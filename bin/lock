@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#xset dpms force off && xscreensaver-command -lock
+#i3lock && xset dpms force off
+exec slock & xset dpms force off

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+umask 0077
+exec > /dev/null
+
+BASEDIR="$HOME/.offlineimap"
+PIDFILE="$BASEDIR/pid"
+
+if [ -f "$PIDFILE" ]; then
+    PID="$(cat "$PIDFILE")"
+    kill -10 "$PID" && exit
+fi
+
+offlineimap

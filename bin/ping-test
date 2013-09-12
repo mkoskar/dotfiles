@@ -1,0 +1,14 @@
+#!/bin/bash
+
+function iter() {
+    date '+%c'
+    ping -c 10 8.8.8.8
+}
+
+function run() {
+    while true; do
+        iter
+    done
+}
+
+run > ~/ping-test.log 2>&1 &

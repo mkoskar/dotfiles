@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo ">>> DIFF: $*" >&2
+
+/usr/bin/diff "$@"
+RETVAL=$?
+
+echo ">>> DIFF EXIT: $RETVAL" >&2
+
+exit $RETVAL

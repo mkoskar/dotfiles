@@ -1,0 +1,40 @@
+# ~/.offlineimaprc
+
+[general]
+accounts = mgm
+maxsyncaccounts = 1
+ui = basic
+socktimeout = 120
+
+[mbnames]
+enabled = yes
+filename = ~/.mutt/offlineimap-mailboxes.muttrc
+header = 'mailboxes '
+peritem = '~/mail/%(accountname)s/%(foldername)s'
+sep = ' '
+footer = '\n'
+
+[Account mgm]
+localrepository = mgm-local
+remoterepository = mgm-remote
+autorefresh = 3
+quick = 0
+presynchook = imapfilter
+postsynchook = notify-mailbox-synced 'mgm'
+
+[Repository mgm-local]
+type = Maildir
+localfolders = ~/mail/mgm
+#restoreatime = yes
+
+[Repository mgm-remote]
+type = IMAP
+remotehost = <host>
+remoteuser = <user>
+remotepass =
+ssl = yes
+maxconnections = 3
+holdconntection = yes
+keepalive = 60
+folderfilter = lambda foldername: re.search('INBOX', foldername)
+folderincludes = ['Deleted Items', 'Drafts', 'Sent Items', 'Templates']

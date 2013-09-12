@@ -1,0 +1,9 @@
+#!/bin/bash
+
+printf '\n---------- PRIMARY ----------\n'
+
+printf "$(xsel)\n\n\n"
+
+printf '\n---------- CLIPBOARD ----------\n'
+
+printf "$(xsel -b)\n\n\n"

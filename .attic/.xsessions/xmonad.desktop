@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=XMonad
+Comment=This starts XMonad session
+Exec=xmonad-session
+Icon=
+Type=Application

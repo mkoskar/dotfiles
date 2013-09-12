@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Compiz
+Comment=This starts Compiz session
+Exec=compiz-session
+Icon=
+Type=Application

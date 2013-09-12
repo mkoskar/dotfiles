@@ -1,0 +1,5 @@
+#!/bin/bash
+
+killall -9 -g aosd_cat
+
+echo "# $1" | aosd_cat -p 2 -x -10 -y 25 -e 1 -t 2 -n local_osd -f 0 -u 4000 -o 0 -R yellow &

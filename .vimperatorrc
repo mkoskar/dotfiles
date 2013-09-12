@@ -1,0 +1,6 @@
+" ~/.vimperatorrc
+
+set autocomplete=false
+" set followhints=1
+set gui=none,addons,nobookmarks,tabs
+set hlsearch

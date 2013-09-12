@@ -1,0 +1,85 @@
+! ~/.Xresources
+
+! colors ---------------------------------------------------------------------
+URxvt.background:   #000000
+!URxvt.background:   #101010
+URxvt.foreground:   #C0C0C0
+
+XTerm.background:   #FFFFFF
+!XTerm.background:   #333333
+!XTerm.background:   #EDEDED
+!XTerm.background:   #C0C0C0
+!XTerm.background:   #101010
+XTerm.foreground:   #000000
+
+!black
+*color0:            #000000
+*color8:            #555555
+
+!red
+*color1:            #AA0000
+*color9:            #DD5555
+
+!green
+*color2:            #00AA00
+*color10:           #55DD55
+
+!yellow
+!*color3:            #AA5500
+*color3:            #FDB436
+!*color11:           #DDDD55
+*color11:           #FEED6A
+
+!blue
+*color4:            #1122AA
+*color12:           #5555DD
+
+!magenta
+*color5:            #AA00AA
+*color13:           #DD55DD
+
+!cyan
+*color6:            #00AAAA
+*color14:           #55DDDD
+
+!white
+*color7:            #C0C0C0
+*color15:           #DDDDDD
+
+! xterm ----------------------------------------------------------------------
+XTerm.termName:         xterm-256color
+XTerm*faceName:         xft:local_terminal_sized
+XTerm*colorMode:        true
+XTerm*dynamicColors:    true
+XTerm*bellIsUrgent:     true
+XTerm*saveLines:        1000
+XTerm*utf8:             2
+
+! urxvt ----------------------------------------------------------------------
+URxvt.termName:         rxvt-256color
+URxvt.underlineColor:   yellow
+URxvt.font:             xft:local_terminal_sized
+URxvt.scrollstyle:      plain
+URxvt.scrollBar:        false
+URxvt.saveLines:        1000
+URxvt.pointerBlank:     true
+URxvt.urgentOnBell:     true
+URxvt.iso14755:         false
+URxvt.iso14755_52:      false
+URxvt.perl-ext-common:  default,matcher,confirm-paste
+URxvt.url-launcher:     firefox
+URxvt.matcher.button:   1
+
+! xcursor --------------------------------------------------------------------
+Xcursor.theme:          Grounation
+Xcursor.size:           22
+
+! xft ------------------------------------------------------------------------
+Xft.dpi:                96
+!Xft.dpi:                118
+Xft.antialias:          true
+Xft.hinting:            true
+Xft.hintstyle:          hintslight
+Xft.autohint:           false
+Xft.rgba:               rgb
+Xft.lcdfilter:          lcddefault

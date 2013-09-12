@@ -1,0 +1,4 @@
+# sort-threads.muttrc
+
+set sort = threads
+macro index,pager \140 '<enter-command>source ~/.mutt/sort-date.muttrc<enter>'

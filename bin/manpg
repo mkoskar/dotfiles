@@ -1,0 +1,3 @@
+#!/bin/bash
+
+pg -c 'set nonu ft=man nonu nolist titlestring=MANPAGE' "$@"

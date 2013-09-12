@@ -1,0 +1,13 @@
+# ~/.gtkrc-2.0.mine
+
+#gtk-theme-name="Mist"
+#gtk-theme-name="MurrezaWarm"
+#gtk-theme-name="Glider"
+#gtk-icon-theme-name="Simple"
+
+style "user-font"
+{
+    font_name = "sans 8"
+}
+widget_class "*" style "user-font"
+gtk-font-name = "sans 8"

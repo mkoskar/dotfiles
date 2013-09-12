@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo ">>> DIFF3: $*" >&2
+
+/usr/bin/diff3 "$@"
+RETVAL=$?
+
+echo ">>> DIFF3 EXIT: $RETVAL" >&2
+
+exit $RETVAL

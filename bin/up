@@ -1,0 +1,38 @@
+#!/bin/bash
+
+if ! tmux has-session -t log; then
+    cd "$HOME"
+    tmux new -d -s log
+    tmux neww -d -t log:1
+fi
+
+if ! tmux has-session -t stuff; then
+    cd "$HOME"
+    tmux new -d -s stuff
+    tmux neww -d -t stuff:1
+fi
+
+if ! tmux has-session -t work; then
+    cd "$HOME/projects"
+    tmux new -d -s work
+    tmux neww -d -t work:1
+fi
+
+# run inside an existing pane (assuming it's a shell)
+#tmux send -t stuff:1 'ls -la' Enter
+
+# run and show the output in copy buffer of an existing pane
+# (runs in fresh shell instance)
+#tmux run -t stuff:1 'ls -la'
+
+# open a new window and run inside
+#tmux neww -t stuff vim
+
+# split horizontally on current window
+#tmux splitw -t stuff vim
+
+# first send SIGSTOP and then try to send some keys as a command
+#tmux send -t stuff:1 C-Z
+#tmux send -t stuff:1 'ls -la' Enter
+
+tmux att -t stuff

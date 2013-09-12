@@ -1,0 +1,27 @@
+[user]
+    email = <email>
+    name = Miroslav Koskar
+
+[http]
+    sslVerify = false
+
+[credential]
+    helper = cache --timeout=3600
+
+[alias]
+    b = branch
+    st = status
+    co = checkout
+    ci = commit
+    df = diff
+    dt = difftool
+    dfc = diff --cached
+    lg1 = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(bold white)— %an%C(reset)%C(bold yellow)%d%C(reset)' --abbrev-commit --date=relative
+    lg2 = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(bold white)— %an%C(reset)' --abbrev-commit
+    lg = !"git lg1"
+
+[push]
+    default = simple
+
+[merge]
+    tool = vimdiff

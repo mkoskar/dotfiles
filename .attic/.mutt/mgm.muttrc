@@ -1,0 +1,11 @@
+# mgm.muttrc
+
+set from        = ''
+set copy
+set record      = '+Sent Items'
+set postpone    = ask-yes
+set postponed   = '+Drafts'
+set smtp_url    = $my_mgm_smtp
+
+# trash folder patch
+#set trash       = '+Deleted Items'

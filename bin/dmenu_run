@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec /usr/bin/dmenu_run -i -fn 'local_dmenu' -nb '#333333' -nf '#FFFFFF' -sb '#000000' -sf '#87cefa' -p '>'

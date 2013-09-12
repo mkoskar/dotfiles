@@ -1,0 +1,11 @@
+# ~/.screenrc
+
+startup_message off
+vbell off
+defscrollback 1000
+hardstatus string "(%n: %t) - %h"
+caption always "%{=}%-Lw%{=b .W}%n%f %t%{-}%+Lw %= %h"
+
+# so that OSC escape sequence for setting window title works
+termcapinfo rxvt* 'hs:ts=\E]2;:fs=\007:ds=\E]2;\007'
+termcapinfo xterm* 'hs:ts=\E]2;:fs=\007:ds=\E]2;\007'

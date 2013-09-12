@@ -1,0 +1,37 @@
+# accounts.muttrc
+
+set my_maildir          = '~/mail'
+set my_mgm              = "$my_maildir/mgm"
+set my_gmail            = "$my_maildir/gmail"
+
+set my_mgm_imap         = 'imaps://'
+set my_mgm_smtp         = 'smtp://'
+set my_mgm_smtp_davmail = 'smtp://'
+set my_gmail_imap       = 'imaps://'
+set my_gmail_smtp       = 'smtps://'
+
+account-hook .                      'unset imap_pass; unset smtp_pass'
+account-hook $my_mgm_imap           'set imap_pass = ""'
+account-hook $my_mgm_smtp_davmail   'set smtp_pass = ""'
+account-hook $my_gmail_imap         'set imap_pass = ""'
+account-hook $my_gmail_smtp         'set smtp_pass = ""'
+
+folder-hook '!'                     'source ~/.mutt/spool.muttrc'
+folder-hook $my_mgm_imap            "set folder = $my_mgm_imap;     source ~/.mutt/mgm.muttrc"
+folder-hook $my_gmail_imap          "set folder = $my_gmail_imap;   source ~/.mutt/gmail.muttrc"
+folder-hook $my_mgm                 "set folder = $my_mgm;          source ~/.mutt/mgm.muttrc"
+folder-hook $my_gmail               "set folder = $my_gmail;        source ~/.mutt/gmail.muttrc"
+
+mailboxes !
+#mailboxes $my_mgm_imap/INBOX
+#mailboxes $my_gmail_imap/INBOX
+source ~/.mutt/offlineimap-mailboxes.muttrc
+
+set query_command       = "~/.mutt/mutt-ldap_localhost.pl %s"
+
+macro index,pager   \e1     "<change-folder>$my_mgm/INBOX<Enter>"                   'go to $mgm/INBOX'
+macro index,pager   \e2     "<change-folder>$my_mgm/Sent<quote-char> Items<Enter>"  'go to $mgm/Sent Items'
+macro index,pager   \e3     "<change-folder>$my_mgm/Drafts<Enter>"                  'go to $mgm/Drafts'
+
+macro index,pager   \e<F1>  "<change-folder>?<change-dir>^A^K$my_mgm_imap<Enter>"   'browse $mgm_imap'
+macro index,pager   \e<F2>  "<change-folder>?<change-dir>^A^K$my_gmail_imap<Enter>" 'browse $gmail_imap'

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+INPUT="$XDG_DATA_HOME/clipbored/clips"
+
+EXE=$(cat $INPUT | tac | dmenu -i -l 15 -fn 'local_dmenu' -nb '#333333' -nf '#FFFFFF' -sb '#000000' -sf '#87cefa' -p 'primary>')
+
+exec echo -n "$EXE" | xsel -i

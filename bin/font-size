@@ -1,0 +1,3 @@
+#!/bin/bash
+
+font "xft:local_terminal:size=$1"

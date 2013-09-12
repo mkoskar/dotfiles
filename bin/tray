@@ -1,0 +1,10 @@
+#!/bin/bash
+
+killall -9 trayer
+
+trayer --edge top --align right \
+       --widthtype request --height 16 --heighttype pixel \
+       --SetDockType true --SetPartialStrut false \
+       --transparent true --alpha 0 --tint 0x000000 \
+       --monitor primary \
+       --expand true &

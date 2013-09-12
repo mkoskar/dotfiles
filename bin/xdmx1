@@ -1,0 +1,3 @@
+#!/bin/bash
+
+Xdmx :10 -br -norender -noglxproxy -configfile xdmx.conf -config test1

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+case "$ACTION" in
+    download)
+        killall feh
+        feh -FZn . &
+        ;;
+esac
+
+exit 0

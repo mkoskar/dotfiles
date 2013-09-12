@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Default
+Comment=This starts default session
+Exec=default
+Icon=
+Type=Application

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+umask 0077
+exec > /dev/null
+
+BASEDIR="$HOME/.offlineimap"
+PIDFILE="$BASEDIR/pid"
+
+function log() {
+    echo "$*" >&2
+}
+
+if [ -f "$PIDFILE" ]; then
+    PID="$(cat "$PIDFILE")"
+    log "> terminating... $PID"
+    kill "$PID" 2>&1 || log "> not running... (nothing killed)"
+    until ! ps -p "$PID"; do
+        log "> sleeping..."
+        sleep 1
+    done
+fi
+
+log "> starting..."
+nohup /usr/bin/offlineimap -c "$BASEDIR/config" -l "$BASEDIR/log" 2>&1 &

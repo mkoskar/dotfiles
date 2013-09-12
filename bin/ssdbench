@@ -1,0 +1,28 @@
+#!/bin/bash
+
+cd ~/tmp
+pwd
+
+#echo '--- hdparm ----------'
+
+#for i in {1..5}; do
+    sudo hdparm -Tt /dev/sda
+#done
+
+echo '--- write ----------'
+
+for i in {1..5}; do
+    sudo bash -c 'echo 3 > /proc/sys/vm/drop_caches'
+    dd if=/dev/zero of=tempfile bs=1M count=1024 conv=fdatasync,notrunc
+done
+
+echo '--- read ----------'
+
+for i in {1..5}; do
+    sudo bash -c 'echo 3 > /proc/sys/vm/drop_caches'
+    dd if=tempfile of=/dev/null bs=1M count=1024
+done
+
+dd if=tempfile of=/dev/null bs=1M count=1024
+
+rm tempfile

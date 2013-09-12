@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Start bold mode
+export LESS_TERMCAP_md=$'\e[1;37m'
+# Start standout mode
+export LESS_TERMCAP_so=$'\e[1;37;41m'
+# End standout mode
+export LESS_TERMCAP_se=$'\e[0m'
+# Start underlining
+export LESS_TERMCAP_us=$'\e[4;93m'
+# End underlining
+export LESS_TERMCAP_ue=$'\e[0m'
+# End all mode like so, us, mb, md and mr
+export LESS_TERMCAP_me=$'\e[0m'
+
+exec /usr/bin/less "$@"

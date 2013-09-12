@@ -1,0 +1,13 @@
+#!/bin/bash
+
+xrandr-bigdesktop
+
+xset -b dpms 180 240 300
+xsetroot -solid black
+xsetroot -cursor_name left_ptr
+
+tray
+workrave &
+udiskie -s &
+
+xmonad
