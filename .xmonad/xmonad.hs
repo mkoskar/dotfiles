@@ -111,11 +111,8 @@ myConfig = defaultConfig
             ("M-<F1>", spawn "setxkbmap us && notify-xkbmap"),
             ("M-<F2>", spawn "setxkbmap sk -variant qwerty && notify-xkbmap"),
             ("M-<F3>", spawn "setxkbmap cz -variant qwerty && notify-xkbmap"),
-            ("M-<F4>", spawn "setxkbmap dvorak && notify-xkbmap"),
             -- vim cheat sheet
             ("M-v", spawn "feh -F /home/mirci/archive/incoming/vim/vi-vim-cheat-sheet.gif"),
-            -- dvorak cheat sheet
-            -- ("M-d", spawn "feh -F /home/mirci/archive/incoming/dvorak/1024W.gif"),
             -- xrandr
             ("M-<F10>", spawn "xrandr-bigdesktop && xmonad-session-repair"),
             ("M-<F11>", spawn "xrandr-bigdesktop-HDMI_HDMI && xmonad-session-repair"),
@@ -146,10 +143,7 @@ myConfig = defaultConfig
         myManageHook = composeOne
             [
                 isDialog -?> doCenterFloat,
-                -- className =? "Gimp" -?> doCenterFloat,
                 className =? "Skype" -?> doFloat
-                -- className =? "Google-chrome" && title =? "Hangouts" -?> doFloat
-                -- className =? "Pidgin" -?> doFloat
             ]
         -- layout hook
         myLayoutHook = layoutHintsWithPlacement (0.5, 0.5) myTabbed  |||
@@ -168,7 +162,6 @@ myConfig = defaultConfig
                     }
                 myTabbed = tabbedBottom shrinkText myTheme
                 myTiled = Tall 1 (3/100) (1/2)
-                -- myGrid = dwmStyle shrinkText myTheme Grid
 
 -- main
 main = xmonad =<< myStatusBar (withUrgencyHook NoUrgencyHook myConfig)

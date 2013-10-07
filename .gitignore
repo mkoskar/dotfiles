@@ -33,6 +33,7 @@
 !.Xmodmap
 !.Xresources
 !.bashrc
+!.bcrc
 !.gitconfig
 !.gtk-bookmarks
 !.gtkrc-2.0.mine

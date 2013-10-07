@@ -1,4 +1,0 @@
-#!/bin/bash
-
-lock &
-/usr/sbin/pm-suspend

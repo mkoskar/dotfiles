@@ -1,4 +1,4 @@
 #!/bin/bash
 
 netdown
-sudo netctl stop-all
+sudo /usr/bin/netctl stop-all

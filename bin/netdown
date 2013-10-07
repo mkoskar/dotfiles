@@ -2,5 +2,5 @@
 
 for i in $(ls /sys/class/net); do
     [[ "$i" == 'lo' ]] && continue
-    sudo ip link set dev "$i" down
+    sudo /usr/bin/ip link set dev "$i" down
 done

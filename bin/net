@@ -1,4 +1,4 @@
 #!/bin/bash
 
 netoff
-sudo netctl start wlan0-Slon
+sudo /usr/bin/netctl start wlan0-Slon

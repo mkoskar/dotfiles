@@ -1,0 +1,4 @@
+#!/bin/bash
+
+lock &
+sudo /usr/bin/pm-suspend

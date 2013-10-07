@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#exec > ~/.xsession.out 2>&1
+exec > ~/.xsession.out 2>&1
 
 XSESSION="${1:-xmonad-session}"
 
