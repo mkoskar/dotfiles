@@ -1,6 +1,28 @@
 " ~/.vimperatorrc
 
 set autocomplete=false
-" set followhints=1
 set gui=none,addons,nobookmarks,tabs
 set hlsearch
+
+noremap <A-j> 5j
+noremap <A-k> 5k
+
+nnoremap <A-l> gt
+nnoremap <A-h> gT
+nnoremap <A-1> 1gt
+nnoremap <A-2> 2gt
+nnoremap <A-3> 3gt
+nnoremap <A-4> 4gt
+nnoremap <A-5> 5gt
+nnoremap <A-6> 6gt
+nnoremap <A-7> 7gt
+nnoremap <A-8> 8gt
+nnoremap <A-9> 9gt
+nnoremap <silent> <A-0> :tablast<CR>
+
+nnoremap <silent> <C-Space> :nohls<CR>
+
+cnoremap <C-o> <Tab>
+cnoremap <C-k> <S-Tab>
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>

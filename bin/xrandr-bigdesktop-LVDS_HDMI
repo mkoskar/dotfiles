@@ -2,9 +2,4 @@
 
 source ~/bin/xrandr-env
 
-#xrandr-dual HDMI1 LVDS1 --primary --right-of HDMI1
-#xrandr-dual LVDS1 HDMI1 --primary --right-of LVDS1
-
-#xrandr-dual LVDS1 HDMI2 --primary --right-of LVDS1
-#xrandr-dual LVDS1 HDMI3 --primary --right-of LVDS1
-xrandr-dual HDMI3 LVDS1 --primary --left-of HDMI3
+xrandr-dual LVDS1 HDMI3 --primary --left-of LVDS1

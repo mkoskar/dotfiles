@@ -2,7 +2,7 @@
 
 xrandr-bigdesktop
 
-xset -b dpms 180 240 300
+xset b off s off dpms 0 0 300
 xsetroot -solid black
 xsetroot -cursor_name left_ptr
 

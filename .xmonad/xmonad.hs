@@ -100,9 +100,6 @@ myConfig = defaultConfig
             ("M-S-t", namedScratchpadAction myScratchpads "term"),
             ("M-S-h", namedScratchpadAction myScratchpads "htop"),
             -- audio
---             ("M-S-j", spawn "pamixer --decrease 5 && notify-audio"),
---             ("M-S-k", spawn "pamixer --increase 5 && notify-audio"),
---             ("M-S-m", spawn "pamixer --toggle-mute && notify-audio"),
             ("M-S-j", spawn "amixer set Master 2- && notify-audio"),
             ("M-S-k", spawn "amixer set Master 2+ && notify-audio"),
             ("M-S-m", spawn "amixer set Master toggle && notify-audio"),
@@ -116,7 +113,8 @@ myConfig = defaultConfig
             -- xrandr
             ("M-<F10>", spawn "xrandr-bigdesktop && xmonad-session-repair"),
             ("M-<F11>", spawn "xrandr-bigdesktop-HDMI_HDMI && xmonad-session-repair"),
-            -- xsel
+            -- other
+            ("M-S-d", spawn "dpms-toggle && notify-dpms"),
             ("M-<F5>", spawn "xsel | xsel -ib"),
             ("M-<F6>", spawn "xsel -b | xsel -i"),
             ("M-<F7>", spawn "xsel | xsel -i"),

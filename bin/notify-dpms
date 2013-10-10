@@ -1,0 +1,6 @@
+#!/bin/bash
+
+exec > /dev/null 2>&1
+
+xset -q | grep -q "DPMS is Enabled" && osd "dpms [on]" && exit
+xset -q | grep -q "DPMS is Disabled" && osd "dpms [off]"
