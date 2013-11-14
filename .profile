@@ -5,4 +5,7 @@
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 
-[ -r "$HOME/.bashrc" ] && . "$HOME/.bashrc"
+source ~/bin/ssh-agent.sh
+source ~/bin/gpg-agent.sh
+
+[ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"

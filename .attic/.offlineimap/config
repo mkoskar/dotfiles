@@ -1,40 +1,23 @@
-# ~/.offlineimaprc
+# ~/.offlineimap/config
 
 [general]
-accounts = mgm
-maxsyncaccounts = 1
-ui = basic
-socktimeout = 120
+ui = quiet
+accounts = example
 
-[mbnames]
-enabled = yes
-filename = ~/.mutt/offlineimap-mailboxes.muttrc
-header = 'mailboxes '
-peritem = '~/mail/%(accountname)s/%(foldername)s'
-sep = ' '
-footer = '\n'
+[Account example]
+localrepository = example-local
+remoterepository = example-remote
+autorefresh = 5
+quick = 5
+postsynchook = notify-mailbox-synced 'example'
 
-[Account mgm]
-localrepository = mgm-local
-remoterepository = mgm-remote
-autorefresh = 3
-quick = 0
-presynchook = imapfilter
-postsynchook = notify-mailbox-synced 'mgm'
-
-[Repository mgm-local]
+[Repository example-local]
 type = Maildir
-localfolders = ~/mail/mgm
-#restoreatime = yes
+localfolders = ~/mail/example
 
-[Repository mgm-remote]
-type = IMAP
-remotehost = <host>
+[Repository example-remote]
+type = Gmail
 remoteuser = <user>
-remotepass =
-ssl = yes
+remotepass = <pass>
 maxconnections = 3
-holdconntection = yes
-keepalive = 60
-folderfilter = lambda foldername: re.search('INBOX', foldername)
-folderincludes = ['Deleted Items', 'Drafts', 'Sent Items', 'Templates']
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt

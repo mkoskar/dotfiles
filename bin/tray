@@ -1,6 +1,6 @@
 #!/bin/bash
 
-killall -9 trayer
+killall -9 trayer > /dev/null 2>&1
 
 trayer --edge top --align right \
        --widthtype request --height 16 --heighttype pixel \

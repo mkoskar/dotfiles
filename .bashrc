@@ -28,6 +28,7 @@ alias nw='tmux neww'
 [[ "$TERM" == 'screen' ]] && export TERM='screen-256color'
 
 stty -ixon
+export GPG_TTY=$(tty)
 
 eval `dircolors -b`
 
@@ -40,16 +41,16 @@ unset MAILCHECK
 shopt -s autocd checkjobs cmdhist dotglob histappend \
          histreedit histverify lithist no_empty_cmd_completion
 
-bind -m vi-insert   '"\C-e" :shell-expand-line'
-bind -m vi-command  '"\C-e" :shell-expand-line'
-bind -m vi-insert   '"\ee"  :history-and-alias-expand-line'
-bind -m vi-insert   '"\eE"  :history-and-alias-expand-line'
-bind -m vi-command  '"\ee"  :history-and-alias-expand-line'
-bind -m vi-command  '"\eE"  :history-and-alias-expand-line'
-bind -m vi-insert   '"\ei"  :complete-filename'
-bind -m vi-insert   '"\eI"  :complete-filename'
-bind -m vi-insert   '"\e\t" :dynamic-complete-history'
-bind -m vi-insert   '"\eq"  :dabbrev-expand'
+bind -m vi-insert   '"\C-e": shell-expand-line'
+bind -m vi-command  '"\C-e": shell-expand-line'
+bind -m vi-insert   '"\ee":  history-and-alias-expand-line'
+bind -m vi-insert   '"\eE":  history-and-alias-expand-line'
+bind -m vi-command  '"\ee":  history-and-alias-expand-line'
+bind -m vi-command  '"\eE":  history-and-alias-expand-line'
+bind -m vi-insert   '"\ei":  complete-filename'
+bind -m vi-insert   '"\eI":  complete-filename'
+bind -m vi-insert   '"\e\t": dynamic-complete-history'
+bind -m vi-insert   '"\eq":  dabbrev-expand'
 
 export HISTCONTROL='erasedups'
 export HISTFILESIZE='5000'
@@ -57,6 +58,9 @@ export HISTSIZE='500'
 export HISTIGNORE='exit'
 
 export LESS='-MRS#3'
+
+# gpg
+alias gpgsandbox='gpg --homedir "${HOME}/.gnupg/sandbox"'
 
 # virtualenvwrapper
 export VIRTUALENVWRAPPER_PYTHON="$(which python2)"

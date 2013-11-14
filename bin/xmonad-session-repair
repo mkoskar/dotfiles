@@ -2,6 +2,8 @@
 
 export DISPLAY=:0
 
-xsetroot -solid black
 xmonad --restart
+
+sleep 1
+xsetroot -solid black
 tray

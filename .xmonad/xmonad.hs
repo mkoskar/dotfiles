@@ -56,7 +56,6 @@ myStatusBar conf = statusBar "xmobar" myXmobarPP myToggleStrutsKey conf
                 ppUrgent = xmobarColor "#FF5555" "#FEEF6A" . pad,
                 ppSep = " ",
                 ppTitle = xmobarColor "#EFEFEF" "" . shorten 100,
-                -- ppLayout = \ x -> "",
                 ppOrder = \ (workspaces : layout : title : extras) -> [workspaces, title]
             }
 
@@ -93,23 +92,18 @@ myConfig = defaultConfig
             -- scrot
             ("<Print>", spawn "scrot -e 'feh $f'"),
             ("M-<Print>", spawn "sleep 0.5 && scrot -s -e 'feh $f'"),
-            -- prompts
-            ("M-g", launchApp defaultXPConfig "gimp"),
-            ("M-n", appendFilePrompt defaultXPConfig "/home/mirci/personal/notes"),
             -- scratchpads
             ("M-S-t", namedScratchpadAction myScratchpads "term"),
             ("M-S-h", namedScratchpadAction myScratchpads "htop"),
             -- audio
-            ("M-S-j", spawn "amixer set Master 2- && notify-audio"),
-            ("M-S-k", spawn "amixer set Master 2+ && notify-audio"),
-            ("M-S-m", spawn "amixer set Master toggle && notify-audio"),
-            ("M-S-n", spawn "amixer set Headphone,1 toggle"),
+            ("M-S-j", spawn "amixer -q set Master 4- && notify-audio"),
+            ("M-S-k", spawn "amixer -q set Master 4+ && notify-audio"),
+            ("M-S-m", spawn "amixer -q set Master toggle && notify-audio"),
+            ("M-S-n", spawn "amixer -q set Headphone,1 toggle && notify-audio-dock"),
             -- setxkbmap
             ("M-<F1>", spawn "setxkbmap us && notify-xkbmap"),
             ("M-<F2>", spawn "setxkbmap sk -variant qwerty && notify-xkbmap"),
             ("M-<F3>", spawn "setxkbmap cz -variant qwerty && notify-xkbmap"),
-            -- vim cheat sheet
-            ("M-v", spawn "feh -F /home/mirci/archive/incoming/vim/vi-vim-cheat-sheet.gif"),
             -- xrandr
             ("M-<F10>", spawn "xrandr-bigdesktop && xmonad-session-repair"),
             ("M-<F11>", spawn "xrandr-bigdesktop-HDMI_HDMI && xmonad-session-repair"),
@@ -144,8 +138,8 @@ myConfig = defaultConfig
                 className =? "Skype" -?> doFloat
             ]
         -- layout hook
-        myLayoutHook = layoutHintsWithPlacement (0.5, 0.5) myTabbed  |||
-                                                           Full      |||
+        myLayoutHook = layoutHintsWithPlacement (0.5, 0.5) myTabbed |||
+                       noBorders Full |||
                        layoutHintsWithPlacement (0.5, 0.5) myTiled
             where
                 aTheme = (theme deiflTheme)

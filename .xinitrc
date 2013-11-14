@@ -29,5 +29,8 @@ if [ -d '/etc/X11/xinit/xinitrc.d' ]; then
     done
 fi
 
+setxkbmap -option compose:ralt
+
 XSESSION="$1"
-exec "$(which ssh-agent)" "$XSESSION"
+exec "$XSESSION"
+#exec ssh-agent gpg-agent --daemon "$XSESSION"

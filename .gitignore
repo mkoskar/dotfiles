@@ -11,6 +11,10 @@
 !.config/gtk-3.0/bookmarks
 !.config/user-dirs.dirs
 
+!.gnupg
+!.gnupg/gpg-agent.conf
+!.gnupg/gpg.conf
+
 !.moc
 !.moc/config
 !.moc/keymap

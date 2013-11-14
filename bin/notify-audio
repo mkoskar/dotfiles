@@ -1,12 +1,3 @@
 #!/bin/bash
 
-exec > /dev/null 2>&1
-
-#if pamixer --get-mute; then
-#    osd "mute"
-#else
-#    osd "volume: $(pamixer --get-volume)%"
-#    osd "volume: $(pamixer --get-volume)%"
-#fi
-
 osd "$(amixer get Master | grep % | awk '{print $4 " / " $6}')"
