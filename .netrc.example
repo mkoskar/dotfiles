@@ -1,2 +1,1 @@
-machine git.miroslavkoskar.com login <user> password <password>
-machine github.com login <user> password <password>
+machine <host> login <user> password <password>

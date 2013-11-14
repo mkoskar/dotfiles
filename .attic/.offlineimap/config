@@ -3,6 +3,7 @@
 [general]
 ui = quiet
 accounts = example
+pythonfile = ~/bin/authinfo.py
 
 [Account example]
 localrepository = example-local
@@ -18,6 +19,7 @@ localfolders = ~/mail/example
 [Repository example-remote]
 type = Gmail
 remoteuser = <user>
-remotepass = <pass>
+remotepass = <password>
+remotepasseval = get_authinfo_password('imap.gmail.com', '<user>')
 maxconnections = 3
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
