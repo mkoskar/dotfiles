@@ -2,7 +2,7 @@
 
 # if there is terminal connected to the STDIN,
 # execute command normally
-tty > /dev/null 2>&1 && exec "$@"
+tty -s && exec "$@"
 
 # else execute command to read from STDIN
 exec "$@" -
