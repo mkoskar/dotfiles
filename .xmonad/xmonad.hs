@@ -37,7 +37,7 @@ import XMonad.Prompt.AppendFile
 -- import XMonad.Prompt.Shell
 -- import XMonad.Prompt.Ssh
 
-import XMonad.Util.EZConfig (additionalKeysP)
+import XMonad.Util.EZConfig
 -- import XMonad.Util.Loggers
 -- import XMonad.Util.Run
 import XMonad.Util.NamedScratchpad
@@ -69,58 +69,13 @@ myConfig = defaultConfig
             normalBorderColor = "#000000",
             focusedBorderColor = "#FF3333",
             modMask = myModMask,
-            startupHook = setWMName "LG3D",
-            manageHook = manageHook defaultConfig <+> namedScratchpadManageHook myScratchpads <+> myManageHook,
+            startupHook = setWMName "LG3D" <+> checkKeymap defaultConfig myKeymap,
+            manageHook = namedScratchpadManageHook myScratchpads <+> myManageHook,
             layoutHook = myLayoutHook,
             logHook = updatePointer (Relative 0.5 0.5)
         }
-        `additionalKeysP`
-        ([
-            -- wm bindings
-            ("M-a", toggleWS),
-            ("M-w", nextScreen),
-            ("M-S-w", shiftNextScreen),
-            ("M-s", moveTo Prev NonEmptyWS),
-            ("M-d", moveTo Next NonEmptyWS),
-            ("M-z", swapNextScreen),
-            -- xterm
-            ("M-x x", spawn "xterm"),
-            -- dmenu
-            ("M-p", spawn "dmenu_run"),
-            -- lock
-            ("M-S-l", spawn "lock"),
-            -- scrot
-            ("<Print>", spawn "scrot -e 'feh $f'"),
-            ("M-<Print>", spawn "sleep 0.5 && scrot -s -e 'feh $f'"),
-            -- scratchpads
-            ("M-S-t", namedScratchpadAction myScratchpads "term"),
-            ("M-S-h", namedScratchpadAction myScratchpads "htop"),
-            -- audio
-            ("M-S-j", spawn "amixer -q set Master 4- && notify-audio"),
-            ("M-S-k", spawn "amixer -q set Master 4+ && notify-audio"),
-            ("M-S-m", spawn "amixer -q set Master toggle && notify-audio"),
-            ("M-S-n", spawn "amixer -q set Headphone,1 toggle && notify-audio-dock"),
-            -- setxkbmap
-            ("M-<F1>", spawn "setxkbmap us && notify-xkbmap"),
-            ("M-<F2>", spawn "setxkbmap sk -variant qwerty && notify-xkbmap"),
-            ("M-<F3>", spawn "setxkbmap cz -variant qwerty && notify-xkbmap"),
-            -- xrandr
-            ("M-<F10>", spawn "xrandr-bigdesktop && xmonad-session-repair"),
-            ("M-<F11>", spawn "xrandr-bigdesktop-HDMI_HDMI && xmonad-session-repair"),
-            -- other
-            ("M-S-d", spawn "dpms-toggle && notify-dpms"),
-            ("M-<F5>", spawn "xsel | xsel -ib"),
-            ("M-<F6>", spawn "xsel -b | xsel -i"),
-            ("M-<F7>", spawn "xsel | xsel -i"),
-            ("M-<F8>", spawn "xsel -b | xsel -ib")
-        ]
-        ++
-        [
-            -- remapping screen bindings based on their physical location
-            ("M-" ++ mask ++ [key], action screen)
-            | (key, screen) <- zip ['e', 'r'] [0..],
-              (action, mask) <- [(viewScreen, "") , (sendToScreen, "S-")]
-        ])
+        `removeKeysP` [ "M-e", "M-S-e", "M-r", "M-S-r" ]
+        `additionalKeysP` (myKeymap)
     where
         myTerminal = "urxvtc"
         myModMask = mod4Mask
@@ -154,6 +109,48 @@ myConfig = defaultConfig
                     }
                 myTabbed = tabbedBottom shrinkText myTheme
                 myTiled = Tall 1 (3/100) (1/2)
+        -- keymap
+        myKeymap = [
+                -- wm bindings
+                ("M-a", toggleWS),
+                ("M-w", nextScreen),
+                ("M-S-w", shiftNextScreen),
+                ("M-s", moveTo Prev NonEmptyWS),
+                ("M-d", moveTo Next NonEmptyWS),
+                ("M-z", swapNextScreen),
+                -- xterm
+                ("M-x x", spawn "xterm"),
+                -- dmenu
+                ("M-p", spawn "dmenu_run"),
+                -- lock
+                ("M-S-l", spawn "lock"),
+                -- scrot
+                ("<Print>", spawn "scrot -e 'feh $f'"),
+                ("M-<Print>", spawn "sleep 0.5 && scrot -s -e 'feh $f'"),
+                -- scratchpads
+                ("M-S-t", namedScratchpadAction myScratchpads "term"),
+                ("M-S-h", namedScratchpadAction myScratchpads "htop"),
+                -- audio
+                ("M-S-j", spawn "amixer -q set Master 4- && notify-audio"),
+                ("M-S-k", spawn "amixer -q set Master 4+ && notify-audio"),
+                ("M-S-m", spawn "amixer -q set Master toggle && notify-audio"),
+                ("M-S-n", spawn "amixer -q set Headphone,1 toggle && notify-audio-dock"),
+                -- setxkbmap
+                ("M-<F1>", spawn "setxkbmap us && notify-xkbmap"),
+                ("M-<F2>", spawn "setxkbmap sk -variant qwerty && notify-xkbmap"),
+                ("M-<F3>", spawn "setxkbmap cz -variant qwerty && notify-xkbmap"),
+                -- xrandr
+                ("M-<F10>", spawn "xrandr-bigdesktop && xmonad-session-repair"),
+                ("M-<F11>", spawn "xrandr-bigdesktop-HDMI_HDMI && xmonad-session-repair"),
+                -- other
+                ("M-S-d", spawn "dpms-toggle && notify-dpms"),
+                ("M-S-b", spawn "backlight-toggle"),
+                ("M-S-r", spawn "rfkill-toggle && notify-rfkill"),
+                ("M-<F5>", spawn "xsel | xsel -ib"),
+                ("M-<F6>", spawn "xsel -b | xsel -i"),
+                ("M-<F7>", spawn "xsel | xsel -i"),
+                ("M-<F8>", spawn "xsel -b | xsel -ib")
+            ]
 
 -- main
 main = xmonad =<< myStatusBar (withUrgencyHook NoUrgencyHook myConfig)

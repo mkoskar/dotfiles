@@ -68,13 +68,16 @@ source "$HOME/.local/bin/virtualenvwrapper.sh"
 alias mkvirtualenv2="mkvirtualenv -p $(which python2)"
 alias mkvirtualenv3="mkvirtualenv -p $(which python3)"
 alias pipinst='pip install --download-cache="$HOME/.pip-cache"'
+alias wo='workon'
+complete -o default -o nospace -F _virtualenvs wo
+
+# python
 alias py='python'
 alias ipy='ipython'
 
 # mplayer
 alias play='mplayer -msgcolor -msgmodule'
 alias playcd='mplayer cdda://'
-#alias playdvd='mplayer dvd://'
 alias playdvd='mplayer -mouse-movements dvdnav://'
 alias playvcd='mplayer vcd://2'
 

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+MAX=15
+SET=10
+LOW=8
+
+CUR="$(</sys/class/backlight/acpi_video0/brightness)"
+
+case "$CUR" in
+    $MAX)
+        ;;
+    $SET)
+        SET=$LOW
+        ;;
+    $LOW)
+        SET=$MAX
+        ;;
+esac
+
+sudo bash -c "echo $SET > /sys/class/backlight/acpi_video0/brightness"

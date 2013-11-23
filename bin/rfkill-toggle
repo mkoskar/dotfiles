@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ "$(</sys/class/rfkill/rfkill0/state)" -eq "1" ]; then
+    rfkill block all
+else
+    rfkill unblock all
+fi

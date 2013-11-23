@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ "$(</sys/class/rfkill/rfkill0/state)" -eq "1" ]; then
+    osd 'rfkill [on]'
+else
+    osd 'rfkill [off]'
+fi

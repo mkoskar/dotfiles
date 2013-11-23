@@ -1,21 +1,21 @@
 -- ~/.xmobarrc
 
-Config { font = "xft:local_xmobar"
-       , bgColor = "#000000"
-       , fgColor = "#C0C0C0"
-       , position = TopW L 90
-       , lowerOnStart = True
-       , commands = [ Run StdinReader
-                    , Run Cpu ["-t","<total>","-L","3","-H","50","-n","#EFEFEF","-h","#FF5555"] 10
---                  , Run CpuFreq ["-t","<cpu0>|<cpu1>","-L","0","-H","2","-n","#C0C0C0","-h","#FF5555"] 50
---                  , Run CoreTemp ["-t","<core0>|<core1>","-L","0","-H","60","-n","#C0C0C0","-h","#FF5555"] 100
-                    , Run Memory ["-t","<usedratio>"] 50
---                  , Run Swap ["-t","<usedratio>"] 50
-                    , Run Date "%d.%m|%k:%M" "date" 100
-                    ]
-       , sepChar = "%"
-       , alignSep = "}{"
---         , template = "%StdinReader% }{ %cpu%  %cpufreq%  %coretemp%  %memory%/%swap%  %date%"
---         , template = "%StdinReader% }{ %cpu%  %memory%/%swap%  %date%"
-           , template = "%StdinReader% }{ %cpu%  %memory%  %date%"
-       }
+Config {
+    font = "xft:local_xmobar"
+    , bgColor = "#000000"
+    , fgColor = "#C0C0C0"
+    , position = TopP 0 100
+    , commands = [
+        Run StdinReader
+        , Run Locks
+        , Run Weather "LKPR" ["-t", "<skyCondition>|<tempC>"] 600
+        , Run Battery ["-t", "<watts>|<left>/<timeleft>", "-L", "20", "-H", "50", "-l", "#FF5555", "-n", "#EFEFEF", "-p", "2", "-c", "0", "--",
+                       "-L", "0", "-H", "15", "-m", "#55FF55", "-h", "#FF5555"] 50
+        , Run Wireless "wlan0" ["-t", "q<quality>", "-p", "2", "-c", "0"] 50
+        , Run Cpu ["-t", "<total>", "-L", "8", "-H", "30", "-n", "#EFEFEF", "-h", "#FF5555", "-p", "2", "-c", "0"] 30
+        , Run Memory ["-t", "<usedratio>", "-p", "2", "-c", "0"] 50
+        , Run Date "%d.%m|%k:%M" "date" 600
+    ]
+    , alignSep = "}{"
+    , template = "%StdinReader% }{ <fc=#FF5555>%locks%</fc>  %LKPR%  %battery%  %wlan0wi%  %cpu%|%memory%  %date%"
+}

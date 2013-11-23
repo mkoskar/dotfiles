@@ -7,7 +7,6 @@ xsetroot -solid black
 xsetroot -cursor_name left_ptr
 
 tray
-workrave &
 udiskie -s &
 
 xmonad
