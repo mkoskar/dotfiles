@@ -2,31 +2,27 @@
 
 set -e
 
-export TERM='linux'
 export PATH="/home/mirci/bin:$PATH"
 
 USER='mirci'
+XTTY=1
 
 VTOLD=$(fgconsole)
-VTNEW=10
-exec 0<>/dev/tty$VTNEW >&0 2>&1 
 
 SYSRQ_PATH='/proc/sys/kernel/sysrq'
 SYSRQ_OLD=$(cat "$SYSRQ_PATH")
 echo 0 > "$SYSRQ_PATH"
 
 function cleanup {
-    clear
     echo $SYSRQ_OLD > "$SYSRQ_PATH"
     vtswitch-lock -u
     chvt $VTOLD
 }
 trap cleanup EXIT
 
-clear
-chvt $VTNEW
+chvt $XTTY
 vtswitch-lock
-setterm -blank 1
 
-sudo -u $USER away -C away
-read
+sudo -u $USER bash -c 'export DISPLAY=:0
+                       export XAUTHORITY=~/.Xauthority
+                       slock'

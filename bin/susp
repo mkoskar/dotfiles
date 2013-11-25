@@ -1,4 +1,3 @@
 #!/bin/bash
 
-lock &
-sudo /usr/bin/pm-suspend
+systemctl suspend

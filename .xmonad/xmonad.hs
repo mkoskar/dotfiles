@@ -123,7 +123,7 @@ myConfig = defaultConfig
                 -- dmenu
                 ("M-p", spawn "dmenu_run"),
                 -- lock
-                ("M-S-l", spawn "lock"),
+                ("M-S-l", spawn "sudo lock"),
                 -- scrot
                 ("<Print>", spawn "scrot -e 'feh $f'"),
                 ("M-<Print>", spawn "sleep 0.5 && scrot -s -e 'feh $f'"),

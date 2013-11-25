@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+
+import argparse
+import fcntl
+
+VT_LOCKSWITCH = 0x560B
+VT_UNLOCKSWITCH = 0x560C
+
+parser = argparse.ArgumentParser(description='Locks (or unlocks) console switching.')
+parser.add_argument('-u', '--unlock', action='store_true', help='unlock')
+args = parser.parse_args()
+
+console = open('/dev/console', 'w')
+fcntl.ioctl(console, VT_UNLOCKSWITCH if args.unlock else VT_LOCKSWITCH)
+console.close()

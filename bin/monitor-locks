@@ -1,0 +1,8 @@
+#!/bin/bash
+
+TYPE='signal'
+INTERFACE='org.freedesktop.login1.Session'
+MEMBER='Lock'
+WATCH="type='$TYPE',interface='$INTERFACE',member='$MEMBER'"
+
+dbus-monitor --system --profile "$WATCH" | sed '1d'
