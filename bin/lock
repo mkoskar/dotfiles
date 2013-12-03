@@ -8,7 +8,7 @@ export PATH="/home/mirci/bin:$PATH"
 USER='mirci'
 
 VTOLD=$(fgconsole)
-VTNEW=10
+VTNEW=30
 exec 0<>/dev/tty$VTNEW >&0 2>&1 
 
 SYSRQ_PATH='/proc/sys/kernel/sysrq'
@@ -16,17 +16,18 @@ SYSRQ_OLD=$(cat "$SYSRQ_PATH")
 echo 0 > "$SYSRQ_PATH"
 
 function cleanup {
-    clear
-    echo $SYSRQ_OLD > "$SYSRQ_PATH"
     vtswitch-lock -u
     chvt $VTOLD
+    clear
+    echo $SYSRQ_OLD > "$SYSRQ_PATH"
 }
 trap cleanup EXIT
 
 clear
+tput civis
+setterm -blank 1
 chvt $VTNEW
 vtswitch-lock
-setterm -blank 1
 
 sudo -u $USER away -C away
 read

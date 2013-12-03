@@ -35,7 +35,7 @@ eval `dircolors -b`
 PS1='\u@\h:\!:\#:\W\$ '
 PROMPT_DIRTRIM=3
 CDPATH='.:..:~'
-unset PROMPT_COMMAND
+#unset PROMPT_COMMAND
 unset MAILCHECK
 
 shopt -s autocd checkjobs cmdhist dotglob histappend \

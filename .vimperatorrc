@@ -1,7 +1,7 @@
 " ~/.vimperatorrc
 
 set autocomplete=false
-set gui=none,addons,nobookmarks,tabs
+set gui=none,tabs,navigation
 set hlsearch
 
 noremap <A-j> 5j

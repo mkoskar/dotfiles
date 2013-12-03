@@ -1,4 +1,4 @@
 #!/bin/bash
 
 netoff
-sudo /usr/bin/netctl start wlan0-Slon
+sudo netctl restore
