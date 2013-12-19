@@ -94,8 +94,16 @@ nnoremap <C-K> <C-W>k
 nnoremap <C-J> <C-W>j
 nnoremap <C-H> <C-W>h
 nnoremap <C-L> <C-W>l
-nnoremap <C-Q> :bd<CR>
-"nnoremap <C-X><C-X> :bd<CR>
+
+" TODO (standardize shortcuts of tmux and vim)
+" - moving in windows / panes
+" - resizing windows / panes
+" - maximizing window / pane
+
+"nnoremap <C-W><Esc>k 5<C-W>+
+"nnoremap <C-W><Esc>j 5<C-W>-
+"nnoremap <C-W><Esc>h 5<C-W>>
+"nnoremap <C-W><Esc>l 5<C-W><
 
 "nnoremap <silent> <C-K> :<C-U>let @w=":resize +".v:count1."<C-V><CR>"<Bar>@w<CR>
 "nnoremap <silent> <C-J> :<C-U>let @w=":resize -".v:count1."<C-V><CR>"<Bar>@w<CR>
@@ -238,6 +246,9 @@ nnoremap <Leader>ew :e %%
 nnoremap <Leader>es :sp %%
 nnoremap <Leader>ev :vsp %%
 nnoremap <Leader>et :tabe %%
+
+nnoremap <C-Q> :bd<CR>
+"nnoremap <C-X><C-X> :bd<CR>
 
 " macros
 " TODO

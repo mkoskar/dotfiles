@@ -58,6 +58,7 @@ export HISTSIZE='500'
 export HISTIGNORE='exit'
 
 export LESS='-MRS#3'
+export LESSHISTFILE='-'
 
 # gpg
 alias gpgsandbox='gpg --homedir "${HOME}/.gnupg/sandbox"'
