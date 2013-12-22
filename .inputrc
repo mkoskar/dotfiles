@@ -1,5 +1,3 @@
-# ~/.inputrc
-
 # no terminal bell
 set bell-style none
 
@@ -14,16 +12,6 @@ set skip-completed-text on
 
 # vi editing mode
 set editing-mode vi
-
-# prompt format for command mode
-set vi-command-prompt \001\033[1;33m\002{}\001\033[0m\002
-
-$if python
-    set vi-command-prompt \001\033[1;37;41m\002>\001\033[0m\002{}
-$endif
-
-# vi mode changed script
-set vi-mode-changed-bin /home/mirci/.inputrc_vi_mode_changed
 
 # insert mode key bindings
 set keymap vi-insert
@@ -50,11 +38,6 @@ set keymap vi-command
 
 "\C-p": history-search-backward
 "\C-n": history-search-forward
-
-# effectively before 'accept-line' switch to 'insert' mode
-# this can be helpfull in case of vi mode visualization
-"\n": "i\n"
-"\r": "i\r"
 
 $if bash
     "\C-x\C-x": "0isudo \C-[0"

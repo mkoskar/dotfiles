@@ -1,5 +1,3 @@
-" ~/.vimperatorrc
-
 set autocomplete=false
 set gui=none,tabs,navigation
 set hlsearch

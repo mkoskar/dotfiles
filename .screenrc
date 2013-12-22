@@ -1,5 +1,3 @@
-# ~/.screenrc
-
 startup_message off
 vbell off
 defscrollback 1000

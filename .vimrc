@@ -1,5 +1,3 @@
-" ~/.vimrc
-
 if exists('$BASEDIR')
     cd $BASEDIR
 endif

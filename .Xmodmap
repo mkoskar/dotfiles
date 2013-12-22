@@ -1,5 +1,3 @@
-! ~/.Xmodmap
-
 ! map CapsLock to LeftControl
 remove Lock = Caps_Lock
 keysym Caps_Lock = Control_L

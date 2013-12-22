@@ -1,5 +1,3 @@
--- ~/.xmobarrc
-
 Config {
     font = "xft:local_xmobar"
     , bgColor = "#000000"

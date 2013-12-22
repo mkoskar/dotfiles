@@ -1,6 +1,6 @@
 # ~/.bashrc
-
-#echo '>>> ~/.bashrc' >&2
+# - executed by bash(1) for non-login shells
+# - this is also included in ~/.profile
 
 export LANG='en_US.UTF-8'
 export LC_COLLATE='C'
@@ -35,7 +35,6 @@ eval `dircolors -b`
 PS1='\u@\h:\!:\#:\W\$ '
 PROMPT_DIRTRIM=3
 CDPATH='.:..:~'
-#unset PROMPT_COMMAND
 unset MAILCHECK
 
 shopt -s autocd checkjobs cmdhist dotglob histappend \
