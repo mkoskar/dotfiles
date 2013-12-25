@@ -1,6 +1,6 @@
-# Source this file to initialize "gpg-agent".
+# Source this file to initialize gpg-agent.
 
-INFO="$HOME/.gnupg/gpg-agent-info"
+INFO=~/.gnupg/gpg-agent-info
 
 (
     [ -f "$INFO" ] && source "$INFO"

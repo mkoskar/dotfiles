@@ -1,6 +1,6 @@
-# Source this file to initialize "ssh-agent".
+# Source this file to initialize ssh-agent.
 
-INFO="$HOME/.ssh/ssh-agent-info"
+INFO=~/.ssh/ssh-agent-info
 
 (
     [ -f "$INFO" ] && source "$INFO"

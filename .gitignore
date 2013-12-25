@@ -36,6 +36,7 @@
 !.Xmodmap
 !.Xresources
 !.authinfo.example
+!.bash_profile
 !.bashrc
 !.bcrc
 !.gitconfig
