@@ -7,7 +7,7 @@
 
 [ -z "$INTERACTIVE" ] && return
 
-shopt -s autocd checkjobs cmdhist dotglob histappend \
+shopt -s autocd checkjobs checkwinsize cmdhist dotglob histappend \
          histreedit histverify lithist no_empty_cmd_completion
 
 bind -m vi-insert   '"\C-e": shell-expand-line'
@@ -21,7 +21,7 @@ bind -m vi-insert   '"\eI":  complete-filename'
 bind -m vi-insert   '"\e\t": dynamic-complete-history'
 bind -m vi-insert   '"\eq":  dabbrev-expand'
 
-HISTCONTROL='erasedups'
+HISTCONTROL='ignorespace:erasedups'
 HISTFILESIZE='5000'
 HISTSIZE='500'
 HISTIGNORE='exit'

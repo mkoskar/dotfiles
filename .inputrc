@@ -24,7 +24,6 @@ set keymap vi-insert
 
 $if bash
     "\C-x\C-x": "\C-[0isudo \C-[0"
-    "\C-x\C-s": "\C-[ddiscreen\n"
     "\C-x\C-t": "\C-[dditmux new -s ''\C-[i"
     "\C-x\C-h": "\C-[dditail -n 25 ~/.bash_history | igrep ''\C-[i"
 $endif
@@ -41,7 +40,6 @@ set keymap vi-command
 
 $if bash
     "\C-x\C-x": "0isudo \C-[0"
-    "\C-x\C-s": "ddiscreen\n"
     "\C-x\C-t": "dditmux new -s ''\C-[i"
     "\C-x\C-h": "dditail -n 25 ~/.bash_history | igrep ''\C-[i"
 $endif

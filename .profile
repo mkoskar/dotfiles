@@ -2,6 +2,8 @@
 # - executed by the command interpreter for login shells
 # - not read by bash(1), if ~/.bash_profile or ~/.bash_login exists
 
+umask 022
+
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 
@@ -12,6 +14,8 @@ export LANG='en_US.UTF-8'
 export LC_COLLATE='C'
 export EDITOR='vim'
 export BROWSER='firefox'
+
+export XAUTHORITY=~/.Xauthority
 
 export LESS='-MRS#3'
 export LESSHISTFILE='-'

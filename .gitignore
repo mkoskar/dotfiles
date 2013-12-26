@@ -2,32 +2,25 @@
 
 !.attic
 
-!.config
-!.config/fontconfig
 !.config/fontconfig/fonts.conf
-!.config/gtk-3.0
 !.config/gtk-3.0/bookmarks
 !.config/gtk-3.0/settings.ini
 !.config/aurvote.example
 !.config/user-dirs.dirs
 
-!.gnupg
 !.gnupg/gpg-agent.conf
 !.gnupg/gpg.conf
 
-!.moc
-!.moc/themes
+!.icons/default/index.theme
+
 !.moc/themes/my_theme
 !.moc/config
 !.moc/keymap
 
-!.ssh
 !.ssh/config.example
 
-!.subversion
 !.subversion/config
 
-!.xmonad
 !.xmonad/xmonad.hs
 !.xmonad/xmonad.hs.minimal
 
