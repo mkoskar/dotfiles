@@ -13,6 +13,8 @@
 
 !.icons/default/index.theme
 
+!.local/share/applications/mimeapps.list
+
 !.moc/themes/my_theme
 !.moc/config
 !.moc/keymap
