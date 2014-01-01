@@ -19,6 +19,8 @@
 !.moc/config
 !.moc/keymap
 
+!.mplayer/config
+
 !.ssh/config.example
 
 !.subversion/config
@@ -28,7 +30,6 @@
 
 !bin
 
-!.Xmodmap
 !.Xresources
 !.authinfo.example
 !.bash_profile

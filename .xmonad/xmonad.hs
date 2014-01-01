@@ -137,8 +137,8 @@ myConfig = defaultConfig
                 ("M-S-n", spawn "amixer -q set Headphone,1 toggle && notify-audio-dock"),
                 -- setxkbmap
                 ("M-<F1>", spawn "setxkbmap us && notify-xkbmap"),
-                ("M-<F2>", spawn "setxkbmap sk -variant qwerty && notify-xkbmap"),
-                ("M-<F3>", spawn "setxkbmap cz -variant qwerty && notify-xkbmap"),
+                ("M-<F2>", spawn "setxkbmap sk qwerty && notify-xkbmap"),
+                ("M-<F3>", spawn "setxkbmap cz qwerty && notify-xkbmap"),
                 -- xrandr
                 ("M-<F10>", spawn "xrandr-bigdesktop && xmonad-session-repair"),
                 ("M-<F11>", spawn "xrandr-bigdesktop-HDMI_HDMI && xmonad-session-repair"),
@@ -146,6 +146,7 @@ myConfig = defaultConfig
                 ("M-S-d", spawn "dpms-toggle && notify-dpms"),
                 ("M-S-b", spawn "backlight-toggle"),
                 ("M-S-r", spawn "rfkill-toggle && notify-rfkill"),
+                ("M-S-u", spawn "xdotool getwindowfocus mousemove --window %1 0 0 click --clearmodifiers 1"),
                 ("M-<F5>", spawn "xsel | xsel -ib"),
                 ("M-<F6>", spawn "xsel -b | xsel -i"),
                 ("M-<F7>", spawn "xsel | xsel -i"),

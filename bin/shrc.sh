@@ -35,20 +35,32 @@ alias py='python'
 alias ipy='ipython'
 
 # mplayer
-alias play='mplayer -msgcolor -msgmodule'
-alias playcd='mplayer cdda://'
-alias playdvd='mplayer -mouse-movements dvdnav://'
-alias playvcd='mplayer vcd://2'
+alias play='mplayer -really-quiet'
+alias playcd='play cdda://'
+alias playdvd='play -mouse-movements dvdnav://'
+alias playvcd='play vcd://2'
 
-# BBC radio
-bbcradio() { 
-    local s PS3="Select a station: "
-    select s in 1 1x 2 3 4 4x 5l 5lsp 6 "Asian Network an" "Nations & Local lcl"; do
+# radio
+radio() { 
+    local PS3='Select a station: '
+    local stations=(
+        'BBC 1                      http://www.bbc.co.uk/radio/listen/live/r1.asx'
+        'BBC 1Xtra                  http://www.bbc.co.uk/radio/listen/live/r1x.asx'
+        'BBC 2                      http://www.bbc.co.uk/radio/listen/live/r2.asx'
+        'BBC 3                      http://www.bbc.co.uk/radio/listen/live/r3.asx'
+        'BBC 4                      http://www.bbc.co.uk/radio/listen/live/r4.asx'
+        'BBC 4Xtra                  http://www.bbc.co.uk/radio/listen/live/r4x.asx'
+        'BBC 5 Live                 http://www.bbc.co.uk/radio/listen/live/r5l.asx'
+        'BBC 5 Live Sports Extra    http://www.bbc.co.uk/radio/listen/live/r5lsp.asx'
+        'BBC 6 Music                http://www.bbc.co.uk/radio/listen/live/r6.asx'
+        'BBC Asian Network          http://www.bbc.co.uk/radio/listen/live/ran.asx'
+        'BBC World Service          http://www.bbc.co.uk/worldservice/meta/live/nb/eieuk_au_nb.asx'
+        'BBC London                 http://www.bbc.co.uk/radio/listen/live/bbclondon.asx'
+    )
+    local sel
+    select sel in "${stations[@]}"; do
         break
     done
-    s=($s)
-    play -playlist "http://www.bbc.co.uk/radio/listen/live/r${s[@]: -1}.asx"
+    sel=($sel)
+    play -playlist "${sel[@]: -1}"
 }
-
-alias bbclondon='play -playlist http://www.bbc.co.uk/radio/listen/live/bbclondon.asx'
-alias bbcworld='play -playlist http://www.bbc.co.uk/worldservice/meta/tx/nb/live/eneuk.asx'

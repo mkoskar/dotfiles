@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # add all jdbc jars to the classpath
-for i in "$HOME/opt/jdbc/*"; do
+for i in ~/opt/jdbc/*; do
     TMP_CP="$TMP_CP:$i"
 done
 
 export CLASSPATH="$TMP_CP:$CLASSPATH"
-exec "$HOME/opt/squirrel-sql/squirrel-sql.sh"
+exec ~/opt/squirrel-sql/squirrel-sql.sh

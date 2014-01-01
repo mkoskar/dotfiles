@@ -15,7 +15,9 @@ export LC_COLLATE='C'
 export EDITOR='vim'
 export BROWSER='firefox'
 
-export XAUTHORITY=~/.Xauthority
+export XAUTHORITY="$HOME/.Xauthority"
+
+export VDPAU_DRIVER='va_gl'
 
 export LESS='-MRS#3'
 export LESSHISTFILE='-'
@@ -25,6 +27,6 @@ _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 _JAVA_OPTIONS+=' -Dswing.aatext=true'
 _JAVA_OPTIONS+=' -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
 export _JAVA_OPTIONS
-export _JAVA_AWT_WM_NONREPARENTING='1'
+export _JAVA_AWT_WM_NONREPARENTING=1
 
 export ORACLE_HOME='/opt/instantclient'

@@ -1,19 +1,19 @@
 #!/bin/bash
 
 if ! tmux has-session -t log; then
-    cd "$HOME"
+    cd ~
     tmux new -d -s log
     tmux neww -d -t log:1
 fi
 
 if ! tmux has-session -t stuff; then
-    cd "$HOME"
+    cd ~
     tmux new -d -s stuff
     tmux neww -d -t stuff:1
 fi
 
 if ! tmux has-session -t work; then
-    cd "$HOME/projects"
+    cd ~/projects
     tmux new -d -s work
     tmux neww -d -t work:1
 fi

@@ -4,5 +4,5 @@ exec > ~/.xsession.out 2>&1
 
 XSESSION="${1:-xmonad-session}"
 
-#exec startx ~/.xinitrc "$XSESSION" -- -dpi 118
 exec startx ~/.xinitrc "$XSESSION"
+#exec startx ~/.xinitrc "$XSESSION" -- -dpi 118

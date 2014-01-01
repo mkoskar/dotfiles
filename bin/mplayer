@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec /usr/bin/mplayer "$@" 2> /dev/null
