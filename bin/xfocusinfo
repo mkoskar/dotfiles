@@ -1,0 +1,113 @@
+#!/usr/bin/env python2
+
+'''
+TODO - rewrite this to nicer form
+'''
+
+from __future__ import print_function
+
+import argparse
+from argparse import RawTextHelpFormatter
+from collections import OrderedDict
+
+import xcb
+import xcb.xinerama
+
+def intersect(x1, y1, w1, h1, \
+              x2, y2, w2, h2):
+    return max(0, min(x1 + w1, x2 + w2) - max(x1, x2)) * \
+           max(0, min(y1 + h1, y2 + h2) - max(y1, y2))
+
+FOCUS_NONE = xcb.NONE
+FOCUS_POINTER_ROOT = xcb.xproto.InputFocus.PointerRoot
+
+parser = argparse.ArgumentParser(description='''Determines and prints out (in shell eval format) focused
+  - X screen
+  - Xinerama head
+  - root window id
+  - target window id
+
+For a focused window spanning multiple Xinerama heads, focus is determined by
+size of corresponding intersecting area (see option --topleft).
+If root or no window is focused, pointer coordinates are used (see option --pointer).
+
+TODO
+- output screen dimensions
+- output head dimensions
+''',
+formatter_class=RawTextHelpFormatter)
+parser.add_argument('-n', '--no-defaults', action='store_true', help='TODO')
+parser.add_argument('--input', action='store_true', help='N/A')
+parser.add_argument('--pointer', action='store_true', help='N/A')
+parser.add_argument('--topleft', action='store_true', help='N/A')
+args = parser.parse_args()
+
+result = OrderedDict()
+RES_screen_number = 'SCREEN'
+RES_head_number = 'HEAD'
+RES_root = 'ROOT'
+RES_window = 'WINDOW'
+
+conn = xcb.connect()
+setup = conn.get_setup()
+
+default_screen_number = 0
+default_head_number = 0
+default_screen = setup.roots[default_screen_number]
+default_root = default_screen.root
+
+if not args.no_defaults:
+    result[RES_root] = default_root
+    result[RES_screen_number] = default_screen_number
+    result[RES_head_number] = default_head_number
+
+window = conn.core.GetInputFocus().reply().focus
+result[RES_window] = window
+
+roots = [screen.root for screen in setup.roots]
+
+if args.pointer or window in (roots + [FOCUS_NONE, FOCUS_POINTER_ROOT]):
+    pointer = conn.core.QueryPointer(default_root).reply()
+    root = pointer.root
+    screen_number = roots.index(root)
+
+    head_number = 0
+    heads = conn(xcb.xinerama.key).QueryScreens().reply().screen_info
+    for i, h in enumerate(heads):
+        if intersect(pointer.root_x, pointer.root_y, 1, 1,
+                     h.x_org, h.y_org, h.width, h.height):
+            head_number = i
+            break
+
+    result[RES_window] = pointer.child
+    result[RES_root] = root
+    result[RES_screen_number] = screen_number
+    result[RES_head_number] = head_number
+
+else:
+    top = window
+    reply = conn.core.QueryTree(top).reply()
+    parent, root = reply.parent, reply.root
+    while parent != root:
+        top = parent
+        parent = conn.core.QueryTree(top).reply().parent
+
+    tg = conn.core.GetGeometry(top).reply()
+    screen_number = roots.index(root)
+
+    max_area = 0
+    head_number = 0
+    heads = conn(xcb.xinerama.key).QueryScreens().reply().screen_info
+    for i, h in enumerate(heads):
+        area = intersect(tg.x, tg.y, tg.width, tg.height,
+                         h.x_org, h.y_org, h.width, h.height)
+        if area > max_area:
+            max_area = area
+            head_number = i
+
+    result[RES_root] = root
+    result[RES_screen_number] = screen_number
+    result[RES_head_number] = head_number
+
+for k, v in result.iteritems():
+    print("{}={}".format(k, v))

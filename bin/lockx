@@ -14,9 +14,9 @@ SYSRQ_OLD=$(cat "$SYSRQ_PATH")
 echo 0 > "$SYSRQ_PATH"
 
 function cleanup {
-    echo $SYSRQ_OLD > "$SYSRQ_PATH"
     vtswitch-lock -u
     chvt $VTOLD
+    echo $SYSRQ_OLD > "$SYSRQ_PATH"
 }
 trap cleanup EXIT
 

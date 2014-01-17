@@ -1,21 +1,25 @@
 #!/bin/bash
 
-if ! tmux has-session -t log; then
+has-session() {
+    tmux has-session -t $1 &> /dev/null
+}
+
+if ! has-session log; then
     cd ~
     tmux new -d -s log
-    tmux neww -d -t log:1
+    tmux neww -d -t log:2
 fi
 
-if ! tmux has-session -t stuff; then
+if ! has-session stuff; then
     cd ~
     tmux new -d -s stuff
-    tmux neww -d -t stuff:1
+    tmux neww -d -t stuff:2
 fi
 
-if ! tmux has-session -t work; then
+if ! has-session work; then
     cd ~/projects
     tmux new -d -s work
-    tmux neww -d -t work:1
+    tmux neww -d -t work:2
 fi
 
 # run inside an existing pane (assuming it's a shell)

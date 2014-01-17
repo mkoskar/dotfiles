@@ -1,13 +1,18 @@
 # Source this file to initialize shell.
 
+# during the X server startup TERMINFO is set, but we don't want it
+unset TERMINFO
+
+TTY=$(tty) && export GPG_TTY=$TTY
+
 [ -z "$INTERACTIVE" ] && return
 
-[[ "$TERM" == 'screen' ]] && export TERM='screen-256color'
-
-export GPG_TTY=$(tty)
+source ~/bin/term.sh
+tput init
 
 stty -ixon
-eval $(dircolors -b)
+
+eval $(TERM=xterm dircolors -b)
 
 alias ls='ls -h --group-directories-first --color=auto'
 alias l='ls -la'
@@ -17,11 +22,9 @@ alias g="grep --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --excl
 alias stat="stat -c '%A %a %h %U %G %s %y %n'"
 alias info='info --vi-keys'
 alias nw='tmux neww'
-
-# gpg
 alias gpgsandbox='gpg --homedir ~/.gnupg/sandbox'
 
-# virtualenvwrapper
+# virtualenv
 export VIRTUALENVWRAPPER_PYTHON="$(which python2)"
 source ~/.local/bin/virtualenvwrapper.sh
 alias mkvirtualenv2="mkvirtualenv -p $(which python2)"
@@ -40,7 +43,6 @@ alias playcd='play cdda://'
 alias playdvd='play -mouse-movements dvdnav://'
 alias playvcd='play vcd://2'
 
-# radio
 radio() { 
     local PS3='Select a station: '
     local stations=(
@@ -63,4 +65,8 @@ radio() {
     done
     sel=($sel)
     play -playlist "${sel[@]: -1}"
+}
+
+a() {
+    sleep ${1:-5m} && play -loop 0 /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
 }

@@ -25,6 +25,8 @@
 
 !.subversion/config
 
+!.terminfo
+
 !.xmonad/xmonad.hs
 !.xmonad/xmonad.hs.minimal
 
@@ -35,6 +37,7 @@
 !.bash_profile
 !.bashrc
 !.bcrc
+!.fbtermrc
 !.gitconfig
 !.gitignore
 !.gtk-bookmarks

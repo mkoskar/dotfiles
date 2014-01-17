@@ -1,0 +1,7 @@
+font-names=local_terminal_sized
+color-background=0
+color-foreground=7
+history-lines=8192
+cursor-shape=1
+cursor-interval=0
+word-chars=._-

@@ -1,5 +1,0 @@
-#!/bin/bash
-
-source ~/bin/xrandr-env
-
-xrandr-dual HDMI2 HDMI3 --primary --left-of HDMI2

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+CPATH="$(readlink -f "$1")"
+[ -e "$CPATH" ] && pacman -Qo "$CPATH"
+
+SPATH="$(type -P "$1")"
+[ -n "$SPATH" ] && pacman -Qo "$SPATH"

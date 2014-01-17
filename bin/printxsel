@@ -2,8 +2,10 @@
 
 printf '\n---------- PRIMARY ----------\n'
 
-printf "$(xsel)\n\n\n"
+xsel
+echo -e '\n'
 
 printf '\n---------- CLIPBOARD ----------\n'
 
-printf "$(xsel -b)\n\n\n"
+xsel -b
+echo -e '\n\n'

@@ -1,6 +1,10 @@
 #!/bin/bash
 
-exec > ~/.xsession.out 2>&1
+set -e
+
+VTNO=$(fgconsole)
+
+exec > ~/.xsession$VTNO.out 2>&1
 
 XSESSION="${1:-xmonad-session}"
 

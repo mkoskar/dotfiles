@@ -1,51 +1,37 @@
 -- ~/.xmonad/xmonad.hs
 
+import System.IO
+
 import XMonad hiding ( (|||) )
 import qualified XMonad.StackSet as W
 
 import XMonad.Actions.CycleWS
--- import XMonad.Actions.CycleRecentWS
+import XMonad.Actions.CycleWindows
+import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.UpdatePointer
+import XMonad.Actions.Warp
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 
--- import XMonad.Layout.BorderResize
-import XMonad.Layout.BoringWindows
--- import XMonad.Layout.DragPane
-import XMonad.Layout.DwmStyle
-import XMonad.Layout.Grid
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.LayoutCombinators
--- import XMonad.Layout.Magnifier
--- import XMonad.Layout.Master
--- import XMonad.Layout.Maximize
--- import XMonad.Layout.Minimize
--- import XMonad.Layout.MouseResizableTile
 import XMonad.Layout.NoBorders
--- import XMonad.Layout.SimpleFloat
--- import XMonad.Layout.Spacing
 import XMonad.Layout.Tabbed
--- import XMonad.Layout.WindowArranger
 
 import XMonad.Prompt
-import XMonad.Prompt.AppLauncher
+import XMonad.Prompt.Shell
 import XMonad.Prompt.AppendFile
--- import XMonad.Prompt.Shell
--- import XMonad.Prompt.Ssh
 
 import XMonad.Util.EZConfig
--- import XMonad.Util.Loggers
--- import XMonad.Util.Run
 import XMonad.Util.NamedScratchpad
+import XMonad.Util.Run
 import XMonad.Util.Themes
+import XMonad.Util.WorkspaceCompare
 
-import System.IO
-
--- status bar
 myStatusBar conf = statusBar "xmobar" myXmobarPP myToggleStrutsKey conf
     where
         myToggleStrutsKey XConfig{modMask = modm} = (modm, xK_b)
@@ -56,43 +42,40 @@ myStatusBar conf = statusBar "xmobar" myXmobarPP myToggleStrutsKey conf
                 ppUrgent = xmobarColor "#FF5555" "#FEEF6A" . pad,
                 ppSep = " ",
                 ppTitle = xmobarColor "#EFEFEF" "" . shorten 100,
-                ppOrder = \ (workspaces : layout : title : extras) -> [workspaces, title]
+                ppOrder = \ (workspaces : layout : title : extras) -> [workspaces, title],
+                ppSort = getSortByXineramaPhysicalRule
             }
 
--- config
 myConfig = defaultConfig
         {
-            terminal = myTerminal,
-            workspaces = myWorkspaces,
-            focusFollowsMouse = True,
             borderWidth = 2,
             normalBorderColor = "#000000",
             focusedBorderColor = "#FF3333",
+            focusFollowsMouse = True,
+            clickJustFocuses = True,
             modMask = myModMask,
-            startupHook = setWMName "LG3D" <+> checkKeymap defaultConfig myKeymap,
-            manageHook = namedScratchpadManageHook myScratchpads <+> myManageHook,
+            terminal = myTerminal,
+            workspaces = myWorkspaces,
+            startupHook = setWMName "LG3D" <+> checkKeymap myConfig myKeymap,
+            manageHook = myManageHook,
             layoutHook = myLayoutHook,
             logHook = updatePointer (Relative 0.5 0.5)
         }
-        `removeKeysP` [ "M-e", "M-S-e", "M-r", "M-S-r" ]
-        `additionalKeysP` (myKeymap)
+        `removeKeysP` ["M-w", "M-S-w", "M-e", "M-S-e", "M-r", "M-S-r"]
+        `additionalKeysP` myKeymap
     where
-        myTerminal = "urxvtc"
         myModMask = mod4Mask
-        -- workspaces
-        myWorkspaces = workspaces defaultConfig
-        -- scratchpads
+        myTerminal = "urxvtc"
+        myWorkspaces = map show [1..9]
         myScratchpads = [
                 NS "term" (myTerminal ++ " -name sp_term") (resource =? "sp_term") (customFloating $ W.RationalRect 0.1 0.1 0.8 0.8),
                 NS "htop" (myTerminal ++ " -name sp_htop -e htop") (resource =? "sp_htop") (customFloating $ W.RationalRect 0.05 0.05 0.9 0.9)
             ]
-        -- manage hook
-        myManageHook = composeOne
+        myManageHook = namedScratchpadManageHook myScratchpads <+> composeOne
             [
                 isDialog -?> doCenterFloat,
                 className =? "Skype" -?> doFloat
             ]
-        -- layout hook
         myLayoutHook = layoutHintsWithPlacement (0.5, 0.5) myTabbed |||
                        noBorders Full |||
                        layoutHintsWithPlacement (0.5, 0.5) myTiled
@@ -103,55 +86,72 @@ myConfig = defaultConfig
                         activeBorderColor = activeColor aTheme,
                         inactiveBorderColor = inactiveColor aTheme,
                         urgentBorderColor = urgentColor aTheme,
-                        fontName = "xft:local_xmonad_tabbed",
+                        fontName = "xft:local_xmonad",
                         decoWidth = 500,
                         decoHeight = 15
                     }
                 myTabbed = tabbedBottom shrinkText myTheme
                 myTiled = Tall 1 (3/100) (1/2)
-        -- keymap
         myKeymap = [
-                -- wm bindings
-                ("M-a", toggleWS),
-                ("M-w", nextScreen),
-                ("M-S-w", shiftNextScreen),
-                ("M-s", moveTo Prev NonEmptyWS),
-                ("M-d", moveTo Next NonEmptyWS),
-                ("M-z", swapNextScreen),
-                -- xterm
-                ("M-x x", spawn "xterm"),
-                -- dmenu
-                ("M-p", spawn "dmenu_run"),
-                -- lock
-                ("M-S-l", spawn "sudo lock"),
-                -- scrot
-                ("<Print>", spawn "scrot -e 'feh $f'"),
-                ("M-<Print>", spawn "sleep 0.5 && scrot -s -e 'feh $f'"),
+                ("M-w", onPrevNeighbour W.view),
+                ("M-e", onNextNeighbour W.view),
+                ("M-S-w", onPrevNeighbour W.shift),
+                ("M-S-e", onNextNeighbour W.shift),
+
+                ("M-s", moveTo Prev HiddenNonEmptyWS),
+                ("M-d", moveTo Next HiddenNonEmptyWS),
+
+                ("M-z", onPrevNeighbour W.greedyView),
+                ("M-x", onNextNeighbour W.greedyView),
+
+                ("M-u", viewScreen 0),
+                ("M-i", viewScreen 1),
+                ("M-o", viewScreen 2),
+                ("M-S-u", sendToScreen 0),
+                ("M-S-i", sendToScreen 1),
+                ("M-S-o", sendToScreen 2),
+
+                ("M-a", toggleWS' ["NSP"]),
+                ("M-S-p", warpToWindow 0 0),
+
+                ("M-<Backspace>", focusUrgent),
+
                 -- scratchpads
                 ("M-S-t", namedScratchpadAction myScratchpads "term"),
                 ("M-S-h", namedScratchpadAction myScratchpads "htop"),
+
+                -- dmenu
+                ("M-p", spawn "dmenu_run"),
+
+                -- screenshots
+                ("M-<Print>", spawn "scrot -m ~/tmp/shot-%Y-%m-%d.%s.png -e 'feh $f'"),
+                ("M-S-<Print>", spawn "sleep 0.5 && scrot -m -s ~/tmp/shot-%Y-%m-%d.%s.png -e 'feh $f'"),
+
                 -- audio
-                ("M-S-j", spawn "amixer -q set Master 4- && notify-audio"),
-                ("M-S-k", spawn "amixer -q set Master 4+ && notify-audio"),
+                ("M-S-[", spawn "amixer -q set Master 4- && notify-audio"),
+                ("M-S-]", spawn "amixer -q set Master 4+ && notify-audio"),
                 ("M-S-m", spawn "amixer -q set Master toggle && notify-audio"),
                 ("M-S-n", spawn "amixer -q set Headphone,1 toggle && notify-audio-dock"),
+
                 -- setxkbmap
                 ("M-<F1>", spawn "setxkbmap us && notify-xkbmap"),
                 ("M-<F2>", spawn "setxkbmap sk qwerty && notify-xkbmap"),
                 ("M-<F3>", spawn "setxkbmap cz qwerty && notify-xkbmap"),
-                -- xrandr
-                ("M-<F10>", spawn "xrandr-bigdesktop && xmonad-session-repair"),
-                ("M-<F11>", spawn "xrandr-bigdesktop-HDMI_HDMI && xmonad-session-repair"),
-                -- other
-                ("M-S-d", spawn "dpms-toggle && notify-dpms"),
-                ("M-S-b", spawn "backlight-toggle"),
-                ("M-S-r", spawn "rfkill-toggle && notify-rfkill"),
-                ("M-S-u", spawn "xdotool getwindowfocus mousemove --window %1 0 0 click --clearmodifiers 1"),
+
+                -- selections
                 ("M-<F5>", spawn "xsel | xsel -ib"),
                 ("M-<F6>", spawn "xsel -b | xsel -i"),
                 ("M-<F7>", spawn "xsel | xsel -i"),
-                ("M-<F8>", spawn "xsel -b | xsel -ib")
+                ("M-<F8>", spawn "xsel -b | xsel -ib"),
+
+                -- other
+                ("M-<F10>", spawn "xscreen && xmonad-session-repair"),
+                ("M-<F12>", spawn "grabc 2>&1 | xsel -i"),
+                ("M-S-<F12>", spawn "xmeasure | xsel -i"),
+                ("M-S-l", spawn "sudo lockx"),
+                ("M-S-b", spawn "backlight-toggle"),
+                ("M-S-d", spawn "dpms-toggle && notify-dpms"),
+                ("M-S-r", spawn "rfkill-toggle && notify-rfkill")
             ]
 
--- main
 main = xmonad =<< myStatusBar (withUrgencyHook NoUrgencyHook myConfig)

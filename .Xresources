@@ -1,15 +1,4 @@
 ! colors ---------------------------------------------------------------------
-URxvt.background:   #000000
-!URxvt.background:   #101010
-URxvt.foreground:   #C0C0C0
-
-XTerm.background:   #FFFFFF
-!XTerm.background:   #333333
-!XTerm.background:   #EDEDED
-!XTerm.background:   #C0C0C0
-!XTerm.background:   #101010
-XTerm.foreground:   #000000
-
 !black
 *color0:            #000000
 *color8:            #555555
@@ -45,28 +34,64 @@ XTerm.foreground:   #000000
 *color15:           #DDDDDD
 
 ! xterm ----------------------------------------------------------------------
-XTerm.termName:         xterm-256color
+XTerm.termName:         xterm-256color-fix-bsdel
+XTerm*background:       #000000
+XTerm*foreground:       #C0C0C0
+XTerm*cursorColor:      #DDDDDD
 XTerm*faceName:         xft:local_terminal_sized
 XTerm*colorMode:        true
 XTerm*dynamicColors:    true
 XTerm*bellIsUrgent:     true
-XTerm*saveLines:        1000
+XTerm*bellOnReset:      false
+XTerm*metaSendsEscape:  true
+XTerm*saveLines:        8192
 XTerm*utf8:             2
+XTerm*printAttributes:  0
+XTerm*printerCommand:   cat > $(mktemp -p ~/tmp xterm.XXXXXX)
+XTerm.backarrowKeyIsErase:  true
+XTerm*VT100.translations:   #override \n\
+                            ~Shift ~Alt Ctrl <Key>H: string(\177) \n\
+                            ~Shift <Key>Print: print() \n\
+                            Shift <Key>Print: print-everything()
 
 ! urxvt ----------------------------------------------------------------------
-URxvt.termName:         rxvt-256color
-URxvt.underlineColor:   yellow
+URxvt.termName:         rxvt-unicode-256color-fix-bsdel
+URxvt.background:       0
+URxvt.foreground:       7
+URxvt.cursorColor:      15
+URxvt.cursorColor2:     1
+URxvt.scrollColor:      gray20
+URxvt.underlineColor:   #FDB436
 URxvt.font:             xft:local_terminal_sized
 URxvt.scrollstyle:      plain
-URxvt.scrollBar:        false
-URxvt.saveLines:        1000
+URxvt.thickness:        5
+URxvt.saveLines:        8192
 URxvt.pointerBlank:     true
 URxvt.urgentOnBell:     true
 URxvt.iso14755:         false
 URxvt.iso14755_52:      false
+URxvt.cutchars:         '"()*,<>[]{}|\''
+URxvt.print-pipe:       cat > $(mktemp -p ~/tmp urxvt.XXXXXX)
+
+! ASCII BS  == 8   == \010 == ^H
+! ASCII DEL == 127 == \177 == ^?
+
+! BackSpace = BS
+! C-BackSpace = DEL
+! C-h = BS
+!URxvt.backspacekey:         \010
+!URxvt.keysym.C-BackSpace:   \177
+
+! BackSpace = DEL
+! C-BackSpace = BS
+! C-h = DEL
+URxvt.keysym.C-h:       \177
+URxvt.keysym.A-C-h:     builtin:
+URxvt.keysym.S-C-h:     builtin:
+
 URxvt.perl-ext-common:  default,matcher,confirm-paste
-URxvt.url-launcher:     firefox
 URxvt.matcher.button:   1
+URxvt.url-launcher:     firefox
 
 ! xcursor --------------------------------------------------------------------
 Xcursor.theme:          Grounation

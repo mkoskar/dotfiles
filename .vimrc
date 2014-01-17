@@ -59,7 +59,6 @@ set sidescroll=10
 set sidescrolloff=10
 set list
 set listchars=eol:¬,tab:>-,trail:-,extends:>,precedes:<
-"set relativenumber
 
 nnoremap <silent> <Leader>l :set list!<CR>
 
@@ -84,19 +83,14 @@ set statusline+=%=
 set statusline+=0x%-3B
 set statusline+=\ %-14(%l,%c%V%)
 set statusline+=\ %P\ 
-"set hidden
 set splitbelow
 set splitright
 
 nnoremap <C-K> <C-W>k
 nnoremap <C-J> <C-W>j
 nnoremap <C-H> <C-W>h
+nnoremap <BS> <C-W>h
 nnoremap <C-L> <C-W>l
-
-" TODO (standardize shortcuts of tmux and vim)
-" - moving in windows / panes
-" - resizing windows / panes
-" - maximizing window / pane
 
 "nnoremap <C-W><Esc>k 5<C-W>+
 "nnoremap <C-W><Esc>j 5<C-W>-
@@ -112,6 +106,8 @@ nnoremap <C-L> <C-W>l
 
 "========== terminal
 set guicursor+=a:blinkon0
+set nottybuiltin
+set t_ut=
 
 "========== using the mouse
 set mouse=a
@@ -130,7 +126,7 @@ set shortmess=aoOtTWI
 set showcmd
 set showmode
 set ruler
-set visualbell
+set novisualbell
 
 "========== editing text
 set textwidth=79
@@ -406,8 +402,12 @@ endfunction
 if has('autocmd')
 augroup VIMRC
     autocmd!
-    " When '.vimrc' is edited, reload it.
+    " When '.vimrc' is written, reload it.
     autocmd BufWritePost .vimrc source ~/.vimrc
+
+    " When '.Xresources' is written, reload it.
+    autocmd BufWritePost .Xresources !xrdb -load ~/.Xresources
+
     autocmd FileType make setlocal ts=4 sts=0 sw=4 noexpandtab
     autocmd BufNewFile,BufRead *.rss setfiletype xml
 

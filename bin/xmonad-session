@@ -1,6 +1,6 @@
 #!/bin/bash
 
-xrandr-bigdesktop
+xscreen
 
 xset b off s off dpms 0 0 300
 xsetroot -solid black

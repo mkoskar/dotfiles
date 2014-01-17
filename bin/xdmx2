@@ -1,3 +1,0 @@
-#!/bin/bash
-
-Xdmx :10 -br -configfile xdmx.conf -config test2
