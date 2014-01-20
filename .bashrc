@@ -27,6 +27,7 @@ HISTSIZE='500'
 HISTIGNORE='exit'
 
 PS1='\u@\h:\!:\#:\W\$ '
+PS1='\#:\W\$ '
 PROMPT_DIRTRIM=3
 CDPATH='.:..:~'
 unset MAILCHECK

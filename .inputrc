@@ -26,6 +26,9 @@ $if bash
     "\C-x\C-x": "\C-[0isudo \C-[0"
     "\C-x\C-t": "\C-[dditmux new -s ''\C-[i"
     "\C-x\C-h": "\C-[dditail -n 25 ~/.bash_history | igrep ''\C-[i"
+    "\C-x\C-a": "\C-[a!!:*\C-["
+    "\C-x\C-l": "\C-[a!!:$\C-["
+    "\C-x\C-s": "\C-[a!!:gs/"
 $endif
 
 $if python
@@ -42,6 +45,9 @@ $if bash
     "\C-x\C-x": "0isudo \C-[0"
     "\C-x\C-t": "dditmux new -s ''\C-[i"
     "\C-x\C-h": "dditail -n 25 ~/.bash_history | igrep ''\C-[i"
+    "\C-x\C-a": "a!!:*\C-["
+    "\C-x\C-l": "a!!:$\C-["
+    "\C-x\C-s": "a!!:gs/"
 $endif
 
 $if python
