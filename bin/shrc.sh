@@ -3,7 +3,7 @@
 # during the X server startup TERMINFO is set, but we don't want it
 unset TERMINFO
 
-TTY=$(tty) && export GPG_TTY=$TTY
+TTY=$(tty) && export GPG_TTY="$TTY"
 
 [ -z "$INTERACTIVE" ] && return
 

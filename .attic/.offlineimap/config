@@ -1,5 +1,3 @@
-# ~/.offlineimap/config
-
 [general]
 ui = quiet
 accounts = example

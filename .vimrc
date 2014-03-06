@@ -72,6 +72,8 @@ nnoremap <silent> <Space> :nohls<Bar>echo<CR>
 nnoremap <silent> # :let @/="<C-R>=escape(escape(expand('<cWORD>'), '/\.*$^~["'), '''/\.*$^~["')<CR>"<Bar>set hls<CR>
 nnoremap <silent> * :let @/="<C-R>=escape(escape(expand('<cword>'), '/\.*$^~["'), '''/\.*$^~["')<CR>"<Bar>set hls<CR>
 
+nnoremap <silent> <Leader>sp :set spell!<CR>
+
 "========== multiple windows
 set laststatus=2
 set statusline=
@@ -243,6 +245,10 @@ nnoremap <Leader>et :tabe %%
 
 nnoremap <C-Q> :bd<CR>
 "nnoremap <C-X><C-X> :bd<CR>
+
+" insert spaces
+"nnoremap <Leader> <Space> :e %%
+
 
 " macros
 " TODO

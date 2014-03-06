@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source ~/.profile
-
 USERRESOURCES="$HOME/.Xresources"
 USERMODMAP="$HOME/.Xmodmap"
 SYSRESOURCES='/etc/X11/xinit/.Xresources'
@@ -42,4 +40,3 @@ fi
 
 XSESSION="$1"
 exec "$XSESSION"
-#exec ssh-agent gpg-agent --daemon "$XSESSION"

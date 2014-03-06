@@ -22,8 +22,8 @@ bind -m vi-insert   '"\e\t": dynamic-complete-history'
 bind -m vi-insert   '"\eq":  dabbrev-expand'
 
 HISTCONTROL='ignorespace:erasedups'
-HISTFILESIZE='5000'
-HISTSIZE='500'
+HISTFILESIZE=5000
+HISTSIZE=500
 HISTIGNORE='exit'
 
 PS1='\u@\h:\!:\#:\W\$ '

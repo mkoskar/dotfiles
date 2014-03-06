@@ -12,6 +12,7 @@ set skip-completed-text on
 
 # vi editing mode
 set editing-mode vi
+set show-mode-in-prompt on
 
 # insert mode key bindings
 set keymap vi-insert

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 
 '''
-TODO - rewrite this to nicer form
+TODO - refactor this
 '''
 
 from __future__ import print_function

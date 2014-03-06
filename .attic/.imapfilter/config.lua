@@ -1,5 +1,3 @@
--- ~/.imapfilter/config.lua
-
 -- options
 options.subscribe = true
 

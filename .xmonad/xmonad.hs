@@ -1,5 +1,3 @@
--- ~/.xmonad/xmonad.hs
-
 import System.IO
 
 import XMonad hiding ( (|||) )
@@ -112,7 +110,7 @@ myConfig = defaultConfig
                 ("M-S-o", sendToScreen 2),
 
                 ("M-a", toggleWS' ["NSP"]),
-                ("M-S-p", warpToWindow 0 0),
+                ("M-S-p", warpToWindow 0.01 0.01),
 
                 ("M-<Backspace>", focusUrgent),
 
