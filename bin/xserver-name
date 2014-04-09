@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Returns name of locally running Xserver process.
+
+set -e
+
+pid="$(xserver-pid)"
+ps -p "$pid" -o comm=

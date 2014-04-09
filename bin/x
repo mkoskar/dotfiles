@@ -2,11 +2,57 @@
 
 set -e
 
-VTNO=$(fgconsole)
+if [ $# -eq 0 ]; then
+    echo
+    echo 'm) main [default]'
+    echo 'o) openbox'
+    echo 'x) xmonad'
 
-exec > ~/.xsession$VTNO.out 2>&1
+    read -N1 -s -p ': ' sel
+    test ! "$sel" && sel=m
+    case "$sel" in
+        [mM]) 
+            set -- xsession main
+            ;;
+        [oO])
+            set -- xsession openbox
+            ;;
+        [xX])
+            set -- xsession xmonad
+            ;;
+        *)
+            echo -e '---\n'
+            exit 1
+    esac
+    echo -e "$sel\n"
+fi
 
-XSESSION="${1:-xmonad-session}"
+# -------- /usr/bin/Xephyr
 
-exec startx ~/.xinitrc "$XSESSION"
-#exec startx ~/.xinitrc "$XSESSION" -- -dpi 118
+if [ "$(basename "$0")" == 'xx' ]; then
+    dispno=91
+    while true; do
+        [ ! -f "/tmp/.X$dispno-lock" ] && break
+        dispno="$(($dispno + 1))"
+    done
+
+    startx ~/.xinitrc "$@" -- \
+        /usr/bin/Xephyr ":$dispno" -nolisten tcp -dpi 96 -resizeable \
+        > "$HOME/.xsession$dispno.out" 2>&1 &
+    exit
+fi
+
+# -------- /usr/bin/X
+
+vtno="$XDG_VTNR" # vtno="$(fgconsole)"
+dispno="$vtno"
+lockfile="/tmp/.X$dispno-lock"
+
+if [ -f "$lockfile" ]; then
+    echo "Display $dispno is currently in use (pid=$(cat "$lockfile" | sed 's/\s//g'))."
+    exit 2
+fi
+
+exec startx ~/.xinitrc "$@" -- \
+    /usr/bin/X ":$dispno" "vt$vtno" -nolisten tcp -dpi 96 \
+    > "$HOME/.xsession$dispno.out" 2>&1

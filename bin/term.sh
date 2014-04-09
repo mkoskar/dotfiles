@@ -1,10 +1,5 @@
 # Source this file to set correct terminal.
 
-if [ "$TERM" = linux ]; then
-    # linux console supports 16 colors
-    export TERM='linux-16color'
-fi
-
 if [[ ! "$TERM" =~ ^screen ]]; then
     export TERMOLD=$TERM
     return

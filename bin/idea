@@ -1,3 +1,0 @@
-#!/bin/bash
-
-exec ~/opt/devel/idea-IU-123.169/bin/idea.sh

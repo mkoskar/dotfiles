@@ -12,7 +12,6 @@ set skip-completed-text on
 
 # vi editing mode
 set editing-mode vi
-set show-mode-in-prompt on
 
 # insert mode key bindings
 set keymap vi-insert
@@ -24,6 +23,8 @@ set keymap vi-insert
 "\C-k": menu-complete-backward
 
 $if bash
+    set show-mode-in-prompt on
+
     "\C-x\C-x": "\C-[0isudo \C-[0"
     "\C-x\C-t": "\C-[dditmux new -s ''\C-[i"
     "\C-x\C-h": "\C-[dditail -n 25 ~/.bash_history | igrep ''\C-[i"

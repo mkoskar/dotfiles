@@ -5,7 +5,10 @@
 umask 022
 
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/opt/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
+
+export LD_LIBRARY_PATH="$HOME/opt/lib"
 
 source ~/bin/ssh-agent.sh
 source ~/bin/gpg-agent.sh

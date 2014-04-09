@@ -1,4 +1,4 @@
-[Default Applications]
+[Added Associations]
 application/pdf=zathura-pdf-poppler.desktop
 image/vnd.djvu=zathura-djvu.desktop
 application/postscript=zathura-ps.desktop

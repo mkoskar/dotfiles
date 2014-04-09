@@ -1,6 +1,4 @@
 #!/bin/bash
 
-export DISPLAY=:0
-
 xsetroot -solid black
 xmonad --restart

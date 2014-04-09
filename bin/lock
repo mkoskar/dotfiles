@@ -3,31 +3,31 @@
 set -e
 
 export TERM='linux'
-export PATH="/home/mirci/bin:$PATH"
+export PATH="/home/miro/bin:$PATH"
 
-USER='mirci'
+user='miro'
 
-VTOLD=$(fgconsole)
-VTNEW=30
-exec 0<>/dev/tty$VTNEW >&0 2>&1 
+vtold="$(fgconsole)"
+vtnew=8
+exec 0<>"/dev/tty$vtnew" >&0 2>&1 
 
-SYSRQ_PATH='/proc/sys/kernel/sysrq'
-SYSRQ_OLD=$(cat "$SYSRQ_PATH")
-echo 0 > "$SYSRQ_PATH"
+sysrq_path='/proc/sys/kernel/sysrq'
+sysrq_old="$(cat "$sysrq_path")"
+echo 0 > "$sysrq_path"
 
-function cleanup {
-    vtswitch-lock -u
-    chvt $VTOLD
+cleanup() {
     clear
-    echo $SYSRQ_OLD > "$SYSRQ_PATH"
+    echo "$sysrq_old" > "$sysrq_path"
+    vtswitch-lock -u
+    chvt "$vtold"
 }
 trap cleanup EXIT
 
 clear
 tput civis
 
-chvt $VTNEW
+chvt "$vtnew"
 vtswitch-lock
 
-sudo -u $USER away -C away
+su - "$user" -c 'away -C away'
 read

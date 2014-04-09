@@ -46,7 +46,7 @@ myStatusBar conf = statusBar "xmobar" myXmobarPP myToggleStrutsKey conf
 
 myConfig = defaultConfig
         {
-            borderWidth = 2,
+            borderWidth = 1,
             normalBorderColor = "#000000",
             focusedBorderColor = "#FF3333",
             focusFollowsMouse = True,
@@ -132,7 +132,7 @@ myConfig = defaultConfig
                 ("M-S-n", spawn "amixer -q set Headphone,1 toggle && notify-audio-dock"),
 
                 -- setxkbmap
-                ("M-<F1>", spawn "setxkbmap us && notify-xkbmap"),
+                ("M-<F1>", spawn "setxkbmap us cz_sk_de && notify-xkbmap"),
                 ("M-<F2>", spawn "setxkbmap sk qwerty && notify-xkbmap"),
                 ("M-<F3>", spawn "setxkbmap cz qwerty && notify-xkbmap"),
 
@@ -149,7 +149,8 @@ myConfig = defaultConfig
                 ("M-S-l", spawn "sudo lockx"),
                 ("M-S-b", spawn "backlight-toggle"),
                 ("M-S-d", spawn "dpms-toggle && notify-dpms"),
-                ("M-S-r", spawn "rfkill-toggle && notify-rfkill")
+                ("M-S-r", spawn "rfkill-toggle && notify-rfkill"),
+                ("M-S-<Home>", spawn "urxvtc -e less -m ~/projects/meta.rst")
             ]
 
 main = xmonad =<< myStatusBar (withUrgencyHook NoUrgencyHook myConfig)

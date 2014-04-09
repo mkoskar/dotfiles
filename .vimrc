@@ -94,10 +94,10 @@ nnoremap <C-H> <C-W>h
 nnoremap <BS> <C-W>h
 nnoremap <C-L> <C-W>l
 
-"nnoremap <C-W><Esc>k 5<C-W>+
-"nnoremap <C-W><Esc>j 5<C-W>-
-"nnoremap <C-W><Esc>h 5<C-W>>
-"nnoremap <C-W><Esc>l 5<C-W><
+"nnoremap <C-W><M-k> 5<C-W>+
+"nnoremap <C-W><M-j> 5<C-W>-
+"nnoremap <C-W><M-h> 5<C-W>>
+"nnoremap <C-W><M-l> 5<C-W><
 
 "nnoremap <silent> <C-K> :<C-U>let @w=":resize +".v:count1."<C-V><CR>"<Bar>@w<CR>
 "nnoremap <silent> <C-J> :<C-U>let @w=":resize -".v:count1."<C-V><CR>"<Bar>@w<CR>
@@ -107,7 +107,6 @@ nnoremap <C-L> <C-W>l
 "noremap <silent> <C-W>. :@w<CR>
 
 "========== terminal
-set guicursor+=a:blinkon0
 set nottybuiltin
 set t_ut=
 
@@ -115,6 +114,7 @@ set t_ut=
 set mouse=a
 
 "========== GUI
+set guicursor+=a:blinkon0
 set guifont=local_terminal_sized
 set guioptions+=c
 set guioptions+=e
@@ -188,7 +188,12 @@ exe 'set viminfo+=n'.$VIMDIR.'/.viminfo'
 filetype plugin indent on
 syntax enable
 
-colorscheme luciusblack
+if &t_Co < 256
+    colorscheme desert
+else
+    colorscheme luciusblack
+endif
+
 highlight Cursor guifg=white guibg=sienna2
 
 " fast editing of the '.vimrc'
@@ -219,11 +224,29 @@ nnoremap k gk
 xnoremap j gj
 xnoremap k gk
 
+nmap <M-j> 5j
+nmap <M-j> 5j
+nmap <M-k> 5k
+xmap <M-j> 5j
+xmap <M-k> 5k
+nmap <Esc>j 5j
 nmap <Esc>j 5j
 nmap <Esc>k 5k
 xmap <Esc>j 5j
 xmap <Esc>k 5k
 
+nnoremap <M-l> gt
+nnoremap <M-h> gT
+nnoremap <M-1> 1gt
+nnoremap <M-2> 2gt
+nnoremap <M-3> 3gt
+nnoremap <M-4> 4gt
+nnoremap <M-5> 5gt
+nnoremap <M-6> 6gt
+nnoremap <M-7> 7gt
+nnoremap <M-8> 8gt
+nnoremap <M-9> 9gt
+nnoremap <silent> <M-0> :tablast<CR>
 nnoremap <Esc>l gt
 nnoremap <Esc>h gT
 nnoremap <Esc>1 1gt
@@ -274,13 +297,14 @@ let g:netrw_silent = 1
 "let g:netrw_special_syntax = 1
 
 "========== nerdtree
+let g:NERDTreeCaseSensitiveSort = 1
 let g:NERDTreeHijackNetrw = 0
 let g:NERDTreeIgnore = ['^\.svn$', '^\.git$', '\.swp$', '\~$']
 let g:NERDTreeBookmarksFile = $VIMDIR.'/.NERDTreeBookmarks'
-"let g:NERDTreeQuitOnOpen = 1
 let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeWinSize = 36
+let g:NERDTreeDirArrows = 1
 
 noremap <silent> <F1> :NERDTreeFind<CR>
 noremap <silent> <F2> :NERDTreeToggle<CR>

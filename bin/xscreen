@@ -1,3 +1,9 @@
 #!/bin/bash
 
-autorandr -c --force
+if [ "$(xserver-name)" == 'X' ]; then
+    autorandr -c --force
+fi
+
+xset b off s off dpms 0 0 300
+xsetroot -solid black
+xsetroot -cursor_name left_ptr

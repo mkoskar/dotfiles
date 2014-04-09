@@ -24,18 +24,19 @@ alias info='info --vi-keys'
 alias nw='tmux neww'
 alias gpgsandbox='gpg --homedir ~/.gnupg/sandbox'
 
-# virtualenv
-export VIRTUALENVWRAPPER_PYTHON="$(which python2)"
-source ~/.local/bin/virtualenvwrapper.sh
-alias mkvirtualenv2="mkvirtualenv -p $(which python2)"
-alias mkvirtualenv3="mkvirtualenv -p $(which python3)"
-alias pipinst='pip install --download-cache=~/.pip-cache'
-alias wo='workon'
-complete -o default -o nospace -F _virtualenvs wo
-
 # python
 alias py='python'
 alias ipy='ipython'
+alias pipinst='pip install --download-cache=~/.pip-cache'
+
+# virtualenvwrapper
+if [ -f /usr/bin/virtualenvwrapper.sh ]; then
+    source /usr/bin/virtualenvwrapper.sh
+    alias mkvirtualenv2="mkvirtualenv -p $(which python2)"
+    alias mkvirtualenv3="mkvirtualenv -p $(which python3)"
+    alias wo='workon'
+    complete -o default -o nospace -F _virtualenvs wo
+fi
 
 # mplayer
 alias play='mplayer -really-quiet'

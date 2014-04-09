@@ -1,3 +1,0 @@
-#!/bin/bash
-
-exec ~/opt/pycharm-2.7.2/bin/pycharm.sh

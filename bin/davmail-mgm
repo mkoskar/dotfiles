@@ -7,7 +7,7 @@ exec > /dev/null
 BASEDIR="$HOME/.davmail"
 PIDFILE="$BASEDIR/davmail_mgm.pid"
 
-function log() {
+log() {
     echo "$*" >&2
 }
 

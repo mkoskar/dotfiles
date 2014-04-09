@@ -1,0 +1,20 @@
+#!/bin/bash
+
+main() {
+    workrave &
+    xmonad
+}
+
+xmonad() {
+    tray
+    /usr/bin/xmonad
+}
+
+openbox() {
+    tray
+    /usr/bin/openbox
+}
+
+xscreen
+
+[ $# -gt 0 ] && eval "$*"

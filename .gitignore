@@ -32,14 +32,20 @@
 
 !bin
 
+!opt
+!opt/bin
+
 !.Xresources
 !.authinfo.example
 !.bash_profile
 !.bashrc
 !.bcrc
 !.fbtermrc
+!.gitattributes
 !.gitconfig
+!.gitexcludes
 !.gitignore
+!.gitmessage
 !.gtk-bookmarks
 !.gtkrc-2.0
 !.inputrc

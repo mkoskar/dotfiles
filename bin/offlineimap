@@ -7,7 +7,7 @@ exec > /dev/null
 BASEDIR="$HOME/.offlineimap"
 PIDFILE="$BASEDIR/pid"
 
-function log() {
+log() {
     echo "$*" >&2
 }
 

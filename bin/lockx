@@ -2,27 +2,23 @@
 
 set -e
 
-export PATH="/home/mirci/bin:$PATH"
+export PATH="/home/miro/bin:$PATH"
 
-USER='mirci'
-XTTY=1
+user='miro'
 
-VTOLD=$(fgconsole)
+sysrq_path='/proc/sys/kernel/sysrq'
+sysrq_old="$(cat "$sysrq_path")"
+echo 0 > "$sysrq_path"
 
-SYSRQ_PATH='/proc/sys/kernel/sysrq'
-SYSRQ_OLD=$(cat "$SYSRQ_PATH")
-echo 0 > "$SYSRQ_PATH"
-
-function cleanup {
+cleanup() {
+    echo "$sysrq_old" > "$sysrq_path"
     vtswitch-lock -u
-    chvt $VTOLD
-    echo $SYSRQ_OLD > "$SYSRQ_PATH"
 }
 trap cleanup EXIT
 
-chvt $XTTY
 vtswitch-lock
 
-sudo -u $USER bash -c 'export DISPLAY=:0
-                       export XAUTHORITY=~/.Xauthority
-                       slock'
+vtno="$(fgconsole)"
+su - "$user" -c "export DISPLAY=':$vtno'
+                 export XAUTHORITY=~/.Xauthority
+                 slock"

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-killall -9 trayer > /dev/null 2>&1
+killallx trayer
 
 trayer --edge top --align right \
        --width 100 --widthtype pixel \

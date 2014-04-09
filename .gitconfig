@@ -1,8 +1,13 @@
 [user]
     name = Miroslav Koskar
 
+[core]
+    ;autocrlf = input
+    attributesfile = ~/.gitattributes
+    excludesfile = ~/.gitexcludes
+
 [http]
-    sslVerify = false
+    ;sslVerify = false
 
 [credential]
     helper = cache --timeout=3600
@@ -10,7 +15,7 @@
 
 [alias]
     b = branch
-    st = status
+    st = status -s
     co = checkout
     ci = commit
     df = diff
@@ -21,8 +26,14 @@
     lg2 = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(bold white)— %an%C(reset)' --abbrev-commit
     lg = !"git lg1"
 
+[color]
+    ui = auto
+
+[commit]
+    template = ~/.gitmessage
+
 [push]
-    default = simple
+    default = nothing
 
 [merge]
     tool = vimdiff
