@@ -1,19 +1,13 @@
-# no terminal bell
 set bell-style none
-
-# show completion matches immediately
+set bind-tty-special-chars off
+set colored-stats
+set completion-prefix-display-length 2
+set editing-mode vi
+set keyseq-timeout 500
+set mark-symlinked-directories on
 set show-all-if-ambiguous on
-
-# show completion matches only if there is no partial completion
-set show-all-if-unmodified on
-
-# do not insert the completion text if it is already present
 set skip-completed-text on
 
-# vi editing mode
-set editing-mode vi
-
-# insert mode key bindings
 set keymap vi-insert
 
 "\C-l": clear-screen
@@ -21,37 +15,38 @@ set keymap vi-insert
 "\C-n": history-search-forward
 "\C-o": menu-complete
 "\C-k": menu-complete-backward
+"\C-w": backward-kill-word
 
 $if bash
     set show-mode-in-prompt on
 
-    "\C-x\C-x": "\C-[0isudo \C-[0"
-    "\C-x\C-t": "\C-[dditmux new -s ''\C-[i"
-    "\C-x\C-h": "\C-[dditail -n 25 ~/.bash_history | igrep ''\C-[i"
-    "\C-x\C-a": "\C-[a!!:*\C-["
-    "\C-x\C-l": "\C-[a!!:$\C-["
-    "\C-x\C-s": "\C-[a!!:gs/"
+    "\C-x\C-x": "\e0isudo \e0"
+    "\C-x\C-t": "\edditmux new -s ''\ei"
+    "\C-x\C-h": "\edditail -n 25 ~/.bash_history | igrep ''\ei"
+    "\C-x\C-a": "\ea!!:*\e"
+    "\C-x\C-l": "\ea!!:$\e"
+    "\C-x\C-s": "\ea!!:gs/"
 $endif
 
 $if python
-    "\C-x\C-h": "\C-[ddihelp()\C-[i"
+    "\C-x\C-h": "\eddihelp()\ei"
 $endif
 
-# command mode key bindings
 set keymap vi-command
 
 "\C-p": history-search-backward
 "\C-n": history-search-forward
+"\C-w": backward-kill-word
 
 $if bash
-    "\C-x\C-x": "0isudo \C-[0"
-    "\C-x\C-t": "dditmux new -s ''\C-[i"
-    "\C-x\C-h": "dditail -n 25 ~/.bash_history | igrep ''\C-[i"
-    "\C-x\C-a": "a!!:*\C-["
-    "\C-x\C-l": "a!!:$\C-["
+    "\C-x\C-x": "0isudo \e0"
+    "\C-x\C-t": "dditmux new -s ''\ei"
+    "\C-x\C-h": "dditail -n 25 ~/.bash_history | igrep ''\ei"
+    "\C-x\C-a": "a!!:*\e"
+    "\C-x\C-l": "a!!:$\e"
     "\C-x\C-s": "a!!:gs/"
 $endif
 
 $if python
-    "\C-x\C-h": "ddihelp()\C-[i"
+    "\C-x\C-h": "ddihelp()\ei"
 $endif

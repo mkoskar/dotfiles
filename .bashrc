@@ -13,11 +13,8 @@ shopt -s autocd checkjobs checkwinsize cmdhist dotglob histappend \
 bind -m vi-insert   '"\C-e": shell-expand-line'
 bind -m vi-command  '"\C-e": shell-expand-line'
 bind -m vi-insert   '"\ee":  history-and-alias-expand-line'
-bind -m vi-insert   '"\eE":  history-and-alias-expand-line'
 bind -m vi-command  '"\ee":  history-and-alias-expand-line'
-bind -m vi-command  '"\eE":  history-and-alias-expand-line'
 bind -m vi-insert   '"\ei":  complete-filename'
-bind -m vi-insert   '"\eI":  complete-filename'
 bind -m vi-insert   '"\e\t": dynamic-complete-history'
 bind -m vi-insert   '"\eq":  dabbrev-expand'
 

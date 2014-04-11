@@ -1,3 +1,3 @@
 #!/bin/bash
 
-gphoto2 --quiet --capture-image-and-download --interval 5 --hook-script "$(which camhook)"
+gphoto2 --quiet --capture-image-and-download --interval 5 --hook-script "$(type -P camhook)"

@@ -16,13 +16,14 @@ eval $(TERM=xterm dircolors -b)
 
 alias ls='ls -h --group-directories-first --color=auto'
 alias l='ls -la'
-alias grep='grep --color=auto'
-alias igrep='grep -i'
+alias grep='LC_ALL=C grep --color=auto'
 alias g="grep --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exclude='*~'"
+alias gi="g -i"
 alias stat="stat -c '%A %a %h %U %G %s %y %n'"
 alias info='info --vi-keys'
 alias nw='tmux neww'
 alias gpgsandbox='gpg --homedir ~/.gnupg/sandbox'
+alias qiv='qiv -uLtiGfl --vikeys'
 
 # python
 alias py='python'
@@ -32,8 +33,8 @@ alias pipinst='pip install --download-cache=~/.pip-cache'
 # virtualenvwrapper
 if [ -f /usr/bin/virtualenvwrapper.sh ]; then
     source /usr/bin/virtualenvwrapper.sh
-    alias mkvirtualenv2="mkvirtualenv -p $(which python2)"
-    alias mkvirtualenv3="mkvirtualenv -p $(which python3)"
+    alias mkvirtualenv2="mkvirtualenv -p $(type -P python2)"
+    alias mkvirtualenv3="mkvirtualenv -p $(type -P python3)"
     alias wo='workon'
     complete -o default -o nospace -F _virtualenvs wo
 fi

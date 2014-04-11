@@ -196,6 +196,15 @@ endif
 
 highlight Cursor guifg=white guibg=sienna2
 
+let c='a'
+while c <= 'z'
+    exec "set <M-".c.">=\e".c
+    exec "imap \e".c." <M-".c.">"
+    let c = nr2char(1 + char2nr(c))
+endw
+
+set timeout timeoutlen=500 ttimeoutlen=10
+
 " fast editing of the '.vimrc'
 nnoremap <silent> <Leader>rc :vs ~/.vimrc<CR>
 
@@ -229,11 +238,6 @@ nmap <M-j> 5j
 nmap <M-k> 5k
 xmap <M-j> 5j
 xmap <M-k> 5k
-nmap <Esc>j 5j
-nmap <Esc>j 5j
-nmap <Esc>k 5k
-xmap <Esc>j 5j
-xmap <Esc>k 5k
 
 nnoremap <M-l> gt
 nnoremap <M-h> gT
@@ -247,18 +251,6 @@ nnoremap <M-7> 7gt
 nnoremap <M-8> 8gt
 nnoremap <M-9> 9gt
 nnoremap <silent> <M-0> :tablast<CR>
-nnoremap <Esc>l gt
-nnoremap <Esc>h gT
-nnoremap <Esc>1 1gt
-nnoremap <Esc>2 2gt
-nnoremap <Esc>3 3gt
-nnoremap <Esc>4 4gt
-nnoremap <Esc>5 5gt
-nnoremap <Esc>6 6gt
-nnoremap <Esc>7 7gt
-nnoremap <Esc>8 8gt
-nnoremap <Esc>9 9gt
-nnoremap <silent> <Esc>0 :tablast<CR>
 
 cnoremap %% <C-R>=expand('%:h').'/'<CR>
 nnoremap <Leader>ew :e %%
@@ -267,11 +259,6 @@ nnoremap <Leader>ev :vsp %%
 nnoremap <Leader>et :tabe %%
 
 nnoremap <C-Q> :bd<CR>
-"nnoremap <C-X><C-X> :bd<CR>
-
-" insert spaces
-"nnoremap <Leader> <Space> :e %%
-
 
 " macros
 " TODO
