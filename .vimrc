@@ -1,3 +1,5 @@
+let g:vimrc_done = 0
+
 if exists('$BASEDIR')
     cd $BASEDIR
 endif
@@ -9,6 +11,7 @@ endif
 "========== important
 set nocompatible
 set pastetoggle=<F6>
+set timeout timeoutlen=500 ttimeoutlen=10
 let mapleader = ','
 
 "========== moving around, searching and patterns
@@ -24,7 +27,7 @@ set smartcase
 "========== tags
 set tags=./tags,tags
 if exists('$BASEDIR')
-    exe 'set tags^='.$BASEDIR.'/tags'
+    exec 'set tags^='.$BASEDIR.'/tags'
 endif
 
 "0 or s: Find this C symbol
@@ -151,15 +154,15 @@ set preserveindent
 "========== folding
 set foldcolumn=1
 
-nnoremap <silent> <Leader>ff :set fdm=manual<CR>
-nnoremap <silent> <Leader>fi :set fdm=indent<CR>
-nnoremap <silent> <Leader>fs :set fdm=syntax<CR>
-nnoremap <silent> <Leader>fm :set fdm=marker<CR>
+nnoremap <Leader>ff :set fdm=manual<CR>
+nnoremap <Leader>fi :set fdm=indent<CR>
+nnoremap <Leader>fs :set fdm=syntax<CR>
+nnoremap <Leader>fm :set fdm=marker<CR>
 
 "========== reading and writing files
 set modeline
 set backup
-exe 'set backupdir='.$VIMDIR.'/.backupdir'
+exec 'set backupdir='.$VIMDIR.'/.backupdir'
 set autoread
 
 "========== the swap file
@@ -171,10 +174,10 @@ set wildmenu
 set wildmode=list:longest,full
 "set wildoptions=tagfile
 set undofile
-exe 'set undodir='.$VIMDIR.'/.undodir'
+exec 'set undodir='.$VIMDIR.'/.undodir'
 
 "========== running make and jumping to errors
-set grepprg=grep\ -n\ --exclude-dir=.svn\ --exclude-dir=.git\ --exclude='*.swp'\ --exclude='*~'\ $*\ /dev/null
+set grepprg=grep\ -n\ --exclude-dir='.svn'\ --exclude-dir='.git'\ --exclude='*.swp'\ --exclude='*~'\ $*\ /dev/null
 
 "========== multi-byte characters
 set encoding=utf-8
@@ -182,7 +185,7 @@ set encoding=utf-8
 "========== various
 set virtualedit=block
 set gdefault
-exe 'set viminfo+=n'.$VIMDIR.'/.viminfo'
+exec 'set viminfo+=n'.$VIMDIR.'/.viminfo'
 
 "========== other
 filetype plugin indent on
@@ -195,15 +198,6 @@ else
 endif
 
 highlight Cursor guifg=white guibg=sienna2
-
-let c='a'
-while c <= 'z'
-    exec "set <M-".c.">=\e".c
-    exec "imap \e".c." <M-".c.">"
-    let c = nr2char(1 + char2nr(c))
-endw
-
-set timeout timeoutlen=500 ttimeoutlen=10
 
 " fast editing of the '.vimrc'
 nnoremap <silent> <Leader>rc :vs ~/.vimrc<CR>
@@ -260,9 +254,6 @@ nnoremap <Leader>et :tabe %%
 
 nnoremap <C-Q> :bd<CR>
 
-" macros
-" TODO
-
 "==============================================================================
 " 3rd party
 "==============================================================================
@@ -271,10 +262,10 @@ nnoremap <C-Q> :bd<CR>
 silent! call pathogen#infect()
 
 "========== netrw
-let g:netrw_list_cmd ="sshm USEPORT HOSTNAME ls -Fa -I ."
-let g:netrw_scp_cmd ="scpm -q"
-let g:netrw_sftp_cmd ="sftpm"
-let g:netrw_bufsettings = "noma nomod nonu nowrap ro nolist cc=0 fdc=0"
+let g:netrw_list_cmd ='sshm USEPORT HOSTNAME ls -Fa -I .'
+let g:netrw_scp_cmd ='scpm -q'
+let g:netrw_sftp_cmd ='sftpm'
+let g:netrw_bufsettings = 'noma nomod nonu nowrap ro nolist cc=0 fdc=0'
 let g:netrw_alto = 1
 let g:netrw_altv = 1
 let g:netrw_fastbrowse = 0
@@ -339,11 +330,34 @@ nnoremap <C-N> :FindClass
 nnoremap <silent> <F4> :GundoToggle<CR>
 
 "========== scratch
-"nnoremap <silent> <Leader>ss :Scratch<CR>
-"nnoremap <silent> <Leader>sp :Sscratch<CR>
 nnoremap <silent> <Leader>ss :Sscratch<CR>
 
 "========== other
+nnoremap <silent> <Leader>mm :MetaToggle<CR>
+command! MetaToggle call s:MetaToggle()
+let g:meta_enabled = 0
+function! s:MetaToggle()
+    let chars = '0123456789abcdefghijklmnopqrstuvwxyz'
+    let i = 0
+    let n = len(chars)
+    while i < n
+        let c = chars[i]
+        if g:meta_enabled
+            exec 'set <M-'.c.'>='
+        else
+            exec 'set <M-'.c.">=\e".c
+        endif
+        let i += 1
+    endwhile
+    let g:meta_enabled = !g:meta_enabled
+    if g:vimrc_done
+        redraw
+        echohl WarningMsg
+        echo 'Meta '.(g:meta_enabled ? 'ON' : 'OFF')
+    endif
+endfunction
+exec ':silent MetaToggle'
+
 nnoremap <silent> QQ :QuitTab<CR>
 command! QuitTab call s:QuitTab()
 function! s:QuitTab()
@@ -354,63 +368,50 @@ function! s:QuitTab()
     endtry
 endfunction
 
-nnoremap <silent> <F5> :call Preserve(':%s/\s\+$//e')<CR>
+nnoremap <silent> <Leader>pp :call Preserve(':%s/\s\+$//e')<CR>
 function! Preserve(command)
     let _s=@/
     let pos = getpos('.')
-    execute a:command
+    exec a:command
     let @/=_s
     call setpos('.', pos)
 endfunction
 
 command! -nargs=1 Diff2 call s:Diff2(expand('%'), <f-args>)
 function! s:Diff2(file1, file2)
-    silent exe 'tabnew | e '.a:file1.' | diffthis | vs | e '.a:file2.' | diffthis'
-endfunction
-
-command! DiffSvn call s:DiffSvn(expand('%'))
-"function! s:DiffSvn(file)
-"let svn_base_file = substitute(a:file, '\(.*\)/\(.*\)$', '\1/.svn/text-base/\2.svn-base', '')
-"call s:Diff2(a:file, svn_base_file)
-"endfunction
-function! s:DiffSvn(file)
-    silent exe 'tabnew | e '.a:file.' | diffthis | vert new | r! "svn cat '.a:file.'" | diffthis'
+    silent exec 'tabnew | e '.a:file1.' | diffthis | vs | e '.a:file2.' | diffthis'
 endfunction
 
 " Find file in current directory and edit it.
 command! -nargs=* Find :call Find(<f-args>)
 function! Find(...)
-    let path="."
+    let path='.'
     if a:0==2
         let path=a:2
     endif
     let l:list=system("find ".path. " -name '".a:1."' | grep -v .svn ")
-    let l:num=strlen(substitute(l:list, "[^\n]", "", "g"))
+    let l:num=strlen(substitute(l:list, '[^\n]', '', 'g'))
     if l:num < 1
         echo "'".a:1."' not found"
         return
     endif
     if l:num == 1
-        exec "open " . substitute(l:list, "\n", "", "g")
+        exec 'open ' . substitute(l:list, '\n', '', 'g')
     else
         let tmpfile = tempname()
-        exec "redir! > " . tmpfile
+        exec 'redir! > ' . tmpfile
         silent echon l:list
         redir END
         let old_efm = &efm
         set efm=%f
-
-        if exists(":cgetfile")
-            exec "silent! cgetfile " . tmpfile
+        if exists(':cgetfile')
+            exec 'silent! cgetfile ' . tmpfile
         else
-            exec "silent! cfile " . tmpfile
+            exec 'silent! cfile ' . tmpfile
         endif
-
         let &efm = old_efm
-
         " Open the quickfix window below the current window
         botright copen
-
         call delete(tmpfile)
     endif
 endfunction
@@ -445,3 +446,5 @@ augroup VIMRC
     autocmd BufWinEnter NetrwMessage nnoremap <silent> q :q<CR>
 augroup END
 endif
+
+let g:vimrc_done = 1

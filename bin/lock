@@ -9,15 +9,15 @@ user='miro'
 
 vtold="$(fgconsole)"
 vtnew=8
-exec 0<>"/dev/tty$vtnew" >&0 2>&1 
+exec <>"/dev/tty$vtnew" >&0 2>&1
 
 sysrq_path='/proc/sys/kernel/sysrq'
-sysrq_old="$(cat "$sysrq_path")"
-echo 0 > "$sysrq_path"
+sysrq_old="$(<"$sysrq_path")"
+echo 0 >"$sysrq_path"
 
 cleanup() {
     clear
-    echo "$sysrq_old" > "$sysrq_path"
+    echo "$sysrq_old" >"$sysrq_path"
     vtswitch-lock -u
     chvt "$vtold"
 }

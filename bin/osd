@@ -1,10 +1,9 @@
 #!/bin/bash
 
-PIDs=$(pgrep aosd_cat)
+pids="$(pgrepallx aosd_cat)"
 
-printf ' %s ' "$1" | aosd_cat -p 2 -x -10 -y 25 -d 5 -e 0 -t 0 -n local_osd -B black -R yellow -f 0 -u 4000 -o 0 &
+<<<" $1 " aosd_cat -p 2 -x -10 -y 25 -d 5 -e 0 -t 0 -f 0 -u 1000 -o 0 \
+                   -n local_osd -B black -R yellow &
 
-sleep 0.02
-kill -9 $PIDs > /dev/null 2>&1
-
-exit 0
+sleep 0.01
+killer $pids

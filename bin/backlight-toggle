@@ -1,20 +1,18 @@
 #!/bin/bash
 
-MAX=15
-SET=10
-LOW=8
+max=15
+val=10
+low=8
 
-CUR="$(</sys/class/backlight/acpi_video0/brightness)"
-
-case "$CUR" in
-    $MAX)
+case "$(</sys/class/backlight/acpi_video0/brightness)" in
+    "$max")
         ;;
-    $SET)
-        SET=$LOW
+    "$val")
+        val="$low"
         ;;
-    $LOW)
-        SET=$MAX
+    "$low")
+        val="$max"
         ;;
 esac
 
-sudo bash -c "echo $SET > /sys/class/backlight/acpi_video0/brightness"
+sudo bash -c "echo $val >/sys/class/backlight/acpi_video0/brightness"

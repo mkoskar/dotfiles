@@ -7,11 +7,11 @@ export PATH="/home/miro/bin:$PATH"
 user='miro'
 
 sysrq_path='/proc/sys/kernel/sysrq'
-sysrq_old="$(cat "$sysrq_path")"
-echo 0 > "$sysrq_path"
+sysrq_old="$(<"$sysrq_path")"
+echo 0 >"$sysrq_path"
 
 cleanup() {
-    echo "$sysrq_old" > "$sysrq_path"
+    echo "$sysrq_old" >"$sysrq_path"
     vtswitch-lock -u
 }
 trap cleanup EXIT

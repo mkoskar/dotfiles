@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo ">>> DIFF3: $*" >&2
+echo "> diff3: $*" >&2
 
 /usr/bin/diff3 "$@"
-RETVAL=$?
+retval=$?
 
-echo ">>> DIFF3 EXIT: $RETVAL" >&2
+echo "> diff3 exit: $retval" >&2
 
-exit $RETVAL
+exit $retval

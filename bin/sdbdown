@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sudo /usr/bin/hdparm -S 1 /dev/sdb > /dev/null 2>&1
-sudo /usr/bin/hdparm -y /dev/sdb > /dev/null 2>&1
+sudo /usr/bin/hdparm -S 1 /dev/sdb &>/dev/null
+sudo /usr/bin/hdparm -y /dev/sdb &>/dev/null

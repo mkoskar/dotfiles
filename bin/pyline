@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-
-"""
-http://bbs.archlinux.org/viewtopic.php?pid=431568#p431568
-"""
+# -*- coding: utf-8 -*-
 
 import sys
 

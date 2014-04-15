@@ -1,11 +1,11 @@
 # ~/.bashrc
 # - executed by bash(1) for non-login shells
 
-[[ $- == *i* ]] && INTERACTIVE='yes'
+[ -f ~/bin/shrc.sh ] && . ~/bin/shrc.sh
 
-[ -f ~/bin/shrc.sh ] && source ~/bin/shrc.sh
-
-[ -z "$INTERACTIVE" ] && return
+# continue only in case of interactive shell
+case $- in *i*) ;; *) return ;; esac
+# ------------------------------------------
 
 shopt -s autocd checkjobs checkwinsize cmdhist dotglob histappend \
          histreedit histverify lithist no_empty_cmd_completion
@@ -23,8 +23,28 @@ HISTFILESIZE=5000
 HISTSIZE=500
 HISTIGNORE='exit'
 
-PS1='\u@\h:\!:\#:\W\$ '
+#PS1='\u@\h:\!:\#:\W\$ '
 PS1='\#:\W\$ '
 PROMPT_DIRTRIM=3
 CDPATH='.:..:~'
 unset MAILCHECK
+
+complete -W 'audio dpms rfkill xkb' status
+complete -W 'audio dpms rfkill xkb' status-notify
+complete -W '10m 15m 20m 25m 30m' a
+complete -c cpath
+complete -c csyspath
+complete -c on
+complete -f paco
+complete -c pacoc
+
+_pacl() {
+    COMPREPLY=()
+    . /usr/share/bash-completion/completions/pacman
+    _get_comp_words_by_ref cur prev
+    _pacman_pkg Qq
+}
+complete -F _pacl pacl
+
+[ "$(type -t wo)" = 'alias' ] \
+    && complete -o default -o nospace -F _virtualenvs wo

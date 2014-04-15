@@ -1,5 +1,0 @@
-#!/bin/bash
-
-davmail
-offlineimap
-exec mutt

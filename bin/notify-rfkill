@@ -1,6 +1,0 @@
-#!/bin/bash
-
-[ "$(</sys/class/rfkill/rfkill0/soft)" -eq 1 ] && VAL='soft' || VAL='off'
-[ "$(</sys/class/rfkill/rfkill0/hard)" -eq 1 ] && VAL='hard'
-
-osd "rfkill [$VAL]"

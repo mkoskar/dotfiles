@@ -1,6 +1,6 @@
 #!/bin/bash
 
-killallx trayer
+killer $(pgrepallx trayer)
 
 trayer --edge top --align right \
        --width 100 --widthtype pixel \

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-INTERNET_IFACE=${1:-eth0}
+iface="${1:-eth0}"
 
-gpg -d ~/.netap.gpg | sudo create_ap -w 2 wlan0 $INTERNET_IFACE
+gpg -d ~/.netap.gpg | sudo create_ap -w 2 wlan0 "$iface"

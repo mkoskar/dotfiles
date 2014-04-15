@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+pids="$(pgrep -x "$1")"
+
+for i in $pids; do
+    env="/proc/$i/environ"
+    [ -r "$env" ] && grep -Fzxq "DISPLAY=$DISPLAY" "$env" && echo "$i"
+done

@@ -1,7 +1,0 @@
-#!/bin/bash
-
-for i in $(pgrep -x $1); do
-    if grep -zxq "DISPLAY=$DISPLAY" /proc/$i/environ; then
-        kill $i
-    fi
-done

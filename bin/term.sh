@@ -1,7 +1,8 @@
 # Source this file to set correct terminal.
+# :Compatibility: POSIX
 
-if [[ ! "$TERM" =~ ^screen ]]; then
-    export TERMOLD=$TERM
+if [ -n "${TERM##screen*}" ]; then
+    export TERMOLD="$TERM"
     return
 fi
 
@@ -14,12 +15,10 @@ esac
 
 export TERM='screen'
 
-TERMOLD_COLORS=$(tput -T$TERMOLD colors)
-if [ $TERMOLD_COLORS == 256 ]; then
+if [ "$(tput "-T$TERMOLD" colors)" -eq 256 ]; then
     export TERM='screen-256color'
 fi
 
-VERASE=$(stty -g | awk -F ':' '{ print $7 }')
-if [ $VERASE == 7f ]; then
+if [ "$(stty -g | awk -F ':' '{ print $7 }')" = '7f' ]; then
     export TERM="$TERM-bsdel"
 fi

@@ -38,7 +38,7 @@ if [ "$(basename "$0")" == 'xx' ]; then
 
     startx ~/.xinitrc "$@" -- \
         /usr/bin/Xephyr ":$dispno" -nolisten tcp -dpi 96 -resizeable \
-        > "$HOME/.xsession$dispno.out" 2>&1 &
+        &>"$HOME/.xsession$dispno.out" &
     exit
 fi
 
@@ -55,4 +55,4 @@ fi
 
 exec startx ~/.xinitrc "$@" -- \
     /usr/bin/X ":$dispno" "vt$vtno" -nolisten tcp -dpi 96 \
-    > "$HOME/.xsession$dispno.out" 2>&1
+    &>"$HOME/.xsession$dispno.out"

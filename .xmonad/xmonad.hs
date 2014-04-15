@@ -126,15 +126,15 @@ myConfig = defaultConfig
                 ("M-S-<Print>", spawn "sleep 0.5 && scrot -m -s ~/tmp/shot-%Y-%m-%d.%s.png -e 'feh $f'"),
 
                 -- audio
-                ("M-S-[", spawn "amixer -q set Master 4- && notify-audio"),
-                ("M-S-]", spawn "amixer -q set Master 4+ && notify-audio"),
-                ("M-S-m", spawn "amixer -q set Master toggle && notify-audio"),
-                ("M-S-n", spawn "amixer -q set Headphone,1 toggle && notify-audio-dock"),
+                ("M-S-]", spawn "volup && status-notify audio"),
+                ("M-S-[", spawn "voldown && status-notify audio"),
+                ("M-S-m", spawn "voltoggle && status-notify audio"),
+                ("M-S-n", spawn "voltoggle-dock && status-notify audio"),
 
                 -- setxkbmap
-                ("M-<F1>", spawn "setxkbmap us cz_sk_de && notify-xkbmap"),
-                ("M-<F2>", spawn "setxkbmap sk qwerty && notify-xkbmap"),
-                ("M-<F3>", spawn "setxkbmap cz qwerty && notify-xkbmap"),
+                ("M-<F1>", spawn "setxkbmap us cz_sk_de && status-notify xkb"),
+                ("M-<F2>", spawn "setxkbmap sk qwerty && status-notify xkb"),
+                ("M-<F3>", spawn "setxkbmap cz qwerty && status-notify xkb"),
 
                 -- selections
                 ("M-<F5>", spawn "xsel | xsel -ib"),
@@ -148,8 +148,8 @@ myConfig = defaultConfig
                 ("M-S-<F12>", spawn "xmeasure | xsel -i"),
                 ("M-S-l", spawn "sudo lockx"),
                 ("M-S-b", spawn "backlight-toggle"),
-                ("M-S-d", spawn "dpms-toggle && notify-dpms"),
-                ("M-S-r", spawn "rfkill-toggle && notify-rfkill"),
+                ("M-S-d", spawn "dpms-toggle && status-notify dpms"),
+                ("M-S-r", spawn "rfkill-toggle && status-notify rfkill"),
                 ("M-S-<Home>", spawn "urxvtc -e less -m ~/projects/meta.rst")
             ]
 

@@ -1,3 +1,5 @@
 #!/bin/bash
 
+# .. TODO: obsolete?
+
 exec /usr/bin/imapfilter -v -l ~/.imapfilter/log

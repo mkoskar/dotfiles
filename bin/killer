@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+while getopts 's:' opt; do
+    case "$opt" in
+        s)
+            sopt="$OPTARG"
+            ;;
+        *)
+            exit 1
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+sig="${sopt:-SIGTERM}"
+
+[ $# -eq 0 ] && exit 1
+
+for pid in "$@"; do
+    pgid="$(ps -p "$pid" -o pgid=)"
+    [ -z "$pgid" ] && continue
+
+    printf 'pkill --signal %s -g %s\n' "$sig" "$pgid" >&2
+    pkill --signal "$sig" -g "$pgid"
+done

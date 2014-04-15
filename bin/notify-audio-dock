@@ -1,4 +1,0 @@
-#!/bin/bash
-
-amixer get Headphone,1 | grep -Fq 'Playback [on]' && osd 'dock [on]' && exit
-amixer get Headphone,1 | grep -Fq 'Playback [off]' && osd 'dock [off]'

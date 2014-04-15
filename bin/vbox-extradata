@@ -1,9 +1,0 @@
-#!/bin/bash
-
-VBoxManage setextradata 'winXP' 'VBoxInternal/Devices/pcnet/0/LUN#0/Config/debug/Protocol' TCP
-VBoxManage setextradata 'winXP' 'VBoxInternal/Devices/pcnet/0/LUN#0/Config/debug/GuestPort' 9999
-VBoxManage setextradata 'winXP' 'VBoxInternal/Devices/pcnet/0/LUN#0/Config/debug/HostPort' 9999
-
-VBoxManage setextradata 'winXP' 'VBoxInternal/Devices/pcnet/0/LUN#0/Config/gwthosted/Protocol' TCP
-VBoxManage setextradata 'winXP' 'VBoxInternal/Devices/pcnet/0/LUN#0/Config/gwthosted/GuestPort' 8787
-VBoxManage setextradata 'winXP' 'VBoxInternal/Devices/pcnet/0/LUN#0/Config/gwthosted/HostPort' 8787

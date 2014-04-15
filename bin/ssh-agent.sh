@@ -1,14 +1,17 @@
 # Source this file to initialize ssh-agent.
+# :Compatibility: POSIX
 
-INFO="$HOME/.ssh/ssh-agent-info"
+info="$HOME/.ssh/ssh-agent-info"
 
 (
-    [ -f "$INFO" ] && source "$INFO"
+    [ -f "$info" ] && . "$info"
 
-    if [ -z "$SSH_AGENT_PID" ] || ! ps -u -p $SSH_AGENT_PID > /dev/null; then
-        ssh-agent | grep ^SSH > "$INFO"
-        chmod 600 "$INFO"
+    if [ -n "$SSH_AGENT_PID" ] &&
+            ! ps -u -p "$SSH_AGENT_PID" >/dev/null 2>&1; then
+        ssh-agent | grep '^SSH' >"$info"
+        chmod 600 "$info"
     fi
 )
 
-source "$INFO"
+. "$info"
+unset info

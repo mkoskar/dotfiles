@@ -1,14 +1,18 @@
 # Source this file to initialize gpg-agent.
+# :Compatibility: POSIX
 
-INFO="$HOME/.gnupg/gpg-agent-info"
+info="$HOME/.gnupg/gpg-agent-info"
 
 (
-    [ -f "$INFO" ] && source "$INFO"
+    [ -f "$info" ] && . "$info"
 
-    if [ -z "$GPG_AGENT_INFO" ] || ! ps -u -p $(echo "$GPG_AGENT_INFO" | cut -d: -f 2) > /dev/null; then
-        gpg-agent -q --daemon > "$INFO"
-        chmod 600 "$INFO"
+    if [ -n "$GPG_AGENT_INFO" ] &&
+            ! ps -u -p "$(echo "$GPG_AGENT_INFO" | cut -d: -f 2)" \
+            >/dev/null 2>&1; then
+        gpg-agent -q --daemon >"$info"
+        chmod 600 "$info"
     fi
 )
 
-source "$INFO"
+. "$info"
+unset info

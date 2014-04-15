@@ -1,5 +1,5 @@
 #!/bin/bash
 
-echo ">>> MERGE: $*" >&2
+echo "> merge: $*" >&2
 
 vimdiff "$@"

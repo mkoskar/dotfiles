@@ -1,3 +1,0 @@
-#!/bin/bash
-
-osd "$(amixer get Master | grep % | awk '{print $4 " / " $6}')"

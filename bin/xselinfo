@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo '---------- Primary ----------'
+xsel
+
+echo -e '\n---------- Clipboard ----------'
+xsel -b
+
+echo

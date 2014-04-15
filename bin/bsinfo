@@ -1,11 +1,13 @@
 #!/bin/bash
 
+set -e
+
 echo -e '\n--------------------'
 echo "TERM = $TERM"
 echo "TERMINFO = $TERMINFO"
 echo "TERMINFO_DIRS = $TERMINFO_DIRS"
 echo
-infocmp -1 | sed -nE '1,2p;/\bkbs=/p'
+infocmp -1 | sed -n '1,2p;/\bkbs=/p'
 
 echo -e '\n--------------------'
 stty -a | perl -n -e '/\b(erase = .*?);/ && print "stty $1\n"'

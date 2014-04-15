@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# IDS=$(xdotool search --class 'skype')
-IDS=$(xdotool search --name '^\*.*Skype')
+#ids="$(xdotool search --class 'skype')"
+ids="$(xdotool search --name '^\*.*Skype')"
 
-for id in $IDS; do
+for id in $ids; do
     seturgent "$id"
 done
