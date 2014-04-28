@@ -1,0 +1,12 @@
+set noloadplugins
+
+syntax on
+filetype plugin on
+
+if &t_Co < 256
+    colorscheme desert
+else
+    colorscheme luciusblack
+endif
+
+" vim: ft=vim

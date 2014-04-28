@@ -1,3 +1,38 @@
 #!/bin/bash
 
-exec col -bx | vl "$@"
+set -e
+
+if [ ! -t 1 ]; then
+    echo 'stdout is not a tty' >&2
+    exit 1
+fi
+
+run() {
+    if [ -n "$PAGER_TITLE" ]; then
+        vim -On -u ~/.pgrc "$@" -c "redraw | file ${PAGER_TITLE//\ /\\ }"
+    else
+        vim -On -u ~/.pgrc "$@"
+    fi
+}
+
+if [ -t 0 ]; then
+    run "$@"
+    exit
+fi
+
+PAGER_TITLE="${PAGER_TITLE:--stdin-}"
+
+# Instead of instructing Vim to read from stdin, connect stdin to tty
+# and let it read from the pipe file descriptor directly.
+# - allows preprocessing (e.g, 'col -b')
+# - prevents displaying of "Vim: Reading from stdin..." message
+# - if pipeline reads from the same tty as Vim is connected to
+#   result is unspecified (e.g., $ cat | pg)
+
+exec 8<&0 0<&1
+
+if [ "$(basename "$0")" = 'pgx' ]; then
+    run -c 'silent e '<(<&8 col -b) "$@" 
+else
+    run -c 'silent e /dev/fd/8 | AnsiEsc' "$@"
+fi

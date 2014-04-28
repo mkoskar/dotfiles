@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# OSC 0 ; Pt ST
+# Change icon name and window title to Pt.
+
+printf '\e]0;%s\e\' "$1"

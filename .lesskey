@@ -1,0 +1,7 @@
+#command
+h       left-scroll
+l       right-scroll
+\40     undo-hilite
+
+#line-edit
+^W      word-backspace

@@ -6,4 +6,4 @@ pids="$(pgrepallx aosd_cat)"
                    -n local_osd -B black -R yellow &
 
 sleep 0.01
-killer $pids
+killer -g $pids

@@ -22,6 +22,7 @@ set -o noclobber
 
 alias ls='ls -h --group-directories-first --color=auto'
 alias l='ls -la'
+alias rm='rm -I --one-file-system'
 
 alias grep='LC_ALL=C grep --color=auto'
 alias g="grep"
@@ -32,7 +33,9 @@ alias gri="gr -i"
 alias gpgsandbox='gpg --homedir ~/.gnupg/sandbox'
 alias info='info --vi-keys'
 alias nw='tmux neww'
+alias feh='feh -F'
 alias qiv='qiv -uLtiGfl --vikeys'
+alias sxiv='sxiv -f'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
 
 # python

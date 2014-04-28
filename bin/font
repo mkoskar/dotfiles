@@ -1,3 +1,6 @@
 #!/bin/bash
 
+# OSC 50 ; Pt ST
+# Set font to Pt.
+
 printf '\e]50;%s\e\' "$1"

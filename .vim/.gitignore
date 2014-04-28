@@ -1,0 +1,6 @@
+!*
+*.swp
+.backupdir
+.undodir
+.viminfo
+bundle

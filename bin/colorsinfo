@@ -1,0 +1,187 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+    colorsinfo
+    ~~~~~~~~~~
+
+    Performs simple test of terminal colors.
+
+    :copyright: Copyright 2013 by Miroslav Koskar
+    :license: BSD
+"""
+
+import argparse
+import functools
+import re
+import textwrap
+
+
+parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent("""
+        Performs simple test of terminal colors.
+        Uses ECMA-48 SGR escape sequences:
+
+        * colors 0-7   : CSI 3x/4x m
+        * colors 8-15  : CSI 9x/10x m
+        * colors 16+   : CSI 38;5;x/48;5;x m
+
+        By default it prints a table of 0-15 foreground to 0-7 background colors.
+        Default foreground and background colors are always included.
+        Output can be inverted by using '-t' option.
+
+        If at least one positional argument is specified it will determine
+        the output. One can specify foreground and background color ranges as
+        2 positional arguments. Format of each range argument is:
+
+        <start_color_index>[,end_color_index,[step]]
+
+        E.g.,
+
+        * 0,64,8        - yields: 0, 8, 16, 24, 32, 40, 48, 56
+        * 5,10          - yields: 5, 6, 7, 8, 9
+        * 35            - yields: 35, 36, 37, 38, 39, 40, 41, 42
+
+        Examples:
+
+        $ colorsinfo 0,16       - 0-15 foreground colors on 0-7 backgrounds
+        $ colorsinfo 0,16 0,16  - 16x16 color cube
+        """
+    )
+)
+parser.add_argument('-b', '--bold', action='store_true', help='CSI 1 m')
+parser.add_argument('-f', '--faint', action='store_true', help='CSI 2 m')
+parser.add_argument('-s', '--standout', action='store_true', help='CSI 3 m')
+parser.add_argument('-u', '--underlined', action='store_true', help='CSI 4 m')
+parser.add_argument('-l', '--blink', action='store_true', help='CSI 5 m')
+parser.add_argument('-r', '--reverse', action='store_true', help='CSI 7 m')
+parser.add_argument('-t', '--transpose', action='store_true')
+parser.add_argument('fg_range', nargs='?')
+parser.add_argument('bg_range', nargs='?')
+args = parser.parse_args()
+
+# print without line terminator
+printn = functools.partial(print, end='')
+
+# color range patter for input parsing
+CRANGE_PATTERN = re.compile(r'(\d+)(,(\d+)(,(\d+))?)?')
+
+
+def parse_range(string):
+    if string is None:
+        return (0, None, None)
+    match = CRANGE_PATTERN.fullmatch(string)
+    if not match:
+        raise RuntimeError('invalid color range format')
+    return match.group(1, 3, 5)
+
+
+def fg_attrs(c):
+    if c is None or c < 0:
+        return (39,)
+    if c < 16:
+        return (30 + 60 * (c // 8) + c % 8,)
+    return (38, 5, c)
+
+
+def bg_attrs(c):
+    if c is None or c < 0:
+        return (49,)
+    if c < 16:
+        return (40 + 60 * (c // 8) + c % 8,)
+    return (48, 5, c)
+
+
+def echo(text, fg=None, bg=None, attrs=None):
+    all_attrs = []
+    if attrs is not None:
+        all_attrs.extend(attrs)
+    all_attrs.extend(fg_attrs(fg))
+    all_attrs.extend(bg_attrs(bg))
+    printn('\033[{}m{}\033[0m'.format(';'.join(map(str, all_attrs)), text))
+
+
+def cstr(c):
+    return 'none' if c is None else '{:d}'.format(c)
+
+
+def cname(c):
+    if c is None:
+        return 'none'
+    if c >= 16:
+        return cstr(c)
+    return {
+        0: 'black',
+        1: 'red',
+        2: 'green',
+        3: 'yellow',
+        4: 'blue',
+        5: 'magenta',
+        6: 'cyan',
+        7: 'white'
+    } [c % 8] + '+' * (c // 8)
+
+
+def print_row(header, cells):
+    printn('{:<5} '.format(header))
+    for c in cells:
+        echo('{:^10}'.format(c[0]), *c[1:])
+    print()
+
+
+def print_header(header, colors):
+    print()
+    print_row(header, [(cstr(c),) for c in colors])
+    print_row('-' * 5, [('-' * 8,) for c in colors])
+
+
+def color_range(b, e, s=None):
+    s = int(s or 1) or 1
+    if e is None:
+        e = int(b) + 8
+    colors = [None]
+    colors.extend(range(int(b), int(e), s))
+    return colors
+
+
+def render(fg_range, bg_range, transpose=False):
+    fg_colors = color_range(*fg_range)
+    bg_colors = color_range(*bg_range)
+
+    vcolors = bg_colors if transpose else fg_colors
+    hcolors = fg_colors if transpose else bg_colors
+
+    print_header('bg/fg' if transpose else 'fg/bg', hcolors)
+    for vc in vcolors:
+        if transpose:
+            print_row(cstr(vc), [(cname(hc), hc, vc, attrs) for hc in hcolors])
+        else:
+            print_row(cstr(vc), [(cname(vc), vc, hc, attrs) for hc in hcolors])
+    print()
+
+
+attrs = []
+if args.bold:
+    attrs.append(1)
+if args.faint:
+    attrs.append(2)
+if args.standout:
+    attrs.append(3)
+if args.underlined:
+    attrs.append(4)
+if args.blink:
+    attrs.append(5)
+if args.reverse:
+    attrs.append(7)
+
+if args.fg_range:
+    render(parse_range(args.fg_range),
+           parse_range(args.bg_range),
+           args.transpose)
+else:
+    if args.transpose:
+        render((0, 8), (0, 16), True)
+        render((0, 8), (0, 16), True)
+    else:
+        render((0, 16), (0, 8))
+        render((0, 16), (8, 16))

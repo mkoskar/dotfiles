@@ -11,7 +11,7 @@ xmonad() {
 }
 
 openbox() {
-    tray
+    tint2 &
     /usr/bin/openbox
 }
 

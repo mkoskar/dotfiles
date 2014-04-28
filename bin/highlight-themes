@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -e
+
+themes=(
+    anotherdark
+    bluegreen
+    breeze
+    candy
+    clarity
+    molokai
+    moria
+    neon
+)
+
+keypress() {
+    read -N1 -s
+}
+
+printtheme() {
+    theme="$1"
+    shift
+    echo -e "\n========================================> $theme\n"
+    highlight -s "$theme" -O xterm256 "$@"
+    keypress
+}
+
+echo -e '\nSelected themes:'
+keypress
+
+for theme in ${themes[@]}; do
+    printtheme "$theme" "$@"
+done
+
+echo -e '\nAll themes:'
+keypress
+
+for i in /usr/share/highlight/themes/*; do
+    theme="$(basename -s '.theme' "$i")"
+    printtheme "$theme" "$@"
+done

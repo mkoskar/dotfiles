@@ -12,7 +12,7 @@ Config {
         ,Run Wireless "wlan0" ["-t", "q<quality>"] 50
         ,Run Cpu ["-t", "<total>", "-L", "8", "-H", "30", "-n", "#EFEFEF", "-h", "#FF5555", "-p", "2", "-c", "0"] 30
         ,Run Memory ["-t", "<usedratio>", "-p", "2", "-c", "0"] 50
-        ,Run Date "%d.%m|%k:%M" "date" 600
+        ,Run Date "%a|%d.%m|%H:%M" "date" 600
     ]
     ,alignSep = "}{"
     ,template = "%StdinReader% }{ <fc=#FF5555>%locks%</fc>  %LKPR%  %battery%  %wlan0wi%  %cpu%|%memory%  %date%"

@@ -1,3 +1,8 @@
 #!/bin/bash
 
-pg -c 'set nonu ft=man nonu nolist titlestring=MANPAGE' "$@"
+if [ -t 0 ]; then
+    pg -c "set ft=man | Man $@"
+    exit
+fi
+
+PAGER_TITLE="$MAN_PN" exec pgx -c 'set ft=man'

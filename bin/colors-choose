@@ -1,0 +1,88 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import signal
+
+from gi.repository import Gtk
+from gi.repository import Gdk
+
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+
+def set_colorn(n, c):
+    print('\033]4;{};{}\033\\'.format(n, c), end='', flush=True)
+
+
+def set_colorfg(c):
+    print('\033]10;{}\033\\'.format(c), end='', flush=True)
+
+
+def set_colorbg(c):
+    print('\033]11;{}\033\\'.format(c), end='', flush=True)
+
+
+def color_to_rgba(color):
+    return color.to_string()
+
+
+def color_to_hex(color):
+    rgb = (color.red, color.green, color.blue)
+    rgb = tuple(map(lambda x: int(x * 255), rgb))
+    return '#{:02X}{:02X}{:02X}'.format(*rgb)
+
+
+class MainWindow(Gtk.Window):
+
+    def __init__(self):
+        Gtk.Window.__init__(self, title='Set Terminal Colors', resizable=False)
+
+        grid = Gtk.Grid()
+
+        self.cbuttons = []
+        for n in range(16):
+            btn = Gtk.ColorButton()
+            btn.set_size_request(80, 80)
+            btn.connect('color-set', self.on_color_set, n)
+            self.cbuttons.append(btn)
+            lbl = Gtk.Label()
+            lbl.set_text('color{}'.format(n))
+            grid.attach(btn, n % 8, 2 * (n // 8), 1, 1)
+            grid.attach(lbl, n % 8, 1 + 2 * (n // 8), 1, 1)
+
+        btn = Gtk.ColorButton()
+        btn.set_size_request(0, 50)
+        btn.connect('color-set', self.on_colorfg_set)
+        self.fgbutton = btn
+        lbl = Gtk.Label()
+        lbl.set_text('FG')
+        grid.attach(btn, 0, 5, 4, 1)
+        grid.attach(lbl, 0, 6, 4, 1)
+
+        btn = Gtk.ColorButton()
+        btn.set_size_request(0, 50)
+        btn.connect('color-set', self.on_colorbg_set)
+        self.bgbutton = btn
+        lbl = Gtk.Label()
+        lbl.set_text('BG')
+        grid.attach(btn, 4, 5, 4, 1)
+        grid.attach(lbl, 4, 6, 4, 1)
+
+        self.add(grid)
+
+    def on_color_set(self, widget, n):
+        color = widget.get_rgba()
+        set_colorn(n, color_to_hex(color))
+
+    def on_colorfg_set(self, widget):
+        color = widget.get_rgba()
+        set_colorfg(color_to_hex(color))
+
+    def on_colorbg_set(self, widget):
+        color = widget.get_rgba()
+        set_colorbg(color_to_hex(color))
+
+
+win = MainWindow()
+win.connect('delete-event', Gtk.main_quit)
+win.show_all()
+Gtk.main()

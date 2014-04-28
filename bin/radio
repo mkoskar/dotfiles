@@ -19,4 +19,4 @@ select sel in "${stations[@]}"; do
     break
 done
 sel=($sel)
-play -playlist "${sel[@]: -1}"
+mplayer -really-quiet -playlist "${sel[@]: -1}"

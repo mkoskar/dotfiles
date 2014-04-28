@@ -8,20 +8,23 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/opt/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 
-export LD_LIBRARY_PATH="$HOME/opt/lib"
-
 source ~/bin/ssh-agent.sh
 source ~/bin/gpg-agent.sh
 
 export LANG='en_US.UTF-8'
 export LC_COLLATE='C'
-export EDITOR='vim'
+export LD_LIBRARY_PATH="$HOME/opt/lib"
+
 export BROWSER='firefox'
-export LESS='-MRS#3'
+export EDITOR='vim'
+export LESS='-MRS#3c'
 export LESSHISTFILE='-'
-export XAUTHORITY="$HOME/.Xauthority"
-export VDPAU_DRIVER='va_gl'
+export LESSOPEN='| highlight --quiet -O xterm256 -s bluegreen %s'
+export MANPAGER='manpg'
 export ORACLE_HOME='/opt/instantclient'
+export PAGER='pg'
+export VDPAU_DRIVER='va_gl'
+export XAUTHORITY="$HOME/.Xauthority"
 
 export JDK_HOME="$JAVA_HOME"
 _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'

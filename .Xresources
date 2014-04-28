@@ -4,22 +4,20 @@
 *color8:            #555555
 
 !red
-*color1:            #AA0000
+*color1:            #990000
 *color9:            #DD5555
 
 !green
-*color2:            #00AA00
+*color2:            #1A991A
 *color10:           #55DD55
 
 !yellow
-!*color3:            #AA5500
 *color3:            #FDB436
-!*color11:           #DDDD55
 *color11:           #FEED6A
 
 !blue
-*color4:            #1122AA
-*color12:           #5555DD
+*color4:            #3A4CA6
+*color12:           #4E5DB5
 
 !magenta
 *color5:            #AA00AA
@@ -33,35 +31,58 @@
 *color7:            #C0C0C0
 *color15:           #DDDDDD
 
+!*color0: #000000
+!*color1: #FF6C60
+!*color2: #A8FF60
+!*color3: #FFFFB6
+!*color4: #96CBFE
+!*color5: #FF73FD
+!*color6: #C6C5FE
+!*color7: #EEEEEE
+!*color8: #7C7C7C
+!*color9: #FFB6B0
+!*color10: #CEFFAC
+!*color11: #FFFFCC
+!*color12: #B6DCFF
+!*color13: #FF9CFE
+!*color14: #DFDFFE
+!*color15: #FFFFFF
+
 ! xterm ----------------------------------------------------------------------
-XTerm.termName:         xterm-256color-fix-bsdel
-XTerm*background:       #000000
-XTerm*foreground:       #C0C0C0
-XTerm*cursorColor:      #DDDDDD
-XTerm*faceName:         xft:local_terminal_sized
-XTerm*colorMode:        true
-XTerm*dynamicColors:    true
-XTerm*bellIsUrgent:     true
-XTerm*bellOnReset:      false
-XTerm*metaSendsEscape:  true
-XTerm*saveLines:        8192
-XTerm*utf8:             2
-XTerm*printAttributes:  0
-XTerm*printerCommand:   cat > $(mktemp -p ~/tmp xterm.XXXXXX)
-XTerm.backarrowKeyIsErase:  true
-XTerm*VT100.translations:   #override \n\
-                            ~Shift ~Alt Ctrl <Key>H: string(\177) \n\
-                            ~Shift <Key>Print: print() \n\
-                            Shift <Key>Print: print-everything()
+XTerm.termName:                 xterm-256color-fix-bsdel
+XTerm.backarrowKeyIsErase:      true
+
+XTerm*vt100.background:         #000000
+XTerm*vt100.foreground:         #C0C0C0
+XTerm*vt100.cursorColor:        #DDDDDD
+!XTerm*vt100.boldColors:         false
+XTerm*vt100.dynamicColors:      true
+XTerm*vt100.italicULMode:       false
+
+XTerm*vt100.faceName:           xft:local_terminal_sized
+XTerm*vt100.bellIsUrgent:       true
+XTerm*vt100.bellOnReset:        false
+XTerm*vt100.metaSendsEscape:    true
+XTerm*vt100.saveLines:          8192
+XTerm*vt100.utf8:               2
+XTerm*vt100.printAttributes:    0
+XTerm*vt100.printerCommand:     cat > $(mktemp -p ~/tmp xterm.XXXXXX)
+XTerm*vt100.translations:       #override \n\
+                                ~Shift ~Alt Ctrl <Key>H: string(\177) \n\
+                                ~Shift <Key>Print: print() \n\
+                                Shift <Key>Print: print-everything()
 
 ! urxvt ----------------------------------------------------------------------
 URxvt.termName:         rxvt-unicode-256color-fix-bsdel
+
 URxvt.background:       0
 URxvt.foreground:       7
 URxvt.cursorColor:      15
 URxvt.cursorColor2:     1
 URxvt.scrollColor:      gray20
 URxvt.underlineColor:   #FDB436
+!URxvt.intensityStyles:  false
+
 URxvt.font:             xft:local_terminal_sized
 URxvt.scrollstyle:      plain
 URxvt.thickness:        5
@@ -99,7 +120,6 @@ Xcursor.size:           22
 
 ! xft ------------------------------------------------------------------------
 Xft.dpi:                96
-!Xft.dpi:                118
 Xft.antialias:          true
 Xft.hinting:            true
 Xft.hintstyle:          hintslight

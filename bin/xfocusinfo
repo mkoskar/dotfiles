@@ -18,6 +18,7 @@
 from __future__ import print_function
 
 import argparse
+import textwrap
 from collections import OrderedDict
 
 import xcb
@@ -32,24 +33,27 @@ def intersect(x1, y1, w1, h1, \
 FOCUS_NONE = xcb.NONE
 FOCUS_POINTER_ROOT = xcb.xproto.InputFocus.PointerRoot
 
-parser = argparse.ArgumentParser(description="""
-Determines and prints out (in shell eval format) focused:
+parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent("""
+        Determines and prints out (in shell eval format) focused:
 
-* X screen
-* Xinerama head
-* root window id
-* target window id
+        * X screen
+        * Xinerama head
+        * root window id
+        * target window id
 
-For a focused window spanning multiple Xinerama heads, focus is determined by
-size of corresponding intersecting area (see option --topleft).
-If root or no window is focused, pointer coordinates are used (see option --pointer).
+        For a focused window spanning multiple Xinerama heads, focus is determined by
+        size of corresponding intersecting area (see option --topleft).
+        If root or no window is focused, pointer coordinates are used (see option --pointer).
 
-TODO:
+        TODO:
 
-* output screen dimensions
-* output head dimensions
-""")
-
+        * output screen dimensions
+        * output head dimensions
+        """
+    )
+)
 parser.add_argument('-n', '--no-defaults', action='store_true', help='TODO')
 parser.add_argument('--input', action='store_true', help='N/A')
 parser.add_argument('--pointer', action='store_true', help='N/A')

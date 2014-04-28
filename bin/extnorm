@@ -11,25 +11,32 @@
 """
 
 import argparse, os
+import unicodedata as ud
 from os import path
 
 parser = argparse.ArgumentParser(
     description='Normalizes filename extensions by making them lowercase.'
 )
+parser.add_argument('-p', '--perform', action='store_true',
+                    help='specify this to really perform renaming')
 parser.add_argument('-r', '--recursive', action='store_true',
                     help='operate recursively')
 args = parser.parse_args()
+
+if not args.perform:
+    print('Dry run...')
 
 for root, dirs, files in os.walk('.'):
     for f in files:
         name, ext = path.splitext(f)
 
-        if ext and not ext.islower():
+        if ext and any(c.isalpha() and not c.islower() for c in ext):
             src_path = path.join(root, f)
             dst_path = path.join(root, name + ext.lower())
-
             print(src_path)
-            os.rename(src_path, dst_path)
+
+            if args.perform:
+                os.rename(src_path, dst_path)
 
     if not args.recursive:
         break;

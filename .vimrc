@@ -1,10 +1,10 @@
 let g:vimrc_done = 0
 
-if exists('$BASEDIR')
+if exists($BASEDIR)
     cd $BASEDIR
 endif
 
-if !exists('$VIMDIR')
+if !exists($VIMDIR)
     let $VIMDIR = '~/.vim'
 endif
 
@@ -13,6 +13,7 @@ set nocompatible
 set pastetoggle=<F6>
 set timeout timeoutlen=500 ttimeoutlen=10
 let mapleader = ','
+let maplocalleader = ';'
 
 "========== moving around, searching and patterns
 set whichwrap=b,s,<,>,[,]
@@ -20,13 +21,14 @@ set whichwrap=b,s,<,>,[,]
 " (empty) - current working directory
 " **      - recursive from current working directory
 set path=.,,**,
+set nowrapscan
 set incsearch
 set ignorecase
 set smartcase
 
 "========== tags
 set tags=./tags,tags
-if exists('$BASEDIR')
+if exists($BASEDIR)
     exec 'set tags^='.$BASEDIR.'/tags'
 endif
 
@@ -51,7 +53,7 @@ nnoremap <silent> <C-_>e :lcs find e <C-R>=expand('<cword>')<CR><CR>
 nnoremap <silent> <C-_>f :lcs find f <C-R>=expand('<cfile>')<CR><CR>
 nnoremap <silent> <C-_>i :lcs find i ^<C-R>=expand('<cfile>')<CR>$<CR>
 
-if exists('$BASEDIR')
+if exists($BASEDIR)
     nnoremap <silent> <F12> :!$BASEDIR/tags.sh<CR>
 endif
 
@@ -72,9 +74,8 @@ set colorcolumn=79,84
 set spelllang=en_us
 
 nnoremap <silent> <Space> :nohls<Bar>echo<CR>
-nnoremap <silent> # :let @/="<C-R>=escape(escape(expand('<cWORD>'), '/\.*$^~["'), '''/\.*$^~["')<CR>"<Bar>set hls<CR>
-nnoremap <silent> * :let @/="<C-R>=escape(escape(expand('<cword>'), '/\.*$^~["'), '''/\.*$^~["')<CR>"<Bar>set hls<CR>
-
+nnoremap <silent> # :let @/ = "<C-R>=escape(escape(expand('<cWORD>'), '/\.*$^~["'), '''/\.*$^~["')<CR>"<Bar>set hls<CR>
+nnoremap <silent> * :let @/ = "<C-R>=escape(escape(expand('<cword>'), '/\.*$^~["'), '''/\.*$^~["')<CR>"<Bar>set hls<CR>
 nnoremap <silent> <Leader>sp :set spell!<CR>
 
 "========== multiple windows
@@ -87,7 +88,7 @@ set statusline+=%(\ %y%)
 set statusline+=%=
 set statusline+=0x%-3B
 set statusline+=\ %-14(%l,%c%V%)
-set statusline+=\ %P\ 
+set statusline+=\ %P\
 set splitbelow
 set splitright
 
@@ -97,15 +98,15 @@ nnoremap <C-H> <C-W>h
 nnoremap <BS> <C-W>h
 nnoremap <C-L> <C-W>l
 
+" TODO: better resizing
 "nnoremap <C-W><M-k> 5<C-W>+
 "nnoremap <C-W><M-j> 5<C-W>-
 "nnoremap <C-W><M-h> 5<C-W>>
 "nnoremap <C-W><M-l> 5<C-W><
-
-"nnoremap <silent> <C-K> :<C-U>let @w=":resize +".v:count1."<C-V><CR>"<Bar>@w<CR>
-"nnoremap <silent> <C-J> :<C-U>let @w=":resize -".v:count1."<C-V><CR>"<Bar>@w<CR>
-"nnoremap <silent> <C-H> :<C-U>let @w=":vertical resize +".v:count1."<C-V><CR>"<Bar>@w<CR>
-"nnoremap <silent> <C-L> :<C-U>let @w=":vertical resize -".v:count1."<C-V><CR>"<Bar>@w<CR>
+"nnoremap <silent> <C-K> :<C-U>let @w = ":resize +".v:count1."<C-V><CR>"<Bar>@w<CR>
+"nnoremap <silent> <C-J> :<C-U>let @w = ":resize -".v:count1."<C-V><CR>"<Bar>@w<CR>
+"nnoremap <silent> <C-H> :<C-U>let @w = ":vertical resize +".v:count1."<C-V><CR>"<Bar>@w<CR>
+"nnoremap <silent> <C-L> :<C-U>let @w = ":vertical resize -".v:count1."<C-V><CR>"<Bar>@w<CR>
 "nnoremap <silent> <C-I> :@w<CR>
 "noremap <silent> <C-W>. :@w<CR>
 
@@ -152,7 +153,7 @@ set copyindent
 set preserveindent
 
 "========== folding
-set foldcolumn=1
+"set foldcolumn=1
 
 nnoremap <Leader>ff :set fdm=manual<CR>
 nnoremap <Leader>fi :set fdm=indent<CR>
@@ -188,8 +189,8 @@ set gdefault
 exec 'set viminfo+=n'.$VIMDIR.'/.viminfo'
 
 "========== other
+syntax on
 filetype plugin indent on
-syntax enable
 
 if &t_Co < 256
     colorscheme desert
@@ -199,27 +200,17 @@ endif
 
 highlight Cursor guifg=white guibg=sienna2
 
-" fast editing of the '.vimrc'
-nnoremap <silent> <Leader>rc :vs ~/.vimrc<CR>
-
-" write to system files
-cmap w!! %!sudo tee > /dev/null %
+" make Man available
+runtime ftplugin/man.vim
 
 " let Y yank not entire line, but from cursor to the end (consistent with D, C)
 nnoremap Y y$
-" no EX mode
+" no Ex mode
 nnoremap Q <nop>
-" no MAN lookup
+" no Man lookup
 nnoremap K <nop>
-
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
+" no useless help messages
+nnoremap <C-c> <silent> <C-c>
 
 " operate on display lines not file lines
 nnoremap j gj
@@ -227,7 +218,6 @@ nnoremap k gk
 xnoremap j gj
 xnoremap k gk
 
-nmap <M-j> 5j
 nmap <M-j> 5j
 nmap <M-k> 5k
 xmap <M-j> 5j
@@ -247,42 +237,204 @@ nnoremap <M-9> 9gt
 nnoremap <silent> <M-0> :tablast<CR>
 
 cnoremap %% <C-R>=expand('%:h').'/'<CR>
-nnoremap <Leader>ew :e %%
-nnoremap <Leader>es :sp %%
-nnoremap <Leader>ev :vsp %%
-nnoremap <Leader>et :tabe %%
+nmap <Leader>ew :e %%
+nmap <Leader>es :sp %%
+nmap <Leader>ev :vsp %%
+nmap <Leader>et :tabe %%
 
 nnoremap <C-Q> :bd<CR>
 
-"==============================================================================
+" fast editing of the '.vimrc'
+nnoremap <silent> <Leader>rc :vs ~/.vimrc<CR>
+
+" write to system files
+" TODO: obsolete? this is breaking incsearch
+"cmap w!! %!sudo tee > /dev/null %
+
+" XML prettify
+vnoremap <silent> <Leader>px !tidy -q -i -xml<CR>
+nnoremap <silent> <Leader>px !!tidy -q -i -xml<CR>
+
+" Re-read file and page forward 'tail -f'
+" TODO: fix
+"map F :e<CR>G:sleep 1<CR>F
+
+" Echos most recently caught exception (removing Vim 'class').
+function! EchoException()
+    redraw
+    echohl ErrorMsg
+    echo substitute(v:exception, '^Vim(.*):', '', 'g')
+    echohl None
+endfunction
+
+" Echos last given error message.
+function! EchoLastError()
+    call EchoError(v:errmsg)
+endfunction
+
+" Echos given error message.
+function! EchoError(errmsg)
+    if a:errmsg != ''
+        redraw
+        echohl ErrorMsg
+        echomsg a:errmsg
+        echohl None
+    endif
+endfunction
+
+" Performs exec of passed command in try/catch block catching all errors.
+function! TryCatchAll(command)
+    try
+        exec a:command
+    catch
+        call EchoException()
+    endtry
+endfunction
+
+" Toggles diff mode of current buffer.
+nnoremap <silent> <Leader>dd :DiffToggle<CR>
+command! DiffToggle call s:DiffToggle()
+function! s:DiffToggle()
+   if &diff
+        diffoff
+    else
+        diffthis
+    endif
+endfunction
+
+" Start diff of current buffer with another file.
+nnoremap <Leader>df :Diff2 <C-R>=expand('%')<CR>
+command! -nargs=1 -complete=file Diff2 call s:Diff2(<f-args>)
+function! s:Diff2(file) abort
+    if !filereadable(a:file)
+        call EchoError("Diff2: can't read ".a:file)
+        return
+    endif
+    let filetype = &ft
+    diffthis
+    exec 'vnew | r '.a:file.' | normal! 1Gdd'
+    diffthis
+    exec 'setl bt=nofile bh=wipe nobl noswf ft='.filetype
+    exec 'silent file DIFF_'.a:file
+endfunction
+
+" Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding.
+nnoremap <silent> <Leader>mm :MetaToggle<CR>
+command! MetaToggle call s:MetaToggle()
+let g:meta_enabled = 0
+function! s:MetaToggle()
+    let chars = '0123456789abcdefghijklmnopqrstuvwxyz'
+    let i = 0
+    let n = len(chars)
+    while i < n
+        let c = chars[i]
+        if g:meta_enabled
+            exec 'set <M-'.c.'>='
+        else
+            exec 'set <M-'.c.">=\e".c
+        endif
+        let i += 1
+    endwhile
+    let g:meta_enabled = !g:meta_enabled
+    if g:vimrc_done
+        redraw
+        echohl WarningMsg
+        echo 'Meta '.(g:meta_enabled ? 'ON' : 'OFF')
+        echohl None
+    endif
+endfunction
+exec 'silent MetaToggle'
+
+" Close current or last tab.
+" TODO: bang support
+nnoremap <silent> QQ :QuitTab<CR>
+command! QuitTab call TryCatchAll('silent call s:QuitTab()')
+function! s:QuitTab()
+    try
+        tabclose
+    catch /E784/
+        qall
+    endtry
+endfunction
+
+" Execute command while preserving last search pattern and current position.
+" TODO: make command
+nnoremap <silent> <Leader>pp :call Preserve(':%s/\s\+$//e')<CR>
+function! Preserve(command)
+    let _s = @/
+    let pos = getpos('.')
+    exec a:command
+    let @/ = _s
+    call setpos('.', pos)
+endfunction
+
+" Find file in current directory and edit it.
+" TODO: fix
+command! -nargs=* Find call Find(<f-args>)
+function! s:Find(...)
+    let path = '.'
+    if a:0 == 2
+        let path = a:2
+    endif
+    let l:list = system("find ".path. " -name '".a:1."' | grep -v .svn ")
+    let l:num = strlen(substitute(l:list, '[^\n]', '', 'g'))
+    if l:num < 1
+        echo "'".a:1."' not found"
+        return
+    endif
+    if l:num == 1
+        exec 'open '.substitute(l:list, '\n', '', 'g')
+    else
+        let tmpfile = tempname()
+        exec 'redir! > '.tmpfile
+        silent echon l:list
+        redir END
+        let old_efm = &efm
+        set efm=%f
+        if exists(':cgetfile')
+            exec 'silent! cgetfile '.tmpfile
+        else
+            exec 'silent! cfile '.tmpfile
+        endif
+        let &efm = old_efm
+        " Open the quickfix window below the current window
+        botright copen
+        call delete(tmpfile)
+    endif
+endfunction
+
+"=====================================================================
 " 3rd party
-"==============================================================================
+"=====================================================================
 
 "========== pathogen
-silent! call pathogen#infect()
+execute pathogen#infect()
 
 "========== netrw
-let g:netrw_list_cmd ='sshm USEPORT HOSTNAME ls -Fa -I .'
-let g:netrw_scp_cmd ='scpm -q'
-let g:netrw_sftp_cmd ='sftpm'
-let g:netrw_bufsettings = 'noma nomod nonu nowrap ro nolist cc=0 fdc=0'
 let g:netrw_alto = 1
 let g:netrw_altv = 1
-let g:netrw_fastbrowse = 0
+let g:netrw_banner = 1
+let g:netrw_bufsettings = 'noma nomod nonu nowrap ro nolist cc=0 fdc=0'
+let g:netrw_fastbrowse = 2
+let g:netrw_list_cmd = 'sshm USEPORT HOSTNAME ls -Fa -I .'
 let g:netrw_liststyle = 0
+let g:netrw_preview = 1
 let g:netrw_retmap = 1
+let g:netrw_scp_cmd = 'scpm -q'
+let g:netrw_sftp_cmd = 'sftpm'
 let g:netrw_silent = 1
-"let g:netrw_special_syntax = 1
+let g:netrw_special_syntax = 1
+let g:netrw_winsize = 30
 
 "========== nerdtree
+let g:NERDTreeBookmarksFile = $VIMDIR.'/.NERDTreeBookmarks'
 let g:NERDTreeCaseSensitiveSort = 1
+let g:NERDTreeDirArrows = 1
 let g:NERDTreeHijackNetrw = 0
 let g:NERDTreeIgnore = ['^\.svn$', '^\.git$', '\.swp$', '\~$']
-let g:NERDTreeBookmarksFile = $VIMDIR.'/.NERDTreeBookmarks'
 let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeWinSize = 36
-let g:NERDTreeDirArrows = 1
 
 noremap <silent> <F1> :NERDTreeFind<CR>
 noremap <silent> <F2> :NERDTreeToggle<CR>
@@ -298,11 +450,11 @@ let g:bufExplorerFindActive = 0
 let g:bufExplorerShowRelativePath = 1
 
 "========== minibufexpl
-let g:miniBufExplorerMoreThanOne = 1000
 "let g:miniBufExplMapCTabSwitchBufs = 1
 "let g:miniBufExplMapCTabSwitchWindows = 1
-let g:miniBufExplUseSingleClick = 1
 let g:miniBufExplModSelTarget = 1
+let g:miniBufExplUseSingleClick = 1
+let g:miniBufExplorerMoreThanOne = 1000
 
 noremap <silent> <Leader>bb :MiniBufExplorer<CR>
 
@@ -332,118 +484,36 @@ nnoremap <silent> <F4> :GundoToggle<CR>
 "========== scratch
 nnoremap <silent> <Leader>ss :Sscratch<CR>
 
-"========== other
-nnoremap <silent> <Leader>mm :MetaToggle<CR>
-command! MetaToggle call s:MetaToggle()
-let g:meta_enabled = 0
-function! s:MetaToggle()
-    let chars = '0123456789abcdefghijklmnopqrstuvwxyz'
-    let i = 0
-    let n = len(chars)
-    while i < n
-        let c = chars[i]
-        if g:meta_enabled
-            exec 'set <M-'.c.'>='
-        else
-            exec 'set <M-'.c.">=\e".c
-        endif
-        let i += 1
-    endwhile
-    let g:meta_enabled = !g:meta_enabled
-    if g:vimrc_done
-        redraw
-        echohl WarningMsg
-        echo 'Meta '.(g:meta_enabled ? 'ON' : 'OFF')
-    endif
-endfunction
-exec ':silent MetaToggle'
+"=====================================================================
+" Autocommands
+"=====================================================================
 
-nnoremap <silent> QQ :QuitTab<CR>
-command! QuitTab call s:QuitTab()
-function! s:QuitTab()
-    try
-        tabclose
-    catch /E784/ "Can't close last tab
-        qall
-    endtry
-endfunction
-
-nnoremap <silent> <Leader>pp :call Preserve(':%s/\s\+$//e')<CR>
-function! Preserve(command)
-    let _s=@/
-    let pos = getpos('.')
-    exec a:command
-    let @/=_s
-    call setpos('.', pos)
-endfunction
-
-command! -nargs=1 Diff2 call s:Diff2(expand('%'), <f-args>)
-function! s:Diff2(file1, file2)
-    silent exec 'tabnew | e '.a:file1.' | diffthis | vs | e '.a:file2.' | diffthis'
-endfunction
-
-" Find file in current directory and edit it.
-command! -nargs=* Find :call Find(<f-args>)
-function! Find(...)
-    let path='.'
-    if a:0==2
-        let path=a:2
-    endif
-    let l:list=system("find ".path. " -name '".a:1."' | grep -v .svn ")
-    let l:num=strlen(substitute(l:list, '[^\n]', '', 'g'))
-    if l:num < 1
-        echo "'".a:1."' not found"
-        return
-    endif
-    if l:num == 1
-        exec 'open ' . substitute(l:list, '\n', '', 'g')
-    else
-        let tmpfile = tempname()
-        exec 'redir! > ' . tmpfile
-        silent echon l:list
-        redir END
-        let old_efm = &efm
-        set efm=%f
-        if exists(':cgetfile')
-            exec 'silent! cgetfile ' . tmpfile
-        else
-            exec 'silent! cfile ' . tmpfile
-        endif
-        let &efm = old_efm
-        " Open the quickfix window below the current window
-        botright copen
-        call delete(tmpfile)
-    endif
-endfunction
-
-"========== autocommands
 if has('autocmd')
 augroup VIMRC
     autocmd!
-    " When '.vimrc' is written, reload it.
-    autocmd BufWritePost .vimrc source ~/.vimrc
 
-    " When '.Xresources' is written, reload it.
-    autocmd BufWritePost .Xresources !xrdb -load ~/.Xresources
-
-    autocmd FileType make setlocal ts=4 sts=0 sw=4 noexpandtab
-    autocmd BufNewFile,BufRead *.rss setfiletype xml
-
-    " Adjust settings of special buffers.
     function! s:SpecialBufferSettings()
-        setlocal nonu nowrap nolist cc=0 fdc=0
+        setl nonu nowrap nolist cc=0 fdc=0
     endfunction
 
-    autocmd CmdwinEnter * call s:SpecialBufferSettings()
-    autocmd BufWinEnter quickfix call s:SpecialBufferSettings()
-    autocmd BufWinEnter NERD_tree_* call s:SpecialBufferSettings()
-    autocmd BufWinEnter __Tag_List__ call s:SpecialBufferSettings()
-    autocmd BufWinEnter \[BufExplorer\] call s:SpecialBufferSettings()
+    function! s:ManBufferSettings()
+        setl noma nonu nowrap nolist cc=0 fdc=0 ts=8
+    endfunction
+
     autocmd BufWinEnter -MiniBufExplorer- call s:SpecialBufferSettings()
+    autocmd BufWinEnter -MiniBufExplorer- nnoremap <silent> q :q<CR>
+    autocmd BufWinEnter NERD_tree_* call s:SpecialBufferSettings()
+    autocmd BufWinEnter NetrwMessage nnoremap <silent> q :q<CR>
+    autocmd BufWinEnter \[BufExplorer\] call s:SpecialBufferSettings()
+    autocmd BufWinEnter __Tag_List__ call s:SpecialBufferSettings()
+    autocmd BufWinEnter quickfix call s:SpecialBufferSettings()
+    autocmd BufWritePost .Xresources !xrdb -load ~/.Xresources
+    autocmd BufWritePost .vimrc source ~/.vimrc
+    autocmd CmdwinEnter * call s:SpecialBufferSettings()
+    autocmd FileType make setl ts=4 sts=0 sw=4 noexpandtab
+    autocmd FileType man call s:ManBufferSettings()
     autocmd FileType tar call s:SpecialBufferSettings()
     autocmd FileType zip call s:SpecialBufferSettings()
-    autocmd BufWinEnter -MiniBufExplorer- nnoremap <silent> q :q<CR>
-    autocmd BufWinEnter NetrwMessage nnoremap <silent> q :q<CR>
 augroup END
 endif
 

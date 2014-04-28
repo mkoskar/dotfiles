@@ -1,0 +1,128 @@
+set nocompatible
+let mapleader = ','
+
+set whichwrap=b,s,<,>,[,]
+set nowrapscan
+set incsearch
+set ignorecase
+set smartcase
+
+set scrolloff=10
+set nowrap
+set sidescroll=10
+set sidescrolloff=10
+set listchars=eol:¬,tab:>-,trail:-,extends:>,precedes:<
+
+nnoremap <silent> <Leader>l :set list!<CR>
+
+set background=dark
+set hlsearch
+
+nnoremap <silent> <Space> :nohls<Bar>echo<CR>
+nnoremap <silent> # :let @/ = "<C-R>=escape(escape(expand('<cWORD>'), '/\.*$^~["'), '''/\.*$^~["')<CR>"<Bar>set hls<CR>
+nnoremap <silent> * :let @/ = "<C-R>=escape(escape(expand('<cword>'), '/\.*$^~["'), '''/\.*$^~["')<CR>"<Bar>set hls<CR>
+
+set splitbelow
+set splitright
+
+nnoremap <C-K> <C-W>k
+nnoremap <C-J> <C-W>j
+nnoremap <C-H> <C-W>h
+nnoremap <BS> <C-W>h
+nnoremap <C-L> <C-W>l
+
+set nottybuiltin
+set t_ut=
+
+set mouse=a
+
+set shortmess=aoOtTWI
+set showcmd
+set showmode
+set ruler
+set novisualbell
+
+set tabstop=4
+set shiftwidth=4
+
+nnoremap <Leader>ff :set fdm=manual<CR>
+nnoremap <Leader>fi :set fdm=indent<CR>
+nnoremap <Leader>fs :set fdm=syntax<CR>
+nnoremap <Leader>fm :set fdm=marker<CR>
+
+set nobackup
+set noswapfile
+
+set wildmenu
+set wildmode=list:longest,full
+set noundofile
+
+set encoding=utf-8
+
+set virtualedit=block
+set viminfo=
+
+syntax on
+filetype plugin on
+
+if &t_Co < 256
+    colorscheme desert
+else
+    colorscheme luciusblack
+endif
+
+set runtimepath^=~/.vim/bundle/vim-AnsiEsc
+runtime ftplugin/man.vim
+let g:loaded_getscriptPlugin = 1
+let g:loaded_netrwPlugin = 1
+let g:loaded_rrhelper = 1
+let g:loaded_spellfile_plugin = 1
+let g:loaded_vimballPlugin = 1
+
+" let Y yank not entire line, but from cursor to the end (consistent with D, C)
+nnoremap Y y$
+" no Ex mode
+nnoremap Q <nop>
+" no Man lookup
+nnoremap K <nop>
+" no useless help messages
+nnoremap <C-c> <silent> <C-c>
+" quit quickly
+noremap q :qa<CR>
+
+" operate on display lines not file lines
+nnoremap j gj
+nnoremap k gk
+xnoremap j gj
+xnoremap k gk
+
+" Reloads buffer after number (defaults to 1) of seconds have passed.
+map <silent> F :Reload<CR>F<CR>
+command! -nargs=? Reload call Reload(<f-args>)
+function! Reload(...)
+    let d = 1
+    if a:0 == 1
+        let d = a:1
+    endif
+    try
+        echohl WarningMsg | echo 'Reload in '.d.'s (interrupt to abort)' | echohl None
+        exec 'sleep '.d
+        e
+        normal! G
+    finally
+        redraw
+        echo
+    endtry
+endfunction
+
+if has('autocmd')
+augroup PGRC
+    autocmd!
+
+    autocmd BufRead * setl noma buftype=nowrite
+    autocmd FileType make setl ts=4 sts=0 sw=4 noexpandtab
+    autocmd FileType man setl ts=8
+augroup END
+endif
+
+" vim: ft=vim

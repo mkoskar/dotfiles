@@ -2,8 +2,11 @@
 
 set -e
 
-while getopts 's:' opt; do
+while getopts 'gs:' opt; do
     case "$opt" in
+        g)
+            gopt=1
+            ;;
         s)
             sopt="$OPTARG"
             ;;
@@ -19,9 +22,12 @@ sig="${sopt:-SIGTERM}"
 [ $# -eq 0 ] && exit 1
 
 for pid in "$@"; do
-    pgid="$(ps -p "$pid" -o pgid=)"
-    [ -z "$pgid" ] && continue
+    if [ -n "$gopt" ]; then
+        pgid="$(ps -p "$pid" -o pgid=)"
+        [ -z "$pgid" ] && continue
 
-    printf 'pkill --signal %s -g %s\n' "$sig" "$pgid" >&2
-    pkill --signal "$sig" -g "$pgid"
+        pkill --signal "$sig" -g "$pgid"
+    else
+        kill -s "$sig" "$pid"
+    fi
 done
