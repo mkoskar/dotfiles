@@ -201,7 +201,7 @@ endif
 highlight Cursor guifg=white guibg=sienna2
 
 " make Man available
-runtime ftplugin/man.vim
+"runtime ftplugin/man.vim
 
 " let Y yank not entire line, but from cursor to the end (consistent with D, C)
 nnoremap Y y$
@@ -338,12 +338,10 @@ function! s:MetaToggle()
     let g:meta_enabled = !g:meta_enabled
     if g:vimrc_done
         redraw
-        echohl WarningMsg
-        echo 'Meta '.(g:meta_enabled ? 'ON' : 'OFF')
-        echohl None
+        echohl WarningMsg | echo 'Meta '.(g:meta_enabled ? 'ON' : 'OFF') | echohl None
     endif
 endfunction
-exec 'silent MetaToggle'
+silent MetaToggle
 
 " Close current or last tab.
 " TODO: bang support
@@ -408,7 +406,7 @@ endfunction
 "=====================================================================
 
 "========== pathogen
-execute pathogen#infect()
+exec pathogen#infect()
 
 "========== netrw
 let g:netrw_alto = 1

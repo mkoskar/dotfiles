@@ -1,6 +1,7 @@
 !*
 *.swp
 .backupdir
+.netrwhist
 .undodir
 .viminfo
 bundle

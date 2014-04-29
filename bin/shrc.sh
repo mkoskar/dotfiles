@@ -30,13 +30,14 @@ alias gi="g -i"
 alias gr="g -r --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exclude='*~'"
 alias gri="gr -i"
 
+alias feh='feh -F'
 alias gpgsandbox='gpg --homedir ~/.gnupg/sandbox'
 alias info='info --vi-keys'
+alias manl="MANPAGER='less -s' man"
 alias nw='tmux neww'
-alias feh='feh -F'
 alias qiv='qiv -uLtiGfl --vikeys'
-alias sxiv='sxiv -f'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
+alias sxiv='sxiv -f'
 
 # python
 alias py='python'
@@ -103,7 +104,7 @@ pacoc() {
 
 # lists files provided by passed package
 pacl() {
-    pacman -Ql "$1" | less
+    pacman -Ql "$1" | pg
 }
 
 # continue only in case of Bourne shell

@@ -29,15 +29,18 @@ PROMPT_DIRTRIM=3
 CDPATH='.:..:~'
 unset MAILCHECK
 
+complete -W '10m 15m 20m 25m 30m' a
 complete -W 'audio dpms rfkill xkb' status
 complete -W 'audio dpms rfkill xkb' status-notify
-complete -W '10m 15m 20m 25m 30m' a
 complete -W 'n fg bg cur' color
 complete -c cpath
 complete -c csyspath
 complete -c on
-complete -f paco
 complete -c pacoc
+complete -f paco
+
+. /usr/share/bash-completion/completions/man
+complete -F _man manl
 
 _pacl() {
     COMPREPLY=()

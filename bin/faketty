@@ -1,0 +1,4 @@
+#!/bin/bash
+
+exec unbuffer "$@"
+#exec script /dev/null -qfc "$*"
