@@ -27,6 +27,7 @@
 !.gtk-bookmarks
 !.gtkrc-2.0
 !.icons/default/index.theme
+!.infokey
 !.inputrc
 !.lesskey
 !.local/share/applications/mimeapps.list

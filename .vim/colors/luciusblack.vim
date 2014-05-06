@@ -15,7 +15,6 @@ hi Normal           ctermfg=7               ctermbg=0
 "hi Comment          ctermfg=240                                     cterm=none
 hi Comment          guifg=#909090                                   gui=none
 hi Comment          ctermfg=245                                     cterm=none
-"todo
 
 "hi Constant         guifg=#70c0d8                                   gui=none
 "hi Constant         ctermfg=74                                      cterm=none

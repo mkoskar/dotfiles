@@ -2,7 +2,7 @@
 
 set -e
 
-if [ "$(basename "$0")" == 'status-notify' ]; then
+if [ "$(basename "$0")" = 'status-notify' ]; then
     notify "$(status "$@")"
     exit 0
 fi

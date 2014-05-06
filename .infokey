@@ -1,0 +1,24 @@
+#info
+l       forward-char
+h       backward-char
+0       beginning-of-line
+$       end-of-line
+w       forward-word
+b       backward-word
+g       beginning-of-node
+G       end-of-node
+^N      next-node
+^P      prev-node
+u       up-node
+t       top-node
+d       dir-node
+^O      history-node
+)       move-to-next-xref
+(       move-to-prev-xref
+^]      select-reference-this-line
+\kd     next-line
+\ku     prev-line
+\kr     forward-char
+\kl     backward-char
+\kD     scroll-forward-page-only
+\kU     scroll-backward-page-only

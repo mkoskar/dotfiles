@@ -221,7 +221,9 @@ myConfig = defaultConfig
         , ("M-[", withFocused (sendMessage . maximizeRestore))
 
           -- other
-        , ("M-S-p", warpToWindow 0.01 0.01)
+        , ("M-S-y", warpToWindow 0.005 0.005)
+        , ("M-S-p", warpToWindow 0.995 0.995)
+        , ("M-c", spawn "xdotool getwindowfocus click --clearmodifiers 1")
 
           -- Launchers
           -- =========

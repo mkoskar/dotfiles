@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$(xserver-name)" == 'X' ]; then
+if [ "$(xserver-name)" = 'X' ]; then
     autorandr -c --force
 fi
 

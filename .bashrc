@@ -4,8 +4,8 @@
 [ -f ~/bin/shrc.sh ] && . ~/bin/shrc.sh
 
 # continue only in case of interactive shell
-case $- in *i*) ;; *) return ;; esac
 # ------------------------------------------
+case $- in *i*) ;; *) return ;; esac
 
 shopt -s autocd checkjobs checkwinsize cmdhist dotglob histappend \
          histreedit histverify lithist no_empty_cmd_completion

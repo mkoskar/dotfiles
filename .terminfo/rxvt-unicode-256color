@@ -1,6 +1,7 @@
 #	Reconstructed via infocmp from file: /usr/share/terminfo/r/rxvt-unicode-256color
-rxvt-unicode-256color-fix|rxvt-unicode terminal with 256 colors (X Window System),
+rxvt-unicode-256color|rxvt-unicode terminal with 256 colors (X Window System),
 	am,
+	bce,
 	bw,
 	ccc,
 	eo,
@@ -75,7 +76,7 @@ rxvt-unicode-256color-fix|rxvt-unicode terminal with 256 colors (X Window System
 	ka1=\EOw,
 	ka3=\EOy,
 	kb2=\EOu,
-	kbs=^H,
+	kbs=\177,
 	kc1=\EOq,
 	kc3=\EOs,
 	kcbt=\E[Z,

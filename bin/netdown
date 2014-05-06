@@ -1,6 +1,6 @@
 #!/bin/bash
 
 for i in $(ls /sys/class/net); do
-    [[ "$i" == 'lo' ]] && continue
+    [ "$i" = 'lo' ] && continue
     sudo /usr/bin/ip link set dev "$i" down
 done

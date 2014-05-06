@@ -1,21 +1,14 @@
 # Source this file to initialize shell.
 # :Compatibility: POSIX / Bourne
 
-# during the X server startup TERMINFO is set, but we don't want it
-unset TERMINFO
-
-tty="$(tty)" && export GPG_TTY="$tty"
-unset tty
+if [ -t 0 ]; then
+    export GPG_TTY="$(tty)"
+    . ~/bin/term.sh
+fi
 
 # continue only in case of interactive shell
 # ------------------------------------------
 case $- in *i*) ;; *) return ;; esac
-
-. ~/bin/term.sh
-tput init
-
-# turn off flow control
-stty -ixon -ixoff
 
 # prevent overwriting an existing file when doing redirects
 set -o noclobber
@@ -107,8 +100,8 @@ pacl() {
     pacman -Ql "$1" | pg
 }
 
-# continue only in case of Bourne shell
-# -------------------------------------
+# continue only in case of Bourne-like shell
+# ------------------------------------------
 eval 'function _bourne_test { true; }' 2>/dev/null || return
 unset _bourne_test
 

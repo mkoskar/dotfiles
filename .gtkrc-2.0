@@ -16,3 +16,8 @@ gtk-xft-antialias=1
 gtk-xft-hinting=1
 gtk-xft-hintstyle="hintslight"
 gtk-xft-rgba=rgb
+
+style "gvimfix" {
+    bg[NORMAL] = "#000"
+}
+widget "vim-main-window.*GtkForm" style "gvimfix"

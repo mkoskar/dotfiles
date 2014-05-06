@@ -29,7 +29,7 @@ fi
 
 # -------- /usr/bin/Xephyr
 
-if [ "$(basename "$0")" == 'xx' ]; then
+if [ "$(basename "$0")" = 'xx' ]; then
     dispno=91
     while true; do
         [ ! -f "/tmp/.X$dispno-lock" ] && break

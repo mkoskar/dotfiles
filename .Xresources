@@ -49,7 +49,7 @@
 !*color15: #FFFFFF
 
 ! xterm ----------------------------------------------------------------------
-XTerm.termName:                 xterm-256color-fix-bsdel
+XTerm.termName:                 xterm-256color
 XTerm.backarrowKeyIsErase:      true
 
 XTerm*vt100.background:         #000000
@@ -73,7 +73,7 @@ XTerm*vt100.translations:       #override \n\
                                 Shift <Key>Print: print-everything()
 
 ! urxvt ----------------------------------------------------------------------
-URxvt.termName:         rxvt-unicode-256color-fix-bsdel
+URxvt.termName:         rxvt-unicode-256color
 
 URxvt.background:       0
 URxvt.foreground:       7

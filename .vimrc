@@ -11,7 +11,7 @@ endif
 "========== important
 set nocompatible
 set pastetoggle=<F6>
-set timeout timeoutlen=500 ttimeoutlen=10
+set timeout timeoutlen=1000 ttimeoutlen=10
 let mapleader = ','
 let maplocalleader = ';'
 
@@ -32,26 +32,17 @@ if exists($BASEDIR)
     exec 'set tags^='.$BASEDIR.'/tags'
 endif
 
-"0 or s: Find this C symbol
-"1 or g: Find this definition
-"2 or d: Find functions called by this function
-"3 or c: Find functions callling this function
-"4 or it: Find this text string
-"6 or e: Find this egrep pattern
-"7 or f: Find this file
-"8 or i: Find files #including this file
-
 "set cscopetag
 "set cscopequickfix=s-,d-,c-,t-,e-,i-
 
-nnoremap <silent> <C-_>s :lcs find s <C-R>=expand('<cword>')<CR><CR>
-nnoremap <silent> <C-_>g :lcs find g <C-R>=expand('<cword>')<CR><CR>
-nnoremap <silent> <C-_>d :lcs find d <C-R>=expand('<cword>')<CR><CR>
-nnoremap <silent> <C-_>c :lcs find c <C-R>=expand('<cword>')<CR><CR>
-nnoremap <silent> <C-_>t :lcs find t <C-R>=expand('<cword>')<CR><CR>
-nnoremap <silent> <C-_>e :lcs find e <C-R>=expand('<cword>')<CR><CR>
-nnoremap <silent> <C-_>f :lcs find f <C-R>=expand('<cfile>')<CR><CR>
-nnoremap <silent> <C-_>i :lcs find i ^<C-R>=expand('<cfile>')<CR>$<CR>
+"nnoremap <silent> <C-_>s :lcs find s <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>g :lcs find g <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>d :lcs find d <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>c :lcs find c <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>t :lcs find t <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>e :lcs find e <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>f :lcs find f <C-R>=expand('<cfile>')<CR><CR>
+"nnoremap <silent> <C-_>i :lcs find i ^<C-R>=expand('<cfile>')<CR>$<CR>
 
 if exists($BASEDIR)
     nnoremap <silent> <F12> :!$BASEDIR/tags.sh<CR>
@@ -84,31 +75,46 @@ set statusline=
 set statusline+=%2n
 set statusline+=\ %<%f
 set statusline+=%(\ [%M%W%R]%)
+set statusline+=%(\ %{fugitive#statusline()}%)
 set statusline+=%(\ %y%)
 set statusline+=%=
 set statusline+=0x%-3B
 set statusline+=\ %-14(%l,%c%V%)
-set statusline+=\ %P\
+set statusline+=\ %P\ 
 set splitbelow
 set splitright
 
-nnoremap <C-K> <C-W>k
+" spatial navigation
 nnoremap <C-J> <C-W>j
+nnoremap <C-K> <C-W>k
 nnoremap <C-H> <C-W>h
-nnoremap <BS> <C-W>h
 nnoremap <C-L> <C-W>l
+nmap <BS> <C-H>
 
-" TODO: better resizing
-"nnoremap <C-W><M-k> 5<C-W>+
-"nnoremap <C-W><M-j> 5<C-W>-
-"nnoremap <C-W><M-h> 5<C-W>>
-"nnoremap <C-W><M-l> 5<C-W><
-"nnoremap <silent> <C-K> :<C-U>let @w = ":resize +".v:count1."<C-V><CR>"<Bar>@w<CR>
-"nnoremap <silent> <C-J> :<C-U>let @w = ":resize -".v:count1."<C-V><CR>"<Bar>@w<CR>
-"nnoremap <silent> <C-H> :<C-U>let @w = ":vertical resize +".v:count1."<C-V><CR>"<Bar>@w<CR>
-"nnoremap <silent> <C-L> :<C-U>let @w = ":vertical resize -".v:count1."<C-V><CR>"<Bar>@w<CR>
-"nnoremap <silent> <C-I> :@w<CR>
-"noremap <silent> <C-W>. :@w<CR>
+nnoremap <silent> c<C-J> :below sp<CR>
+nnoremap <silent> c<C-K> :above sp<CR>
+nnoremap <silent> c<C-H> :lefta vsp<CR>
+nnoremap <silent> c<C-L> :rightb vsp<CR>
+nmap c<BS> c<C-H>
+
+nnoremap d<C-J> <C-W>j<C-W>c
+nnoremap d<C-K> <C-W>k<C-W>c
+nnoremap d<C-H> <C-W>h<C-W>c
+nnoremap d<C-L> <C-W>l<C-W>c
+nmap d<BS> d<C-H>
+
+nnoremap <C-_> <C-W>_
+nnoremap g<C-J> <C-W>j<C-W>_
+nnoremap g<C-K> <C-W>k<C-W>_
+nnoremap g<C-H> <C-W>h<C-W>_
+nnoremap g<C-L> <C-W>l<C-W>_
+nmap g<BS> g<C-H>
+
+" faster resizing
+nnoremap <silent> - :resize -5<CR>
+nnoremap <silent> + :resize +5<CR>
+nnoremap <silent> <C-W>, :vert resize -5<CR>
+nnoremap <silent> <C-W>. :vert resize +5<CR>
 
 "========== terminal
 set nottybuiltin
@@ -119,7 +125,7 @@ set mouse=a
 
 "========== GUI
 set guicursor+=a:blinkon0
-set guifont=local_terminal_sized
+set guifont=Monaco\ 12
 set guioptions+=c
 set guioptions+=e
 set guioptions-=m
@@ -153,7 +159,7 @@ set copyindent
 set preserveindent
 
 "========== folding
-"set foldcolumn=1
+set foldcolumn=0
 
 nnoremap <Leader>ff :set fdm=manual<CR>
 nnoremap <Leader>fi :set fdm=indent<CR>
@@ -167,13 +173,12 @@ exec 'set backupdir='.$VIMDIR.'/.backupdir'
 set autoread
 
 "========== the swap file
-"set noswapfile
+set swapfile
 
 "========== command line editing
 set history=500
 set wildmenu
 set wildmode=list:longest,full
-"set wildoptions=tagfile
 set undofile
 exec 'set undodir='.$VIMDIR.'/.undodir'
 
@@ -192,16 +197,8 @@ exec 'set viminfo+=n'.$VIMDIR.'/.viminfo'
 syntax on
 filetype plugin indent on
 
-if &t_Co < 256
-    colorscheme desert
-else
-    colorscheme luciusblack
-endif
-
-highlight Cursor guifg=white guibg=sienna2
-
 " make Man available
-"runtime ftplugin/man.vim
+runtime ftplugin/man.vim
 
 " let Y yank not entire line, but from cursor to the end (consistent with D, C)
 nnoremap Y y$
@@ -242,25 +239,17 @@ nmap <Leader>es :sp %%
 nmap <Leader>ev :vsp %%
 nmap <Leader>et :tabe %%
 
-nnoremap <C-Q> :bd<CR>
+nnoremap <silent> <C-Q> :bd<CR>
 
 " fast editing of the '.vimrc'
 nnoremap <silent> <Leader>rc :vs ~/.vimrc<CR>
-
-" write to system files
-" TODO: obsolete? this is breaking incsearch
-"cmap w!! %!sudo tee > /dev/null %
 
 " XML prettify
 vnoremap <silent> <Leader>px !tidy -q -i -xml<CR>
 nnoremap <silent> <Leader>px !!tidy -q -i -xml<CR>
 
-" Re-read file and page forward 'tail -f'
-" TODO: fix
-"map F :e<CR>G:sleep 1<CR>F
-
 " Echos most recently caught exception (removing Vim 'class').
-function! EchoException()
+function! EchoException() abort
     redraw
     echohl ErrorMsg
     echo substitute(v:exception, '^Vim(.*):', '', 'g')
@@ -268,22 +257,20 @@ function! EchoException()
 endfunction
 
 " Echos last given error message.
-function! EchoLastError()
+function! EchoLastError() abort
     call EchoError(v:errmsg)
 endfunction
 
 " Echos given error message.
-function! EchoError(errmsg)
+function! EchoError(errmsg) abort
     if a:errmsg != ''
         redraw
-        echohl ErrorMsg
-        echomsg a:errmsg
-        echohl None
+        echohl ErrorMsg | echomsg a:errmsg | echohl None
     endif
 endfunction
 
 " Performs exec of passed command in try/catch block catching all errors.
-function! TryCatchAll(command)
+function! TryCatchAll(command) abort
     try
         exec a:command
     catch
@@ -292,19 +279,17 @@ function! TryCatchAll(command)
 endfunction
 
 " Toggles diff mode of current buffer.
-nnoremap <silent> <Leader>dd :DiffToggle<CR>
-command! DiffToggle call s:DiffToggle()
-function! s:DiffToggle()
+function! s:DiffToggle() abort
    if &diff
         diffoff
     else
         diffthis
     endif
 endfunction
+command! DiffToggle call s:DiffToggle()
+nnoremap <silent> <Leader>dd :DiffToggle<CR>
 
-" Start diff of current buffer with another file.
-nnoremap <Leader>df :Diff2 <C-R>=expand('%')<CR>
-command! -nargs=1 -complete=file Diff2 call s:Diff2(<f-args>)
+" Starts diff of current buffer with another file.
 function! s:Diff2(file) abort
     if !filereadable(a:file)
         call EchoError("Diff2: can't read ".a:file)
@@ -317,12 +302,12 @@ function! s:Diff2(file) abort
     exec 'setl bt=nofile bh=wipe nobl noswf ft='.filetype
     exec 'silent file DIFF_'.a:file
 endfunction
+command! -nargs=1 -complete=file Diff2 call s:Diff2(<f-args>)
+nnoremap <Leader>df :Diff2 <C-R>=expand('%')<CR>
 
 " Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding.
-nnoremap <silent> <Leader>mm :MetaToggle<CR>
-command! MetaToggle call s:MetaToggle()
 let g:meta_enabled = 0
-function! s:MetaToggle()
+function! s:MetaToggle() abort
     let chars = '0123456789abcdefghijklmnopqrstuvwxyz'
     let i = 0
     let n = len(chars)
@@ -341,72 +326,72 @@ function! s:MetaToggle()
         echohl WarningMsg | echo 'Meta '.(g:meta_enabled ? 'ON' : 'OFF') | echohl None
     endif
 endfunction
+command! MetaToggle call s:MetaToggle()
+nnoremap <silent> <Leader>mm :MetaToggle<CR>
 silent MetaToggle
 
-" Close current or last tab.
-" TODO: bang support
-nnoremap <silent> QQ :QuitTab<CR>
-command! QuitTab call TryCatchAll('silent call s:QuitTab()')
-function! s:QuitTab()
+" Closes current or last tab.
+function! s:QuitTab(bang) abort
     try
-        tabclose
+        exec 'tabclose'.a:bang
     catch /E784/
-        qall
+        exec 'qall'.a:bang
     endtry
 endfunction
+command! -bang QuitTab call TryCatchAll("silent call s:QuitTab('<bang>')")
+nnoremap <silent> qq :QuitTab<CR>
+nnoremap <silent> QQ :QuitTab!<CR>
 
-" Execute command while preserving last search pattern and current position.
-" TODO: make command
-nnoremap <silent> <Leader>pp :call Preserve(':%s/\s\+$//e')<CR>
-function! Preserve(command)
-    let _s = @/
-    let pos = getpos('.')
-    exec a:command
-    let @/ = _s
-    call setpos('.', pos)
+" A wrapper function to restore the cursor position, window position,
+" and last search pattern after running a command.
+function! Preserve(command) abort
+    " save
+    let last_search = @/
+    let cursor_pos = getpos('.')
+    normal H
+    let window_pos = getpos('.')
+    call setpos('.', cursor_pos)
+    try
+        execute a:command
+    finally
+        " restore
+        call setpos('.', window_pos)
+        normal zt
+        call setpos('.', cursor_pos)
+        let @/ = last_search
+    endtry
 endfunction
+nnoremap <silent> <Leader>pp :call Preserve('%s/\s\+$//e')<CR>
 
-" Find file in current directory and edit it.
-" TODO: fix
-command! -nargs=* Find call Find(<f-args>)
-function! s:Find(...)
-    let path = '.'
-    if a:0 == 2
-        let path = a:2
+" Walks through list of colorschemes (q/C-C=quit, k=prev, default=next).
+function! Themes() abort
+    let themes = ['luciusblack', 'hybrid', 'bclear']
+    let l = len(themes)
+    if !exists("s:themes_last_index")
+        let s:themes_last_index = 0
     endif
-    let l:list = system("find ".path. " -name '".a:1."' | grep -v .svn ")
-    let l:num = strlen(substitute(l:list, '[^\n]', '', 'g'))
-    if l:num < 1
-        echo "'".a:1."' not found"
-        return
-    endif
-    if l:num == 1
-        exec 'open '.substitute(l:list, '\n', '', 'g')
-    else
-        let tmpfile = tempname()
-        exec 'redir! > '.tmpfile
-        silent echon l:list
-        redir END
-        let old_efm = &efm
-        set efm=%f
-        if exists(':cgetfile')
-            exec 'silent! cgetfile '.tmpfile
+    let i = s:themes_last_index
+    while 1
+        let theme = themes[i]
+        exec 'colorscheme '.theme
+        redraw | echo theme
+        let c = getchar()
+        if c == 3 || c == 113
+            break
+        elseif c == 107
+            let i = i > 0 ? i-1 : l-1
         else
-            exec 'silent! cfile '.tmpfile
+            let i = i < l-1 ? i+1 : 0
         endif
-        let &efm = old_efm
-        " Open the quickfix window below the current window
-        botright copen
-        call delete(tmpfile)
-    endif
+    endwhile
+    let s:themes_last_index = i
+    redraw | echo
 endfunction
+nnoremap <silent> <Leader>tt :call Themes()<CR>
 
 "=====================================================================
 " 3rd party
 "=====================================================================
-
-"========== pathogen
-exec pathogen#infect()
 
 "========== netrw
 let g:netrw_alto = 1
@@ -423,6 +408,18 @@ let g:netrw_sftp_cmd = 'sftpm'
 let g:netrw_silent = 1
 let g:netrw_special_syntax = 1
 let g:netrw_winsize = 30
+
+"========== pathogen
+exec pathogen#infect()
+
+set background=dark
+if has("gui_running")
+    colorscheme bclear
+elseif &t_Co == 256
+    colorscheme luciusblack
+else
+    colorscheme desert
+endif
 
 "========== nerdtree
 let g:NERDTreeBookmarksFile = $VIMDIR.'/.NERDTreeBookmarks'
