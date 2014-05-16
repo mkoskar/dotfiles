@@ -1,10 +1,23 @@
 #!/bin/bash
+#
+# Session lock script with `away` as backend.
+#
+# * disable SysRq
+# * switch to VT 8
+# * disable VT switching
+# * run backend
+#
+# :Copyright: Copyright 2013 by Miroslav Koskar
+# :License: BSD
 
 set -e
 
 export TERM='linux'
+
+# because of where `vtswitch-lock` is installed
 export PATH="/home/miro/bin:$PATH"
 
+# target user
 user='miro'
 
 vtold="$(fgconsole)"

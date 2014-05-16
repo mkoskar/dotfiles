@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+echo
+echo `tput sgr0`normal
+echo `tput bold`bold`tput sgr0`
+echo `tput smso`standout`tput sgr0`
+echo `tput smul`underline`tput sgr0`
+echo `tput sitm`italics`tput sgr0`
+echo `tput blink`blink`tput sgr0`
+echo `tput rev`reverse`tput sgr0`
+
+echo $'\n--------------------'
+echo "TERM = $TERM"
+echo "TERMINFO = $TERMINFO"
+echo "TERMINFO_DIRS = $TERMINFO_DIRS"
+echo
+infocmp -1 | sed -n '1,2p;/\bkbs=/p;/\bsmso=/p;/\bsitm=/p'
+
+echo $'\n--------------------'
+stty -a | perl -n -e '/\b(erase = .*?);/ && print "stty $1\n"'
+
+echo $'\n--------------------'
+read -N 1 -p 'Press BS:      '
+echo
+read -N 1 -p 'Press CTRL+BS: '
+echo
+read -N 1 -p 'Press CTRL+H:  '
+echo
+echo

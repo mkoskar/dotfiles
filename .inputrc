@@ -22,7 +22,7 @@ $if bash
 
     "\C-x\C-x": "\e0isudo \e0"
     "\C-x\C-t": "\edditmux new -s ''\ei"
-    "\C-x\C-h": "\edditail -n 25 ~/.bash_history | igrep ''\ei"
+    "\C-x\C-h": "\eddihistory 25 | gi ''\ei"
     "\C-x\C-a": "\ea!!:*\e"
     "\C-x\C-l": "\ea!!:$\e"
     "\C-x\C-s": "\ea!!:gs/"
@@ -41,7 +41,7 @@ set keymap vi-command
 $if bash
     "\C-x\C-x": "0isudo \e0"
     "\C-x\C-t": "dditmux new -s ''\ei"
-    "\C-x\C-h": "dditail -n 25 ~/.bash_history | igrep ''\ei"
+    "\C-x\C-h": "ddihistory 25 | gi ''\ei"
     "\C-x\C-a": "a!!:*\e"
     "\C-x\C-l": "a!!:$\e"
     "\C-x\C-s": "a!!:gs/"

@@ -1,6 +1,35 @@
 #!/bin/bash
+#
+# Set passed font or scroll through predefined list.
+#
+# :Copyright: Copyright 2013 by Miroslav Koskar
+# :License: BSD
 
-# OSC 50 ; Pt ST
-# Set font to Pt.
+set -e
 
-printf '\e]50;%s\e\' "$1"
+format='%s\e\\'
+if [ -n "$TMUX" ]; then
+    format='\ePtmux;\e%s\a\e\\'
+elif [ "${TERM%%-*}" = 'screen' ]; then
+    format='\eP%s\a\e\\'
+fi
+
+process() {
+    printf -v seq '\e]50;%s' "$1"
+    printf "$format" "$seq"
+}
+
+processor() {
+    while read -s line; do
+        process "$line"
+    done
+}
+
+if [ -z "$1" ]; then
+    scroller 'xft:local_terminal_sized' \
+             'xft:Monaco:size=10' \
+             'xft:Monaco:size=11' \
+             | processor
+else
+    process "$1"
+fi

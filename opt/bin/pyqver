@@ -1,0 +1,4 @@
+#!/bin/bash
+
+python2 ~/opt/pyqver/pyqver2.py "$1"
+python3 ~/opt/pyqver/pyqver3.py "$1"

@@ -1,60 +1,11 @@
-! colors ---------------------------------------------------------------------
-!black
-*color0:            #000000
-*color8:            #555555
-
-!red
-*color1:            #990000
-*color9:            #DD5555
-
-!green
-*color2:            #1A991A
-*color10:           #55DD55
-
-!yellow
-*color3:            #FDB436
-*color11:           #FEED6A
-
-!blue
-*color4:            #3A4CA6
-*color12:           #4E5DB5
-
-!magenta
-*color5:            #AA00AA
-*color13:           #DD55DD
-
-!cyan
-*color6:            #00AAAA
-*color14:           #55DDDD
-
-!white
-*color7:            #C0C0C0
-*color15:           #DDDDDD
-
-!*color0: #000000
-!*color1: #FF6C60
-!*color2: #A8FF60
-!*color3: #FFFFB6
-!*color4: #96CBFE
-!*color5: #FF73FD
-!*color6: #C6C5FE
-!*color7: #EEEEEE
-!*color8: #7C7C7C
-!*color9: #FFB6B0
-!*color10: #CEFFAC
-!*color11: #FFFFCC
-!*color12: #B6DCFF
-!*color13: #FF9CFE
-!*color14: #DFDFFE
-!*color15: #FFFFFF
+! xcolors --------------------------------------------------------------------
+#include ".xcolors/default"
+!#include ".xcolors/base16/base16-default.dark.xresources"
 
 ! xterm ----------------------------------------------------------------------
 XTerm.termName:                 xterm-256color
 XTerm.backarrowKeyIsErase:      true
 
-XTerm*vt100.background:         #000000
-XTerm*vt100.foreground:         #C0C0C0
-XTerm*vt100.cursorColor:        #DDDDDD
 !XTerm*vt100.boldColors:         false
 XTerm*vt100.dynamicColors:      true
 XTerm*vt100.italicULMode:       false
@@ -75,9 +26,6 @@ XTerm*vt100.translations:       #override \n\
 ! urxvt ----------------------------------------------------------------------
 URxvt.termName:         rxvt-unicode-256color
 
-URxvt.background:       0
-URxvt.foreground:       7
-URxvt.cursorColor:      15
 URxvt.cursorColor2:     1
 URxvt.scrollColor:      gray20
 URxvt.underlineColor:   #FDB436

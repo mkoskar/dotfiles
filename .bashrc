@@ -20,14 +20,12 @@ bind -m vi-insert   '"\eq":  dabbrev-expand'
 
 HISTCONTROL='ignorespace:erasedups'
 HISTFILESIZE=5000
-HISTSIZE=500
 HISTIGNORE='exit'
+HISTSIZE=500
 
-#PS1='\u@\h:\!:\#:\W\$ '
-PS1='\#:\W\$ '
-PROMPT_DIRTRIM=3
 CDPATH='.:..:~'
-unset MAILCHECK
+PROMPT_DIRTRIM=3
+PS1='$?:\W\$ '
 
 complete -W '10m 15m 20m 25m 30m' a
 complete -W 'audio dpms rfkill xkb' status

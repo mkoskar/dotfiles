@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# Scrolls through argument list (or predefined one if there are no arguments)
+# and process each item by 'colorx', hence changing ANSI terminal colors.
+#
+# :Copyright: Copyright 2013 by Miroslav Koskar
+# :License: BSD
+
+set -e
+
+processor() {
+    while read -s line; do
+        colorsx "$line"
+    done
+}
+
+if [ $# -eq 0 ]; then
+    set -- ~/.xcolors/default \
+           ~/.xcolors/hybrid \
+           ~/.xcolors/tomorrow/Tomorrow \
+           ~/.xcolors/tomorrow/Tomorrow\ Night \
+           ~/.xcolors/tomorrow/Tomorrow-Night-Bright \
+           ~/.xcolors/base16/base16-brewer.dark.xresources \
+           ~/.xcolors/base16/base16-brewer.light.xresources \
+           ~/.xcolors/base16/base16-default.dark.xresources \
+           ~/.xcolors/base16/base16-default.light.xresources
+fi
+
+scroller "$@" | processor

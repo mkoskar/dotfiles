@@ -1,9 +1,20 @@
 #!/bin/bash
+#
+# Session lock script with `slock` as backend.
+#
+# * disable SysRq
+# * disable VT switching
+# * run backend on display ':{current VT}'
+#
+# :Copyright: Copyright 2013 by Miroslav Koskar
+# :License: BSD
 
 set -e
 
+# because of where `vtswitch-lock` is installed
 export PATH="/home/miro/bin:$PATH"
 
+# target user
 user='miro'
 
 sysrq_path='/proc/sys/kernel/sysrq'

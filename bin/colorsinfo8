@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo -e '\n>>> 8x8 normal'
+colorsinfo 0,8
+
+echo '>>> 8x8 bold'
+colorsinfo 0,8 -b

@@ -3,7 +3,7 @@
 echo '---------- Primary ----------'
 xsel
 
-echo -e '\n---------- Clipboard ----------'
+echo $'\n---------- Clipboard ----------'
 xsel -b
 
 echo

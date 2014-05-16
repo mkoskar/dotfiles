@@ -50,10 +50,13 @@
 !.vimperatorrc
 !.vimrc
 !.wgetrc
+!.xcolors
 !.xinitrc
 !.xmobarrc
 !.xmonad/xmonad.hs
 !.xmonad/xmonad.hs.minimal
+!.zprofile
+!.zshrc
 !bin
 !opt
 !opt/bin

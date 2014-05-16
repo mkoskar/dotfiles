@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+# Scrolls through passed arguments.
+# Current item (argument) is printed in the status line on
+# stderr and send to stdout for processing.
+#
+# Navigation:
+#
+# * q / Q       - quit
+# * g / 0       - beginning
+# * G / $       - end
+# * k / K       - previous
+# * (default)   - next
+#
+# :Copyright: Copyright 2013 by Miroslav Koskar
+# :License: BSD
+
+set -e
+
+[ -t 0 ] || exit 1
+items=("$@")
+i=0
+l=${#items[@]}
+while true; do
+    (( l == 0 )) && break
+    item="${items[i]}"
+
+    printf '\e[1G%s\e[0K' "$((i+1)) : $item" >&2
+    echo "$item"
+
+    (( l == 1 )) && break
+    read -N1 -s c
+    case "$c" in
+        q|Q)
+            break
+            ;;
+        g|0)
+            i=0
+            ;;
+        G|$)
+            i=$((l-1))
+            ;;
+        k|K)
+            i=$((i-1))
+            ;;
+        *)
+            i=$((i+1))
+            ;;
+    esac
+    (( i < 0 )) && i=$((l-1))
+    (( i > l-1 )) && i=0
+done
+echo >&2

@@ -6,8 +6,9 @@
 
     Locks (or unlocks) VT switching.
 
-    :copyright: Copyright 2013 by Miroslav Koskar
-    :license: BSD
+    :Compatibility: Python 2.7 / 3.2
+    :Copyright: Copyright 2013 by Miroslav Koskar
+    :License: BSD
 """
 
 import argparse

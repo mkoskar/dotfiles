@@ -2,6 +2,11 @@
 
 set -e
 
+err_usage() {
+    echo "usage: $(basename "$0") [-g | -s sigspec] pid ..."
+    exit 1
+}
+
 while getopts 'gs:' opt; do
     case "$opt" in
         g)
@@ -11,23 +16,22 @@ while getopts 'gs:' opt; do
             sopt="$OPTARG"
             ;;
         *)
-            exit 1
-            ;;
+            err_usage
     esac
 done
 shift $((OPTIND-1))
 
+[ $# -eq 0 ] && err_usage
+
 sig="${sopt:-SIGTERM}"
 
-[ $# -eq 0 ] && exit 1
-
-for pid in "$@"; do
-    if [ -n "$gopt" ]; then
+if [ -n "$gopt" ]; then
+    for pid in "$@"; do
         pgid="$(ps -p "$pid" -o pgid=)"
         [ -z "$pgid" ] && continue
 
         pkill --signal "$sig" -g "$pgid"
-    else
-        kill -s "$sig" "$pid"
-    fi
-done
+    done
+else
+    kill -s "$sig" "$@"
+fi

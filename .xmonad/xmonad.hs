@@ -260,7 +260,7 @@ myConfig = defaultConfig
         , ("M-<F10>", spawn "xscreen && xmonad-session-repair")
         , ("M-<F12>", spawn "grabc 2>&1 | xsel -i")
         , ("M-S-<F12>", spawn "xmeasure | xsel -i")
-        , ("M-S-<Home>", spawn "urxvtc -title meta -e pg ~/projects/meta.rst")
+        , ("M-S-<Home>", spawn "urxvtc -e pg ~/projects/meta.rst")
         , ("M-S-b", spawn "backlight-toggle")
         , ("M-; M-l", spawn "sudo lockx")
         , ("M-; M-d", spawn "dpms-toggle && status-notify dpms")

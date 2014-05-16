@@ -1,0 +1,57 @@
+#!/bin/bash
+#
+# Get information about Xserver (based on DISPLAY environment variable).
+#
+# :Copyright: Copyright 2013 by Miroslav Koskar
+# :License: BSD
+
+set -e
+
+xserver-dispno() {
+    ! xset q &>/dev/null && exit 1
+    dispno="$(echo "$DISPLAY" | awk -F '[:.]' '{print $2}')"
+    printf '%d\n' "$dispno"
+}
+
+xserver-pid() {
+    dispno="$(xserver-dispno)"
+    lockfile="/tmp/.X$dispno-lock"
+
+    [ ! -f "$lockfile" ] && exit 1
+    cat "$lockfile" | sed 's/\s//g'
+}
+
+xserver-cmd() {
+    pid="$(xserver-pid)"
+    ps -p "$pid" -o cmd=
+}
+
+xserver-name() {
+    pid="$(xserver-pid)"
+    ps -p "$pid" -o comm=
+}
+
+case "$1" in
+    cmd)
+        xserver-cmd
+        ;;
+    dispno)
+        xserver-dispno
+        ;;
+    name)
+        xserver-name
+        ;;
+    pid)
+        xserver-pid
+        ;;
+    *)
+        cat <<-EOF
+		usage: xserverq cmd     - get command-line
+		       xserverq dispno  - get display number
+		       xserverq name    - get command name
+		       xserverq pid     - get PID
+		
+		Get information about Xserver (based on DISPLAY environment variable).
+		EOF
+        exit 1
+esac

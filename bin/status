@@ -8,32 +8,33 @@ if [ "$(basename "$0")" = 'status-notify' ]; then
 fi
 
 case "$1" in
-    audio):
+    audio)
 
         val="$(amixer get Master | grep -F '%' | awk '{print $4 " / " $6}')"
         amixer get Headphone,1 | grep -Fq 'Playback [on]' && val="$val +dock"
         printf 'audio: %s\n' "$val"
         ;;
 
-    dpms):
+    dpms)
 
         xset -q | grep -Fq 'DPMS is Enabled' && val='on' || val='off'
         printf 'dpms: [%s]\n' "$val"
         ;;
 
-    rfkill):
+    rfkill)
 
         [ "$(</sys/class/rfkill/rfkill0/soft)" -eq 1 ] && val='soft' || val='off'
         [ "$(</sys/class/rfkill/rfkill0/hard)" -eq 1 ] && val='hard'
         printf 'rfkill: [%s]\n' "$val"
         ;;
 
-    xkb):
+    xkb)
 
         val="$(setxkbmap -query | grep -F 'layout:' | awk '{print $2}')"
         printf 'xkb: [%s]\n' "$val"
         ;;
 
-    *):
+    *)
+        echo "usage: $(basename "$0") {audio | dpms | rfkill | xkb}"
         exit 1
 esac

@@ -6,13 +6,15 @@
 
     Normalizes filename extensions by making them lowercase.
 
-    :copyright: Copyright 2013 by Miroslav Koskar
-    :license: BSD
+    :Compatibility: Python 2.7 / 3.2
+    :Copyright: Copyright 2013 by Miroslav Koskar
+    :License: BSD
 """
 
-import argparse, os
-import unicodedata as ud
 from os import path
+import argparse
+import os
+import unicodedata as ud
 
 parser = argparse.ArgumentParser(
     description='Normalizes filename extensions by making them lowercase.'

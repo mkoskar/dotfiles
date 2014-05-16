@@ -1,0 +1,67 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+    colorsx
+    ~~~~~~~
+
+    Set terminal ANSI colors read in Xresources format.
+
+    :Compatibility: Python 2.7 / 3.2
+    :Copyright: Copyright 2013 by Miroslav Koskar
+    :License: BSD
+"""
+
+from sys import exit, stdin
+import argparse
+import re
+import signal
+import subprocess
+
+from colors import set_color, set_colorfg, set_colorbg, set_colorcur
+
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+parser = argparse.ArgumentParser(
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    description='Set terminal ANSI colors read in Xresources format.'
+)
+
+parser.add_argument('--prefix', default='*', help='consider only colors with PREFIX')
+parser.add_argument('-v', '--verbose', action='store_true')
+parser.add_argument('file', help='pass - to read from stdin')
+args = parser.parse_args()
+
+proc = None
+if args.file == '-':
+    proc = subprocess.Popen(['cpp', '-P'], stdin=stdin, stdout=subprocess.PIPE)
+else:
+    proc = subprocess.Popen(['cpp', '-P', args.file], stdout=subprocess.PIPE)
+
+xcolor_pattern = re.compile(re.escape(args.prefix) + r'\.?'
+    '(color(\d+)|(foreground)|(background)|(cursorColor))\s*:(.*)$')
+
+while True:
+    line = proc.stdout.readline()
+    if not line:
+        break
+
+    line = line.decode().strip()
+    match = xcolor_pattern.match(line)
+    if not match:
+        continue
+    name, colorn, fg, bg, cur, value = match.groups()
+    value = value.strip()
+
+    if args.verbose:
+        print(name, value)
+    if colorn:
+        set_color(int(colorn), value)
+    elif fg:
+        set_colorfg(value)
+    elif bg:
+        set_colorbg(value)
+    elif cur:
+        set_colorcur(value)
+
+if proc.wait() != 0:
+    exit(1)

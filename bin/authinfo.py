@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
     authinfo.py
@@ -6,13 +6,17 @@
 
     Reads ~/.authinfo.gpg to provide login credentials.
 
-    :copyright: Copyright 2013 by Miroslav Koskar
-    :license: BSD
+    :Compatibility: Python 3.2
+    :Copyright: Copyright 2013 by Miroslav Koskar
+    :License: BSD
 """
 
-import argparse, os, re, sys
 from os import path
 from stat import S_IMODE
+import argparse
+import os
+import re
+import sys
 
 
 def get_authinfo_password(machine, login, port=None):
@@ -43,6 +47,7 @@ def get_authinfo_password(machine, login, port=None):
                    .format(re.escape(machine), re.escape(login)), re.M)
     res = p.search(authinfo)
     return res.group(1) if res else None
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(

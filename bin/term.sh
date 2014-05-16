@@ -1,7 +1,7 @@
 # Source this file to initialize terminal.
 # :Compatibility: POSIX
 
-if [ -n "${TERM##screen*}" ]; then
+if [ ! "${TERM%%-*}" = 'screen' ]; then
     # not screen
     export TERMOLD="$TERM"
 else

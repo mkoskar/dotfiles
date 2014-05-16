@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
     xfocusinfo
@@ -11,8 +11,9 @@
     * root window id
     * target window id
 
-    :copyright: Copyright 2013 by Miroslav Koskar
-    :license: BSD
+    :Compatibility: Python 2.7 / 3.2
+    :Copyright: Copyright 2013 by Miroslav Koskar
+    :License: BSD
 """
 
 from __future__ import print_function

@@ -39,4 +39,4 @@ fi
 #tmux send -t stuff:1 C-Z
 #tmux send -t stuff:1 'ls -la' Enter
 
-tmux att -t stuff
+exec tmux att -t stuff

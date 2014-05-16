@@ -1,4 +1,24 @@
 #!/bin/bash
+#
+# X session startup script.
+#
+# If no arguments are passed, simple menu of predefined X sessions
+# is presented to choose from. Otherwise arguments define what to do.
+#
+# By default:
+#
+# * allocates VT passed in XDG_VTNR (which by default corresponds to active VT)
+# * dislay number will be the same as VT number
+# * continue only if display number is not used already
+# * startx ~/.xinitrc <xsession> '/usr/bin/X'
+#
+# If started as 'xx':
+#
+# * dislay number will be the first free starting with 91
+# * startx ~/.xinitrc <xsession> '/usr/bin/Xephyr'
+#
+# :Copyright: Copyright 2013 by Miroslav Koskar
+# :License: BSD
 
 set -e
 

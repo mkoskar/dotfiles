@@ -21,7 +21,6 @@ set whichwrap=b,s,<,>,[,]
 " (empty) - current working directory
 " **      - recursive from current working directory
 set path=.,,**,
-set nowrapscan
 set incsearch
 set ignorecase
 set smartcase
@@ -75,7 +74,7 @@ set statusline=
 set statusline+=%2n
 set statusline+=\ %<%f
 set statusline+=%(\ [%M%W%R]%)
-set statusline+=%(\ %{fugitive#statusline()}%)
+"set statusline+=%(\ %{fugitive#statusline()}%)
 set statusline+=%(\ %y%)
 set statusline+=%=
 set statusline+=0x%-3B
@@ -193,6 +192,8 @@ set virtualedit=block
 set gdefault
 exec 'set viminfo+=n'.$VIMDIR.'/.viminfo'
 
+nnoremap cov :set <C-R>=(&virtualedit =~# "all") ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
+
 "========== other
 syntax on
 filetype plugin indent on
@@ -305,6 +306,40 @@ endfunction
 command! -nargs=1 -complete=file Diff2 call s:Diff2(<f-args>)
 nnoremap <Leader>df :Diff2 <C-R>=expand('%')<CR>
 
+" Closes current or last tab.
+function! s:QuitTab(bang) abort
+    try
+        exec 'tabclose'.a:bang
+    catch /E784/
+        exec 'qall'.a:bang
+    endtry
+endfunction
+command! -bang QuitTab call TryCatchAll("silent call s:QuitTab('<bang>')")
+nnoremap <silent> QQ :QuitTab<CR>
+nnoremap <silent> QA :QuitTab!<CR>
+
+" A wrapper function to restore the cursor position, window position,
+" and last search pattern after running a command.
+function! Preserve(command) abort
+    " save
+    let last_search = @/
+    let cursor_pos = getpos('.')
+    normal H
+    let window_pos = getpos('.')
+    call setpos('.', cursor_pos)
+    try
+        execute a:command
+    finally
+        " restore
+        call setpos('.', window_pos)
+        normal zt
+        call setpos('.', cursor_pos)
+        let @/ = last_search
+    endtry
+endfunction
+nnoremap <silent> <Leader>pp :call Preserve('%s/\s\+$//e')<CR>
+nnoremap <silent> <Leader>== :call Preserve('normal gg=G')<CR>
+
 " Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding.
 let g:meta_enabled = 0
 function! s:MetaToggle() abort
@@ -330,38 +365,20 @@ command! MetaToggle call s:MetaToggle()
 nnoremap <silent> <Leader>mm :MetaToggle<CR>
 silent MetaToggle
 
-" Closes current or last tab.
-function! s:QuitTab(bang) abort
-    try
-        exec 'tabclose'.a:bang
-    catch /E784/
-        exec 'qall'.a:bang
-    endtry
+" Zoom / Restore window.
+function! s:ZoomToggle() abort
+    if exists("t:zoomed") && t:zoomed
+        execute t:zoom_winrestcmd
+        let t:zoomed = 0
+    else
+        let t:zoom_winrestcmd = winrestcmd()
+        resize
+        vertical resize
+        let t:zoomed = 1
+    endif
 endfunction
-command! -bang QuitTab call TryCatchAll("silent call s:QuitTab('<bang>')")
-nnoremap <silent> qq :QuitTab<CR>
-nnoremap <silent> QQ :QuitTab!<CR>
-
-" A wrapper function to restore the cursor position, window position,
-" and last search pattern after running a command.
-function! Preserve(command) abort
-    " save
-    let last_search = @/
-    let cursor_pos = getpos('.')
-    normal H
-    let window_pos = getpos('.')
-    call setpos('.', cursor_pos)
-    try
-        execute a:command
-    finally
-        " restore
-        call setpos('.', window_pos)
-        normal zt
-        call setpos('.', cursor_pos)
-        let @/ = last_search
-    endtry
-endfunction
-nnoremap <silent> <Leader>pp :call Preserve('%s/\s\+$//e')<CR>
+command! ZoomToggle call s:ZoomToggle()
+nnoremap <silent> <C-A> :ZoomToggle<CR>
 
 " Walks through list of colorschemes (q/C-C=quit, k=prev, default=next).
 function! Themes() abort
@@ -387,7 +404,8 @@ function! Themes() abort
     let s:themes_last_index = i
     redraw | echo
 endfunction
-nnoremap <silent> <Leader>tt :call Themes()<CR>
+command! Themes call s:Themes()
+nnoremap <silent> <Leader>th :call Themes()<CR>
 
 "=====================================================================
 " 3rd party
@@ -427,12 +445,15 @@ let g:NERDTreeCaseSensitiveSort = 1
 let g:NERDTreeDirArrows = 1
 let g:NERDTreeHijackNetrw = 0
 let g:NERDTreeIgnore = ['^\.svn$', '^\.git$', '\.swp$', '\~$']
+let g:NERDTreeMapCWD = 'cD'
 let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeWinSize = 36
 
 noremap <silent> <F1> :NERDTreeFind<CR>
 noremap <silent> <F2> :NERDTreeToggle<CR>
+noremap <silent> <Leader>tf :NERDTreeFind<CR>
+noremap <silent> <Leader>tt :NERDTreeToggle<CR>
 
 "========== nerdcommenter
 "let g:NERDSpaceDelims = 1
@@ -467,17 +488,23 @@ let g:Tlist_WinWidth = 35
 
 nnoremap <silent> <F8> :TlistToggle<CR>
 
-"========== tagfinder
-runtime plugin/tagfinder.vim
-DefineTagFinder FindClass c
+"========== tagbar
+nnoremap <silent> <F8> :Tagbar<CR>
 
-nnoremap <C-N> :FindClass 
+"========== tagfinder
+"runtime plugin/tagfinder.vim
+"DefineTagFinder FindClass c
+
+"nnoremap <C-N> :FindClass 
 
 "========== gundo
 nnoremap <silent> <F4> :GundoToggle<CR>
 
 "========== scratch
 nnoremap <silent> <Leader>ss :Sscratch<CR>
+
+"========== vim-airline
+let g:airline#extensions#tabline#enabled = 1
 
 "=====================================================================
 " Autocommands
@@ -492,13 +519,14 @@ augroup VIMRC
     endfunction
 
     function! s:ManBufferSettings()
-        setl noma nonu nowrap nolist cc=0 fdc=0 ts=8
+        call s:SpecialBufferSettings()
+        setl noma ts=8
     endfunction
 
     autocmd BufWinEnter -MiniBufExplorer- call s:SpecialBufferSettings()
-    autocmd BufWinEnter -MiniBufExplorer- nnoremap <silent> q :q<CR>
+    autocmd BufWinEnter -MiniBufExplorer- nnoremap <silent> <buffer> q :q<CR>
     autocmd BufWinEnter NERD_tree_* call s:SpecialBufferSettings()
-    autocmd BufWinEnter NetrwMessage nnoremap <silent> q :q<CR>
+    autocmd BufWinEnter NetrwMessage nnoremap <silent> <buffer> q :q<CR>
     autocmd BufWinEnter \[BufExplorer\] call s:SpecialBufferSettings()
     autocmd BufWinEnter __Tag_List__ call s:SpecialBufferSettings()
     autocmd BufWinEnter quickfix call s:SpecialBufferSettings()

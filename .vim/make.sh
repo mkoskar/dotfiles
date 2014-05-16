@@ -50,27 +50,34 @@ function from_vba() {
     fi
 }
 
-from_git https://github.com/AndrewRadev/tagfinder.vim.git
-from_git https://github.com/Raimondi/delimitMate
-from_git https://github.com/SirVer/ultisnips.git
-from_git https://github.com/Valloric/YouCompleteMe.git
+from_git https://github.com/Lokaltog/vim-easymotion.git
 from_git https://github.com/chriskempson/base16-vim.git
 from_git https://github.com/flazz/vim-colorschemes.git
 from_git https://github.com/jakar/vim-AnsiEsc.git
 from_git https://github.com/kien/ctrlp.vim.git
-from_git https://github.com/mattn/emmet-vim.git
-from_git https://github.com/msanders/snipmate.vim.git
+from_git https://github.com/majutsushi/tagbar.git
 from_git https://github.com/scrooloose/nerdcommenter.git
 from_git https://github.com/scrooloose/nerdtree.git
-from_git https://github.com/scrooloose/syntastic.git
 from_git https://github.com/sjl/gundo.vim.git
-from_git https://github.com/tpope/vim-fugitive.git
-from_git https://github.com/tpope/vim-git.git
-from_git https://github.com/tpope/vim-markdown.git
 from_git https://github.com/tpope/vim-pathogen.git
-from_git https://github.com/tpope/vim-ragtag.git
-from_git https://github.com/tpope/vim-repeat.git
-from_git https://github.com/tpope/vim-surround.git
-from_git https://github.com/tpope/vim-unimpaired.git
 from_git https://github.com/vim-scripts/bufexplorer.zip.git
 from_git https://github.com/vim-scripts/minibufexpl.vim.git
+
+#from_git https://github.com/AndrewRadev/tagfinder.vim.git
+#from_git https://github.com/Raimondi/delimitMate
+#from_git https://github.com/Shougo/unite.vim.git
+#from_git https://github.com/SirVer/ultisnips.git
+#from_git https://github.com/Valloric/YouCompleteMe.git
+#from_git https://github.com/airblade/vim-gitgutter.git
+#from_git https://github.com/bling/vim-airline.git
+#from_git https://github.com/mattn/emmet-vim.git
+#from_git https://github.com/mhinz/vim-signify.git
+#from_git https://github.com/msanders/snipmate.vim.git
+#from_git https://github.com/scrooloose/syntastic.git
+#from_git https://github.com/tpope/vim-fugitive.git
+#from_git https://github.com/tpope/vim-git.git
+#from_git https://github.com/tpope/vim-markdown.git
+#from_git https://github.com/tpope/vim-ragtag.git
+#from_git https://github.com/tpope/vim-repeat.git
+#from_git https://github.com/tpope/vim-surround.git
+#from_git https://github.com/tpope/vim-unimpaired.git

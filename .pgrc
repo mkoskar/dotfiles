@@ -2,7 +2,6 @@ set nocompatible
 let mapleader = ','
 
 set whichwrap=b,s,<,>,[,]
-set nowrapscan
 set incsearch
 set ignorecase
 set smartcase

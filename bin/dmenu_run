@@ -1,5 +1,9 @@
 #!/bin/bash
 
-exec /usr/bin/dmenu_run -nb '#333333' -sb '#000000' \
-                        -nf '#FFFFFF' -sf '#87cefa' \
-                        -fn 'local_dmenu' -i -p '>'
+run () {
+    dmenu_path | dmenu -nb '#333333' -sb '#000000' \
+                       -nf '#FFFFFF' -sf '#87cefa' \
+                       -fn 'local_dmenu' -i -p '>'
+}
+
+exec $(run)

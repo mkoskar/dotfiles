@@ -1,6 +1,13 @@
 #!/bin/bash
+#
+# Wrapper script to use Vim as a pager.
+# Install by running `export PAGER='pg'`.
+#
+# :Copyright: Copyright 2013 by Miroslav Koskar
+# :License: BSD
 
 set -e
+set +o posix
 
 if [ ! -t 1 ]; then
     echo 'stdout is not a tty' >&2
