@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+
+sslcat-modulus rsa "$1"
+sslcat-modulus x509 "$2"
