@@ -1,6 +1,5 @@
 ! xcolors --------------------------------------------------------------------
 #include ".xcolors/default"
-!#include ".xcolors/base16/base16-default.dark.xresources"
 
 ! xterm ----------------------------------------------------------------------
 XTerm.termName:                 xterm-256color
@@ -72,5 +71,6 @@ Xft.antialias:          true
 Xft.hinting:            true
 Xft.hintstyle:          hintslight
 Xft.autohint:           false
-Xft.rgba:               rgb
-Xft.lcdfilter:          lcddefault
+Xft.rgba:               none
+!Xft.rgba:               rgb
+!Xft.lcdfilter:          lcddefault
