@@ -223,7 +223,7 @@ myConfig = defaultConfig
           -- other
         , ("M-S-y", warpToWindow 0.005 0.005)
         , ("M-S-p", warpToWindow 0.995 0.995)
-        , ("M-c", spawn "xdotool getwindowfocus click --clearmodifiers 1")
+        , ("M-y", spawn "xdotool getwindowfocus click --clearmodifiers 1")
 
           -- Launchers
           -- =========

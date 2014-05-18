@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-    colorsinfo
-    ~~~~~~~~~~
+    tcolorsinfo
+    ~~~~~~~~~~~
 
     Performs simple test of terminal ANSI colors.
 
@@ -46,8 +46,8 @@ parser = argparse.ArgumentParser(
 
         Examples:
 
-        $ colorsinfo 0,16       - 0-15 foreground colors on 0-7 backgrounds
-        $ colorsinfo 0,16 0,16  - 16x16 color cube
+        $ tcolorsinfo 0,16       - 0-15 foreground colors on 0-7 backgrounds
+        $ tcolorsinfo 0,16 0,16  - 16x16 color cube
         """
     )
 )

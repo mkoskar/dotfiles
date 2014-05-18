@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Scrolls through argument list (or predefined one if there are no arguments)
-# and process each item by 'colorx', hence changing ANSI terminal colors.
+# and process each item by 'tcolors x', hence changing ANSI terminal colors.
 #
 # :Copyright: Copyright 2013 by Miroslav Koskar
 # :License: BSD
@@ -10,7 +10,7 @@ set -e
 
 processor() {
     while read -s line; do
-        colorsx "$line"
+        tcolors x "$line"
     done
 }
 
