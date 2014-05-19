@@ -14,6 +14,7 @@
 from sys import stdout
 import argparse
 import signal
+import textwrap
 
 from gi.repository import Gdk
 from gi.repository import Gtk
@@ -39,57 +40,82 @@ class MainWindow(Gtk.Window):
         for n in range(16):
             btn = Gtk.ColorButton()
             btn.set_size_request(80, 80)
-            btn.connect('color-set', self.on_colorp_set, n)
+            btn.connect('color-set', self.on_color_set)
+            btn.setfn = lambda c, n = n: tcolors.set_colorp(n, c, flush=True)
             self.pbuttons.append(btn)
-            lbl = Gtk.Label()
-            lbl.set_text('color{}'.format(n))
+
+            btn_reset = Gtk.Button('color{}'.format(n), sensitive=False)
+            btn_reset.connect('clicked', self.on_color_reset, btn)
+            btn.btn_reset = btn_reset
+
             grid.attach(btn, n % 8, 2 * (n // 8), 1, 1)
-            grid.attach(lbl, n % 8, 1 + 2 * (n // 8), 1, 1)
+            grid.attach(btn_reset, n % 8, 1 + 2 * (n // 8), 1, 1)
 
         btn = Gtk.ColorButton()
         btn.set_size_request(0, 50)
-        btn.connect('color-set', self.on_colorfg_set)
+        btn.connect('color-set', self.on_color_set)
+        btn.setfn = lambda c: tcolors.set_colorfg(c, flush=True)
         self.fgbutton = btn
-        lbl = Gtk.Label()
-        lbl.set_text('fg')
+
+        btn_reset = Gtk.Button('fg', sensitive=False)
+        btn_reset.connect('clicked', self.on_color_reset, btn)
+        btn.btn_reset = btn_reset
+
         grid.attach(btn, 0, 5, 3, 1)
-        grid.attach(lbl, 0, 6, 3, 1)
+        grid.attach(btn_reset, 0, 6, 3, 1)
 
         btn = Gtk.ColorButton()
         btn.set_size_request(0, 50)
-        btn.connect('color-set', self.on_colorbg_set)
+        btn.connect('color-set', self.on_color_set)
+        btn.setfn = lambda c: tcolors.set_colorbg(c, flush=True)
         self.bgbutton = btn
-        lbl = Gtk.Label()
-        lbl.set_text('bg')
+
+        btn_reset = Gtk.Button('bg', sensitive=False)
+        btn_reset.connect('clicked', self.on_color_reset, btn)
+        btn.btn_reset = btn_reset
+
         grid.attach(btn, 3, 5, 3, 1)
-        grid.attach(lbl, 3, 6, 3, 1)
+        grid.attach(btn_reset, 3, 6, 3, 1)
 
         btn = Gtk.ColorButton()
         btn.set_size_request(0, 50)
-        btn.connect('color-set', self.on_colorcur_set)
+        btn.connect('color-set', self.on_color_set)
+        btn.setfn = lambda c: tcolors.set_colorcur(c, flush=True)
         self.curbutton = btn
-        lbl = Gtk.Label()
-        lbl.set_text('cur')
+
+        btn_reset = Gtk.Button('cur', sensitive=False)
+        btn_reset.connect('clicked', self.on_color_reset, btn)
+        btn.btn_reset = btn_reset
+
         grid.attach(btn, 6, 5, 2, 1)
-        grid.attach(lbl, 6, 6, 2, 1)
+        grid.attach(btn_reset, 6, 6, 2, 1)
 
         self.add(grid)
 
-    def on_colorp_set(self, widget, n):
-        color = widget.get_rgba()
-        tcolors.set_colorp(n, color_to_hex(color), flush=True)
+    def on_color_set(self, cbtn):
+        color = cbtn.get_rgba()
+        if hasattr(cbtn, 'saved_color'):
+            style = cbtn.btn_reset.get_style_context()
+            if not color.equal(cbtn.saved_color):
+                style.add_class('changed')
+            else:
+                style.remove_class('changed')
+        cbtn.setfn(color_to_hex(cbtn.get_rgba()))
 
-    def on_colorfg_set(self, widget):
-        color = widget.get_rgba()
-        tcolors.set_colorfg(color_to_hex(color), flush=True)
+    def on_color_reset(self, w, cbtn):
+        cbtn.set_rgba(cbtn.saved_color)
+        self.on_color_set(cbtn)
 
-    def on_colorbg_set(self, widget):
-        color = widget.get_rgba()
-        tcolors.set_colorbg(color_to_hex(color), flush=True)
+    def save_color(self, cbtn):
+        cbtn.saved_color = cbtn.get_rgba()
+        cbtn.btn_reset.set_sensitive(True)
 
-    def on_colorcur_set(self, widget):
-        color = widget.get_rgba()
-        tcolors.set_colorcur(color_to_hex(color), flush=True)
+    def save_colors(self):
+        for cbtn in self.pbuttons:
+            self.save_color(cbtn)
+        self.save_color(self.fgbutton)
+        self.save_color(self.bgbutton)
+        self.save_color(self.curbutton)
 
     def init_xcolors(self, file, prefix):
         xcolors = tcolors.set_from_xcolors(file, prefix)
@@ -111,23 +137,40 @@ class MainWindow(Gtk.Window):
 
     def init_tcolors(self):
         # TODO
-        print('init_tcolors: not implemented yet')
+        pass
 
 
 parser = argparse.ArgumentParser(
-    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    description='Set Terminal ANSI Colors.'
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent("""
+        Set terminal ANSI colors.
+        Colors are initialized from terminal itself (if supported).
+        If <file> is passed, matching X resources are used instead.
+        """
+    )
 )
 parser.add_argument('--prefix', default='*',
-                    help='xcolors: consider only colors with PREFIX')
-parser.add_argument('file', nargs='?', help='xcolors: pass - to read from stdin')
+        help='consider only X resources with PREFIX (default: *)')
+parser.add_argument('file', nargs='?',
+                    help="'-' for stdin; initialize from X resources")
 args = parser.parse_args()
 
 main = MainWindow()
+
 if (args.file):
     main.init_xcolors(args.file, args.prefix)
+    main.save_colors()
 else:
     main.init_tcolors()
+
+screen = Gdk.Screen.get_default()
+css_provider = Gtk.CssProvider()
+css_provider.load_from_data(
+    'GtkButton.changed { background-color: #ccc; font-weight: bold; }'.encode()
+)
+style = Gtk.StyleContext()
+style.add_provider_for_screen(screen, css_provider,
+                              Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
 main.connect('delete-event', Gtk.main_quit)
 main.show_all()

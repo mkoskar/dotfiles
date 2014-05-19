@@ -39,7 +39,7 @@ def set_colorp(n, c, flush=False):
 
 def get_colorp(n):
     # TODO
-    print('not implemented yet')
+    pass
 
 
 def set_colorfg(c, flush=False):
@@ -48,7 +48,7 @@ def set_colorfg(c, flush=False):
 
 def get_colorfg():
     # TODO
-    print('not implemented yet')
+    pass
 
 
 def set_colorbg(c, flush=False):
@@ -57,7 +57,7 @@ def set_colorbg(c, flush=False):
 
 def get_colorbg():
     # TODO
-    print('not implemented yet')
+    pass
 
 
 def set_colorcur(c, flush=False):
@@ -66,7 +66,7 @@ def set_colorcur(c, flush=False):
 
 def get_colorcur():
     # TODO
-    print('not implemented yet')
+    pass
 
 
 def get_xcolors(file=None, prefix=None):
@@ -147,8 +147,8 @@ if __name__ == '__main__':
     )
     x_parser = subparsers.add_parser(
         'x',
-        help='set from xcolors',
-        description='Set colors read in Xresources format.'
+        help='set from X resources',
+        description='Set colors from X resources.'
     )
 
     p_parser.add_argument('index', help='palette color index')
@@ -158,8 +158,9 @@ if __name__ == '__main__':
     c_parser.add_argument('color', nargs='?', help='cursor color')
     x_parser.add_argument('-p', '--print', action='store_true',
                           help="don't apply, print-out only")
-    x_parser.add_argument('--prefix', default='*', help='consider only colors with PREFIX')
-    x_parser.add_argument('file', help='pass - to read from stdin')
+    x_parser.add_argument('--prefix', default='*',
+                          help='consider only X resources with PREFIX (default: *)')
+    x_parser.add_argument('file', help="'-' for stdin")
 
     args = parser.parse_args()
 
@@ -185,8 +186,7 @@ if __name__ == '__main__':
             get_colorcur()
     elif args.mode == 'x':
         if args.print:
-            xcolors = get_xcolors(args.file, args.prefix)
-            for c in xcolors:
+            for c in get_xcolors(args.file, args.prefix):
                 print(c[0], c[1])
         else:
             set_from_xcolors(args.file, args.prefix)
