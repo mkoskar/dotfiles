@@ -12,8 +12,8 @@
 # * k / K       - previous
 # * (default)   - next
 #
-# :Copyright: Copyright 2013 by Miroslav Koskar
-# :License: BSD
+# :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
+# :License: BSD 2-clause
 
 set -e
 

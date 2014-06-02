@@ -4,7 +4,6 @@
 [ -f ~/bin/shrc.sh ] && . ~/bin/shrc.sh
 
 TMPPREFIX="${TMPDIR:-/tmp}/zsh"
-[ -d "$TMPPREFIX" ] || mkdir -p "$TMPPREFIX"
 
 # continue only in case of interactive shell
 # ------------------------------------------
@@ -82,8 +81,6 @@ zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
 zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
 zstyle ':completion:*:-tilde-:*' group-order named-directories path-directories users expand
-zstyle ':completion:*:approximate:*' max-errors 1 numeric
-zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:default' list-prompt '%S%M matches%s'
 zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
@@ -96,10 +93,10 @@ zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:manuals.(^1*)' insert-sections true
 zstyle ':completion:*:match:*' original only
 zstyle ':completion:*:matches' group 'yes'
-zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:messages' format ' %F{purple}-- %d --%f'
 zstyle ':completion:*:options' auto-description '%d'
 zstyle ':completion:*:options' description 'yes'
-zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:warnings' format ' %F{yellow}-- no matches found --%f'
 zstyle ':completion::complete:*' cache-path "${ZDOTDIR:-$HOME}/.zcompcache"
 zstyle ':completion::complete:*' use-cache on
 
@@ -255,36 +252,36 @@ bindkey -M isearch . self-insert
 #========== zsh-syntax-highlighting
 
 . /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-#ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 #ZSH_HIGHLIGHT_STYLES[default]='none'
-#ZSH_HIGHLIGHT_STYLES[unknown-token]='bg=red,fg=15'
-#ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=228'
-#ZSH_HIGHLIGHT_STYLES[alias]='fg=156'
-#ZSH_HIGHLIGHT_STYLES[builtin]='fg=228'
-#ZSH_HIGHLIGHT_STYLES[function]='fg=156'
-#ZSH_HIGHLIGHT_STYLES[command]='fg=15'
-#ZSH_HIGHLIGHT_STYLES[precommand]='fg=228'
-#ZSH_HIGHLIGHT_STYLES[commandseparator]='none'
-#ZSH_HIGHLIGHT_STYLES[hashed-command]='none'
-#ZSH_HIGHLIGHT_STYLES[path]='fg=15'
-#ZSH_HIGHLIGHT_STYLES[path_prefix]='fg=15'
-#ZSH_HIGHLIGHT_STYLES[path_approx]='fg=15'
-#ZSH_HIGHLIGHT_STYLES[globbing]='fg=15'
-#ZSH_HIGHLIGHT_STYLES[history-expansion]='fg=cyan'
+#ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red,bold'
+ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=yellow,bold,underline'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan,bold'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=yellow,bold'
+ZSH_HIGHLIGHT_STYLES[function]='fg=cyan,bold'
+ZSH_HIGHLIGHT_STYLES[command]='fg=green,bold'
+ZSH_HIGHLIGHT_STYLES[precommand]='fg=yellow,bold,underline'
+ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=white,bold'
+ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=green,bold,underline'
+ZSH_HIGHLIGHT_STYLES[path]='fg=15'
+ZSH_HIGHLIGHT_STYLES[path_prefix]='none'
+ZSH_HIGHLIGHT_STYLES[path_approx]='none'
+ZSH_HIGHLIGHT_STYLES[globbing]='fg=11'
+ZSH_HIGHLIGHT_STYLES[history-expansion]='fg=14'
 #ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='none'
 #ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='none'
-#ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='fg=15'
-#ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=174'
-#ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=174'
-#ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]='fg=167'
-#ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]='fg=167'
-#ZSH_HIGHLIGHT_STYLES[assign]='fg=156'
+#ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='none'
+#ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=yellow'
+#ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]='fg=11'
+ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]='fg=15'
+ZSH_HIGHLIGHT_STYLES[assign]='fg=11'
 
 #========== zsh-history-substring-search
 
 . ~/opt/zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
-#HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=blue,fg=15'
-#HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=red,fg=15'
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=8,fg=15'
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=red,fg=15'
 
 #========== aliases
 

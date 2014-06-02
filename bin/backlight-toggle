@@ -4,6 +4,8 @@ max=15
 val=10
 low=8
 
+# SEEALSO: xbacklight(1) - adjust backlight brightness using RandR extension
+
 case "$(</sys/class/backlight/acpi_video0/brightness)" in
     "$max")
         ;;

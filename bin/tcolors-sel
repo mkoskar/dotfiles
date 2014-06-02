@@ -3,8 +3,8 @@
 # Scrolls through argument list (or predefined one if there are no arguments)
 # and process each item by 'tcolors x', hence changing ANSI terminal colors.
 #
-# :Copyright: Copyright 2013 by Miroslav Koskar
-# :License: BSD
+# :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
+# :License: BSD 2-clause
 
 set -e
 
@@ -16,14 +16,9 @@ processor() {
 
 if [ $# -eq 0 ]; then
     set -- ~/.xcolors/default \
-           ~/.xcolors/hybrid \
-           ~/.xcolors/tomorrow/Tomorrow \
-           ~/.xcolors/tomorrow/Tomorrow\ Night \
-           ~/.xcolors/tomorrow/Tomorrow-Night-Bright \
-           ~/.xcolors/base16/base16-brewer.dark.xresources \
-           ~/.xcolors/base16/base16-brewer.light.xresources \
-           ~/.xcolors/base16/base16-default.dark.xresources \
-           ~/.xcolors/base16/base16-default.light.xresources
+           ~/.xcolors/default1 \
+           ~/.xcolors/default2 \
+           ~/.xcolors/default3
 fi
 
 scroller "$@" | processor

@@ -7,8 +7,8 @@
     Reads ~/.authinfo.gpg to provide login credentials.
 
     :Compatibility: Python 3.2
-    :Copyright: Copyright 2013 by Miroslav Koskar
-    :License: BSD
+    :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
+    :License: BSD 2-clause
 """
 
 from os import path

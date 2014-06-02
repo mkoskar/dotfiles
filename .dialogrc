@@ -1,0 +1,15 @@
+use_shadow = OFF
+screen_color = (CYAN, BLACK, ON)
+
+bindkey checklist \j ITEM_NEXT
+bindkey checklist \k ITEM_PREV
+bindkey radiolist \j ITEM_NEXT
+bindkey radiolist \k ITEM_PREV
+bindkey menubox \j ITEM_NEXT
+bindkey menubox \k ITEM_PREV
+
+bindkey * ^Q ESC
+bindkey * ^A BEGIN
+bindkey * ^K DELETE_ALL
+bindkey * ^D DELETE_RIGHT
+bindkey * ^E FINAL

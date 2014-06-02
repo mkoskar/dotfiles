@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# TODO: repeatable, unattended calibration & profiling
+
+set -e
+
+cd ~/.local/share/icc
+
+gopts=(-v2 -d2 -ye -H -F -P 0.5,0.5,2.0 -Ibw)
+
+echo $'\n> dispcal:'
+dispcal "${gopts[@]}" -m -q m -t 6500 -g 2.2 out
+
+echo $'\n--------------------------------------------------'
+echo '> targen:'
+targen -v2 -d 3 -G -e 4 -s 5 -g 17 -f 64 out
+
+echo $'\n--------------------------------------------------'
+echo '> dispread:'
+dispread "${gopts[@]}" -N -k out.cal out
+
+echo $'\n--------------------------------------------------'
+echo '> colprof:'
+colprof -v2 -D 'model' \
+           -C 'copyright' \
+           -q u -a G -Z p -n c out
+echo

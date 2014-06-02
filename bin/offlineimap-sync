@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# .. TODO: obsolete?
+# TODO: obsolete?
 
 set -e
 umask 0077

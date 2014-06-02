@@ -17,8 +17,8 @@
 # * dislay number will be the first free starting with 91
 # * startx ~/.xinitrc <xsession> '/usr/bin/Xephyr'
 #
-# :Copyright: Copyright 2013 by Miroslav Koskar
-# :License: BSD
+# :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
+# :License: BSD 2-clause
 
 set -e
 
@@ -69,7 +69,7 @@ dispno="$vtno"
 lockfile="/tmp/.X$dispno-lock"
 
 if [ -f "$lockfile" ]; then
-    echo "Display $dispno is currently in use (pid=$(cat "$lockfile" | sed 's/\s//g'))."
+    echo -e "Display $dispno is currently in use (pid=$(cat "$lockfile" | sed 's/\s//g')).\n"
     exit 2
 fi
 

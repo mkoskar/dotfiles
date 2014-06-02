@@ -7,26 +7,34 @@
     Set Terminal ANSI Colors.
 
     :Compatibility: Python 2.7 / 3.2
-    :Copyright: Copyright 2013 by Miroslav Koskar
-    :License: BSD
+    :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
+    :License: BSD 2-clause
 """
 
-from sys import stdout
+from __future__ import print_function
+
+from sys import exit, stdout
 import argparse
 import signal
+import sys
 import textwrap
+
+sys.dont_write_bytecode = True
 
 from gi.repository import Gdk
 from gi.repository import Gtk
 import tcolors
 
-signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-
-def color_to_hex(color):
+def color_to_rgb(color):
     rgb = (color.red, color.green, color.blue)
     rgb = tuple(map(lambda x: int(x * 255), rgb))
     return '#{:02X}{:02X}{:02X}'.format(*rgb)
+
+
+def parse_color(rgb):
+    color = Gdk.Color.parse(rgb)
+    return color[1] if color[0] else None
 
 
 class MainWindow(Gtk.Window):
@@ -100,44 +108,43 @@ class MainWindow(Gtk.Window):
                 style.add_class('changed')
             else:
                 style.remove_class('changed')
-        cbtn.setfn(color_to_hex(cbtn.get_rgba()))
+        cbtn.setfn(color_to_rgb(cbtn.get_rgba()))
 
     def on_color_reset(self, w, cbtn):
         cbtn.set_rgba(cbtn.saved_color)
         self.on_color_set(cbtn)
 
-    def save_color(self, cbtn):
-        cbtn.saved_color = cbtn.get_rgba()
-        cbtn.btn_reset.set_sensitive(True)
-
-    def save_colors(self):
-        for cbtn in self.pbuttons:
-            self.save_color(cbtn)
-        self.save_color(self.fgbutton)
-        self.save_color(self.bgbutton)
-        self.save_color(self.curbutton)
+    def init_color(self, cbtn, rgb):
+        color = parse_color(rgb)
+        if color:
+            cbtn.set_color(color)
+            cbtn.saved_color = cbtn.get_rgba()
+            cbtn.btn_reset.set_sensitive(True)
+        else:
+            cbtn.set_color(parse_color('#000000'))
+            cbtn.btn_reset.set_sensitive(False)
 
     def init_xcolors(self, file, prefix):
         xcolors = tcolors.set_from_xcolors(file, prefix)
         stdout.flush()
         for c in xcolors:
             name, value, p, fg, bg, cur = c
-            gdk_color = Gdk.Color.parse(value)
-            if not gdk_color[0]:
-                continue
-            value = gdk_color[1]
             if fg:
-                self.fgbutton.set_color(value)
+                self.init_color(self.fgbutton, value)
             elif bg:
-                self.bgbutton.set_color(value)
+                self.init_color(self.bgbutton, value)
             elif cur:
-                self.curbutton.set_color(value)
+                self.init_color(self.curbutton, value)
             else:
-                self.pbuttons[int(p)].set_color(value)
+                self.init_color(self.pbuttons[int(p)], value)
 
     def init_tcolors(self):
-        # TODO
-        pass
+        with tcolors.get_term_colors():
+            self.init_color(self.fgbutton, tcolors.get_colorfg())
+            self.init_color(self.bgbutton, tcolors.get_colorbg())
+            self.init_color(self.curbutton, tcolors.get_colorcur())
+            for n, cbtn in enumerate(self.pbuttons):
+                self.init_color(cbtn, tcolors.get_colorp(n))
 
 
 parser = argparse.ArgumentParser(
@@ -150,23 +157,29 @@ parser = argparse.ArgumentParser(
     )
 )
 parser.add_argument('--prefix', default='*',
-        help='consider only X resources with PREFIX (default: *)')
+                    help='X resources prefix (default: *)')
 parser.add_argument('file', nargs='?',
-                    help="'-' for stdin; initialize from X resources")
+                    help="X resources source file; '-' for stdin")
 args = parser.parse_args()
-
 main = MainWindow()
 
-if (args.file):
-    main.init_xcolors(args.file, args.prefix)
-    main.save_colors()
-else:
-    main.init_tcolors()
+try:
+    if (args.file):
+        main.init_xcolors(args.file, args.prefix)
+    else:
+        main.init_tcolors()
+except KeyboardInterrupt:
+    exit(130)
+except RuntimeError as e:
+    print('{}: error: {}'.format(parser.prog, e), file=stderr)
+    exit(1)
+
+signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 screen = Gdk.Screen.get_default()
 css_provider = Gtk.CssProvider()
 css_provider.load_from_data(
-    'GtkButton.changed { background-color: #ccc; font-weight: bold; }'.encode()
+    'GtkButton.changed { background-color: #bbb; font-weight: bold; }'.encode()
 )
 style = Gtk.StyleContext()
 style.add_provider_for_screen(screen, css_provider,

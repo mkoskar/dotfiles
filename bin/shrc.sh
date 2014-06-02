@@ -28,7 +28,7 @@ alias lx='ll -XB'
 alias grep='LC_ALL=C grep --color=auto'
 alias g='grep'
 alias gi='g -i'
-alias gr="g -r --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exclude='*~'"
+alias gr="g -R --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exclude='*~'"
 alias gri='gr -i'
 
 alias feh='feh -F'
@@ -39,7 +39,6 @@ alias nw='tmux neww'
 alias qiv='qiv -uLtiGfl --vikeys'
 alias rm='rm -I --one-file-system'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
-alias sxiv='sxiv -f'
 
 # python
 alias py='python'

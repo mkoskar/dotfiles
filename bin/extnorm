@@ -7,8 +7,8 @@
     Normalizes filename extensions by making them lowercase.
 
     :Compatibility: Python 2.7 / 3.2
-    :Copyright: Copyright 2013 by Miroslav Koskar
-    :License: BSD
+    :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
+    :License: BSD 2-clause
 """
 
 from os import path

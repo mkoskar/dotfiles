@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+xprop -root -remove _ICC_PROFILE
+xprop -root -remove _ICC_PROFILE_1
+xprop -root -remove _ICC_PROFILE_2
+
+dispwin -d1 -c
+dispwin -d2 -c
+dispwin -d3 -c

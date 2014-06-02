@@ -1,0 +1,4 @@
+#include "default"
+
+*.background: #2D2D30
+*.color0: #323235

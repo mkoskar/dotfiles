@@ -11,21 +11,21 @@ echo `tput sitm`italics`tput sgr0`
 echo `tput blink`blink`tput sgr0`
 echo `tput rev`reverse`tput sgr0`
 
-echo $'\n--------------------'
+echo $'\n--------------------------------------------------'
 echo "TERM = $TERM"
 echo "TERMINFO = $TERMINFO"
 echo "TERMINFO_DIRS = $TERMINFO_DIRS"
 echo
 infocmp -1 | sed -n '1,2p;/\bkbs=/p;/\bsmso=/p;/\bsitm=/p'
 
-echo $'\n--------------------'
+echo $'\n--------------------------------------------------'
 stty -a | perl -n -e '/\b(erase = .*?);/ && print "stty $1\n"'
 
-echo $'\n--------------------'
-read -N 1 -p 'Press BS:      '
+echo $'\n--------------------------------------------------'
+read -N1 -p 'Press BS:      '
 echo
-read -N 1 -p 'Press CTRL+BS: '
+read -N1 -p 'Press CTRL+BS: '
 echo
-read -N 1 -p 'Press CTRL+H:  '
+read -N1 -p 'Press CTRL+H:  '
 echo
 echo

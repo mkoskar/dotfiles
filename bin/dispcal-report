@@ -1,0 +1,43 @@
+#!/bin/bash
+
+set -e
+
+prgname="${0##*/}"
+trap 'echo; exit 130' SIGINT
+
+echo $'\n> Check X display root window _ICC_PROFILE atoms:'
+xprop -root -len 8 _ICC_PROFILE _ICC_PROFILE_1 _ICC_PROFILE_2
+
+echo $'\n--------------------------------------------------'
+echo '> Select display / monitor to continue:'
+
+_dall="$(dispcal -h 2>&1 | LC_ALL=C grep -F Output | sed 's/^\s*//')"
+IFS=$'\n' eval 'dall=($_dall)'
+echo "$_dall"
+echo
+
+read -N1 -s -p 'Your choice: ' dsel
+echo
+
+if [[ ! "$dsel" =~ ^[1-9]$ ]] || (( $dsel > ${#dall[@]} )); then
+    echo "$prgname: error: invalid choice" && exit 2
+fi
+echo "${dall[$((dsel-1))]}"
+
+# -H                Use high resolution spectrum mode (if available)
+# -F                Fill whole screen with black background
+# -P ho,vo,ss[,vs]  Position test window and scale it
+# -Y p              Don't wait for the instrument to be placed on the display
+# -R                Report on the uncalibrated display then exit
+# -r                Report on the calibrated display then exit
+
+gopts=(-v2 -d$dsel -ye -H -F -P 0.5,0.5,2.0 -Y p)
+
+echo $'\n--------------------------------------------------'
+echo '> Uncalibrated display:'
+dispcal "${gopts[@]}" -R
+
+echo $'\n--------------------------------------------------'
+echo '> Calibrated display:'
+dispcal "${gopts[@]}" -r
+echo

@@ -8,7 +8,6 @@ import qualified XMonad.StackSet as W
 
 import XMonad.Actions.CycleWS
 import XMonad.Actions.FloatKeys
-import XMonad.Actions.MouseResize
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.Warp
@@ -29,13 +28,9 @@ import XMonad.Layout.Maximize
 import XMonad.Layout.Minimize
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
-import XMonad.Layout.NoFrillsDecoration
-import XMonad.Layout.PerWorkspace
-import XMonad.Layout.PositionStoreFloat
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
 import XMonad.Layout.TrackFloating
-import XMonad.Layout.WindowArranger
 import XMonad.Layout.WindowNavigation
 
 import XMonad.Util.EZConfig
@@ -83,34 +78,27 @@ myConfig = defaultConfig
         , NS "htop" (myTerminal ++ " -name sp_htop -e htop") (resource =? "sp_htop")
           (customFloating $ W.RationalRect 0.05 0.05 0.9 0.9)
         ]
-    myManageHook = manageDocks <+>
-                   positionStoreManageHook Nothing <+>
-                   namedScratchpadManageHook myScratchpads <+>
-                   toggleHook "doFloat" doFloat <+>
-                   composeOne
-                       [ isDialog -?> doFloat
+    myManageHook = composeOne
+                       [ isDialog -?> doCenterFloat
                        , className =? "Skype" -?> doFloat
-                       ]
-    myLayoutHook = avoidStruts .
-                   trackFloating .
-                   boringWindows .
-                   minimize .
-                   maximize .
-                   configurableNavigation noNavigateBorders .
-                   mkToggle (single NOBORDERS) .
-                   mkToggle (single FULL) .
-                   mkToggle (single MIRROR) .
-                   onWorkspace "9"
-                       (
-                           noFrillsDeco shrinkText myTheme $
-                           mouseResize $ windowArrange positionStoreFloat
-                       )
-                   $
-                   layoutHintsWithPlacement (0.5, 0.5)
-                       (
-                           myTabbed |||
-                           myTall
-                       )
+                       ] <+>
+                   toggleHook "doFloat" doFloat <+>
+                   namedScratchpadManageHook myScratchpads <+>
+                   positionStoreManageHook Nothing <+>
+                   manageDocks
+    myLayoutHook = avoidStruts $
+                   trackFloating $
+                   boringWindows $
+                   minimize $
+                   maximize $
+                   configurableNavigation noNavigateBorders $
+                   mkToggle (single NOBORDERS) $
+                   mkToggle (single FULL) $
+                   mkToggle (single MIRROR) $
+                   layoutHintsWithPlacement (0.5, 0.5) (
+                       myTabbed |||
+                       myTall
+                   )
       where
         myTheme = defaultTheme
             { inactiveBorderColor = inactiveColor myTheme

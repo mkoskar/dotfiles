@@ -3,8 +3,8 @@
 # Wrapper script to use Vim as a man(1) pager.
 # Install by running `export MANPAGER='manpg'`.
 #
-# :Copyright: Copyright 2013 by Miroslav Koskar
-# :License: BSD
+# :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
+# :License: BSD 2-clause
 
 if [ -t 0 ]; then
     pg -c "set ft=man | Man $@"

@@ -7,8 +7,8 @@
 # * disable VT switching
 # * run backend
 #
-# :Copyright: Copyright 2013 by Miroslav Koskar
-# :License: BSD
+# :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
+# :License: BSD 2-clause
 
 set -e
 
@@ -20,9 +20,11 @@ export PATH="/home/miro/bin:$PATH"
 # target user
 user='miro'
 
-vtold="$(fgconsole)"
-vtnew=8
-exec <>"/dev/tty$vtnew" >&0 2>&1
+vtno_old="$(fgconsole)"
+vtno_new=8
+vtnew="/dev/tty$vtno_new"
+
+exec <>"$vtnew" >&0 2>&1
 
 sysrq_path='/proc/sys/kernel/sysrq'
 sysrq_old="$(<"$sysrq_path")"
@@ -32,15 +34,16 @@ cleanup() {
     clear
     echo "$sysrq_old" >"$sysrq_path"
     vtswitch-lock -u
-    chvt "$vtold"
+    chvt "$vtno_old"
 }
 trap cleanup EXIT
 
 clear
 tput civis
 
-chvt "$vtnew"
+chvt "$vtno_new"
 vtswitch-lock
+chown "$user" "$vtnew"
 
 su - "$user" -c 'away -C away'
 read

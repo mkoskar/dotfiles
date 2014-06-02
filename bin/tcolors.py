@@ -6,18 +6,25 @@
 
     Get/Set terminal ANSI colors.
 
+    Code to retrieve terminal colors was adopted from
+    http://xyne.archlinux.ca/projects/python3-colorsysplus/.
+
     :Compatibility: Python 2.7 / 3.2
-    :Copyright: Copyright 2013 by Miroslav Koskar
-    :License: BSD
+    :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
+    :License: BSD 2-clause
 """
 
 from __future__ import print_function
 
-from sys import stdin, stdout
+from contextlib import contextmanager
+from sys import exit, stdin, stdout, stderr
 import os
 import re
+import select
 import subprocess
+import termios
 
+_poll = None
 _TERM = os.environ.get('TERM')
 if os.environ.get('TMUX'):
     _seqfmt = '\033Ptmux;\033{}\a\033\\'
@@ -38,8 +45,7 @@ def set_colorp(n, c, flush=False):
 
 
 def get_colorp(n):
-    # TODO
-    pass
+    return get_term_color([4, n])
 
 
 def set_colorfg(c, flush=False):
@@ -47,8 +53,7 @@ def set_colorfg(c, flush=False):
 
 
 def get_colorfg():
-    # TODO
-    pass
+    return get_term_color([10])
 
 
 def set_colorbg(c, flush=False):
@@ -56,8 +61,7 @@ def set_colorbg(c, flush=False):
 
 
 def get_colorbg():
-    # TODO
-    pass
+    return get_term_color([11])
 
 
 def set_colorcur(c, flush=False):
@@ -65,8 +69,7 @@ def set_colorcur(c, flush=False):
 
 
 def get_colorcur():
-    # TODO
-    pass
+    return get_term_color([12])
 
 
 def get_xcolors(file=None, prefix=None):
@@ -90,7 +93,7 @@ def get_xcolors(file=None, prefix=None):
         value = value.strip()
         xcolors.append((name, value, p, fg, bg, cur))
     if proc.wait() != 0:
-        raise RuntimeError('Preprocessing failed!')
+        raise RuntimeError('Preprocessing failed')
     return xcolors
 
 
@@ -109,12 +112,61 @@ def set_from_xcolors(file=None, prefix=None):
     return xcolors
 
 
+def get_term_color(ansi, timeout=1000, retries=5):
+    global _poll
+    if not _poll:
+        _poll = select.poll()
+        _poll.register(stdin.fileno(), select.POLLIN)
+
+    while _poll.poll(0):
+        stdin.read()
+
+    query = '\033]' + ';'.join([str(a) for a in ansi]) + ';?' + '\007'
+    os.write(0, _seqfmt.format(query).encode())
+
+    regex = re.compile(
+        '\033\\](\d+;)+rgba?:(([0-9a-f]+)/)?([0-9a-f]+)/([0-9a-f]+)/([0-9a-f]+)\007',
+        re.IGNORECASE
+    )
+    match = None
+    output = ''
+    while not match:
+        if retries < 1 or not _poll.poll(timeout):
+            return None
+        retries -= 1
+        output += stdin.read()
+        match = regex.search(output)
+    return '#' + ''.join(match.group(i)[:2] for i in [4, 5, 6])
+
+
+@contextmanager
+def get_term_colors():
+    if not stdin.isatty():
+        raise RuntimeError('<stdin> is not connected to a terminal')
+
+    tc_save = None
+    try:
+        tc_save = termios.tcgetattr(stdin.fileno())
+        tc = termios.tcgetattr(stdin.fileno())
+        tc[3] &= ~termios.ECHO
+        tc[3] &= ~termios.ICANON
+        tc[6][termios.VMIN] = 0
+        tc[6][termios.VTIME] = 0
+        termios.tcsetattr(stdin.fileno(), termios.TCSANOW, tc)
+
+        yield
+    finally:
+        if tc_save:
+            termios.tcsetattr(
+                stdin.fileno(),
+                termios.TCSANOW,
+                tc_save
+            )
+
+
 if __name__ == '__main__':
     import argparse
-    import signal
     import textwrap
-
-    signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -147,8 +199,8 @@ if __name__ == '__main__':
     )
     x_parser = subparsers.add_parser(
         'x',
-        help='set from X resources',
-        description='Set colors from X resources.'
+        help='get/set as/from X resources',
+        description='Get/Set colors as/from X resources.'
     )
 
     p_parser.add_argument('index', help='palette color index')
@@ -159,36 +211,65 @@ if __name__ == '__main__':
     x_parser.add_argument('-p', '--print', action='store_true',
                           help="don't apply, print-out only")
     x_parser.add_argument('--prefix', default='*',
-                          help='consider only X resources with PREFIX (default: *)')
-    x_parser.add_argument('file', help="'-' for stdin")
-
+                          help='X resources prefix (default: *)')
+    x_parser.add_argument('file', nargs='?',
+                          help="X resources source file; '-' for stdin")
     args = parser.parse_args()
 
-    if args.mode == 'p':
-        if args.color:
-            set_colorp(args.index, args.color)
+    try:
+        if args.mode == 'p':
+            if args.color:
+                set_colorp(args.index, args.color)
+            else:
+                output = []
+                with get_term_colors():
+                    output.append(get_colorp(args.index))
+                print('\n'.join(output))
+        elif args.mode == 'f':
+            if args.color:
+                set_colorfg(args.color)
+            else:
+                output = []
+                with get_term_colors():
+                    output.append(get_colorfg())
+                print('\n'.join(output))
+        elif args.mode == 'b':
+            if args.color:
+                set_colorbg(args.color)
+            else:
+                output = []
+                with get_term_colors():
+                    output.append(get_colorbg())
+                print('\n'.join(output))
+        elif args.mode == 'c':
+            if args.color:
+                set_colorcur(args.color)
+            else:
+                output = []
+                with get_term_colors():
+                    output.append(get_colorcur())
+                print('\n'.join(output))
+        elif args.mode == 'x':
+            if args.file:
+                if args.print:
+                    for c in get_xcolors(args.file, args.prefix):
+                        print(c[0], c[1])
+                else:
+                    set_from_xcolors(args.file, args.prefix)
+            else:
+                output = []
+                with get_term_colors():
+                    output.append('{}.foreground: {}'.format(args.prefix, get_colorfg()))
+                    output.append('{}.background: {}'.format(args.prefix, get_colorbg()))
+                    output.append('{}.cursorColor: {}'.format(args.prefix, get_colorcur()))
+                    for n in range(0, 16):
+                        output.append('{}.color{}: {}'.format(args.prefix, n, get_colorp(n)))
+                print('\n'.join(output))
         else:
-            get_colorp(args.index)
-    elif args.mode == 'f':
-        if args.color:
-            set_colorfg(args.color)
-        else:
-            get_colorfg()
-    elif args.mode == 'b':
-        if args.color:
-            set_colorbg(args.color)
-        else:
-            get_colorbg()
-    elif args.mode == 'c':
-        if args.color:
-            set_colorcur(args.color)
-        else:
-            get_colorcur()
-    elif args.mode == 'x':
-        if args.print:
-            for c in get_xcolors(args.file, args.prefix):
-                print(c[0], c[1])
-        else:
-            set_from_xcolors(args.file, args.prefix)
-    else:
-        parser.print_usage()
+            parser.print_usage()
+            exit(2)
+    except KeyboardInterrupt:
+        exit(130)
+    except RuntimeError as e:
+        print('{}: error: {}'.format(parser.prog, e), file=stderr)
+        exit(1)

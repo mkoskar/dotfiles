@@ -1,0 +1,67 @@
+#!/bin/bash
+
+set -e
+
+match() {
+    for i in "$@"; do
+        printf '%-25s %s\n' "$i" "$(fc-match "$i")"
+    done
+}
+
+echo $'\n--------------------------------------------------'
+echo $'> Generic:\n'
+
+patterns=(
+    'serif'
+    'sans-serif'
+    'monospace'
+    'cursive'
+    'fantasy'
+)
+match "${patterns[@]}"
+
+echo $'\n--------------------------------------------------'
+echo $'> Other:\n'
+
+patterns=(
+    'Andale Mono'
+    'Arial Black'
+    'Arial Narrow'
+    'Arial'
+    'Avant Garde'
+    'Book Antiqua'
+    'Bookman'
+    'Calibri'
+    'Century Gothic'
+    'Consolas'
+    'Copperplate Gothic'
+    'Courier New'
+    'Courier'
+    'Frutiger'
+    'Futura'
+    'Garamond'
+    'Geneva'
+    'Georgia'
+    'Gill Sans'
+    'Helvetica Condensed'
+    'Helvetica'
+    'Impact'
+    'Lucida Console'
+    'Lucida Sans Unicode'
+    'Monaco'
+    'Palatino Linotype'
+    'Palatino'
+    'Symbol'
+    'Tahoma'
+    'Times New Roman'
+    'Times'
+    'Trebuchet MS'
+    'Trebuchet'
+    'Univers'
+    'Verdana'
+    'Webdings'
+    'Wingdings'
+    'Zapf Dingbats'
+)
+match "${patterns[@]}"
+echo

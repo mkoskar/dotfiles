@@ -16,6 +16,7 @@
 !.config/ranger/scope.sh
 !.config/tint2/tint2rc
 !.config/user-dirs.dirs
+!.dialogrc
 !.fbtermrc
 !.gitattributes
 !.gitconfig
@@ -31,6 +32,7 @@
 !.inputrc
 !.lesskey
 !.local/share/applications/mimeapps.list
+!.local/share/fonts/make.sh
 !.makepkg.conf
 !.moc/config
 !.moc/keymap

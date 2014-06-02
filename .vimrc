@@ -1,5 +1,3 @@
-let g:vimrc_done = 0
-
 if exists($BASEDIR)
     cd $BASEDIR
 endif
@@ -192,7 +190,7 @@ set virtualedit=block
 set gdefault
 exec 'set viminfo+=n'.$VIMDIR.'/.viminfo'
 
-nnoremap cov :set <C-R>=(&virtualedit =~# "all") ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
+nnoremap cov :set <C-R>=(&virtualedit =~# 'all') ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
 
 "========== other
 syntax on
@@ -356,7 +354,7 @@ function! s:MetaToggle() abort
         let i += 1
     endwhile
     let g:meta_enabled = !g:meta_enabled
-    if g:vimrc_done
+    if exists('g:vimrc_done') && g:vimrc_done
         redraw
         echohl WarningMsg | echo 'Meta '.(g:meta_enabled ? 'ON' : 'OFF') | echohl None
     endif
@@ -367,7 +365,7 @@ silent MetaToggle
 
 " Zoom / Restore window.
 function! s:ZoomToggle() abort
-    if exists("t:zoomed") && t:zoomed
+    if exists('t:zoomed') && t:zoomed
         execute t:zoom_winrestcmd
         let t:zoomed = 0
     else
@@ -384,7 +382,7 @@ nnoremap <silent> <C-A> :ZoomToggle<CR>
 function! Themes() abort
     let themes = ['luciusblack', 'hybrid', 'bclear']
     let l = len(themes)
-    if !exists("s:themes_last_index")
+    if !exists('s:themes_last_index')
         let s:themes_last_index = 0
     endif
     let i = s:themes_last_index
@@ -431,7 +429,7 @@ let g:netrw_winsize = 30
 exec pathogen#infect()
 
 set background=dark
-if has("gui_running")
+if has('gui_running')
     colorscheme bclear
 elseif &t_Co == 256
     colorscheme luciusblack

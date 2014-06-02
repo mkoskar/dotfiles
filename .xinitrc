@@ -8,7 +8,7 @@ fi
 
 xresources=~/.Xresources
 if [ -f "$xresources" ]; then
-    xrdb -merge "$xresources"
+    xrdb -load "$xresources"
 fi
 
 xmodmap=~/.Xmodmap
