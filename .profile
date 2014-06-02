@@ -6,6 +6,7 @@ umask 022
 
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/opt/bin:$PATH"
+export PATH="$HOME/projects/pub/tcolors/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 
 source ~/bin/ssh-agent.sh
