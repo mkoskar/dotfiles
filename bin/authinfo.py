@@ -8,7 +8,7 @@
 
     :Compatibility: Python 3.2
     :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
-    :License: BSD 2-clause
+    :License: BSD 2-Clause
 """
 
 from os import path

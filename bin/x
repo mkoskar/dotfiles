@@ -18,7 +18,7 @@
 # * startx ~/.xinitrc <xsession> '/usr/bin/Xephyr'
 #
 # :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
-# :License: BSD 2-clause
+# :License: BSD 2-Clause
 
 set -e
 

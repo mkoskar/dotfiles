@@ -3,7 +3,7 @@
 # Get information about Xserver (based on DISPLAY environment variable).
 #
 # :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
-# :License: BSD 2-clause
+# :License: BSD 2-Clause
 
 set -e
 

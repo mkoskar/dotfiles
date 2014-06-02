@@ -4,7 +4,7 @@
 # Install by running `export PAGER='pg'`.
 #
 # :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
-# :License: BSD 2-clause
+# :License: BSD 2-Clause
 
 set -e
 set +o posix
