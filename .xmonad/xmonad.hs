@@ -37,14 +37,16 @@ import XMonad.Util.EZConfig
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.WorkspaceCompare
 
-myStatusBar conf = statusBar "xmobar" myXmobarPP myToggleStrutsKey conf
+myStatusBar conf = statusBar "statusbar" myPP myToggleStrutsKey conf
   where
-    myXmobarPP = defaultPP
-        { ppCurrent = xmobarColor "#55FF55" "" . wrap "[" "]"
-        , ppVisible = xmobarColor "#FEED6A" "" . wrap "(" ")"
-        , ppUrgent = xmobarColor "#FF5555" "#FEEF6A" . pad
+    {-color = dzenColor-}
+    color = xmobarColor
+    myPP = defaultPP
+        { ppCurrent = color "#55FF55" "" . wrap "[" "]"
+        , ppVisible = color "#FEED6A" "" . wrap "(" ")"
+        , ppUrgent = color "#FF5555" "#FEEF6A" . pad
         , ppSep = " "
-        , ppTitle = xmobarColor "#EFEFEF" "" . shorten 100
+        , ppTitle = color "#EFEFEF" "" . shorten 100
         , ppOrder = \(workspaces : layout : title : extras) -> [workspaces, title]
         , ppSort = getSortByXineramaPhysicalRule
         }
@@ -84,10 +86,8 @@ myConfig = defaultConfig
                        ] <+>
                    toggleHook "doFloat" doFloat <+>
                    namedScratchpadManageHook myScratchpads <+>
-                   positionStoreManageHook Nothing <+>
-                   manageDocks
-    myLayoutHook = avoidStruts $
-                   trackFloating $
+                   positionStoreManageHook Nothing
+    myLayoutHook = trackFloating $
                    boringWindows $
                    minimize $
                    maximize $

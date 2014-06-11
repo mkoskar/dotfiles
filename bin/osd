@@ -1,9 +1,34 @@
 #!/bin/bash
 
-pids="$(pgrepallx aosd_cat)"
+set -e
 
-<<<" $1 " aosd_cat -p 2 -x -10 -y 25 -d 5 -e 0 -t 0 -f 0 -u 1000 -o 0 \
-                   -n local_osd -B black -R yellow &
+name='default'
+dispno="$(xserverq dispno)"
+pipe="$TMPDIR/osd-$UID/${name}$dispno"
 
-sleep 0.01
-killer -g $pids
+if [ "$(basename "$0")" = 'osdd' ]; then
+    if [ -e "$pipe" ]; then
+        exit 3
+    fi
+
+    mkdir -p -m 700 "${pipe%/*}"
+    mkfifo -m 600 "$pipe"
+
+    cleanup() {
+        rm -f "$pipe"
+        exec 2>/dev/null
+        kill $(jobs -pr)
+    }
+    trap cleanup EXIT
+
+    aosd_cat -O 0 -p 2 -x -10 -y 25 -e 0 -d 5 \
+             -t 0 -n local_osd -A 2 \
+             -B black -R yellow \
+             -f 0 -u 1000 -o 0 \
+             -l 1 \
+             -k -m -i "$pipe"
+    exit
+fi
+
+[ ! -p "$pipe" ] && exit 1
+echo "$*" >"$pipe"

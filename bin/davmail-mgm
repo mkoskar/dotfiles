@@ -4,7 +4,7 @@
 
 set -e
 umask 0077
-exec > /dev/null
+exec >/dev/null
 
 BASEDIR="$HOME/.davmail"
 PIDFILE="$BASEDIR/davmail_mgm.pid"

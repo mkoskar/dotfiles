@@ -1,5 +1,5 @@
 Config {
-     font = "xft:local_xmobar"
+     font = "xft:local_statusbar"
     ,bgColor = "#000000"
     ,fgColor = "#C0C0C0"
     ,position = TopP 0 100

@@ -1,48 +1,48 @@
 #!/bin/bash
 #
-# Get information about Xserver (based on DISPLAY environment variable).
+# Get information about X server (based on DISPLAY environment variable).
 #
 # :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
 # :License: BSD 2-Clause
 
 set -e
 
-xserver-dispno() {
+xserver_dispno() {
     ! xset q &>/dev/null && exit 1
     dispno="$(echo "$DISPLAY" | awk -F '[:.]' '{print $2}')"
     printf '%d\n' "$dispno"
 }
 
-xserver-pid() {
-    dispno="$(xserver-dispno)"
+xserver_pid() {
+    dispno="$(xserver_dispno)"
     lockfile="/tmp/.X$dispno-lock"
 
     [ ! -f "$lockfile" ] && exit 1
     cat "$lockfile" | sed 's/\s//g'
 }
 
-xserver-cmd() {
-    pid="$(xserver-pid)"
+xserver_cmd() {
+    pid="$(xserver_pid)"
     ps -p "$pid" -o cmd=
 }
 
-xserver-name() {
-    pid="$(xserver-pid)"
+xserver_name() {
+    pid="$(xserver_pid)"
     ps -p "$pid" -o comm=
 }
 
 case "$1" in
     cmd)
-        xserver-cmd
+        xserver_cmd
         ;;
     dispno)
-        xserver-dispno
+        xserver_dispno
         ;;
     name)
-        xserver-name
+        xserver_name
         ;;
     pid)
-        xserver-pid
+        xserver_pid
         ;;
     *)
         cat <<-EOF
@@ -51,7 +51,7 @@ case "$1" in
 		       xserverq name    - get command name
 		       xserverq pid     - get PID
 		
-		Get information about Xserver (based on DISPLAY environment variable).
+		Get information about X server (based on DISPLAY environment variable).
 		EOF
-        exit 1
+        exit 2
 esac

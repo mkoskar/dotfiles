@@ -4,7 +4,7 @@ killer $(pgrepallx trayer)
 
 trayer --edge top --align right \
        --width 100 --widthtype pixel \
-       --height 17 --heighttype pixel \
+       --height 19 --heighttype pixel \
        --SetDockType true --SetPartialStrut true \
        --transparent true --alpha 0 --tint 0x000000 \
        --monitor primary \

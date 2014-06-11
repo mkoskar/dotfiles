@@ -1,6 +1,8 @@
 #!/bin/bash
 
 main() {
+    osdd &
+    twmnd &
     workrave &
     xmonad
 }

@@ -15,7 +15,9 @@
 !.config/ranger/rifle.conf
 !.config/ranger/scope.sh
 !.config/tint2/tint2rc
+!.config/twmn/twmn.conf
 !.config/user-dirs.dirs
+!.conkyrc
 !.dialogrc
 !.fbtermrc
 !.gitattributes

@@ -1,0 +1,16 @@
+background no
+out_to_x yes
+out_to_console no
+
+use_xft yes
+xftfont local_osd
+xftalpha 0.1
+text_buffer_size 2048
+double_buffer yes
+
+override_utf8_locale yes
+update_interval 1
+total_run_times 0
+
+TEXT
+Time: ${time %a %b %d %H:%M}

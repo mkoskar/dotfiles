@@ -70,7 +70,7 @@ lockfile="/tmp/.X$dispno-lock"
 
 if [ -f "$lockfile" ]; then
     echo -e "Display $dispno is currently in use (pid=$(cat "$lockfile" | sed 's/\s//g')).\n"
-    exit 2
+    exit 1
 fi
 
 exec startx ~/.xinitrc "$@" -- \

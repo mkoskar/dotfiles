@@ -3,7 +3,6 @@
 set -e
 
 prgname="${0##*/}"
-trap 'echo; exit 130' SIGINT
 
 echo $'\n> Check X display root window _ICC_PROFILE atoms:'
 xprop -root -len 8 _ICC_PROFILE _ICC_PROFILE_1 _ICC_PROFILE_2
