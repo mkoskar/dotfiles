@@ -4,7 +4,7 @@ set -e
 
 err_usage() {
     echo "usage: $(basename "$0") [-g | -s sigspec] pid ..."
-    exit 1
+    exit 2
 }
 
 while getopts 'gs:' opt; do

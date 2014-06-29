@@ -29,7 +29,6 @@ PS1='$?:\W\$ '
 
 complete -W '10m 15m 20m 25m 30m' a
 complete -W 'audio dpms rfkill xkb' status
-complete -W 'audio dpms rfkill xkb' status-notify
 complete -W 'n fg bg cur' color
 complete -c cpath
 complete -c csyspath

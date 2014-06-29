@@ -31,6 +31,7 @@ alias gi='g -i'
 alias gr="g -R --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exclude='*~'"
 alias gri='gr -i'
 
+alias acpi='acpi -V'
 alias feh='feh -F'
 alias gpgsandbox='gpg --homedir ~/.gnupg/sandbox'
 alias info='info --vi-keys'
@@ -38,6 +39,8 @@ alias manl="MANPAGER='less -s' man"
 alias nw='tmux neww'
 alias qiv='qiv -uLtiGfl --vikeys'
 alias rm='rm -I --one-file-system'
+alias sc='systemctl'
+alias scu='systemctl --user'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
 
 # python

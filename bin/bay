@@ -1,0 +1,56 @@
+#!/bin/bash
+
+set -eu
+
+dock=$(grep -l ata_bay /sys/devices/platform/dock.?/type)
+dock=${dock%%/type}
+
+if [ ! -d "$dock" -o ! -r "$dock/docked" ]; then
+    exit 1
+fi
+
+undock=
+if [ "$(basename "$0")" = 'bay-undock' ]; then
+    undock=1
+fi
+
+standby=
+if [ "$(basename "$0")" = 'bay-standby' ]; then
+    standby=1
+fi
+
+if [ "$(<$dock/docked)" = "0" ]; then
+    echo 'undocked' >&2
+else
+    echo 'docked' >&2
+    sysdev='/sys/devices/pci0000:00/0000:00:1f.2/ata2/host1/target1:0:0/1:0:0:0'
+    devname=($sysdev/block/*)
+    devname="${devname##*/}"
+    dev="/dev/$devname"
+
+    if [ -n "$standby" ]; then
+        [ ! -r "$dev" ] && exit 2
+
+        if ! smartctl -i -n standby "$dev" &>/dev/null; then
+            echo 'standby' >&2
+        else
+            echo 'going standby' >&2
+            hdparm -y "$dev" &>/dev/null
+        fi
+    fi
+
+    if [ -n "$undock" ]; then
+        echo 'undocking' >&2
+        [ ! -r "$dev" ] && exit 2
+
+        sync
+        umountall "$devname"
+
+        echo 1 >>"$sysdev/delete"
+
+        if [ ! -w "$dock/undock" ]; then
+            exit 1
+        fi
+        echo 1 >>"$dock/undock"
+    fi
+fi

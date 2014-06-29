@@ -1,9 +1,0 @@
-# gmail.muttrc
-
-set from        = ''
-set postpone    = ask-yes
-set postponed   = '+[Gmail]/Drafts'
-set smtp_url    = $my_gmail_smtp
-
-# trash folder patch
-#set trash       = '+[Gmail]/Trash'

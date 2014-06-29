@@ -1,0 +1,15 @@
+# vim: ft=muttrc
+
+set folder = $my_example
+set from = '<email>'
+
+set copy
+set postpone = ask-yes
+set postponed = '+Drafts'
+set record = '+Sent'
+set smtp_url = $my_example_smtp
+set spoolfile = '+INBOX'
+unset read_only
+
+# trash patch
+#set trash = '+Trash'

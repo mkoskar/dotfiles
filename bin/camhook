@@ -1,12 +1,14 @@
 #!/bin/bash
 
+set -e
+
 pidfile='preview.pid'
 prevfile='preview.jpg'
 
 preview() {
     qiv -tiGfl --vikeys -T "$prevfile"
-    rm "$pidfile"
-    rm "$prevfile"
+    rm -f "$pidfile"
+    rm -f "$prevfile"
 }
 
 case "$ACTION" in
@@ -24,5 +26,3 @@ case "$ACTION" in
     stop)
         ;;
 esac
-
-exit 0

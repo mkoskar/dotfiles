@@ -1,0 +1,21 @@
+IMAPAccount example
+Host <host>
+User <user>
+PassCmd "authinfo <machine> <login>"
+UseIMAPS yes
+RequireSSL yes
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore example-remote
+Account example
+
+MaildirStore example-local
+Path ~/mail/example/
+Inbox ~/mail/example/INBOX
+
+Channel example
+Master :example-remote:
+Slave :example-local:
+Patterns *
+Create Slave
+SyncState *

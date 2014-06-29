@@ -9,15 +9,13 @@ export PATH="$HOME/opt/bin:$PATH"
 export PATH="$HOME/projects/pub/tcolors/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 
-source ~/bin/ssh-agent.sh
-source ~/bin/gpg-agent.sh
-
 export LANG='en_US.UTF-8'
 export LC_COLLATE='C'
 export LD_LIBRARY_PATH="$HOME/opt/lib"
 
 export BROWSER='firefox'
-export EDITOR='vim'
+export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+export EDITOR='e'
 export LESS='-MRS#3ci'
 export LESSHISTFILE='-'
 export LESSOPEN='| highlight --quiet -O xterm256 -s bluegreen %s'
@@ -39,3 +37,6 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 
 export TMPDIR="/tmp/$USER"
 [ -d "$TMPDIR" ] || mkdir -p -m 700 "$TMPDIR"
+
+source ~/bin/ssh-agent.sh
+source ~/bin/gpg-agent.sh

@@ -1,1 +1,1 @@
-machine <host> login <user> password <password> [port <port>]
+machine <machine> login <login> password <password> [port <port>]

@@ -1,0 +1,75 @@
+#!/bin/bash
+
+set -eu
+
+# teardown a single device by node name
+#   $1: device node name e.g., md0, dm-2
+stop_device() {
+    local devtype= devname=
+
+    # the device must still be active
+    [ -e "$1" ] || return 1
+
+    # this can sometimes fail on stopped md devices, when the
+    # sysfs node doesn't go away as quickly as i'd like it to.
+    devtype="$(lsblk -drno TYPE "/dev/$1")" || return 1
+    case "$devtype" in
+        crypt|lvm|dm)
+            read devname <"$1/dm/name"
+            dmsetup remove "$devname"
+            ;;
+        raid*)
+            # wait for arrays with external metadata to be marked as
+            # clean. unfortunately, there isn't a whole lot we can do
+            # if this fails, and the array may need a full rebuild on
+            # the next reboot.
+            IFS=: read metadata _ <"$1/md/metadata_version"
+            if [ "$metadata" = 'external' ]; then
+                mdadm --wait-clean "/dev/$1"
+            fi
+            mdadm --stop "/dev/$1"
+            ;;
+        dmraid)
+            read devname <"$1/dm/name"
+            dmraid -an "$devname"
+            ;;
+        # silently ignore unstacked devices
+    esac
+}
+
+# recursively umount and disassemble a device chain
+#   $1: device node name e.g., md0, dm-2
+umount_device() {
+    local part= holder= mount=
+    local dev="/dev/$1" dev_mapper=
+
+    local dm_name_path="$1/dm/name"
+    [ -e "$dm_name_path" ] && dev_mapper="/dev/mapper/$(<"$dm_name_path")"
+
+    [ -e "$1" ] || return 1
+
+    if [ "$(lsblk -drno TYPE "$dev")" = 'disk' ]; then
+        for part in $(lsblk -rno TYPE,NAME "$dev" | grep -E '^part ' | awk '{print $2}'); do
+            umount_device "$part"
+        done
+    fi
+
+    for holder in "$1/holders/"*; do
+        [ -e "$holder" ] && umount_device "${holder##*/}"
+    done
+
+    if grep -qE "^($dev|$dev_mapper) " /proc/mounts; then
+        umount -A "$dev"
+    fi
+
+    stop_device "$1"
+}
+
+cd /sys/class/block
+
+if [ $# -eq 0 ]; then
+    echo "usage: $(basename "$0") <block-device-name> (e.g., sda, dm-0)" >&2
+    exit 2
+fi
+
+umount_device "$1"

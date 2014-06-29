@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/usr/bin/tree -a -I '.git|.svn' --noreport -x -C "$@" | pg

@@ -5,6 +5,8 @@
 !.bash_profile
 !.bashrc
 !.bcrc
+!.config
+!.config/Trolltech.conf
 !.config/aurvote.example
 !.config/fontconfig/fonts.conf
 !.config/gtk-3.0/bookmarks
@@ -14,6 +16,7 @@
 !.config/ranger/rc.conf
 !.config/ranger/rifle.conf
 !.config/ranger/scope.sh
+!.config/systemd
 !.config/tint2/tint2rc
 !.config/twmn/twmn.conf
 !.config/user-dirs.dirs
@@ -36,10 +39,13 @@
 !.local/share/applications/mimeapps.list
 !.local/share/fonts/make.sh
 !.makepkg.conf
+!.mbsyncrc.example
 !.moc/config
 !.moc/keymap
 !.moc/themes/my_theme
 !.mplayer/config
+!.msmtprc.example
+!.mutt
 !.netrc.example
 !.pgrc
 !.pinforc

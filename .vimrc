@@ -240,6 +240,11 @@ nmap <Leader>et :tabe %%
 
 nnoremap <silent> <C-Q> :bd<CR>
 
+" Working on diffs
+nnoremap <silent> <Leader>du :diffup<CR>
+nnoremap <silent> <Leader>d; :,diffget<CR>
+nnoremap <silent> <Leader>d: :,diffput<CR>
+
 " fast editing of the '.vimrc'
 nnoremap <silent> <Leader>rc :vs ~/.vimrc<CR>
 
@@ -326,7 +331,7 @@ function! Preserve(command) abort
     let window_pos = getpos('.')
     call setpos('.', cursor_pos)
     try
-        execute a:command
+        exec a:command
     finally
         " restore
         call setpos('.', window_pos)
@@ -366,7 +371,7 @@ silent MetaToggle
 " Zoom / Restore window.
 function! s:ZoomToggle() abort
     if exists('t:zoomed') && t:zoomed
-        execute t:zoom_winrestcmd
+        exec t:zoom_winrestcmd
         let t:zoomed = 0
     else
         let t:zoom_winrestcmd = winrestcmd()

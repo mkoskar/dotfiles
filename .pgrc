@@ -55,6 +55,7 @@ set noswapfile
 set wildmenu
 set wildmode=list:longest,full
 set noundofile
+set undolevels=-1 
 
 set encoding=utf-8
 
@@ -95,6 +96,8 @@ nnoremap k gk
 xnoremap j gj
 xnoremap k gk
 
+nnoremap <silent> <C-A> :AnsiEsc<CR>
+
 " Reloads buffer after number (defaults to 1) of seconds have passed.
 map <silent> F :Reload<CR>F<CR>
 command! -nargs=? Reload call Reload(<f-args>)
@@ -106,7 +109,7 @@ function! Reload(...)
     try
         echohl WarningMsg | echo 'Reload in '.d.'s (interrupt to abort)' | echohl None
         exec 'sleep '.d
-        e
+        edit
         normal! G
     finally
         redraw

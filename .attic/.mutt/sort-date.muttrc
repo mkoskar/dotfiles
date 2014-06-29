@@ -1,4 +1,0 @@
-# sort-date.muttrc
-
-set sort = reverse-date-received
-macro index,pager \140 '<enter-command>source ~/.mutt/sort-threads.muttrc<enter>'

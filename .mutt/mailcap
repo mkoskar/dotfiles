@@ -1,0 +1,15 @@
+text/html;                  $BROWSER %s
+text/html;                  w3m -I %{charset} -T text/html; copiousoutput
+text/*;                     e %s
+
+image/*;                    mutt_bgrun sxiv %s
+audio/*;                    mutt_bgrun mplayer %s
+video/*;                    mutt_bgrun mplayer %s
+
+application/ogg;            mutt_bgrun mplayer %s
+application/pdf;            mutt_bgrun zathura %s
+application/msword;         mutt_bgrun libreoffice %s
+application/msexcel;        mutt_bgrun libreoffice %s
+application/mspowerpoint;   mutt_bgrun libreoffice %s
+application/vnd.ms-excel;   mutt_bgrun libreoffice %s
+application/*;              e %s

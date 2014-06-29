@@ -1,9 +1,0 @@
-#!/bin/bash
-
-[ "$(</sys/class/rfkill/rfkill0/hard)" -eq 1 ] && exit
-
-if [ "$(</sys/class/rfkill/rfkill0/soft)" -eq 1 ]; then
-    rfkill unblock all
-else
-    rfkill block all
-fi

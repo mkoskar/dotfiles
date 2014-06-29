@@ -18,7 +18,7 @@ SAVEHIST=5000
 typeset -gU path fpath cdpath
 
 zmodload zsh/attr
-zmodload zsh/stat
+zmodload -F zsh/stat b:zstat
 
 autoload -Uz add-zsh-hook
 autoload -Uz compinit

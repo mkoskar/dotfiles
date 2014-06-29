@@ -87,7 +87,8 @@ myConfig = defaultConfig
                    toggleHook "doFloat" doFloat <+>
                    namedScratchpadManageHook myScratchpads <+>
                    positionStoreManageHook Nothing
-    myLayoutHook = trackFloating $
+    myLayoutHook = avoidStruts $
+                   trackFloating $
                    boringWindows $
                    minimize $
                    maximize $
@@ -228,15 +229,15 @@ myConfig = defaultConfig
         , ("M-S-<Print>", spawn "sleep 0.5 && scrot -m -s ~/tmp/shot-%Y-%m-%d.%s.png -e 'feh -Z. $f'")
 
           -- audio
-        , ("M-S-]", spawn "volup && status-notify audio")
-        , ("M-S-[", spawn "voldown && status-notify audio")
-        , ("M-S-m", spawn "voltoggle && status-notify audio")
-        , ("M-S-n", spawn "voltoggle-dock && status-notify audio")
+        , ("M-S-]", spawn "volup")
+        , ("M-S-[", spawn "voldown")
+        , ("M-S-m", spawn "voltoggle")
+        , ("M-S-n", spawn "voltoggle-dock")
 
           -- setxkbmap
-        , ("M-<F1>", spawn "setxkbmap us cz_sk_de && status-notify xkb")
-        , ("M-<F2>", spawn "setxkbmap sk qwerty && status-notify xkb")
-        , ("M-<F3>", spawn "setxkbmap cz qwerty && status-notify xkb")
+        , ("M-<F1>", spawn "xkb us")
+        , ("M-<F2>", spawn "xkb sk")
+        , ("M-<F3>", spawn "xkb cz")
 
           -- selections
         , ("M-<F5>", spawn "xsel | xsel -ib")
@@ -251,8 +252,8 @@ myConfig = defaultConfig
         , ("M-S-<Home>", spawn "urxvtc -e pg ~/projects/meta.rst")
         , ("M-S-b", spawn "backlight-toggle")
         , ("M-; M-l", spawn "sudo lockx")
-        , ("M-; M-d", spawn "dpms-toggle && status-notify dpms")
-        , ("M-; M-r", spawn "rfkill-toggle && status-notify rfkill")
+        , ("M-; M-d", spawn "dpms-toggle")
+        , ("M-; M-w", spawn "wifi-toggle")
         ]
 
 main = xmonad =<< myStatusBar (withUrgencyHook NoUrgencyHook myConfig)

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-PS3='Select a station: '
+set -eu
+
+PS3='Select: '
 stations=(
     'BBC 1                      http://www.bbc.co.uk/radio/listen/live/r1.asx'
     'BBC 1Xtra                  http://www.bbc.co.uk/radio/listen/live/r1x.asx'

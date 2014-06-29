@@ -7,8 +7,8 @@
 # :License: BSD 2-Clause
 
 if [ -t 0 ]; then
-    pg -c "set ft=man | Man $@"
-    exit
+    echo 'stdin is a tty' >&2
+    exit 1
 fi
 
-PAGER_TITLE="$MAN_PN" exec pgx -c 'set ft=man'
+col -b | PAGER_TITLE="$MAN_PN" pg -c 'set ft=man'

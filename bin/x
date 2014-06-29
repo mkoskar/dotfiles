@@ -32,13 +32,13 @@ if [ $# -eq 0 ]; then
     test ! "$sel" && sel=m
     case "$sel" in
         [mM]) 
-            set -- xsession main
+            set -- main
             ;;
         [oO])
-            set -- xsession openbox
+            set -- openbox
             ;;
         [xX])
-            set -- xsession xmonad
+            set -- xmonad
             ;;
         *)
             echo -e '---\n'
@@ -56,7 +56,7 @@ if [ "$(basename "$0")" = 'xx' ]; then
         dispno="$(($dispno + 1))"
     done
 
-    startx ~/.xinitrc "$@" -- \
+    startx ~/bin/xsession "$@" -- \
         /usr/bin/Xephyr ":$dispno" -nolisten tcp -dpi 96 -resizeable \
         &>"$HOME/.xsession$dispno.out" &
     exit
@@ -73,6 +73,6 @@ if [ -f "$lockfile" ]; then
     exit 1
 fi
 
-exec startx ~/.xinitrc "$@" -- \
+exec startx ~/bin/xsession "$@" -- \
     /usr/bin/X ":$dispno" "vt$vtno" -nolisten tcp -dpi 96 \
     &>"$HOME/.xsession$dispno.out"

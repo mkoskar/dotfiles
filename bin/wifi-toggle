@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+wifi toggle &>/dev/null
+
+status-osd wifi

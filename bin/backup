@@ -1,0 +1,110 @@
+#!/bin/bash
+
+# TODO:
+# * backup from lvm snapshots as oppose to live filesystem
+# * move from /etc/cron.hourly to systemd
+# * mail on exit code != 2
+
+set -eu
+
+part="$(realpath '/dev/disk/by-uuid/a10fd9bc-f55c-4d83-8bb7-a0345da60247')"
+disk="${part%%[0-9]}"
+fs="$(realpath '/dev/disk/by-uuid/95908df8-35c5-4f39-a57b-ca0a091b4eda')"
+target='/mnt/backups'
+mapper='/dev/mapper/backups'
+
+# backup-setup
+
+if [ "$(basename "$0")" = 'backup-setup' ]; then
+    if [ ! -e "$part" ]; then
+        echo 'target partition missing' >&2
+        exit 1
+    fi
+
+    if [ ! -e "$fs" ]; then
+        cryptsetup luksOpen "$part" backups
+    fi
+
+    mkdir -p "$target"
+    mount "$fs" "$target"
+    exit
+fi
+
+# backup
+
+log_prefix=$$
+log() {
+    echo "$log_prefix: $*" >&2
+}
+
+cleanup() {
+    log "exiting ($?)"
+}
+trap cleanup EXIT
+
+exec 8>>/var/log/backup.log
+if [ -t 2 ]; then
+    exec > >(tee -a /dev/fd/8 >&2) 2>&1
+else
+    exec >&8 2>&1
+fi
+
+mkdir -p /run/lock/backup
+
+log "-- $(date)"
+
+if [ ! -e "$part" ]; then
+    log "$target: target partition missing"
+    exit 2
+fi
+
+if [ ! -d "$target" -o ! -w "$target" ]; then
+    log "$target: not a directory or not a writable one"
+    exit 11
+fi
+
+if [ ! "$(grep -F " $target " /proc/mounts | awk '{print $1}')" = "$mapper" -o \
+     ! "$(realpath "$mapper")" = "$(realpath "$fs")" ]; then
+    log "$target: mountpoint misconfigured"
+    exit 12
+fi
+
+(
+
+if ! flock -n 9; then
+    log "$target: full-backup in progress"
+    exit 13
+fi
+
+START=$(date +%s)
+
+mkdir -p "$target/full-backup"
+rsync -aAHSX / "$target/full-backup/master" \
+      --delete \
+      --backup --backup-dir=../$(date '+%Y-%m-%d.%H-%M-%S.%s') \
+      --exclude-from=- <<-EOF
+	*/lost+found
+	/dev/*
+	/home/*/.adobe/*
+	/home/*/.cache/*
+	/home/*/.macromedia/*
+	/home/*/.thumbnails/*
+	/media/*
+	/mnt/*
+	/proc/*
+	/run/*
+	/sys/*
+	/tmp/*
+	/var/abs/*
+	/var/cache/pacman/*
+	/var/cache/pkgfile/*
+	/var/lib/pacman/sync/*
+EOF
+
+FINISH=$(date +%s)
+log "total time: $(( ($FINISH-$START) / 60 )) minutes, $(( ($FINISH-$START) % 60 )) seconds"
+
+echo 'setting standby' >&2
+hdparm -S 12 "$disk" &>/dev/null
+
+) 9>/run/lock/backup/full-backup.lock

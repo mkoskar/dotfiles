@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+. ~/.profile
+
+if /usr/bin/mbsync -q -a; then
+    notify-send '___ mbsync ___'
+else
+    notify-send '___ mbsync FAIL ___'
+fi

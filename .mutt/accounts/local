@@ -1,0 +1,6 @@
+# vim: ft=muttrc
+
+set my_local = $MAIL
+folder-hook $my_local source ~/.mutt/accounts/local_hook
+
+mailboxes $my_local

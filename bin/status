@@ -2,50 +2,68 @@
 
 set -e
 
-if [ "$(basename "$0")" = 'status-notify' ]; then
-    notify "$(status "$@")"
+if [ "$(basename "$0")" = 'status-osd' ]; then
+    out="$(status "$@")"
+    [ -t 1 ] && echo "$out"
+    osd "$out"
     exit 0
 fi
 
 status_audio() {
-    val="$(amixer get Master | grep -F '%' | awk '{print $4 " / " $6}')"
+    local val="$(amixer get Master | grep -F '%' | awk '{print $4 " / " $6}')"
     amixer get Headphone,1 | grep -Fq 'Playback [on]' && val="$val +dock"
     printf 'audio: %s\n' "$val"
 }
 
-status_dpms() {
-    xset -q | grep -Fq 'DPMS is Enabled' && val='on' || val='off'
-    printf 'dpms: [%s]\n' "$val"
+status_bluetooth() {
+    local val
+    val="$(bluetooth | awk -F= '{gsub(/^[ \t]+/, "", $2); print $2}')"
+    printf 'bluetooth: %s\n' "$val"
 }
 
-status_rfkill() {
-    [ "$(</sys/class/rfkill/rfkill0/soft)" -eq 1 ] && val='soft' || val='off'
-    [ "$(</sys/class/rfkill/rfkill0/hard)" -eq 1 ] && val='hard'
-    printf 'rfkill: [%s]\n' "$val"
+status_dpms() {
+    local val='-'
+    if xset q &>/dev/null; then
+        xset q | grep -Fq 'DPMS is Enabled' && val='on' || val='off'
+    fi
+    printf 'dpms: %s\n' "$val"
+}
+
+status_wifi() {
+    local val
+    val="$(wifi | awk -F= '{gsub(/^[ \t]+/, "", $2); print $2}')"
+    printf 'wifi: %s\n' "$val"
 }
 
 status_xkb() {
-    val="$(setxkbmap -query | grep -F 'layout:' | awk '{print $2}')"
-    printf 'xkb: [%s]\n' "$val"
+    local val='-'
+    if xset q &>/dev/null; then
+        val="$(setxkbmap -query | grep -F 'layout:' | awk '{print $2}')"
+    fi
+    printf 'xkb: %s\n' "$val"
 }
 
 case "$1" in
     audio)
         status_audio
         ;;
+    bluetooth)
+        status_bluetooth
+        ;;
     dpms)
         status_dpms
         ;;
-    rfkill)
-        status_rfkill
+    wifi)
+        status_wifi
         ;;
     xkb)
         status_xkb
         ;;
     *)
         status_audio
+        status_bluetooth
         status_dpms
-        status_rfkill
+        status_wifi
         status_xkb
         ;;
 esac

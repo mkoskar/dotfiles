@@ -1,0 +1,39 @@
+# vim: ft=muttrc
+
+set my_mail = ~/mail
+set folder = $my_mail
+
+account-hook . 'unset imap_pass; \
+                unset smtp_pass'
+
+folder-hook . 'set folder = $my_mail; \
+               unset copy; \
+               unset from; \
+               unset mbox; \
+               unset move; \
+               unset postpone; \
+               unset postponed; \
+               unset read_only; \
+               unset record; \
+               unset smtp_url; \
+               unset spoolfile'
+
+unmailboxes *
+
+# example account
+source ~/.mutt/accounts/example
+
+macro browser \e1 "<exit>\e1" 'go to $example/INBOX'
+macro index,pager \e1 "<change-folder>^U$my_example/INBOX<Enter>" 'go to $example/INBOX'
+macro index,pager,browser \e<F1> "<change-folder>?<change-dir>^U$my_example_imap<Enter>" 'browse $example_imap'
+
+# local account
+source ~/.mutt/accounts/local
+set spoolfile = $my_local
+
+macro browser \e0 "<exit>\e9" 'go to $local'
+macro index,pager \e0 "<change-folder>^U$my_local<Enter>" 'go to $local'
+
+# finally
+folder-hook . 'push "<change-folder>?<change-dir>^U=<Enter><exit>"'
+macro index,pager,browser <Tab> "<change-folder>?<change-dir>^U=<Enter>" 'browse ='

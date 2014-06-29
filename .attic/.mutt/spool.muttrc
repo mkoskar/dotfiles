@@ -1,6 +1,0 @@
-# spool.muttrc
-
-set from        = $USER
-
-# trash folder patch
-unset trash

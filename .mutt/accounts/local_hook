@@ -1,0 +1,6 @@
+# vim: ft=muttrc
+
+set from = $USER
+
+set spoolfile = $my_local
+unset read_only

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+input="${1:--}"
+output="${2:--}"
+
+gpg -d -o "$output" -q --no-tty "$input"

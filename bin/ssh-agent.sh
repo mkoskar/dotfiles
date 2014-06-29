@@ -8,7 +8,7 @@ info="$HOME/.ssh/ssh-agent-info"
 
     if [ -n "$SSH_AGENT_PID" ] &&
             ! ps -u -p "$SSH_AGENT_PID" >/dev/null 2>&1; then
-        ssh-agent | grep '^SSH' >"$info"
+        ssh-agent | grep '^SSH' >|"$info"
         chmod 600 "$info"
     fi
 )

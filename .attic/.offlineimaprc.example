@@ -1,0 +1,24 @@
+[general]
+ui = quiet
+accounts = example
+pythonfile = ~/bin/authinfo.py
+
+[Account example]
+localrepository = example-local
+remoterepository = example-remote
+autorefresh = 0
+quick = 15
+status_backend = sqlite
+postsynchook = notify-send 'example synced'
+
+[Repository example-local]
+type = Maildir
+localfolders = ~/mail/example
+
+[Repository example-remote]
+type = Gmail
+remoteuser = <user>
+remotepasseval = get_authinfo_password('gmail.com', '<user>')
+maxconnections = 5
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt

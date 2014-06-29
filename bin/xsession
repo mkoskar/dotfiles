@@ -1,5 +1,29 @@
 #!/bin/bash
 
+set -e
+
+# startx unsets DBUS_SESSION_BUS_ADDRESS, let's get it back
+. ~/.profile
+
+if [ -d /etc/X11/xinit/xinitrc.d ]; then
+    for i in /etc/X11/xinit/xinitrc.d/* ; do
+        [ -f "$i" ] && source "$i"
+    done
+fi
+
+xresources=~/.Xresources
+if [ -f "$xresources" ]; then
+    xrdb -load "$xresources"
+fi
+
+xmodmap=~/.Xmodmap
+if [ -f "$xmodmap" ]; then
+    xmodmap "$xmodmap"
+fi
+
+xkb
+xscreen
+
 main() {
     osdd &
     twmnd &
@@ -8,7 +32,7 @@ main() {
 }
 
 xmonad() {
-    tray
+    tray &
     /usr/bin/xmonad
 }
 
@@ -16,7 +40,5 @@ openbox() {
     tint2 &
     /usr/bin/openbox
 }
-
-xscreen
 
 [ $# -gt 0 ] && eval "$*"

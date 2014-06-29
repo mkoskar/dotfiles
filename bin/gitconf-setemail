@@ -1,4 +1,0 @@
-#!/bin/bash
-
-git config user.email "$(git config -f ~/.git/config --get user.email)"
-git config --local --list

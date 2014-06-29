@@ -1,3 +1,6 @@
 #!/bin/bash
 
+set -e
+
 amixer -q set Headphone,1 toggle
+status-osd audio

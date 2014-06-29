@@ -1,3 +1,0 @@
-#!/bin/bash
-
-sudo /usr/bin/hdparm -Y /dev/sdb &>/dev/null
