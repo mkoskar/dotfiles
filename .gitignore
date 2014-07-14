@@ -6,7 +6,6 @@
 !.bashrc
 !.bcrc
 !.config
-!.config/Trolltech.conf
 !.config/aurvote.example
 !.config/fontconfig/fonts.conf
 !.config/gtk-3.0/bookmarks
@@ -53,7 +52,9 @@
 !.screenrc
 !.ssh/config.example
 !.subversion/config
+!.taskrc
 !.terminfo
+!.tidyrc
 !.tmux.conf
 !.vim
 !.vimcatrc

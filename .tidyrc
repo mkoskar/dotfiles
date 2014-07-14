@@ -1,0 +1,43 @@
+# http://tidy.sourceforge.net/docs/quickref.html
+
+# HTML, XHTML, XML Options Reference
+anchor-as-name: no
+doctype: omit
+drop-empty-paras: no
+fix-backslash: no
+fix-bad-comments: no
+fix-uri:no
+join-styles: no
+literal-attributes: yes
+lower-literals: no
+merge-divs: no
+merge-spans: no
+output-html: yes
+preserve-entities: yes
+quote-ampersand: no
+quote-nbsp: no
+show-body-only: auto
+
+# Diagnostics Options Reference
+show-errors: 0
+show-warnings: 0
+
+# Pretty Print Options Reference
+break-before-br: yes
+indent: yes
+indent-spaces: 4
+tab-size: 4
+vertical-space: yes
+wrap: 80
+wrap-asp: no
+wrap-jste: no
+wrap-php: no
+wrap-sections: no
+
+# Character Encoding Options Reference
+char-encoding: utf8
+
+# Miscellaneous Options Reference
+force-output: yes
+quiet: yes
+tidy-mark: no

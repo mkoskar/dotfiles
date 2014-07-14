@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -eu
+
+dev='/dev/sr0'
+case "$(basename "$0")" in
+    sr0-iso)
+        if [ $# -eq 0 ]; then
+            blocks="$(expr $(isosize "$dev") / 2048)"
+            output="sr0_$(date '+%Y-%m-%d.%s').iso"
+            echo "Creating $output of following size: $(expr $blocks / 512) MB"
+            dd if="$dev" of="$output" bs=2048 count=$blocks
+        else
+            wodim -v -multi dev="$dev" "$1"
+        fi
+        ;;
+    *)
+        wodim dev="$dev" -checkdrive
+        ;;
+esac

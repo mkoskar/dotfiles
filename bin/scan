@@ -39,4 +39,4 @@ scanimage -d pixma:MX920_192.168.100.2 \
     >"$tmpfile"
 
 tiff2pdf -j -q "$quality" \
-    -o ~/downloads/_scanner/scan-$(date '+%Y-%m-%d.%s')_${optsline}.pdf "$tmpfile"
+    -o ~/download/_scanner/scan-$(date '+%Y-%m-%d.%s')_${optsline}.pdf "$tmpfile"

@@ -249,8 +249,8 @@ nnoremap <silent> <Leader>d: :,diffput<CR>
 nnoremap <silent> <Leader>rc :vs ~/.vimrc<CR>
 
 " XML prettify
-vnoremap <silent> <Leader>px !tidy -q -i -xml<CR>
-nnoremap <silent> <Leader>px !!tidy -q -i -xml<CR>
+vnoremap <silent> <Leader>px !tidy -config ~/.tidyrc -xml<CR>
+nnoremap <silent> <Leader>px !!tidy -config ~/.tidyrc -xml<CR>
 
 " Echos most recently caught exception (removing Vim 'class').
 function! EchoException() abort

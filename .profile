@@ -22,6 +22,7 @@ export LESSOPEN='| highlight --quiet -O xterm256 -s bluegreen %s'
 export MAILCHECK=0
 export MANPAGER='manpg'
 export ORACLE_HOME='/opt/instantclient'
+export PACKER_CACHE_DIR="$HOME/.packer_cache"
 export PAGER='pg'
 export VDPAU_DRIVER='va_gl'
 export XAUTHORITY="$HOME/.Xauthority"
@@ -31,7 +32,7 @@ eval "$(TERM=ansi dircolors)"
 export JDK_HOME="$JAVA_HOME"
 _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 _JAVA_OPTIONS+=' -Dswing.aatext=true'
-_JAVA_OPTIONS+=' -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+#_JAVA_OPTIONS+=' -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
 export _JAVA_OPTIONS
 export _JAVA_AWT_WM_NONREPARENTING=1
 
