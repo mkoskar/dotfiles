@@ -85,9 +85,7 @@ rsync -aAHSX / "$target/full-backup/master" \
       --exclude-from=- <<-EOF
 	*/lost+found
 	/dev/*
-	/home/*/.adobe/*
 	/home/*/.cache/*
-	/home/*/.macromedia/*
 	/home/*/.thumbnails/*
 	/media/*
 	/mnt/*

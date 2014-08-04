@@ -1,5 +1,6 @@
 *
 !.Xresources
+!.adobe
 !.attic
 !.authinfo.example
 !.bash_profile
@@ -37,6 +38,7 @@
 !.lesskey
 !.local/share/applications/mimeapps.list
 !.local/share/fonts/make.sh
+!.macromedia
 !.makepkg.conf
 !.mbsyncrc.example
 !.moc/config

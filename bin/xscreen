@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$(xserverq name)" = 'X' ]; then
+if [ "$(xserverq name)" = 'Xorg.bin' ]; then
     autorandr -c --force
 fi
 

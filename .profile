@@ -24,6 +24,7 @@ export MANPAGER='manpg'
 export ORACLE_HOME='/opt/instantclient'
 export PACKER_CACHE_DIR="$HOME/.packer_cache"
 export PAGER='pg'
+export PIP_REQUIRE_VIRTUALENV='true'
 export VDPAU_DRIVER='va_gl'
 export XAUTHORITY="$HOME/.Xauthority"
 

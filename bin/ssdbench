@@ -1,28 +1,24 @@
 #!/bin/bash
 
-cd ~/tmp
-pwd
+cd ~
+out=benchfile
 
-#echo '--- hdparm ----------'
+echo '--- hdparm ----------'
 
-#for i in {1..5}; do
-    sudo /usr/bin/hdparm -Tt /dev/sda
-#done
+sudo /usr/bin/hdparm -Tt /dev/sda
 
-echo '--- write ----------'
+echo $'\n--- write ----------'
 
 for i in {1..5}; do
     sudo /usr/bin/bash -c 'echo 3 >/proc/sys/vm/drop_caches'
-    dd if=/dev/zero of=tempfile bs=1M count=1024 conv=fdatasync,notrunc
+    dd if=/dev/zero of="$out" bs=1M count=1024 conv=fdatasync,notrunc
 done
 
-echo '--- read ----------'
+echo $'\n--- read ----------'
 
 for i in {1..5}; do
     sudo /usr/bin/bash -c 'echo 3 >/proc/sys/vm/drop_caches'
-    dd if=tempfile of=/dev/null bs=1M count=1024
+    dd if="$out" of=/dev/null bs=1M count=1024
 done
 
-dd if=tempfile of=/dev/null bs=1M count=1024
-
-rm tempfile
+rm "$out"

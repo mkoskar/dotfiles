@@ -1,2 +1,6 @@
-*.swp
+*.o
 *.pyc
+*.pyo
+*.so
+*.swp
+.tup

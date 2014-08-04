@@ -24,21 +24,21 @@ fi
 xkb
 xscreen
 
-main() {
+_main() {
     osdd &
     twmnd &
     workrave &
-    xmonad
+    _xmonad
 }
 
-xmonad() {
-    tray &
-    /usr/bin/xmonad
-}
-
-openbox() {
+_openbox() {
     tint2 &
-    /usr/bin/openbox
+    openbox
+}
+
+_xmonad() {
+    tray &
+    xmonad
 }
 
 [ $# -gt 0 ] && eval "$*"

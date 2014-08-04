@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec google-chrome-stable --enable-extension-timeline-api
+exec google-chrome-stable
