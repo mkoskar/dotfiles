@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+# Synchronize all external mailboxes including post-processing.
+# This is intended to be started by a service manager of some kind.
+
+set -e
+
+prgname='mbsync'
+
+log() {
+    echo "$*" >&2
+}
+
+t_begin="$(date +%s)"
+
+cleanup() {
+    exitcode=$?
+    t_end="$(date +%s)"
+    runtime=$((t_end - t_begin))
+    echo "exiting after ${runtime}s ($exitcode)"
+    if [ $exitcode -eq 0 ]; then
+        notify-send "___ $prgname ___"
+    else
+        notify-send "___ $prgname FAIL ___"
+    fi
+}
+trap cleanup EXIT
+
+# ----------------------------------------
+
+. ~/.profile
+
+# hardcoded X server DISPLAY
+export DISPLAY=':1'
+
+/usr/bin/mbsync -q -a
+notmuch new --quiet 2>/dev/null

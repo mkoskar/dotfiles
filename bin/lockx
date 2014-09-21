@@ -11,8 +11,8 @@
 
 set -e
 
-# because of where `vtswitch-lock` is installed
-export PATH="/home/miro/bin:$PATH"
+basedir="$(dirname "$(realpath "$0")")"
+export PATH="$basedir:$PATH"
 
 # target user
 user='miro'

@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -e
+
+get() {
+    xdotool search --classname "$@"
+}
+
+get_() {
+    ids=($(get "$@"))
+}
+
+assert() {
+    #get_ --sync "$1"
+    # ^^^ too slow; instead, sleep a bit and try again
+    sleep 0.3
+    get_ "$1"
+}
+
+close() {
+    #get "$1" windowkill %@ || true
+    get_ "$1" || true
+    for id in "${ids[@]}"; do
+        wmctrl -i -c "$id"
+    done
+}
+
+unset TMUX
+
+name='s_tmp'
+close "$name"
+term -name "$name" -e trun s tmp &
+assert "$name"
+
+name='s_aux'
+close "$name"
+term -name "$name" -e trun s aux &
+assert "$name"
+
+name='s_wrk'
+close "$name"
+term -name "$name" -e trun s wrk &
+assert "$name"
+wmctrl -i -a "${ids[0]}"

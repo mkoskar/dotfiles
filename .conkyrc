@@ -1,0 +1,118 @@
+# vim: ft=conf fdm=marker
+
+# settings {{{
+out_to_console no
+out_to_ncurses yes
+short_units yes
+top_cpu_separate yes
+top_name_width 10
+update_interval 1.0
+# }}}
+
+TEXT
+
+ $sysname $nodename $kernel $machine
+
+${color cyan}\
+ $time\
+${color white}
+ $utime UTC
+ $uptime
+
+# cpu {{{
+${color cyan}\
+ cpu: $cpu% (${cpu cpu1} ${cpu cpu2} ${cpu cpu3} ${cpu cpu4})\
+${color white}
+ freq: ${freq_g 1} | ${freq_g 3}
+ load: ${loadavg 1} / ${loadavg 2} / ${loadavg 3}
+\
+${if_match ${top cpu 1} >= 10}${color green}${endif}\
+${if_match ${top cpu 1} >= 20}${color yellow}${endif}\
+ ${top cpu 1}% [${top pid 1}] ${top name 1}\
+${color white}
+\
+${if_match ${top cpu 2} >= 10}${color green}${endif}\
+${if_match ${top cpu 2} >= 20}${color yellow}${endif}\
+ ${top cpu 2}% [${top pid 2}] ${top name 2}\
+${color white}
+\
+${if_match ${top cpu 3} >= 10}${color green}${endif}\
+${if_match ${top cpu 3} >= 20}${color yellow}${endif}\
+ ${top cpu 3}% [${top pid 3}] ${top name 3}\
+${color white}
+# }}}
+
+# mem {{{
+${color cyan}\
+ mem: $memperc% ($mem / $memmax)\
+${color white}
+ free: $memfree / $memeasyfree ($buffers + $cached)
+\
+${if_match ${to_bytes ${top_mem mem_res 1}} >= 104857600}${color green}${endif}\
+${if_match ${to_bytes ${top_mem mem_res 1}} >= 209715200}${color yellow}${endif}\
+ ${top_mem mem 1}% [${top_mem pid 1}] ${top_mem name 1} ${top_mem mem_res 1}\
+${color white}
+\
+${if_match ${to_bytes ${top_mem mem_res 2}} >= 104857600}${color green}${endif}\
+${if_match ${to_bytes ${top_mem mem_res 2}} >= 209715200}${color yellow}${endif}\
+ ${top_mem mem 2}% [${top_mem pid 2}] ${top_mem name 2} ${top_mem mem_res 2}\
+${color white}
+\
+${if_match ${to_bytes ${top_mem mem_res 3}} >= 104857600}${color green}${endif}\
+${if_match ${to_bytes ${top_mem mem_res 3}} >= 209715200}${color yellow}${endif}\
+ ${top_mem mem 3}% [${top_mem pid 3}] ${top_mem name 3} ${top_mem mem_res 3}\
+${color white}
+# }}}
+
+# io {{{
+${color cyan}\
+ /dev/sda (${ioscheduler sda}): ${diskio_read /dev/sda} / ${diskio_write /dev/sda}\
+${color white}
+\
+${if_match ${to_bytes ${top_io io_write 1}} >= 102400}${color green}${endif}\
+${if_match ${to_bytes ${top_io io_write 1}} >= 512000}${color yellow}${endif}\
+ ${top_io io_perc 1}% [${top_io pid 1}] ${top_io name 1} ${top_io io_read 1} / ${top_io io_write 1}\
+${color white}
+\
+${if_match ${to_bytes ${top_io io_write 2}} >= 102400}${color green}${endif}\
+${if_match ${to_bytes ${top_io io_write 2}} >= 512000}${color yellow}${endif}\
+ ${top_io io_perc 2}% [${top_io pid 2}] ${top_io name 2} ${top_io io_read 2} / ${top_io io_write 2}\
+${color white}
+\
+${if_match ${to_bytes ${top_io io_write 3}} >= 102400}${color green}${endif}\
+${if_match ${to_bytes ${top_io io_write 3}} >= 512000}${color yellow}${endif}\
+ ${top_io io_perc 3}% [${top_io pid 3}] ${top_io name 3} ${top_io io_read 3} / ${top_io io_write 3}\
+${color white}
+# }}}
+
+ mnt /: ${fs_free /} (${fs_free_perc /}%) free
+ mnt /home: ${fs_free /home} (${fs_free_perc /home}%) free
+
+ ns: ${nameserver}
+ gw: ${gw_iface} > ${gw_ip}
+
+${color cyan}\
+ eth0:  ${addrs eth0}\
+${color white}
+${color yellow}\
+        ${downspeed eth0} / ${upspeed eth0}\
+${color white}
+
+${color cyan}\
+ wlan0: ${addrs wlan0}\
+${color white}
+        ${wireless_ap wlan0} | ${wireless_mode wlan0}
+        ${wireless_essid wlan0} | q${wireless_link_qual_perc wlan0} | ${wireless_bitrate wlan0}
+${color yellow}\
+        ${downspeed wlan0} / ${upspeed wlan0}\
+${color white}
+
+${if_match "${acpiacadapter AC}" == "off-line"}${color yellow}${endif}\
+ ac: ${acpiacadapter AC}
+ battery: $battery ${if_empty $battery_time}${else}($battery_time)${endif}\
+${color white}
+
+${if_match ${hwmon 1 fan 1} > 0}${color yellow}${endif}\
+ fan: ${hwmon 1 fan 1} rpm\
+${color white}
+ temp core: ${hwmon 0 temp 1} ${hwmon 0 temp 2} ${hwmon 0 temp 3} | sda: ${hddtemp /dev/sda}

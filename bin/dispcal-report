@@ -2,7 +2,7 @@
 
 set -e
 
-prgname="${0##*/}"
+prgname="$(basename "$0")"
 
 echo $'\n> Check X display root window _ICC_PROFILE atoms:'
 xprop -root -len 8 _ICC_PROFILE _ICC_PROFILE_1 _ICC_PROFILE_2
@@ -18,10 +18,10 @@ echo
 read -N1 -s -p 'Your choice: ' dsel
 echo
 
-if [[ ! "$dsel" =~ ^[1-9]$ ]] || (( $dsel > ${#dall[@]} )); then
+if [[ ! "$dsel" =~ ^[1-9]$ ]] || (($dsel > ${#dall[@]})); then
     echo "$prgname: error: invalid choice" && exit 2
 fi
-echo "${dall[$((dsel-1))]}"
+echo "${dall[$((dsel - 1))]}"
 
 # -H                Use high resolution spectrum mode (if available)
 # -F                Fill whole screen with black background

@@ -68,7 +68,7 @@ umount_device() {
 cd /sys/class/block
 
 if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") <block-device-name> (e.g., sda, dm-0)" >&2
+    echo "usage: $(basename "$0") block-device-name (e.g., sda, dm-0)" >&2
     exit 2
 fi
 

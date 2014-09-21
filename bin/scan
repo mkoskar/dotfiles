@@ -22,7 +22,7 @@ optsline="${mode}-${resolution}dpi-jq${quality}"
 
 # --source Flatbed|Automatic Document Feeder|ADF Duplex [Flatbed]
 # --mode auto|Color|Gray|Lineart [Color]
-# --resolution auto||75|150|300|600|1200|2400dpi [75]
+# --resolution auto|75|150|300|600|1200|2400dpi [75]
 
 tmpfile="$(mktemp --suffix=.tiff 2>/dev/null)"
 

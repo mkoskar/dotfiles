@@ -12,10 +12,12 @@ Account example
 MaildirStore example-local
 Path ~/mail/example/
 Inbox ~/mail/example/INBOX
+Flatten .
 
 Channel example
 Master :example-remote:
 Slave :example-local:
 Patterns *
-Create Slave
+Create Both
+Expunge Both
 SyncState *

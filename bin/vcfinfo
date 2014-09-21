@@ -1,0 +1,6 @@
+#!/bin/bash
+
+awk -F: '
+/FN:/ { print "\n" $2 }
+/TEL;/ { print $2 }
+'

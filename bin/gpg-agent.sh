@@ -4,11 +4,11 @@
 info="$HOME/.gnupg/gpg-agent-info"
 
 (
-    [ -f "$info" ] && . "$info"
+    [ -e "$info" ] && . "$info"
 
-    if [ -n "$GPG_AGENT_INFO" ] &&
-            ! ps -u -p "$(echo "$GPG_AGENT_INFO" | cut -d: -f 2)" \
-            >/dev/null 2>&1; then
+    if [ -z "$GPG_AGENT_INFO" ] ||
+            ! ps -up "$(echo "$GPG_AGENT_INFO" | cut -d: -f2)" \
+            &>/dev/null; then
         gpg-agent -q --daemon --log-file="$TMPDIR/gpg-agent.log" >|"$info"
         chmod 600 "$info"
     fi

@@ -6,13 +6,13 @@ umask 022
 
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/opt/bin:$PATH"
-export PATH="$HOME/projects/pub/tcolors/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 
 export LANG='en_US.UTF-8'
 export LC_COLLATE='C'
 export LD_LIBRARY_PATH="$HOME/opt/lib"
 
+export ASPROOT="$HOME/.asp"
 export BROWSER='firefox'
 export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
 export EDITOR='e'
@@ -40,5 +40,5 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export TMPDIR="/tmp/$USER"
 [ -d "$TMPDIR" ] || mkdir -p -m 700 "$TMPDIR"
 
-source ~/bin/ssh-agent.sh
-source ~/bin/gpg-agent.sh
+[ -f ~/bin/ssh-agent.sh ] && . ~/bin/ssh-agent.sh
+[ -f ~/bin/gpg-agent.sh ] && . ~/bin/gpg-agent.sh

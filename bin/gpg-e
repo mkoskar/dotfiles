@@ -3,4 +3,4 @@
 input="${1:--}"
 output="${2:--}"
 
-gpg -e -r 35FD5DFB -o "$output" -q --no-tty "$input"
+gpg -q -e -r 35FD5DFB -o "$output" "$input"

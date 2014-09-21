@@ -13,6 +13,7 @@ import XMonad.Actions.UpdatePointer
 import XMonad.Actions.Warp
 
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.Minimize
@@ -44,7 +45,7 @@ myStatusBar conf = statusBar "statusbar" myPP myToggleStrutsKey conf
     myPP = defaultPP
         { ppCurrent = color "#55FF55" "" . wrap "[" "]"
         , ppVisible = color "#FEED6A" "" . wrap "(" ")"
-        , ppUrgent = color "#FF5555" "#FEEF6A" . pad
+        , ppUrgent = color "#BB4455" "#FEEF6A" . pad
         , ppSep = " "
         , ppTitle = color "#EFEFEF" "" . shorten 100
         , ppOrder = \(workspaces : layout : title : extras) -> [workspaces, title]
@@ -72,16 +73,19 @@ myConfig = defaultConfig
     }
   where
     myModMask = mod4Mask
-    myTerminal = "urxvtc"
-    myWorkspaces = map show [1..9]
+    myTerminal = "term"
+    myWorkspaces = map show [0..9]
     myScratchpads =
-        [ NS "term" (myTerminal ++ " -name sp_term") (resource =? "sp_term")
-          (customFloating $ W.RationalRect 0.1 0.1 0.8 0.8)
-        , NS "htop" (myTerminal ++ " -name sp_htop -e htop") (resource =? "sp_htop")
-          (customFloating $ W.RationalRect 0.05 0.05 0.9 0.9)
+        [ NS "sp0" (myTerminal ++ " -name sp0 -e trun s adm") (resource =? "sp0")
+          (customFloating $ W.RationalRect 0.03 0.03 0.94 0.94)
+        , NS "sp1" (myTerminal ++ " -name sp1 -e trun s mon") (resource =? "sp1")
+          (customFloating $ W.RationalRect 0.03 0.03 0.94 0.94)
         ]
     myManageHook = composeOne
                        [ isDialog -?> doCenterFloat
+                       , resource =? "s_aux" -?> doShift "2"
+                       , resource =? "s_tmp" -?> doShift "2"
+                       , resource =? "s_wrk" -?> doShift "1"
                        , className =? "Skype" -?> doFloat
                        ] <+>
                    toggleHook "doFloat" doFloat <+>
@@ -102,17 +106,17 @@ myConfig = defaultConfig
                    )
       where
         myTheme = defaultTheme
-            { inactiveBorderColor = inactiveColor myTheme
-            , activeBorderColor = activeColor myTheme
+            { activeBorderColor = activeColor myTheme
+            , inactiveBorderColor = inactiveColor myTheme
             , urgentBorderColor = urgentColor myTheme
 
-            , inactiveTextColor = "#888888"
             , activeTextColor = "#87CEFA"
-            , urgentTextColor = activeTextColor myTheme
+            , inactiveTextColor = "#888888"
+            , urgentTextColor = "#BB4455"
 
             , activeColor = "#000000"
             , inactiveColor = "#333333"
-            , urgentColor = "#FDB436"
+            , urgentColor = "#FEEF6A"
 
             , fontName = "xft:local_xmonad"
             , decoWidth = 500
@@ -122,10 +126,10 @@ myConfig = defaultConfig
         myTall = ResizableTall 1 0.05 0.5 []
     myKeymap =
         [
-          -- M-[1..9] - switch to workspace N
-          -- M-S-[1..9] - move client to workspace N
+          -- M-[0..9] - switch to workspace N
+          -- M-S-[0..9] - move client to workspace N
           ("M" ++ m ++ "-" ++ k, windows $ f i)
-            | (i, k) <- zip myWorkspaces $ map show [1..9]
+            | (i, k) <- zip myWorkspaces $ map show [0..9]
             , (f, m) <- [(W.greedyView, ""), (W.shift, "-S")]
         ]
         ++
@@ -221,8 +225,8 @@ myConfig = defaultConfig
         , ("M-S-<Return>", spawn myTerminal)
 
           -- scratchpads
-        , ("M-S-;", namedScratchpadAction myScratchpads "term")
-        , ("M-; M-;", namedScratchpadAction myScratchpads "htop")
+        , ("M-S-;", namedScratchpadAction myScratchpads "sp0")
+        , ("M-; M-;", namedScratchpadAction myScratchpads "sp1")
 
           -- screenshots
         , ("M-<Print>", spawn "scrot -m ~/tmp/shot-%Y-%m-%d.%s.png -e 'feh -Z. $f'")
@@ -247,13 +251,14 @@ myConfig = defaultConfig
 
           -- other
         , ("M-<F10>", spawn "xscreen && xmonad-session-repair")
+        , ("M-S-<F10>", spawn "xscreen-mobile && xmonad-session-repair")
         , ("M-<F12>", spawn "grabc 2>&1 | xsel -i")
         , ("M-S-<F12>", spawn "xmeasure | xsel -i")
-        , ("M-S-<Home>", spawn "urxvtc -e pg ~/projects/meta.rst")
+        , ("M-S-<Home>", spawn $ myTerminal ++ " -e pg ~/projects/meta.rst")
         , ("M-S-b", spawn "backlight-toggle")
         , ("M-; M-l", spawn "sudo lockx")
         , ("M-; M-d", spawn "dpms-toggle")
         , ("M-; M-w", spawn "wifi-toggle")
         ]
 
-main = xmonad =<< myStatusBar (withUrgencyHook NoUrgencyHook myConfig)
+main = xmonad =<< myStatusBar (withUrgencyHook NoUrgencyHook $ ewmh myConfig)

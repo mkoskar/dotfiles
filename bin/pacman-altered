@@ -1,0 +1,14 @@
+#!/bin/bash
+
+join_nl() {
+    local IFS=$'\n'
+    echo "$*"
+}
+
+strings=(
+    ' 0 altered files'
+    '(Modification time mismatch)'
+)
+
+_strings=$(join_nl "${strings[@]}")
+LC_ALL=C pacman -Qkk 2>&1 | grep -Fv "$_strings"

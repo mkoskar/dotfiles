@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+    echo "usage: $(basename "$0") <device>" >&2
+    exit 2
+fi
+
+target="$1"
+
+process() {
+    echo $'\n--------------------------------------------------'
+    echo "> hdparm -I $target"
+
+    sudo hdparm -I "$target"
+
+    echo $'\n--------------------------------------------------'
+    echo -e "> smartctl -a $target\n"
+
+    sudo smartctl -a "$target"
+}
+
+process | pg

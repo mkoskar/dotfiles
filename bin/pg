@@ -9,8 +9,8 @@
 set -e
 
 if [ ! -t 1 ]; then
-    echo 'stdout is not a tty' >&2
-    exit 1
+    cat
+    exit
 fi
 
 run() {

@@ -1,3 +1,16 @@
 #!/bin/bash
 
-exec google-chrome-stable
+# SEEALSO: http://peter.sh/experiments/chromium-command-line-switches/
+#
+# --disable-software-rasterizer
+# --force-gpu-rasterization
+# --ignore-gpu-blacklist
+# --no-experiments
+# --num-raster-threads
+# --silent-launch
+# --video-threads
+
+exec google-chrome-stable \
+    --restore-last-session \
+    --ignore-gpu-blacklist \
+    --force-gpu-rasterization "$@"

@@ -2,4 +2,4 @@
 Description=mbsync timer
 
 [Timer]
-OnUnitInactiveSec=120s
+OnUnitInactiveSec=15m

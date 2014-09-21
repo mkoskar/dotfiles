@@ -1,3 +1,5 @@
+" vim: ft=vim
+
 set nocompatible
 let mapleader = ','
 
@@ -96,7 +98,37 @@ nnoremap k gk
 xnoremap j gj
 xnoremap k gk
 
+nmap <M-j> 5j
+nmap <M-k> 5k
+xmap <M-j> 5j
+xmap <M-k> 5k
+
 nnoremap <silent> <C-A> :AnsiEsc<CR>
+
+" Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding.
+let g:meta_enabled = 0
+function! s:MetaToggle() abort
+    let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+    let i = 0
+    let n = len(chars)
+    while i < n
+        let c = chars[i]
+        if g:meta_enabled
+            exec 'set <M-'.c.'>='
+        else
+            exec 'set <M-'.c.">=\e".c
+        endif
+        let i += 1
+    endwhile
+    let g:meta_enabled = !g:meta_enabled
+    if exists('g:vimrc_done') && g:vimrc_done
+        redraw
+        echohl WarningMsg | echo 'Meta '.(g:meta_enabled ? 'ON' : 'OFF') | echohl None
+    endif
+endfunction
+command! MetaToggle call s:MetaToggle()
+nnoremap <silent> <Leader>mm :MetaToggle<CR>
+silent MetaToggle
 
 " Reloads buffer after number (defaults to 1) of seconds have passed.
 map <silent> F :Reload<CR>F<CR>
@@ -127,4 +159,4 @@ augroup PGRC
 augroup END
 endif
 
-" vim: ft=vim
+let g:vimrc_done = 1

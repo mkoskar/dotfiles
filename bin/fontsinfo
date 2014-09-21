@@ -64,4 +64,5 @@ patterns=(
     'Zapf Dingbats'
 )
 match "${patterns[@]}"
+
 echo

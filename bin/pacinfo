@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# SEEALSO: http://wiki.archlinux.org/index.php/Pacman_tips
+
+echo $'\n--------------------------------------------------'
+echo $'> Foreign & Explicit:\n'
+
+pacman -Qem
+
+echo $'\n--------------------------------------------------'
+echo $'> Unrequired dependencies:\n'
+
+pacman -Qdt
+
+echo $'\n--------------------------------------------------'
+echo $'> Unmet dependencies:\n'
+
+pacman -T $(expac -l '\n' %D | sort -u)
+
+echo $'\n--------------------------------------------------'
+echo $'> Modified "Backup Files":\n'
+
+LC_ALL=C pacman -Qii | grep -E -e '^MODIFIED\s' -e '^UNREADABLE\s'
+
+echo $'\n--------------------------------------------------'
+echo $'> Missing files:\n'
+
+pacman -Qqk
+
+echo

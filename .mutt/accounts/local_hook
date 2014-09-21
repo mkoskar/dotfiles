@@ -1,6 +1,8 @@
 # vim: ft=muttrc
 
+#set folder = $my_local
 set from = $USER
+set my_base = $my_local
 
-set spoolfile = $my_local
-unset read_only
+# mailboxes
+set spoolfile = $my_local_spoolfile

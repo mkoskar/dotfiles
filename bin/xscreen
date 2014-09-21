@@ -1,7 +1,11 @@
 #!/bin/bash
 
 if [ "$(xserverq name)" = 'Xorg.bin' ]; then
-    autorandr -c --force
+    if [ "$(basename "$0")" = 'xscreen-mobile' ]; then
+        autorandr -l mobile
+    else
+        autorandr -c -d mobile --force
+    fi
 fi
 
 xset b off s off dpms 0 0 300

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+[ -e ~/bin/term.sh ] && . ~/bin/term.sh
+
+# wait a bit for WM geometry to kick-in
+sleep 0.05
+
+exec "$@"

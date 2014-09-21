@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e
+
+target="$1"
+tdir="$(dirname "$target")"
+tname="$(basename "$target")"
+moveto="${2:-$tdir/.$tname}"
+
+[ -t 0 ] || target=/dev/stdin
+[ -z "$target" -o ! -r "$target" ] && exit 1
+
+# NOTE: filename per line
+# (newlines inside filename are not considered)
+
+echo
+echo 'm) move'
+echo 'D) delete'
+
+read -N1 -s -p ': ' sel
+case "$sel" in
+    [mM])
+        mkdir -p "$moveto"
+        cmd=(mv {} -t "$moveto")
+        ;;
+    D)
+        cmd=(rm {})
+        ;;
+    *)
+        echo -e '---\n'
+        exit 1
+esac
+echo -e "$sel\n"
+
+grep -vE '^#!' "$target" | xargs -d '\n' -I{} "${cmd[@]}"

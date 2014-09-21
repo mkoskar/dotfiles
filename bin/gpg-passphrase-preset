@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e
+
+cmd=/usr/lib/gnupg/gpg-preset-passphrase
+
+_preset() {
+    </dev/tty IFS= read -s -r -p "Passphrase for (${1:0:8}...): " pass;
+    echo
+    [ -z "$pass" ] && return 1
+    <<<"$pass" $cmd --preset "$1"
+    #<<<"PRESET_PASSPHRASE <string_or_keygrip> <timeout> <hexstring>" gpg-connect-agent
+}
+
+_clear() {
+    $cmd --forget "$1"
+    #<<<"CLEAR_PASSPHRASE $1" gpg-connect-agent
+}
+
+# ----------------------------------------
+
+ids=()
+[ -t 0 ] && src=~/.gnupg/gpg-preset-ids || src=/dev/stdin
+while IFS= read -r line; do
+    ids+=("$line")
+done <"$src"
+
+if [ ${#ids} -eq 0 ]; then
+    exit 1
+fi
+
+[ "$(basename "$0")" = 'gpg-passphrase-clear' ] \
+    && action='clear' || action='preset'
+
+# <id> should be respective secret key fingerprint reported by:
+# $ gpg --fingerprint --fingerprint
+
+for id in "${ids[@]}"; do
+    _$action "$id"
+done

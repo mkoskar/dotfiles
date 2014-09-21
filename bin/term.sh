@@ -1,6 +1,10 @@
 # Source this file to initialize terminal.
 # :Compatibility: POSIX
 
+[ ! -t 0 ] && return
+
+export GPG_TTY="$(tty)"
+
 if [ ! "${TERM%%-*}" = 'screen' ]; then
     # not screen
     export TERMOLD="$TERM"

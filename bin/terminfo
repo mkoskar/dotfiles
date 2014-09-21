@@ -13,6 +13,7 @@ echo `tput rev`reverse`tput sgr0`
 
 echo $'\n--------------------------------------------------'
 echo "TERM = $TERM"
+echo "TERMOLD = $TERMOLD"
 echo "TERMINFO = $TERMINFO"
 echo "TERMINFO_DIRS = $TERMINFO_DIRS"
 echo

@@ -1,3 +1,7 @@
 #!/bin/bash
 
-exec stdiner vim -NOn -i NONE -u NONE "$@"
+set -e
+
+server="${VIMSERVER:-$TMUX}"
+vim --serverlist | grep -Fxiq "$server" || exit 1
+vim --servername "$server" --remote-tab-silent "$@"

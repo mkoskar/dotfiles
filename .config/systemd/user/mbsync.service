@@ -5,4 +5,4 @@ After=dbus.socket
 
 [Service]
 Type=simple
-ExecStart=/home/miro/bin/mbsync
+ExecStart=/home/miro/bin/mbsync-bin

@@ -1,0 +1,94 @@
+#!/bin/bash
+
+set -e
+shopt -s nullglob
+
+get() {
+    local sep="${3:-/}"
+    local in="$1$sep$2"
+    local out="_$2"
+    typeset -g "$out"=
+    [ -e "$in" ] && typeset -g "$out"="$(<"$in")" || true
+}
+
+get_() {
+    get "$1" "$2" _
+}
+
+uconv() {
+    [ -n "$1" ] && typeset -g "$2"=$(($1 / (1000 * 1000))) || true
+}
+
+echo $'\n--------------------------------------------------'
+echo $'> cpu:\n'
+
+grep -F 'cpu MHz' /proc/cpuinfo
+
+echo $'\n--------------------------------------------------'
+base='/sys/class/powercap'
+echo -e "> $base:\n"
+
+for rapl in "$base"/*; do
+    [ ! -e "$rapl/name" ] && continue
+    _rapl="${rapl##*/}"
+
+    get "$rapl" name
+
+    get "$rapl" energy_uj
+    uconv "$_energy_uj" _energy
+
+    get "$rapl" max_energy_range_uj
+    uconv "$_max_energy_range_uj" _max_energy_range
+
+    get "$rapl" power_uw
+    uconv "$_power_uw" _power
+
+    get "$rapl" max_power_range_uw
+    uconv "$_max_power_range_uw" _max_power_range
+
+    get "$rapl" enabled
+
+    [ "$_enabled" -eq 1 ] && _enabled='*' || _enabled=' '
+
+    printf $'(%s) %-16s : %-15s %8sJ / %8sJ : %8sW / %8sW\n' \
+        "$_enabled" "$_rapl" "$_name" \
+        "$_energy" "$_max_energy_range" \
+        "$_power" "$_max_power_range"
+
+    for i in 0 1 2 3 4 5 6 7 8 9; do
+        _base="$rapl/constraint_$i"
+
+        get_ "$_base" name
+
+        [ -z "$_name" ] && break
+
+        get_ "$_base" time_window_us
+        uconv "$_time_window_us" _time_window
+
+        get_ "$_base" power_limit_uw
+        uconv "$_power_limit_uw" _power_limit
+
+        get_ "$_base" max_power_uw
+        uconv "$_max_power_uw" _max_power
+
+        printf "    %-16s : %-15s %19sus : %8sW / %8sW\n" \
+            "constraint_$i" "$_name" \
+            "$_time_window_us" "$_power_limit" "$_max_power"
+    done
+    echo
+done
+
+echo '--------------------------------------------------'
+base='/sys/devices/system/cpu/intel_pstate'
+echo -e "> $base:\n"
+
+get "$base" min_perf_pct
+get "$base" max_perf_pct
+get "$base" no_turbo
+
+printf $'%-25s %-25s %-25s\n' \
+    "min_perf_pct: $_min_perf_pct" \
+    "max_perf_pct: $_max_perf_pct" \
+    "no_turbo: $_no_turbo"
+
+echo

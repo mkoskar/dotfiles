@@ -20,16 +20,18 @@ color tree          color255        default
 
 color header        color156        default       'From:'
 color header        color156        default       'Subject:'
-color body          brightcolor255  default       '\*+[^*]+\*+'
+color body          brightwhite     default       '\*+[^*]+\*+'
 color body          color255        default       '_+[^_]+_+'
 
-color index         brightcolor255  default       '~N|~O'
-color index         color167        default       '~F'
-color index         color243        default       '~D'
-color index         brightyellow    default       '~T'
+color index         brightwhite     default       ~N
+color index         color167        default       ~F
+color index         color243        default       ~D
+color index         brightyellow    default       ~T
 
 # colorindex patch
 #color index_author  color255        default       '~d <1d'
 #color index_author  color156        default       '~d >1d ~d <2d'
 #color index_author  color180        default       '~d >2d ~d <3d'
-#color index_subject color255        default       '~t miroslav.koskar'
+
+# sidebar patch
+color sidebar_new   brightwhite     default

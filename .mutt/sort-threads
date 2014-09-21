@@ -1,4 +1,4 @@
 # vim: ft=muttrc
 
 set sort = threads
-macro index,pager \140 '<enter-command>source ~/.mutt/sort-date<enter>'
+macro index \140 '<enter-command>source ~/.mutt/sort-date<enter>'

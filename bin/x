@@ -52,8 +52,8 @@ fi
 if [ "$(basename "$0")" = 'xx' ]; then
     dispno=91
     while true; do
-        [ ! -f "/tmp/.X$dispno-lock" ] && break
-        dispno="$(($dispno + 1))"
+        [ ! -e "/tmp/.X$dispno-lock" ] && break
+        dispno=$(($dispno + 1))
     done
 
     startx ~/bin/xsession "$@" -- \
@@ -68,7 +68,7 @@ vtno="$XDG_VTNR" # vtno="$(fgconsole)"
 dispno="$vtno"
 lockfile="/tmp/.X$dispno-lock"
 
-if [ -f "$lockfile" ]; then
+if [ -e "$lockfile" ]; then
     echo -e "Display $dispno is currently in use (pid=$(cat "$lockfile" | sed 's/\s//g')).\n"
     exit 1
 fi

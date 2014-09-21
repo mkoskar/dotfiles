@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+prgname="$(basename "$0")"
+
+cleanup() {
+    exitcode=$?
+    if [ $exitcode -eq 0 ]; then
+        notify-send "___ $prgname ___"
+    else
+        notify-send "___ $prgname FAIL ___"
+    fi
+}
+trap cleanup EXIT
+
+# ----------------------------------------
+
+add() {
+    local input="$1"
+    goobook add <<<"$input"
+}
+
+input="$(grep -P '^From:')"
+add "$input" &

@@ -1,15 +1,19 @@
 # vim: ft=muttrc
 
-set folder = $my_example
+#set folder = $my_example
 set from = '<email>'
+set my_base = $my_example
+set my_imap = $my_example_imap
 
-set copy
-set postpone = ask-yes
-set postponed = '+Drafts'
-set record = '+Sent'
-set smtp_url = $my_example_smtp
-set spoolfile = '+INBOX'
-unset read_only
+# mailboxes
+set spoolfile = $my_example_spoolfile
+set record = $my_example_record
+set postponed = $my_example_postponed
+set my_mbtrashed = $my_example_mbtrashed
 
-# trash patch
-#set trash = '+Trash'
+# other
+set query_command = "goobook query '%s'"
+set sendmail = /usr/bin/msmtp
+
+macro index,pager A <pipe-message>goobook-add<enter> 'add sender as contact'
+macro index,pager \ez '<shell-escape>pg ~/.msmtp.log<enter>' 'show msmtp log'

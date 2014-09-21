@@ -1,0 +1,65 @@
+#!/bin/bash
+
+set -e
+shopt -s nullglob
+
+get() {
+    local sep="${3:-/}"
+    local in="$1$sep$2"
+    local out="_$2"
+    typeset -g "$out"=
+    [ -e "$in" ] && typeset -g "$out"="$(<"$in")" || true
+}
+
+get_() {
+    get "$1" "$2" _
+}
+
+echo $'\n--------------------------------------------------'
+echo $'> sensors:\n'
+
+sensors
+
+echo '--------------------------------------------------'
+base='/sys/class/thermal'
+echo -e "> $base:\n"
+
+for cdev in "$base"/cooling_device*; do
+    _cdev="${cdev##*/}"
+
+    get "$cdev" type
+    get "$cdev" cur_state
+    get "$cdev" max_state
+
+    printf $'%-18s : %-20s %6s / %6s\n' "$_cdev" "$_type" "$_cur_state" "$_max_state"
+done
+echo
+
+for tzone in "$base"/thermal_zone*; do
+    _tzone="${tzone##*/}"
+
+    get "$tzone" type
+    get "$tzone" temp
+    get "$tzone" mode
+    get "$tzone" policy
+    get "$tzone" passive
+
+    printf $'%-18s : %-20s %6s\n' "$_tzone" "$_type" "$_temp"
+
+    [ -n "$_mode" ] && printf $'  %-16s : %-28s\n' 'mode' "$_mode"
+
+    printf $'  %-16s : %-20s\n' 'policy' "$_policy"
+
+    [ -n "$_passive" ] && printf $'  %-16s : %-28s\n' 'passive' "$_passive"
+
+    for tpoint in "$tzone"/trip_point_*_type; do
+        _base="${tpoint%%_type}"
+        _tpoint="${_base##*/}"
+
+        get_ "$_base" type
+        get_ "$_base" temp
+
+        printf $'  %-16s : %-20s %6s\n' "$_tpoint" "$_type" "$_temp"
+    done
+    echo
+done

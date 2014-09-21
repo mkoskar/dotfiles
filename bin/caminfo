@@ -1,3 +1,6 @@
 #!/bin/bash
 
+gphoto2 --auto-detect
+echo
+
 gphoto2 --abilities

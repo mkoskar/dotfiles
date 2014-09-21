@@ -14,17 +14,23 @@
     helper = netrc
 
 [alias]
-    b = branch
+    b = branch --all
     ci = commit
     co = checkout
+    conf = config --local --list
     d = difftool
     dc = difftool --cached
     df = diff
     dfc = diff --cached
-    lg = !"git lg1"
+    f = fetch --all
+    k = !gitk
+    lg = !git lg1
     lg1 = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(bold white)— %an%C(reset)%C(bold yellow)%d%C(reset)' --abbrev-commit --date=relative
     lg2 = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(bold white)— %an%C(reset)' --abbrev-commit
+    set-email = !gitconf-setemail
+    set-upstream = remote add upstream
     st = status -s
+    stu = status -su
 
 [color]
     pager = false

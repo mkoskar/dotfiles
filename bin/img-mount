@@ -12,7 +12,7 @@ if [ "$(basename "$0")" = 'img-umount' ]; then
 fi
 
 if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") <image>" >&2
+    echo "usage: $(basename "$0") image" >&2
     exit 2
 fi
 

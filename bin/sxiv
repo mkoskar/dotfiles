@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+tmpfile="$(mktemp)"
+trap 'rm -f "$tmpfile"' EXIT
+
+/usr/bin/sxiv -o "$@" >"$tmpfile"
+
+[ -s "$tmpfile" ] || exit
+
+mkdir .marked
+xargs -a "$tmpfile" -d '\n' -I{} mv {} -t .marked

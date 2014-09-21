@@ -1,5 +1,5 @@
 # ~/.bashrc
-# - executed by bash(1) for non-login shells
+# - executed by bash(1) for interactive non-login shells
 
 [ -f ~/bin/shrc.sh ] && . ~/bin/shrc.sh
 
@@ -27,14 +27,12 @@ CDPATH='.:..:~'
 PROMPT_DIRTRIM=3
 PS1='$?:\W\$ '
 
-complete -W '10m 15m 20m 25m 30m' a
-complete -W 'audio dpms rfkill xkb' status
-complete -W 'n fg bg cur' color
-complete -c cpath
-complete -c csyspath
-complete -c on
-complete -c pacoc
-complete -f paco
+complete -o nospace -W '10m 15m 20m 25m 30m' a
+complete -o nospace -c pth
+complete -o nospace -c spth
+complete -o nospace -c on
+complete -o nospace -f paco
+complete -o nospace -c pacoc
 
 . /usr/share/bash-completion/completions/man
 complete -F _man manl
@@ -42,10 +40,8 @@ complete -F _man manl
 _pacl() {
     COMPREPLY=()
     . /usr/share/bash-completion/completions/pacman
+    local cur prev
     _get_comp_words_by_ref cur prev
     _pacman_pkg Qq
 }
-complete -F _pacl pacl
-
-[ "$(type -t wo)" = 'alias' ] \
-    && complete -o default -o nospace -F _virtualenvs wo
+complete -o nospace -F _pacl pacl pacd pacp pacw paci

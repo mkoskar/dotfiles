@@ -1,0 +1,27 @@
+# vim: ft=muttrc fdm=marker
+
+set my_mail = ~/mail
+
+account-hook . 'unset imap_pass'
+folder-hook . 'source ~/.mutt/accountsrc_pre_hook'
+unmailboxes *
+
+# --- {{{
+
+# local account
+source ~/.mutt/accounts/local
+macro index,pager \e<F1> "<change-folder>$my_local_spoolfile<enter>" 'switch to local account'
+macro browser \e<F1> <exit>\e<F1> 'switch to local account'
+
+# main account
+source ~/.mutt/accounts/main
+macro index,pager \e<F2> "<change-folder>$my_main_spoolfile<enter>" 'switch to main account'
+macro browser \e<F2> <exit>\e<F2> 'switch to main account'
+
+# --- }}}
+
+folder-hook . 'source ~/.mutt/accountsrc_post_hook'
+
+# defaults
+set folder = $my_mail
+set spoolfile = $my_main_spoolfile

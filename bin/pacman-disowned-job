@@ -1,0 +1,11 @@
+#!/bin/bash
+
+basedir="$(dirname "$(realpath "$0")")"
+export PATH="$basedir:$PATH"
+
+log='/var/log/pacman-disowned.log'
+
+mv "$log" "$log.old"
+pacman-disowned >"$log"
+
+diff -U 0 "$log.old" "$log" | filterdiff --remove-timestamps

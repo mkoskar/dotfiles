@@ -1,8 +1,4 @@
-if exists($BASEDIR)
-    cd $BASEDIR
-endif
-
-if !exists($VIMDIR)
+if !exists("$VIMDIR")
     let $VIMDIR = '~/.vim'
 endif
 
@@ -25,7 +21,7 @@ set smartcase
 
 "========== tags
 set tags=./tags,tags
-if exists($BASEDIR)
+if exists("$BASEDIR")
     exec 'set tags^='.$BASEDIR.'/tags'
 endif
 
@@ -41,7 +37,7 @@ endif
 "nnoremap <silent> <C-_>f :lcs find f <C-R>=expand('<cfile>')<CR><CR>
 "nnoremap <silent> <C-_>i :lcs find i ^<C-R>=expand('<cfile>')<CR>$<CR>
 
-if exists($BASEDIR)
+if exists("$BASEDIR")
     nnoremap <silent> <F12> :!$BASEDIR/tags.sh<CR>
 endif
 
@@ -239,6 +235,7 @@ nmap <Leader>ev :vsp %%
 nmap <Leader>et :tabe %%
 
 nnoremap <silent> <C-Q> :bd<CR>
+nnoremap <silent> <Leader>rr :setl readonly!<CR>
 
 " Working on diffs
 nnoremap <silent> <Leader>du :diffup<CR>
@@ -281,6 +278,17 @@ function! TryCatchAll(command) abort
         call EchoException()
     endtry
 endfunction
+
+" Write with elevated privileges.
+function! s:Write(...) abort
+    let file = '%'
+    if a:0
+        let file = a:1
+    endif
+    exec 'silent write !sudo tee >/dev/null '.file
+    edit!
+endfunction
+command! -nargs=? W call s:Write(<f-args>)
 
 " Toggles diff mode of current buffer.
 function! s:DiffToggle() abort
@@ -346,7 +354,7 @@ nnoremap <silent> <Leader>== :call Preserve('normal gg=G')<CR>
 " Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding.
 let g:meta_enabled = 0
 function! s:MetaToggle() abort
-    let chars = '0123456789abcdefghijklmnopqrstuvwxyz'
+    let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     let i = 0
     let n = len(chars)
     while i < n
@@ -381,10 +389,10 @@ function! s:ZoomToggle() abort
     endif
 endfunction
 command! ZoomToggle call s:ZoomToggle()
-nnoremap <silent> <C-A> :ZoomToggle<CR>
+nnoremap <silent> <C-M> :ZoomToggle<CR>
 
 " Walks through list of colorschemes (q/C-C=quit, k=prev, default=next).
-function! Themes() abort
+function! s:Themes() abort
     let themes = ['luciusblack', 'hybrid', 'bclear']
     let l = len(themes)
     if !exists('s:themes_last_index')
@@ -408,11 +416,53 @@ function! Themes() abort
     redraw | echo
 endfunction
 command! Themes call s:Themes()
-nnoremap <silent> <Leader>th :call Themes()<CR>
+nnoremap <silent> <Leader>th :Themes<CR>
 
 "=====================================================================
 " 3rd party
 "=====================================================================
+
+function! s:MoveToPrevTab() abort
+    if tabpagenr('$') == 1 && winnr('$') == 1
+        return
+    endif
+    let l:tab_nr = tabpagenr('$')
+    let l:cur_buf = bufnr('%')
+    if tabpagenr() != 1
+        close!
+        if l:tab_nr == tabpagenr('$')
+            tabprev
+        endif
+        vert topleft split
+    else
+        close!
+        exe '0tabnew'
+    endif
+    exe 'b'.l:cur_buf
+endfunc
+command! MoveToPrevTab call s:MoveToPrevTab()
+nnoremap <silent> <M-H> :MoveToPrevTab<CR>
+
+function! s:MoveToNextTab() abort
+    if tabpagenr('$') == 1 && winnr('$') == 1
+        return
+    endif
+    let l:tab_nr = tabpagenr('$')
+    let l:cur_buf = bufnr('%')
+    if tabpagenr() < tab_nr
+        close!
+        if l:tab_nr == tabpagenr('$')
+            tabnext
+        endif
+        vert topleft split
+    else
+        close!
+        tabnew
+    endif
+    exe 'b'.l:cur_buf
+endfunc
+command! MoveToNextTab call s:MoveToNextTab()
+nnoremap <silent> <M-L> :MoveToNextTab<CR>
 
 "========== netrw
 let g:netrw_alto = 1
@@ -443,6 +493,7 @@ else
 endif
 
 "========== nerdtree
+"let g:NERDTreeQuitOnOpen = 1
 let g:NERDTreeBookmarksFile = $VIMDIR.'/.NERDTreeBookmarks'
 let g:NERDTreeCaseSensitiveSort = 1
 let g:NERDTreeDirArrows = 1

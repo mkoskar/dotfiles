@@ -1,13 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-    pyline
-    ~~~~~~
-
-    Simple line processor.
-
-    :Compatibility: Python 2.0 / 3.0
-"""
 
 import sys
 

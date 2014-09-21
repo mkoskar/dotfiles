@@ -1,0 +1,148 @@
+#!/bin/bash
+
+set -e
+
+prgname="$(basename "$0")"
+
+# ----------------------------------------
+
+cmd() {
+    tmux -L "${socket:-default}" "$@" >/dev/null
+}
+
+exists () {
+    cmd has -t "$session" &>/dev/null
+}
+
+new() {
+    local name="$(cmd new -d)"
+    exists || cmd rename -t "$name" "$session"
+    cmd setenv -t "$session" BASEDIR "$(pwd)" \
+        \; neww -kt :0 "$@"
+}
+
+neww() {
+    cmd neww -t "$session" "$@"
+}
+
+# ----------------------------------------
+
+_s() {
+    new
+    neww -d
+}
+
+_sp() {
+    new 'trun ranger' \
+        \; setw remain-on-exit on \
+        \; setw main-pane-height 30 \
+        \; selectl main-horizontal
+
+    neww 'trun vim --servername "$TMUX"' \
+        \; setw remain-on-exit on \
+        \; splitw -h \
+        \; setw main-pane-width 84 \
+        \; selectl main-vertical
+}
+
+# ----------------------------------------
+
+_adm() {
+    cd ~
+    _sp
+    neww -d
+}
+
+_aux() {
+    cd ~
+
+    local notesdir=~/projects/notes/src
+    new -n 'notes' -c "$notesdir" 'trun e' \
+        \; setw remain-on-exit on \
+        \; splitw -h -c "$notesdir" \
+        \; setw main-pane-width 121 \
+        \; selectl main-vertical \
+        \; selectp -t :.0
+
+    neww 'trun mutt' \
+        \; setw remain-on-exit on
+
+    neww 'trun weechat' \
+        \; setw remain-on-exit on
+
+    cmd selectw -t "$session:1"
+}
+
+_mon() {
+    cd ~
+
+    new -n 'top' 'trun onsigwinch-exec tmux selectl -- conky' \
+        \; setw remain-on-exit on \
+        \; splitw -h 'trun htop' \
+        \; setw main-pane-width 43 \
+        \; selectl main-vertical
+
+    neww -n 'journal' 'trun journalctl --system -f' \
+        \; setw remain-on-exit on \
+        \; splitw -v 'trun journalctl --user -f' \
+        \; selectl even-vertical \
+        \; selectp -t :.0
+
+    neww -n 'logs' -c /var/log
+
+    cmd selectw -t "$session:0"
+}
+
+_tmp() {
+    cd ~/tmp
+    _s
+}
+
+_wrk() {
+    cd ~/projects
+    _sp
+}
+
+# ----------------------------------------
+
+attach=1
+if [ $# -gt 0 -a -z "${1##-*}" ]; then
+    [ ! "$1" = '-d' ] && exit 2
+    unset attach
+    shift
+fi
+
+session="$1"
+if [ -z "$session" ]; then
+    session="$(pwd | sed -r "s,^$HOME(/|$),~\1,")"
+    if [ ! "$session" = '/' -a ! "$session" = '~' ]; then
+        sdigest="$(<<<"$session" sha1sum | awk '{print $1}')"
+        session="$(<<<"$session" tr '.:' _)"
+        session="=${session##*/}_#${sdigest: -2}"
+    fi
+fi
+
+socket="$2"
+
+(exec 9<"$(realpath "$0")"
+if ! flock -w 30 9; then
+    exit 3
+fi
+(exec 9<&-
+
+if ! exists; then
+    case "$session" in
+        adm | aux | mon | tmp | wrk)
+            _$session
+            ;;
+        *)
+            case "$prgname" in s | sp) ;; *) exit 2 ;; esac
+            _$prgname
+    esac
+fi
+
+))
+
+if [ -n "$attach" ]; then
+    cmd attach -t "$session"
+fi

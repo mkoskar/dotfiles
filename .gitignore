@@ -8,11 +8,13 @@
 !.bcrc
 !.config
 !.config/aurvote.example
+!.config/fish/config.fish
 !.config/fontconfig/fonts.conf
 !.config/gtk-3.0/bookmarks
 !.config/gtk-3.0/settings.ini
 !.config/openbox/menu.xml
 !.config/openbox/rc.xml
+!.config/ranger/colorschemes/custom.py
 !.config/ranger/rc.conf
 !.config/ranger/rifle.conf
 !.config/ranger/scope.sh
@@ -30,6 +32,7 @@
 !.gitmessage
 !.gnupg/gpg-agent.conf
 !.gnupg/gpg.conf
+!.goobookrc.example
 !.gtk-bookmarks
 !.gtkrc-2.0
 !.icons/default/index.theme
@@ -43,7 +46,7 @@
 !.mbsyncrc.example
 !.moc/config
 !.moc/keymap
-!.moc/themes/my_theme
+!.moc/themes/custom_theme
 !.mplayer/config
 !.msmtprc.example
 !.mutt
@@ -51,6 +54,7 @@
 !.pgrc
 !.pinforc
 !.profile
+!.rtorrent.rc
 !.screenrc
 !.ssh/config.example
 !.subversion/config
@@ -68,6 +72,7 @@
 !.xmobarrc
 !.xmonad/xmonad.hs
 !.xmonad/xmonad.hs.minimal
+!.yaourtrc
 !.zprofile
 !.zshrc
 !bin

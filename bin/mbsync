@@ -2,10 +2,10 @@
 
 set -e
 
-. ~/.profile
-
-if /usr/bin/mbsync -q -a; then
-    notify-send '___ mbsync ___'
-else
-    notify-send '___ mbsync FAIL ___'
+if [ "$(basename "$0")" = 'mbsyncoff' ]; then
+    systemctl --user stop mbsync.timer
+    exit
 fi
+
+systemctl --user start mbsync.timer
+systemctl --user start mbsync.service

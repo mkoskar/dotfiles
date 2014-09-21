@@ -19,7 +19,7 @@ while getopts 'gs:' opt; do
             err_usage
     esac
 done
-shift $((OPTIND-1))
+shift $((OPTIND - 1))
 
 [ $# -eq 0 ] && err_usage
 

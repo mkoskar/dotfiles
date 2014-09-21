@@ -3,8 +3,6 @@
 
 [ -f ~/bin/shrc.sh ] && . ~/bin/shrc.sh
 
-TMPPREFIX="${TMPDIR:-/tmp}/zsh"
-
 # continue only in case of interactive shell
 # ------------------------------------------
 case $- in *i*) ;; *) return ;; esac
@@ -13,11 +11,13 @@ CDPATH='.:..:~'
 HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
 HISTSIZE=500
 SAVEHIST=5000
+TMPPREFIX="${TMPDIR:-/tmp}/zsh"
 
 # ensure path arrays do not contain duplicates
 typeset -gU path fpath cdpath
 
 zmodload zsh/attr
+zmodload zsh/complist
 zmodload -F zsh/stat b:zstat
 
 autoload -Uz add-zsh-hook
@@ -130,6 +130,21 @@ zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<-
 zstyle ':completion:*:ssh:*' group-order users hosts-domain hosts-host hosts-ipaddr
 zstyle ':completion:*:ssh:*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
 
+# custom
+compctl -k "(10m 15m 20m 25m 30m)" a
+compctl -m pth
+compctl -m spth
+compctl -m on
+compctl -f paco
+compctl -m pacoc
+
+function _pacl {
+    local -a packages_long
+    packages_long=(/var/lib/pacman/local/"$1"*(/))
+    reply=(${${packages_long#/var/lib/pacman/local/}%-*-*})
+}
+compctl -K _pacl pacl pacd pacp pacw paci
+
 #========== window-title
 
 function set-window-title {
@@ -137,7 +152,6 @@ function set-window-title {
     zformat -f title '%n@%m:%s' "s:${PWD/#$HOME/~}"
     printf '\e]0;%s\e\' "${(V%)title}"
 }
-
 add-zsh-hook precmd set-window-title
 
 #========== zle
@@ -248,6 +262,8 @@ bindkey -M vicmd 'u' undo
 bindkey -M vicmd '\eh' run-help
 
 bindkey -M isearch . self-insert
+
+bindkey -M menuselect '^U' send-break
 
 #========== zsh-syntax-highlighting
 
