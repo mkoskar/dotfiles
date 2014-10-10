@@ -7,7 +7,7 @@ if [ $# -eq 0 ]; then
     exit 2
 fi
 
-target="$1"
+target=$1
 
 [ ! -w "$target" -o -x "$target" ] && exit 1
 

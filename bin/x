@@ -30,19 +30,20 @@ if [ $# -eq 0 ]; then
 
     read -N1 -s -p ': ' sel
     test ! "$sel" && sel=m
-    case "$sel" in
+    case $sel in
         [mM])
-            set -- _main
+            set -- main
             ;;
         [oO])
-            set -- _openbox
+            set -- openbox
             ;;
         [xX])
-            set -- _xmonad
+            set -- xmonad
             ;;
         *)
             echo -e '---\n'
             exit 1
+            ;;
     esac
     echo -e "$sel\n"
 fi
@@ -53,7 +54,7 @@ if [ "$(basename "$0")" = 'xx' ]; then
     dispno=91
     while true; do
         [ ! -e "/tmp/.X$dispno-lock" ] && break
-        dispno=$(($dispno + 1))
+        dispno=$((dispno+1))
     done
 
     startx ~/bin/xsession "$@" -- \
@@ -64,8 +65,8 @@ fi
 
 # -------- /usr/bin/X
 
-vtno="$XDG_VTNR" # vtno="$(fgconsole)"
-dispno="$vtno"
+vtno=$XDG_VTNR # vtno=$(fgconsole)
+dispno=$vtno
 lockfile="/tmp/.X$dispno-lock"
 
 if [ -e "$lockfile" ]; then

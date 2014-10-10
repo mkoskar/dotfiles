@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cd ~/projects/notes/src/09-root
+
+output() {
+    local files=([0-9]*) l=${#files[@]}
+    for i in "${!files[@]}"; do
+        cat "${files[i]}"
+        ((i != l-1)) && \
+            echo $'\n\n--------------------------------------------------\n\n'
+    done
+}
+
+output | PAGER_TITLE='Words Of Wisdom' pg -c 'set ft=rst'

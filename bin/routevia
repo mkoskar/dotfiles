@@ -1,0 +1,10 @@
+#!/bin/bash
+
+gw=${1:-192.168.88.5}
+dev=${2:-tun0}
+
+while true; do
+    read line
+    [ -z "$line" ] && break
+    sudo ip route add "$line" via "$gw" dev "$dev"
+done

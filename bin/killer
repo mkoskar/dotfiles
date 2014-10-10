@@ -8,29 +8,27 @@ err_usage() {
 }
 
 while getopts 'gs:' opt; do
-    case "$opt" in
+    case $opt in
         g)
             gopt=1
             ;;
         s)
-            sopt="$OPTARG"
+            sopt=$OPTARG
             ;;
         *)
             err_usage
+            ;;
     esac
 done
-shift $((OPTIND - 1))
+shift $((OPTIND-1))
 
 [ $# -eq 0 ] && err_usage
 
-sig="${sopt:-SIGTERM}"
+sig=${sopt:-SIGTERM}
 
 if [ -n "$gopt" ]; then
     for pid in "$@"; do
-        pgid="$(ps -p "$pid" -o pgid=)"
-        [ -z "$pgid" ] && continue
-
-        pkill --signal "$sig" -g "$pgid"
+        pgid=$(ps -p "$pid" -o pgid=) && kill -s "$sig" -"${pgid##* }"
     done
 else
     kill -s "$sig" "$@"

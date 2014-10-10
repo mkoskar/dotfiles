@@ -2,7 +2,7 @@
 
 set -e
 
-pids="$(pgrep -x "$1")"
+pids=$(pgrep -x "$1")
 
 for i in $pids; do
     env="/proc/$i/environ"

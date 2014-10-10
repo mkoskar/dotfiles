@@ -1,0 +1,70 @@
+#!/bin/bash
+
+set -e
+
+playback_up() {
+    amixer -q set Master 5%+
+}
+
+playback_down() {
+    amixer -q set Master 5%-
+}
+
+playback_toggle() {
+    amixer -q set Master toggle
+}
+
+playback_dock_toggle() {
+    amixer -q -c 0 set Headphone,1 toggle
+}
+
+capture_toggle() {
+    amixer -q set Capture toggle
+}
+
+pulse_init() {
+    pulseaudio --start
+    pacmd set-sink-port 0 analog-output
+    amixer -q -c 0 set Speaker 100%
+}
+
+case $1 in
+    playback_up | playback_down | \
+    playback_toggle | playback_dock_toggle | \
+    capture_toggle)
+        $1
+        status-osd audio
+        exit
+        ;;
+    pulse_init)
+        $1
+        exit
+        ;;
+esac
+
+while true; do
+    printf '\e[1G%s\e[0K' "$(status audio)"
+
+    read -N1 -s c
+    case $c in
+        k|K)
+            playback_up
+            ;;
+        j|J)
+            playback_down
+            ;;
+        m|M)
+            playback_toggle
+            ;;
+        n|N)
+            playback_dock_toggle
+            ;;
+        r|R)
+            capture_toggle
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+echo

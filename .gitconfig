@@ -7,7 +7,7 @@
     excludesfile = ~/.gitexcludes
 
 [http]
-    ;sslVerify = false
+    ;sslverify = false
 
 [credential]
     helper = cache --timeout=3600
@@ -44,3 +44,12 @@
 
 [merge]
     tool = vimdiff
+
+[format]
+    ;signaturefile = ~/.gitsignature
+    coverletter = auto
+    signature =
+    thread = shallow
+
+[mailinfo]
+    scissors = true

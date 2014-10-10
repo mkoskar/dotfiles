@@ -25,7 +25,7 @@ while IFS= read -r line; do
     ids+=("$line")
 done <"$src"
 
-if [ ${#ids} -eq 0 ]; then
+if [ ${#ids[@]} -eq 0 ]; then
     exit 1
 fi
 

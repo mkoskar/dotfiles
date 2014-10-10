@@ -6,14 +6,14 @@ low=8
 
 # SEEALSO: xbacklight(1) - adjust backlight brightness using RandR extension
 
-case "$(</sys/class/backlight/acpi_video0/brightness)" in
+case $(</sys/class/backlight/acpi_video0/brightness) in
     "$max")
         ;;
     "$val")
-        val="$low"
+        val=$low
         ;;
     "$low")
-        val="$max"
+        val=$max
         ;;
 esac
 

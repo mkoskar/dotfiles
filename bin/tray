@@ -1,5 +1,7 @@
 #!/bin/bash
 
+xdotool search --class trayer windowkill
+
 exec trayer --edge top --align right \
             --width 100 --widthtype pixel \
             --height 19 --heighttype pixel \

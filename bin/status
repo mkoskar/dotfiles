@@ -3,21 +3,27 @@
 set -e
 
 if [ "$(basename "$0")" = 'status-osd' ]; then
-    out="$(status "$@")"
+    out=$(status "$@")
     [ -t 1 ] && echo "$out"
     osd "$out"
     exit 0
 fi
 
 status_audio() {
-    local val="$(amixer get Master | grep -F '%' | awk '{print $4 " / " $6}')"
-    amixer get Headphone,1 | grep -Fq 'Playback [on]' && val="$val +dock"
-    printf 'audio: %s\n' "$val"
+    local pval=$(amixer get Master \
+        | gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {print a[2] " " a[1]}' \
+        | head -n1)
+    amixer -c 0 get Headphone,1 | grep -Fq 'Playback [on]' && pval="$pval +dock"
+
+    local rval=$(amixer get Capture \
+        | gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {print a[2] " " a[1]}' \
+        | head -n1)
+
+    printf 'audio: %s / %s\n' "$pval" "$rval"
 }
 
 status_bluetooth() {
-    local val
-    val="$(bluetooth | awk -F= '{gsub(/^[ \t]+/, "", $2); print $2}')"
+    local val=$(bluetooth | awk -F= '{gsub(/^[ \t]+/, "", $2); print $2}')
     printf 'bluetooth: %s\n' "$val"
 }
 
@@ -30,20 +36,19 @@ status_dpms() {
 }
 
 status_wifi() {
-    local val
-    val="$(wifi | awk -F= '{gsub(/^[ \t]+/, "", $2); print $2}')"
+    local val=$(wifi | awk -F= '{gsub(/^[ \t]+/, "", $2); print $2}')
     printf 'wifi: %s\n' "$val"
 }
 
 status_xkb() {
     local val='-'
     if xset q &>/dev/null; then
-        val="$(setxkbmap -query | grep -F 'layout:' | awk '{print $2}')"
+        val=$(setxkbmap -query | grep -F 'layout:' | awk '{print $2}')
     fi
     printf 'xkb: %s\n' "$val"
 }
 
-case "$1" in
+case $1 in
     audio)
         status_audio
         ;;

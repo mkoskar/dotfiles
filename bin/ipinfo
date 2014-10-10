@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo $'\n--------------------------------------------------'
+echo $'> IP:\n'
+
+ip addr show
+
+echo $'\n--------------------------------------------------'
+echo $'> Routing:\n'
+
+ip rule show
+echo
+
+routel local
+echo
+
+routel main
+echo

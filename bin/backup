@@ -7,11 +7,11 @@
 
 set -eu
 
-basedir="$(dirname "$(realpath "$0")")"
+basedir=$(dirname "$(realpath "$0")")
 export PATH="$basedir:$PATH"
 
-part="$(realpath '/dev/disk/by-uuid/a10fd9bc-f55c-4d83-8bb7-a0345da60247')"
-disk="${part%%[0-9]}"
+part=$(realpath '/dev/disk/by-uuid/a10fd9bc-f55c-4d83-8bb7-a0345da60247')
+disk=${part%%[0-9]}
 fs='/dev/disk/by-uuid/95908df8-35c5-4f39-a57b-ca0a091b4eda'
 target='/mnt/backups'
 mapper='/dev/mapper/backups'
@@ -82,14 +82,14 @@ if ! mounted "$target" "$mapper" >/dev/null; then
     exit 12
 fi
 
-exec 9<"$(realpath "$0")"
-if ! flock -n 9; then
+exec 8<"$(realpath "$0")"
+if ! flock -n 8; then
     log "$target: full-backup in progress"
     exit 3
 fi
-(exec 9<&-
+(exec 8<&-
 
-t_begin="$(date +%s)"
+t_begin=$(date +%s)
 
 mkdir -p "$target/full-backup"
 rsync -aAHSX / "$target/full-backup/master" \
@@ -112,8 +112,8 @@ rsync -aAHSX / "$target/full-backup/master" \
 	/var/lib/pacman/sync/*
 EOF
 
-t_end="$(date +%s)"
-log "total time: $(( ($t_end - $t_begin) / 60 )) minutes, $(( ($t_end - $t_begin) % 60 )) seconds"
+t_end=$(date +%s)
+log "total time: $(((t_end-t_begin)/60)) minutes, $(((t_end-t_begin)%60)) seconds"
 
 echo 'setting standby' >&2
 hdparm -S 12 "$disk" &>/dev/null

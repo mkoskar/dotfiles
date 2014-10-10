@@ -6,7 +6,6 @@ Config {
     ,commands = [
          Run StdinReader
         ,Run Locks
-        ,Run Weather "LKPR" ["-t", "<skyCondition>|<tempC>"] 600
         ,Run Battery ["-t", "<watts>|<left>|<timeleft>", "-L", "20", "-H", "50", "-l", "#FF5555", "-n", "#EFEFEF", "--",
                        "-L", "0", "-H", "12", "-m", "#55FF55", "-h", "#FF5555"] 50
         ,Run Wireless "wlan0" ["-t", "q<quality>"] 50
@@ -15,5 +14,5 @@ Config {
         ,Run Date "%a|%d.%m|%H:%M" "date" 600
     ]
     ,alignSep = "}{"
-    ,template = "%StdinReader% }{ <fc=#FF5555>%locks%</fc>  %LKPR%  %battery%  %wlan0wi%  %cpu%|%memory%  %date%"
+    ,template = "%StdinReader% }{ <fc=#FF5555>%locks%</fc> %battery%  %wlan0wi%  %cpu%|%memory%  %date%"
 }

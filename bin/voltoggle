@@ -1,6 +1,0 @@
-#!/bin/bash
-
-set -e
-
-amixer -q set Master toggle
-status-osd audio

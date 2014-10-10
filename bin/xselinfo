@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo '---------- Primary ----------'
+echo $'\n---------- Primary ----------'
 xsel
 
 echo $'\n---------- Clipboard ----------'

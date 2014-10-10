@@ -1,9 +1,20 @@
 #!/bin/bash
+#
+# Generate:
+#
+# 1) RSA 4096-bit key encrypted using 256-bit AES cipher => `site.key`
+# 2) PKCS#10 CSR (Certificate Signing Request) using SHA-256 digest => `site.csr`
 
 set -e
 
-openssl genrsa -des3 -out site.key 4096
-#openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -des3 -pass stdin -out site.key
+keyfile='site.key'
+[ -e "$keyfile" ] && (confirm "$keyfile already exists, overwrite?" n || exit 2)
 
-openssl req -new -sha256 -key site.key -out site.csr
-cat site.csr
+openssl genrsa -aes256 -out "$keyfile" 4096
+#openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -aes-256-cbc -pass stdin -out "$keyfile"
+
+csrfile='site.csr'
+[ -e "$csrfile" ] && (confirm "$csrfile already exists, overwrite?" n || exit 2)
+
+openssl req -new -sha256 -key "$keyfile" -out "$csrfile"
+cat "$csrfile"

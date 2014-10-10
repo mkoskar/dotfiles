@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+
+event=$1
+session=$XSESSION
+
+startup() {
+    case $session in
+        main)
+            xup
+            ;;
+    esac
+}
+
+case $event in
+    startup)
+        startup
+        ;;
+esac

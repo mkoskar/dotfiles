@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+custom_repo=~/packages
+custom_repo_db="$custom_repo/custom.db"
+
+if [ ! -e "$custom_repo_db" ]; then
+    (cd "$custom_repo" && repo-init custom)
+fi
+
+yaourt -Syyua

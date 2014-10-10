@@ -14,6 +14,7 @@
 !.config/gtk-3.0/settings.ini
 !.config/openbox/menu.xml
 !.config/openbox/rc.xml
+!.config/pulse/client.conf
 !.config/ranger/colorschemes/custom.py
 !.config/ranger/rc.conf
 !.config/ranger/rifle.conf
@@ -35,6 +36,7 @@
 !.goobookrc.example
 !.gtk-bookmarks
 !.gtkrc-2.0
+!.hushlogin
 !.icons/default/index.theme
 !.infokey
 !.inputrc

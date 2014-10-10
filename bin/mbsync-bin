@@ -11,17 +11,17 @@ log() {
     echo "$*" >&2
 }
 
-t_begin="$(date +%s)"
+t_begin=$(date +%s)
 
 cleanup() {
     exitcode=$?
-    t_end="$(date +%s)"
-    runtime=$((t_end - t_begin))
+    t_end=$(date +%s)
+    runtime=$((t_end-t_begin))
     echo "exiting after ${runtime}s ($exitcode)"
     if [ $exitcode -eq 0 ]; then
-        notify-send "___ $prgname ___"
+        notify "___ $prgname ___"
     else
-        notify-send "___ $prgname FAIL ___"
+        notify "___ $prgname FAIL ___"
     fi
 }
 trap cleanup EXIT

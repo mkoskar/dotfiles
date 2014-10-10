@@ -27,7 +27,7 @@ else
     devname=($sysdev/block/*)
 
     if [ -d "$devname" ]; then
-        devname="${devname##*/}"
+        devname=${devname##*/}
         dev="/dev/$devname"
     else
         echo 'no block device' >&2

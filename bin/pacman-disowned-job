@@ -1,6 +1,8 @@
 #!/bin/bash
 
-basedir="$(dirname "$(realpath "$0")")"
+set -e
+
+basedir=$(dirname "$(realpath "$0")")
 export PATH="$basedir:$PATH"
 
 log='/var/log/pacman-disowned.log'

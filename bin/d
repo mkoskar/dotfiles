@@ -11,16 +11,14 @@ set -- -udprN "$@"
 cmd=(diff "$@")
 
 process() {
-    case "$(basename "$0")" in
+    case $(basename "$0") in
         d0)
             "${cmd[@]}"
             ;;
         *)
-            tmpfile="$(mktemp)"
+            tmpfile=$(mktemp)
             trap 'rm -f "$tmpfile"' EXIT
-
             echo '---'
-
             "${cmd[@]}" | filterdiff -v --remove-timestamps --annotate \
                                         --strip=1 \
                                         --addoldprefix=a/ \
@@ -29,7 +27,9 @@ process() {
                         | diffstat -p1
             echo
             cat "$tmpfile"
+            ;;
     esac
 }
 
-process | PAGER_TITLE="${cmd[@]}" pg -c 'set ft=diff'
+# execute explicitly in subshell to workaround not firing trap
+( process ) | PAGER_TITLE="${cmd[@]}" pg -c 'set ft=diff'

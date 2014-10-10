@@ -5,8 +5,8 @@ set -e
 cd ~/.local/share/fonts
 
 get() {
-    fname="$(curl -sLJO -w '%{filename_effective}' "$1")"
-    outd="$(mktemp -d)"
+    local fname=$(curl -sLJO -w '%{filename_effective}' "$1")
+    local outd=$(mktemp -d)
     aunpack -X "$outd" "$fname"
     find "$outd" -iregex '.*\.\(ttf\|otf\)' -exec mv {} . \;
     rm -r "$fname" "$outd"

@@ -18,9 +18,8 @@ function maybe_cd() {
 }
 
 function from_git() {
-    local name
-    name="${1##*/}"
-    name="${name%%.git}"
+    local name=${1##*/}
+    name=${name%%.git}
     echo "> $name : $1"
 
     if maybe_cd "$name"; then
@@ -35,12 +34,10 @@ function from_git() {
 }
 
 function from_vba() {
-    local vba name
-    vba="${1##*/}"
-    name="${vba%%.vba.gz}"
+    local vba=${1##*/} name=${vba%%.vba.gz}
     echo "> $name : $1"
 
-    http_code="$(curl -sL "$1" -o "$vba" -z "$vba" -w '%{http_code}')"
+    local http_code=$(curl -sL "$1" -o "$vba" -z "$vba" -w '%{http_code}')
     if [ "$http_code" = '200' ]; then
         rm -rf "$name"
         mkdir "$name"

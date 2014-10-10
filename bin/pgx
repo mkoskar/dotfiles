@@ -1,1 +1,8 @@
-pg
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+    echo "usage: $(basename "$0") cmd [arg]..."
+    exit 2
+fi
+
+CMD="$*" PAGER_TITLE="$ $CMD" pg

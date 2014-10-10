@@ -16,6 +16,8 @@ if [ $# -eq 0 ]; then
     exit 2
 fi
 
+image=$1
+
 modprobe nbd max_part=16
-qemu-nbd -c "$dev" "$1"
+qemu-nbd -c "$dev" "$image"
 lsblk "$dev"

@@ -33,7 +33,7 @@ if [ $# -eq 0 ]; then
     set -- us
 fi
 
-case "$1" in
+case $1 in
     cz)
         setxkbmap cz qwerty
         ;;
@@ -46,6 +46,7 @@ case "$1" in
     *)
         echo "usage: $(basename "$0") [cz | sk | us]"
         exit 2
+        ;;
 esac
 
 status-osd xkb || true

@@ -14,7 +14,7 @@ if [ ! -t 1 ]; then
 fi
 
 run() {
-    if [ "$(basename "$0")" = 'pgx' ]; then
+    if [ "$(basename "$0")" = 'pg0' ]; then
         set -- -c 'syntax off | filetype off | filetype plugin off' "$@"
     else
         set -- "$@" -c 'AnsiEsc'
@@ -31,6 +31,6 @@ if [ -t 0 ]; then
     exit
 fi
 
-PAGER_TITLE="${PAGER_TITLE:--stdin-}"
-exec 10<&0 0<&1
-run -c 'silent e /dev/fd/10' "$@"
+PAGER_TITLE=${PAGER_TITLE:--stdin-}
+exec 8<&0 0<&1
+run -c 'silent e /dev/fd/8' "$@"

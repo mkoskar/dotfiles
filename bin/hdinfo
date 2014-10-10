@@ -1,11 +1,11 @@
 #!/bin/bash
 
 if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") <device>" >&2
+    echo "usage: $(basename "$0") device" >&2
     exit 2
 fi
 
-target="$1"
+target=$1
 
 process() {
     echo $'\n--------------------------------------------------'
@@ -19,4 +19,4 @@ process() {
     sudo smartctl -a "$target"
 }
 
-process | pg
+process 2>&1 | pg

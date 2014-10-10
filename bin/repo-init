@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -eq 0 ]; then
+    echo "usage: $(basename "$0") name" >&2
+    exit 2
+fi
+
+name=$1
+
+if [ -e "$name.db" ]; then
+    echo "$name.db already exists" >&2
+    exit 1
+fi
+
+bsdtar -czf "$name.db.tar.gz" -T /dev/null
+ln -s "$name.db.tar.gz" "$name.db"
+
+#gpg -q -b -u 35FD5DFB "$name.db.tar.gz"
+#ln -s "$name.db.tar.gz.sig" "$name.db.sig"

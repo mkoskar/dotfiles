@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -gt 0 ]; then
+    target=$(realpath "$1")
+    if [ ! -d "$target" ]; then
+        echo "$target is not a directory" >&2
+        exit 2
+    fi
+    cd "$target"
+    shift
+fi
+
+tmp_meta=$(mktemp)
+tmp_files=$(mktemp)
+trap 'rm -f "$tmp_meta" "$tmp_files"' EXIT
+
+meta_format='%y %u %g %m %p %l\0'
+if [ "$(basename "$0")" = 'dirsum0' ]; then
+    meta_format='%y %u %g %m %T@ %p %l\0'
+fi
+
+find "$@" \
+     \( -fprintf "$tmp_meta" "$meta_format" \) \
+     \( -type f -fprintf "$tmp_files" '%p\0' \)
+
+(
+    sort -z "$tmp_meta"
+    sort -z "$tmp_files" | xargs -0 md5sum
+) | md5sum

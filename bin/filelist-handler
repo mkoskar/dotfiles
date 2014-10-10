@@ -2,10 +2,10 @@
 
 set -e
 
-target="$1"
-tdir="$(dirname "$target")"
-tname="$(basename "$target")"
-moveto="${2:-$tdir/.$tname}"
+target=$1
+tdir=$(dirname "$target")
+tname=$(basename "$target")
+moveto=${2:-$tdir/.$tname}
 
 [ -t 0 ] || target=/dev/stdin
 [ -z "$target" -o ! -r "$target" ] && exit 1
@@ -18,7 +18,7 @@ echo 'm) move'
 echo 'D) delete'
 
 read -N1 -s -p ': ' sel
-case "$sel" in
+case $sel in
     [mM])
         mkdir -p "$moveto"
         cmd=(mv {} -t "$moveto")
@@ -29,6 +29,7 @@ case "$sel" in
     *)
         echo -e '---\n'
         exit 1
+        ;;
 esac
 echo -e "$sel\n"
 

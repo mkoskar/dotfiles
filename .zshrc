@@ -157,8 +157,12 @@ add-zsh-hook precmd set-window-title
 #========== zle
 
 KEYTIMEOUT=1
-PROMPT='$vimode%?:%1~%(!.#.$) '
 WORDCHARS='*?_-.[]~&;!#$%^(){}<>'
+
+PROMPT='$_vimode%?:%1~%(!.#.$) '
+if [ -n "$(hostname-label)" ]; then
+    PROMPT='$_vimode%?:%m:%1~%(!.#.$) '
+fi
 
 function expand-dot-to-parent-directory-path {
     [[ "$LBUFFER" = *.. ]] && LBUFFER+='/..' || LBUFFER+='.'
@@ -177,9 +181,9 @@ function overwrite-mode-select {
 }
 
 function zle-line-init zle-keymap-select {
-    vimode=':'
+    _vimode=':'
     if [ ! "$KEYMAP" = 'vicmd' ]; then
-        [[ "$ZLE_STATE" == *overwrite* ]] && vimode='^' || vimode='+'
+        [[ "$ZLE_STATE" == *overwrite* ]] && _vimode='^' || _vimode='+'
     fi
     zle reset-prompt
 }
@@ -267,39 +271,44 @@ bindkey -M menuselect '^U' send-break
 
 #========== zsh-syntax-highlighting
 
-. /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
-#ZSH_HIGHLIGHT_STYLES[default]='none'
-#ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red,bold'
-ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=yellow,bold,underline'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan,bold'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=yellow,bold'
-ZSH_HIGHLIGHT_STYLES[function]='fg=cyan,bold'
-ZSH_HIGHLIGHT_STYLES[command]='fg=green,bold'
-ZSH_HIGHLIGHT_STYLES[precommand]='fg=yellow,bold,underline'
-ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=white,bold'
-ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=green,bold,underline'
-ZSH_HIGHLIGHT_STYLES[path]='fg=15'
-ZSH_HIGHLIGHT_STYLES[path_prefix]='none'
-ZSH_HIGHLIGHT_STYLES[path_approx]='none'
-ZSH_HIGHLIGHT_STYLES[globbing]='fg=11'
-ZSH_HIGHLIGHT_STYLES[history-expansion]='fg=14'
-#ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='none'
-#ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='none'
-#ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='none'
-#ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=yellow'
-#ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=yellow'
-ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]='fg=11'
-ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]='fg=15'
-ZSH_HIGHLIGHT_STYLES[assign]='fg=11'
+_src=/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -e "$_src" ]; then
+    . "$_src"
+    ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+    #ZSH_HIGHLIGHT_STYLES[default]='none'
+    #ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red,bold'
+    ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=yellow,bold,underline'
+    ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan,bold'
+    ZSH_HIGHLIGHT_STYLES[builtin]='fg=yellow,bold'
+    ZSH_HIGHLIGHT_STYLES[function]='fg=cyan,bold'
+    ZSH_HIGHLIGHT_STYLES[command]='fg=green,bold'
+    ZSH_HIGHLIGHT_STYLES[precommand]='fg=yellow,bold,underline'
+    ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=white,bold'
+    ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=green,bold,underline'
+    ZSH_HIGHLIGHT_STYLES[path]='fg=15'
+    ZSH_HIGHLIGHT_STYLES[path_prefix]='none'
+    ZSH_HIGHLIGHT_STYLES[path_approx]='none'
+    ZSH_HIGHLIGHT_STYLES[globbing]='fg=11'
+    ZSH_HIGHLIGHT_STYLES[history-expansion]='fg=14'
+    #ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='none'
+    #ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='none'
+    #ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='none'
+    #ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=yellow'
+    #ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=yellow'
+    ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]='fg=11'
+    ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]='fg=15'
+    ZSH_HIGHLIGHT_STYLES[assign]='fg=11'
+fi
 
 #========== zsh-history-substring-search
 
-. ~/opt/zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
-HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=8,fg=15'
-HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=red,fg=15'
+_src=~/opt/zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+if [ -e "$_src" ]; then
+    . "$_src"
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=8,fg=15'
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=red,fg=15'
+fi
 
 #========== aliases
 
-unalias run-help
 alias help='run-help'

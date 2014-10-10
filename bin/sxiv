@@ -2,7 +2,7 @@
 
 set -e
 
-tmpfile="$(mktemp)"
+tmpfile=$(mktemp)
 trap 'rm -f "$tmpfile"' EXIT
 
 /usr/bin/sxiv -o "$@" >"$tmpfile"

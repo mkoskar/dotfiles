@@ -1,8 +1,10 @@
 #!/bin/bash
 
-echo '> Setup backup'
+echo $'\n--------------------------------------------------'
+echo $'> Setup backup:\n'
 sudo backup-setup
 sudo bay-standby
 
-echo '> Restore network'
-sudo netctl restore
+echo $'\n--------------------------------------------------'
+echo '> Start X session:'
+exec x

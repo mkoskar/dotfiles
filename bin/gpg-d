@@ -1,6 +1,6 @@
 #!/bin/bash
 
-input="${1:--}"
-output="${2:--}"
+input=${1:--}
+output=${2:--}
 
 gpg -q -d -o "$output" "$input"

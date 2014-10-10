@@ -12,21 +12,21 @@
 
 set -e
 
-basedir="$(dirname "$(realpath "$0")")"
+basedir=$(dirname "$(realpath "$0")")
 export PATH="$basedir:$PATH"
 export TERM='linux'
 
 # target user
 user='miro'
 
-vtno_old="$(fgconsole)"
+vtno_old=$(fgconsole)
 vtno_new=8
 vtnew="/dev/tty$vtno_new"
 
 exec <>"$vtnew" >&0 2>&1
 
 sysrq_path='/proc/sys/kernel/sysrq'
-sysrq_old="$(<"$sysrq_path")"
+sysrq_old=$(<"$sysrq_path")
 echo 0 >"$sysrq_path"
 
 cleanup() {

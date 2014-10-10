@@ -7,40 +7,27 @@
 
 set -e
 
-TARGET_BASE="$HOME/tmp"
-
-IFS=$'\n' eval 'devices=($(jmtpfs -l 2>/dev/null | grep -P "'"^\d, .*"'" | sort -u))'
-echo -e $"\nDevices:\n${devices[@]}"
-
 IFS=$'\n' eval 'mounts=($(grep -P "'"^jmtpfs "'" /proc/mounts | sort -u))'
-if [ "${#mounts[@]}" -gt 0 ]; then
-    echo -e $"\nMounts:\n${mounts[@]}"
+if [ ${#mounts[@]} -gt 0 ]; then
+    echo -e "\nMounts:\n${mounts[@]}"
     echo
 
-    read -N1 -s -p 'Unmount [y]: ' input
-    input="${input:-y}"
-
-    case "$input" in
-        [yY])
-            echo y
-            PS3='Select: '
-            select sel in "${mounts[@]}"; do
-                break
-            done
-            [ -z "$sel" ] && exit 2
-            sel=($sel)
-            target="${sel[1]}"
-            fusermount -u "$target"
-            rm -d "$target"
-            ;;
-        *)
-            echo n
-            ;;
-    esac
+    if confirm 'Unmount' y; then
+        PS3='Select: '
+        select sel in "${mounts[@]}"; do
+            break
+        done
+        [ -z "$sel" ] && exit 2
+        sel=($sel)
+        target=${sel[1]}
+        fusermount -u "$target"
+        rm -d "$target"
+    fi
 fi
 
-if [ "${#devices[@]}" -gt 0 ]; then
-    echo -e $'\nMount:'
+IFS=$'\n' eval 'devices=($(jmtpfs -l 2>/dev/null | grep -P "'"^\d, .*"'" | sort -u))'
+if [ ${#devices[@]} -gt 0 ]; then
+    echo $'\nMount:'
 
     PS3='Select: '
     select sel in "${devices[@]}"; do
@@ -49,8 +36,9 @@ if [ "${#devices[@]}" -gt 0 ]; then
     [ -z "$sel" ] && exit 2
 
     device=($(awk -F ', ' '{print $1 " " $2}' <<<"$sel"))
-    target="$TARGET_BASE/mtp-${device[0]}-${device[1]}"
+    target="$HOME/tmp/mtp-${device[0]}-${device[1]}"
 
     [ -d "$target" ] || mkdir "$target"
     jmtpfs "-device=${device[0]},${device[1]}" "$target" &>/dev/null
 fi
+echo

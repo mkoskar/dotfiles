@@ -1,6 +1,0 @@
-#!/bin/bash
-
-set -e
-
-amixer -q set Master 4-
-status-osd audio

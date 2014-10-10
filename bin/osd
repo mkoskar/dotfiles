@@ -3,7 +3,7 @@
 set -e
 
 name='default'
-dispno="$(xserverq dispno)"
+dispno=$(xserverq dispno)
 pipe="$TMPDIR/osd-$UID/${name}$dispno"
 
 if [ "$(basename "$0")" = 'osdd' ]; then

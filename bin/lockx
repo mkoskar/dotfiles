@@ -11,14 +11,14 @@
 
 set -e
 
-basedir="$(dirname "$(realpath "$0")")"
+basedir=$(dirname "$(realpath "$0")")
 export PATH="$basedir:$PATH"
 
 # target user
 user='miro'
 
 sysrq_path='/proc/sys/kernel/sysrq'
-sysrq_old="$(<"$sysrq_path")"
+sysrq_old=$(<"$sysrq_path")
 echo 0 >"$sysrq_path"
 
 cleanup() {
@@ -29,7 +29,7 @@ trap cleanup EXIT
 
 vtswitch-lock
 
-vtno="$(fgconsole)"
+vtno=$(fgconsole)
 su - "$user" -c "export DISPLAY=':$vtno'
                  export XAUTHORITY=~/.Xauthority
                  slock"

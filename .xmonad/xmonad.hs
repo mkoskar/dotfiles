@@ -1,6 +1,6 @@
+import Data.Monoid (mempty, All(..), appEndo)
 import System.Exit
 import qualified Data.Map as M
-import Data.Monoid (mempty, All(..), appEndo)
 
 import XMonad hiding ((|||))
 import XMonad.StackSet (screenDetail, current)
@@ -62,7 +62,8 @@ myConfig = defaultConfig
     , workspaces = myWorkspaces
     , keys = \conf -> mkKeymap conf myKeymap
     , startupHook = setWMName "LG3D" <+>
-                    checkKeymap myConfig myKeymap
+                    checkKeymap myConfig myKeymap <+>
+                    spawn "xsession-hook startup"
     , logHook = updatePointer (Relative 0.5 0.5)
     , handleEventHook = docksEventHook <+>
                         minimizeEventHook <+>
@@ -233,10 +234,11 @@ myConfig = defaultConfig
         , ("M-S-<Print>", spawn "sleep 0.5 && scrot -m -s ~/tmp/shot-%Y-%m-%d.%s.png -e 'feh -Z. $f'")
 
           -- audio
-        , ("M-S-]", spawn "volup")
-        , ("M-S-[", spawn "voldown")
-        , ("M-S-m", spawn "voltoggle")
-        , ("M-S-n", spawn "voltoggle-dock")
+        , ("M-S-]", spawn "audio playback_up")
+        , ("M-S-[", spawn "audio playback_down")
+        , ("M-S-m", spawn "audio playback_toggle")
+        , ("M-S-n", spawn "audio playback_dock_toggle")
+        , ("M-S-r", spawn "audio capture_toggle")
 
           -- setxkbmap
         , ("M-<F1>", spawn "xkb us")
@@ -254,7 +256,7 @@ myConfig = defaultConfig
         , ("M-S-<F10>", spawn "xscreen-mobile && xmonad-session-repair")
         , ("M-<F12>", spawn "grabc 2>&1 | xsel -i")
         , ("M-S-<F12>", spawn "xmeasure | xsel -i")
-        , ("M-S-<Home>", spawn $ myTerminal ++ " -e pg ~/projects/meta.rst")
+        , ("M-S-<Home>", spawn $ myTerminal ++ " -e trun wow")
         , ("M-S-b", spawn "backlight-toggle")
         , ("M-; M-l", spawn "sudo lockx")
         , ("M-; M-d", spawn "dpms-toggle")

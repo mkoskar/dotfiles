@@ -2,7 +2,7 @@
 
 set -e
 
-output="$(dialog --keep-tite --backtitle 'scan' \
+output=$(dialog --keep-tite --backtitle 'scan' \
     --no-items --nocancel --default-item Gray --menu 'Mode:' 12 28 12 \
         Color Gray \
     --and-widget \
@@ -11,23 +11,21 @@ output="$(dialog --keep-tite --backtitle 'scan' \
     --and-widget \
     --no-items --nocancel --default-item 75 --menu 'JPEG Quality:' 12 28 12 \
         50 75 90 95 100 \
-    2>&1 >/dev/tty)"
+    2>&1 >/dev/tty)
 
 output=($output)
-mode="${output[0]}"
-resolution="${output[1]}"
-quality="${output[2]}"
+mode=${output[0]}
+resolution=${output[1]}
+quality=${output[2]}
 [ -z "$mode" -o -z "$resolution" -o -z "$quality" ] && exit 1
-optsline="${mode}-${resolution}dpi-jq${quality}"
+optsline="$mode-${resolution}dpi-jq$quality"
 
 # --source Flatbed|Automatic Document Feeder|ADF Duplex [Flatbed]
 # --mode auto|Color|Gray|Lineart [Color]
 # --resolution auto|75|150|300|600|1200|2400dpi [75]
 
-tmpfile="$(mktemp --suffix=.tiff 2>/dev/null)"
-
-cleanup() { rm -f "$tmpfile"; }
-trap cleanup EXIT
+tmpfile=$(mktemp --suffix=.tiff 2>/dev/null)
+trap 'rm -f "$tmpfile"' EXIT
 
 #export SANE_DEBUG_PIXMA=1
 #export SANE_DEBUG_BJNP=1
@@ -39,4 +37,4 @@ scanimage -d pixma:MX920_192.168.100.2 \
     >"$tmpfile"
 
 tiff2pdf -j -q "$quality" \
-    -o ~/download/_scanner/scan-$(date '+%Y-%m-%d.%s')_${optsline}.pdf "$tmpfile"
+    -o ~/download/_scanner/scan-$(date '+%Y-%m-%d.%s')_$optsline.pdf "$tmpfile"

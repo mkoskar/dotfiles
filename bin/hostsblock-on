@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ "$(basename "$0")" = 'hostsblock-off' ]; then
+    sudo mv /etc/hosts.d/10-* /etc/hosts.d/off >/dev/null 2>&1
+else
+    sudo mv /etc/hosts.d/off/10-* /etc/hosts.d >/dev/null 2>&1
+fi
+
+sudo systemctl restart dnsmasq

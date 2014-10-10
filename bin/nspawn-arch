@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e
+
+if [ ! $(id -u) -eq 0 ]; then
+    echo 'This script must be run with root privileges.'
+    exit 1
+fi
+
+basedir=$(dirname "$(realpath "$0")")
+export PATH="$basedir:$PATH"
+
+cd ~miro/opt/nspawn/arch
+
+# ----------------------------------------
+
+(exec 8<"$(realpath "$0")"
+flock 8
+(exec 8<&-
+
+if [ ! -e base ]; then
+    mkdir base
+    pkgs=(
+        $(pacman -Sgq base | grep -Fxv linux)
+    )
+    pacstrap -c -d base "${pkgs[@]}"
+fi
+
+))
+
+# ----------------------------------------
+
+machine=$1
+root="$machine"
+[ -z "$machine" ] && exit
+
+mkdir -p "$root" "${root}_"
+unionfs -o allow_other,cow "${root}_"=RW:base=RO "$root"
+
+cleanup() {
+    mounted "$root" >/dev/null && umount "$root"
+}
+trap cleanup EXIT
+
+systemd-nspawn --quiet --boot --link-journal=guest -M "$machine" \
+    --directory="$root"

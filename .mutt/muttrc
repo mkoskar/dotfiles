@@ -48,7 +48,7 @@ set status_format = '[%r] %f [total:%?M?%M/?%m%?n? new:%n?%?d? deleted:%d?%?t? t
 # index settings
 set reply_regexp = '^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*'
 set sort_aux = reverse-date-received
-source ~/.mutt/sort-threads
+source ~/.mutt/sort_threads
 
 # pager settings
 alternative_order text/plain text/enriched text/html
@@ -191,6 +191,7 @@ macro pager \ek kkkkk
 macro browser \ea <exit>\ea 'go to previous mailbox'
 macro browser u /^\\.\\.$<enter><enter> 'go up a dir'
 macro compose Y pfy 'send the message without PGP'
+macro compose v "<edit-from>^Uidentity_<tab>" 'select from'
 
 macro index o <enter>
 macro pager o q

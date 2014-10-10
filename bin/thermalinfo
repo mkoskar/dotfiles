@@ -4,7 +4,7 @@ set -e
 shopt -s nullglob
 
 get() {
-    local sep="${3:-/}"
+    local sep=${3:-/}
     local in="$1$sep$2"
     local out="_$2"
     typeset -g "$out"=
@@ -25,7 +25,7 @@ base='/sys/class/thermal'
 echo -e "> $base:\n"
 
 for cdev in "$base"/cooling_device*; do
-    _cdev="${cdev##*/}"
+    _cdev=${cdev##*/}
 
     get "$cdev" type
     get "$cdev" cur_state
@@ -36,7 +36,7 @@ done
 echo
 
 for tzone in "$base"/thermal_zone*; do
-    _tzone="${tzone##*/}"
+    _tzone=${tzone##*/}
 
     get "$tzone" type
     get "$tzone" temp
@@ -53,8 +53,8 @@ for tzone in "$base"/thermal_zone*; do
     [ -n "$_passive" ] && printf $'  %-16s : %-28s\n' 'passive' "$_passive"
 
     for tpoint in "$tzone"/trip_point_*_type; do
-        _base="${tpoint%%_type}"
-        _tpoint="${_base##*/}"
+        _base=${tpoint%%_type}
+        _tpoint=${_base##*/}
 
         get_ "$_base" type
         get_ "$_base" temp

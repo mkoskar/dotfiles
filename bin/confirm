@@ -1,0 +1,45 @@
+#!/bin/bash
+#
+# Simple confirmation dialog.
+#
+# :Copyright: (c) 2014 Miroslav Koskar (http://miroslavkoskar.com/)
+# :License: BSD 2-Clause
+
+set -e
+
+if [ $# -eq 0 ]; then
+    echo "usage: $(basename "$0") prompt [default]"
+    exit 2
+fi
+
+prompt=$1
+default=$2
+
+case $default in
+    [yY])
+        prompt="$prompt [Y/n]: "
+        ;;
+    [nN])
+        prompt="$prompt [y/N]: "
+        ;;
+    *)
+        prompt="$prompt [y/n]: "
+        ;;
+esac
+
+while read -N1 -s -p "$prompt" input; do
+    input=${input:-$default}
+    case $input in
+        [yY])
+            echo y
+            exit 0
+            ;;
+        [nN])
+            echo n
+            exit 1
+            ;;
+        *)
+            echo
+            ;;
+    esac
+done

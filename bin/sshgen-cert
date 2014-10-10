@@ -1,0 +1,30 @@
+#!/bin/bash
+
+err_usage() {
+    echo "usage: $(basename "$0") ca_key pub_key identity principals"
+    exit 2
+}
+
+[ $# -ne 4 ] && err_usage
+
+ca_key=$1
+pub_key=$2
+identity=$3
+principals=$4
+
+opts=()
+if [ "$(basename "$0")" = 'sshgen-hostcert' ]; then
+    identity="host_$identity"
+    opts+=(-h)
+else
+    identity="user_$identity"
+fi
+
+opts+=(
+    -s "$ca_key"
+    -I "$identity"
+    -n "$principals"
+    -V +52w
+)
+
+ssh-keygen "${opts[@]}" "$pub_key"

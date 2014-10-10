@@ -1,7 +1,9 @@
 " vim: ft=vim
 
 set nocompatible
+set timeout timeoutlen=1000 ttimeoutlen=10
 let mapleader = ','
+let maplocalleader = ';'
 
 set whichwrap=b,s,<,>,[,]
 set incsearch
@@ -43,8 +45,8 @@ set showmode
 set ruler
 set novisualbell
 
-set tabstop=4
-set shiftwidth=4
+set tabstop=8
+set shiftwidth=8
 
 nnoremap <Leader>ff :set fdm=manual<CR>
 nnoremap <Leader>fi :set fdm=indent<CR>
@@ -57,7 +59,7 @@ set noswapfile
 set wildmenu
 set wildmode=list:longest,full
 set noundofile
-set undolevels=-1 
+set undolevels=-1
 
 set encoding=utf-8
 
@@ -121,7 +123,7 @@ function! s:MetaToggle() abort
         let i += 1
     endwhile
     let g:meta_enabled = !g:meta_enabled
-    if exists('g:vimrc_done') && g:vimrc_done
+    if !has('vim_starting')
         redraw
         echohl WarningMsg | echo 'Meta '.(g:meta_enabled ? 'ON' : 'OFF') | echohl None
     endif
@@ -132,8 +134,8 @@ silent MetaToggle
 
 " Reloads buffer after number (defaults to 1) of seconds have passed.
 map <silent> F :Reload<CR>F<CR>
-command! -nargs=? Reload call Reload(<f-args>)
-function! Reload(...)
+command! -nargs=? Reload call s:Reload(<f-args>)
+function! s:Reload(...) abort
     let d = 1
     if a:0 == 1
         let d = a:1
@@ -141,22 +143,46 @@ function! Reload(...)
     try
         echohl WarningMsg | echo 'Reload in '.d.'s (interrupt to abort)' | echohl None
         exec 'sleep '.d
-        edit
-        normal! G
+        if exists(':ReloadX')
+            ReloadX
+        else
+            edit
+            normal! G
+        endif
     finally
         redraw
         echo
     endtry
 endfunction
 
+if exists("$CMD")
+    " Reloads buffer from $CMD.
+    map <silent> R :ReloadX<CR>
+    map <silent> <C-R> :ReloadX<CR>
+    command! ReloadX call s:ReloadX()
+    function! s:ReloadX() abort
+        try
+            setl modifiable
+            exec 'silent! 0read! '.$CMD
+            normal! dG
+            normal! gg
+            setl noma
+        endtry
+        if !has('vim_starting')
+            redraw
+            echohl WarningMsg | echo '['.strftime("%H:%M:%S").'] $ '.$CMD | echohl None
+        endif
+    endfunction
+    silent ReloadX
+endif
+
+set noma buftype=nowrite
+
 if has('autocmd')
 augroup PGRC
     autocmd!
 
-    autocmd BufRead * setl noma buftype=nowrite
     autocmd FileType make setl ts=4 sts=0 sw=4 noexpandtab
     autocmd FileType man setl ts=8
 augroup END
 endif
-
-let g:vimrc_done = 1

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ $# -gt 0 ]; then
+    opts=(-p "$1" -a)
+fi
+
+lsof -n "${opts[@]}" -itcp -o -iudp

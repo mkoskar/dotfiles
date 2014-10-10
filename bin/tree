@@ -1,3 +1,10 @@
 #!/bin/bash
 
-/usr/bin/tree -a -I '.git|.svn' --noreport -x -C "$@" | pg
+prg=(/usr/bin/tree -a -I '.git|.svn' --noreport -x)
+
+if [ ! -t 1 ]; then
+    "${prg[@]}" "$@"
+    exit
+fi
+
+"${prg[@]}" -C "$@" | PAGER_TITLE="$@" pg

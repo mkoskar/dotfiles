@@ -12,10 +12,10 @@ if [ $# -eq 0 ]; then
     exit 2
 fi
 
-_mountpoint="$(realpath "$1")"
-_device="${2:-.*}"
-_type="${3:-.*}"
-_option="${4:-.*}"
+_mountpoint=$(realpath "$1")
+_device=${2:-.*}
+_type=${3:-.*}
+_option=${4:-.*}
 
 mount | awk -v mountpoint="$_mountpoint" \
             -v device="$_device" \

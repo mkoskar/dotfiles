@@ -12,9 +12,9 @@ stop_device() {
 
     # this can sometimes fail on stopped md devices, when the
     # sysfs node doesn't go away as quickly as i'd like it to.
-    devtype="$(lsblk -drno TYPE "/dev/$1")" || return 1
-    case "$devtype" in
-        crypt|lvm|dm)
+    devtype=$(lsblk -drno TYPE "/dev/$1") || return 1
+    case $devtype in
+        crypt | lvm | dm)
             read devname <"$1/dm/name"
             dmsetup remove "$devname"
             ;;

@@ -8,9 +8,13 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/opt/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 
+export HOSTNAME=$(hostname)
 export LANG='en_US.UTF-8'
 export LC_COLLATE='C'
 export LD_LIBRARY_PATH="$HOME/opt/lib"
+
+export TMPDIR="/tmp/$USER"
+[ -d "$TMPDIR" ] || mkdir -p -m 700 "$TMPDIR"
 
 export ASPROOT="$HOME/.asp"
 export BROWSER='firefox'
@@ -36,9 +40,6 @@ _JAVA_OPTIONS+=' -Dswing.aatext=true'
 #_JAVA_OPTIONS+=' -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
 export _JAVA_OPTIONS
 export _JAVA_AWT_WM_NONREPARENTING=1
-
-export TMPDIR="/tmp/$USER"
-[ -d "$TMPDIR" ] || mkdir -p -m 700 "$TMPDIR"
 
 [ -f ~/bin/ssh-agent.sh ] && . ~/bin/ssh-agent.sh
 [ -f ~/bin/gpg-agent.sh ] && . ~/bin/gpg-agent.sh

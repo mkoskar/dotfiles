@@ -4,7 +4,7 @@ set -e
 shopt -s nullglob
 
 get() {
-    local sep="${3:-/}"
+    local sep=${3:-/}
     local in="$1$sep$2"
     local out="_$2"
     typeset -g "$out"=
@@ -16,7 +16,7 @@ get_() {
 }
 
 uconv() {
-    [ -n "$1" ] && typeset -g "$2"=$(($1 / (1000 * 1000))) || true
+    [ -n "$1" ] && typeset -g "$2"=$(($1/(1000*1000))) || true
 }
 
 echo $'\n--------------------------------------------------'
@@ -30,7 +30,7 @@ echo -e "> $base:\n"
 
 for rapl in "$base"/*; do
     [ ! -e "$rapl/name" ] && continue
-    _rapl="${rapl##*/}"
+    _rapl=${rapl##*/}
 
     get "$rapl" name
 
@@ -55,7 +55,7 @@ for rapl in "$base"/*; do
         "$_energy" "$_max_energy_range" \
         "$_power" "$_max_power_range"
 
-    for i in 0 1 2 3 4 5 6 7 8 9; do
+    for i in $(seq 0 9); do
         _base="$rapl/constraint_$i"
 
         get_ "$_base" name

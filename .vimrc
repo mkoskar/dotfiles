@@ -234,8 +234,13 @@ nmap <Leader>es :sp %%
 nmap <Leader>ev :vsp %%
 nmap <Leader>et :tabe %%
 
+nnoremap <silent> <C-X> :q<CR>
 nnoremap <silent> <C-Q> :bd<CR>
-nnoremap <silent> <Leader>rr :setl readonly!<CR>
+nnoremap <silent> <Leader>rr :setl noreadonly modifiable<CR>
+
+vnoremap <silent> <Leader>ss :sort<CR>
+vnoremap <silent> <Leader>su :sort u<CR>
+vnoremap <silent> <Leader>sd :sort!<CR>
 
 " Working on diffs
 nnoremap <silent> <Leader>du :diffup<CR>
@@ -349,6 +354,7 @@ function! Preserve(command) abort
     endtry
 endfunction
 nnoremap <silent> <Leader>pp :call Preserve('%s/\s\+$//e')<CR>
+vnoremap <silent> <Leader>pp :call Preserve("'<,'>s/\\s\\+$//e")<CR>
 nnoremap <silent> <Leader>== :call Preserve('normal gg=G')<CR>
 
 " Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding.
@@ -367,7 +373,7 @@ function! s:MetaToggle() abort
         let i += 1
     endwhile
     let g:meta_enabled = !g:meta_enabled
-    if exists('g:vimrc_done') && g:vimrc_done
+    if !has('vim_starting')
         redraw
         echohl WarningMsg | echo 'Meta '.(g:meta_enabled ? 'ON' : 'OFF') | echohl None
     endif
@@ -389,7 +395,8 @@ function! s:ZoomToggle() abort
     endif
 endfunction
 command! ZoomToggle call s:ZoomToggle()
-nnoremap <silent> <C-M> :ZoomToggle<CR>
+nnoremap <silent> <M-z> :ZoomToggle<CR>
+nnoremap <silent> <M-m> :ZoomToggle<CR>
 
 " Walks through list of colorschemes (q/C-C=quit, k=prev, default=next).
 function! s:Themes() abort
@@ -555,7 +562,7 @@ nnoremap <silent> <F8> :Tagbar<CR>
 nnoremap <silent> <F4> :GundoToggle<CR>
 
 "========== scratch
-nnoremap <silent> <Leader>ss :Sscratch<CR>
+nnoremap <silent> <Leader>sc :Sscratch<CR>
 
 "========== vim-airline
 let g:airline#extensions#tabline#enabled = 1
@@ -593,5 +600,3 @@ augroup VIMRC
     autocmd FileType zip call s:SpecialBufferSettings()
 augroup END
 endif
-
-let g:vimrc_done = 1

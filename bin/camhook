@@ -11,7 +11,7 @@ preview() {
     rm -f "$prevfile"
 }
 
-case "$ACTION" in
+case $ACTION in
     init)
         ;;
     start)

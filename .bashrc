@@ -24,8 +24,12 @@ HISTIGNORE='exit'
 HISTSIZE=500
 
 CDPATH='.:..:~'
-PROMPT_DIRTRIM=3
-PS1='$?:\W\$ '
+
+_title='\[\e]0;\u@\h:\w\a\]'
+PS1="$_title\$?:\W\$ "
+if [ -n "$(hostname-label)" ]; then
+    PS1="$_title\$?:\h:\W\$ "
+fi
 
 complete -o nospace -W '10m 15m 20m 25m 30m' a
 complete -o nospace -c pth
@@ -33,9 +37,6 @@ complete -o nospace -c spth
 complete -o nospace -c on
 complete -o nospace -f paco
 complete -o nospace -c pacoc
-
-. /usr/share/bash-completion/completions/man
-complete -F _man manl
 
 _pacl() {
     COMPREPLY=()

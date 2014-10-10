@@ -7,31 +7,33 @@
 
 set -e
 
+prgname=$(basename "$0")
+
 xserver_dispno() {
     ! xset q &>/dev/null && exit 1
-    dispno="$(echo "$DISPLAY" | awk -F '[:.]' '{print $2}')"
+    dispno=$(echo "$DISPLAY" | awk -F '[:.]' '{print $2}')
     printf '%d\n' "$dispno"
 }
 
 xserver_pid() {
-    dispno="$(xserver_dispno)"
+    dispno=$(xserver_dispno)
     lockfile="/tmp/.X$dispno-lock"
 
-    [ ! -f "$lockfile" ] && exit 1
+    [ ! -e "$lockfile" ] && exit 1
     cat "$lockfile" | sed 's/\s//g'
 }
 
 xserver_cmd() {
-    pid="$(xserver_pid)"
+    pid=$(xserver_pid)
     ps -p "$pid" -o cmd=
 }
 
 xserver_name() {
-    pid="$(xserver_pid)"
+    pid=$(xserver_pid)
     ps -p "$pid" -o comm=
 }
 
-case "$1" in
+case $1 in
     cmd)
         xserver_cmd
         ;;
@@ -46,12 +48,13 @@ case "$1" in
         ;;
     *)
         cat <<-EOF
-		usage: xserverq cmd     - get command-line
-		       xserverq dispno  - get display number
-		       xserverq name    - get command name
-		       xserverq pid     - get PID
+		usage: $prgname cmd     - get command-line
+		       $prgname dispno  - get display number
+		       $prgname name    - get command name
+		       $prgname pid     - get PID
 		
 		Get information about X server (based on DISPLAY environment variable).
 		EOF
         exit 2
+        ;;
 esac

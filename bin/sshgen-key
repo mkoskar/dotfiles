@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# Generate SSHv2 RSA 4096-bit key.
+# If passphrase is provided, key is further encrypted using 128-bit AES cipher.
+
+err_usage() {
+    echo "usage: $(basename "$0") key_id (e.g., username)"
+    exit 2
+}
+
+[ $# -eq 0 ] && err_usage
+
+key_id=$1
+ssh-keygen -t rsa -b 4096 -C "$key_id" -f "id_rsa_$key_id"

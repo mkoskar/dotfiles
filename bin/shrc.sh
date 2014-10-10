@@ -41,6 +41,40 @@ alias playcd='play cdda://'
 alias playdvd='play -mouse-movements dvdnav://'
 alias playvcd='play vcd://2'
 
+# docker
+alias dk='docker'
+alias dkc='docker ps'
+alias dkca='docker ps -a'
+alias dkcl='docker ps -l -q'
+alias dki='docker images'
+alias dkia='docker images -a'
+alias dkr='docker run -P'
+alias dkrd='docker run -d -P'
+alias dkri='docker run -i -t -P'
+
+dkb() {
+    docker build -t=$1 .
+}
+
+dkip() {
+    local target=${1:-$(docker ps -l -q)}
+    [ -z "$target" ] && return 2
+    docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$target"
+}
+
+dkrm() {
+    confirm 'About to remove ALL containers. Continue?' n || return 0
+    local ids
+    ids=($(docker ps -a -q))
+    [ ${#ids[@]} -gt 0 ] && docker rm -f "${ids[@]}" || true
+}
+
+dkstop() {
+    local ids
+    ids=($(docker ps -a -q))
+    [ ${#ids[@]} -gt 0 ] && docker stop "${ids[@]}" || true
+}
+
 # other
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -49,7 +83,7 @@ alias acpi='acpi -V'
 alias callgrind='valgrind --tool=callgrind'
 alias cower='cower --color=auto'
 alias feh='feh -F'
-alias gpgsandbox='gpg --homedir ~/.gnupg/sandbox'
+alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
 alias info='info --vi-keys'
 alias lsdiff='lsdiff -s'
 alias manl="MANPAGER='less -s' man"
@@ -57,16 +91,17 @@ alias ntpdq='sudo ntpd -q && sudo hwclock -w'
 alias pac='pacman'
 alias qiv='qiv -uLtiGfl --vikeys'
 alias rm='rm -I --one-file-system'
-alias sd='systemctl'
+alias sd='sudo systemctl'
 alias sdu='systemctl --user'
 alias se='sudoedit'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
+alias watch='watch -n1 -t -c'
 alias wtc='curl --silent http://whatthecommit.com/index.txt'
 
 # simple alarm (defaults to 5 minutes)
 a() {
-    local d="${1:-5m}"
+    local d=${1:-5m}
     printf '%s ... alarm after %s\n' "$(date)" "$d"
     sleep "${1:-5m}"
     echo 'Beep...'
@@ -76,7 +111,7 @@ a() {
 # returns command executable on current PATH
 pth() {
     local c
-    c="$(command -v "$1")" || return 1
+    c=$(command -v "$1") || return 1
     [ -z "${c##/*}" ] && echo "$c"
 }
 
@@ -94,22 +129,22 @@ lsfd() {
 # (defaults to 'ls -la')
 on() {
     local p
-    p="$(pth "$1")" || return 1
+    p=$(pth "$1") || return 1
     shift
     eval "${*:-ls -la}" "$p"
 }
 
 # finds what package provides file or directory
 paco() {
-    local p="$(readlink -f "$1")"
+    local p=$(realpath "$1")
     [ -e "$p" ] && pacman -Qo "$p"
 }
 
 # finds what package provides command
 pacoc() {
     local p
-    p="$(pth "$1")" && pacman -Qo "$p"
-    p="$(spth "$1")" && pacman -Qo "$p"
+    p=$(pth "$1") && pacman -Qo "$p"
+    p=$(spth "$1") && pacman -Qo "$p"
 }
 
 # files provided by package
@@ -134,7 +169,7 @@ pacw() {
 
 # target detailed info
 paci() {
-    local p="$(expac %n "$1")"
+    local p=$(expac %n "$1")
     [ -z "$p" ] && return 1
     pacman -Qii "$p"
 }
@@ -147,8 +182,8 @@ unset _bourne_test
 # virtualenvwrapper
 if [ -e /usr/bin/virtualenvwrapper.sh ]; then
     . /usr/bin/virtualenvwrapper_lazy.sh
-    alias mkvirtualenv2="mkvirtualenv -p $(pth python2)"
-    alias mkvirtualenv3="mkvirtualenv -p $(pth python3)"
+    alias mkvirtualenv2="mkvirtualenv -p '$(pth python2)'"
+    alias mkvirtualenv3="mkvirtualenv -p '$(pth python3)'"
     alias wo='workon'
     if [ -n "$BASH" ]; then
         _virtualenvwrapper_load() {
