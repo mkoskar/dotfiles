@@ -31,7 +31,6 @@ autoload -Uz copy-earlier-word
 
 setopt always_to_end
 setopt auto_cd
-setopt auto_name_dirs
 setopt auto_pushd
 setopt auto_resume
 setopt brace_ccl
