@@ -1,0 +1,11 @@
+accept_bad_cookie 0
+accept_cookie 1
+confirm_qq 0
+display_image 0
+editor e
+extbrowser b
+mark_all_pages 1
+open_tab_blank 1
+show_cookie 0
+ssl_verify_server 1
+use_cookie 1

@@ -61,11 +61,14 @@ myConfig = defaultConfig
     , terminal = myTerminal
     , workspaces = myWorkspaces
     , keys = \conf -> mkKeymap conf myKeymap
-    , startupHook = setWMName "LG3D" <+>
-                    checkKeymap myConfig myKeymap <+>
+    , startupHook = checkKeymap myConfig myKeymap <+>
+                    ewmhDesktopsStartup <+>
+                    setWMName "LG3D" <+>
                     spawn "xsession-hook startup"
-    , logHook = updatePointer (Relative 0.5 0.5)
-    , handleEventHook = docksEventHook <+>
+    , logHook = ewmhDesktopsLogHook <+>
+                updatePointer (Relative 0.5 0.5)
+    , handleEventHook = ewmhDesktopsEventHook <+>
+                        docksEventHook <+>
                         minimizeEventHook <+>
                         positionStoreEventHook <+>
                         hintsEventHook
@@ -263,4 +266,4 @@ myConfig = defaultConfig
         , ("M-; M-w", spawn "wifi-toggle")
         ]
 
-main = xmonad =<< myStatusBar (withUrgencyHook NoUrgencyHook $ ewmh myConfig)
+main = xmonad =<< myStatusBar (withUrgencyHook NoUrgencyHook myConfig)

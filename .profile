@@ -17,7 +17,7 @@ export TMPDIR="/tmp/$USER"
 [ -d "$TMPDIR" ] || mkdir -p -m 700 "$TMPDIR"
 
 export ASPROOT="$HOME/.asp"
-export BROWSER='firefox'
+export BROWSER='b'
 export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
 export EDITOR='e'
 export LESS='-MRS#3ci'

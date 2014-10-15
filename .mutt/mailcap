@@ -1,4 +1,4 @@
-text/html;                  $BROWSER %s
+text/html;                  w3m -I %{charset} -T text/html
 text/html;                  w3m -I %{charset} -T text/html; copiousoutput
 text/*;                     e %s
 

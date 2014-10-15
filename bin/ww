@@ -1,0 +1,31 @@
+#!/bin/bash
+
+ti_reset=$'\e[m'
+ti_hi0=$'\e[1;37m'
+ti_hi1=$'\e[1;32m'
+ti_hi2=$'\e[1;31m'
+ti_hi3=$'\e[1;33m'
+
+format="%I, %j (%l, %L) at %a
+----------------------------------------
+Condition:              ${ti_hi0}%c${ti_reset}
+Clouds:                 ${ti_hi0}%d%%${ti_reset}
+Barometric pressure:    %bhPa
+Precipitation:          %pmm
+Relative humidity:      ${ti_hi0}%P%%${ti_reset}
+Temperature:            Low: ${ti_hi1}%h°C${ti_reset} / High: ${ti_hi2}%H°C${ti_reset} / Current: ${ti_hi3}%t°C${ti_reset}
+Wind:                   %X (%x°), %wmps, %Wmps
+Sun:                    %s / %S
+"
+
+get() {
+    local opts=(-m -l "$1")
+    local opts_digest=$(<<<"${opts[*]}" sha1sum | awk '{print $1}')
+    shaman "${opts[@]}" -f "$format" \
+        -c "$HOME/.cache/shaman-${opts_digest: -7}.json"
+}
+
+echo
+get 'Martin,SK'
+get 'Bratislava,SK'
+get 'Prague,CZ'

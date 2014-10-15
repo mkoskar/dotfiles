@@ -1,3 +1,35 @@
 #!/bin/bash
 
-exec firefox -no-remote
+set -e
+
+case $1 in -h|--help)
+    cat <<-EOF
+	usage: ff [arg]...              - short for 'ffp default [arg]...'
+	       ffp profile [arg]...     - start firefox as 'firefox -P profile [arg]...'
+	EOF
+    exit
+    ;;
+esac
+
+if [ "$(basename "$0")" = 'ff' ]; then
+    set -- default "$@"
+fi
+
+profiles=($(find ~/.mozilla/firefox -mindepth 1 -maxdepth 1 -type d | sed 's/^.*\.//' | sort))
+
+if [ $# -gt 0 ]; then
+    for p in "${profiles[@]}"; do
+        if [ "$p" = "$1" ]; then
+            profile=$1
+            shift
+        fi
+    done
+fi
+
+if [ -z "$profile" ]; then
+    profile=$(zenity --list --title='Select Firefox Profile' --text='$ firefox -P ...' --height 300 \
+        --hide-header --column='' "${profiles[@]}")
+fi
+
+export LOGNAME="$USER.$profile"
+exec firefox -P "$profile" "$@"

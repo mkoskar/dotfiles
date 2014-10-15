@@ -1,0 +1,4 @@
+#!/bin/bash
+
+hstatus "$1" >/dev/tty
+echo "$2"

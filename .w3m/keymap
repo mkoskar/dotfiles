@@ -1,0 +1,16 @@
+keymap 0 LINE_BEGIN
+
+keymap C-D NEXT_PAGE
+keymap C-U PREV_PAGE
+
+keymap C-N NEXT_LINK
+keymap M-j NEXT_LINK
+keymap J NEXT_LINK
+
+keymap C-P PREV_LINK
+keymap M-k PREV_LINK
+keymap K PREV_LINK
+
+keymap o GOTO_LINK
+keymap O EXTERN_LINK
+keymap C-O OPTIONS

@@ -2,11 +2,17 @@
 
 set -e
 
-custom_repo=~/packages
-custom_repo_db="$custom_repo/custom.db"
+echo $'\n--------------------------------------------------'
+echo $'> Update [custom] repo:\n'
 
-if [ ! -e "$custom_repo_db" ]; then
-    (cd "$custom_repo" && repo-init custom)
-fi
+repo-update
+
+echo $'\n--------------------------------------------------'
+echo $'> Update (official & aur):\n'
 
 yaourt -Syyua
+
+echo $'\n--------------------------------------------------'
+echo $'> Update (devel):\n'
+
+yaourt -Su --devel

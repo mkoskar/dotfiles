@@ -1,8 +1,61 @@
 #!/bin/bash
 
-# if there is terminal connected to the STDIN,
-# execute command normally
-[ -t 0 ] && exec "$@"
+set -e
 
-# else execute command to read from STDIN
-exec "$@" -
+if [ -t 0 ]; then
+    echo 'stdin is a tty' >&2
+    exit 1
+fi
+
+err_usage() {
+    echo "usage: $(basename "$0") [-t | -T] [arg]..."
+    exit 2
+}
+
+while getopts 'tT' opt; do
+    case $opt in
+        t)
+            topt=1
+            ;;
+        T)
+            Topt=1
+            ;;
+        *)
+            err_usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+[ $# -eq 0 ] && set -- cat {}
+
+if [ -n "$topt$Topt" ]; then
+    file=$(mktemp -t 'stdiner.XXXXXXXXXX')
+    trap 'rm -f "$file"' EXIT
+    cat >"$file"
+else
+    exec 8<&0
+    file='/dev/fd/8'
+fi
+exec 0</dev/tty
+
+args=("$@")
+for i in "${!args[@]}"; do
+    if [ "${args[$i]}" = '{}' ]; then
+        args[$i]=$file
+        farg=1
+    fi
+done
+
+[ -z "$farg" ] && args+=("$file")
+
+"${args[@]}"
+
+if [ -n "$Topt" ]; then
+    trap - EXIT
+    (
+        trap 'rm -f "$file"' EXIT
+        sleep 2
+        while fuser "$file"; do sleep 1; done
+    ) &
+fi

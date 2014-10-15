@@ -7,22 +7,24 @@ prgname=$(basename "$0")
 # ----------------------------------------
 
 cmd() {
-    tmux -L "${socket:-default}" "$@" >/dev/null
+    tmux -L "${socket:-default}" "$@"
 }
 
 exists () {
-    cmd has -t "$session" &>/dev/null
+    cmd has -t "$session" >/dev/null 2>&1
 }
 
 new() {
-    local name=$(cmd new -d)
-    exists || cmd rename -t "$name" "$session"
-    cmd setenv -t "$session" BASEDIR "$(pwd)" \
+    local name=$(cmd new -dP)
+    if [ ! "$name" = "$session:" ]; then
+        cmd rename -t "$name" "$session"
+    fi
+    cmd setenv -t "$session" BASEDIR "$PWD" \
         \; neww -kt :0 "$@"
 }
 
 neww() {
-    cmd neww -t "$session" "$@"
+    cmd neww -t "$session:" "$@"
 }
 
 # ----------------------------------------
@@ -70,7 +72,7 @@ _aux() {
     neww 'trun weechat' \
         \; setw remain-on-exit on
 
-    cmd selectw -t "$session:1"
+    cmd selectw -t :1
 }
 
 _mon() {
@@ -93,7 +95,7 @@ _mon() {
 
     neww -n 'logs' -c /var/log
 
-    cmd selectw -t "$session:0"
+    cmd selectw -t :0
 }
 
 _tmp() {
@@ -117,7 +119,7 @@ fi
 
 session=$1
 if [ -z "$session" ]; then
-    session=$(pwd | sed -r "s,^$HOME(/|$),~\1,")
+    session=$(<<<"$PWD" sed -r "s,^$HOME(/|$),~\1,")
     if [ ! "$session" = '/' -a ! "$session" = '~' ]; then
         sdigest=$(<<<"$session" sha1sum | awk '{print $1}')
         session=$(<<<"$session" tr '.:' _)

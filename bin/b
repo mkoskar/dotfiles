@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+if [ "$(basename "$0")" = 'b0' ]; then
+    set -- quarantine "$@"
+fi
+
+ff "$@" >/dev/null 2>&1 &

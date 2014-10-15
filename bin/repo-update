@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+shopt -s nullglob
+
+name=${1:-custom}
+
+repo="$HOME/packages/$name"
+repo_db="$repo/$name.db"
+
+if [ ! -e "$repo_db" ]; then
+    (mkdir -p "$repo" && cd "$repo" && repo-init "$name")
+fi
+
+cd "$repo"
+packages=(*.pkg.tar.xz)
+if [ "${#packages[@]}" -gt 0 ]; then
+    repo-add -d -q "$name.db.tar.gz" "${packages[@]}"
+fi

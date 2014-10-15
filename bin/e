@@ -1,3 +1,13 @@
 #!/bin/bash
 
-exec stdiner vim -NO "$@"
+set -e
+
+if ! [ -t 0 ]; then
+    set -- "$@" -
+fi
+
+if [ "$(basename "$0")" = 'e0' ]; then
+    set -- -n -i NONE -u NONE "$@"
+fi
+
+exec vim -NO "$@"

@@ -1,8 +1,0 @@
-import XMonad
-
--- main
-main = xmonad defaultConfig
-        {
-            modMask = mod4Mask,
-            terminal = "urxvt"
-        }

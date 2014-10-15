@@ -1,3 +1,1 @@
-#!/bin/bash
-
-exec stdiner vim -NOn -i NONE -u NONE "$@"
+e

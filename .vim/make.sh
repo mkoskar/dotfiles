@@ -78,3 +78,4 @@ from_git https://github.com/vim-scripts/minibufexpl.vim.git
 #from_git https://github.com/tpope/vim-repeat.git
 #from_git https://github.com/tpope/vim-surround.git
 #from_git https://github.com/tpope/vim-unimpaired.git
+#from_git https://github.com/yuratomo/w3m.vim.git

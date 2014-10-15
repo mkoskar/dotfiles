@@ -2,7 +2,7 @@
 
 # global settings
 set abort_nosubject = ask-no
-set abort_unmodified = ask-no
+set abort_unmodified = no
 set alias_file = ~/.mutt/aliases
 set beep_new
 set bounce = ask-no
@@ -37,13 +37,13 @@ unset wait_key
 
 # formats
 set alias_format = ' %2n %t %-40.40r    %a'
-set compose_format = '-- Mutt: Compose [Approx. msg size: %l   Atts: %a]'
+set compose_format = "mutt-hstatus '%v' '-- Mutt: Compose [Approx. msg size: %l   Atts: %a]'|"
 set date_format = '%m/%d/%y %I:%M%P'
 set folder_format = ' %2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f'
 set index_format = '%?M?+& ?[%Z]  %D  %-25.25F  %s'
 set pager_format = '[%Z] %C/%m: %-20.20n   %s%*  -- (%P)'
 set query_format = ' %2c %t %-40.40a    %n %?e?(%e)?'
-set status_format = '[%r] %f [total:%?M?%M/?%m%?n? new:%n?%?d? deleted:%d?%?t? tagged:%t?%?F? flagged:%F?%?p? postponed:%p? size:%l] %> %s/%S (%P)'
+set status_format = "mutt-hstatus '%v' '[%r] %f [total:%?M?%M/?%m%?n? new:%n?%?d? deleted:%d?%?t? tagged:%t?%?F? flagged:%F?%?p? postponed:%p? size:%l] %> %s/%S (%P)'|"
 
 # index settings
 set reply_regexp = '^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*'
@@ -180,18 +180,18 @@ macro generic,index \ek (((
 macro generic,pager <F1> '<shell-escape>pg /usr/share/doc/mutt/manual.txt<enter>' 'show manual'
 macro index,pager * <tag-pattern>*<enter> 'tag all'
 macro index,pager <backspace> <untag-pattern>*<enter> 'untag all'
-macro index,pager Z <shell-escape>mbsync<enter> 'trigger mailboxes synchronization'
-macro index,pager \cO <query> 'run external address query'
+macro index,pager Z '<shell-escape>mbsync &<enter>' 'trigger mailboxes synchronization'
 macro index,pager \cR <tag-prefix><clear-flag>N<backspace> 'mark all tagged messages as read'
-macro index,pager \ev <pipe-message>urlview<enter> 'follow links with urlview'
-macro index,pager \ea "<change-folder>!!<enter>" 'go to previous mailbox'
+macro index,pager \ea '<change-folder>!!<enter>' 'go to previous mailbox'
 macro index,pager y <change-folder>?<toggle-mailboxes> 'show mailboxes list'
+macro index,pager,attach O <pipe-message>w3m<enter> 'view in w3m'
+macro index,pager,attach \cO '<pipe-message>stdiner -T b0<enter>' 'view in browser'
 macro pager \ej jjjjj
 macro pager \ek kkkkk
 macro browser \ea <exit>\ea 'go to previous mailbox'
 macro browser u /^\\.\\.$<enter><enter> 'go up a dir'
 macro compose Y pfy 'send the message without PGP'
-macro compose v "<edit-from>^Uidentity_<tab>" 'select from'
+macro compose v '<edit-from>^Uidentity_<tab>' 'select from'
 
 macro index o <enter>
 macro pager o q
