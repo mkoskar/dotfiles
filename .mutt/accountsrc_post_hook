@@ -18,11 +18,11 @@ macro browser \e4 <exit>\e4 'go to archived mailbox'
 macro index,pager \e0 "<change-folder>$my_mbtrashed<enter>" 'go to trashed mailbox'
 macro browser \e0 <exit>\e0 'go to trashed mailbox'
 
-macro index \& "<tag-prefix><save-message>$my_mbarchived<enter><sync-mailbox>" 'archive messages'
-macro pager \& "<save-message>$my_mbarchived<enter><sync-mailbox>" 'archive message'
+macro index \& "<tag-prefix><save-message>$my_mbarchived<enter><previous-entry><sync-mailbox>" 'archive messages'
+macro pager \& "<save-message>$my_mbarchived<enter><previous-entry><sync-mailbox>" 'archive message'
 
-macro index \# "<tag-prefix><save-message>$my_mbtrashed<enter><sync-mailbox>" 'trash messages'
-macro pager \# "<save-message>$my_mbtrashed<enter><sync-mailbox>" 'trash message'
+macro index \# "<tag-prefix><save-message>$my_mbtrashed<enter><previous-entry><sync-mailbox>" 'trash messages'
+macro pager \# "<save-message>$my_mbtrashed<enter><previous-entry><sync-mailbox>" 'trash message'
 
 #push "<change-folder>?<change-dir>^U$my_base<enter><exit>"
 macro index,pager <tab> "<change-folder>?<change-dir>^U$my_base<enter>" 'browse account local folder'

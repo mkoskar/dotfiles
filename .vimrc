@@ -47,7 +47,7 @@ set nowrap
 set sidescroll=10
 set sidescrolloff=10
 set list
-set listchars=eol:¬,tab:>-,trail:-,extends:>,precedes:<
+set listchars=eol:Â¬,tab:>-,trail:-,extends:>,precedes:<
 
 nnoremap <silent> <Leader>l :set list!<CR>
 
@@ -162,10 +162,11 @@ nnoremap <Leader>fm :set fdm=marker<CR>
 "========== reading and writing files
 set modeline
 set backup
-exec 'set backupdir='.$VIMDIR.'/.backupdir'
+exec 'set backupdir='.$VIMDIR.'/.backupdir//'
 set autoread
 
 "========== the swap file
+exec 'set directory=~/.vim/.swapdir//,'.$TMPDIR.'//'
 set swapfile
 
 "========== command line editing
@@ -173,9 +174,14 @@ set history=500
 set wildmenu
 set wildmode=list:longest,full
 set undofile
-exec 'set undodir='.$VIMDIR.'/.undodir'
+exec 'set undodir='.$VIMDIR.'/.undodir//'
+
+"========== executing external commands
+set shell=~/bin/bashx
+set shellredir=>%s\ 2>&1
 
 "========== running make and jumping to errors
+set shellpipe=2>&1\|\ tee
 set grepprg=grep\ -n\ --exclude-dir='.svn'\ --exclude-dir='.git'\ --exclude='*.swp'\ --exclude='*~'\ $*\ /dev/null
 
 "========== multi-byte characters
@@ -215,6 +221,7 @@ nmap <M-k> 5k
 xmap <M-j> 5j
 xmap <M-k> 5k
 
+nnoremap <M-n> :tabnew<CR>
 nnoremap <M-l> gt
 nnoremap <M-h> gT
 nnoremap <M-1> 1gt
@@ -505,7 +512,7 @@ let g:NERDTreeBookmarksFile = $VIMDIR.'/.NERDTreeBookmarks'
 let g:NERDTreeCaseSensitiveSort = 1
 let g:NERDTreeDirArrows = 1
 let g:NERDTreeHijackNetrw = 0
-let g:NERDTreeIgnore = ['^\.svn$', '^\.git$', '\.swp$', '\~$']
+let g:NERDTreeIgnore = []
 let g:NERDTreeMapCWD = 'cD'
 let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeShowHidden = 1
@@ -593,6 +600,7 @@ augroup VIMRC
     autocmd BufWinEnter quickfix call s:SpecialBufferSettings()
     autocmd BufWritePost .Xresources !xrdb -load ~/.Xresources
     autocmd BufWritePost .vimrc source ~/.vimrc
+    autocmd BufWritePre * let &backupext = '_'.substitute(expand('%:p:h'), '/', '%', 'g')
     autocmd CmdwinEnter * call s:SpecialBufferSettings()
     autocmd FileType make setl ts=4 sts=0 sw=4 noexpandtab
     autocmd FileType man call s:ManBufferSettings()

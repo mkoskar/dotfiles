@@ -1,5 +1,6 @@
 *
 !.Xresources
+!.ackrc
 !.adobe
 !.attic
 !.authinfo.example
@@ -12,13 +13,12 @@
 !.config/fontconfig/fonts.conf
 !.config/gtk-3.0/bookmarks
 !.config/gtk-3.0/settings.ini
+!.config/herbstluftwm/autostart
+!.config/mimeapps.list
 !.config/openbox/menu.xml
 !.config/openbox/rc.xml
 !.config/pulse/client.conf
-!.config/ranger/colorschemes/custom.py
-!.config/ranger/rc.conf
-!.config/ranger/rifle.conf
-!.config/ranger/scope.sh
+!.config/ranger
 !.config/systemd
 !.config/tint2/tint2rc
 !.config/twmn/twmn.conf
@@ -37,10 +37,12 @@
 !.gtk-bookmarks
 !.gtkrc-2.0
 !.hushlogin
-!.icons/default/index.theme
+!.ideavimrc
+!.iftoprc
 !.infokey
 !.inputrc
 !.lesskey
+!.local/share/applications/browser.desktop
 !.local/share/applications/mimeapps.list
 !.local/share/fonts/make.sh
 !.macromedia
@@ -53,6 +55,7 @@
 !.msmtprc.example
 !.mutt
 !.netrc.example
+!.newsbeuter/config
 !.pgrc
 !.pinforc
 !.profile
@@ -78,6 +81,7 @@
 !.xmonad/xmonad.hs
 !.xmonad/xmonad.hs.minimal
 !.yaourtrc
+!.zfunctions
 !.zprofile
 !.zshrc
 !bin

@@ -59,7 +59,7 @@ URxvt.keysym.S-C-h:     builtin:
 
 URxvt.perl-ext-common:  default,matcher,confirm-paste
 URxvt.matcher.button:   1
-URxvt.url-launcher:     firefox
+URxvt.url-launcher:     b
 
 ! xcursor --------------------------------------------------------------------
 Xcursor.theme:          Grounation

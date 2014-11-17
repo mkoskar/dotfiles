@@ -1,14 +1,12 @@
-# Source this file to initialize shell.
+# Source this file to get common aliases and functions.
 # :Compatibility: POSIX / Bourne
 
-[ -e ~/bin/term.sh ] && . ~/bin/term.sh
-
-# continue only in case of interactive shell
-# ------------------------------------------
-case $- in *i*) ;; *) return ;; esac
-
-# prevent overwriting an existing file when doing redirects
 set -o noclobber
+
+if [ -n "$BASH" ]; then
+    shopt -s expand_aliases
+    unset BASH_ENV
+fi
 
 # ls
 alias ls='ls --group-directories-first --color=auto'
@@ -23,9 +21,10 @@ alias lt='ll -tr'
 alias lu='lt -u'
 alias lx='ll -XB'
 
-# grep
+# ack / grep
+alias ac='ack --color'
 alias grep='LC_ALL=C grep --color=auto'
-alias g='grep'
+alias g='grep -n --color=always'
 alias gi='g -i'
 alias gr="g -R --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exclude='*~'"
 alias gri='gr -i'
@@ -33,31 +32,30 @@ alias gri='gr -i'
 # python
 alias py='python'
 alias ipy='ipython'
+alias pip-no-require-venv='PIP_REQUIRE_VIRTUALENV= '
 alias pipinst='pip install --download-cache=~/.pip-cache'
 
 # mplayer
-alias play='mplayer -really-quiet'
+play() { mplayer -really-quiet "$@" 2>/dev/null; }
 alias playcd='play cdda://'
 alias playdvd='play -mouse-movements dvdnav://'
 alias playvcd='play vcd://2'
 
 # docker
 alias dk='docker'
+alias dkb='docker build'
 alias dkc='docker ps'
 alias dkca='docker ps -a'
 alias dkcl='docker ps -l -q'
+alias dke='docker exec -i -t'
 alias dki='docker images'
 alias dkia='docker images -a'
-alias dkr='docker run -P'
-alias dkrd='docker run -d -P'
-alias dkri='docker run -i -t -P'
-
-dkb() {
-    docker build -t=$1 .
-}
+alias dkr='docker run -e TERM="${TERM%%-bsdel}" -P'
+alias dkrd='docker run -e TERM="${TERM%%-bsdel}" -d -P'
+alias dkri='docker run -e TERM="${TERM%%-bsdel}" -i -t -P'
 
 dkip() {
-    local target=${1:-$(docker ps -l -q)}
+    local target=${1:-$(docker ps -lq)}
     [ -z "$target" ] && return 2
     docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$target"
 }
@@ -65,13 +63,13 @@ dkip() {
 dkrm() {
     confirm 'About to remove ALL containers. Continue?' n || return 0
     local ids
-    ids=($(docker ps -a -q))
+    ids=($(docker ps -aq))
     [ ${#ids[@]} -gt 0 ] && docker rm -f "${ids[@]}" || true
 }
 
 dkstop() {
     local ids
-    ids=($(docker ps -a -q))
+    ids=($(docker ps -aq))
     [ ${#ids[@]} -gt 0 ] && docker stop "${ids[@]}" || true
 }
 
@@ -82,13 +80,18 @@ alias ....='cd ../../..'
 alias acpi='acpi -V'
 alias callgrind='valgrind --tool=callgrind'
 alias cower='cower --color=auto'
+alias df='df -h'
+alias du='du -sh'
 alias feh='feh -F'
 alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
 alias info='info --vi-keys'
+alias loclib='tree ~/.local/lib'
 alias lsdiff='lsdiff -s'
 alias manl="MANPAGER='less -s' man"
 alias ntpdq='sudo ntpd -q && sudo hwclock -w'
 alias pac='pacman'
+alias pactree='pactree --color'
+alias psa='ps auxf'
 alias qiv='qiv -uLtiGfl --vikeys'
 alias rm='rm -I --one-file-system'
 alias sd='sudo systemctl'
@@ -106,6 +109,11 @@ a() {
     sleep "${1:-5m}"
     echo 'Beep...'
     play -loop 0 /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
+}
+
+alias cd='__cd'
+__cd() {
+    [ $# -eq 0 ] && \cd "${BASEDIR:-$HOME}" || \cd "$@"
 }
 
 # returns command executable on current PATH
@@ -149,7 +157,7 @@ pacoc() {
 
 # files provided by package
 pacl() {
-    pacman -Qql "$1" | pg
+    pacman -Qql "$1"
 }
 
 # target 'depends on'

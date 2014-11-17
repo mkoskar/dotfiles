@@ -1,15 +1,1 @@
-#!/bin/bash
-
-set -e
-
-if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") cmd [arg]..."
-    exit 2
-fi
-
-while true; do
-    t_begin=$(date +%s.%N)
-    eval "$@"
-    t_end=$(date +%s.%N)
-    [ "$(bc <<<"($t_end-$t_begin) < 0.4")" -eq 1 ] && break
-done
+repete

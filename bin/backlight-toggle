@@ -1,20 +1,43 @@
 #!/bin/bash
 
-max=15
-val=10
+set -e
+
 low=8
+med=10
+high=15
 
-# SEEALSO: xbacklight(1) - adjust backlight brightness using RandR extension
-
-case $(</sys/class/backlight/acpi_video0/brightness) in
-    "$max")
-        ;;
-    "$val")
+toggle() {
+    val=$(</sys/class/backlight/acpi_video0/brightness)
+    if ((val < low)); then
         val=$low
-        ;;
-    "$low")
-        val=$max
-        ;;
-esac
+    elif ((val < med)); then
+        val=$med
+    elif ((val < high)); then
+        val=$high
+    else
+        val=$low
+    fi
 
-sudo bash -c "echo $val >/sys/class/backlight/acpi_video0/brightness"
+    # SEEALSO: xbacklight(1) - adjust backlight brightness using RandR extension
+    sudo bash -c "echo $val >/sys/class/backlight/acpi_video0/brightness"
+}
+
+if ! [ -t 1 ]; then
+    toggle
+    exit
+fi
+
+while true; do
+    printf '\e[1G%s\e[0K' "$(status backlight)"
+
+    read -N1 -s c
+    case $c in
+        q|Q)
+            break
+            ;;
+        *)
+            toggle
+            ;;
+    esac
+done
+echo

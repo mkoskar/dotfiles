@@ -8,6 +8,7 @@ session=$XSESSION
 startup() {
     case $session in
         main)
+            wmname LG3D
             xup
             ;;
     esac

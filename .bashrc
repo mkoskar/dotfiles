@@ -1,11 +1,13 @@
 # ~/.bashrc
 # - executed by bash(1) for interactive non-login shells
 
-[ -f ~/bin/shrc.sh ] && . ~/bin/shrc.sh
+[ -e ~/bin/term.sh ] && . ~/bin/term.sh
 
 # continue only in case of interactive shell
 # ------------------------------------------
 case $- in *i*) ;; *) return ;; esac
+
+[ -e ~/bin/shx.sh ] && . ~/bin/shx.sh
 
 shopt -s autocd checkjobs checkwinsize cmdhist dotglob histappend \
          histreedit histverify lithist no_empty_cmd_completion

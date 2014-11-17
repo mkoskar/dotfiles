@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 echo $'\n--------------------------------------------------'
 echo $'> Update [custom] repo:\n'
 
@@ -16,3 +14,11 @@ echo $'\n--------------------------------------------------'
 echo $'> Update (devel):\n'
 
 yaourt -Su --devel
+
+echo $'\n--------------------------------------------------'
+echo $'> Cleanup:\n'
+
+yaourt -Qdt
+echo
+
+yaourt -C

@@ -1,0 +1,37 @@
+"========== moving around, searching and patterns
+set ignorecase
+set smartcase
+
+"========== displaying text
+set scrolloff=10
+set sidescroll=10
+set sidescrolloff=10
+
+"========== syntax, highlighting and spelling
+set hlsearch
+
+nnoremap <silent> <Space> :nohls<Bar>echo<CR>
+
+" spatial navigation
+nnoremap <C-J> <C-W>j
+nnoremap <C-K> <C-W>k
+nnoremap <C-H> <C-W>h
+nnoremap <C-L> <C-W>l
+
+"========== messages and info
+set showmode
+set novisualbell
+
+"========== command line editing
+set history=500
+
+"========== various
+set gdefault
+
+" let Y yank not entire line, but from cursor to the end (consistent with D, C)
+nnoremap Y y$
+
+nmap <A-j> 5j
+nmap <A-k> 5k
+vmap <A-j> 5j
+vmap <A-k> 5k

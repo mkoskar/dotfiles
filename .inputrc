@@ -3,9 +3,10 @@ set bind-tty-special-chars off
 set colored-stats
 set completion-prefix-display-length 2
 set editing-mode vi
-set keyseq-timeout 500
+set keyseq-timeout 10
 set mark-symlinked-directories on
 set show-all-if-ambiguous on
+set show-mode-in-prompt on
 set skip-completed-text on
 
 set keymap vi-insert
@@ -17,19 +18,20 @@ set keymap vi-insert
 "\C-k": menu-complete-backward
 "\C-w": backward-kill-word
 
-$if bash
-    set show-mode-in-prompt on
+"\C-x": noop
+"\C-xp": "\eIpgx \e0"
+"\C-xP": "\eA | pg\eF|h"
 
-    "\C-x\C-x": "\e0isudo \e0"
-    "\C-x\C-t": "\edditmux new -s ''\ei"
-    "\C-x\C-h": "\eddihistory 25 | gi ''\ei"
-    "\C-x\C-a": "\ea!!:*\e"
-    "\C-x\C-l": "\ea!!:$\e"
-    "\C-x\C-s": "\ea!!:gs/"
+$if bash
+    "\C-xx": "\e0isudo \e0"
+    "\C-xh": "\eddihistory 25 | gi ''\ei"
+    "\C-xa": "\ea!!:*\e"
+    "\C-xl": "\ea!!:$\e"
+    "\C-xs": "\ea!!:gs/"
 $endif
 
 $if python
-    "\C-x\C-h": "\eddihelp()\ei"
+    "\C-xh": "\eddihelp()\ei"
 $endif
 
 set keymap vi-command
@@ -38,15 +40,18 @@ set keymap vi-command
 "\C-n": history-search-forward
 "\C-w": backward-kill-word
 
+"\C-x": noop
+"\C-xp": "Ipgx \e0"
+"\C-xP": "A | pg\eF|h"
+
 $if bash
-    "\C-x\C-x": "0isudo \e0"
-    "\C-x\C-t": "dditmux new -s ''\ei"
-    "\C-x\C-h": "ddihistory 25 | gi ''\ei"
-    "\C-x\C-a": "a!!:*\e"
-    "\C-x\C-l": "a!!:$\e"
-    "\C-x\C-s": "a!!:gs/"
+    "\C-xx": "Isudo \e0"
+    "\C-xh": "ddihistory 25 | gi ''\ei"
+    "\C-xa": "a!!:*\e"
+    "\C-xl": "a!!:$\e"
+    "\C-xs": "a!!:gs/"
 $endif
 
 $if python
-    "\C-x\C-h": "ddihelp()\ei"
+    "\C-xh": "ddihelp()\ei"
 $endif

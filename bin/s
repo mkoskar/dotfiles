@@ -59,18 +59,24 @@ _aux() {
     cd ~
 
     local notesdir=~/projects/notes/src
-    new -n 'notes' -c "$notesdir" 'trun e' \
+    new -n notes -c "$notesdir" 'trun e' \
         \; setw remain-on-exit on \
         \; splitw -h -c "$notesdir" \
         \; setw main-pane-width 121 \
         \; selectl main-vertical \
         \; selectp -t :.0
 
-    neww 'trun mutt' \
+    neww -n mail 'trun mutt' \
         \; setw remain-on-exit on
 
-    neww 'trun weechat' \
+    neww -n chat 'trun weechat' \
         \; setw remain-on-exit on
+
+    neww -n feeds 'trun newsbeuter' \
+        \; setw remain-on-exit on \
+        \; splitw -h 'trun respawn podbeuter' \
+        \; selectl even-horizontal \
+        \; selectp -t :.0
 
     cmd selectw -t :1
 }
@@ -78,22 +84,25 @@ _aux() {
 _mon() {
     cd ~
 
-    new -n 'top' 'trun onsigwinch-exec tmux selectl -- conky' \
+    new -n top 'trun onsigwinch-exec tmux selectl -- conky' \
         \; setw remain-on-exit on \
         \; splitw -h 'trun htop' \
         \; setw main-pane-width 43 \
         \; selectl main-vertical
 
-    neww -n 'journal' 'trun journalctl --system -f' \
+    neww -n journal 'trun journalctl --system -f' \
         \; setw remain-on-exit on \
         \; splitw -v 'trun journalctl --user -f' \
         \; selectl even-vertical \
         \; selectp -t :.0
 
-    neww -n 'sstat' 'trun pgx ss' \
+    neww -n sstat 'trun pgx ss' \
         \; setw remain-on-exit on
 
-    neww -n 'logs' -c /var/log
+    neww 'trun iftop' \
+        \; setw remain-on-exit on
+
+    neww -n logs -c /var/log
 
     cmd selectw -t :0
 }
@@ -119,10 +128,10 @@ fi
 
 session=$1
 if [ -z "$session" ]; then
-    session=$(<<<"$PWD" sed -r "s,^$HOME(/|$),~\1,")
+    session=$(sed -r "s,^$HOME(/|$),~\1," <<<"$PWD")
     if [ ! "$session" = '/' -a ! "$session" = '~' ]; then
-        sdigest=$(<<<"$session" sha1sum | awk '{print $1}')
-        session=$(<<<"$session" tr '.:' _)
+        sdigest=$(sha1sum | awk '{print $1}' <<<"$session")
+        session=$(tr '.:' _ <<<"$session")
         session="=${session##*/}_#${sdigest: -2}"
     fi
 fi

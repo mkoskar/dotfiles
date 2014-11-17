@@ -1,0 +1,140 @@
+#!/bin/bash
+
+set -e
+
+err_usage() {
+    cat >&2 <<-EOF
+	usage: $(basename "$0") [-d delay] [-t] [-T delta] [-o output] [-a] [-i] [-c] [-C] [-h] [-H] cmd [arg]...
+
+	  Execute 'cmd [arg]...' repeatedly.
+
+	  -d delay  - wait for 'delay' milliseconds; <0 = wait forever, 0 = don't wait at all (default: -1)
+	  -t        - terminate if 'cmd' finished in less than 'delta' milliseconds
+	  -T delta  - (default: 400)
+	  -o output - redirect stdin and sterr to 'output'
+	  -a        - don't truncate 'output' but do append instead
+	  -i        - don't use alternate screen
+	  -c        - clear screen before execution
+	  -C        - negate '-c'
+	  -h        - show this help message and exit
+	  -H        - output header
+
+	EOF
+    exit 2
+}
+
+if [ "$(basename "$0")" = 'respawn' ]; then
+    set -- -d0 -t "$@"
+fi
+
+while getopts 'd:tT:o:aicChH' opt; do
+    case $opt in
+        d)
+            if ! [ "$OPTARG" -eq "$OPTARG" ] 2>/dev/null; then
+                echo "$0: option requires an integer argument -- $opt" >&2
+                err_usage
+            fi
+            dopt=$OPTARG
+            ;;
+        t)
+            term=1
+            ;;
+        T)
+            if ! [ "$OPTARG" -eq "$OPTARG" ] 2>/dev/null; then
+                echo "$0: option requires an integer argument -- $opt" >&2
+                err_usage
+            fi
+            Topt=$OPTARG
+            ;;
+        o)
+            redir='>'
+            output=$OPTARG
+            ;;
+        a)
+            redir='>>'
+            ;;
+        i)
+            inline=1
+            ;;
+        c)
+            copt=1
+            ;;
+        C)
+            copt=0
+            ;;
+        H)
+            header=1
+            ;;
+        *)
+            err_usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if [ $# -eq 0 ]; then
+    err_usage
+fi
+
+delay=${dopt:--1}
+term_delta=${Topt:-400}
+
+if [ ! -t 0 ]; then
+    if [ $delay -lt 0 ]; then
+        echo "stdin not being a tty doesn't go with negative delay" >&2
+        exit 2
+    fi
+    notty=1
+fi
+
+read_opts=(-N1 -s)
+if ((delay > 0)); then
+    delay_ms=$(<<<"scale=2; $delay/1000" bc -l)
+    read_opts+=(-t "$delay_ms")
+fi
+
+eval_opts=("$@")
+if [ -n "$output" ]; then
+    eval_opts+=("$redir" "$output" '2>&1')
+fi
+
+if [ -z "$inline" ]; then
+    clear=1
+
+    tput smcup
+    tput clear
+    tput civis
+
+    cleanup() {
+        tput cnorm
+        tput rmcup
+    }
+    trap cleanup EXIT
+fi
+
+if [ -n "$copt" ]; then
+    [ "$copt" -eq 1 ] && clear=1 || unset clear
+fi
+
+while true; do
+    [ -n "$clear" ] && tput clear
+    [ -n "$header" ] && printf -- '---- %s ----\n' "$(date)" >&2
+    [ -n "$term" ] && t_begin=$(date +%s.%N)
+
+    eval "${eval_opts[@]}"
+
+    if [ -n "$term" ]; then
+        t_end=$(date +%s.%N)
+        [ "$(<<<"($t_end-$t_begin) < $term_delta/1000" bc -l)" -eq 1 ] && break
+    fi
+
+    if [ -n "$notty" -a $delay -gt 0 ]; then
+        sleep "$delay_ms"
+        continue
+    fi
+
+    if [ $delay -ne 0 ]; then
+        read "${read_opts[@]}" c || continue
+        case $c in q|Q) break ;; esac
+    fi
+done

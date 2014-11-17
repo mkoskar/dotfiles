@@ -1,3 +1,16 @@
 #!/bin/bash
 
-exec urxvt "$@"
+set -e
+
+name=()
+for arg in "$@"; do
+    shift
+    [ "$arg" = '-' ] && break
+    name+=("$arg")
+done
+name=${name[*]:-term}
+
+[ $# -eq 0 ] && set -- shell
+
+#exec st -c "$name" -e "$@"
+exec urxvt -name "$name" -e "$@"

@@ -1,17 +1,21 @@
 # ~/.zshrc
 # - executed by zsh(1) for interactive shells
 
-[ -f ~/bin/shrc.sh ] && . ~/bin/shrc.sh
+[ -e ~/bin/term.sh ] && . ~/bin/term.sh
 
 # continue only in case of interactive shell
 # ------------------------------------------
 case $- in *i*) ;; *) return ;; esac
+
+[ -e ~/bin/shx.sh ] && . ~/bin/shx.sh
 
 CDPATH='.:..:~'
 HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
 HISTSIZE=500
 SAVEHIST=5000
 TMPPREFIX="${TMPDIR:-/tmp}/zsh"
+
+fpath=(~/.zfunctions $fpath)
 
 # ensure path arrays do not contain duplicates
 typeset -gU path fpath cdpath
@@ -267,6 +271,25 @@ bindkey -M vicmd '\eh' run-help
 bindkey -M isearch . self-insert
 
 bindkey -M menuselect '^U' send-break
+
+# macros
+bindkey -M viins -r '^X'
+bindkey -M viins -s '^Xp' '\eIpgx \e0'
+bindkey -M viins -s '^XP' '\eA | pg\eF|h'
+bindkey -M viins -s '^Xx' '\e0isudo \e0'
+bindkey -M viins -s '^Xh' "\eddihistory 25 | gi ''\ei"
+bindkey -M viins -s '^Xa' '\ea!!:*\e'
+bindkey -M viins -s '^Xl' '\ea!!:$\e'
+bindkey -M viins -s '^Xs' '\ea!!:gs/'
+
+bindkey -M vicmd -r '^X'
+bindkey -M vicmd -s '^Xp' 'Ipgx \e0'
+bindkey -M vicmd -s '^XP' 'A | pg\eF|h'
+bindkey -M vicmd -s '^Xx' 'Isudo \e0'
+bindkey -M vicmd -s '^Xh' "ddihistory 25 | gi ''\ei"
+bindkey -M vicmd -s '^Xa' 'a!!:*\e'
+bindkey -M vicmd -s '^Xl' 'a!!:$\e'
+bindkey -M vicmd -s '^Xs' 'a!!:gs/'
 
 #========== zsh-syntax-highlighting
 

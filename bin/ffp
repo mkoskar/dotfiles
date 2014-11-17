@@ -5,31 +5,63 @@ set -e
 case $1 in -h|--help)
     cat <<-EOF
 	usage: ff [arg]...              - short for 'ffp default [arg]...'
-	       ffp profile [arg]...     - start firefox as 'firefox -P profile [arg]...'
+	       ffp [profile] [arg]...   - start firefox as '/usr/bin/firefox -P profile [arg]...'
+	       ffa [profile] [arg]...   - start firefox as '/usr/bin/firefox-aurora -P profile [arg]...'
 	EOF
     exit
     ;;
 esac
 
-if [ "$(basename "$0")" = 'ff' ]; then
-    set -- default "$@"
-fi
+prgname=$(basename "$0")
 
-profiles=($(find ~/.mozilla/firefox -mindepth 1 -maxdepth 1 -type d | sed 's/^.*\.//' | sort))
+case $prgname in ff | firefox) set -- default "$@" ;; esac
+
+# ----------------------------------------
+
+bin='/usr/bin/firefox'
+
+case $prgname in
+    ffa | firefox-aurora)
+        regexp='^aurora'
+        bin='/usr/bin/firefox-aurora'
+        ;;
+    *)
+        regexp='^((?!aurora)(?!dev-edition-default).)*$'
+        ;;
+esac
+
+# ----------------------------------------
+
+profiles=($(<~/.mozilla/firefox/profiles.ini awk -F = '/Name/ { print $2 }' | grep -P "$regexp" | sort))
 
 if [ $# -gt 0 ]; then
     for p in "${profiles[@]}"; do
         if [ "$p" = "$1" ]; then
             profile=$1
             shift
+            break
         fi
     done
 fi
 
 if [ -z "$profile" ]; then
-    profile=$(zenity --list --title='Select Firefox Profile' --text='$ firefox -P ...' --height 300 \
-        --hide-header --column='' "${profiles[@]}")
+    if has-cmd yad; then
+        profile=$(yad --list \
+            --title='Select Firefox Profile' --text="$ $bin -P ..." \
+            --height 300 --fixed --center \
+            --no-headers --separator='' --column='' "${profiles[@]}")
+    elif has-cmd zenity; then
+        profile=$(zenity --list \
+            --title='Select Firefox Profile' --text="$ $bin -P ..." \
+            --height 300 \
+            --hide-header --separator='' --column='' "${profiles[@]}")
+    else
+        echo 'Install yad or zenity for selection dialog to work.' >&2
+        exit 1
+    fi
 fi
 
+[ -z "$profile" ] && exit 1
+
 export LOGNAME="$USER.$profile"
-exec firefox -P "$profile" "$@"
+exec "$bin" -P "$profile" "$@"

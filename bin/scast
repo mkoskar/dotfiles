@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# -w            select a window by mouse click
+# -s            select a rectangular region by mouse
+# -x <n|list>   select the Xinerama head of ID n
+# -i            combine regions by intersection
+
+if [ $# -eq 0 ]; then
+    set -- -w
+fi
+
+cd ~/tmp
+
+echo 'Press [q] to stop, [?] for help'
+ffcast -q "$@" rec
+
+last=$(find -type f -name 'screencast-*' | sort -r | sed '2,$d')
+if [ -n "$last" ]; then
+    echo "> $last"
+    mplayer -really-quiet -loop 0 >/dev/null 2>&1 "$last"
+fi

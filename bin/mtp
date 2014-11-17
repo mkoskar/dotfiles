@@ -35,7 +35,7 @@ if [ ${#devices[@]} -gt 0 ]; then
     done
     [ -z "$sel" ] && exit 2
 
-    device=($(awk -F ', ' '{print $1 " " $2}' <<<"$sel"))
+    device=($(<<<"$sel" awk -F ', ' '{print $1 " " $2}'))
     target="$HOME/tmp/mtp-${device[0]}-${device[1]}"
 
     [ -d "$target" ] || mkdir "$target"

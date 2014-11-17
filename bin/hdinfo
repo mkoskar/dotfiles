@@ -19,4 +19,4 @@ process() {
     sudo smartctl -a "$target"
 }
 
-process 2>&1 | pg
+process 2>&1 | $PAGER

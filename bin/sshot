@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# -w            select a window by mouse click
+# -s            select a rectangular region by mouse
+# -x <n|list>   select the Xinerama head of ID n
+# -i            combine regions by intersection
+
+if [ $# -eq 0 ]; then
+    set -- -w
+fi
+
+cd ~/tmp
+
+ffcast -q "$@" png
+
+find -type f -name 'screenshot-*' | sort -r | xargs -x sxiv

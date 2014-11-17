@@ -22,6 +22,12 @@ status_audio() {
     printf 'audio: %s / %s\n' "$pval" "$rval"
 }
 
+status_backlight() {
+    local src='/sys/class/backlight/acpi_video0'
+    local val=$(printf '%s / %s' "$(<"$src/brightness")" "$(<"$src/max_brightness")")
+    printf 'backlight: %s\n' "$val"
+}
+
 status_bluetooth() {
     local val=$(bluetooth | awk -F= '{gsub(/^[ \t]+/, "", $2); print $2}')
     printf 'bluetooth: %s\n' "$val"
@@ -52,6 +58,9 @@ case $1 in
     audio)
         status_audio
         ;;
+    backlight)
+        status_backlight
+        ;;
     bluetooth)
         status_bluetooth
         ;;
@@ -66,6 +75,7 @@ case $1 in
         ;;
     *)
         status_audio
+        status_backlight
         status_bluetooth
         status_dpms
         status_wifi

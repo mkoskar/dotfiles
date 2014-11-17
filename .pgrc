@@ -61,6 +61,10 @@ set wildmode=list:longest,full
 set noundofile
 set undolevels=-1
 
+set shell=~/bin/bashx
+set shellredir=>%s\ 2>&1
+set shellpipe=2>&1\|\ tee
+
 set encoding=utf-8
 
 set virtualedit=block
@@ -105,6 +109,7 @@ nmap <M-k> 5k
 xmap <M-j> 5j
 xmap <M-k> 5k
 
+map <silent> r :edit<CR>:norm gg<CR>
 nnoremap <silent> <C-A> :AnsiEsc<CR>
 
 " Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding.
@@ -133,8 +138,6 @@ nnoremap <silent> <Leader>mm :MetaToggle<CR>
 silent MetaToggle
 
 " Reloads buffer after number (defaults to 1) of seconds have passed.
-map <silent> F :Reload<CR>F<CR>
-command! -nargs=? Reload call s:Reload(<f-args>)
 function! s:Reload(...) abort
     let d = 1
     if a:0 == 1
@@ -147,25 +150,23 @@ function! s:Reload(...) abort
             ReloadX
         else
             edit
-            normal! G
+            silent normal! gg
         endif
     finally
         redraw
         echo
     endtry
 endfunction
+command! -nargs=? Reload call s:Reload(<f-args>)
+map <silent> F :Reload<CR>F<CR>
 
 if exists("$CMD")
     " Reloads buffer from $CMD.
-    map <silent> R :ReloadX<CR>
-    map <silent> <C-R> :ReloadX<CR>
-    command! ReloadX call s:ReloadX()
     function! s:ReloadX() abort
         try
             setl modifiable
-            exec 'silent! 0read! '.$CMD
-            normal! dG
-            normal! gg
+            exec 'silent 0read! '.$CMD
+            silent normal! jdGgg
             setl noma
         endtry
         if !has('vim_starting')
@@ -173,7 +174,8 @@ if exists("$CMD")
             echohl WarningMsg | echo '['.strftime("%H:%M:%S").'] $ '.$CMD | echohl None
         endif
     endfunction
-    silent ReloadX
+    command! ReloadX call s:ReloadX()
+    map <silent> r :ReloadX<CR>
 endif
 
 set noma buftype=nowrite

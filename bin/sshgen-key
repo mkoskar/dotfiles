@@ -11,4 +11,4 @@ err_usage() {
 [ $# -eq 0 ] && err_usage
 
 key_id=$1
-ssh-keygen -t rsa -b 4096 -C "$key_id" -f "id_rsa_$key_id"
+ssh-keygen -t rsa -b 4096 -C "$key_id" -f "ssh_${key_id}_rsa_key"

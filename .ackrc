@@ -1,0 +1,9 @@
+# vim: ft=conf
+
+--color-filename=cyan
+--color-lineno=yellow
+--color-match=on_red
+--follow
+--nobreak
+--smart-case
+--sort-files

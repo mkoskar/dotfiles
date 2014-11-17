@@ -20,6 +20,7 @@ export ASPROOT="$HOME/.asp"
 export BROWSER='b'
 export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
 export EDITOR='e'
+export GREP_COLORS='sl=:cx=:mt=41:fn=36:ln=33:bn=33:se=:ne'
 export LESS='-MRS#3ci'
 export LESSHISTFILE='-'
 export LESSOPEN='| highlight --quiet -O xterm256 -s bluegreen %s'
@@ -34,12 +35,14 @@ export XAUTHORITY="$HOME/.Xauthority"
 
 eval "$(TERM=ansi dircolors)"
 
-export JDK_HOME="$JAVA_HOME"
-_JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
-_JAVA_OPTIONS+=' -Dswing.aatext=true'
-#_JAVA_OPTIONS+=' -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+export JDK_HOME='/usr/lib/jvm/default'
+export JAVA_HOME=$JDK_HOME
+export IDEA_JDK='/usr/lib/jvm/java-7-openjdk'
+_JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd'
+_JAVA_OPTIONS="$_JAVA_OPTIONS -Dswing.aatext=true"
+_JAVA_OPTIONS="$_JAVA_OPTIONS -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
 export _JAVA_OPTIONS
 export _JAVA_AWT_WM_NONREPARENTING=1
 
-[ -f ~/bin/ssh-agent.sh ] && . ~/bin/ssh-agent.sh
-[ -f ~/bin/gpg-agent.sh ] && . ~/bin/gpg-agent.sh
+[ -e ~/bin/ssh-agent.sh ] && . ~/bin/ssh-agent.sh
+[ -e ~/bin/gpg-agent.sh ] && . ~/bin/gpg-agent.sh

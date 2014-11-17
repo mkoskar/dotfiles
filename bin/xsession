@@ -25,11 +25,19 @@ xkb
 xscreen
 audio pulse_init
 
+# ----------------------------------------
+
 _main() {
     osdd &
     twmnd &
     workrave &
     _xmonad
+}
+
+# ----------------------------------------
+
+_herbstluftwm() {
+    herbstluftwm --locked
 }
 
 _openbox() {
@@ -44,11 +52,12 @@ _xmonad() {
 
 session=$1
 case $session in
-    main | openbox | xmonad)
+    main | \
+    herbstluftwm | openbox | xmonad)
         export XSESSION="$session"
         _$session
         ;;
     *)
-        [ $# -gt 0 ] && eval "$*"
+        [ $# -gt 0 ] && "$@"
         ;;
 esac

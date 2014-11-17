@@ -5,4 +5,5 @@ if [ $# -eq 0 ]; then
     exit 2
 fi
 
-CMD="$*" PAGER_TITLE="$ $CMD" pg
+CMD=$(printf ' %q' "$@")
+CMD=${CMD:1} PAGER_TITLE="$ $CMD" pg -c ReloadX

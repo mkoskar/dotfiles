@@ -7,6 +7,11 @@
 
 set -eu
 
+if [ $(id -u) -ne 0 ]; then
+    echo 'This script must be run with root privileges.'
+    exit 1
+fi
+
 basedir=$(dirname "$(realpath "$0")")
 export PATH="$basedir:$PATH"
 
@@ -100,6 +105,8 @@ rsync -aAHSX / "$target/full-backup/master" \
 	/dev/*
 	/home/*/.cache/*
 	/home/*/.thumbnails/*
+	/home/docker.img
+	/home/docker/*
 	/media/*
 	/mnt/*
 	/proc/*
@@ -109,6 +116,7 @@ rsync -aAHSX / "$target/full-backup/master" \
 	/var/abs/*
 	/var/cache/pacman/*
 	/var/cache/pkgfile/*
+	/var/lib/docker/*
 	/var/lib/pacman/sync/*
 EOF
 

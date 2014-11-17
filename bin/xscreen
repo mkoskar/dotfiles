@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ "$(xserverq name)" = 'Xorg.bin' ]; then
     if [ "$(basename "$0")" = 'xscreen-mobile' ]; then
         autorandr -l mobile
@@ -9,5 +11,7 @@ if [ "$(xserverq name)" = 'Xorg.bin' ]; then
 fi
 
 xset b off s off dpms 0 0 300
-xsetroot -solid black
 xsetroot -cursor_name left_ptr
+
+xsetroot -solid black
+command -v hsetroot >/dev/null && hsetroot || true

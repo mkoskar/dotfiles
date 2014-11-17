@@ -80,9 +80,9 @@ myConfig = defaultConfig
     myTerminal = "term"
     myWorkspaces = map show [0..9]
     myScratchpads =
-        [ NS "sp0" (myTerminal ++ " -name sp0 -e trun s adm") (resource =? "sp0")
+        [ NS "sp0" (myTerminal ++ " sp0 - trun s adm") (resource =? "sp0")
           (customFloating $ W.RationalRect 0.03 0.03 0.94 0.94)
-        , NS "sp1" (myTerminal ++ " -name sp1 -e trun s mon") (resource =? "sp1")
+        , NS "sp1" (myTerminal ++ " sp1 - trun s mon") (resource =? "sp1")
           (customFloating $ W.RationalRect 0.03 0.03 0.94 0.94)
         ]
     myManageHook = composeOne
@@ -90,6 +90,7 @@ myConfig = defaultConfig
                        , resource =? "s_aux" -?> doShift "2"
                        , resource =? "s_tmp" -?> doShift "2"
                        , resource =? "s_wrk" -?> doShift "1"
+                       , className =? "MPlayer" -?> doShift "9"
                        , className =? "Skype" -?> doFloat
                        ] <+>
                    toggleHook "doFloat" doFloat <+>
@@ -233,8 +234,8 @@ myConfig = defaultConfig
         , ("M-; M-;", namedScratchpadAction myScratchpads "sp1")
 
           -- screenshots
-        , ("M-<Print>", spawn "scrot -m ~/tmp/shot-%Y-%m-%d.%s.png -e 'feh -Z. $f'")
-        , ("M-S-<Print>", spawn "sleep 0.5 && scrot -m -s ~/tmp/shot-%Y-%m-%d.%s.png -e 'feh -Z. $f'")
+        , ("M-<Print>", spawn "sshot")
+        , ("M-S-<Print>", spawn "sshot -s")
 
           -- audio
         , ("M-S-]", spawn "audio playback_up")
@@ -259,7 +260,7 @@ myConfig = defaultConfig
         , ("M-S-<F10>", spawn "xscreen-mobile && xmonad-session-repair")
         , ("M-<F12>", spawn "grabc 2>&1 | xsel -i")
         , ("M-S-<F12>", spawn "xmeasure | xsel -i")
-        , ("M-S-<Home>", spawn $ myTerminal ++ " -e trun wow")
+        , ("M-S-<Home>", spawn $ myTerminal ++ " - trun wow")
         , ("M-S-b", spawn "backlight-toggle")
         , ("M-; M-l", spawn "sudo lockx")
         , ("M-; M-d", spawn "dpms-toggle")

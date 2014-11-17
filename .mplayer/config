@@ -3,15 +3,13 @@ lirc=no
 msgmodule=yes
 prefer-ipv4=yes
 
-ao=alsa
+ao=pulse
 softvol=yes
 softvol-max=400
 
 double=yes
-monitoraspect=16:9
 use-filename-title=yes
 vo=vaapi
-vf-add=screenshot
 
 ffactor=1
 spuaa=4

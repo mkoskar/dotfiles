@@ -18,7 +18,7 @@ trap cleanup EXIT
 
 add() {
     local input=$1
-    goobook add <<<"$input"
+    <<<"$input" goobook add
 }
 
 input=$(grep -P '^From:')

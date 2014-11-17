@@ -29,16 +29,16 @@ unset TMUX
 
 name='s_tmp'
 close "$name"
-term -name "$name" -e trun s tmp &
+term "$name" - trun s tmp &
 assert "$name"
 
 name='s_aux'
 close "$name"
-term -name "$name" -e trun s aux &
+term "$name" - trun s aux &
 assert "$name"
 
 name='s_wrk'
 close "$name"
-term -name "$name" -e trun s wrk &
+term "$name" - trun s wrk &
 assert "$name"
 wmctrl -i -a "${ids[0]}"

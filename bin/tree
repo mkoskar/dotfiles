@@ -7,4 +7,4 @@ if [ ! -t 1 ]; then
     exit
 fi
 
-"${prg[@]}" -C "$@" | PAGER_TITLE="$@" pg
+pgx "${prg[@]}" -C "$@"

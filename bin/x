@@ -22,9 +22,14 @@
 
 set -e
 
+ti_reset=$'\e[m'
+ti_hi0=$'\e[1;37m'
+ti_hi1=$'\e[1;32m'
+
 if [ $# -eq 0 ]; then
     echo
-    echo 'm) main [default]'
+    echo "${ti_hi0}m) main ${ti_hi1}[default]${ti_reset}"
+    echo 'h) herbstluftwm'
     echo 'o) openbox'
     echo 'x) xmonad'
 
@@ -33,6 +38,9 @@ if [ $# -eq 0 ]; then
     case $sel in
         [mM])
             set -- main
+            ;;
+        [hH])
+            set -- herbstluftwm
             ;;
         [oO])
             set -- openbox

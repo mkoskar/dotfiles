@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec /usr/bin/newsbeuter -q -l 1 -d ~/.newsbeuter/main.log

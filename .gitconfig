@@ -45,6 +45,9 @@
 [merge]
     tool = vimdiff
 
+[difftool]
+    ;prompt = false
+
 [format]
     ;signaturefile = ~/.gitsignature
     coverletter = auto

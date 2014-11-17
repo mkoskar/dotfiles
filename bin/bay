@@ -3,6 +3,11 @@
 set -e
 shopt -s nullglob
 
+if [ $(id -u) -ne 0 ]; then
+    echo 'This script must be run with root privileges.'
+    exit 1
+fi
+
 dock=$(grep -l ata_bay /sys/devices/platform/dock.?/type)
 dock=${dock%%/type}
 
@@ -51,6 +56,9 @@ else
 
             echo "umountall $devname..." >&2
             umountall "$devname"
+
+            echo 'standby...' >&2
+            hdparm -y "$dev" &>/dev/null
         fi
 
         if [ -d "$sysdev" ]; then

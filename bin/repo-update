@@ -1,19 +1,27 @@
 #!/bin/bash
 
 set -e
-shopt -s nullglob
 
 name=${1:-custom}
+repo_dir="$HOME/packages/$name"
+repo_db="$name.db"
+repo_dbgz="$name.db.tar.gz"
 
-repo="$HOME/packages/$name"
-repo_db="$repo/$name.db"
+mkdir -p "$repo_dir"
+cd "$repo_dir"
 
 if [ ! -e "$repo_db" ]; then
-    (mkdir -p "$repo" && cd "$repo" && repo-init "$name")
+    repo-init "$name"
 fi
 
-cd "$repo"
-packages=(*.pkg.tar.xz)
-if [ "${#packages[@]}" -gt 0 ]; then
-    repo-add -d -q "$name.db.tar.gz" "${packages[@]}"
-fi
+tar -tzf "$repo_dbgz" | sed -nE 's,^(.*)-.*-.*/$,\1,p' | sort -u >list.old
+ls *.pkg.tar.xz | sed -nE 's,^(.*)-.*-.*-.*$,\1,p' | sort -u >list.curr
+
+for i in *.pkg.tar.xz; do
+    repo-add -n -q "$repo_dbgz" "$i"
+done
+
+while read i; do
+    echo "==> $i removed"
+    repo-remove -q "$repo_dbgz" "$i"
+done < <(comm -23 list.old list.curr)

@@ -1,0 +1,88 @@
+# vim: ft=config
+
+auto-reload yes
+bookmark-cmd "cat"
+browser b %u
+error-log "~/.newsbeuter/error.log"
+goto-next-feed no
+podcast-auto-enqueue no
+reload-threads 3
+save-path "~/download"
+search-highlight-colors black yellow
+text-width 79
+
+feedlist-format " %n %11u %t"
+articlelist-format " [%f]  %D %6L %?T?;%-17T; ?%t"
+
+feedlist-title-format "Feedlist (%u unread, %t total)%?T? - tag ‘%T’&?"
+articlelist-title-format "Feed (%u/%t) %T | %U"
+searchresult-title-format "Search Result (%u/%t)"
+filebrowser-title-format "%?O?Open File&Save File? - %f"
+help-title-format "Help (%N %V)"
+selecttag-title-format "Select Tag"
+selectfilter-title-format "Select Filter"
+itemview-title-format "Article (%u/%t) %T"
+urlview-title-format "URLs"
+dialogs-title-format "Dialogs"
+
+unbind-key  A
+unbind-key  C
+unbind-key  n
+unbind-key  p
+unbind-key  ^K
+unbind-key  v
+unbind-key  ^V
+unbind-key  ^G
+unbind-key  g
+unbind-key  G
+
+bind-key    o   open
+bind-key    o   quit                    article
+bind-key    O   open-in-browser         article
+bind-key    ^R  mark-feed-read
+bind-key    ^K  mark-all-feeds-read
+bind-key    ^_  save
+bind-key    J   next-unread
+bind-key    K   prev-unread
+bind-key    )   next
+bind-key    (   prev
+bind-key    h   toggle-source-view
+bind-key    m   bookmark
+bind-key    ,   next-unread-feed
+bind-key    >   next-unread-feed
+bind-key    <   prev-unread-feed
+bind-key    ,   next-unread             feedlist
+bind-key    >   next-unread             feedlist
+bind-key    <   prev-unread             feedlist
+bind-key    ^N  next-feed
+bind-key    ^P  prev-feed
+bind-key    d   close-dialog
+bind-key    }   next-dialog
+bind-key    {   prev-dialog
+bind-key    s   sort
+bind-key    S   rev-sort
+bind-key    k   up
+bind-key    j   down
+bind-key    ^U  pageup
+bind-key    ^D  pagedown
+bind-key    ;   macro-prefix
+
+color   background          default     default
+color   listnormal          default     default
+color   listfocus           default     default     reverse
+color   listnormal_unread   white       default     bold
+color   listfocus_unread    white       default     reverse
+color   info                color255    color237
+color   article             default     default
+
+highlight article "^Title:.*$" color156 default
+highlight article "^(Feed|Author|Link|Date):" color156 default
+
+# podbeuter
+download-path "~/download/podcasts/%h/%n"
+max-downloads 3
+player "mplayer -really-quiet"
+
+bind-key    d   pb-download
+bind-key    p   pb-play
+bind-key    $   pb-mark-as-finished

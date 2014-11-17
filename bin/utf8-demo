@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+target="$HOME/opt/UTF-8-demo.txt"
+if [ ! -f "$target" ]; then
+    curl -s -o "$target" http://www.cl.cam.ac.uk/~mgk25/ucs/examples/UTF-8-demo.txt
+fi
+cat "$target"

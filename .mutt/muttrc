@@ -29,6 +29,7 @@ set timeout = 5
 set use_envelope_from
 set wrap = -1
 unset confirmappend
+unset help
 unset mail_check_recent
 unset mark_old
 unset use_domain
@@ -38,12 +39,12 @@ unset wait_key
 # formats
 set alias_format = ' %2n %t %-40.40r    %a'
 set compose_format = "mutt-hstatus '%v' '-- Mutt: Compose [Approx. msg size: %l   Atts: %a]'|"
-set date_format = '%m/%d/%y %I:%M%P'
+set date_format = '!%b %d %I:%M'
 set folder_format = ' %2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f'
 set index_format = '%?M?+& ?[%Z]  %D  %-25.25F  %s'
-set pager_format = '[%Z] %C/%m: %-20.20n   %s%*  -- (%P)'
+set pager_format = '[%Z] (%C/%m) %n: %s%*  -- (%P)'
 set query_format = ' %2c %t %-40.40a    %n %?e?(%e)?'
-set status_format = "mutt-hstatus '%v' '[%r] %f [total:%?M?%M/?%m%?n? new:%n?%?d? deleted:%d?%?t? tagged:%t?%?F? flagged:%F?%?p? postponed:%p? size:%l] %> %s/%S (%P)'|"
+set status_format = "mutt-hstatus '%v' '[%r] %f (%n/%m)%?d? deleted:%d?%?t? tagged:%t?%?F? flagged:%F?%?p? postponed:%p? %l %> %s/%S (%P)'|"
 
 # index settings
 set reply_regexp = '^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*'

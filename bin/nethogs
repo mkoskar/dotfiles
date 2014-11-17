@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+
+ifaces=($(ip -o -0 link show up | awk -F ': ' '!/lo/ { print $2 }'))
+sudo /usr/bin/nethogs "$@" "${ifaces[@]}"

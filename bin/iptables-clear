@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+if [ $(id -u) -ne 0 ]; then
+    echo 'This script must be run with root privileges.'
+    exit 1
+fi
+
+#iptables -P INPUT ACCEPT
+#iptables -P FORWARD ACCEPT
+#iptables -P OUTPUT ACCEPT
+#iptables -t nat -F
+#iptables -t mangle -F
+#iptables -F
+#iptables -X
+
+/usr/lib/systemd/scripts/iptables-flush
+#/usr/lib/systemd/scripts/iptables-flush 6

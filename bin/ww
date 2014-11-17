@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 ti_reset=$'\e[m'
 ti_hi0=$'\e[1;37m'
 ti_hi1=$'\e[1;32m'

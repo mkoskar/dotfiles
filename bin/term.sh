@@ -18,7 +18,7 @@ else
         _)
             export TERMOLD=$TERM
             ;;
-        linux)
+        _linux)
             export TERM='screen.linux'
             ;;
         *)

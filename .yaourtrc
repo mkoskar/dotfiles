@@ -1,5 +1,8 @@
 DETAILUPGRADE=2
-DEVELSRCDIR=~/.cache/yaourt-develsrc
+DEVELSRCDIR=~/.cache/yaourt-devel-src
 EXPORT=1
 EXPORTSRC=1
 USECOLOR=2
+
+# makepkg overrides
+PKGDEST=~/packages
