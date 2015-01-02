@@ -38,7 +38,7 @@ quit_client           = q
 quit                  = Q
 
 # Menu and interface control keys:
-go                    = ENTER
+go                    = ENTER o
 menu_down             = DOWN j
 menu_up               = UP k
 menu_page_down        = PAGE_DOWN ^f
@@ -71,7 +71,7 @@ previous              = b
 toggle_shuffle        = S
 toggle_repeat         = R
 toggle_auto_next      = X
-go_url                = o
+go_url                = O
 
 # Volume control keys:
 volume_down_1         = <

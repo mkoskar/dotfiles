@@ -1,3 +1,5 @@
+# vim: ft=cfg
+
 [DEFAULT]
 email: <email>
 passwordeval: <passwordeval>

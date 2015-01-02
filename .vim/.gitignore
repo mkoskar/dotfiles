@@ -1,7 +1,7 @@
 !*
-.backupdir
+.backup
 .netrwhist
-.swapdir
-.undodir
+.swap
+.undo
 .viminfo
 bundle

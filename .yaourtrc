@@ -1,3 +1,5 @@
+# vim: ft=conf
+
 DETAILUPGRADE=2
 DEVELSRCDIR=~/.cache/yaourt-devel-src
 EXPORT=1

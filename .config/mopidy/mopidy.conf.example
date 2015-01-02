@@ -1,0 +1,20 @@
+# vim: ft=cfg
+
+[loglevels]
+mopidy = warning
+playback = warning
+
+[local]
+media_dir = ~/archive/music
+
+[beets]
+enabled = false
+
+[dirble]
+api_key = <api_key>
+
+[podcast]
+feeds =
+
+[soundcloud]
+auth_token = <auth_token>

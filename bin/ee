@@ -2,6 +2,10 @@
 
 set -e
 
+if [ $# -eq 0 ]; then
+    set -- .
+fi
+
 server=${VIMSERVER:-$TMUX}
 vim --serverlist | grep -Fxiq "$server" || exit 1
 vim --servername "$server" --remote-tab-silent "$@"

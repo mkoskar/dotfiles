@@ -45,8 +45,8 @@
 [merge]
     tool = vimdiff
 
-[difftool]
-    ;prompt = false
+[mergetool "vimdiff"]
+    path = vimdiff
 
 [format]
     ;signaturefile = ~/.gitsignature

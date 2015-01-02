@@ -31,6 +31,7 @@ URxvt.underlineColor:   #FDB436
 !URxvt.intensityStyles:  false
 
 URxvt.font:             xft:local_terminal_sized
+URxvt.italicFont:
 URxvt.scrollstyle:      plain
 URxvt.thickness:        5
 URxvt.saveLines:        8192

@@ -8,7 +8,7 @@ repo-update
 echo $'\n--------------------------------------------------'
 echo $'> Update (official & aur):\n'
 
-yaourt -Syyua
+yaourt -Syua
 
 echo $'\n--------------------------------------------------'
 echo $'> Update (devel):\n'

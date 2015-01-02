@@ -3,14 +3,16 @@
 set -e
 
 if [ $(id -u) -ne 0 ]; then
-    echo 'This script must be run with root privileges.'
-    exit 1
+    sudo -- "$0" "$@"
+    exit
 fi
 
 basedir=$(dirname "$(realpath "$0")")
 export PATH="$basedir:$PATH"
 
-cd ~miro/opt/nspawn/arch
+homedir=~miro/opt/nspawn/arch
+mkdir -p "$homedir"
+cd "$homedir"
 
 # ----------------------------------------
 
@@ -21,7 +23,7 @@ flock 8
 if [ ! -e base ]; then
     mkdir base
     pkgs=(
-        $(pacman -Sgq base | grep -Fxv linux)
+        $(pacman -Sgq base base-devel | grep -Fxv linux)
     )
     pacstrap -c -d base "${pkgs[@]}"
 fi
@@ -43,4 +45,4 @@ cleanup() {
 trap cleanup EXIT
 
 systemd-nspawn --quiet --boot --link-journal=guest -M "$machine" \
-    --directory="$root"
+               --directory="$root"

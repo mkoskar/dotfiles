@@ -7,8 +7,9 @@ output() {
     for i in "${!files[@]}"; do
         cat "${files[i]}"
         ((i != l-1)) && \
-            echo $'\n\n--------------------------------------------------\n\n'
+            #echo $'\n\n--------------------------------------------------\n\n'
+            echo
     done
 }
 
-output | PAGER_TITLE='Words Of Wisdom' pg -c 'set ft=rst'
+output | PAGER_TITLE='Words Of Wisdom' pg -c 'set ft=rst fdm=marker'

@@ -17,5 +17,5 @@ ffcast -q "$@" rec
 last=$(find -type f -name 'screencast-*' | sort -r | sed '2,$d')
 if [ -n "$last" ]; then
     echo "> $last"
-    mplayer -really-quiet -loop 0 >/dev/null 2>&1 "$last"
+    mpv --loop inf "$last"
 fi

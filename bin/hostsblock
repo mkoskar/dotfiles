@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ $(id -u) -ne 0 ]; then
+    sudo -- "$0" "$@" >/dev/null 2>&1
+    exit
+fi
+
+prgname=$(basename "$0")
+
+cd /etc/hosts.d
+
+case $prgname in
+    hostsblock-off)
+        mv 10-* off
+        ;;
+    hostsblock-antiad)
+        mv 10-* off
+        mv off/10-hostsblock .
+        ;;
+    *)
+        mv off/10-* .
+        ;;
+esac
+
+systemctl restart dnsmasq

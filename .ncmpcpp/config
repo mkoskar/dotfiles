@@ -1,0 +1,4 @@
+display_bitrate = yes
+mpd_connection_timeout = 10
+playlist_display_mode = classic
+volume_change_step = 1

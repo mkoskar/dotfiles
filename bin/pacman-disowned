@@ -17,6 +17,7 @@ find /etc /opt /usr \
         -name lost+found -o \
         -path /etc/.attic -o \
         -path /etc/.git -o \
+        -path /etc/hosts.d -o \
         -path /etc/ssl/certs -o \
         -path /usr/share/mime \
     \) -prune -o \( -type d -printf '%p/\n' -o -print \) | sort >fs

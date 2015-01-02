@@ -1,0 +1,57 @@
+def_key "k"
+  scroll_up
+
+def_key "j"
+  scroll_down
+
+def_key "ctrl_u"
+  page_up
+
+def_key "ctrl_d"
+  page_down
+
+def_key "g"
+  move_home
+
+def_key "G"
+  move_end
+
+def_key "d"
+  delete_playlist_items
+
+def_key "d"
+  delete_stored_playlist
+
+def_key "l"
+  next_column
+
+def_key "l"
+  slave_screen
+
+def_key "h"
+  previous_column
+
+def_key "h"
+  master_screen
+
+def_key "ctrl_g"
+  jump_to_position_in_song
+
+def_key "ctrl_l"
+  show_lyrics
+
+def_key "o"
+  press_enter
+
+def_key "O"
+  jump_to_playing_song
+
+def_key "q"
+  require_screen "playlist"
+  quit
+
+def_key "q"
+  show_playlist
+
+def_key "Q"
+  quit

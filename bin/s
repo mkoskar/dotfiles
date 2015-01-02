@@ -15,11 +15,12 @@ exists () {
 }
 
 new() {
-    local name=$(cmd new -dP)
+    local name
+    name=$(cmd new -dP)
     if [ ! "$name" = "$session:" ]; then
         cmd rename -t "$name" "$session"
     fi
-    cmd setenv -t "$session" BASEDIR "$PWD" \
+    cmd setenv -t "$session" SHOME "$PWD" \
         \; neww -kt :0 "$@"
 }
 
@@ -64,7 +65,8 @@ _aux() {
         \; splitw -h -c "$notesdir" \
         \; setw main-pane-width 121 \
         \; selectl main-vertical \
-        \; selectp -t :.0
+        \; selectp -t :.0 \
+        \; resize-pane -Z
 
     neww -n mail 'trun mutt' \
         \; setw remain-on-exit on
@@ -73,10 +75,10 @@ _aux() {
         \; setw remain-on-exit on
 
     neww -n feeds 'trun newsbeuter' \
-        \; setw remain-on-exit on \
-        \; splitw -h 'trun respawn podbeuter' \
-        \; selectl even-horizontal \
-        \; selectp -t :.0
+        \; setw remain-on-exit on
+
+    #neww -n music 'trun ncmpcpp' \
+    #    \; setw remain-on-exit on
 
     cmd selectw -t :1
 }
@@ -130,7 +132,7 @@ session=$1
 if [ -z "$session" ]; then
     session=$(sed -r "s,^$HOME(/|$),~\1," <<<"$PWD")
     if [ ! "$session" = '/' -a ! "$session" = '~' ]; then
-        sdigest=$(sha1sum | awk '{print $1}' <<<"$session")
+        sdigest=$(sha1sum <<<"$session" | awk '{print $1}')
         session=$(tr '.:' _ <<<"$session")
         session="=${session##*/}_#${sdigest: -2}"
     fi

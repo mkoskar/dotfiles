@@ -45,7 +45,9 @@ if [ $# -gt 0 ]; then
 fi
 
 if [ -z "$profile" ]; then
-    if has-cmd yad; then
+    if has-cmd dmenu; then
+        profile=$(IFS=$'\n'; echo "${profiles[*]}" | dmenu "$prgname")
+    elif has-cmd yad; then
         profile=$(yad --list \
             --title='Select Firefox Profile' --text="$ $bin -P ..." \
             --height 300 --fixed --center \

@@ -89,14 +89,14 @@ let g:loaded_vimballPlugin = 1
 
 " let Y yank not entire line, but from cursor to the end (consistent with D, C)
 nnoremap Y y$
-" no Ex mode
-nnoremap Q <nop>
 " no Man lookup
 nnoremap K <nop>
 " no useless help messages
 nnoremap <C-c> <silent> <C-c>
 " quit quickly
-noremap q :qa<CR>
+noremap <silent> q :qa<CR>
+noremap <silent> Q :qa<CR>
+nnoremap <silent> <C-X> :q<CR>
 
 " operate on display lines not file lines
 nnoremap j gj

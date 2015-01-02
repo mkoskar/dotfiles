@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e
+
+prgname=$(basename "$0")
+
+case $prgname in
+    vlcdo0)
+        exec >/dev/null 2>&1
+        ;;
+    vlcdo-add)
+        vlcdo0 add "$1"
+        exit
+        ;;
+    vlcdo-enqueue)
+        vlcdo0 enqueue "$1" && vlcdo play
+        exit
+        ;;
+esac
+
+name='default'
+sock="$TMPDIR/vlc-$UID/$name"
+args=(--quiet --no-video-title-show)
+
+if [ ! -e "$sock" ]; then
+    mkdir -p -m 700 "${sock%/*}"
+    setsid /usr/bin/vlc --extraintf oldrc --rc-fake-tty --rc-unix "$sock" "${args[@]}" >/dev/null 2>&1 &
+    sleep 0.2
+fi
+
+if [ $# -gt 0 ]; then
+    <<<"$*" socat unix-connect:"$sock" -
+elif [ ! -t 0 ]; then
+    socat unix-connect:"$sock" -
+fi

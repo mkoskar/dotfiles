@@ -1,3 +1,3 @@
 #!/bin/bash
 
-font "xft:local_terminal:size=$1"
+tfont "xft:local_terminal:size=${1:-12}"

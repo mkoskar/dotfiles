@@ -1,4 +1,4 @@
-# vim: ft=cfg
+# vim: ft=conf
 
 # network
 port_range = 7881-7889

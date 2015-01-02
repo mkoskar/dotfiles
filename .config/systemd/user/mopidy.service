@@ -1,0 +1,9 @@
+[Unit]
+Description=mopidy
+
+[Service]
+Environment=DISPLAY=:1
+ExecStart=/usr/bin/mopidy
+
+[Install]
+WantedBy=default.target

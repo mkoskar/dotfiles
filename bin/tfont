@@ -28,6 +28,7 @@ processor() {
 if [ -z "$1" ]; then
     scroller 'xft:local_terminal_sized' \
              'xft:local_terminal:pixelsize=20' \
+             'xft:MonteCarlo' \
              'xft:Monaco:size=10' \
              'xft:Monaco:size=11' \
              'xft:Source\ Code\ Pro:size=10' \

@@ -4,9 +4,9 @@ set -e
 
 cd ~/.vim
 
-mkdir -p .backupdir
-mkdir -p .undodir
-mkdir -p .swapdir
+mkdir -p .backup
+mkdir -p .undo
+mkdir -p .swap
 
 mkdir -p autoload
 ln -sf ../bundle/vim-pathogen/autoload/pathogen.vim autoload
@@ -59,6 +59,7 @@ from_git https://github.com/scrooloose/nerdcommenter.git
 from_git https://github.com/scrooloose/nerdtree.git
 from_git https://github.com/sjl/gundo.vim.git
 from_git https://github.com/tommcdo/vim-exchange.git
+from_git https://github.com/tpope/vim-fugitive.git
 from_git https://github.com/tpope/vim-pathogen.git
 from_git https://github.com/tpope/vim-repeat.git
 from_git https://github.com/tpope/vim-surround.git
@@ -72,11 +73,11 @@ from_git https://github.com/vimoutliner/vimoutliner.git
 #from_git https://github.com/Valloric/YouCompleteMe.git
 #from_git https://github.com/airblade/vim-gitgutter.git
 #from_git https://github.com/bling/vim-airline.git
+#from_git https://github.com/justinmk/vim-gtfo
 #from_git https://github.com/mattn/emmet-vim.git
 #from_git https://github.com/mhinz/vim-signify.git
 #from_git https://github.com/msanders/snipmate.vim.git
 #from_git https://github.com/scrooloose/syntastic.git
-#from_git https://github.com/tpope/vim-fugitive.git
 #from_git https://github.com/tpope/vim-git.git
 #from_git https://github.com/tpope/vim-markdown.git
 #from_git https://github.com/tpope/vim-ragtag.git

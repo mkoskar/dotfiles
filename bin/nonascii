@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+    set -- -
+fi
+
+LC_ALL=C grep --color=auto '[^ -~]' "$@"

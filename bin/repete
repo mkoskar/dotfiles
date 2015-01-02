@@ -30,7 +30,7 @@ fi
 while getopts 'd:tT:o:aicChH' opt; do
     case $opt in
         d)
-            if ! [ "$OPTARG" -eq "$OPTARG" ] 2>/dev/null; then
+            if [ ! "$OPTARG" -eq "$OPTARG" ] 2>/dev/null; then
                 echo "$0: option requires an integer argument -- $opt" >&2
                 err_usage
             fi
@@ -40,7 +40,7 @@ while getopts 'd:tT:o:aicChH' opt; do
             term=1
             ;;
         T)
-            if ! [ "$OPTARG" -eq "$OPTARG" ] 2>/dev/null; then
+            if [ ! "$OPTARG" -eq "$OPTARG" ] 2>/dev/null; then
                 echo "$0: option requires an integer argument -- $opt" >&2
                 err_usage
             fi

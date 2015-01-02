@@ -3,10 +3,10 @@ text/html;                  w3m -I %{charset} -T text/html; copiousoutput
 text/*;                     e %s
 
 image/*;                    mutt-bgrun sxiv %s
-audio/*;                    mutt-bgrun mplayer %s
-video/*;                    mutt-bgrun mplayer %s
+audio/*;                    mutt-bgrun mpv %s
+video/*;                    mutt-bgrun mpv %s
 
-application/ogg;            mutt-bgrun mplayer %s
+application/ogg;            mutt-bgrun mpv %s
 application/pdf;            mutt-bgrun zathura %s
 application/msword;         mutt-bgrun libreoffice %s
 application/msexcel;        mutt-bgrun libreoffice %s

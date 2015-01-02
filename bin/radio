@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: refactor
+
 set -eu
 
 PS3='Select: '

@@ -25,11 +25,16 @@ xkb
 xscreen
 audio pulse_init
 
+if [ "$(xserverq name)" = 'Xorg.bin' ]; then
+    :
+    #compton
+fi
+
 # ----------------------------------------
 
 _main() {
     osdd &
-    twmnd &
+    dunst &
     workrave &
     _xmonad
 }

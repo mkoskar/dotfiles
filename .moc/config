@@ -192,7 +192,7 @@ MusicDir = "/home/miro/music"
 # Example:    Theme = laras_theme
 #
 #Theme =
-Theme = custom_theme
+Theme = custom
 
 # The theme used when running on an xterm.
 #

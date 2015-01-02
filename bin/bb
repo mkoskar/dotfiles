@@ -1,0 +1,45 @@
+#!/bin/bash
+
+set -e
+
+declare -A marks
+
+while read k v; do
+    marks["$k"]="$v"
+done <<-EOF
+    ant             b file:///usr/share/doc/apache-ant/index.html
+    base            b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/index.html
+    bash            b file:///usr/share/doc/bash/index.html
+    gradle          b file:///usr/share/gradle/doc/userguide/userguide.html
+    gradle-dsl      b file:///usr/share/gradle/doc/dsl/index.html
+    graphviz        b file:///usr/share/graphviz/doc
+    groovy          b file:///usr/share/doc/groovy-2.3.8/html/documentation/index.html
+    groovy-api      b file:///usr/share/doc/groovy-2.3.8/html/api/index.html
+    groovy-gapi     b file:///usr/share/doc/groovy-2.3.8/html/gapi/index.html
+    java-apis       b http://www.oracle.com/technetwork/java/api-141528.html
+    java-specs      b http://docs.oracle.com/javase/specs/index.html
+    java-tutorials  b http://docs.oracle.com/javase/tutorial/reallybigindex.html
+    javase          b http://www.oracle.com/technetwork/java/javase/overview/index.html
+    jdk             b file:///usr/share/doc/jdk-doc/index.html
+    jdk-api         b file:///usr/share/doc/jdk-doc/api/index.html
+    jdk7            b file:///usr/share/doc/jdk7-doc/index.html
+    jdk7-api        b file:///usr/share/doc/jdk7-doc/api/index.html
+    jee             b http://www.oracle.com/technetwork/java/javaee/overview/index.html
+    jee-specs       b http://www.oracle.com/technetwork/java/javaee/tech/index.html
+    jee7-api        b file://$HOME/opt/java_ee_sdk-7u1/docs/api/index.html
+    jee7-samples    b file://$HOME/opt/java_ee_sdk-7u1/samples/docs/list.html
+    jee7-tutorial   b file://$HOME/opt/java_ee_sdk-7u1/docs/javaee-tutorial/doc/index.html
+    jsr             b file://$HOME/archive/lib/00-cs/java/08-jsr/
+    jsr-all         b https://jcp.org/en/jsr/all?sortBy=date
+    maven           b http://maven.apache.org/plugins/index.html
+    notes           b file://$HOME/projects/notes/_build/html/index.html
+    oracle-plsql    b https://docs.oracle.com/database/121/LNPLS/toc.htm
+    oracle-sql      b https://docs.oracle.com/database/121/SQLRF/toc.htm
+    rst             b file://$HOME/projects/lab/docutils/showcase/_build/html/index.html
+    scala           b file:///usr/share/doc/scala/api/scala-library/index.html
+    sqlite          b file:///usr/share/doc/sqlite/docs.html
+    sqlite-lang     b file:///usr/share/doc/sqlite/lang.html
+EOF
+
+mark=$(IFS=$'\n'; echo "${!marks[*]}" | sort | dmenu 'bb')
+eval "${marks[$mark]}"

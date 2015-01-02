@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sed -r 's/^(\S)/\x0\1/' | sort -z | tr -d '\0'

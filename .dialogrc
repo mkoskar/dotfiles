@@ -1,3 +1,5 @@
+# vim: ft=conf
+
 use_shadow = OFF
 screen_color = (CYAN, BLACK, ON)
 

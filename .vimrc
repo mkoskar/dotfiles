@@ -1,3 +1,7 @@
+if exists('g:loaded_vimrc')
+    finish
+endif
+
 if !exists("$VIMDIR")
     let $VIMDIR = '~/.vim'
 endif
@@ -65,7 +69,7 @@ nnoremap <silent> <Leader>sp :set spell!<CR>
 "========== multiple windows
 set laststatus=2
 set statusline=
-set statusline+=%2n
+set statusline+=%n
 set statusline+=\ %<%f
 set statusline+=%(\ [%M%W%R]%)
 "set statusline+=%(\ %{fugitive#statusline()}%)
@@ -73,7 +77,7 @@ set statusline+=%(\ %y%)
 set statusline+=%=
 set statusline+=0x%-3B
 set statusline+=\ %-14(%l,%c%V%)
-set statusline+=\ %P\ 
+set statusline+=\ %P
 set splitbelow
 set splitright
 
@@ -137,6 +141,7 @@ set novisualbell
 set textwidth=79
 set backspace=indent,eol,start
 set formatoptions=tcroqln21j
+set completeopt=longest,menuone
 set tildeop
 set showmatch
 
@@ -162,19 +167,20 @@ nnoremap <Leader>fm :set fdm=marker<CR>
 "========== reading and writing files
 set modeline
 set backup
-exec 'set backupdir='.$VIMDIR.'/.backupdir//'
+exec 'set backupdir='.$VIMDIR.'/.backup'
 set autoread
 
 "========== the swap file
-exec 'set directory=~/.vim/.swapdir//,'.$TMPDIR.'//'
+exec 'set directory=~/.vim/.swap//,'.$TMPDIR.'//'
 set swapfile
 
 "========== command line editing
 set history=500
-set wildmenu
 set wildmode=list:longest,full
+set wildignore=
+set wildmenu
 set undofile
-exec 'set undodir='.$VIMDIR.'/.undodir//'
+exec 'set undodir='.$VIMDIR.'/.undo'
 
 "========== executing external commands
 set shell=~/bin/bashx
@@ -197,6 +203,15 @@ nnoremap cov :set <C-R>=(&virtualedit =~# 'all') ? 'virtualedit=block' : 'virtua
 "========== other
 syntax on
 filetype plugin indent on
+
+set background=dark
+if has('gui_running')
+    colorscheme bclear
+elseif &t_Co == 256
+    colorscheme luciusblack
+else
+    colorscheme desert
+endif
 
 " make Man available
 runtime ftplugin/man.vim
@@ -240,6 +255,8 @@ nmap <Leader>ew :e %%
 nmap <Leader>es :sp %%
 nmap <Leader>ev :vsp %%
 nmap <Leader>et :tabe %%
+
+nnoremap <Leader>hh :tab help<Space>
 
 nnoremap <silent> <C-X> :q<CR>
 nnoremap <silent> <C-Q> :bd<CR>
@@ -497,21 +514,10 @@ let g:netrw_winsize = 30
 "========== pathogen
 exec pathogen#infect()
 
-set background=dark
-if has('gui_running')
-    colorscheme bclear
-elseif &t_Co == 256
-    colorscheme luciusblack
-else
-    colorscheme desert
-endif
-
 "========== nerdtree
-"let g:NERDTreeQuitOnOpen = 1
+let g:NERDTreeAutoDeleteBuffer = 1
 let g:NERDTreeBookmarksFile = $VIMDIR.'/.NERDTreeBookmarks'
 let g:NERDTreeCaseSensitiveSort = 1
-let g:NERDTreeDirArrows = 1
-let g:NERDTreeHijackNetrw = 0
 let g:NERDTreeIgnore = []
 let g:NERDTreeMapCWD = 'cD'
 let g:NERDTreeShowBookmarks = 1
@@ -557,13 +563,21 @@ let g:Tlist_WinWidth = 35
 nnoremap <silent> <F8> :TlistToggle<CR>
 
 "========== tagbar
+let g:tagbar_autofocus = 1
+let g:tagbar_iconchars = ['▸', '▾']
+let g:tagbar_map_jump = 'o'
+let g:tagbar_map_togglefold = ['O', 'za']
+let g:tagbar_sort = 0
+
+highlight TagbarHighlight cterm=reverse
+
 nnoremap <silent> <F8> :Tagbar<CR>
 
 "========== tagfinder
 "runtime plugin/tagfinder.vim
 "DefineTagFinder FindClass c
 
-"nnoremap <C-N> :FindClass 
+"nnoremap <C-N> :FindClass<Space>
 
 "========== gundo
 nnoremap <silent> <F4> :GundoToggle<CR>
@@ -573,6 +587,23 @@ nnoremap <silent> <Leader>sc :Sscratch<CR>
 
 "========== vim-airline
 let g:airline#extensions#tabline#enabled = 1
+
+"========== ctrlp
+let g:ctrlp_by_filename = 1
+let g:ctrlp_lazy_update = 0
+let g:ctrlp_prompt_mappings = {'ToggleMRURelative()': ['<F2>']}
+let g:ctrlp_show_hidden = 1
+
+nnoremap <silent> <M-e> :CtrlPMRUFiles<CR>
+
+let g:ctrlp_prompt_mappings = {
+    \ 'PrtCurLeft()': ['<c-h>', '<left>', '<c-^>'],
+    \ 'PrtSelectMove("u")':   ['<m-k>', '<PageUp>', '<kPageUp>'],
+    \ 'PrtSelectMove("d")':   ['<m-j>', '<PageDown>', '<kPageDown>'],
+    \ }
+
+"========== fugitive
+nnoremap <Leader>gg :G
 
 "=====================================================================
 " Autocommands
@@ -593,7 +624,6 @@ augroup VIMRC
 
     autocmd BufWinEnter -MiniBufExplorer- call s:SpecialBufferSettings()
     autocmd BufWinEnter -MiniBufExplorer- nnoremap <silent> <buffer> q :q<CR>
-    autocmd BufWinEnter NERD_tree_* call s:SpecialBufferSettings()
     autocmd BufWinEnter NetrwMessage nnoremap <silent> <buffer> q :q<CR>
     autocmd BufWinEnter \[BufExplorer\] call s:SpecialBufferSettings()
     autocmd BufWinEnter __Tag_List__ call s:SpecialBufferSettings()
@@ -604,7 +634,18 @@ augroup VIMRC
     autocmd CmdwinEnter * call s:SpecialBufferSettings()
     autocmd FileType make setl ts=4 sts=0 sw=4 noexpandtab
     autocmd FileType man call s:ManBufferSettings()
+    autocmd FileType nerdtree call s:SpecialBufferSettings()
+    autocmd FileType netrw call s:SpecialBufferSettings()
     autocmd FileType tar call s:SpecialBufferSettings()
     autocmd FileType zip call s:SpecialBufferSettings()
 augroup END
+endif
+
+if exists("$BASEDIR") && filereadable("$BASEDIR/.vimrc")
+    try
+        let g:loaded_vimrc = 1
+        exec 'source '.$BASEDIR.'/.vimrc'
+    finally
+        unlet g:loaded_vimrc
+    endtry
 endif

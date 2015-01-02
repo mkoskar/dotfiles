@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+
+what=($(xsel))
+exec mpv --really-quiet --msg-level=all=error "${what[@]}" 2>/dev/null

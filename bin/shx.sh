@@ -26,7 +26,7 @@ alias ac='ack --color'
 alias grep='LC_ALL=C grep --color=auto'
 alias g='grep -n --color=always'
 alias gi='g -i'
-alias gr="g -R --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exclude='*~'"
+alias gr="g -r --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exclude='*~'"
 alias gri='gr -i'
 
 # python
@@ -34,12 +34,6 @@ alias py='python'
 alias ipy='ipython'
 alias pip-no-require-venv='PIP_REQUIRE_VIRTUALENV= '
 alias pipinst='pip install --download-cache=~/.pip-cache'
-
-# mplayer
-play() { mplayer -really-quiet "$@" 2>/dev/null; }
-alias playcd='play cdda://'
-alias playdvd='play -mouse-movements dvdnav://'
-alias playvcd='play vcd://2'
 
 # docker
 alias dk='docker'
@@ -73,11 +67,25 @@ dkstop() {
     [ ${#ids[@]} -gt 0 ] && docker stop "${ids[@]}" || true
 }
 
+# maven
+alias mvn-effective-pom='mvn help:effective-pom'
+alias mvn-effective-settings='mvn help:effective-settings'
+alias mvn-dependency-tree='mvn dependency:tree'
+
+mvn-describe-plugin() {
+    [ $# -eq 0 ] && mvn help:describe -Dplugin="$1"
+}
+
+# gradle
+alias gradle-tasks='gradle -q tasks --all'
+alias gradle-dependencies='gradle -q dependencies'
+
 # other
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias acpi='acpi -V'
+alias cal='cal -3 -m'
 alias callgrind='valgrind --tool=callgrind'
 alias cower='cower --color=auto'
 alias df='df -h'
@@ -108,13 +116,24 @@ a() {
     printf '%s ... alarm after %s\n' "$(date)" "$d"
     sleep "${1:-5m}"
     echo 'Beep...'
-    play -loop 0 /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
+    notify-send -u critical 'Beep...' "Time's up!"
+    mpv --loop inf /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
+}
+
+# plant a base
+base() {
+    export BASEDIR=${1:-$PWD}
 }
 
 alias cd='__cd'
 __cd() {
-    [ $# -eq 0 ] && \cd "${BASEDIR:-$HOME}" || \cd "$@"
+    [ $# -eq 0 ] && \cd "${BASEDIR:-${SHOME:-$HOME}}" || \cd "$@"
 }
+
+mplayer() { /usr/bin/mplayer -really-quiet -msglevel all=1 "$@" 2>/dev/null; }
+mpv() { /usr/bin/mpv --really-quiet --msg-level=all=error "$@" 2>/dev/null; }
+smplayer() { /usr/bin/smplayer "$@" >/dev/null 2>&1; }
+vlc() { /usr/bin/vlc "$@" 2>/dev/null; }
 
 # returns command executable on current PATH
 pth() {

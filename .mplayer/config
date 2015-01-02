@@ -1,11 +1,13 @@
 ar=no
 lirc=no
+mouse-movements=yes
+msgcolor=no
 msgmodule=yes
 prefer-ipv4=yes
 
 ao=pulse
-softvol=yes
 softvol-max=400
+softvol=yes
 
 double=yes
 use-filename-title=yes

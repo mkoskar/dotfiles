@@ -2,7 +2,7 @@
 
 set -e
 
-if [ "$(basename "$0")" = 'mbsyncoff' ]; then
+if [ "$(basename "$0")" = 'mbsync-off' ]; then
     systemctl --user stop mbsync.timer
     exit
 fi

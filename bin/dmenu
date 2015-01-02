@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+if [ "$(basename "$0")" = 'dmenub' ]; then
+    extra_args=(-b)
+fi
+
+exec /usr/bin/dmenu -nb '#333333' -sb '#000000' \
+                    -nf '#FFFFFF' -sf '#87cefa' \
+                    -fn 'local_dmenu' -i "${extra_args[@]}" -p "${1:->}"

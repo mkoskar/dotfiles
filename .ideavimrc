@@ -1,4 +1,5 @@
 "========== moving around, searching and patterns
+set nowrapscan
 set ignorecase
 set smartcase
 
@@ -6,11 +7,12 @@ set smartcase
 set scrolloff=10
 set sidescroll=10
 set sidescrolloff=10
+set nonumber
 
 "========== syntax, highlighting and spelling
 set hlsearch
 
-nnoremap <silent> <Space> :nohls<Bar>echo<CR>
+nmap <Space> :nohls<Bar>echo<CR>
 
 " spatial navigation
 nnoremap <C-J> <C-W>j
@@ -31,7 +33,25 @@ set gdefault
 " let Y yank not entire line, but from cursor to the end (consistent with D, C)
 nnoremap Y y$
 
-nmap <A-j> 5j
-nmap <A-k> 5k
-vmap <A-j> 5j
-vmap <A-k> 5k
+nnoremap <A-j> 5j
+nnoremap <A-k> 5k
+vnoremap <A-j> 5j
+vnoremap <A-k> 5k
+
+nmap QQ :q<CR>
+nmap QA :qall<CR>
+nmap <C-X> :q<CR>
+
+nmap <A-l> :action NextTab<CR>
+nmap <A-h> :action PreviousTab<CR>
+nmap <A-S-k> :action MethodUp<CR>
+nmap <A-S-j> :action MethodDown<CR>
+nmap c<C-j> :action SplitHorizontally<CR>
+nmap c<C-l> :action SplitVertically<CR>
+
+imap <C-J> <Esc>:action InsertLiveTemplate<CR>a
+
+noremap <F1> :action SelectIn<CR>
+noremap <F2> :action ActivateProjectToolWindow<CR>
+noremap ,tf :action SelectIn<CR>
+noremap ,tt :action ActivateProjectToolWindow<CR>

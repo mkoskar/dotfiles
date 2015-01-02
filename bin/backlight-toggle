@@ -22,7 +22,7 @@ toggle() {
     sudo bash -c "echo $val >/sys/class/backlight/acpi_video0/brightness"
 }
 
-if ! [ -t 1 ]; then
+if [ ! -t 1 ]; then
     toggle
     exit
 fi

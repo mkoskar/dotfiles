@@ -38,6 +38,9 @@ import XMonad.Util.EZConfig
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.WorkspaceCompare
 
+doShiftView :: WorkspaceId -> ManageHook
+doShiftView i = doShift i <+> (doF $ W.view i)
+
 myStatusBar conf = statusBar "statusbar" myPP myToggleStrutsKey conf
   where
     {-color = dzenColor-}
@@ -86,13 +89,22 @@ myConfig = defaultConfig
           (customFloating $ W.RationalRect 0.03 0.03 0.94 0.94)
         ]
     myManageHook = composeOne
-                       [ isDialog -?> doCenterFloat
-                       , resource =? "s_aux" -?> doShift "2"
-                       , resource =? "s_tmp" -?> doShift "2"
-                       , resource =? "s_wrk" -?> doShift "1"
-                       , className =? "MPlayer" -?> doShift "9"
-                       , className =? "Skype" -?> doFloat
+                       [ appName =? "clementine" -?> doShiftView "8"
+                       , appName =? "gpodder" -?> doShiftView "8"
+                       , appName =? "libreoffice" -?> doShiftView "8"
+                       , appName =? "s_aux" -?> doShift "2"
+                       , appName =? "s_tmp" -?> doShift "2"
+                       , appName =? "s_wrk" -?> doShift "1"
+                       , appName =? "skype" -?> doShiftView "9"
+                       , appName =? "smplayer" -?> doShiftView "9"
+                       , appName =? "spacefm" -?> doShiftView "5"
+                       , appName =? "sxiv" -?> doShiftView "9"
+                       , appName =? "vlc" -?> doShiftView "9"
+                       , appName =? "zathura" -?> doShiftView "8"
+                       , className =? "MPlayer" -?> doShiftView "9"
+                       , className =? "mpv" -?> doShiftView "9"
                        ] <+>
+                   composeAll [ isDialog --> doCenterFloat ] <+>
                    toggleHook "doFloat" doFloat <+>
                    namedScratchpadManageHook myScratchpads <+>
                    positionStoreManageHook Nothing
@@ -220,13 +232,14 @@ myConfig = defaultConfig
 
           -- other
         , ("M-S-y", warpToWindow 0.005 0.005)
-        , ("M-S-p", warpToWindow 0.995 0.995)
+        , ("M-C-y", warpToWindow 0.995 0.995)
         , ("M-y", spawn "xdotool getwindowfocus click --clearmodifiers 1")
 
           -- Launchers
           -- =========
 
         , ("M-p", spawn "dmenu_run")
+        , ("M-'", spawn "bb")
         , ("M-S-<Return>", spawn myTerminal)
 
           -- scratchpads
@@ -243,6 +256,7 @@ myConfig = defaultConfig
         , ("M-S-m", spawn "audio playback_toggle")
         , ("M-S-n", spawn "audio playback_dock_toggle")
         , ("M-S-r", spawn "audio capture_toggle")
+        , ("M-S-p", spawn "playerctl play-pause")
 
           -- setxkbmap
         , ("M-<F1>", spawn "xkb us")

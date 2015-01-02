@@ -81,7 +81,7 @@ highlight article "^(Feed|Author|Link|Date):" color156 default
 # podbeuter
 download-path "~/download/podcasts/%h/%n"
 max-downloads 3
-player "mplayer -really-quiet"
+player "mpv"
 
 bind-key    d   pb-download
 bind-key    p   pb-play
