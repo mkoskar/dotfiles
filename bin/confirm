@@ -2,7 +2,7 @@
 #
 # Simple confirmation dialog.
 #
-# :Copyright: (c) 2014 Miroslav Koskar (http://miroslavkoskar.com/)
+# :Copyright: (c) 2014 Miroslav Koskar (http://mkoskar.com/)
 # :License: BSD 2-Clause
 
 set -e

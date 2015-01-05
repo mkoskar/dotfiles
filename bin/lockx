@@ -6,7 +6,7 @@
 # * disable VT switching
 # * run backend on display ':{current VT}'
 #
-# :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
+# :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
 # :License: BSD 2-Clause
 
 set -e

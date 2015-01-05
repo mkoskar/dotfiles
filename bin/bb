@@ -8,6 +8,7 @@ while read k v; do
     marks["$k"]="$v"
 done <<-EOF
     ant             b file:///usr/share/doc/apache-ant/index.html
+    apache          b http://httpd.apache.org/docs/
     base            b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/index.html
     bash            b file:///usr/share/doc/bash/index.html
     gradle          b file:///usr/share/gradle/doc/userguide/userguide.html

@@ -17,7 +17,7 @@
 # * dislay number will be the first free starting with 91
 # * startx ~/bin/xsession "$@" -- /usr/bin/Xephyr
 #
-# :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
+# :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
 # :License: BSD 2-Clause
 
 set -e

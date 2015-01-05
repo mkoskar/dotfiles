@@ -2,7 +2,7 @@
 #
 # Get information about X server (based on DISPLAY environment variable).
 #
-# :Copyright: (c) 2013 Miroslav Koskar (http://miroslavkoskar.com/)
+# :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
 # :License: BSD 2-Clause
 
 set -e

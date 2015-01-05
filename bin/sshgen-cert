@@ -10,7 +10,7 @@ err_usage() {
 ca_key=$1
 pub_key=$2
 identity=$3
-principals=$4
+principals=$4   # Multiple principals may be specified, separated by commas.
 
 opts=()
 if [ "$(basename "$0")" = 'sshgen-hostcert' ]; then
