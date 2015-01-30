@@ -1,3 +1,0 @@
-#!/bin/bash
-
-exec env TERM=${TERM%%-bsdel} /usr/bin/ssh "$@"

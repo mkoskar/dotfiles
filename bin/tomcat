@@ -1,0 +1,82 @@
+#!/bin/bash
+
+set -e
+
+log() {
+    echo "$*" >&2
+}
+
+setup() {
+    [ -e "$CATALINA_BASE" ] && return
+
+    log 'Setting up instance...'
+    mkdir -p "$CATALINA_BASE" && cd "$CATALINA_BASE"
+
+    log 'Setting up certificate keystore...'
+    keytool -genkeypair -alias tomcat -keyalg RSA -dname 'cn=' \
+            -keystore keystore -storepass secret -keypass secret
+
+    mkdir -p {bin,conf,lib,logs,temp,webapps}
+
+    cat >bin/setenv.sh <<-EOF
+	CATALINA_OPTS='-Xms512M -Xmx1024M -Djava.awt.headless=true'
+	CATALINA_OPTS="\$CATALINA_OPTS -Dcom.sun.management.jmxremote.port=10815 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+	export CATALINA_OPTS
+	EOF
+
+    cd conf
+
+    ln -s "$CATALINA_HOME/conf/catalina.policy"
+    ln -s "$CATALINA_HOME/conf/catalina.properties"
+    ln -s "$CATALINA_HOME/conf/context.xml"
+    ln -s "$CATALINA_HOME/conf/logging.properties"
+    ln -s "$CATALINA_HOME/conf/server.xml"
+    ln -s "$CATALINA_HOME/conf/tomcat-users.xml"
+    ln -s "$CATALINA_HOME/conf/tomcat-users.xsd"
+    ln -s "$CATALINA_HOME/conf/web.xml"
+}
+
+run() {
+    "$CATALINA_HOME/bin/catalina.sh" run
+}
+
+debug() {
+    export JPDA_OPTS='-agentlib:jdwp=transport=dt_socket,address=8010,server=y,suspend=y'
+    "$CATALINA_HOME/bin/catalina.sh" jpda run
+}
+
+jdb() {
+    "$CATALINA_HOME/bin/catalina.sh" debug
+}
+
+# ----------------------------------------
+
+CATALINA_HOME=${CATALINA_HOME:-~/opt/apache-tomcat-8.0.15}
+export CATALINA_HOME=$(realpath "$CATALINA_HOME")
+
+CATALINA_BASE=${CATALINA_BASE:-instance}
+export CATALINA_BASE=$(realpath "$CATALINA_BASE")
+
+setup
+
+cd "$CATALINA_BASE"
+
+if [ $# -eq 0 ]; then
+    set -- run
+fi
+
+case $1 in
+    run)
+        run
+        ;;
+    debug)
+        debug
+        ;;
+    jdb)
+        jdb
+        ;;
+    *)
+        echo "usage: $(basename "$0") {run | debug | jdb}" >&2
+        exit 2
+        ;;
+esac

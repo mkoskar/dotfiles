@@ -1,0 +1,65 @@
+#!/bin/bash
+
+set -e
+
+tzprint() {
+    for tz in "$@"; do
+        if [ "$tz" = '-' ]; then
+            echo $'\n---------------------------------------------------------'
+            continue
+        fi
+        if [ "$tz" = '+' ]; then
+            echo
+            continue
+        fi
+        if [ "$tz" = 'local' ]; then
+            tz=$(readlink -f /etc/localtime)
+            tz=${tz#/usr/share/zoneinfo/}
+        else
+            export TZ=$tz
+        fi
+        printf $'%-25s %s\n' "$tz" "$(date -R)"
+    done
+}
+
+tzs=(
+    +
+    local
+    UTC
+    -
+    US/Pacific
+    US/Mountain
+    US/Central
+    US/Eastern
+    +
+    America/Vancouver
+    America/Los_Angeles
+    America/Toronto
+    America/New_York
+    -
+    WET
+    CEST
+    CET
+    EET
+    +
+    Europe/London
+    Europe/Brussels
+    Europe/Amsterdam
+    Europe/Prague
+    Europe/Moscow
+    -
+    Asia/Tel_Aviv
+    Asia/Dubai
+    Asia/Singapore
+    Asia/Shanghai
+    Asia/Tokyo
+    -
+    Australia/West
+    Australia/North
+    Australia/South
+    +
+    Australia/Sydney
+)
+tzprint "${tzs[@]}"
+
+echo

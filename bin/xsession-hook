@@ -5,12 +5,18 @@ set -e
 event=$1
 session=$XSESSION
 
+run() {
+    (pgrepallx "$1" >/dev/null || exec "$@") &
+}
+
 startup() {
     case $session in
         main)
-            wmname LG3D
-            gpodder &
-            xup
+            apod-bg &
+            run clementine
+            run gpodder
+            run workrave
+            xup &
             ;;
     esac
 }

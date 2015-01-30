@@ -1,11 +1,6 @@
 #!/bin/bash
 
 echo $'\n--------------------------------------------------'
-echo $'> Update [custom] repo:\n'
-
-pacrepo-update
-
-echo $'\n--------------------------------------------------'
 echo $'> Update (official & aur):\n'
 
 yaourt -Syua

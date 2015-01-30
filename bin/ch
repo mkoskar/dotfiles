@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# SEEALSO: http://peter.sh/experiments/chromium-command-line-switches/
+# http://peter.sh/experiments/chromium-command-line-switches/
 #
 # --disable-software-rasterizer
 # --force-gpu-rasterization

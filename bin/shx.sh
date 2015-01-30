@@ -3,6 +3,8 @@
 
 set -o noclobber
 
+unset MAILCHECK
+
 if [ -n "$BASH" ]; then
     shopt -s expand_aliases
     unset BASH_ENV
@@ -21,8 +23,9 @@ alias lt='ll -tr'
 alias lu='lt -u'
 alias lx='ll -XB'
 
-# ack / grep
-alias ac='ack --color'
+# ack / ag / grep
+alias ack='ack --color'
+alias ag='ag --color --color-path=36 --color-line-number=33 --color-match=41 --follow --nobreak --smart-case --noheading'
 alias grep='LC_ALL=C grep --color=auto'
 alias g='grep -n --color=always'
 alias gi='g -i'
@@ -32,8 +35,6 @@ alias gri='gr -i'
 # python
 alias py='python'
 alias ipy='ipython'
-alias pip-no-require-venv='PIP_REQUIRE_VIRTUALENV= '
-alias pipinst='pip install --download-cache=~/.pip-cache'
 
 # docker
 alias dk='docker'
@@ -44,9 +45,9 @@ alias dkcl='docker ps -l -q'
 alias dke='docker exec -i -t'
 alias dki='docker images'
 alias dkia='docker images -a'
-alias dkr='docker run -e TERM="${TERM%%-bsdel}" -P'
-alias dkrd='docker run -e TERM="${TERM%%-bsdel}" -d -P'
-alias dkri='docker run -e TERM="${TERM%%-bsdel}" -i -t -P'
+alias dkr='docker run -P'
+alias dkrd='docker run -d -P'
+alias dkri='docker run -i -t -P'
 
 dkip() {
     local target=${1:-$(docker ps -lq)}
@@ -55,10 +56,10 @@ dkip() {
 }
 
 dkrm() {
-    confirm 'About to remove ALL containers. Continue?' n || return 0
+    confirm 'Remove ALL containers (with volumes). Continue?' n || return 0
     local ids
     ids=($(docker ps -aq))
-    [ ${#ids[@]} -gt 0 ] && docker rm -f "${ids[@]}" || true
+    [ ${#ids[@]} -gt 0 ] && docker rm -v -f "${ids[@]}" || true
 }
 
 dkstop() {
@@ -80,6 +81,9 @@ mvn-describe-plugin() {
 alias gradle-tasks='gradle -q tasks --all'
 alias gradle-dependencies='gradle -q dependencies'
 
+# node
+alias npmg='npm -g'
+
 # other
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -89,6 +93,7 @@ alias cal='cal -3 -m'
 alias callgrind='valgrind --tool=callgrind'
 alias cower='cower --color=auto'
 alias df='df -h'
+alias dstat='dstat -cglmnpry --tcp'
 alias du='du -sh'
 alias feh='feh -F'
 alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
@@ -199,6 +204,17 @@ paci() {
     local p=$(expac %n "$1")
     [ -z "$p" ] && return 1
     pacman -Qii "$p"
+}
+
+# returns shell's name and its version
+shi() {
+    if [ -n "$BASH_VERSION" ]; then
+        echo "bash $BASH_VERSION"
+    elif [ -n "$ZSH_VERSION" ]; then
+        echo "zsh $ZSH_VERSION"
+    else
+        echo 'unknown'
+    fi
 }
 
 # continue only in case of Bourne-like shell

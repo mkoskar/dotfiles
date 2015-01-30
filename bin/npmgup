@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+packages=(
+    bower
+    browserify
+    grunt-cli
+    jshint
+    learnyounode
+    semver
+    stream-adventure
+)
+
+npm -g install "${packages[@]}"

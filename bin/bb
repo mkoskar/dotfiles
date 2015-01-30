@@ -2,45 +2,103 @@
 
 set -e
 
-declare -A marks
+declare -A map
+prgname=$(basename "$0")
 
 while read k v; do
-    marks["$k"]="$v"
+    map["$k"]=$v
 done <<-EOF
     ant             b file:///usr/share/doc/apache-ant/index.html
     apache          b http://httpd.apache.org/docs/
+    arxiv           sr arxiv {}
+    aur             sr aur {}
     base            b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/index.html
     bash            b file:///usr/share/doc/bash/index.html
+    cite            sr cite {}
+    d               sr webster {}
+    dd              sr duckduckgo {}
+    deb             sr debpackages {}
+    docker          b https://docs.docker.com/reference/builder/
+    foldoc          sr foldoc {}
+    g               sr google {}
+    gc              sr gcache {}
+    gg              sr google -G {}
+    gh              sr github {}
+    gi              sr google -i {}
     gradle          b file:///usr/share/gradle/doc/userguide/userguide.html
     gradle-dsl      b file:///usr/share/gradle/doc/dsl/index.html
     graphviz        b file:///usr/share/graphviz/doc
-    groovy          b file:///usr/share/doc/groovy-2.3.8/html/documentation/index.html
-    groovy-api      b file:///usr/share/doc/groovy-2.3.8/html/api/index.html
-    groovy-gapi     b file:///usr/share/doc/groovy-2.3.8/html/gapi/index.html
+    groovy          b file:///usr/share/doc/groovy-2.4.0/html/documentation/index.html
+    groovy-api      b file:///usr/share/doc/groovy-2.4.0/html/api/index.html
+    groovy-gapi     b file:///usr/share/doc/groovy-2.4.0/html/gapi/index.html
+    guava           b http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/index.html
+    haskell         b file:///usr/share/doc/ghc/html/libraries/index.html
+    hibernate-orm   b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
+    imdb            sr imdb {}
+    iojs            b https://iojs.org/api/
     java-apis       b http://www.oracle.com/technetwork/java/api-141528.html
     java-specs      b http://docs.oracle.com/javase/specs/index.html
     java-tutorials  b http://docs.oracle.com/javase/tutorial/reallybigindex.html
     javase          b http://www.oracle.com/technetwork/java/javase/overview/index.html
-    jdk             b file:///usr/share/doc/jdk-doc/index.html
-    jdk-api         b file:///usr/share/doc/jdk-doc/api/index.html
-    jdk7            b file:///usr/share/doc/jdk7-doc/index.html
-    jdk7-api        b file:///usr/share/doc/jdk7-doc/api/index.html
+    jdk             b file:///usr/share/doc/jdk-docs/index.html
+    jdk-api         b file:///usr/share/doc/jdk-docs/api/index.html
+    jdk7            b file:///usr/share/doc/jdk7-docs/index.html
+    jdk7-api        b file:///usr/share/doc/jdk7-docs/api/index.html
     jee             b http://www.oracle.com/technetwork/java/javaee/overview/index.html
     jee-specs       b http://www.oracle.com/technetwork/java/javaee/tech/index.html
     jee7-api        b file://$HOME/opt/java_ee_sdk-7u1/docs/api/index.html
     jee7-samples    b file://$HOME/opt/java_ee_sdk-7u1/samples/docs/list.html
     jee7-tutorial   b file://$HOME/opt/java_ee_sdk-7u1/docs/javaee-tutorial/doc/index.html
+    jquery          sr jquery {}
     jsr             b file://$HOME/archive/lib/00-cs/java/08-jsr/
     jsr-all         b https://jcp.org/en/jsr/all?sortBy=date
     maven           b http://maven.apache.org/plugins/index.html
+    mdn             sr mdn {}
+    mongodb         b http://docs.mongodb.org/manual/reference/
+    music           sr musicbrainz {}
+    mutt            b file:///usr/share/doc/mutt/manual.html
+    nodejs          b file:///usr/share/doc/nodejs/index.html
     notes           b file://$HOME/projects/notes/_build/html/index.html
+    ntrs            sr ntrs {}
     oracle-plsql    b https://docs.oracle.com/database/121/LNPLS/toc.htm
     oracle-sql      b https://docs.oracle.com/database/121/SQLRF/toc.htm
-    rst             b file://$HOME/projects/lab/docutils/showcase/_build/html/index.html
+    pkg             sr archpkg {}
+    postgresql      b file:///usr/share/doc/postgresql/html/index.html
+    python          b file:///usr/share/doc/python/html/index.html
+    python2         b file:///usr/share/doc/python2/html/index.html
+    rst             b http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
+    rst-demo        b file://$HOME/projects/lab/docutils/showcase/_build/html/index.html
+    s               sr ixquick {}
     scala           b file:///usr/share/doc/scala/api/scala-library/index.html
+    si              sr ixquick -search=pics {}
+    spring          b file:///usr/share/doc/spring-framework/spring-framework-reference/html/index.html
+    spring-api      b file:///usr/share/doc/spring-framework/javadoc-api/index.html
+    spring-platform b http://docs.spring.io/platform/docs/current/reference/htmlsingle/#appendix
+    sql-bnf         b file://$HOME/archive/lib/00-cs/dbms/sql-bnf/index.html
     sqlite          b file:///usr/share/doc/sqlite/docs.html
     sqlite-lang     b file:///usr/share/doc/sqlite/lang.html
+    tomcat          b file:///var/lib/tomcat8/webapps/docs/index.html
+    tr              sr translate {}
+    w               sr wikipedia {}
+    yt              sr youtube {}
 EOF
 
-mark=$(IFS=$'\n'; echo "${!marks[*]}" | sort | dmenu 'bb')
-eval "${marks[$mark]}"
+k=$1
+if [ -z "$k" ]; then
+    read k q <<<"$(IFS=$'\n'; echo "${!map[*]}" | sort | dmenu1 "$prgname")"
+    [ -z "$k" ] && exit 1
+else
+    q=$(dmenu1 "$prgname $k" </dev/null)
+fi
+
+eval cmd=("${map[$k]}")
+[ -z "$cmd" ] && exit 1
+
+for i in "${!cmd[@]}"; do
+    if [ "${cmd[$i]}" = '{}' ]; then
+        cmd[$i]=$q
+    fi
+done
+
+export SURFRAW_quote_ifs=no
+exec "${cmd[@]}"

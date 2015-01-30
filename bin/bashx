@@ -1,4 +1,4 @@
 #!/bin/bash
 
-export BASH_ENV=~/bin/shx.sh
-bash "$@"
+export BASH_ENV="$HOME/bin/shx.sh"
+exec bash "$@"

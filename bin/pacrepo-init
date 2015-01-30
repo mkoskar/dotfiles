@@ -17,5 +17,5 @@ fi
 bsdtar -czf "$name.db.tar.gz" -T /dev/null
 ln -s "$name.db.tar.gz" "$name.db"
 
-#gpg -q -b -u 35FD5DFB "$name.db.tar.gz"
+#gpg -q -b -u <key> "$name.db.tar.gz"
 #ln -s "$name.db.tar.gz.sig" "$name.db.sig"

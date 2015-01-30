@@ -16,7 +16,7 @@ _clear() {
 # ----------------------------------------
 
 ids=()
-[ -t 0 ] && src=~/.gnupg/gpg-preset-ids || src=/dev/stdin
+[ -t 0 ] && src="$HOME/.gnupg/gpg-preset-ids" || src='/dev/stdin'
 while IFS= read -r line; do
     ids+=("$line")
 done <"$src"

@@ -11,4 +11,4 @@ if [ -t 0 ]; then
     exit 1
 fi
 
-col -b | PAGER_TITLE="$MAN_PN" pg -c 'set ft=man'
+col -b | PAGER_TITLE=$MAN_PN pg -c 'set ft=man'

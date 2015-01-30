@@ -1,13 +1,20 @@
+-- vim: fdm=marker
+
+-- {{{ Imports
+
+import Data.Maybe (fromMaybe)
 import Data.Monoid (mempty, All(..), appEndo)
+import Graphics.X11.Xinerama (getScreenInfo)
 import System.Exit
 import qualified Data.Map as M
 
-import XMonad hiding ((|||))
+import XMonad hiding ((|||), screenCount)
 import XMonad.StackSet (screenDetail, current)
 import qualified XMonad.StackSet as W
 
 import XMonad.Actions.CycleWS
 import XMonad.Actions.FloatKeys
+import XMonad.Actions.OnScreen
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.Warp
@@ -38,12 +45,22 @@ import XMonad.Util.EZConfig
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.WorkspaceCompare
 
+-- }}}
+
 doShiftView :: WorkspaceId -> ManageHook
-doShiftView i = doShift i <+> (doF $ W.view i)
+doShiftView w = doShift w <+> (doF $ W.view w)
+
+workspaceOnScreen :: PhysicalScreen -> WorkspaceId -> X ()
+workspaceOnScreen p w = do
+    s <- getScreen p
+    windows $ onScreen (W.greedyView w) FocusCurrent (fromMaybe 0 s)
+
+screenCount :: X Int
+screenCount = withDisplay $ io . (fmap length) . getScreenInfo
 
 myStatusBar conf = statusBar "statusbar" myPP myToggleStrutsKey conf
   where
-    {-color = dzenColor-}
+    --color = dzenColor
     color = xmobarColor
     myPP = defaultPP
         { ppCurrent = color "#55FF55" "" . wrap "[" "]"
@@ -64,17 +81,9 @@ myConfig = defaultConfig
     , terminal = myTerminal
     , workspaces = myWorkspaces
     , keys = \conf -> mkKeymap conf myKeymap
-    , startupHook = checkKeymap myConfig myKeymap <+>
-                    ewmhDesktopsStartup <+>
-                    setWMName "LG3D" <+>
-                    spawn "xsession-hook startup"
-    , logHook = ewmhDesktopsLogHook <+>
-                updatePointer (Relative 0.5 0.5)
-    , handleEventHook = ewmhDesktopsEventHook <+>
-                        docksEventHook <+>
-                        minimizeEventHook <+>
-                        positionStoreEventHook <+>
-                        hintsEventHook
+    , startupHook = myStartupHook
+    , logHook = myLogHook
+    , handleEventHook = myHandleEventHook
     , manageHook = myManageHook
     , layoutHook = myLayoutHook
     }
@@ -88,9 +97,41 @@ myConfig = defaultConfig
         , NS "sp1" (myTerminal ++ " sp1 - trun s mon") (resource =? "sp1")
           (customFloating $ W.RationalRect 0.03 0.03 0.94 0.94)
         ]
+
+    -- {{{ Hooks
+
+    myStartupHook = do
+        checkKeymap myConfig myKeymap
+        ewmhDesktopsStartup
+        setWMName "LG3D"
+        spawn "xsession-hook startup"
+        n <- screenCount
+        case n of
+            1 -> do
+                workspaceOnScreen 0 "3"
+            2 -> do
+                workspaceOnScreen 0 "3"
+                workspaceOnScreen 1 "2"
+                viewScreen 0
+            _ -> do
+                workspaceOnScreen 0 "8"
+                workspaceOnScreen 1 "3"
+                workspaceOnScreen 2 "2"
+                viewScreen 1
+
+    myLogHook = ewmhDesktopsLogHook
+                <+> updatePointer (Relative 0.5 0.5)
+
+    myHandleEventHook = ewmhDesktopsEventHook
+                        <+> docksEventHook
+                        <+> minimizeEventHook
+                        <+> positionStoreEventHook
+                        {-<+> hintsEventHook-}
+
     myManageHook = composeOne
-                       [ appName =? "clementine" -?> doShiftView "8"
-                       , appName =? "gpodder" -?> doShiftView "8"
+                       [ appName =? "workrave" <&&> title =? "Workrave" -?> doHideIgnore
+                       , appName =? "clementine" -?> doShiftView "8"
+                       , appName =? "gpodder" -?> doShift "8"
                        , appName =? "libreoffice" -?> doShiftView "8"
                        , appName =? "s_aux" -?> doShift "2"
                        , appName =? "s_tmp" -?> doShift "2"
@@ -103,21 +144,23 @@ myConfig = defaultConfig
                        , appName =? "zathura" -?> doShiftView "8"
                        , className =? "MPlayer" -?> doShiftView "9"
                        , className =? "mpv" -?> doShiftView "9"
-                       ] <+>
-                   composeAll [ isDialog --> doCenterFloat ] <+>
-                   toggleHook "doFloat" doFloat <+>
-                   namedScratchpadManageHook myScratchpads <+>
-                   positionStoreManageHook Nothing
-    myLayoutHook = avoidStruts $
-                   trackFloating $
-                   boringWindows $
-                   minimize $
-                   maximize $
-                   configurableNavigation noNavigateBorders $
-                   mkToggle (single NOBORDERS) $
-                   mkToggle (single FULL) $
-                   mkToggle (single MIRROR) $
-                   layoutHintsWithPlacement (0.5, 0.5) (
+                       ]
+                   <+> composeAll [ isDialog --> doCenterFloat ]
+                   <+> toggleHook "doFloat" doFloat
+                   <+> namedScratchpadManageHook myScratchpads
+                   <+> positionStoreManageHook Nothing
+
+    myLayoutHook = avoidStruts
+                   $ trackFloating
+                   $ boringWindows
+                   $ minimize
+                   $ maximize
+                   $ configurableNavigation noNavigateBorders
+                   $ mkToggle (single NOBORDERS)
+                   $ mkToggle (single FULL)
+                   $ mkToggle (single MIRROR)
+                   --layoutHintsWithPlacement (0.5, 0.5)
+                   (
                        myTabbed |||
                        myTall
                    )
@@ -126,21 +169,23 @@ myConfig = defaultConfig
             { activeBorderColor = activeColor myTheme
             , inactiveBorderColor = inactiveColor myTheme
             , urgentBorderColor = urgentColor myTheme
-
             , activeTextColor = "#87CEFA"
             , inactiveTextColor = "#888888"
             , urgentTextColor = "#BB4455"
-
             , activeColor = "#000000"
             , inactiveColor = "#333333"
             , urgentColor = "#FEEF6A"
-
             , fontName = "xft:local_xmonad"
             , decoWidth = 500
             , decoHeight = 15
             }
         myTabbed = tabbedBottom shrinkText myTheme
         myTall = ResizableTall 1 0.05 0.5 []
+
+    -- }}}
+
+    -- {{{ Keymap
+
     myKeymap =
         [
           -- M-[0..9] - switch to workspace N
@@ -240,6 +285,7 @@ myConfig = defaultConfig
 
         , ("M-p", spawn "dmenu_run")
         , ("M-'", spawn "bb")
+        , ("M-S-'", spawn "bb s")
         , ("M-S-<Return>", spawn myTerminal)
 
           -- scratchpads
@@ -279,6 +325,10 @@ myConfig = defaultConfig
         , ("M-; M-l", spawn "sudo lockx")
         , ("M-; M-d", spawn "dpms-toggle")
         , ("M-; M-w", spawn "wifi-toggle")
+        , ("M-; M-p", do workspaceOnScreen 0 "9"; spawn "p")
+        , ("M-; M-i", spawn "b http://apod.nasa.gov/")
         ]
+
+    -- }}}
 
 main = xmonad =<< myStatusBar (withUrgencyHook NoUrgencyHook myConfig)

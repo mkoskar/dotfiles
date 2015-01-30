@@ -25,5 +25,5 @@ macro index \# "<tag-prefix><save-message>$my_mbtrashed<enter><previous-entry><s
 macro pager \# "<save-message>$my_mbtrashed<enter><previous-entry><sync-mailbox>" 'trash message'
 
 #push "<change-folder>?<change-dir>^U$my_base<enter><exit>"
-macro index,pager <tab> "<change-folder>?<change-dir>^U$my_base<enter>" 'browse account local folder'
+macro index,pager <tab> "<change-folder>?<change-dir>^U$my_base<enter>/<enter>" 'browse account local folder'
 macro index,pager,browser \eI "<change-folder>?<change-dir>^U$my_imap<enter>" 'browse account IMAP folder'

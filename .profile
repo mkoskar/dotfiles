@@ -5,9 +5,11 @@
 umask 022
 
 [ -z "$_PATH" ] && export _PATH="$PATH"
-export PATH="$HOME/.local/bin:$_PATH"
-export PATH="$HOME/opt/bin:$PATH"
-export PATH="$HOME/bin:$PATH"
+PATH="$HOME/.npm-global/bin:$_PATH"
+PATH="$HOME/.local/bin:$PATH"
+PATH="$HOME/opt/bin:$PATH"
+PATH="$HOME/bin:$PATH"
+export PATH
 
 export HOSTNAME=$(hostname)
 export LANG='en_US.UTF-8'
@@ -31,12 +33,10 @@ export GREP_COLORS='sl=:cx=:mt=41:fn=36:ln=33:bn=33:se=:ne'
 export LESS='-MRS#3ci'
 export LESSHISTFILE='-'
 export LESSOPEN='| highlight --quiet -O xterm256 -s bluegreen %s'
-export MAILCHECK=-1
 export MANPAGER='manpg'
 export ORACLE_HOME='/opt/instantclient'
 export PACKER_CACHE_DIR="$HOME/.packer_cache"
 export PAGER='pg'
-export PIP_REQUIRE_VIRTUALENV='true'
 export VDPAU_DRIVER='va_gl'
 export XAUTHORITY="$HOME/.Xauthority"
 

@@ -2,43 +2,14 @@
 
 set -e
 
-get() {
-    xdotool search --classname "$@"
+session() {
+    local sname=$1
+    local wname="s_$sname"
+    xdotool search --classname "$wname" >/dev/null \
+        || term "$wname" - trun s "$sname" &
 }
 
-get_() {
-    ids=($(get "$@"))
-}
-
-assert() {
-    #get_ --sync "$1"
-    # ^^^ too slow; instead, sleep a bit and try again
-    sleep 0.3
-    get_ "$1"
-}
-
-close() {
-    #get "$1" windowkill %@ || true
-    get_ "$1" || true
-    for id in "${ids[@]}"; do
-        wmctrl -i -c "$id"
-    done
-}
-
-unset TMUX
-
-name='s_tmp'
-close "$name"
-term "$name" - trun s tmp &
-assert "$name"
-
-name='s_aux'
-close "$name"
-term "$name" - trun s aux &
-assert "$name"
-
-name='s_wrk'
-close "$name"
-term "$name" - trun s wrk &
-assert "$name"
-wmctrl -i -a "${ids[0]}"
+session wrk
+session tmp
+sleep 0.1 # to ensure order tmp -> aux
+session aux

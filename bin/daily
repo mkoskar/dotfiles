@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+. ~/.profile
+
+# hardcoded X server DISPLAY
+export DISPLAY=':1'
+
+apod-get && apod-bg

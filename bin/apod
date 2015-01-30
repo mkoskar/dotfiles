@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+    apod
+    ~~~~
+
+    Prints http://apod.nasa.gov/ image URL.
+
+    :Compatibility: Python 3.x
+    :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
+    :License: BSD 2-Clause
+"""
+
+from pyquery import PyQuery
+from urllib.parse import urljoin
+from urllib.request import urlopen
+import argparse
+import re
+import textwrap
+
+parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent(
+        """
+        Prints http://apod.nasa.gov/ image URL.
+        If target URL doesn't end with recognized format extension (gif, jpeg, png)
+        preview image URL is returned instead (this covers situations when target
+        URL points to a video file instead of an image).
+        """
+    )
+)
+parser.add_argument('-p', '--preview', action='store_true',
+                    help='always return preview image URL')
+parser.add_argument('-t', '--target', action='store_true',
+                    help='always return target URL')
+args = parser.parse_args()
+
+url = 'http://apod.nasa.gov/'
+resp = urlopen(url)
+html = resp.read().decode('ISO-8859-1')
+
+pq = PyQuery(html)
+img_el = pq('body').find('center a img')
+a_el = img_el.parents('a')
+
+preview = img_el.attr.src.strip()
+target = a_el.attr.href.strip()
+
+if args.preview:
+    print(urljoin(url, preview))
+    exit()
+
+if args.target:
+    print(urljoin(url, target))
+    exit()
+
+result = target
+if not re.match(r'.*\.(gif|jpg|jpeg|png)', result, re.I):
+    result = preview
+
+print(urljoin(url, result))

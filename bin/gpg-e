@@ -3,4 +3,4 @@
 input=${1:--}
 output=${2:--}
 
-gpg -q -e -r 35FD5DFB -o "$output" "$input"
+gpg -q -e -r CDC91131 -o "$output" "$input"

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo $'\n--------------------------------------------------'
+echo $'> pip:\n'
+
+pip --version
+echo
+
+pip list --user
+
+echo $'\n--------------------------------------------------'
+echo $'> pip2:\n'
+
+pip2 --version
+echo
+
+pip2 list --user
+echo

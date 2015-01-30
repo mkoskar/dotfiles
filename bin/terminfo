@@ -17,16 +17,23 @@ echo "TERMOLD = $TERMOLD"
 echo "TERMINFO = $TERMINFO"
 echo "TERMINFO_DIRS = $TERMINFO_DIRS"
 echo
-infocmp -1 | sed -n '1,2p;/\bkbs=/p;/\bsmso=/p;/\bsitm=/p'
+infocmp -1 | sed -n '1,2p;/\bkbs=/p;/\bkdch1=/p;/\bsmso=/p;/\bsitm=/p'
+
+echo $'\n--------------------------------------------------'
+echo "> infocmp -A /usr/share/terminfo $TERM $TERM"
+echo
+infocmp -A /usr/share/terminfo "$TERM" "$TERM" || true
 
 echo $'\n--------------------------------------------------'
 stty -a | perl -n -e '/\b(erase = .*?);/ && print "stty $1\n"'
 
 echo $'\n--------------------------------------------------'
-read -N1 -p 'Press BS:      '
+read -N1 -p 'Press BS:            '
 echo
-read -N1 -p 'Press CTRL+BS: '
+read -N1 -p 'Press CTRL+BS:       '
 echo
-read -N1 -p 'Press CTRL+H:  '
+read -N1 -p 'Press CTRL+H:        '
+echo
+read -N1 -p 'Press CTRL+SHIFT+H:  '
 echo
 echo

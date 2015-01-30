@@ -7,6 +7,7 @@
 !.bash_profile
 !.bashrc
 !.bcrc
+!.bowerrc
 !.config
 !.config/Trolltech.conf
 !.config/aurvote.example
@@ -28,6 +29,7 @@
 !.config/pulse/client.conf
 !.config/ranger
 !.config/redshift.conf
+!.config/surfraw/conf
 !.config/systemd
 !.config/tint2/tint2rc
 !.config/twmn/twmn.conf
@@ -74,17 +76,20 @@
 !.ncmpcpp/config
 !.netrc.example
 !.newsbeuter/config
+!.npmrc.example
 !.pgrc
 !.pinforc
 !.podget/podgetrc
 !.profile
 !.rtorrent.rc
 !.screenrc
+!.sqliterc
 !.ssh/config.example
 !.subversion/config
 !.taskrc
 !.terminfo
 !.tidyrc
+!.tigrc
 !.tmux.conf
 !.toprc
 !.urlview

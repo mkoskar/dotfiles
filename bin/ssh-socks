@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec ssh -D 1080 -N "$@"

@@ -15,6 +15,8 @@
 # :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
 # :License: BSD 2-Clause
 
+# TODO: args-scroll / line-scroll
+
 set -e
 
 [ -t 0 ] || exit 1

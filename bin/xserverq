@@ -6,6 +6,7 @@
 # :License: BSD 2-Clause
 
 set -e
+set -o pipefail
 
 prgname=$(basename "$0")
 
@@ -52,7 +53,7 @@ case $1 in
 		       $prgname dispno  - get display number
 		       $prgname name    - get command name
 		       $prgname pid     - get PID
-		
+
 		Get information about X server (based on DISPLAY environment variable).
 		EOF
         exit 2

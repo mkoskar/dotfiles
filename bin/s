@@ -59,7 +59,7 @@ _adm() {
 _aux() {
     cd ~
 
-    local notesdir=~/projects/notes/src
+    local notesdir="$HOME/projects/notes/src"
     new -n notes -c "$notesdir" 'trun e' \
         \; setw remain-on-exit on \
         \; splitw -h -c "$notesdir" \
@@ -98,7 +98,7 @@ _mon() {
         \; selectl even-vertical \
         \; selectp -t :.0
 
-    neww -n sstat 'trun pgx ss' \
+    neww -n sstat 'trun pgx ss state big' \
         \; setw remain-on-exit on
 
     neww 'trun iftop' \

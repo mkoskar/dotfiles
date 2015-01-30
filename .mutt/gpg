@@ -63,8 +63,8 @@ set crypt_autosign
 set crypt_replysign
 set crypt_replysignencrypted
 set pgp_auto_decode
-set pgp_good_sign = '^\\[GNUPG:\\] GOODSIG'
-set pgp_sign_as = 35FD5DFB
+set pgp_good_sign = '^gpg: Good signature'
+set pgp_sign_as = CDC91131
 set pgp_use_gpg_agent
 
 source ~/.mutt/generate_pgp_auto|

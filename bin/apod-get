@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+path="$HOME/.cache/apod/latest"
+prgname=$(basename "$0")
+
+case $prgname in
+    apod-get)
+        curl -s --create-dirs -o "$path" "$(apod)"
+        ;;
+    apod-bg)
+        feh --bg-max --no-fehbg "$path"
+        ;;
+esac

@@ -33,7 +33,7 @@ fi
 # ----------------------------------------
 
 machine=$1
-root="$machine"
+root=$machine
 [ -z "$machine" ] && exit
 
 mkdir -p "$root" "${root}_"

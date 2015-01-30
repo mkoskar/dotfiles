@@ -18,7 +18,7 @@ XTerm*vt100.utf8:               2
 XTerm*vt100.printAttributes:    0
 XTerm*vt100.printerCommand:     cat > $(mktemp -p ~/tmp xterm.XXXXXX)
 XTerm*vt100.translations:       #override \n\
-                                ~Shift ~Alt Ctrl <Key>H: string(\177) \n\
+                                Ctrl ~Alt  Shift <Key>H: string(\177) \n\
                                 ~Shift <Key>Print: print() \n\
                                 Shift <Key>Print: print-everything()
 

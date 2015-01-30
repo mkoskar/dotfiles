@@ -1,0 +1,19 @@
+set blame-view = date:default author:full file-name:auto id:yes,color line-number:yes,interval=5 text
+set main-view = line-number:yes,interval=5 id:yes date:default author:full commit-title:yes,graph,refs,overflow=no
+
+set tab-size = 4
+
+color "author "     default     default
+
+color cursor        black       white
+color status        default     default
+color date          default     default
+color id            yellow      default
+color header        white       default     bold
+color directory     blue        default     bold
+color grep.file     yellow      default
+color title-blur    244         237
+color title-focus   254         237         bold
+color help-group    default     default
+color diff-stat     default     default
+color graph-commit  cyan        default

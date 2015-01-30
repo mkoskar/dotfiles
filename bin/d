@@ -32,4 +32,4 @@ process() {
 }
 
 # execute explicitly in subshell to workaround not firing trap
-( process ) | PAGER_TITLE="${cmd[@]}" pg -c 'set ft=diff'
+( process ) | PAGER_TITLE=${cmd[@]} pg -c 'set ft=diff'

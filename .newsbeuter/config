@@ -7,6 +7,7 @@ error-log "~/.newsbeuter/error.log"
 goto-next-feed no
 podcast-auto-enqueue no
 reload-threads 3
+reload-time 480
 save-path "~/download"
 search-highlight-colors black yellow
 text-width 79

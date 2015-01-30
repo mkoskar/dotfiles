@@ -22,7 +22,7 @@ if [ "$(basename "$0")" = 'osdd' ]; then
     trap cleanup EXIT
 
     aosd_cat -O 0 -p 2 -x -10 -y 25 -e 0 -d 5 \
-             -t 0 -n local_osd -A 2 \
+             -t 2 -n local_osd -A 2 -b 215 \
              -B black -R yellow \
              -f 0 -u 1000 -o 0 \
              -l 1 \
