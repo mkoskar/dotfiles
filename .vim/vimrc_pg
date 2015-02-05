@@ -1,0 +1,82 @@
+" vim: ft=vim fdm=marker
+
+source ~/.vim/vimrc_base
+
+set nomodifiable
+set buftype=nowrite
+
+set nolist
+set colorcolumn=0
+set laststatus=1
+set tabstop=8
+
+set nobackup
+set noswapfile
+set noundofile
+set undolevels=-1
+set viminfo=
+
+filetype plugin indent off
+
+noremap <silent> q :qa<CR>
+noremap <silent> Q :qa<CR>
+
+map <silent> r :edit<CR>:norm gg<CR>
+
+set runtimepath^=~/.vim/bundle/vim-AnsiEsc
+nnoremap <silent> <C-A> :AnsiEsc<CR>
+
+let g:loaded_getscriptPlugin = 1
+let g:loaded_netrwPlugin = 1
+let g:loaded_rrhelper = 1
+let g:loaded_spellfile_plugin = 1
+let g:loaded_vimballPlugin = 1
+
+" {{{ Reloads buffer after number (defaults to 1) of seconds have passed.
+
+function! s:Reload(...) abort
+    let d = 1
+    if a:0 == 1
+        let d = a:1
+    endif
+    try
+        echohl WarningMsg | echo 'Reload in '.d.'s (interrupt to abort)' | echohl None
+        exec 'sleep '.d
+        if exists(':ReloadX')
+            ReloadX
+        else
+            edit
+            silent normal! gg
+        endif
+    finally
+        redraw
+        echo
+    endtry
+endfunction
+command! -nargs=? Reload call s:Reload(<f-args>)
+map <silent> F :Reload<CR>F<CR>
+
+" }}}
+
+if exists("$CMD")
+
+" {{{ Reloads buffer from $CMD.
+
+function! s:ReloadX() abort
+    try
+        setl modifiable
+        exec 'silent 0read! '.$CMD
+        silent normal! jdGgg
+        setl noma
+    endtry
+    if !has('vim_starting')
+        redraw
+        echohl WarningMsg | echo '['.strftime("%H:%M:%S").'] '.$PAGER_TITLE | echohl None
+    endif
+endfunction
+command! ReloadX call s:ReloadX()
+map <silent> r :ReloadX<CR>
+
+" }}}
+
+endif

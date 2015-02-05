@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -e
+
+xcmenu --query
+
+case $1 in
+    from-primary)
+        data=$(xcmenu -p)
+        xcmenu -ci <<<"$data"
+        ;;
+    from-stdin)
+        data=$(</dev/stdin)
+        xcmenu -pi <<<"$data"
+        xcmenu -ci <<<"$data"
+        ;;
+    *)
+        id=$(xcmenu -m | dmenu xcmenu | sed 's/^[^0-9]*\([^:]*\):.*/\1/g')
+        [ -z "$id" ] && exit 1
+
+        data=$(xcmenu -g <<<"$id")
+        xcmenu -pi <<<"$data"
+        xcmenu -ci <<<"$data"
+
+        if [ ! -t 1 ]; then
+            echo "$data"
+        fi
+        ;;
+esac

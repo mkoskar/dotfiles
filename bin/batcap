@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+. /sys/class/power_supply/BAT0/uevent
+
+calc -qp -- <<<"round($POWER_SUPPLY_ENERGY_FULL / $POWER_SUPPLY_ENERGY_FULL_DESIGN * 100, 2)"

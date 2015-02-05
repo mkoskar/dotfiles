@@ -3,14 +3,14 @@
 set -e
 
 _preset() {
-    </dev/tty IFS= read -s -r -p "Passphrase for (${1:0:8}...): " pass;
+    IFS= read -s -r -p "Passphrase for (${1:0:8}...): " pass </dev/tty
     echo
     [ -z "$pass" ] && return 1
-    <<<"PRESET_PASSPHRASE $1 -1 $(echo -n "$pass" | xxd -ps)" gpg-connect-agent
+    gpg-connect-agent <<<"PRESET_PASSPHRASE $1 -1 $(echo -n "$pass" | xxd -ps)"
 }
 
 _clear() {
-    <<<"CLEAR_PASSPHRASE --mode=normal $1" gpg-connect-agent
+    gpg-connect-agent <<<"CLEAR_PASSPHRASE --mode=normal $1"
 }
 
 # ----------------------------------------

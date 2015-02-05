@@ -51,7 +51,7 @@ jdb() {
 
 # ----------------------------------------
 
-CATALINA_HOME=${CATALINA_HOME:-~/opt/apache-tomcat-8.0.15}
+CATALINA_HOME=${CATALINA_HOME:-$(ls -d ~/opt/apache-tomcat-* | tail -n1)}
 export CATALINA_HOME=$(realpath "$CATALINA_HOME")
 
 CATALINA_BASE=${CATALINA_BASE:-instance}

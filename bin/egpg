@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec vim -NO -u ~/.vim/vimrc_gpg "$@"

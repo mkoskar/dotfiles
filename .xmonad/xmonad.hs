@@ -285,7 +285,7 @@ myConfig = defaultConfig
 
         , ("M-p", spawn "dmenu_run")
         , ("M-'", spawn "bb")
-        , ("M-S-'", spawn "bb s")
+        , ("M-S-'", spawn "bb dd")
         , ("M-S-<Return>", spawn myTerminal)
 
           -- scratchpads
@@ -310,16 +310,14 @@ myConfig = defaultConfig
         , ("M-<F3>", spawn "xkb cz")
 
           -- selections
-        , ("M-<F5>", spawn "xsel | xsel -ib")
-        , ("M-<F6>", spawn "xsel -b | xsel -i")
-        , ("M-<F7>", spawn "xsel | xsel -i")
-        , ("M-<F8>", spawn "xsel -b | xsel -ib")
+        , ("M-<Insert>", spawn "xcmenuc")
+        , ("M-S-<Insert>", spawn "xcmenuc from-primary && notify 'PRIMARY -> CLIPBOARD'")
 
           -- other
         , ("M-<F10>", spawn "xscreen && xmonad-session-repair")
         , ("M-S-<F10>", spawn "xscreen-mobile && xmonad-session-repair")
-        , ("M-<F12>", spawn "grabc 2>&1 | xsel -i")
-        , ("M-S-<F12>", spawn "xmeasure | xsel -i")
+        , ("M-<F12>", spawn "grabc 2>&1 | xcmenuc from-stdin")
+        , ("M-S-<F12>", spawn "xmeasure | xcmenuc from-stdin")
         , ("M-S-<Home>", spawn $ myTerminal ++ " - trun wow")
         , ("M-S-b", spawn "backlight-toggle")
         , ("M-; M-l", spawn "sudo lockx")

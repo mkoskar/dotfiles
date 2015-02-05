@@ -1,9 +1,15 @@
 #!/bin/bash
 
+set -e
+
+# NOTE: xsel version 1.2.0 is broken!
+#       "echo 'something' | xsel -o" should print content of
+#       primary selection, but it will instead read stdin into it
+
 echo $'\n---------- Primary ----------'
-xsel
+xclip -o -selection primary
 
 echo $'\n---------- Clipboard ----------'
-xsel -b
+xclip -o -selection clipboard
 
 echo

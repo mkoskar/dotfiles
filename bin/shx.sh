@@ -89,9 +89,12 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias acpi='acpi -V'
+alias aunpack='aunpack -q'
 alias cal='cal -3 -m'
 alias callgrind='valgrind --tool=callgrind'
 alias cower='cower --color=auto'
+alias cp='cp -ai'
+alias date='date -R'
 alias df='df -h'
 alias dstat='dstat -cglmnpry --tcp'
 alias du='du -sh'
@@ -118,16 +121,19 @@ alias wtc='curl --silent http://whatthecommit.com/index.txt'
 # simple alarm (defaults to 5 minutes)
 a() {
     local d=${1:-5m}
-    printf '%s ... alarm after %s\n' "$(date)" "$d"
+    printf '%s ... alarm after %s\n' "$(\date -R)" "$d"
     sleep "${1:-5m}"
     echo 'Beep...'
     notify-send -u critical 'Beep...' "Time's up!"
     mpv --loop inf /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
 }
 
-# plant a base
 base() {
     export BASEDIR=${1:-$PWD}
+}
+
+unbase() {
+    unset BASEDIR
 }
 
 alias cd='__cd'

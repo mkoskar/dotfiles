@@ -8,6 +8,11 @@ echo $'> Foreign & Explicit:\n'
 pacman -Qem
 
 echo $'\n--------------------------------------------------'
+echo $'> Foreign dependencies:\n'
+
+pacman -Qdm
+
+echo $'\n--------------------------------------------------'
 echo $'> Unrequired dependencies:\n'
 
 pacman -Qdt

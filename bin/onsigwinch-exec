@@ -53,8 +53,6 @@ def sigwinch(handler_args, signum, frame):
         sigwinch_entry_ts = 0
 
 
-# main
-
 signals(SIGHUP_INT_TERM, SIG_IGN)
 
 args = sys.argv[1:]

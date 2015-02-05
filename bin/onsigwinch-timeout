@@ -10,8 +10,6 @@ def sigwinch(signum, frame):
     sys.exit()
 
 
-# main
-
 signal(SIGINT, SIG_DFL)
 signal(SIGWINCH, sigwinch)
 sleep(1)

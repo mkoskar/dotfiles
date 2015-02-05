@@ -30,7 +30,14 @@ trap 'rm -f "$tmpfile"' EXIT
 #export SANE_DEBUG_PIXMA=1
 #export SANE_DEBUG_BJNP=1
 
-scanimage -d pixma:MX920_192.168.100.2 \
+# Detection:
+#
+# 1) turn of firewall
+# 2) scanimage -L
+#
+# SEEALSO: /etc/sane.d/pixma.conf
+
+scanimage -d pixma:MX920_pyrite \
     --progress --format tiff \
     --mode "$mode" \
     --resolution "$resolution" \

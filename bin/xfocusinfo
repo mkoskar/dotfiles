@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
     xfocusinfo
@@ -18,12 +18,12 @@
 
 from __future__ import print_function
 
+from collections import OrderedDict
 import argparse
 import textwrap
-from collections import OrderedDict
 
-import xcb
-import xcb.xinerama
+import xcffib
+import xcffib.xinerama
 
 
 def intersect(x1, y1, w1, h1, \
@@ -31,8 +31,9 @@ def intersect(x1, y1, w1, h1, \
     return max(0, min(x1 + w1, x2 + w2) - max(x1, x2)) * \
            max(0, min(y1 + h1, y2 + h2) - max(y1, y2))
 
-FOCUS_NONE = xcb.NONE
-FOCUS_POINTER_ROOT = xcb.xproto.InputFocus.PointerRoot
+
+FOCUS_NONE = xcffib.NONE
+FOCUS_POINTER_ROOT = xcffib.xproto.InputFocus.PointerRoot
 
 parser = argparse.ArgumentParser(
     formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -57,7 +58,7 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument('-n', '--no-defaults', action='store_true', help='TODO')
 parser.add_argument('--input', action='store_true', help='N/A')
-parser.add_argument('--pointer', action='store_true', help='N/A')
+parser.add_argument('--pointer', action='store_true', help='TODO')
 parser.add_argument('--topleft', action='store_true', help='N/A')
 args = parser.parse_args()
 
@@ -67,7 +68,7 @@ RES_head_number = 'HEAD'
 RES_root = 'ROOT'
 RES_window = 'WINDOW'
 
-conn = xcb.connect()
+conn = xcffib.connect()
 setup = conn.get_setup()
 
 default_screen_number = 0
@@ -91,7 +92,7 @@ if args.pointer or window in (roots + [FOCUS_NONE, FOCUS_POINTER_ROOT]):
     screen_number = roots.index(root)
 
     head_number = 0
-    heads = conn(xcb.xinerama.key).QueryScreens().reply().screen_info
+    heads = conn(xcffib.xinerama.key).QueryScreens().reply().screen_info
     for i, h in enumerate(heads):
         if intersect(pointer.root_x, pointer.root_y, 1, 1,
                      h.x_org, h.y_org, h.width, h.height):
@@ -116,7 +117,7 @@ else:
 
     max_area = 0
     head_number = 0
-    heads = conn(xcb.xinerama.key).QueryScreens().reply().screen_info
+    heads = conn(xcffib.xinerama.key).QueryScreens().reply().screen_info
     for i, h in enumerate(heads):
         area = intersect(tg.x, tg.y, tg.width, tg.height,
                          h.x_org, h.y_org, h.width, h.height)
@@ -128,5 +129,5 @@ else:
     result[RES_screen_number] = screen_number
     result[RES_head_number] = head_number
 
-for k, v in result.iteritems():
+for k, v in result.items():
     print('{}={}'.format(k, v))

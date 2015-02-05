@@ -3,6 +3,12 @@
 set -e
 
 echo $'\n--------------------------------------------------'
-cat /sys/class/power_supply/BAT0/uevent
+base='/sys/class/power_supply/BAT0/uevent'
+echo -e "> $base:\n"
+cat "$base"
+
+echo $'\n--------------------------------------------------'
+echo -e '> batcap [%]:\n'
+batcap
 
 echo

@@ -1,0 +1,17 @@
+" vim: ft=vim fdm=marker
+
+source ~/.vim/vimrc_base
+
+set nobackup
+set noswapfile
+set noundofile
+set undolevels=-1
+set viminfo=
+
+" ----------------------------------------
+
+exec pathogen#infect('bundle_gpg/{}')
+
+" ========== gnupg
+let GPGDefaultRecipients = ['CDC91131']
+let GPGUsePipes = 1

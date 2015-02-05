@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+    reqd
+    ~~~~
+
+    Simple HTTP server that replies with request's headers in response body.
+
+    :Compatibility: 3.x
+    :Copyright: (c) 2014 Miroslav Koskar (http://mkoskar.com/)
+    :License: BSD 2-Clause
+"""
+
+from http.server import HTTPServer, BaseHTTPRequestHandler
+from io import StringIO
+import sys
+
+
+class HTTPHandler(BaseHTTPRequestHandler):
+
+    def do_GET(self):
+        content = self.headers.as_string()
+        body = content.encode('UTF-8', 'replace')
+        sys.stderr.write(content)
+
+        self.send_response(200)
+        self.send_header('Connection', 'close')
+        self.send_header('Content-Length', int(len(body)))
+        self.send_header('Content-Type', 'text/plain; charset=UTF-8')
+        self.end_headers()
+
+        self.wfile.write(body)
+
+
+httpd = HTTPServer(('', 8080), HTTPHandler)
+
+try:
+    httpd.serve_forever()
+except KeyboardInterrupt:
+    pass
+
+httpd.server_close()

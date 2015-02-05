@@ -32,7 +32,7 @@ esac
 
 # ----------------------------------------
 
-profiles=($(<~/.mozilla/firefox/profiles.ini awk -F = '/Name/ { print $2 }' | grep -P "$regexp" | sort))
+profiles=($(awk -F = '/Name/ {print $2}' <~/.mozilla/firefox/profiles.ini | grep -P "$regexp" | sort))
 
 if [ $# -gt 0 ]; then
     for p in "${profiles[@]}"; do

@@ -1,6 +1,0 @@
-#!/bin/bash
-
-set -e
-
-# instead of default ~/.xsel.log use systemd-journald
-/usr/bin/xsel -l >(systemd-cat -t xsel -p err) "$@"

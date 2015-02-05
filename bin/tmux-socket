@@ -2,7 +2,7 @@
 
 [ -z "$TMUX" ] && exit 1
 
-IFS=, <<<"$TMUX" read -ra var
+IFS=, read -ra var <<<"$TMUX"
 socket=${var[0]##*/}
 
 if [ "$(basename "$0")" = 'tmux-socket-label' ]; then

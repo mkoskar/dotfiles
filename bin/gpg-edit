@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -eq 0 ]; then
+    echo "usage: $(basename "$0") file" >&2
+    exit 2
+fi
+
+file=$1
+
+if [ ! -f "$file" ]; then
+    echo 'regular file expected' >&2
+    exit 1
+fi
+
+if [ "${file%%\.gpg}" = "$file" ]; then
+    echo 'should end with .gpg' >&2
+    exit 1
+fi
+
+mode_expected='600'
+
+chmod "$mode_expected" "$file"
+cp -af "$file" "$file.bak"
+
+egpg "$file"
+chmod "$mode_expected" "$file"
+
+mtime1="$(stat -c '%Y' "$file.bak")"
+mtime2="$(stat -c '%Y' "$file")"
+
+if [ "$mtime1" = "$mtime2" ]; then
+    echo 'not touched'
+else
+    cp -af "$file.bak" ~/archive/gpg-edit/"$file.$mtime1"
+    mv "$file.bak" "$file.old"
+fi

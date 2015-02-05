@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
     apod
@@ -6,17 +6,18 @@
 
     Prints http://apod.nasa.gov/ image URL.
 
-    :Compatibility: Python 3.x
+    :Compatibility: 3.2
     :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
     :License: BSD 2-Clause
 """
 
-from pyquery import PyQuery
 from urllib.parse import urljoin
 from urllib.request import urlopen
 import argparse
 import re
 import textwrap
+
+from pyquery import PyQuery
 
 parser = argparse.ArgumentParser(
     formatter_class=argparse.RawDescriptionHelpFormatter,

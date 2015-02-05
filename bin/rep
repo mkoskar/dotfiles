@@ -4,7 +4,7 @@ set -e
 
 err_usage() {
     cat >&2 <<-EOF
-	usage: $(basename "$0") [-d delay] [-t] [-T delta] [-o output] [-a] [-i] [-c] [-C] [-h] [-H] cmd [arg]...
+	usage: $(basename "$0") [-d delay] [-t] [-T delta] [-o output] [-a] [-i] [-I] [-q] [-h] cmd [arg]...
 
 	  Execute 'cmd [arg]...' repeatedly.
 
@@ -13,12 +13,10 @@ err_usage() {
 	  -T delta  - (default: 400)
 	  -o output - redirect stdin and sterr to 'output'
 	  -a        - don't truncate 'output' but do append instead
-	  -i        - don't use alternate screen
-	  -c        - clear screen before execution
-	  -C        - negate '-c'
+	  -i        - inline (don't use alternate screen)
+	  -I        - hide cursor
+	  -q        - quiet
 	  -h        - show this help message and exit
-	  -H        - output header
-
 	EOF
     exit 2
 }
@@ -27,7 +25,7 @@ if [ "$(basename "$0")" = 'respawn' ]; then
     set -- -d0 -t "$@"
 fi
 
-while getopts 'd:tT:o:aicChH' opt; do
+while getopts 'd:tT:o:aiIcCqh' opt; do
     case $opt in
         d)
             if [ ! "$OPTARG" -eq "$OPTARG" ] 2>/dev/null; then
@@ -56,14 +54,17 @@ while getopts 'd:tT:o:aicChH' opt; do
         i)
             inline=1
             ;;
+        I)
+            nocur=1
+            ;;
         c)
             copt=1
             ;;
         C)
             copt=0
             ;;
-        H)
-            header=1
+        q)
+            quiet=1
             ;;
         *)
             err_usage
@@ -89,8 +90,8 @@ fi
 
 read_opts=(-N1 -s)
 if ((delay > 0)); then
-    delay_ms=$(<<<"scale=2; $delay/1000" bc -l)
-    read_opts+=(-t "$delay_ms")
+    delay_s=$(bc -l <<<"scale=2; $delay/1000")
+    read_opts+=(-t "$delay_s")
 fi
 
 eval_opts=("$@")
@@ -99,11 +100,9 @@ if [ -n "$output" ]; then
 fi
 
 if [ -z "$inline" ]; then
-    clear=1
-
     tput smcup
     tput clear
-    tput civis
+    [ -n "$nocur" ] && tput civis
 
     cleanup() {
         tput cnorm
@@ -112,28 +111,30 @@ if [ -z "$inline" ]; then
     trap cleanup EXIT
 fi
 
-if [ -n "$copt" ]; then
-    [ "$copt" -eq 1 ] && clear=1 || unset clear
-fi
-
 while true; do
-    [ -n "$clear" ] && tput clear
-    [ -n "$header" ] && printf -- '---- %s ----\n' "$(date)" >&2
+    [ -z "$inline" ] && tput clear
+    [ -z "$quiet" ] && printf -- '> started: %s\n' "$(date '+%H:%M:%S')" >&2
     [ -n "$term" ] && t_begin=$(date +%s.%N)
 
     eval "${eval_opts[@]}"
 
     if [ -n "$term" ]; then
         t_end=$(date +%s.%N)
-        [ "$(<<<"($t_end-$t_begin) < $term_delta/1000" bc -l)" -eq 1 ] && break
+        [ "$(bc -l <<<"($t_end-$t_begin) < $term_delta/1000")" -eq 1 ] && break
     fi
 
     if [ -n "$notty" -a $delay -gt 0 ]; then
-        sleep "$delay_ms"
+        sleep "$delay_s"
         continue
     fi
 
     if [ $delay -ne 0 ]; then
+        if [ -z "$quiet" ]; then
+            h=
+            [ $delay -gt 0 ] && h="waiting for ${delay}ms, "
+            h="${h}press any key to start or q|Q to quit"
+            printf -- '> finished: %s (%s)\n' "$(date '+%H:%M:%S')" "$h" >&2
+        fi
         read "${read_opts[@]}" c || continue
         case $c in q|Q) break ;; esac
     fi

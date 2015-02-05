@@ -1,0 +1,140 @@
+" vim: ft=vim fdm=marker
+
+source ~/.vim/vimrc_base
+
+if exists("$BASEDIR")
+    exec 'set tags^='.$BASEDIR.'/tags'
+endif
+
+"set cscopetag
+"set cscopequickfix=s-,d-,c-,t-,e-,i-
+
+"nnoremap <silent> <C-_>s :lcs find s <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>g :lcs find g <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>d :lcs find d <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>c :lcs find c <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>t :lcs find t <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>e :lcs find e <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>f :lcs find f <C-R>=expand('<cfile>')<CR><CR>
+"nnoremap <silent> <C-_>i :lcs find i ^<C-R>=expand('<cfile>')<CR>$<CR>
+
+if exists("$BASEDIR")
+    nnoremap <silent> <F12> :!$BASEDIR/tags.sh<CR>
+endif
+
+" XML prettify
+vnoremap <silent> <Leader>px !tidy -config ~/.tidyrc -xml<CR>
+nnoremap <silent> <Leader>px !!tidy -config ~/.tidyrc -xml<CR>
+
+" ----------------------------------------
+
+exec pathogen#infect()
+
+" {{{
+
+" ========== bufexplorer
+let bufExplorerFindActive = 0
+let bufExplorerShowRelativePath = 1
+
+" ========== buftabs
+let buftabs_only_basename = 1
+
+" ========== ctrlp
+let ctrlp_by_filename = 1
+let ctrlp_lazy_update = 0
+let ctrlp_prompt_mappings = {'ToggleMRURelative()': ['<F2>']}
+let ctrlp_show_hidden = 1
+
+nnoremap <silent> <M-e> :CtrlPMRUFiles<CR>
+
+let ctrlp_prompt_mappings = {
+    \ 'PrtCurLeft()': ['<c-h>', '<left>', '<c-^>'],
+    \ 'PrtSelectMove("u")':   ['<m-k>', '<PageUp>', '<kPageUp>'],
+    \ 'PrtSelectMove("d")':   ['<m-j>', '<PageDown>', '<kPageDown>'],
+    \ }
+
+" ========== fugitive
+nnoremap <Leader>gg :G
+
+" ========== gundo
+nnoremap <silent> <F4> :GundoToggle<CR>
+
+" ========== minibufexpl
+"let miniBufExplMapCTabSwitchBufs = 1
+"let miniBufExplMapCTabSwitchWindows = 1
+let miniBufExplModSelTarget = 1
+let miniBufExplUseSingleClick = 1
+let miniBufExplorerMoreThanOne = 1000
+
+noremap <silent> <Leader>bb :MiniBufExplorer<CR>
+
+" ========== nerdcommenter
+"let NERDSpaceDelims = 1
+
+" ========== nerdtree
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeBookmarksFile = $VIMDIR.'/.NERDTreeBookmarks'
+let NERDTreeCaseSensitiveSort = 1
+let NERDTreeIgnore = []
+let NERDTreeMapCWD = 'cD'
+let NERDTreeShowBookmarks = 1
+let NERDTreeShowHidden = 1
+let NERDTreeWinSize = 36
+
+noremap <silent> <F1> :NERDTreeFind<CR>
+noremap <silent> <F2> :NERDTreeToggle<CR>
+noremap <silent> <Leader>tf :NERDTreeFind<CR>
+noremap <silent> <Leader>tt :NERDTreeToggle<CR>
+
+" ========== ragtag
+"let ragtag_globa_maps = 1
+
+" ========== scratch
+nnoremap <silent> <Leader>sc :Sscratch<CR>
+
+" ========== tagbar
+let tagbar_autofocus = 1
+let tagbar_iconchars = ['▸', '▾']
+let tagbar_map_jump = 'o'
+let tagbar_map_togglefold = ['O', 'za']
+let tagbar_sort = 0
+
+highlight TagbarHighlight cterm=reverse
+
+nnoremap <silent> <F8> :Tagbar<CR>
+
+" ========== tagfinder
+"runtime plugin/tagfinder.vim
+"DefineTagFinder FindClass c
+
+"nnoremap <C-N> :FindClass<Space>
+
+" ========== taglist
+"let Tlist_Close_On_Select = 1
+let Tlist_Display_Tag_Scope = 0
+let Tlist_Enable_Fold_Column = 0
+let Tlist_GainFocus_On_ToggleOpen = 1
+let Tlist_Show_One_File = 1
+let Tlist_Use_Right_Window = 1
+let Tlist_WinWidth = 35
+
+nnoremap <silent> <F8> :TlistToggle<CR>
+
+" ========== vim-airline
+let airline#extensions#tabline#enabled = 1
+
+" ----------------------------------------
+
+if has('autocmd')
+augroup VIMRC_EXT
+    autocmd!
+    autocmd BufWinEnter -MiniBufExplorer- call BufferSettings_Special()
+    autocmd BufWinEnter -MiniBufExplorer- nnoremap <silent> <buffer> q :q<CR>
+    autocmd BufWinEnter \[BufExplorer\] call BufferSettings_Special()
+    autocmd BufWinEnter __Tag_List__ call BufferSettings_Special()
+    autocmd BufWritePost ~/.Xresources !xrdb -load ~/.Xresources
+    autocmd FileType nerdtree call BufferSettings_Special()
+augroup END
+endif
+
+" }}}

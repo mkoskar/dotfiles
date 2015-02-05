@@ -3,7 +3,7 @@
 set -e
 
 err_usage() {
-    echo "usage: $(basename "$0") [-g | -s sigspec] pid ..."
+    echo "usage: $(basename "$0") [-g | -s sigspec] pid..."
     exit 2
 }
 

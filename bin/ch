@@ -10,7 +10,25 @@
 # --silent-launch
 # --video-threads
 
+proxy=(
+    --proxy-server='127.0.0.1:8118'
+    #--proxy-bypass-list='<local>'
+)
+
+if [ "$(basename "$0")" = 'ch0' ]; then
+    proxy=()
+fi
+
+logging=(
+    #--enable-logging=stderr
+    #--enable-logging
+    #--v=1
+)
+
 exec google-chrome-stable \
-    --restore-last-session \
+    --force-gpu-rasterization \
     --ignore-gpu-blacklist \
-    --force-gpu-rasterization "$@"
+    --restore-last-session \
+    "${proxy[@]}" \
+    "${logging[@]}" \
+    "$@"

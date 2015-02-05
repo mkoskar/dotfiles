@@ -6,21 +6,28 @@ tmp="${TMPDIR:-/tmp}/pacman-disowned-$UID-$$"
 mkdir "$tmp"
 trap 'rm -rf "$tmp"' EXIT
 
-cd /etc
-git ls-files | sed 's,^,/etc/,' | sort >"$tmp/ignore"
-
 cd "$tmp"
 pacman -Qlq | sort -u >db
 
-find /etc /opt /usr \
+find / -mindepth 1 \
     -type d \( \
         -name lost+found -o \
-        -path /etc/.attic -o \
-        -path /etc/.git -o \
-        -path /etc/hosts.d -o \
-        -path /etc/ssl/certs -o \
-        -path /usr/share/mime \
-    \) -prune -o \( -type d -printf '%p/\n' -o -print \) | sort >fs
+        -path /dev -o \
+        -path /home -o \
+        -path /mnt -o \
+        -path /proc -o \
+        -path /run -o \
+        -path /srv/ftp -o \
+        -path /srv/http -o \
+        -path /sys -o \
+        -path /tmp -o \
+        -path /var/abs -o \
+        -path /var/cache/fontconfig -o \
+        -path /var/cache/man -o \
+        -path /var/cache/pacman -o \
+        -path /var/lib/pacman -o \
+        -path /var/log/local -o \
+        -path /var/spool \
+    \) -prune -false -o \( -type d -printf '%p/\n' -o -print \) | sort >fs
 
-comm -23 fs db >out
-comm -23 out ignore
+comm -23 fs db

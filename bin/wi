@@ -22,7 +22,7 @@ Sun:                    %s / %S
 
 get() {
     local opts=(-m -l "$1")
-    local opts_digest=$(<<<"${opts[*]}" sha1sum | awk '{print $1}')
+    local opts_digest=$(sha1sum | awk '{print $1}' <<<"${opts[*]}")
     shaman "${opts[@]}" -f "$format" \
         -c "$HOME/.cache/shaman-${opts_digest: -7}.json"
 }

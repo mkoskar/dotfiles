@@ -23,8 +23,6 @@ def sigterm(child, signum, frame):
     child.terminate()
 
 
-# main
-
 signals(SIGHUP_INT_TERM, SIG_IGN)
 
 child_args = sys.argv[1:]

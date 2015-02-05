@@ -2,23 +2,11 @@
 
 set -e
 
-cd ~/.vim
-
-mkdir -p .backup
-mkdir -p .undo
-mkdir -p .swap
-
-mkdir -p autoload
-ln -sf ../bundle/vim-pathogen/autoload/pathogen.vim autoload
-
-mkdir -p bundle
-cd ./bundle
-
 maybe_cd() {
     cd "$1" >/dev/null 2>&1
 }
 
-from_git() {
+from_git() {(
     local name=${1##*/}
     name=${name%%.git}
     echo "> $name : $1"
@@ -31,8 +19,7 @@ from_git() {
         cd "$name"
         git checkout -b local "${2:-HEAD}"
     fi
-    cd ..
-}
+)}
 
 from_vba() {
     local vba=${1##*/} name=${vba%%.vba.gz}
@@ -48,24 +35,42 @@ from_vba() {
     fi
 }
 
-from_git https://github.com/Lokaltog/vim-easymotion.git
-from_git https://github.com/SirVer/ultisnips.git
-from_git https://github.com/chriskempson/base16-vim.git
-from_git https://github.com/flazz/vim-colorschemes.git
-from_git https://github.com/jakar/vim-AnsiEsc.git
-from_git https://github.com/kien/ctrlp.vim.git
-from_git https://github.com/majutsushi/tagbar.git
-from_git https://github.com/scrooloose/nerdcommenter.git
-from_git https://github.com/scrooloose/nerdtree.git
-from_git https://github.com/sjl/gundo.vim.git
-from_git https://github.com/tommcdo/vim-exchange.git
-from_git https://github.com/tpope/vim-fugitive.git
-from_git https://github.com/tpope/vim-pathogen.git
-from_git https://github.com/tpope/vim-repeat.git
-from_git https://github.com/tpope/vim-surround.git
-from_git https://github.com/vim-scripts/bufexplorer.zip.git
-from_git https://github.com/vim-scripts/minibufexpl.vim.git
-from_git https://github.com/vimoutliner/vimoutliner.git
+cd ~/.vim
+
+mkdir -p .backup
+mkdir -p .undo
+mkdir -p .swap
+
+mkdir -p autoload
+ln -sf ../bundle/vim-pathogen/autoload/pathogen.vim autoload
+
+
+(
+    mkdir -p bundle; cd bundle
+    from_git https://github.com/Lokaltog/vim-easymotion.git
+    from_git https://github.com/SirVer/ultisnips.git
+    from_git https://github.com/chriskempson/base16-vim.git
+    from_git https://github.com/flazz/vim-colorschemes.git
+    from_git https://github.com/jakar/vim-AnsiEsc.git
+    from_git https://github.com/kien/ctrlp.vim.git
+    from_git https://github.com/majutsushi/tagbar.git
+    from_git https://github.com/scrooloose/nerdcommenter.git
+    from_git https://github.com/scrooloose/nerdtree.git
+    from_git https://github.com/sjl/gundo.vim.git
+    from_git https://github.com/tommcdo/vim-exchange.git
+    from_git https://github.com/tpope/vim-fugitive.git
+    from_git https://github.com/tpope/vim-pathogen.git
+    from_git https://github.com/tpope/vim-repeat.git
+    from_git https://github.com/tpope/vim-surround.git
+    from_git https://github.com/vim-scripts/bufexplorer.zip.git
+    from_git https://github.com/vim-scripts/minibufexpl.vim.git
+    from_git https://github.com/vimoutliner/vimoutliner.git
+)
+
+(
+    mkdir -p bundle_gpg; cd bundle_gpg
+    from_git https://github.com/jamessan/vim-gnupg.git
+)
 
 #from_git https://github.com/AndrewRadev/tagfinder.vim.git
 #from_git https://github.com/Raimondi/delimitMate

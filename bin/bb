@@ -11,9 +11,11 @@ done <<-EOF
     ant             b file:///usr/share/doc/apache-ant/index.html
     apache          b http://httpd.apache.org/docs/
     arxiv           sr arxiv {}
+    ascii           b https://en.wikipedia.org/wiki/ASCII
     aur             sr aur {}
     base            b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/index.html
     bash            b file:///usr/share/doc/bash/index.html
+    charref         b http://dev.w3.org/html5/html-author/charref
     cite            sr cite {}
     d               sr webster {}
     dd              sr duckduckgo {}
@@ -34,6 +36,9 @@ done <<-EOF
     guava           b http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/index.html
     haskell         b file:///usr/share/doc/ghc/html/libraries/index.html
     hibernate-orm   b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
+    http            b http://tools.ietf.org/html/rfc2616
+    i               sr ixquick {}
+    ii              sr ixquick -search=pics {}
     imdb            sr imdb {}
     iojs            b https://iojs.org/api/
     java-apis       b http://www.oracle.com/technetwork/java/api-141528.html
@@ -42,8 +47,8 @@ done <<-EOF
     javase          b http://www.oracle.com/technetwork/java/javase/overview/index.html
     jdk             b file:///usr/share/doc/jdk-docs/index.html
     jdk-api         b file:///usr/share/doc/jdk-docs/api/index.html
-    jdk7            b file:///usr/share/doc/jdk7-docs/index.html
-    jdk7-api        b file:///usr/share/doc/jdk7-docs/api/index.html
+    jdk7            b http://docs.oracle.com/javase/7/docs/index.html
+    jdk7-api        b http://docs.oracle.com/javase/7/docs/api/index.html
     jee             b http://www.oracle.com/technetwork/java/javaee/overview/index.html
     jee-specs       b http://www.oracle.com/technetwork/java/javaee/tech/index.html
     jee7-api        b file://$HOME/opt/java_ee_sdk-7u1/docs/api/index.html
@@ -64,15 +69,14 @@ done <<-EOF
     oracle-sql      b https://docs.oracle.com/database/121/SQLRF/toc.htm
     pkg             sr archpkg {}
     postgresql      b file:///usr/share/doc/postgresql/html/index.html
+    privoxy         b file:///usr/share/doc/privoxy/user-manual/index.html
     python          b file:///usr/share/doc/python/html/index.html
     python2         b file:///usr/share/doc/python2/html/index.html
     rst             b http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
     rst-demo        b file://$HOME/projects/lab/docutils/showcase/_build/html/index.html
-    s               sr ixquick {}
-    scala           b file:///usr/share/doc/scala/api/scala-library/index.html
-    si              sr ixquick -search=pics {}
-    spring          b file:///usr/share/doc/spring-framework/spring-framework-reference/html/index.html
-    spring-api      b file:///usr/share/doc/spring-framework/javadoc-api/index.html
+    scala           b http://www.scala-lang.org/api/current/
+    spring          b http://docs.spring.io/spring/docs/current/spring-framework-reference/html/
+    spring-api      b http://docs.spring.io/spring/docs/current/javadoc-api/
     spring-platform b http://docs.spring.io/platform/docs/current/reference/htmlsingle/#appendix
     sql-bnf         b file://$HOME/archive/lib/00-cs/dbms/sql-bnf/index.html
     sqlite          b file:///usr/share/doc/sqlite/docs.html

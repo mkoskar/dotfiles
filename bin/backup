@@ -58,14 +58,17 @@ cleanup() {
 }
 trap cleanup EXIT
 
-exec 8>>/var/log/backup.log
+loghome='/var/log/local'
+mkdir -p "$loghome"
+
+exec 8>>"$loghome/backup.log"
 if [ -t 2 ]; then
     exec > >(tee -a /dev/fd/8 >&2) 2>&1
 else
     exec >&8 2>&1
 fi
 
-log "-- $(date)"
+log "-- $(date -R)"
 
 if [ ! -e "$part" ]; then
     log "$target: target partition missing"

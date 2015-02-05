@@ -31,7 +31,7 @@ else
 
     #case $TERM in screen | screen-256color)
     #    if infocmp "$TERM-bsdel" >/dev/null 2>&1 && \
-    #        [ "$(stty -g | awk -F ':' '{ print $7 }')" = '7f' ]; then
+    #        [ "$(stty -g | awk -F ':' '{print $7}')" = '7f' ]; then
     #        export TERM="$TERM-bsdel"
     #    fi
     #    ;;

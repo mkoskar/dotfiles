@@ -33,4 +33,4 @@ fi
 
 [ -z "$profile" ] && exit 1
 
-exec ch --user-data-dir="$HOME/.config/google-chrome-$profile" "$@"
+exec ch0 --user-data-dir="$HOME/.config/google-chrome-$profile" "$@"

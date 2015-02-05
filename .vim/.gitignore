@@ -4,4 +4,4 @@
 .swap
 .undo
 .viminfo
-bundle
+bundle*

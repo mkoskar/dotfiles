@@ -29,7 +29,7 @@ if [ ! -e "$sock" ]; then
 fi
 
 if [ $# -gt 0 ]; then
-    <<<"$*" socat unix-connect:"$sock" -
+    socat unix-connect:"$sock" - <<<"$*"
 elif [ ! -t 0 ]; then
     socat unix-connect:"$sock" -
 fi

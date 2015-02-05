@@ -20,9 +20,9 @@ run() {
         set -- "$@" -c 'AnsiEsc'
     fi
     if [ -n "$PAGER_TITLE" ]; then
-        vim -NOn -u ~/.pgrc "$@" -c "redraw | file ${PAGER_TITLE//\ /\\ }"
+        vim -NO -u ~/.vim/vimrc_pg "$@" -c "redraw | file ${PAGER_TITLE//\ /\\ }"
     else
-        vim -NOn -u ~/.pgrc "$@"
+        vim -NO -u ~/.vim/vimrc_pg "$@"
     fi
 }
 

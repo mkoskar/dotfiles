@@ -1,14 +1,15 @@
 #!/bin/bash
 
-join_nl() {
-    local IFS=$'\n'
-    echo "$*"
-}
+set -e
 
-strings=(
-    ' 0 altered files'
-    '(Modification time mismatch)'
-)
+tmp="${TMPDIR:-/tmp}/pacman-altered-$UID-$$"
+mkdir "$tmp"
+trap 'rm -rf "$tmp"' EXIT
 
-_strings=$(join_nl "${strings[@]}")
-LC_ALL=C pacman -Qkk 2>&1 | grep -Fv "$_strings"
+cd "$tmp"
+pacman -Qkk >out 2>err | true
+cat out err | sed -nr -e 's/^backup file: //p' \
+                      -e 's/^warning: //p' | sort
+
+paccheck --quiet --files --file-properties \
+         --backup --noextract --noupgrade | sort >&2
