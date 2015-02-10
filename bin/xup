@@ -11,5 +11,5 @@ session() {
 
 session wrk
 session tmp
-sleep 0.1 # to ensure order tmp -> aux
+sleep 0.3 # to ensure order tmp -> aux
 session aux

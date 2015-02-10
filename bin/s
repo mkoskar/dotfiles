@@ -98,7 +98,7 @@ _mon() {
         \; selectl even-vertical \
         \; selectp -t :.0
 
-    neww -n sstat 'trun pgx ss state big' \
+    neww -n sstat 'trun pgx sstat' \
         \; setw remain-on-exit on
 
     neww 'trun iftop' \

@@ -76,7 +76,6 @@
 !.netrc.example
 !.newsbeuter/config
 !.npmrc.example
-!.pgrc
 !.pinforc
 !.podget/podgetrc
 !.profile
@@ -93,9 +92,7 @@
 !.toprc
 !.urlview
 !.vim
-!.vimcatrc
 !.vimperatorrc
-!.vimrc
 !.w3m/config
 !.w3m/keymap
 !.wgetrc
@@ -108,6 +105,7 @@
 !.zfunctions
 !.zprofile
 !.zshrc
+!README.rst
 !bin
 !opt
 !opt/bin

@@ -1,14 +1,22 @@
 #!/bin/bash
 
 echo $'\n--------------------------------------------------'
-echo $'> IP:\n'
+echo $'> ARP/NDISC cache:\n'
 
-ip addr show
+ip neigh
+
+echo $'\n--------------------------------------------------'
+echo $'> Addressing:\n'
+
+ip addr
+echo
+
+ip maddr
 
 echo $'\n--------------------------------------------------'
 echo $'> Routing:\n'
 
-ip rule show
+ip rule
 echo
 
 routel local

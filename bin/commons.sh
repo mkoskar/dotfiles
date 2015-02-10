@@ -1,0 +1,2 @@
+# Common utilities.
+# :Compatibility: POSIX

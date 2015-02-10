@@ -14,7 +14,7 @@ startup() {
         main)
             apod-bg &
             run clementine
-            run gpodder
+            #run gpodder
             run workrave
             xup &
             ;;

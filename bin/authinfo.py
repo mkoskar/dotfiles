@@ -37,7 +37,7 @@ def get_authinfo_password(machine, login, port=None,
         print("Warning: {0} is not owned by current process's user (uid={1})"
               .format(srcfile, uid), file=stderr)
 
-    expected_mode = 0o400
+    expected_mode = 0o600
     if not S_IMODE(fstat.st_mode) == expected_mode:
         print('Warning: {0} should have mode {1}' \
               .format(srcfile, oct(expected_mode)[2:]), file=stderr)

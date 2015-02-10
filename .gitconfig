@@ -14,7 +14,7 @@
     helper = netrc
 
 [alias]
-    b = branch --all
+    b = branch --all -vv
     ci = commit
     co = checkout
     conf = config --local --list

@@ -21,8 +21,6 @@ filetype plugin indent off
 noremap <silent> q :qa<CR>
 noremap <silent> Q :qa<CR>
 
-map <silent> r :edit<CR>:norm gg<CR>
-
 set runtimepath^=~/.vim/bundle/vim-AnsiEsc
 nnoremap <silent> <C-A> :AnsiEsc<CR>
 
@@ -32,29 +30,31 @@ let g:loaded_rrhelper = 1
 let g:loaded_spellfile_plugin = 1
 let g:loaded_vimballPlugin = 1
 
+map <silent> r :call Preserve('edit')<CR>
+
 " {{{ Reloads buffer after number (defaults to 1) of seconds have passed.
 
-function! s:Reload(...) abort
+function! Reload(...) abort
     let d = 1
-    if a:0 == 1
+    if exists('a:1')
         let d = a:1
     endif
     try
         echohl WarningMsg | echo 'Reload in '.d.'s (interrupt to abort)' | echohl None
         exec 'sleep '.d
         if exists(':ReloadX')
-            ReloadX
+            call Preserve('silent call _ReloadX()')
         else
-            edit
-            silent normal! gg
+            call Preserve('edit')
         endif
     finally
         redraw
         echo
     endtry
 endfunction
-command! -nargs=? Reload call s:Reload(<f-args>)
-map <silent> F :Reload<CR>F<CR>
+command! -nargs=? Reload call Reload(<f-args>)
+map <silent> R :Reload<CR>R<CR>
+map <silent> F :Reload<CR>GF<CR>
 
 " }}}
 
@@ -62,19 +62,23 @@ if exists("$CMD")
 
 " {{{ Reloads buffer from $CMD.
 
-function! s:ReloadX() abort
+function! _ReloadX() abort
     try
         setl modifiable
         exec 'silent 0read! '.$CMD
-        silent normal! jdGgg
+        silent normal! jdG
         setl noma
     endtry
+endfunction
+
+function! ReloadX() abort
+    call Preserve('silent call _ReloadX()')
     if !has('vim_starting')
         redraw
         echohl WarningMsg | echo '['.strftime("%H:%M:%S").'] '.$PAGER_TITLE | echohl None
     endif
 endfunction
-command! ReloadX call s:ReloadX()
+command! ReloadX call ReloadX()
 map <silent> r :ReloadX<CR>
 
 " }}}

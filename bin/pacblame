@@ -1,4 +1,4 @@
 #!/bin/bash
 
 export PAGER_TITLE=$(basename "$0")
-exec pgx sh -c "expac -H M -l '\n' '\%m \%n' | sort -rgk 1"
+exec pgx sh -c "expac -H M -l '\n' '\%m \%n' | sort -k1nr"

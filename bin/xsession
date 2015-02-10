@@ -23,7 +23,7 @@ fi
 
 xkb
 xscreen
-audio pulse_init
+audio pulse_init &
 
 if [ "$(xserverq name)" = 'Xorg.bin' ]; then
     :

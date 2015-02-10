@@ -24,8 +24,7 @@ fi
 find "$@" \
      \( -fprintf "$tmp_meta" "$meta_format" \) \
      \( -type f -fprintf "$tmp_files" '%p\0' \)
-
 (
     sort -z "$tmp_meta"
     sort -z "$tmp_files" | xargs -0 md5sum
-) | md5sum
+) | md5sum | awk "{print \$1 \" $PWD\"}"

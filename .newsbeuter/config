@@ -5,6 +5,7 @@ bookmark-cmd "cat"
 browser b %u
 error-log "~/.newsbeuter/error.log"
 goto-next-feed no
+max-items 500
 podcast-auto-enqueue no
 reload-threads 3
 reload-time 480

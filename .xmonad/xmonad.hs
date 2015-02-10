@@ -323,7 +323,7 @@ myConfig = defaultConfig
         , ("M-; M-l", spawn "sudo lockx")
         , ("M-; M-d", spawn "dpms-toggle")
         , ("M-; M-w", spawn "wifi-toggle")
-        , ("M-; M-p", do workspaceOnScreen 0 "9"; spawn "p")
+        , ("M-; M-p", do workspaceOnScreen 0 "9"; spawn "playx")
         , ("M-; M-i", spawn "b http://apod.nasa.gov/")
         ]
 

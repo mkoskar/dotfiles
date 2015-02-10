@@ -347,29 +347,28 @@ nnoremap <Leader>df :Diff2 <C-R>=expand('%')<CR>
 
 " {{{ Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding.
 
-let meta_enabled = 0
-function! s:MetaToggle() abort
+function! MetaSetup(enable) abort
     let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     let i = 0
     let n = len(chars)
     while i < n
         let c = chars[i]
-        if g:meta_enabled
-            exec 'set <M-'.c.'>='
-        else
+        if a:enable
             exec 'set <M-'.c.">=\e".c
+        else
+            exec 'set <M-'.c.'>='
         endif
         let i += 1
     endwhile
-    let g:meta_enabled = !g:meta_enabled
+    let g:meta_enabled = a:enable
     if !has('vim_starting')
         redraw
         echohl WarningMsg | echo 'Meta '.(g:meta_enabled ? 'ON' : 'OFF') | echohl None
     endif
 endfunction
-command! MetaToggle call s:MetaToggle()
+command! MetaToggle call MetaSetup(!meta_enabled)
 nnoremap <silent> <Leader>mm :MetaToggle<CR>
-silent MetaToggle
+silent call MetaSetup(1)
 
 " }}}
 
@@ -537,5 +536,6 @@ augroup VIMRC_BASE
     autocmd FileType netrw call BufferSettings_Special()
     autocmd FileType tar call BufferSettings_Special()
     autocmd FileType zip call BufferSettings_Special()
+    autocmd TermChanged * silent call MetaSetup(meta_enabled)
 augroup END
 endif

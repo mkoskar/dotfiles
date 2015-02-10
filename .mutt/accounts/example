@@ -4,6 +4,7 @@ set my_example = $my_mail/example
 set my_example_spoolfile = $my_example/INBOX
 set my_example_record = $my_example/sent
 set my_example_postponed = $my_example/drafts
+set my_example_mbarchived = $my_example/shelve
 set my_example_mbtrashed = $my_example/trash
 
 folder-hook $my_example 'source ~/.mutt/accounts/example_hook'

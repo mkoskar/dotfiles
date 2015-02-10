@@ -22,6 +22,9 @@ uconv() {
 echo $'\n--------------------------------------------------'
 echo $'> cpu:\n'
 
+cpupower frequency-info
+
+echo
 grep -F 'cpu MHz' /proc/cpuinfo
 
 echo $'\n--------------------------------------------------'

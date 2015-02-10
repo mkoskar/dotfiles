@@ -12,12 +12,18 @@ from_git() {(
     echo "> $name : $1"
 
     if maybe_cd "$name"; then
-        git fetch
-        git merge "${2:-master}"
+        git fetch --all
+        if [ "$(git rev-parse --abbrev-ref HEAD)" = 'local' ]; then
+            echo '> _local_ branch - not merging!'
+        else
+            git merge --ff-only
+        fi
     else
         git clone "$1"
-        cd "$name"
-        git checkout -b local "${2:-HEAD}"
+        if [ -n "$2" ]; then
+            cd "$name"
+            git checkout -b local "$2"
+        fi
     fi
 )}
 
@@ -44,7 +50,6 @@ mkdir -p .swap
 mkdir -p autoload
 ln -sf ../bundle/vim-pathogen/autoload/pathogen.vim autoload
 
-
 (
     mkdir -p bundle; cd bundle
     from_git https://github.com/Lokaltog/vim-easymotion.git
@@ -52,6 +57,7 @@ ln -sf ../bundle/vim-pathogen/autoload/pathogen.vim autoload
     from_git https://github.com/chriskempson/base16-vim.git
     from_git https://github.com/flazz/vim-colorschemes.git
     from_git https://github.com/jakar/vim-AnsiEsc.git
+    from_git https://github.com/kana/vim-tabpagecd.git
     from_git https://github.com/kien/ctrlp.vim.git
     from_git https://github.com/majutsushi/tagbar.git
     from_git https://github.com/scrooloose/nerdcommenter.git

@@ -9,6 +9,7 @@ set my_imap = $my_example_imap
 set spoolfile = $my_example_spoolfile
 set record = $my_example_record
 set postponed = $my_example_postponed
+set my_mbarchived = $my_example_mbarchived
 set my_mbtrashed = $my_example_mbtrashed
 
 # other

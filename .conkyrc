@@ -112,7 +112,7 @@ ${if_match "${acpiacadapter AC}" == "off-line"}${color yellow}${endif}\
  battery: $battery ${if_empty $battery_time}${else}($battery_time)${endif}\
 ${color white}
 
-${if_match ${hwmon 1 fan 1} > 0}${color yellow}${endif}\
- fan: ${hwmon 1 fan 1} rpm\
+${if_match ${hwmon 0 fan 1} > 0}${color yellow}${endif}\
+ fan: ${hwmon 0 fan 1} rpm\
 ${color white}
- temp core: ${hwmon 0 temp 1} ${hwmon 0 temp 2} ${hwmon 0 temp 3} | sda: ${hddtemp /dev/sda}
+ temp core: ${hwmon 1 temp 1} ${hwmon 1 temp 2} ${hwmon 1 temp 3} | sda: ${hddtemp /dev/sda}
