@@ -10,11 +10,15 @@ esac
 
 prgname=$(basename "$0")
 
+# ----------------------------------------
+
 profiles=(
     devel
     lab
     plain
-    vpn
+    proxy
+    proxy-socks
+    proxy-tor
 )
 
 if [ $# -gt 0 ]; then

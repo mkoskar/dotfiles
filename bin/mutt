@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# GPG_AGENT_INFO is deprecated but Mutt still requires it for gpg-agent
+# to be used (otherwise you will get "Enter PGP passphrase:" prompt).
+export GPG_AGENT_INFO=
+
+exec /usr/bin/mutt "$@"

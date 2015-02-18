@@ -1,0 +1,13 @@
+# vim: tw=0
+
+FSET diff_d() trigdate() - realtoday()
+
+FSET _1() choose(1 + (diff_d() > 1), "", " (%b)")
+FSET _2() choose(1 + (trigtime() != 0), "", " %3")
+FSET _3() choose(1 + (trigtime() != 0 && diff_d() == 0), "", " (%1)")
+
+# Format:
+#
+# REM Feb 01 2015 AT 08:00 MSG %E[_1()][_2()][_3()]: %"message%"
+# REM Feb 01 2015          MSG %E[_1()][_2()][_3()]: %"message%"
+#

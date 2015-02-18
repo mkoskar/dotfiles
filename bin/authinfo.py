@@ -6,7 +6,7 @@
 
     Reads ~/.authinfo.gpg to provide login credentials.
 
-    :Compatibility: Python 2.7 / 3.2
+    :Compatibility: 2.7 / 3.2
     :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
     :License: BSD 2-Clause
 """

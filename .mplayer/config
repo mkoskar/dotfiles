@@ -1,18 +1,12 @@
-ar=no
-lirc=no
-mouse-movements=yes
-msgcolor=no
-msgmodule=yes
-prefer-ipv4=yes
+# video
+double=yes
+vo=vaapi
 
-ao=pulse
+# audio
 softvol-max=400
 softvol=yes
 
-double=yes
-use-filename-title=yes
-vo=vaapi
-
+# osd / subtitles
 ffactor=1
 spuaa=4
 spualign=-1
@@ -27,3 +21,12 @@ subfont-text-scale=3
 subpos=100
 unicode=yes
 utf8=yes
+
+# other
+ar=no
+lirc=no
+mouse-movements=yes
+msgcolor=no
+msgmodule=yes
+prefer-ipv4=yes
+use-filename-title=yes

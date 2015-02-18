@@ -25,7 +25,7 @@ xkb
 xscreen
 audio pulse_init &
 
-if [ "$(xserverq name)" = 'Xorg.bin' ]; then
+if [ "$(xserverq name)" = 'Xorg' ]; then
     :
     #compton
 fi
@@ -35,7 +35,6 @@ fi
 _main() {
     osdd &
     dunst &
-    xcmenu --daemon
     _xmonad
 }
 

@@ -2,9 +2,11 @@
 
 set -e
 
-if [ "$(xserverq name)" = 'Xorg.bin' ]; then
-    if [ "$(basename "$0")" = 'xscreen-mobile' ]; then
-        autorandr -l mobile
+prgname=$(basename "$0")
+
+if [ "$prgname" != 'xscreen0' -a "$(xserverq name)" = 'Xorg' ]; then
+    if [ "$prgname" = 'xscreen-mobile' ]; then
+        autorandr -l mobile --force
     else
         autorandr -c -d mobile --force
     fi

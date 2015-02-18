@@ -5,8 +5,7 @@
 # :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
 # :License: BSD 2-Clause
 
-set -e
-set -o pipefail
+set -e -o pipefail
 
 prgname=$(basename "$0")
 

@@ -1,18 +1,18 @@
 #!/bin/bash
 
-echo $'\n--------------------------------------------------'
-echo $'> pip:\n'
+set -e
 
-pip --version
-echo
+check() {
+    echo $'\n--------------------------------------------------'
+    echo "$*"
+    echo -e "$("$1" --version)\n"
+    "$@"
+}
 
-pip list --user
+if [ -n "$VIRTUAL_ENV" ]; then
+    check pip list
+fi
 
-echo $'\n--------------------------------------------------'
-echo $'> pip2:\n'
-
-pip2 --version
-echo
-
-pip2 list --user
+check /usr/bin/pip list --user
+check /usr/bin/pip2 list --user
 echo

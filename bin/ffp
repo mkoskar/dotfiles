@@ -4,9 +4,9 @@ set -e
 
 case $1 in -h|--help)
     cat <<-EOF
-	usage: ff [arg]...              - short for 'ffp default [arg]...'
-	       ffp [profile] [arg]...   - start firefox as '/usr/bin/firefox -P profile [arg]...'
-	       ffa [profile] [arg]...   - start firefox as '/usr/bin/firefox-aurora -P profile [arg]...'
+	usage: ff | firefox [arg]...
+	       ffp [profile] [arg]...
+	       ffa | firefox-aurora [profile] [arg]...
 	EOF
     exit
     ;;
@@ -14,41 +14,44 @@ esac
 
 prgname=$(basename "$0")
 
-case $prgname in ff | firefox) set -- default "$@" ;; esac
-
 # ----------------------------------------
 
 bin='/usr/bin/firefox'
 
 case $prgname in
+    ff | firefox)
+        profile='default'
+        ;;
     ffa | firefox-aurora)
-        regexp='^aurora'
         bin='/usr/bin/firefox-aurora'
+        regexp='^aurora'
         ;;
     *)
-        regexp='^((?!aurora)(?!dev-edition-default).)*$'
+        regexp='^(?!default$)(?!dev-edition-default$)(?!aurora).*$'
         ;;
 esac
 
 # ----------------------------------------
 
-profiles=($(awk -F = '/Name/ {print $2}' <~/.mozilla/firefox/profiles.ini | grep -P "$regexp" | sort))
-
-if [ $# -gt 0 ]; then
-    for p in "${profiles[@]}"; do
-        if [ "$p" = "$1" ]; then
-            profile=$1
-            shift
-            break
-        fi
-    done
-fi
-
 if [ -z "$profile" ]; then
-    profile=$(IFS=$'\n'; echo "${profiles[*]}" | dmenu1 "$prgname")
-fi
+    profiles=($(awk -F = '/Name/ {print $2}' <~/.mozilla/firefox/profiles.ini | grep -P "$regexp" | sort))
 
-[ -z "$profile" ] && exit 1
+    if [ $# -gt 0 ]; then
+        for p in "${profiles[@]}"; do
+            if [ "$p" = "$1" ]; then
+                profile=$1
+                shift
+                break
+            fi
+        done
+    fi
+
+    if [ -z "$profile" ]; then
+        profile=$(IFS=$'\n'; echo "${profiles[*]}" | dmenu1 "$prgname")
+    fi
+
+    [ -z "$profile" ] && exit 1
+fi
 
 export LOGNAME="$USER.$profile"
-exec "$bin" -P "$profile" "$@"
+exec "$bin" --class "Firefox ($profile)" -P "$profile" "$@"

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+[ $(basename "$0") = 'playctl-bluetooth' ] && blue=1
+
+bluectl() {
+    # hack which happens to workaround bluetooth-player input issues
+    (sleep 0.01; echo "$1"; sleep 0.01) | bluetooth-player 2>/dev/null
+}
+
+play_pause_blue() {
+    local status=$(bluectl show | awk '/Status: /{print $2}')
+    case $status in
+        playing)
+            bluectl pause >/dev/null
+            ;;
+        *)
+            bluectl play >/dev/null
+            ;;
+    esac
+}
+
+case $1 in
+    play-pause)
+        [ -z "$blue" ] && playerctl play-pause || play_pause_blue
+        ;;
+esac

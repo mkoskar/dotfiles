@@ -23,9 +23,8 @@ capture_toggle() {
 }
 
 pulse_init() {
-    pulseaudio --start
-    pacmd set-sink-port 0 analog-output
-    amixer -q -c 0 set Speaker 100%
+    #pulseaudio --start
+    systemctl --user start pulseaudio.service
 }
 
 case $1 in

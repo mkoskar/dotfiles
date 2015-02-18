@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+bluetooth toggle &>/dev/null
+
+state=$(bluetooth | awk '{print $3}')
+if [ "$state" = 'on' ]; then
+    sleep 1
+
+#    dbus-send --system --type=method_call --dest=org.bluez \
+#        /org/bluez/hci0 \
+#        org.freedesktop.DBus.Properties.Set \
+#        string:org.bluez.Adapter1 string:Powered variant:boolean:true
+#
+#    dbus-send --system --type=method_call --dest=org.bluez \
+#        /org/bluez/hci0 \
+#        org.freedesktop.DBus.Properties.Set \
+#        string:org.bluez.Adapter1 string:Pairable variant:boolean:false
+
+    bluetoothctl <<<$'power on\npairable off' >/dev/null
+fi
+
+status-osd bluetooth

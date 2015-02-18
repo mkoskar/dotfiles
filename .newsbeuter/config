@@ -11,6 +11,7 @@ reload-threads 3
 reload-time 480
 save-path "~/download"
 search-highlight-colors black yellow
+suppress-first-reload yes
 text-width 79
 
 feedlist-format " %n %11u %t"

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -e -o pipefail
+
+fortune -s -n 40 | oneline | say -e

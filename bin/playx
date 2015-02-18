@@ -2,5 +2,5 @@
 
 set -e
 
-src=($(xclip -o -selection primary))
-exec mpv --really-quiet --msg-level=all=error "${src[@]}" 2>/dev/null
+src=$(xclip -o)
+exec mpv --really-quiet --msg-level=all=error "$src" 2>/dev/null

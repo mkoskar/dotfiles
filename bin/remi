@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+
+ti_reset=$'\e[m'
+ti_hi0=$'\e[1;37m'; ti_hi0_=$ti_reset
+ti_hi1=$'\e[1;32m'; ti_hi1_=$ti_reset
+ti_hi2=$'\e[1;31m'; ti_hi2_=$ti_reset
+ti_hi3=$'\e[1;33m'; ti_hi3_=$ti_reset
+
+if [ "$(basename "$0")" = 'reminders-to-mail' ]; then
+    ti_hi0='*'; ti_hi0_=$ti_hi0
+    ti_hi1='`'; ti_hi1_=$ti_hi1
+    ti_hi2='+'; ti_hi2_=$ti_hi2
+    ti_hi3='_'; ti_hi3_=$ti_hi3
+fi
+
+rem -q -t${1:-7} -ga | sed -r -f <(
+cat <<-EOF
+	/^No reminders.$/d
+	s/^(Today.*ago\)):/$ti_hi2\1$ti_hi2_:/
+	s/^(Today):/$ti_hi3\1$ti_hi3_:/
+	s/^(Today.*):/$ti_hi0\1$ti_hi0_:/
+	s/^(Tomorrow.*):/$ti_hi1\1$ti_hi1_:/
+EOF
+)

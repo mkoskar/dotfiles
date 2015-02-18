@@ -20,8 +20,17 @@ color tree          color255        default
 
 color header        color156        default       'From:'
 color header        color156        default       'Subject:'
+
+color body          color255        default       '^-.*'
+color body          color110        default       '^--- .*'
+color body          color110        default       '^\+\+\+ .*'
+color body          color228        default       '^@@ .* @@$'
+
 color body          brightwhite     default       '\*+[^*]+\*+'
-color body          color255        default       '_+[^_]+_+'
+color body          color167        default       '\++[^\+]+\++'
+color body          color228        default       '_+[^_]+_+'
+color body          color156        default       '`+[^`]+`+'
+color body          color174        default       '"+[^"]+"+'
 
 color index         brightwhite     default       ~N
 color index         color167        default       ~F

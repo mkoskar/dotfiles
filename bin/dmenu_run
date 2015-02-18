@@ -1,7 +1,6 @@
 #!/bin/bash
 
-set -e
-set -o pipefail
+set -e -o pipefail
 
 cmd=($(dmenu_path | dmenu1))
 exec "${cmd[@]}"

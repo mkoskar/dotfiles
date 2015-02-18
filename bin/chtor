@@ -1,6 +1,6 @@
 #!/bin/bash
 
-exec chp proxy-socks \
-    --proxy-server='socks://127.0.0.1:1080' \
+exec chp proxy-tor --incognito \
+    --proxy-server='socks://127.0.0.1:9050' \
     --proxy-bypass-list='<local>' \
     --host-resolver-rules='MAP * ~NOTFOUND, EXCLUDE 127.0.0.1, EXCLUDE ::1, EXCLUDE localhost'

@@ -22,6 +22,7 @@
 !.config/herbstluftwm/autostart
 !.config/mimeapps.list
 !.config/mopidy/mopidy.conf.example
+!.config/mpv/input.conf
 !.config/mpv/mpv.conf
 !.config/openbox/menu.xml
 !.config/openbox/rc.xml
@@ -39,6 +40,7 @@
 !.conkyrc
 !.dialogrc
 !.fbtermrc
+!.festivalrc
 !.gitattributes
 !.gitconfig
 !.gitexcludes
@@ -79,6 +81,10 @@
 !.pinforc
 !.podget/podgetrc
 !.profile
+!.proxychains/proxychains.conf
+!.proxychains/socksify.conf
+!.proxychains/torify.conf
+!.reminders.example
 !.rtorrent.rc
 !.screenrc
 !.sqliterc
@@ -96,6 +102,7 @@
 !.w3m/config
 !.w3m/keymap
 !.wgetrc
+!.wyrdrc
 !.xcolors
 !.xinitrc
 !.xmobarrc

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-set -o pipefail
+set -e -o pipefail
 
 openssl "$1" -modulus -noout -in "$2" | openssl md5

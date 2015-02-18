@@ -1,0 +1,18 @@
+#!/bin/bash
+
+cat <<-EOF
+
+This is quick and dirty 'crontab' format help.
+See 'crontab(5)' for more details.
+
+The time and date fields are:
+
+    field           allowed values
+    -----           --------------
+    minute          0-59
+    hour            0-23
+    day of month    1-31
+    month           1-12 (or names, see below)
+    day of week     0-7 (0 or 7 is Sunday, or use names)
+
+EOF

@@ -22,4 +22,4 @@ NR > 2 {
         printf(format, $1, $6, $4, $5, $7, $9)
     }
 }
-' | sort -b -k1,1r -k2,2 -k3,3n
+' | sort -b -k1,1r -k2,2 -k3,3

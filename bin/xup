@@ -6,7 +6,7 @@ session() {
     local sname=$1
     local wname="s_$sname"
     xdotool search --classname "$wname" >/dev/null \
-        || term "$wname" - trun s "$sname" &
+        || { term "$wname" - trun s "$sname" & }
 }
 
 session wrk

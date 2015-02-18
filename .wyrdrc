@@ -1,0 +1,44 @@
+# Wyrd configuration file
+
+include "/etc/wyrdrc"
+
+set busy_level1="0"
+set number_weeks="true"
+set week_starts_monday="true"
+
+# templates for creating new appointments
+set timed_template="REM %monname% %mday% %year% AT %hour%:%min% DURATION 1:00 MSG %E[_1()][_2()][_3()]: %\"message%\""
+set untimed_template="REM %monname% %mday% %year% MSG %E[_1()][_2()][_3()]: %\"message%\""
+
+# weekly recurrence
+set template0="REM %wdayname% AT %hour%:%min% DURATION 1:00 MSG %E[_1()][_2()][_3()]: %\"message%\""
+set template1="REM %wdayname% MSG %E[_1()][_2()][_3()]: %\"message%\""
+
+# monthly recurrence
+set template2="REM %mday% AT %hour%:%min% DURATION 1:00 MSG %E[_1()][_2()][_3()]: %\"message%\""
+set template3="REM %mday% MSG %E[_1()][_2()][_3()]: %\"message%\""
+
+# key bindings
+bind "a"                 quick_add
+bind "q"                 quit
+
+# colors
+color help               yellow black
+color timed_default      white black
+color timed_current      white red
+color timed_reminder1    yellow black
+color timed_reminder2    white red
+color timed_reminder3    white green
+color timed_reminder4    yellow magenta
+color untimed_reminder   white black
+color timed_date         cyan black
+color selection_info     white black
+color description        white black
+color status             yellow black
+color calendar_labels    white black
+color calendar_level1    white black
+color calendar_level2    yellow black
+color calendar_level3    yellow black
+color calendar_today     white red
+color left_divider       cyan black
+color right_divider      cyan black

@@ -142,7 +142,9 @@ myConfig = defaultConfig
                        , appName =? "sxiv" -?> doShiftView "9"
                        , appName =? "vlc" -?> doShiftView "9"
                        , appName =? "zathura" -?> doShiftView "8"
+                       , className =? "Firefox (default)" -?> doShiftView "3"
                        , className =? "MPlayer" -?> doShiftView "9"
+                       , className =? "Tor Browser" -?> doShiftView "3"
                        , className =? "mpv" -?> doShiftView "9"
                        ]
                    <+> composeAll [ isDialog --> doCenterFloat ]
@@ -302,7 +304,8 @@ myConfig = defaultConfig
         , ("M-S-m", spawn "audio playback_toggle")
         , ("M-S-n", spawn "audio playback_dock_toggle")
         , ("M-S-r", spawn "audio capture_toggle")
-        , ("M-S-p", spawn "playerctl play-pause")
+        , ("M-S-p", spawn "playctl play-pause")
+        , ("M-C-p", spawn "playctl-bluetooth play-pause")
 
           -- setxkbmap
         , ("M-<F1>", spawn "xkb us")
@@ -310,21 +313,27 @@ myConfig = defaultConfig
         , ("M-<F3>", spawn "xkb cz")
 
           -- selections
-        , ("M-<Insert>", spawn "xcmenuc")
-        , ("M-S-<Insert>", spawn "xcmenuc from-primary && notify 'PRIMARY -> CLIPBOARD'")
+        , ("M-<Insert>", spawn "xclipboard")
+        , ("M-S-<Insert>", spawn "xclipboard from-primary && notify 'PRIMARY -> CLIPBOARD'")
 
           -- other
+        , ("M-<F9>", spawn "xscreen0 && xmonad-session-repair")
         , ("M-<F10>", spawn "xscreen && xmonad-session-repair")
         , ("M-S-<F10>", spawn "xscreen-mobile && xmonad-session-repair")
-        , ("M-<F12>", spawn "grabc 2>&1 | xcmenuc from-stdin")
-        , ("M-S-<F12>", spawn "xmeasure | xcmenuc from-stdin")
-        , ("M-S-<Home>", spawn $ myTerminal ++ " - trun wow")
-        , ("M-S-b", spawn "backlight-toggle")
-        , ("M-; M-l", spawn "sudo lockx")
+
+        , ("M-<F12>", spawn "grabc 2>&1 | xclipboard from-stdin")
+        , ("M-S-<F12>", spawn "xmeasure | xclipboard from-stdin")
+
+        , ("M-; M-b", spawn "bluetooth-toggle")
         , ("M-; M-d", spawn "dpms-toggle")
+        , ("M-; M-l", spawn "sudo lockx")
         , ("M-; M-w", spawn "wifi-toggle")
+        , ("M-S-b", spawn "backlight-toggle")
+
+        , ("M-; M-a", spawn "b http://apod.nasa.gov/")
+        , ("M-; M-i", spawn "notify -u low \"$(status)\"")
         , ("M-; M-p", do workspaceOnScreen 0 "9"; spawn "playx")
-        , ("M-; M-i", spawn "b http://apod.nasa.gov/")
+        , ("M-S-<Home>", spawn $ myTerminal ++ " - trun wow")
         ]
 
     -- }}}

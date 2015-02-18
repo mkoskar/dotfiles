@@ -7,7 +7,7 @@ set -e
 #       primary selection, but it will instead read stdin into it
 
 echo $'\n---------- Primary ----------'
-xclip -o -selection primary
+xclip -o
 
 echo $'\n---------- Clipboard ----------'
 xclip -o -selection clipboard

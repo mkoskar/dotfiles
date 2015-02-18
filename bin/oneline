@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -e -o pipefail
+
+tr -s '\n' ' ' | sed -r -e 's/\s+/ /g' -e 's/\s*$/\n/g'
