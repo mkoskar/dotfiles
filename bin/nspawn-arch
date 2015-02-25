@@ -2,6 +2,11 @@
 
 set -e
 
+if [ $# -eq 0 ]; then
+    echo "usage: $(basename "$0") name"
+    exit 2
+fi
+
 if [ $(id -u) -ne 0 ]; then
     sudo -- "$0" "$@"
     exit
@@ -34,7 +39,6 @@ fi
 
 machine=$1
 root=$machine
-[ -z "$machine" ] && exit
 
 mkdir -p "$root" "${root}_"
 unionfs -o allow_other,cow "${root}_"=RW:base=RO "$root"

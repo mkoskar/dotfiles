@@ -8,7 +8,7 @@ get() {
     local in="$1$sep$2"
     local out="_$2"
     typeset -g "$out"=
-    [ -e "$in" ] && typeset -g "$out"="$(<"$in")" || true
+    [ ! -e "$in" ] || typeset -g "$out"="$(<"$in")"
 }
 
 get_() {

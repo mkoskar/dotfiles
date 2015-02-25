@@ -5,17 +5,12 @@ set -e
 event=$1
 session=$XSESSION
 
-run() {
-    (pgrepallx "$1" >/dev/null || exec "$@") &
-}
-
 startup() {
     case $session in
         main)
             apod-bg &
-            run clementine
-            #run gpodder
-            run workrave
+            xrun0 clementine
+            xrun0 workrave
             xup &
             ;;
     esac

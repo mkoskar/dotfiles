@@ -2,6 +2,11 @@
 
 set -e
 
+if [ $# -eq 0 ]; then
+    echo "usage: $(basename "$0") name"
+    exit 2
+fi
+
 pids=$(pgrep -x "$1")
 
 for i in $pids; do

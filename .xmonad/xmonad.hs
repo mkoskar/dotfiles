@@ -2,6 +2,7 @@
 
 -- {{{ Imports
 
+import Data.List (isPrefixOf)
 import Data.Maybe (fromMaybe)
 import Data.Monoid (mempty, All(..), appEndo)
 import Graphics.X11.Xinerama (getScreenInfo)
@@ -47,6 +48,9 @@ import XMonad.Util.WorkspaceCompare
 
 -- }}}
 
+(<?) :: Eq a => Query [a] -> [a] -> Query Bool
+q <? x = fmap (isPrefixOf x) q
+
 doShiftView :: WorkspaceId -> ManageHook
 doShiftView w = doShift w <+> (doF $ W.view w)
 
@@ -80,7 +84,7 @@ myConfig = defaultConfig
     , modMask = myModMask
     , terminal = myTerminal
     , workspaces = myWorkspaces
-    , keys = \conf -> mkKeymap conf myKeymap
+    , keys = myKeys
     , startupHook = myStartupHook
     , logHook = myLogHook
     , handleEventHook = myHandleEventHook
@@ -101,7 +105,7 @@ myConfig = defaultConfig
     -- {{{ Hooks
 
     myStartupHook = do
-        checkKeymap myConfig myKeymap
+        checkKeymap myConfig myEZKeys
         ewmhDesktopsStartup
         setWMName "LG3D"
         spawn "xsession-hook startup"
@@ -146,6 +150,7 @@ myConfig = defaultConfig
                        , className =? "MPlayer" -?> doShiftView "9"
                        , className =? "Tor Browser" -?> doShiftView "3"
                        , className =? "mpv" -?> doShiftView "9"
+                       , title =? "qiv" -?> doShiftView "9"
                        ]
                    <+> composeAll [ isDialog --> doCenterFloat ]
                    <+> toggleHook "doFloat" doFloat
@@ -188,7 +193,13 @@ myConfig = defaultConfig
 
     -- {{{ Keymap
 
-    myKeymap =
+    myKeys = \conf -> M.union (M.fromList myRawKeys) (mkKeymap conf myEZKeys)
+
+    myRawKeys =
+        [ ((0, 0x1008FFB2), spawn "audio capture_toggle") -- <XF86AudioMicMute>
+        ]
+
+    myEZKeys =
         [
           -- M-[0..9] - switch to workspace N
           -- M-S-[0..9] - move client to workspace N
@@ -317,9 +328,9 @@ myConfig = defaultConfig
         , ("M-S-<Insert>", spawn "xclipboard from-primary && notify 'PRIMARY -> CLIPBOARD'")
 
           -- other
-        , ("M-<F9>", spawn "xscreen0 && xmonad-session-repair")
-        , ("M-<F10>", spawn "xscreen && xmonad-session-repair")
-        , ("M-S-<F10>", spawn "xscreen-mobile && xmonad-session-repair")
+        , ("M-<F9>", spawn "xscreen0 && xmonad --restart")
+        , ("M-<F10>", spawn "xscreen && xmonad --restart")
+        , ("M-S-<F10>", spawn "xscreen-mobile && xmonad --restart")
 
         , ("M-<F12>", spawn "grabc 2>&1 | xclipboard from-stdin")
         , ("M-S-<F12>", spawn "xmeasure | xclipboard from-stdin")
@@ -327,6 +338,7 @@ myConfig = defaultConfig
         , ("M-; M-b", spawn "bluetooth-toggle")
         , ("M-; M-d", spawn "dpms-toggle")
         , ("M-; M-l", spawn "sudo lockx")
+        , ("M-; M-s", spawn "selfie")
         , ("M-; M-w", spawn "wifi-toggle")
         , ("M-S-b", spawn "backlight-toggle")
 
@@ -334,6 +346,13 @@ myConfig = defaultConfig
         , ("M-; M-i", spawn "notify -u low \"$(status)\"")
         , ("M-; M-p", do workspaceOnScreen 0 "9"; spawn "playx")
         , ("M-S-<Home>", spawn $ myTerminal ++ " - trun wow")
+
+        , ("<XF86AudioLowerVolume>", spawn "audio playback_down")
+        , ("<XF86AudioMute>", spawn "audio playback_toggle")
+        , ("<XF86AudioRaiseVolume>", spawn "audio playback_up")
+        , ("<XF86Display>", spawn "xscreen && xmonad --restart")
+        , ("<XF86ScreenSaver>", spawn "sudo lockx")
+        , ("<XF86WebCam>", spawn "selfie")
         ]
 
     -- }}}

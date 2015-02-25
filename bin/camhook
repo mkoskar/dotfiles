@@ -2,13 +2,13 @@
 
 set -e
 
-pidfile='preview.pid'
-prevfile='preview.jpg'
+target=~/tmp/camhook.jpg
+pidfile="$XDG_RUNTIME_DIR/camhook.pid"
 
 preview() {
-    qiv -tiGfl --vikeys -T "$prevfile"
-    rm -f "$pidfile"
-    rm -f "$prevfile"
+    echo $$ >"$pidfile"
+    trap 'rm -f "$pidfile" "$target"' RETURN
+    qiv -tiGfl --vikeys -T "$target"
 }
 
 case $ACTION in
@@ -17,11 +17,8 @@ case $ACTION in
     start)
         ;;
     download)
-        cp "$ARGUMENT" "$prevfile"
-        if [ ! -e "$pidfile" ]; then
-            preview &
-            echo $! >"$pidfile"
-        fi
+        cp "$ARGUMENT" "$target"
+        [ -e "$pidfile" ] || preview &
         ;;
     stop)
         ;;

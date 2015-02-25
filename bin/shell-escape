@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+
+printf -v out "${IFS:0:1}%q" "$@"
+printf "%s\n" "${out:1}"

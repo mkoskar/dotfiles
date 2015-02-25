@@ -5,7 +5,7 @@ set -e
 if [ "$(basename "$0")" = 'status-osd' ]; then
     out=$(status "$@")
     [ -t 1 ] && echo "$out"
-    osd "$out"
+    osd "$out" || true
     exit 0
 fi
 
@@ -23,8 +23,9 @@ status_audio() {
 }
 
 status_backlight() {
+    local val
     local src='/sys/class/backlight/acpi_video0'
-    local val=$(printf '%s / %s' "$(<"$src/brightness")" "$(<"$src/max_brightness")")
+    printf -v val '%s / %s' "$(<"$src/brightness")" "$(<"$src/max_brightness")"
     printf 'backlight: %s\n' "$val"
 }
 

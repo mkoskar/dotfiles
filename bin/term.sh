@@ -9,7 +9,7 @@ export TTY=$(tty)
 
 export GPG_TTY=$TTY
 
-if [ ! "${TERM%%-*}" = 'screen' ]; then
+if [ "${TERM%%-*}" != 'screen' ]; then
     # not screen
     export TERMOLD=$TERM
 else

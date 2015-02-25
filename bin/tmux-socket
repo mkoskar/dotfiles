@@ -1,12 +1,14 @@
 #!/bin/bash
 
+set -e
+
 [ -z "$TMUX" ] && exit 1
 
 IFS=, read -ra var <<<"$TMUX"
 socket=${var[0]##*/}
 
 if [ "$(basename "$0")" = 'tmux-socket-label' ]; then
-    [ ! "$socket" = 'default' ] && echo "$socket " || true
+    [ "$socket" = 'default' ] || echo "$socket "
 else
     echo "$socket"
 fi

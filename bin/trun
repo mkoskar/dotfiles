@@ -2,7 +2,9 @@
 
 [ -e ~/bin/term.sh ] && . ~/bin/term.sh
 
-# wait a bit for WM geometry to kick-in
-sleep 0.05
+if [ "${TERM%%-*}" != 'screen' ]; then
+    # wait a bit for WM geometry to kick-in
+    sleep 0.05
+fi
 
 exec "$@"

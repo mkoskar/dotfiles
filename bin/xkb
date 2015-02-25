@@ -49,4 +49,4 @@ case $1 in
         ;;
 esac
 
-status-osd xkb || true
+status-osd xkb

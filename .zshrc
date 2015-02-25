@@ -135,9 +135,11 @@ zstyle ':completion:*:ssh:*' tag-order 'hosts:-host:host hosts:-domain:domain ho
 
 # custom
 compctl -k "(10m 15m 20m 25m 30m)" a
+compctl -m on
 compctl -m pth
 compctl -m spth
-compctl -m on
+compctl -m xrun
+compctl -m xrun0
 compctl -f paco
 compctl -m pacoc
 

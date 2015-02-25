@@ -4,7 +4,7 @@ set -e
 
 ss -s
 
-netstat -aptuexW --numeric-host --numeric-ports 2>/dev/null |
+netstat -aptueW --numeric-host --numeric-ports 2>/dev/null |
 awk '
 NR > 2 {
     format = "%-8s %-15s %-25s %-25s %-10s %-22s\n"

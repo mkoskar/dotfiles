@@ -23,34 +23,31 @@ fi
 
 xkb
 xscreen
-audio pulse_init &
+audio pulse_init
 
 if [ "$(xserverq name)" = 'Xorg' ]; then
-    :
     #compton
+    :
 fi
 
-# ----------------------------------------
-
 _main() {
-    osdd &
-    dunst &
+    xrun osdd
+    xrun dunst
+    xrun keynav
     _xmonad
 }
-
-# ----------------------------------------
 
 _herbstluftwm() {
     herbstluftwm --locked
 }
 
 _openbox() {
-    tint2 &
+    xrun tint2
     openbox
 }
 
 _xmonad() {
-    tray &
+    xrun tray
     xmonad
 }
 
@@ -61,6 +58,6 @@ case $session in
         _$session
         ;;
     *)
-        [ $# -gt 0 ] && "$@"
+        [ $# -eq 0 ] || "$@"
         ;;
 esac

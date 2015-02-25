@@ -2,6 +2,6 @@
 
 killall /usr/bin/compton >/dev/null 2>&1
 
-if [ ! "$(basename "$0")" = 'compton-off' ]; then
+if [ "$(basename "$0")" != 'compton-off' ]; then
     /usr/bin/compton &
 fi

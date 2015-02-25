@@ -28,7 +28,7 @@ esac
 
 exit 0
 
-# TODO: xcmenu is broken (namely it's synchronization feature)
+# TODO: xcmenu is broken (namely its synchronization feature)
 
 xcmenu --query
 

@@ -15,5 +15,4 @@ fi
 xset b off s off dpms 0 0 300
 xsetroot -cursor_name left_ptr
 
-xsetroot -solid black
-command -v hsetroot >/dev/null && hsetroot || true
+command -v hsetroot >/dev/null && hsetroot || xsetroot -solid black

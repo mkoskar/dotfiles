@@ -24,13 +24,13 @@ items=("$@")
 i=0
 l=${#items[@]}
 while true; do
-    ((l == 0)) && break
+    ((l > 0)) || break
     item=${items[i]}
 
     printf '\e[1G%s\e[0K' "$((i+1)) : $item" >&2
     echo "$item"
 
-    ((l == 1)) && break
+    ((l > 1)) || break
     read -N1 -s c
     case $c in
         q|Q)

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+target=~/tmp/selfie.jpg
+pidfile="$XDG_RUNTIME_DIR/selfie.pid"
+
+preview() {
+    echo $$ >"$pidfile"
+    trap 'rm -f "$pidfile"' RETURN
+    qiv -tiGfl --vikeys -T "$target"
+}
+
+fswebcam -q -r 5000x5000 "$target"
+
+[ -e "$pidfile" ] || preview &

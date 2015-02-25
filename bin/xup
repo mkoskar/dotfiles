@@ -2,14 +2,14 @@
 
 set -e
 
-session() {
+s() {
     local sname=$1
     local wname="s_$sname"
     xdotool search --classname "$wname" >/dev/null \
-        || { term "$wname" - trun s "$sname" & }
+        || term "$wname" - trun s "$sname" &
 }
 
-session wrk
-session tmp
+s wrk
+s tmp
 sleep 0.3 # to ensure order tmp -> aux
-session aux
+s aux

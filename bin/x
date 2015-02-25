@@ -34,7 +34,7 @@ if [ $# -eq 0 ]; then
     echo 'x) xmonad'
 
     read -N1 -s -p ': ' sel
-    test ! "$sel" && sel=m
+    [ -n "$sel" ] || sel=m
     case $sel in
         [mM])
             set -- main
@@ -61,7 +61,7 @@ fi
 if [ "$(basename "$0")" = 'xx' ]; then
     dispno=91
     while true; do
-        [ ! -e "/tmp/.X$dispno-lock" ] && break
+        [ -e "/tmp/.X$dispno-lock" ] || break
         dispno=$((dispno+1))
     done
 

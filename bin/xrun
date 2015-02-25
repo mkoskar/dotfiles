@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -eq 0 ]; then
+    echo "usage: $(basename "$0") cmd [arg]..."
+    exit 2
+fi
+
+if [ "$(basename "$0")" = 'xrun' ]; then
+    xkillall "$1" >/dev/null
+fi
+
+xpgrep "$1" >/dev/null || exec "$@" &

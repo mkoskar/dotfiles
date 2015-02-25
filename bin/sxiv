@@ -7,7 +7,7 @@ trap 'rm -f "$tmpfile"' EXIT
 
 /usr/bin/sxiv -o "$@" >"$tmpfile"
 
-[ -s "$tmpfile" ] || exit
+[ -s "$tmpfile" ] || exit 0
 
 mkdir .marked
 xargs -a "$tmpfile" -d '\n' -I{} mv {} -t .marked

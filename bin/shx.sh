@@ -59,13 +59,13 @@ dkrm() {
     confirm 'Remove ALL containers (with volumes). Continue?' n || return 0
     local ids
     ids=($(docker ps -aq))
-    [ ${#ids[@]} -gt 0 ] && docker rm -v -f "${ids[@]}" || true
+    [ ${#ids[@]} -eq 0 ] || docker rm -v -f "${ids[@]}"
 }
 
 dkstop() {
     local ids
     ids=($(docker ps -aq))
-    [ ${#ids[@]} -gt 0 ] && docker stop "${ids[@]}" || true
+    [ ${#ids[@]} -eq 0 ] || docker stop "${ids[@]}"
 }
 
 # maven
@@ -74,7 +74,8 @@ alias mvn-effective-settings='mvn help:effective-settings'
 alias mvn-dependency-tree='mvn dependency:tree'
 
 mvn-describe-plugin() {
-    [ $# -eq 0 ] && mvn help:describe -Dplugin="$1"
+    [ $# -eq 0 ] && return 2
+    mvn help:describe -Dplugin="$1"
 }
 
 # gradle
@@ -120,6 +121,7 @@ alias sdu='systemctl --user'
 alias se='sudoedit'
 alias ss='ss -napstu'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
+alias type='type -a'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias watch='watch -n1 -t -c'
 alias wtc='curl --silent http://whatthecommit.com/index.txt'
@@ -154,14 +156,18 @@ vlc() { /usr/bin/vlc "$@" 2>/dev/null; }
 
 # returns command executable on current PATH
 pth() {
+    [ $# -eq 0 ] && return 2
     local c
     c=$(command -v "$1") || return 1
-    [ -z "${c##/*}" ] && echo "$c"
+    [ -z "${c##/*}" ] && echo "$c" || {
+        type -a "$1" >&2
+        return 1
+    }
 }
 
 # returns command executable on system PATH
 spth() {
-    (PATH='/bin:/usr/bin' pth "$@")
+    (PATH='/usr/bin' pth "$@")
 }
 
 # lists open file descriptors of a process with passed PID (defaults to '$$')
@@ -172,6 +178,7 @@ lsfd() {
 # finds '$1' on PATH and append it as an argument to the rest of cmdline
 # (defaults to 'ls -la')
 on() {
+    [ $# -eq 0 ] && return 2
     local p
     p=$(pth "$1") || return 1
     shift
@@ -180,12 +187,14 @@ on() {
 
 # finds what package provides file or directory
 paco() {
+    [ $# -eq 0 ] && return 2
     local p=$(realpath "$1")
     [ -e "$p" ] && pacman -Qo "$p"
 }
 
 # finds what package provides command
 pacoc() {
+    [ $# -eq 0 ] && return 2
     local p
     p=$(pth "$1") && pacman -Qo "$p"
     p=$(spth "$1") && pacman -Qo "$p"
@@ -193,26 +202,31 @@ pacoc() {
 
 # files provided by package
 pacl() {
+    [ $# -eq 0 ] && return 2
     pacman -Qql "$1"
 }
 
 # target 'depends on'
 pacd() {
+    [ $# -eq 0 ] && return 2
     expac -l '\n' %D "$1"
 }
 
 # target 'provides'
 pacp() {
+    [ $# -eq 0 ] && return 2
     expac -l '\n' %P "$1"
 }
 
 # target 'required by' (what depends on target)
 pacw() {
+    [ $# -eq 0 ] && return 2
     expac -l '\n' %N "$1"
 }
 
 # target detailed info
 paci() {
+    [ $# -eq 0 ] && return 2
     local p=$(expac %n "$1")
     [ -z "$p" ] && return 1
     pacman -Qii "$p"

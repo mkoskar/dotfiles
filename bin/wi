@@ -22,12 +22,13 @@ Sun:                    %s / %S
 
 get() {
     local opts=(-m -l "$1")
-    local opts_digest=$(sha1sum <<<"${opts[*]}" | awk '{print $1}')
+    local opts_digest=$(md5sum <<<"${opts[*]}" | awk '{print $1}')
     local cache="$HOME/.cache/shaman-${opts_digest: -7}.json"
     touch "$cache"
     shaman "${opts[@]}" -f "$format" -c "$cache"
 }
 
 echo
-get 'Martin,SK'
 get 'Prague,CZ'
+get 'Berlin,DE'
+get 'London,GB'

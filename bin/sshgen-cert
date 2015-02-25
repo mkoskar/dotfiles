@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 err_usage() {
     echo "usage: $(basename "$0") ca_key pub_key identity principals"
     exit 2

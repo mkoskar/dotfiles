@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 [ -n "$TMUX" ] && exit 1
 
 for socket in "$TMPDIR/tmux-$UID/"*; do

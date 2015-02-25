@@ -80,7 +80,7 @@ if [ ! -d "$target" -o ! -w "$target" ]; then
     exit 11
 fi
 
-if [ ! "$(realpath "$mapper")" = "$(realpath "$fs")" ]; then
+if [ "$(realpath "$mapper")" != "$(realpath "$fs")" ]; then
     log "$mapper: mapper misconfigured"
     exit 12
 fi

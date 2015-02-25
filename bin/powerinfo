@@ -8,7 +8,7 @@ get() {
     local in="$1$sep$2"
     local out="_$2"
     typeset -g "$out"=
-    [ -e "$in" ] && typeset -g "$out"="$(<"$in")" || true
+    [ ! -e "$in" ] || typeset -g "$out"="$(<"$in")"
 }
 
 get_() {
@@ -16,7 +16,7 @@ get_() {
 }
 
 uconv() {
-    [ -n "$1" ] && typeset -g "$2"=$(($1/(1000*1000))) || true
+    [ -z "$1" ] || typeset -g "$2"=$(($1/(1000*1000)))
 }
 
 echo $'\n--------------------------------------------------'
