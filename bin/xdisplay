@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ -z "$DISPLAY" ]; then
+    export DISPLAY=':1'
+fi
+
+if [ $# -eq 0 ]; then
+    echo "$DISPLAY"
+    exit
+fi
+
+exec "$@"

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+newdirs=(~/mail/*/INBOX/new/)
+
+out() {
+    local new=$(find "${newdirs[@]}" -type f | wc -l)
+    if [[ $new > 0 ]]; then
+        printf '<fc=#55FF55>%d</fc>' $new
+        [ $new_ ] && delta=$((new-new_))
+        [[ $delta > 0 ]] && printf '<fc=#FEED6A>(+%d)</fc>' $delta
+    fi
+    echo
+    new_=$new
+}
+
+while true; do
+    out
+    inotifywait -qq -e create,delete,move "${newdirs[@]}"
+    sleep 5
+done

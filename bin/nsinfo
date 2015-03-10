@@ -1,9 +1,0 @@
-#!/bin/bash
-
-echo
-tail -n +1 /etc/resolv.conf /etc/dnsmasq-resolv.conf
-
-echo $'\n--------------------------------------------------'
-echo $'> resolvconf:\n'
-
-resolvconf -l

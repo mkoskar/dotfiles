@@ -4,7 +4,6 @@
 set abort_nosubject = ask-no
 set abort_unmodified = no
 set alias_file = ~/.mutt/aliases
-set beep_new
 set bounce = ask-no
 set certificate_file = ~/.mutt/certificates
 set delete

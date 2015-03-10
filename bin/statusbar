@@ -1,12 +1,8 @@
 #!/bin/bash
 
-#set -e
+set -e
 
-#cleanup() { kill $(jobs -pr); }
-#trap cleanup EXIT
+cleanup() { killer -g $$; }
+trap cleanup EXIT
 
-#dzen=(dzen2 -fg '#C0C0C0' -bg '#000000' -fn 'local_statusbar' -e 'onstart=lower')
-#conky | "${dzen[@]}" -ta r -xs 1 &
-#"${dzen[@]}" -ta l -xs 1
-
-exec xmobar
+xmobar

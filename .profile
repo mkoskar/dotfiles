@@ -2,6 +2,8 @@
 # - executed by the command interpreter for login shells
 # - not read by bash(1), if ~/.bash_profile or ~/.bash_login exists
 
+[ -n "$SHRC_DEBUG" ] && echo '~/.profile' >&2
+
 umask 022
 
 [ -z "$_PATH" ] && export _PATH="$PATH"

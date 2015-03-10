@@ -182,9 +182,7 @@ nnoremap cov :set <C-R>=(&virtualedit =~# 'all') ? 'virtualedit=block' : 'virtua
 syntax on
 filetype plugin indent on
 
-if has('gui_running')
-    colorscheme bclear
-elseif &t_Co == 256
+if &t_Co == 256
     colorscheme luciusblack
 else
     colorscheme desert
@@ -348,7 +346,8 @@ nnoremap <Leader>df :Diff2 <C-R>=expand('%')<CR>
 " {{{ Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding.
 
 function! MetaSetup(enable) abort
-    let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+    " don't include O and P because of conflicts in xterm
+    let chars = '0123456789ABCDEFGHIJKLMNQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     let i = 0
     let n = len(chars)
     while i < n

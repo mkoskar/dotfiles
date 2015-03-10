@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+[ $# -eq 0 ] && exit 2
+
+for i in "$@"; do
+    printf '%d ' "0x$i"
+done
+echo

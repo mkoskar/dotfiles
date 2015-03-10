@@ -110,9 +110,10 @@ alias lsdiff='lsdiff -s'
 alias manl="MANPAGER='less -s' man"
 alias ntpdq='sudo ntpd -q && sudo hwclock -w'
 alias pac='pacman'
+alias paccheck='paccheck --files --file-properties --backup --noextract --noupgrade'
 alias pactree='pactree --color'
-alias patch0='patch -p0'
-alias patch1='patch -p1'
+alias patch0='patch -Np0'
+alias patch1='patch -Np1'
 alias psa='ps auxf'
 alias qiv='qiv -uLtiGfl --vikeys'
 alias rm='rm -I --one-file-system'
@@ -188,8 +189,9 @@ on() {
 # finds what package provides file or directory
 paco() {
     [ $# -eq 0 ] && return 2
-    local p=$(realpath "$1")
-    [ -e "$p" ] && pacman -Qo "$p"
+    local p=$(realpath -s "$1")
+    pacman -Qo "$p"
+    [ -L "$p" ] && pacman -Qo "$(realpath "$1")"
 }
 
 # finds what package provides command

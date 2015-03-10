@@ -1,6 +1,8 @@
 # ~/.bashrc
 # - executed by bash(1) for interactive non-login shells
 
+[ -n "$SHRC_DEBUG" ] && echo '~/.bashrc' >&2
+
 [ -e ~/bin/term.sh ] && . ~/bin/term.sh
 
 # continue only in case of interactive shell

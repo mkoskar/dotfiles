@@ -65,7 +65,7 @@ if exists("$CMD")
 function! _ReloadX() abort
     try
         setl modifiable
-        exec 'silent 0read! '.$CMD
+        exec 'silent 0read! '.escape($CMD, '%')
         silent normal! jdG
         setl noma
     endtry

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo
+printf 'DNS host name (FQDN):   %s\n' "$(hostname -f)"
+printf 'Aliases:                %s\n' "$(hostname -a)"
+
+echo $'\n--------------------------------------------------'
+echo $'> resolvconf:\n'
+
+resolvconf -l
+
+echo $'--------------------------------------------------\n'
+tail -n +1 /etc/{resolv.conf,dnsmasq-resolv.conf,dnsmasq-conf.conf}
+echo

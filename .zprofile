@@ -1,6 +1,8 @@
 # ~/.zprofile
 # - executed by zsh(1) for login shells
 
+[ -n "$SHRC_DEBUG" ] && echo '~/.zprofile' >&2
+
 [ -e ~/.profile ] && . ~/.profile
 
 {

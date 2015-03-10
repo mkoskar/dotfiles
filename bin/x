@@ -83,5 +83,5 @@ if [ -e "$lockfile" ]; then
 fi
 
 exec startx ~/bin/xsession "$@" -- \
-    /usr/bin/X ":$dispno" "vt$vtno" -nolisten tcp -dpi 96 \
+    /usr/bin/X ":$dispno" "vt$vtno" -keeptty -nolisten tcp -dpi 96 \
     &>"$HOME/.xsession$dispno.out"

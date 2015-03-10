@@ -15,6 +15,7 @@ done <<-EOF
     aur             sr aur {}
     base            b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/index.html
     bash            b file:///usr/share/doc/bash/index.html
+    bash-faq        b http://mywiki.wooledge.org/BashFAQ
     charref         b http://dev.w3.org/html5/html-author/charref
     cite            sr cite {}
     d               sr webster {}
@@ -27,6 +28,7 @@ done <<-EOF
     gg              sr google -G {}
     gh              sr github {}
     gi              sr google -i {}
+    gimp            b file:///usr/share/gimp/2.0/help/en/index.html
     gradle          b file:///usr/share/gradle/doc/userguide/userguide.html
     gradle-dsl      b file:///usr/share/gradle/doc/dsl/index.html
     graphviz        b file:///usr/share/graphviz/doc
@@ -86,6 +88,7 @@ done <<-EOF
     tomcat          b file:///var/lib/tomcat8/webapps/docs/index.html
     tr              sr translate {}
     w               sr wikipedia {}
+    weechat         b file:///usr/share/doc/weechat/weechat_user.en.html
     yt              sr youtube {}
 EOF
 

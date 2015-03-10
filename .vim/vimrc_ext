@@ -30,6 +30,10 @@ nnoremap <silent> <Leader>px !!tidy -config ~/.tidyrc -xml<CR>
 
 exec pathogen#infect()
 
+if has('gui_running')
+    colorscheme bclear
+endif
+
 " {{{
 
 " ========== bufexplorer

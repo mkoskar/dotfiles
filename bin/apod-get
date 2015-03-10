@@ -2,7 +2,8 @@
 
 set -e
 
-path="$HOME/.cache/apod/latest"
+cache_home=${XDG_CACHE_HOME:-$HOME/.cache}
+path="$cache_home/apod/latest"
 prgname=$(basename "$0")
 
 case $prgname in
@@ -10,6 +11,8 @@ case $prgname in
         curl -s --create-dirs -o "$path" "$(apod)"
         ;;
     apod-bg)
-        feh --bg-max --no-fehbg "$path"
+        command -v apod-bgset >/dev/null 2>&1 \
+            && apod-bgset "$path" \
+            || feh --bg-max --no-fehbg "$path"
         ;;
 esac

@@ -1,6 +1,6 @@
 set bell-style none
 set bind-tty-special-chars off
-set colored-stats
+set colored-stats on
 set completion-prefix-display-length 2
 set editing-mode vi
 set keyseq-timeout 10

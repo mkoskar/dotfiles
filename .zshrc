@@ -1,6 +1,8 @@
 # ~/.zshrc
 # - executed by zsh(1) for interactive shells
 
+[ -n "$SHRC_DEBUG" ] && echo '~/.zshrc' >&2
+
 [ -e ~/bin/term.sh ] && . ~/bin/term.sh
 
 # continue only in case of interactive shell

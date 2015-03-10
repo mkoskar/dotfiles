@@ -1,5 +1,5 @@
 [Unit]
-Description=daily timer
+Description=apod timer
 
 [Timer]
 OnCalendar=8:00

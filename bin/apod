@@ -11,6 +11,7 @@
     :License: BSD 2-Clause
 """
 
+from sys import stderr, exit
 from urllib.parse import urljoin
 from urllib.request import urlopen
 import argparse
@@ -36,27 +37,31 @@ parser.add_argument('-t', '--target', action='store_true',
                     help='always return target URL')
 args = parser.parse_args()
 
-url = 'http://apod.nasa.gov/'
-resp = urlopen(url)
-html = resp.read().decode('ISO-8859-1')
+try:
+    url = 'http://apod.nasa.gov/'
+    resp = urlopen(url)
+    html = resp.read().decode('ISO-8859-1')
 
-pq = PyQuery(html)
-img_el = pq('body').find('center a img')
-a_el = img_el.parents('a')
+    pq = PyQuery(html)
+    img_el = pq('body').find('center a img')
+    a_el = img_el.parents('a')
 
-preview = img_el.attr.src.strip()
-target = a_el.attr.href.strip()
+    preview = img_el.attr.src.strip()
+    target = a_el.attr.href.strip()
 
-if args.preview:
-    print(urljoin(url, preview))
-    exit()
+    if args.preview:
+        print(urljoin(url, preview))
+        exit()
 
-if args.target:
-    print(urljoin(url, target))
-    exit()
+    if args.target:
+        print(urljoin(url, target))
+        exit()
 
-result = target
-if not re.match(r'.*\.(gif|jpg|jpeg|png)', result, re.I):
-    result = preview
+    result = target
+    if not re.match(r'.*\.(gif|jpg|jpeg|png)', result, re.I):
+        result = preview
 
-print(urljoin(url, result))
+    print(urljoin(url, result))
+except Exception as e:
+    print('{}: error: {}'.format(parser.prog, e), file=stderr)
+    exit(1)

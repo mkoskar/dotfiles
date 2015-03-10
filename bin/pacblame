@@ -1,4 +1,38 @@
 #!/bin/bash
 
-export PAGER_TITLE=$(basename "$0")
-exec pgx sh -c "expac -H M -l '\n' '\%m \%n' | sort -k1nr"
+set -e
+
+prgname=$(basename "$0")
+
+err_usage() {
+    cat <<-EOF
+	usage: $prgname         - blame by "install size"
+	       $prgname -d      - blame by "depends on"
+	       $prgname -r      - blame by "required by"
+	EOF
+    exit 2
+}
+
+cmd="expac -H M -l '\n' '%m %n' | sort -k1nr"
+
+while getopts 'drh' opt; do
+    case $opt in
+        d)
+            cmd="expac -l ' ' '%n %E' | awk '{print NF - 1, \$1}' | sort -k1nr"
+            ;;
+        r)
+            cmd="expac -l ' ' '%n %N' | awk '{print NF - 1, \$1}' | sort -k1nr"
+            ;;
+        *)
+            err_usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if [ -t 1 ]; then
+    export PAGER_TITLE=$(basename "$0")
+    exec pgx sh -c "$cmd"
+fi
+
+eval "$cmd"

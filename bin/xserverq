@@ -11,7 +11,7 @@ prgname=$(basename "$0")
 
 xserver_dispno() {
     xset q &>/dev/null || exit 1
-    dispno=$(echo "$DISPLAY" | awk -F '[:.]' '{print $2}')
+    dispno=$(awk -F '[:.]' '{print $2}' <<<"$DISPLAY")
     printf '%d\n' "$dispno"
 }
 
@@ -20,7 +20,7 @@ xserver_pid() {
     lockfile="/tmp/.X$dispno-lock"
 
     [ -e "$lockfile" ] || exit 1
-    cat "$lockfile" | sed 's/\s//g'
+    sed 's/\s//g' "$lockfile"
 }
 
 xserver_cmd() {

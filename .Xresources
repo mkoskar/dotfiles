@@ -3,13 +3,18 @@
 
 ! xterm ----------------------------------------------------------------------
 XTerm.termName:                 xterm-256color
-XTerm.backarrowKeyIsErase:      true
+XTerm.ptyInitialErase:          false
 
 !XTerm*vt100.boldColors:         false
+XTerm*vt100.colorBD:            #dddddd
+XTerm*vt100.colorBDMode:        true
 XTerm*vt100.dynamicColors:      true
-XTerm*vt100.italicULMode:       false
+XTerm*vt100.veryBoldColors:     4
 
-XTerm*vt100.faceName:           xft:local_terminal_sized
+! Since xterm does not support font fallback (only single font),
+! it is reasonable to choose a font with a large set of glyphs.
+XTerm*vt100.faceName:           xft:DejaVu Sans Mono:size=10
+
 XTerm*vt100.bellIsUrgent:       true
 XTerm*vt100.bellOnReset:        false
 XTerm*vt100.metaSendsEscape:    true
@@ -17,21 +22,26 @@ XTerm*vt100.saveLines:          8192
 XTerm*vt100.utf8:               2
 XTerm*vt100.printAttributes:    0
 XTerm*vt100.printerCommand:     cat > $(mktemp -p ~/tmp xterm.XXXXXX)
-XTerm*vt100.translations:       #override \n\
-                                Ctrl ~Alt  Shift <Key>H: string(\177) \n\
-                                ~Shift <Key>Print: print() \n\
+XTerm*vt100.translations:       #override \n \
+                                Ctrl ~Alt Shift <Key>H: string(\177) \n \
+                                ~Shift <Key>Print: print() \n \
                                 Shift <Key>Print: print-everything()
 
 ! urxvt ----------------------------------------------------------------------
 URxvt.termName:         rxvt-unicode-256color
 
+!URxvt.intensityStyles:  false
+!URxvt.underlineColor:   #fdb436
+URxvt.colorBD:          15
+URxvt.colorIT:          #d4c668
 URxvt.cursorColor2:     1
 URxvt.scrollColor:      gray20
-URxvt.underlineColor:   #FDB436
-!URxvt.intensityStyles:  false
 
-URxvt.font:             xft:local_terminal_sized
-URxvt.italicFont:
+! urxvt supports font fallback (for missing glyphs),
+! every font resource can in fact contain font list.
+URxvt.font:             xft:local_terminal_sized, \
+                        xft:DejaVu Sans Mono
+
 URxvt.scrollstyle:      plain
 URxvt.thickness:        5
 URxvt.saveLines:        8192

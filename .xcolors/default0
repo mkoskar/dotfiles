@@ -1,19 +1,56 @@
+! 174 174 174
 *.foreground: #aeaeae
+
+! 0 0 0
 *.background: #000000
+
+! 221 221 221
 *.cursorColor: #dddddd
+
+! 5 5 5
 *.color0: #050505
+
+! 157 45 45
 *.color1: #9d2d2d
+
+! 69 163 69
 *.color2: #45a345
+
+! 219 156 46
 *.color3: #db9c2e
+
+! 56 69 128
 *.color4: #384580
+
+! 164 63 164
 *.color5: #a43fa4
+
+! 34 159 159
 *.color6: #229f9f
+
+! 174 174 174
 *.color7: #aeaeae
+
+! 77 77 77
 *.color8: #4d4d4d
+
+! 192 79 79
 *.color9: #c04f4f
+
+! 112 192 102
 *.color10: #70c066
+
+! 212 198 104
 *.color11: #d4c668
+
+! 96 108 181
 *.color12: #606cb5
+
+! 190 99 190
 *.color13: #be63be
+
+! 104 187 187
 *.color14: #68bbbb
+
+! 221 221 221
 *.color15: #dddddd
