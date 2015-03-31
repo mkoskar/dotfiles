@@ -8,7 +8,7 @@ Config {
     ,commands = [
          Run StdinReader
         ,Run CommandReader "statusbar-mail" "mail"
-        ,Run Battery ["-t", "<watts>|<left>|<timeleft>", "-L", "20", "-H", "50", "-l", "#FF5555", "-n", "#EFEFEF", "--",
+        ,Run Battery ["-t", "<watts>|<left>|<timeleft>", "-L", "15", "-H", "50", "-l", "#FF5555", "-n", "#EFEFEF", "--",
                       "-L", "0", "-H", "12", "-m", "#55FF55", "-h", "#FF5555"] 50
         ,Run Wireless "wlan0" ["-t", "q<quality>"] 50
         ,Run Cpu ["-t", "<total>", "-L", "8", "-H", "30", "-n", "#EFEFEF", "-h", "#FF5555", "-p", "2", "-c", "0"] 30

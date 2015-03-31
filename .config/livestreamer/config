@@ -1,0 +1,4 @@
+default-stream=best
+http-no-ssl-verify
+player-no-close
+player=mpv --cache 2048

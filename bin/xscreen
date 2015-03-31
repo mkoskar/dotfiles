@@ -13,6 +13,8 @@ if [ "$prgname" != 'xscreen0' -a "$(xserverq name)" = 'Xorg' ]; then
 fi
 
 xset b off s off dpms 0 0 300
+
+xset m 4 2
 xsetroot -cursor_name left_ptr
 
 command -v hsetroot >/dev/null && hsetroot || xsetroot -solid black

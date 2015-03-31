@@ -1,10 +1,10 @@
 #!/bin/bash
 
-set -e
-
 [ -n "$TMUX" ] && exit 1
 
+echo
 for socket in "$TMPDIR/tmux-$UID/"*; do
     echo "> $socket"
     tmux -S "$socket" kill-server
+    echo
 done

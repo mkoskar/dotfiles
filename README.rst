@@ -73,7 +73,7 @@ are listed below.
 `pacman-disowned <bin/pacman-disowned>`_, `pacman-disowned-job <bin/pacman-disowned-job>`_
     Run this daily and receive report of what files has became "untracked".
 
-`pgrepallx <bin/pgrepallx>`_
+`xpgrep <bin/xpgrep>`_
     ``pgrep -x`` filtered for current ``$DISPLAY``.
 
 `rep <bin/rep>`_, `respawn <bin/respawn>`_
@@ -109,9 +109,6 @@ are listed below.
 
 `umountall <bin/umountall>`_
     Recursively umount and disassemble a device chain.
-
-`xcmenuc <bin/xcmenuc>`_
-    Simple ``xcmenu`` frontend.
 
 `xfocusinfo <bin/xfocusinfo>`_
     Determines and prints out (in shell eval format) focused X screen,

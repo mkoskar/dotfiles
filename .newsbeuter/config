@@ -32,7 +32,6 @@ unbind-key  A
 unbind-key  C
 unbind-key  n
 unbind-key  p
-unbind-key  ^K
 unbind-key  v
 unbind-key  ^V
 unbind-key  ^G

@@ -24,10 +24,14 @@
 !.config/gtk-3.0/settings.ini
 !.config/herbstluftwm
 !.config/herbstluftwm/autostart
+!.config/livestreamer
+!.config/livestreamer/config
 !.config/mimeapps.list
 !.config/mpv
 !.config/mpv/input.conf
 !.config/mpv/mpv.conf
+!.config/mpv/scripts
+!.config/mpv/scripts/custom.lua
 !.config/openbox
 !.config/openbox/menu.xml
 !.config/openbox/rc.xml

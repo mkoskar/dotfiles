@@ -40,7 +40,7 @@ URxvt.scrollColor:      gray20
 ! urxvt supports font fallback (for missing glyphs),
 ! every font resource can in fact contain font list.
 URxvt.font:             xft:local_terminal_sized, \
-                        xft:DejaVu Sans Mono
+                        xft:Symbola
 
 URxvt.scrollstyle:      plain
 URxvt.thickness:        5

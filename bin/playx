@@ -2,5 +2,8 @@
 
 set -e
 
-src=$(xclip -o)
-exec mpv --really-quiet --msg-level=all=error "$src" 2>/dev/null
+[ -t 1 ] || exec >/dev/null
+
+src=${1:-$(xclip -o)}
+mpv --really-quiet --msg-level=all=error "$src" 2>/dev/null || \
+    livestreamer --loglevel=error "$src" 2>/dev/null

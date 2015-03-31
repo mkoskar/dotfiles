@@ -31,7 +31,6 @@ if [ -z "$1" ]; then
              'xft:local_terminal:pixelsize=28' \
              'xft:local_terminal:pixelsize=32' \
              'xft:DejaVu Sans Mono:size=8' \
-             'xft:DejaVu Sans Mono:size=8:antialias=false' \
              'xft:DejaVu Sans Mono:size=10' \
              'xft:DejaVu Sans Mono:size=11' \
              'xft:DejaVu Sans Mono:pixelsize=14' \
@@ -39,6 +38,7 @@ if [ -z "$1" ]; then
              'xft:Monaco:size=10' \
              'xft:Monaco:size=11' \
              'xft:Source\ Code\ Pro:size=10' \
+             'xft:Envy\ Code\ R:size=11' \
              | processor
 else
     process "$1"

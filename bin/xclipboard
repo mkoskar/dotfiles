@@ -9,7 +9,6 @@
 # *)
 #   - choose item from history (or take content of CLIPBOARD)
 #     and host it in PRIMARY and CLIPBOARD
-#   - echo it on stdout if it is not a terminal
 
 set -e
 
@@ -21,8 +20,7 @@ case $1 in
         xclip -i -f | xclip -i -selection clipboard
         ;;
     *)
-        [ ! -t 1 ] && filter=(-f)
-        xclip -o -selection clipboard | xclip -i "${filter[@]}"
+        xclip -o -selection clipboard | xclip -i
         ;;
 esac
 
@@ -47,9 +45,4 @@ case $1 in
 
         data=$(xcmenu -g <<<"$id")
         xcmenu -ci <<<"$data"
-
-        if [ ! -t 1 ]; then
-            echo "$data"
-        fi
-        ;;
 esac

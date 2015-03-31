@@ -49,6 +49,7 @@ done <<-EOF
     javase          b http://www.oracle.com/technetwork/java/javase/overview/index.html
     jdk             b file:///usr/share/doc/jdk-docs/index.html
     jdk-api         b file:///usr/share/doc/jdk-docs/api/index.html
+    jdk-relnotes    b http://www.oracle.com/technetwork/java/javase/jdk-relnotes-index-2162236.html
     jdk7            b http://docs.oracle.com/javase/7/docs/index.html
     jdk7-api        b http://docs.oracle.com/javase/7/docs/api/index.html
     jee             b http://www.oracle.com/technetwork/java/javaee/overview/index.html
@@ -71,6 +72,7 @@ done <<-EOF
     ntrs            sr ntrs {}
     oracle-plsql    b https://docs.oracle.com/database/121/LNPLS/toc.htm
     oracle-sql      b https://docs.oracle.com/database/121/SQLRF/toc.htm
+    perf            b http://www.brendangregg.com/perf.html
     pkg             sr archpkg {}
     postgresql      b file:///usr/share/doc/postgresql/html/index.html
     privoxy         b file:///usr/share/doc/privoxy/user-manual/index.html
