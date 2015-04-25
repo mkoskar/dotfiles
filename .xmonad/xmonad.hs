@@ -1,5 +1,7 @@
 -- vim: fdm=marker
 
+{-# LANGUAGE FlexibleContexts #-}
+
 -- {{{ Imports
 
 import Data.List (isPrefixOf)

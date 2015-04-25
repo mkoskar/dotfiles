@@ -2,9 +2,24 @@
 
 set -e
 
-if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") name"
+err_usage() {
+    echo "usage: $(basename "$0") [-f] pattern"
     exit 2
-fi
+}
 
-pids=$(xpgrep "$1") && kill -- "${pids[@]}" || true
+while getopts 'f' opt; do
+    case $opt in
+        f)
+            fopt='-f'
+            ;;
+        *)
+            err_usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+[ $# -eq 0 ] && err_usage
+
+xpgrep_opts=($fopt)
+pids=$(xpgrep "${xpgrep_opts[@]}" "$1") && killer -g "${pids[@]}" || true

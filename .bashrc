@@ -37,8 +37,12 @@ fi
 
 complete -o nospace -W '10m 15m 20m 25m 30m' a
 complete -o nospace -c on
+complete -o nospace -c pgx
 complete -o nospace -c pth
+complete -o nospace -c rep
 complete -o nospace -c spth
+complete -o nospace -c xrun
+complete -o nospace -c xrun0
 complete -o nospace -f paco
 complete -o nospace -c pacoc
 

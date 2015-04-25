@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cleanup() { killer -g $$ >/dev/null 2>&1; }
+set -e
+
+cleanup() { kill 0; }
 trap cleanup EXIT
 
 skyped -s -n -H 127.0.0.1 &

@@ -2,12 +2,27 @@
 
 set -e
 
-if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") name"
+err_usage() {
+    echo "usage: $(basename "$0") [-f] pattern"
     exit 2
-fi
+}
 
-pids=$(pgrep -x "$1")
+while getopts 'f' opt; do
+    case $opt in
+        f)
+            fopt='-f'
+            ;;
+        *)
+            err_usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+[ $# -eq 0 ] && err_usage
+
+pgrep_opts=(-x $fopt)
+pids=$(pgrep "${pgrep_opts[@]}" "$1")
 
 for i in $pids; do
     env="/proc/$i/environ"

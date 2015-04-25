@@ -4,7 +4,7 @@ IMAPAccount example
 Host <host>
 User <user>
 PassCmd "authinfo <machine> <login>"
-UseIMAPS yes
+SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 IMAPStore example-remote

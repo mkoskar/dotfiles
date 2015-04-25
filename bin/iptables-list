@@ -7,4 +7,19 @@ if [ $(id -u) -ne 0 ]; then
     exit 1
 fi
 
-iptables -nvL
+list() {
+    family=$1
+    src="/proc/net/${family}_tables_names"
+
+    [ -e "$src" ] || return 0
+    while read table; do
+        echo $'\n--------------------------------------------------'
+        echo -e "> $family table $table:\n"
+        "${family}tables" -t "$table" -nvL
+    done <"$src"
+}
+
+list ip
+list ip6
+
+echo

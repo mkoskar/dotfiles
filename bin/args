@@ -2,7 +2,5 @@
 
 set -e
 
-args=("$0" "$@")
-for i in "${!args[@]}"; do
-    printf $'%s : %s\n' "$i" "${args[$i]}"
-done
+IFS=${SEP:-$'\t'}
+printf '%s\n' "$*"

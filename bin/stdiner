@@ -55,7 +55,7 @@ if [ -n "$Topt" ]; then
     trap - EXIT
     (
         trap 'rm -f "$file"' EXIT
-        sleep 2
+        sleep 30
         while fuser "$file"; do sleep 1; done
     ) &
 fi

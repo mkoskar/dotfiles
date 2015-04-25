@@ -1,6 +1,6 @@
 #!/bin/bash
 
-killall /usr/bin/compton >/dev/null 2>&1
+xkillall -f '/usr/bin/compton($| .*)'
 
 if [ "$(basename "$0")" != 'compton-off' ]; then
     /usr/bin/compton &

@@ -10,10 +10,13 @@ fi
 #iptables -P INPUT ACCEPT
 #iptables -P FORWARD ACCEPT
 #iptables -P OUTPUT ACCEPT
-#iptables -t nat -F
-#iptables -t mangle -F
-#iptables -F
-#iptables -X
+#iptables -F -X
+#iptables -t nat -F -X
+#iptables -t mangle -F -X
 
-/usr/lib/systemd/scripts/iptables-flush
-#/usr/lib/systemd/scripts/iptables-flush 6
+{
+    [ -e /proc/net/ip_tables_names ] && /usr/lib/systemd/scripts/iptables-flush
+    [ -e /proc/net/ip6_tables_names ] && /usr/lib/systemd/scripts/iptables-flush 6
+} >/dev/null
+
+exit 0

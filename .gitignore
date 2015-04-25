@@ -49,6 +49,8 @@
 !.config/vlc/vlcrc
 !.config/weston.ini
 !.config/yad.conf
+!.config/zathura
+!.config/zathura/zathurarc
 !.conkyrc
 !.dialogrc
 !.fbtermrc

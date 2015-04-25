@@ -16,10 +16,9 @@ trap cleanup EXIT
 
 # ----------------------------------------
 
-add() {
-    local input=$1
-    goobook add <<<"$input"
-}
-
 input=$(grep -P '^From:')
-add "$input" &
+
+{
+    goobook add <<<"$input"
+    goobook reload
+} &

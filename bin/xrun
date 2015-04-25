@@ -8,7 +8,7 @@ if [ $# -eq 0 ]; then
 fi
 
 if [ "$(basename "$0")" = 'xrun' ]; then
-    xkillall "$1" >/dev/null
+    xkillall "$1"
 fi
 
 xpgrep "$1" >/dev/null || exec "$@" &

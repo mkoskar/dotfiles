@@ -22,6 +22,7 @@ done <<-EOF
     dd              sr duckduckgo {}
     deb             sr debpackages {}
     docker          b https://docs.docker.com/reference/builder/
+    flp             b http://www.feynmanlectures.caltech.edu/
     foldoc          sr foldoc {}
     g               sr google {}
     gc              sr gcache {}
@@ -29,12 +30,13 @@ done <<-EOF
     gh              sr github {}
     gi              sr google -i {}
     gimp            b file:///usr/share/gimp/2.0/help/en/index.html
+    go              b https://golang.org/ref/spec
     gradle          b file:///usr/share/gradle/doc/userguide/userguide.html
     gradle-dsl      b file:///usr/share/gradle/doc/dsl/index.html
     graphviz        b file:///usr/share/graphviz/doc
-    groovy          b file:///usr/share/doc/groovy-2.4.0/html/documentation/index.html
-    groovy-api      b file:///usr/share/doc/groovy-2.4.0/html/api/index.html
-    groovy-gapi     b file:///usr/share/doc/groovy-2.4.0/html/gapi/index.html
+    groovy          b file:///usr/share/doc/groovy-2.4.3/html/documentation/index.html
+    groovy-api      b file:///usr/share/doc/groovy-2.4.3/html/api/index.html
+    groovy-gapi     b file:///usr/share/doc/groovy-2.4.3/html/gapi/index.html
     guava           b http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/index.html
     haskell         b file:///usr/share/doc/ghc/html/libraries/index.html
     hibernate-orm   b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
@@ -43,6 +45,7 @@ done <<-EOF
     ii              sr ixquick -search=pics {}
     imdb            sr imdb {}
     iojs            b https://iojs.org/api/
+    java            b file:///usr/share/doc/jdk-docs/technotes/tools/unix/java.html
     java-apis       b http://www.oracle.com/technetwork/java/api-141528.html
     java-specs      b http://docs.oracle.com/javase/specs/index.html
     java-tutorials  b http://docs.oracle.com/javase/tutorial/reallybigindex.html
@@ -50,6 +53,7 @@ done <<-EOF
     jdk             b file:///usr/share/doc/jdk-docs/index.html
     jdk-api         b file:///usr/share/doc/jdk-docs/api/index.html
     jdk-relnotes    b http://www.oracle.com/technetwork/java/javase/jdk-relnotes-index-2162236.html
+    jdk-tools       b file:///usr/share/doc/jdk-docs/technotes/tools/index.html
     jdk7            b http://docs.oracle.com/javase/7/docs/index.html
     jdk7-api        b http://docs.oracle.com/javase/7/docs/api/index.html
     jee             b http://www.oracle.com/technetwork/java/javaee/overview/index.html
@@ -63,10 +67,14 @@ done <<-EOF
     linux-docs      b file:///lib/modules/$(uname -r)/build/Documentation/00-INDEX
     linux-howtos    b file:///usr/share/linux-howtos/INDEX
     maven           b http://maven.apache.org/plugins/index.html
+    maven-central   b https://search.maven.org/
+    maven-jcenter   b https://bintray.com/bintray/jcenter
     mdn             sr mdn {}
     mongodb         b http://docs.mongodb.org/manual/reference/
     music           sr musicbrainz {}
     mutt            b file:///usr/share/doc/mutt/manual.html
+    nasatv          b http://www.nasa.gov/multimedia/nasatv/
+    netfilter       b http://www.netfilter.org/documentation/index.html
     nodejs          b file:///usr/share/doc/nodejs/index.html
     notes           b file://$HOME/projects/notes/_build/html/index.html
     ntrs            sr ntrs {}
@@ -80,7 +88,10 @@ done <<-EOF
     python2         b file:///usr/share/doc/python2/html/index.html
     rst             b http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
     rst-demo        b file://$HOME/projects/lab/docutils/showcase/_build/html/index.html
+    rust            b http://doc.rust-lang.org/reference.html
+    rust-api        b http://doc.rust-lang.org/std/
     scala           b http://www.scala-lang.org/api/current/
+    spock           b http://docs.spockframework.org/
     spring          b http://docs.spring.io/spring/docs/current/spring-framework-reference/html/
     spring-api      b http://docs.spring.io/spring/docs/current/javadoc-api/
     spring-platform b http://docs.spring.io/platform/docs/current/reference/htmlsingle/#appendix
@@ -102,7 +113,7 @@ else
     q=$(dmenu1 "$prgname $k" </dev/null)
 fi
 
-eval cmd=("${map[$k]}")
+eval cmd=(${map[$k]})
 [ -z "$cmd" ] && exit 1
 
 for i in "${!cmd[@]}"; do

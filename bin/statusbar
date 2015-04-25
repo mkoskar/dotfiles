@@ -2,7 +2,7 @@
 
 set -e
 
-cleanup() { killer -g $$; }
+cleanup() { kill 0; }
 trap cleanup EXIT
 
 xmobar

@@ -16,8 +16,7 @@ if [ "$(basename "$0")" = 'osdd' ]; then
 
     cleanup() {
         rm -f "$pipe"
-        exec 2>/dev/null
-        kill $(jobs -pr)
+        kill 0
     }
     trap cleanup EXIT
 

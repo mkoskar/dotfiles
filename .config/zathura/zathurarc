@@ -1,0 +1,4 @@
+set scroll-step 150
+
+map <A-j> scroll down
+map <A-k> scroll up

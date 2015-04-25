@@ -1,14 +1,15 @@
 # vim: ft=config
 
 auto-reload yes
-bookmark-cmd "cat"
+bookmark-autopilot yes
+bookmark-cmd "args >> ~/.newsbeuter/bookmarks"
 browser b %u
 error-log "~/.newsbeuter/error.log"
 goto-next-feed no
 max-items 500
 podcast-auto-enqueue no
 reload-threads 3
-reload-time 480
+reload-time 720
 save-path "~/download"
 search-highlight-colors black yellow
 suppress-first-reload yes

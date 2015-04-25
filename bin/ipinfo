@@ -12,6 +12,9 @@ ip addr
 echo
 
 ip maddr
+echo
+
+brctl show
 
 echo $'\n--------------------------------------------------'
 echo $'> Routing:\n'

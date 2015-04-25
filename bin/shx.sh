@@ -68,6 +68,12 @@ dkstop() {
     [ ${#ids[@]} -eq 0 ] || docker stop "${ids[@]}"
 }
 
+# java
+alias java-info='java -XshowSettings:all -version'
+
+# groovy
+alias groovy-grape-verbose='groovy -Dgroovy.grape.report.downloads=true'
+
 # maven
 alias mvn-effective-pom='mvn help:effective-pom'
 alias mvn-effective-settings='mvn help:effective-settings'

@@ -14,7 +14,7 @@ err_usage() {
 	  -o output - redirect stdin and sterr to 'output'
 	  -a        - don't truncate 'output' but do append instead
 	  -i        - inline (don't use alternate screen)
-	  -I        - hide cursor
+	  -I        - don't hide cursor
 	  -q        - quiet
 	  -h        - show this help message and exit
 	EOF
@@ -55,7 +55,7 @@ while getopts 'd:tT:o:aiIcCqh' opt; do
             inline=1
             ;;
         I)
-            nocur=1
+            cur=1
             ;;
         c)
             copt=1
@@ -102,7 +102,7 @@ fi
 if [ -z "$inline" ]; then
     tput smcup
     tput clear
-    [ -n "$nocur" ] && tput civis
+    [ -n "$cur" ] || tput civis
 
     cleanup() {
         tput cnorm
