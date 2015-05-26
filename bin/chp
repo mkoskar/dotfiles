@@ -2,13 +2,13 @@
 
 set -e
 
+prgname=$(basename "$0")
+
 case $1 in -h|--help)
-    echo 'usage: chp [profile] [arg]...'
+    echo "usage: $prgname [profile] [arg]..."
     exit
     ;;
 esac
-
-prgname=$(basename "$0")
 
 # ----------------------------------------
 

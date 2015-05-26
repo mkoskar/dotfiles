@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -eq 0 ]; then
+    echo "usage: $(basename "$0") package" >&2
+    exit 2
+fi
+
+package-query -f '%n - %d\n%U' -A -Si "$1"

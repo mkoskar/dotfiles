@@ -1,3 +1,0 @@
-#!/bin/bash
-
-exec tor-resolve -p 1080 "$@"

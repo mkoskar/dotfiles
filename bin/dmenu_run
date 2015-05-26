@@ -2,5 +2,4 @@
 
 set -e -o pipefail
 
-cmd=($(dmenu_path | dmenu1))
-exec "${cmd[@]}"
+eval exec "$(dmenu_path | dmenu1)"

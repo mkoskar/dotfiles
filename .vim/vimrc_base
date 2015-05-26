@@ -4,6 +4,10 @@ if !exists('$VIMDIR')
     let $VIMDIR = '~/.vim'
 endif
 
+if !exists('$VIMRC')
+    let $VIMRC = expand('<sfile>:p')
+endif
+
 " ========== important
 set nocompatible
 set pastetoggle=<F6>
@@ -25,14 +29,15 @@ set smartcase
 set tags=./tags,tags
 
 " ========== displaying text
-set scrolloff=10
+set scrolloff=5
 set nowrap
-set sidescroll=10
-set sidescrolloff=10
+set sidescroll=15
+set sidescrolloff=15
 set list
 set listchars=eol:¬,tab:>-,trail:-,extends:>,precedes:<
 
-nnoremap <silent> <Leader>l :set list!<CR>
+nnoremap <Leader>l :set <C-R>=&list ? 'nolist' : 'list'<CR><CR>
+nnoremap <Leader>w :set <C-R>=&wrap ? 'nowrap' : 'wrap'<CR><CR>
 
 " ========== syntax, highlighting and spelling
 set background=dark
@@ -40,10 +45,13 @@ set hlsearch
 set colorcolumn=79,84
 set spelllang=en_us
 
+let g:option_colorcolumn = &cc
+
 nnoremap <silent> <Space> :nohls<Bar>echo<CR>
 nnoremap <silent> # :let @/ = "<C-R>=escape(escape(expand('<cWORD>'), '/\.*$^~["'), '''/\.*$^~["')<CR>"<Bar>set hls<CR>
 nnoremap <silent> * :let @/ = "<C-R>=escape(escape(expand('<cword>'), '/\.*$^~["'), '''/\.*$^~["')<CR>"<Bar>set hls<CR>
-nnoremap <silent> <Leader>sp :set spell!<CR>
+nnoremap <Leader>sp :set <C-R>=&spell ? 'nospell' : 'spell'<CR><CR>
+nnoremap col :set <C-R>=&cc ? 'cc=' : 'cc='.g:option_colorcolumn<CR><CR>
 
 " ========== multiple windows
 set laststatus=2
@@ -174,9 +182,9 @@ set encoding=utf-8
 " ========== various
 set virtualedit=block
 set gdefault
-exec 'set viminfo+=n'.$VIMDIR.'/.viminfo'
+exec "set viminfo='100,<50,s10,h,n".$VIMDIR."/.viminfo"
 
-nnoremap cov :set <C-R>=(&virtualedit =~# 'all') ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
+nnoremap cov :set <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
 
 " ========== other
 syntax on
@@ -201,15 +209,20 @@ nnoremap K <nop>
 nnoremap <C-c> <silent> <C-c>
 
 " operate on display lines not file lines
-nnoremap j gj
-nnoremap k gk
-xnoremap j gj
-xnoremap k gk
+noremap j gj
+noremap k gk
 
-nmap <M-j> 5j
-nmap <M-k> 5k
-xmap <M-j> 5j
-xmap <M-k> 5k
+noremap <M-j> 5j
+noremap <M-k> 5k
+
+noremap <M-C-H> 15h
+noremap <M-C-L> 15l
+
+noremap <C-E> 5<C-E>
+noremap <C-Y> 5<C-Y>
+
+noremap zh 15zh
+noremap zl 15zl
 
 nnoremap <M-n> :tabnew<CR>
 nnoremap <M-l> gt
@@ -231,23 +244,48 @@ nmap <Leader>es :sp %%
 nmap <Leader>ev :vsp %%
 nmap <Leader>et :tabe %%
 
+inoremap <C-F>f <C-R>=expand('%:t')<CR>
+inoremap <C-F>n <C-R>=expand('%:t:r')<CR>
+inoremap <C-F>p <C-R>=expand('%:p')<CR>
+inoremap <C-F>d <C-R>=expand('%:r')<CR>
+
+nnoremap <Leader>a ggVG
+vnoremap <Leader>a <Esc>ggVG
 nnoremap <Leader>hh :tab help<Space>
 
 nnoremap <silent> <C-X> :q<CR>
 nnoremap <silent> <C-Q> :bd<CR>
-nnoremap <silent> <Leader>rr :setl noreadonly modifiable<CR>
+nnoremap <silent> <Leader>ee :e<CR>
+nnoremap <silent> <Leader>EE :e!<CR>
+nnoremap <Leader>rr :setl noreadonly modifiable<CR>
 
 vnoremap <silent> <Leader>ss :sort<CR>
 vnoremap <silent> <Leader>su :sort u<CR>
 vnoremap <silent> <Leader>sd :sort!<CR>
+vnoremap <silent> <Leader>sb :!sort-blocks<CR>
 
 " working on diffs
 nnoremap <silent> <Leader>du :diffup<CR>
 nnoremap <silent> <Leader>d; :,diffget<CR>
 nnoremap <silent> <Leader>d: :,diffput<CR>
 
-" fast editing of the 'vimrc'
-nnoremap <silent> <Leader>rc :vs ~/.vim/vimrc<CR>
+" XML prettify
+vnoremap <silent> <Leader>px !tidy -config ~/.tidyrc -xml<CR>
+nnoremap <silent> <Leader>px :%!tidy -config ~/.tidyrc -xml<CR>
+
+" reformat paragraph
+vnoremap <silent> <Leader>pr !reformat<CR>
+nnoremap <silent> <Leader>pr :%!reformat<CR>
+
+" strip_lines / squash
+vnoremap <silent> <Leader>ps !strip_lines<CR>
+nnoremap <silent> <Leader>ps :%!strip_lines<CR>
+vnoremap <silent> <Leader>pS !squash<CR>
+nnoremap <silent> <Leader>pS :%!squash<CR>
+
+" fast editing / reloading of the 'vimrc'
+exec 'nnoremap <silent> <Leader>rc :vs '.$VIMRC.'<CR>'
+exec 'nnoremap <Leader>so :source '.$VIMRC.'<CR>'
 
 " ----------------------------------------
 
@@ -346,6 +384,7 @@ nnoremap <Leader>df :Diff2 <C-R>=expand('%')<CR>
 " {{{ Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding.
 
 function! MetaSetup(enable) abort
+    " Meta + [0-z]
     " don't include O and P because of conflicts in xterm
     let chars = '0123456789ABCDEFGHIJKLMNQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     let i = 0
@@ -359,6 +398,14 @@ function! MetaSetup(enable) abort
         endif
         let i += 1
     endwhile
+    " Meta + C-H, C-L
+    if a:enable
+        exec "set <M-C-H>=\e\x08"
+        exec "set <M-C-L>=\e\x0c"
+    else
+        set <M-C-H>=
+        set <M-C-L>=
+    endif
     let g:meta_enabled = a:enable
     if !has('vim_starting')
         redraw

@@ -2,11 +2,13 @@
 
 set -e
 
-tmp="${TMPDIR:-/tmp}/pacman-disowned-$UID-$$"
-mkdir "$tmp"
-trap 'rm -rf "$tmp"' EXIT
+tmpdir="${TMPDIR:-/tmp}/pacman-disowned-$UID-$$"
+cleanup() { rm -rf "$tmpdir"; }
+trap cleanup EXIT
 
-cd "$tmp"
+mkdir "$tmpdir"
+cd "$tmpdir"
+
 pacman -Qlq | sort -u >db
 
 find / -mindepth 1 \

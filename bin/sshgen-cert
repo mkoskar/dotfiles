@@ -2,12 +2,12 @@
 
 set -e
 
-err_usage() {
-    echo "usage: $(basename "$0") ca_key pub_key identity principals"
+usage_err() {
+    echo "usage: $(basename "$0") ca_key pub_key identity principals" >&2
     exit 2
 }
 
-[ $# -ne 4 ] && err_usage
+[ $# -ne 4 ] && usage_err
 
 ca_key=$1
 pub_key=$2

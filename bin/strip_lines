@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+[ "$(basename "$0")" = 'squash' ] && squash=1
+
+awk -v squash=$squash '
+/^\s*$/ {
+    if (seen_text) {
+        new_lines = (squash ? "" : new_lines) "\n"
+    }
+    next
+}
+{
+    seen_text = 1
+    printf new_lines
+    new_lines = ""
+    print
+}'

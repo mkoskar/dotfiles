@@ -1,3 +1,0 @@
-#!/bin/bash
-
-exec watch -n1 -t cat /proc/sys/kernel/random/entropy_avail

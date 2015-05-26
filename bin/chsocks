@@ -1,6 +1,30 @@
 #!/bin/bash
 
+set -e
+
+_usage() {
+    echo "usage: $(basename "$0") [-p port] [arg]..."
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage >&2; exit 2; }
+
+while getopts 'p:h' opt; do
+    case $opt in
+        p)
+            popt=$OPTARG
+            ;;
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
 exec chp proxy-socks \
-    --proxy-server='socks://127.0.0.1:1080' \
+    --proxy-server="socks://127.0.0.1:${popt:-1080}" \
     --proxy-bypass-list='<local>' \
-    --host-resolver-rules='MAP * ~NOTFOUND, EXCLUDE 127.0.0.1, EXCLUDE ::1, EXCLUDE localhost'
+    --host-resolver-rules='MAP * ~NOTFOUND, EXCLUDE 127.0.0.1, EXCLUDE ::1, EXCLUDE localhost' \
+    "$@"

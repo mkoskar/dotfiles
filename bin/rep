@@ -1,12 +1,14 @@
 #!/bin/bash
 
-set -e
+set -eu
 
-err_usage() {
-    cat >&2 <<-EOF
-	usage: $(basename "$0") [-d delay] [-t] [-T delta] [-o output] [-a] [-i] [-I] [-q] [-h] cmd [arg]...
+prgname=$(basename "$0")
 
-	  Execute 'cmd [arg]...' repeatedly.
+_usage() {
+    cat <<-EOF
+	usage: $prgname [-d delay] [-t] [-T delta] [-o output] [-a] [-i] [-I] [-q] cmd [arg]...
+
+	Execute 'cmd [arg]...' repeatedly.
 
 	  -d delay  - wait for 'delay' milliseconds; <0 = wait forever, 0 = don't wait at all (default: -1)
 	  -t        - terminate if 'cmd' finished in less than 'delta' milliseconds
@@ -18,30 +20,32 @@ err_usage() {
 	  -q        - quiet
 	  -h        - show this help message and exit
 	EOF
-    exit 2
 }
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
 
-if [ "$(basename "$0")" = 'respawn' ]; then
+if [ "$prgname" = 'respawn' ]; then
     set -- -d0 -t "$@"
 fi
 
+dopt= term= Topt= redir= output= inline= cur= copt= quiet=
 while getopts 'd:tT:o:aiIcCqh' opt; do
     case $opt in
         d)
-            if [ ! "$OPTARG" -eq "$OPTARG" ] 2>/dev/null; then
-                echo "$0: option requires an integer argument -- $opt" >&2
-                err_usage
-            fi
+            [ "$OPTARG" -eq "$OPTARG" ] 2>/dev/null || {
+                echo "$prgname: option requires an integer argument -- $opt" >&2
+                usage_err
+            }
             dopt=$OPTARG
             ;;
         t)
             term=1
             ;;
         T)
-            if [ ! "$OPTARG" -eq "$OPTARG" ] 2>/dev/null; then
-                echo "$0: option requires an integer argument -- $opt" >&2
-                err_usage
-            fi
+            [ "$OPTARG" -gt 0 ] 2>/dev/null || {
+                echo "$prgname: option requires a positive integer argument -- $opt" >&2
+                usage_err
+            }
             Topt=$OPTARG
             ;;
         o)
@@ -66,35 +70,39 @@ while getopts 'd:tT:o:aiIcCqh' opt; do
         q)
             quiet=1
             ;;
+        h)
+            usage
+            ;;
         *)
-            err_usage
+            usage_err
             ;;
     esac
 done
 shift $((OPTIND-1))
 
 if [ $# -eq 0 ]; then
-    err_usage
+    usage_err
 fi
 
 delay=${dopt:--1}
 term_delta=${Topt:-400}
 
+notty=1
 if [ ! -t 0 ]; then
-    if [ $delay -lt 0 ]; then
-        echo "stdin not being a tty doesn't go with negative delay" >&2
+    if ((delay < 0)); then
+        echo "$prgname: stdin not being a tty doesn't go with negative delay" >&2
         exit 2
     fi
     notty=1
 fi
 
-read_opts=(-N1 -s)
+read_opts=(-N1 -rs)
 if ((delay > 0)); then
     delay_s=$(bc -l <<<"scale=2; $delay/1000")
     read_opts+=(-t "$delay_s")
 fi
 
-eval_opts=("$@")
+eval_opts=
 if [ -n "$output" ]; then
     eval_opts+=("$redir" "$output" '2>&1')
 fi
@@ -116,7 +124,7 @@ while true; do
     [ -z "$quiet" ] && printf -- '> started: %s\n' "$(date '+%H:%M:%S')" >&2
     [ -n "$term" ] && t_begin=$(date +%s.%N)
 
-    eval "${eval_opts[@]}"
+    bashx -c "$(shell-escape "$@")" "${eval_opts[@]}"
 
     if [ -n "$term" ]; then
         t_end=$(date +%s.%N)

@@ -12,7 +12,7 @@ sigwinch_entry_ts = 0
 sigwinch_reentry_ts = 0
 
 
-def err_usage():
+def usage_err():
     print('usage: onsigwinch-exec handler [arg]... -- child [arg]...', file=sys.stderr)
     sys.exit(2)
 
@@ -60,13 +60,13 @@ args = sys.argv[1:]
 try:
     sep_idx = args.index('--')
 except ValueError:
-    err_usage()
+    usage_err()
 
 handler_args = args[:sep_idx]
 child_args = args[sep_idx+1:]
 
 if not handler_args or not child_args:
-    err_usage()
+    usage_err()
 
 child = subprocess.Popen(
     child_args,

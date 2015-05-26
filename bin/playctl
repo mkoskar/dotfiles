@@ -10,7 +10,7 @@ bluectl() {
 }
 
 play_pause_blue() {
-    local status=$(bluectl show | awk '/Status: /{print $2}')
+    local status=$(bluectl show | awk '/Status:/ {print $2}')
     case $status in
         playing)
             bluectl pause >/dev/null

@@ -1,4 +1,6 @@
 #!/bin/bash
 
+set -e -o pipefail
+
 watch="type='signal',interface='org.freedesktop.login1.Session',member='Lock'"
 dbus-monitor --system --profile "$watch" | sed '1d'

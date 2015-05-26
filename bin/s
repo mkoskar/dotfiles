@@ -11,7 +11,7 @@ cmd() {
 }
 
 exists () {
-    cmd has -t "$session" >/dev/null 2>&1
+    cmd has -t "$session" &>/dev/null
 }
 
 new() {
@@ -135,7 +135,8 @@ fi
 
 socket=$2
 
-(exec 8<"$(realpath "$0")"
+(exec 8>"$XDG_RUNTIME_DIR/s.lock"
+
 if ! flock -w 30 8; then
     exit 3
 fi

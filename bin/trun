@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 [ -e ~/bin/term.sh ] && . ~/bin/term.sh
 
 if [ "${TERM%%-*}" != 'screen' ]; then

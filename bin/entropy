@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+src=/proc/sys/kernel/random/entropy_avail
+
+[ "$(basename "$0")" = 'entropy-watch' ] \
+    && watch -n1 -t cat "$src" \
+    || cat "$src"

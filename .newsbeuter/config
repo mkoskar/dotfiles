@@ -2,7 +2,7 @@
 
 auto-reload yes
 bookmark-autopilot yes
-bookmark-cmd "args >> ~/.newsbeuter/bookmarks"
+bookmark-cmd "mark-url"
 browser b %u
 error-log "~/.newsbeuter/error.log"
 goto-next-feed no

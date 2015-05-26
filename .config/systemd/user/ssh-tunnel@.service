@@ -1,0 +1,12 @@
+[Unit]
+Description=ssh-tunnel(%i) service
+
+[Service]
+Type=simple
+SyslogIdentifier=ssh-tunnel(%i)
+ExecStart=/bin/bash -lc 'ssh -F ~/.ssh/config.tunnels -N "%i"'
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=default.target

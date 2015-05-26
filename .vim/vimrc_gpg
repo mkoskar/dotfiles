@@ -1,5 +1,6 @@
 " vim: ft=vim fdm=marker
 
+let $VIMRC = expand('<sfile>:p')
 source ~/.vim/vimrc_base
 
 set nobackup

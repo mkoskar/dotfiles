@@ -10,6 +10,8 @@
 # --silent-launch
 # --video-threads
 
+set -e
+
 proxy=(
     --proxy-server='127.0.0.1:8118'
     #--proxy-bypass-list='<local>'

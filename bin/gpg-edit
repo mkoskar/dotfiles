@@ -33,7 +33,7 @@ mtime1="$(stat -c '%Y' "$file.bak")"
 mtime2="$(stat -c '%Y' "$file")"
 
 if [ "$mtime1" = "$mtime2" ]; then
-    echo 'not touched'
+    echo 'not touched' >&2
 else
     cp -af "$file.bak" ~/archive/gpg-edit/"${path_hash: -8}__$basename.$mtime1"
     mv "$file.bak" "$file.old"

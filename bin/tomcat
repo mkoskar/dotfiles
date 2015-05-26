@@ -24,7 +24,7 @@ setup() {
 	export CATALINA_OPTS
 	EOF
 
-    cd conf
+    cd ./conf
 
     ln -s "$CATALINA_HOME/conf/catalina.policy"
     ln -s "$CATALINA_HOME/conf/catalina.properties"

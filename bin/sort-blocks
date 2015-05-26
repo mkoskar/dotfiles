@@ -1,3 +1,9 @@
 #!/bin/bash
 
-sed -r 's/^(\S)/\x0\1/' | sort -z | tr -d '\0'
+set -e -o pipefail
+
+squash |
+gawk -v RS='(\n{2,}|\n$)' -v ORS='\x0' '{print $0}' |
+sort -z |
+gawk -v RS='\x0' -v ORS='\n\n' '{print $0}' |
+head -n -1

@@ -31,7 +31,7 @@ while true; do
     echo "$item"
 
     ((l > 1)) || break
-    read -N1 -s c
+    read -N1 -rs c
     case $c in
         q|Q)
             break

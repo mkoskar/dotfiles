@@ -2,7 +2,7 @@
 # :Compatibility: POSIX
 
 [ -n "$SSH_TTY" ] && return
-command -v gpg-agent >/dev/null || return
+has-cmd ssh-agent || return
 
 info="$HOME/.ssh/ssh-agent-info"
 

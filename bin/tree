@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 prg=(/usr/bin/tree -a -I '.git|.svn' --noreport -x)
 
 if [ ! -t 1 ]; then

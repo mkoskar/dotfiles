@@ -22,10 +22,6 @@ if exists("$BASEDIR")
     nnoremap <silent> <F12> :!$BASEDIR/tags.sh<CR>
 endif
 
-" XML prettify
-vnoremap <silent> <Leader>px !tidy -config ~/.tidyrc -xml<CR>
-nnoremap <silent> <Leader>px !!tidy -config ~/.tidyrc -xml<CR>
-
 " ----------------------------------------
 
 exec pathogen#infect()

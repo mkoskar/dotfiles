@@ -23,7 +23,6 @@ capture_toggle() {
 }
 
 pulse_init() {
-    #pulseaudio --start
     systemctl --user start pulseaudio.service
 }
 
@@ -44,7 +43,7 @@ esac
 while true; do
     printf '\e[1G%s\e[0K' "$(status audio)"
 
-    read -N1 -s c
+    read -N1 -rs c
     case $c in
         k|K)
             playback_up

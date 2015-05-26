@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+[ $# -eq 0 ] && exit 2
+
+if [ "$(basename "$0")" = 'ssh-tunnel-off' ]; then
+    systemctl --user stop "ssh-tunnel@$1"
+    exit
+fi
+
+systemctl --user start "ssh-tunnel@$1"

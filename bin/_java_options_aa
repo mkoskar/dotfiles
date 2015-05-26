@@ -13,6 +13,6 @@ if [ "$prgname" = '_java_options_aa' ]; then
     [ $# -eq 0 ] || exec "$@"
 else
     basedir=$(dirname "$0")
-    export PATH=$(sed -E "s,:?$basedir:?,:,g" <<<"$PATH")
+    export PATH=$(sed "s,:?$basedir:?,:,g" <<<"$PATH")
     exec "$prgname" "$@"
 fi

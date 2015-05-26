@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+
+ssh-add -t 10m
+ssh-tunnel baobab

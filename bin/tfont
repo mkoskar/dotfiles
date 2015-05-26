@@ -20,7 +20,7 @@ process() {
 }
 
 processor() {
-    while read -s line; do
+    while read -rs line; do
         process "$line"
     done
 }

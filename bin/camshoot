@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 interval=${1:-0}
 gphoto2 --quiet --capture-image-and-download \
         --hook-script "$(type -P camhook)" \

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -eu
+
+notmuch new --quiet 2>/dev/null

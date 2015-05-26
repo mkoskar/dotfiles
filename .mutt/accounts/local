@@ -1,9 +1,8 @@
 # vim: ft=muttrc
 
 set my_local = $my_mail/local
-set my_local_spoolfile = $my_local/INBOX
 
 folder-hook $my_local 'source ~/.mutt/accounts/local_hook'
 
 mailboxes $my_local
-mailboxes $my_local_spoolfile
+mailboxes $my_local/INBOX

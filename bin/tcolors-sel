@@ -9,7 +9,7 @@
 set -e
 
 processor() {
-    while read -s line; do
+    while read -rs line; do
         tcolors x "$line"
     done
 }

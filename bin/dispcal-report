@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eu -o pipefail
 
 prgname=$(basename "$0")
 
@@ -10,12 +10,12 @@ xprop -root -len 8 _ICC_PROFILE _ICC_PROFILE_1 _ICC_PROFILE_2
 echo $'\n--------------------------------------------------'
 echo '> Select display / monitor to continue:'
 
-_dall=$(dispcal -h 2>&1 | LC_ALL=C grep -F Output | sed 's/^\s*//')
+_dall=$(dispcal -h |& LC_ALL=C grep -F Output | sed 's/^\s*//')
 IFS=$'\n' eval 'dall=($_dall)'
 echo "$_dall"
 echo
 
-read -N1 -s -p 'Your choice: ' dsel
+read -N1 -rsp 'Your choice: ' dsel
 echo
 
 if [[ ! "$dsel" =~ ^[1-9]$ ]] || ((dsel > ${#dall[@]})); then

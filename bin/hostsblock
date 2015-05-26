@@ -1,7 +1,11 @@
 #!/bin/bash
 
+set -eu
+
+[ "${BASH_SOURCE:-}" ] && src=$(realpath -seq "$BASH_SOURCE") || exit 2
+
 if [ $(id -u) -ne 0 ]; then
-    sudo -- "$0" "$@" >/dev/null 2>&1
+    sudo -- "$src" "$@"
     exit
 fi
 
@@ -9,6 +13,7 @@ prgname=$(basename "$0")
 
 cd /etc/hosts.d
 
+{
 case $prgname in
     hostsblock-off)
         mv 10-* off
@@ -21,5 +26,6 @@ case $prgname in
         mv off/10-* .
         ;;
 esac
+} 2>/dev/null || true
 
 systemctl restart dnsmasq

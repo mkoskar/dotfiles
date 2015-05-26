@@ -6,6 +6,6 @@ After=dbus.socket
 [Service]
 Type=simple
 SyslogIdentifier=apod
-ExecStart=/bin/sh -lc 'apod-get && { xdisplay apod-bg || true; }'
+ExecStart=/bin/bash -lc 'apod-get && { xdisplay apod-bg || true; }'
 Restart=on-failure
 RestartSec=3600

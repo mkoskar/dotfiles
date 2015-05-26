@@ -9,7 +9,7 @@ import sys
 SIGHUP_INT_TERM = (SIGHUP, SIGINT, SIGTERM)
 
 
-def err_usage():
+def usage_err():
     print('usage: onsighup-terminate child [arg]...', file=sys.stderr)
     sys.exit(2)
 
@@ -27,7 +27,7 @@ signals(SIGHUP_INT_TERM, SIG_IGN)
 
 child_args = sys.argv[1:]
 if not child_args:
-    err_usage()
+    usage_err()
 
 child = subprocess.Popen(
     child_args,

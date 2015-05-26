@@ -1,8 +1,7 @@
 # vim: ft=muttrc
 
-#set folder = $my_local
 set from = $USER
 set my_base = $my_local
 
 # mailboxes
-set spoolfile = $my_local_spoolfile
+set spoolfile = $my_local/INBOX

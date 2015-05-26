@@ -7,11 +7,14 @@
 # -N    treat absent files as empty
 # -a    treat all files as text
 
+set -e -o pipefail
+
 set -- -udprN "$@"
 cmd=(diff "$@")
+prgname=$(basename "$0")
 
 process() {
-    case $(basename "$0") in
+    case $prgname in
         d0)
             "${cmd[@]}"
             ;;

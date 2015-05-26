@@ -5,8 +5,8 @@ tls_starttls on
 tls_trust_file /etc/ssl/certs/ca-certificates.crt
 logfile ~/.msmtp.log
 
-proxy_host 127.0.0.1
-proxy_port 9050
+#proxy_host 127.0.0.1
+#proxy_port 9050
 
 account <account>
 from <from>

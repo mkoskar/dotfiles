@@ -11,8 +11,8 @@ prgname=$(basename "$0")
 
 xserver_dispno() {
     xset q &>/dev/null || exit 1
-    dispno=$(awk -F '[:.]' '{print $2}' <<<"$DISPLAY")
-    printf '%d\n' "$dispno"
+    [[ "$DISPLAY" =~ ^:([0-9]+)(\.[0-9]+)?$ ]] || exit 1
+    printf '%d\n' "${BASH_REMATCH[1]}"
 }
 
 xserver_pid() {
@@ -25,12 +25,12 @@ xserver_pid() {
 
 xserver_cmd() {
     pid=$(xserver_pid)
-    ps -p "$pid" -o cmd=
+    ps --pid "$pid" -o cmd=
 }
 
 xserver_name() {
     pid=$(xserver_pid)
-    ps -p "$pid" -o comm=
+    ps --pid "$pid" -o comm=
 }
 
 case $1 in
@@ -47,7 +47,7 @@ case $1 in
         xserver_pid
         ;;
     *)
-        cat <<-EOF
+        cat >&2 <<-EOF
 		usage: $prgname cmd     - get command-line
 		       $prgname dispno  - get display number
 		       $prgname name    - get command name

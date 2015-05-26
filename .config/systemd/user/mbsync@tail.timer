@@ -1,0 +1,6 @@
+[Unit]
+Description=mbsync(tail) timer
+
+[Timer]
+OnCalendar=*:30:00
+Persistent=yes

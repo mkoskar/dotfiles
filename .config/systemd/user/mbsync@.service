@@ -1,0 +1,9 @@
+[Unit]
+Description=mbsync(%i) service
+Requires=dbus.socket
+After=dbus.socket
+
+[Service]
+Type=simple
+SyslogIdentifier=mbsync(%i)
+ExecStart=/bin/bash -lc 'xdisplay mbsync-bin "%i"'

@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# This is rather abusive in calling ``ps`` per each process in process tree.
+# Strange alternative could be to parse ``pstree``.
+#
+# TODO: find better alternative
+
+set -eu -o pipefail
+
+pid=${1:-$$}
+
+[ "$pid" -gt 0 ] 2>/dev/null || {
+    echo "usage: $(basename "$0") pid" >&2
+    exit 2
+}
+
+oformat='pgid='
+
+recurse() {
+    local ppid=$1 pid= pgid=
+    [ "$ppid" -eq $$ ] && return
+    { ps --ppid "$ppid" -o pid= -o "$oformat" || true; } | while read -r pid out; do
+        echo "$out"
+        recurse "$pid"
+    done
+}
+
+ps --pid "$pid" -o "$oformat" | sed 's/^\s*//'
+recurse "$pid"

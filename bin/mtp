@@ -5,27 +5,29 @@
 # :Copyright: (c) 2014 Miroslav Koskar (http://mkoskar.com/)
 # :License: BSD 2-Clause
 
-set -e
+set -euf -o pipefail
 
-IFS=$'\n' eval $'mounts=($(grep -P \'^jmtpfs \' /proc/mounts | sort -u))'
+readarray -t mounts < <(grep -P '^jmtpfs ' /proc/mounts | sort -u)
 if [ ${#mounts[@]} -gt 0 ]; then
     echo -e "\nMounts:\n${mounts[@]}"
     echo
 
-    if confirm 'Unmount' y; then
+    if confirm 'Unmount?' y; then
         PS3='Select: '
         select sel in "${mounts[@]}"; do
             break
         done
-        [ -z "$sel" ] && exit 2
+        [ -n "$sel" ] || exit 2
+
         sel=($sel)
         target=${sel[1]}
+
         fusermount -u "$target"
         rm -d "$target"
     fi
 fi
 
-IFS=$'\n' eval $'devices=($(jmtpfs -l 2>/dev/null | grep -P \'^\d, .*\' | sort -u))'
+readarray -t devices < <(jmtpfs -l 2>/dev/null | grep -P '^\d, .*' | sort -u)
 if [ ${#devices[@]} -gt 0 ]; then
     echo $'\nMount:'
 
@@ -33,7 +35,7 @@ if [ ${#devices[@]} -gt 0 ]; then
     select sel in "${devices[@]}"; do
         break
     done
-    [ -z "$sel" ] && exit 2
+    [ -n "$sel" ] || exit 2
 
     device=($(awk -F ', ' '{print $1 " " $2}' <<<"$sel"))
     target="$HOME/tmp/mtp-${device[0]}-${device[1]}"

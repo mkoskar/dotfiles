@@ -1,24 +1,18 @@
 #!/bin/bash
-#
-# Synchronize all external mailboxes including post-processing.
-# This is intended to be started by a service manager of some kind.
 
-set -e
+set -eu
 
-prgname='mbsync'
+[ $# -eq 0 ] && exit 2
 
-log() {
-    echo "$*" >&2
-}
-
+name=$1
 t_begin=$(date +%s)
+prgname="mbsync($name)"
 
 cleanup() {
-    exitcode=$?
-    t_end=$(date +%s)
-    runtime=$((t_end-t_begin))
-    echo "exiting after ${runtime}s ($exitcode)"
-    if [ $exitcode -eq 0 ]; then
+    local exitstatus=$?
+    local t_end=$(date +%s)
+    echo "exiting after $(((t_end-t_begin)/60)) minutes, $(((t_end-t_begin)%60)) seconds ($exitstatus)"
+    if [ $exitstatus -eq 0 ]; then
         notify "___ $prgname ___"
     else
         notify "___ $prgname FAIL ___"
@@ -26,7 +20,4 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# ----------------------------------------
-
-/usr/bin/mbsync -q -a
-notmuch new --quiet 2>/dev/null
+/usr/bin/mbsync -q "$1"

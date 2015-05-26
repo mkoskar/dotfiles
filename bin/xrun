@@ -3,12 +3,17 @@
 set -e
 
 if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") cmd [arg]..."
+    echo "usage: $(basename "$0") cmd [arg]..." >&2
     exit 2
 fi
 
 if [ "$(basename "$0")" = 'xrun' ]; then
     xkillall "$1"
+    sleep 1
 fi
 
-xpgrep "$1" >/dev/null || exec "$@" &
+if ! xpgrep "$1" >/dev/null; then
+    pid=$$
+    pgid=$(ps --pid "$pid" -o pgid=)
+    [ $pid -eq $pgid ] && exec "$@" || exec setsid "$@"
+fi

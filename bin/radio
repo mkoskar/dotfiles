@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# TODO: refactor
+# TODO
 
-set -eu
+set -e
 
 PS3='Select: '
 stations=(

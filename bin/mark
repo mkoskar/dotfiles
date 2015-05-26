@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -e
+
+input=$*
+
+if [ $# -eq 0 ]; then
+    input="$(head -c 500)"
+fi
+
+[ -n "$input" ] || exit 1
+
+prgname=$(basename "$0")
+subname=${prgname##mark-}
+
+cd ~/projects/notes/src/02-marks
+
+outs=(
+    "$subname.rst"
+    $(ls "$subname"-*.rst 2>/dev/null || true)
+)
+out="${outs[0]}"
+
+case $prgname in
+    mark-path)
+        buf=$(pathmark "$input")
+        ;;
+    mark-pkg)
+        buf=$(pkgmark "$input")
+        ;;
+    mark-url)
+        buf=$(urlmark "$input")
+        ;;
+    *)
+        buf=$input
+        ;;
+esac
+
+[ -n "$buf" ] || exit 1
+
+if [ "${#outs[@]}" -gt 1 ]; then
+    out=$(IFS=$'\n'; echo "${outs[*]}" | dmenu1 "$prgname")
+fi
+
+[ -n "$out" ] || exit 1
+
+(
+    flock 1
+    echo
+    sed 's/^/    /' <<<"$buf"
+) >> "$out"

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e -o pipefail
+
 if [ $# -eq 0 ]; then
     echo "usage: $(basename "$0") device" >&2
     exit 2
@@ -19,4 +21,4 @@ process() {
     sudo smartctl -a "$target"
 }
 
-process 2>&1 | $PAGER
+process |& $PAGER

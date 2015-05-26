@@ -4,17 +4,21 @@ set -e
 
 prgname=$(basename "$0")
 
-if [ "$prgname" != 'xscreen0' -a "$(xserverq name)" = 'Xorg' ]; then
-    if [ "$prgname" = 'xscreen-mobile' ]; then
-        autorandr -l mobile --force
-    else
-        autorandr -c -d mobile --force
+(
+    [ -t 1 ] || exec 2>/dev/null
+
+    if [ "$prgname" != 'xscreen0' -a "$(xserverq name)" = 'Xorg' ]; then
+        if [ "$prgname" = 'xscreen-mobile' ]; then
+            autorandr -l mobile --force
+        else
+            autorandr -c -d mobile --force
+        fi
     fi
-fi
+)
 
 xset b off s off dpms 0 0 300
 
 xset m 4 2
 xsetroot -cursor_name left_ptr
 
-command -v hsetroot >/dev/null && hsetroot || xsetroot -solid black
+has-cmd hsetroot && hsetroot || xsetroot -solid black

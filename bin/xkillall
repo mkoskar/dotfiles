@@ -2,24 +2,28 @@
 
 set -e
 
-err_usage() {
+_usage() {
     echo "usage: $(basename "$0") [-f] pattern"
-    exit 2
 }
+usage() { _usage; exit 0; }
+usage_err() { _usage >&2; exit 2; }
 
-while getopts 'f' opt; do
+while getopts 'fh' opt; do
     case $opt in
         f)
             fopt='-f'
             ;;
+        h)
+            usage
+            ;;
         *)
-            err_usage
+            usage_err
             ;;
     esac
 done
 shift $((OPTIND-1))
 
-[ $# -eq 0 ] && err_usage
+[ $# -eq 0 ] && usage_err
 
 xpgrep_opts=($fopt)
-pids=$(xpgrep "${xpgrep_opts[@]}" "$1") && killer -g "${pids[@]}" || true
+xpgrep "${xpgrep_opts[@]}" "$1" | xargs -r killer -g

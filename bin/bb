@@ -5,17 +5,37 @@ set -e
 declare -A map
 prgname=$(basename "$0")
 
-while read k v; do
+kernel_release=$(uname -r)
+kernel_version="v${kernel_release%%-*}"
+
+while read -r k v; do
+    [ -z "$k" ] && continue
     map["$k"]=$v
 done <<-EOF
+
+    0               b https://mkoskar.com/
     ant             b file:///usr/share/doc/apache-ant/index.html
     apache          b http://httpd.apache.org/docs/
+    arch            b https://www.archlinux.org/
+    arch-bugs       b https://bugs.archlinux.org/
+    arch-forums     b https://bbs.archlinux.org/search.php?action=show_new
+    arch-wiki       sr archwiki {}
     arxiv           sr arxiv {}
     ascii           b https://en.wikipedia.org/wiki/ASCII
     aur             sr aur {}
+    awk             b https://www.gnu.org/software/gawk/manual/gawk.html
     base            b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/index.html
-    bash            b file:///usr/share/doc/bash/index.html
+    base-defs       b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/contents.html
+    base-env        b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap08.html
+    base-ifaces     b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/functions/contents.html
+    base-utils      b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/utilities/contents.html
+    bash-abs        b file:///usr/share/doc/bash/index.html
     bash-faq        b http://mywiki.wooledge.org/BashFAQ
+    bash-guide      b http://mywiki.wooledge.org/FullBashGuide
+    bash-guide1     b http://guide.bash.academy/index.html
+    bash-hackers    b http://wiki.bash-hackers.org/start
+    bash-pitfalls   b http://mywiki.wooledge.org/BashPitfalls
+    bash-sheet      b http://mywiki.wooledge.org/BashSheet
     charref         b http://dev.w3.org/html5/html-author/charref
     cite            sr cite {}
     d               sr webster {}
@@ -30,6 +50,8 @@ done <<-EOF
     gh              sr github {}
     gi              sr google -i {}
     gimp            b file:///usr/share/gimp/2.0/help/en/index.html
+    gmail-nolabel   b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:inbox+-in:sent+-in:draft+-in:trash/n100
+    gmail-search    b https://support.google.com/mail/answer/7190
     go              b https://golang.org/ref/spec
     gradle          b file:///usr/share/gradle/doc/userguide/userguide.html
     gradle-dsl      b file:///usr/share/gradle/doc/dsl/index.html
@@ -44,6 +66,7 @@ done <<-EOF
     i               sr ixquick {}
     ii              sr ixquick -search=pics {}
     imdb            sr imdb {}
+    imperial        b https://en.wikipedia.org/wiki/Imperial_units
     iojs            b https://iojs.org/api/
     java            b file:///usr/share/doc/jdk-docs/technotes/tools/unix/java.html
     java-apis       b http://www.oracle.com/technetwork/java/api-141528.html
@@ -62,18 +85,24 @@ done <<-EOF
     jee7-samples    b file://$HOME/opt/java_ee_sdk-7u1/samples/docs/list.html
     jee7-tutorial   b file://$HOME/opt/java_ee_sdk-7u1/docs/javaee-tutorial/doc/index.html
     jquery          sr jquery {}
+    js              b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
+    js-ecma         b http://www.ecma-international.org/ecma-262/5.1/
     jsr             b file://$HOME/archive/lib/00-cs/java/08-jsr/
     jsr-all         b https://jcp.org/en/jsr/all?sortBy=date
-    linux-docs      b file:///lib/modules/$(uname -r)/build/Documentation/00-INDEX
+    linux-docs      b file:///lib/modules/$kernel_release/build/Documentation/00-INDEX
     linux-howtos    b file:///usr/share/linux-howtos/INDEX
+    linux-src       b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/?id=$kernel_version
     maven           b http://maven.apache.org/plugins/index.html
     maven-central   b https://search.maven.org/
     maven-jcenter   b https://bintray.com/bintray/jcenter
     mdn             sr mdn {}
     mongodb         b http://docs.mongodb.org/manual/reference/
+    morse-nato      b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
     music           sr musicbrainz {}
     mutt            b file:///usr/share/doc/mutt/manual.html
-    nasatv          b http://www.nasa.gov/multimedia/nasatv/
+    mutt-patterns   b file:///usr/share/doc/mutt/manual.html#patterns
+    mutt-regexp     b file:///usr/share/doc/mutt/manual.html#regexp
+    nasatv          b http://www.ustream.tv/nasahdtv
     netfilter       b http://www.netfilter.org/documentation/index.html
     nodejs          b file:///usr/share/doc/nodejs/index.html
     notes           b file://$HOME/projects/notes/_build/html/index.html
@@ -81,11 +110,17 @@ done <<-EOF
     oracle-plsql    b https://docs.oracle.com/database/121/LNPLS/toc.htm
     oracle-sql      b https://docs.oracle.com/database/121/SQLRF/toc.htm
     perf            b http://www.brendangregg.com/perf.html
+    perl            b http://perldoc.perl.org/
     pkg             sr archpkg {}
     postgresql      b file:///usr/share/doc/postgresql/html/index.html
     privoxy         b file:///usr/share/doc/privoxy/user-manual/index.html
     python          b file:///usr/share/doc/python/html/index.html
     python2         b file:///usr/share/doc/python2/html/index.html
+    regexp-java      b file:///usr/share/doc/jdk-docs/api/java/util/regex/Pattern.html
+    regexp-js        b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+    regexp-pcre      b file:///usr/share/doc/pcre/html/pcresyntax.html
+    regexp-posix     b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap09.html
+    regexp-python    b file:///usr/share/doc/python/html/library/re.html
     rst             b http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
     rst-demo        b file://$HOME/projects/lab/docutils/showcase/_build/html/index.html
     rust            b http://doc.rust-lang.org/reference.html
@@ -100,26 +135,43 @@ done <<-EOF
     sqlite-lang     b file:///usr/share/doc/sqlite/lang.html
     tomcat          b file:///var/lib/tomcat8/webapps/docs/index.html
     tr              sr translate {}
+    tweets          b https://tweetdeck.twitter.com/
+    unicode         b https://en.wikipedia.org/wiki/Plane_(Unicode)
     w               sr wikipedia {}
     weechat         b file:///usr/share/doc/weechat/weechat_user.en.html
     yt              sr youtube {}
+
+    foot            sr google {} ft in m
+    gallon          sr google {} gal in l
+    inch            sr google {} in in cm
+    mile            sr google {} mi in km
+    ounce           sr google {} oz in g
+    pint            sr google {} pint in l
+    pound           sr google {} lb in kg
+    yard            sr google {} yd in m
+
+    czk-eur         sr google {} czk in eur
+    czk-usd         sr google {} czk in usd
+    eur-czk         sr google {} eur in czk
+    eur-usd         sr google {} eur in usd
+    usd-czk         sr google {} usd in czk
+    usd-eur         sr google {} usd in eur
+
 EOF
 
 k=$1
 if [ -z "$k" ]; then
-    read k q <<<"$(IFS=$'\n'; echo "${!map[*]}" | sort | dmenu1 "$prgname")"
+    read -r k q <<<"$(IFS=$'\n'; echo "${!map[*]}" | sort | dmenu1 "$prgname")"
     [ -z "$k" ] && exit 1
 else
     q=$(dmenu1 "$prgname $k" </dev/null)
 fi
 
-eval cmd=(${map[$k]})
+cmd=(${map[$k]})
 [ -z "$cmd" ] && exit 1
 
 for i in "${!cmd[@]}"; do
-    if [ "${cmd[$i]}" = '{}' ]; then
-        cmd[$i]=$q
-    fi
+    cmd[$i]=${cmd[$i]/\{\}/$q}
 done
 
 export SURFRAW_quote_ifs=no

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -e
 
 # teardown a single device by node name
 #   $1: device node name e.g., md0, dm-2
@@ -15,7 +15,7 @@ stop_device() {
     devtype=$(lsblk -drno TYPE "/dev/$1") || return 1
     case $devtype in
         crypt | lvm | dm)
-            read devname <"$1/dm/name"
+            read -r devname <"$1/dm/name"
             dmsetup remove "$devname"
             ;;
         raid*)
@@ -23,14 +23,14 @@ stop_device() {
             # clean. unfortunately, there isn't a whole lot we can do
             # if this fails, and the array may need a full rebuild on
             # the next reboot.
-            IFS=: read metadata _ <"$1/md/metadata_version"
+            IFS=: read -r metadata _ <"$1/md/metadata_version"
             if [ "$metadata" = 'external' ]; then
                 mdadm --wait-clean "/dev/$1"
             fi
             mdadm --stop "/dev/$1"
             ;;
         dmraid)
-            read devname <"$1/dm/name"
+            read -r devname <"$1/dm/name"
             dmraid -an "$devname"
             ;;
         # silently ignore unstacked devices

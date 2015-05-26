@@ -1,9 +1,11 @@
 #!/bin/bash
 
-set -eu
+set -e
 
 dev='/dev/sr0'
-case $(basename "$0") in
+prgname=$(basename "$0")
+
+case $prgname in
     sr0-iso)
         if [ $# -eq 0 ]; then
             blocks=$(expr $(isosize "$dev") / 2048)

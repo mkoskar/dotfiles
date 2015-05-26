@@ -1,14 +1,14 @@
 #!/bin/bash
 
-cd ~/projects/notes/src/09-root
+set -e
+
+cd ~/projects/notes/src/09-policy
 
 output() {
     local files=([0-9]*) l=${#files[@]}
     for i in "${!files[@]}"; do
         cat "${files[i]}"
-        ((i != l-1)) && \
-            #echo $'\n\n--------------------------------------------------\n\n'
-            echo
+        ((i != l-1)) && echo
     done
 }
 

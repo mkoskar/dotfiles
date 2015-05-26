@@ -2,8 +2,8 @@
 #
 # Generate:
 #
-# 1) RSA 4096-bit key encrypted using 256-bit AES cipher => `site.key`
-# 2) PKCS#10 CSR (Certificate Signing Request) using SHA-256 digest => `site.csr`
+# 1) RSA 4096-bit key encrypted using 256-bit AES cipher => site.key
+# 2) PKCS#10 CSR (Certificate Signing Request) using SHA-256 digest => site.csr
 
 set -e
 

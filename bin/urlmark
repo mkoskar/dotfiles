@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+    urlmark
+    ~~~~~~~
+
+    Get info on URL content (url, title, description, type).
+
+    :Compatibility: 3.2
+    :Copyright: (c) 2015 Miroslav Koskar (http://mkoskar.com/)
+    :License: BSD 2-Clause
+"""
+
+from sys import stderr, exit
+from urllib.request import urlopen
+import argparse
+
+from bs4 import BeautifulSoup
+
+parser = argparse.ArgumentParser(
+    description='Get info on URL content (url, title, description, type).'
+)
+parser.add_argument('-S', '--no-strip', action='store_true',
+                    help="don't strip output")
+parser.add_argument('url')
+args = parser.parse_args()
+
+
+def meta_by_name(soup, name):
+    if not (soup and soup.head):
+        return None
+    meta = soup.head.select('meta[name="' + name + '"]')
+    if meta:
+        return meta[0]['content']
+
+
+def meta_by_property(soup, prop):
+    if not (soup and soup.head):
+        return None
+    meta = soup.head.select('meta[property="' + prop + '"]')
+    if meta:
+        return meta[0]['content']
+
+
+def link_by_rel(soup, rel):
+    if not (soup and soup.head):
+        return None
+    link = soup.head.select('link[rel="' + rel + '"]')
+    if link:
+        return link[0]['href']
+
+
+def sanitize(string):
+    return string and ' '.join(string.split())
+
+
+def output(string):
+    if string:
+        print(sanitize(string))
+    elif args.no_strip:
+        print()
+
+
+try:
+    url = args.url.strip()
+    soup = BeautifulSoup(urlopen(url))
+
+    output(
+        meta_by_property(soup, 'og:url') or \
+        link_by_rel(soup, 'canonical') or \
+        url
+    )
+
+    _title = sanitize(
+        meta_by_property(soup, 'og:title') or \
+        (soup.title and soup.title.string)
+    )
+    output(_title)
+
+    _desc = sanitize(
+        meta_by_property(soup, 'og:description') or \
+        meta_by_name(soup, 'description')
+    )
+    if args.no_strip or _desc != _title:
+        output(_desc)
+
+    output(
+        meta_by_property(soup, 'og:type')
+    )
+except Exception as e:
+    print('{}: error: {}'.format(parser.prog, e), file=stderr)
+    exit(1)

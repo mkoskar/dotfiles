@@ -1,22 +1,25 @@
 # vim: ft=muttrc
 
 set my_example = $my_mail/example
-set my_example_spoolfile = $my_example/INBOX
-set my_example_record = $my_example/sent
-set my_example_postponed = $my_example/drafts
-set my_example_mbarchived = $my_example/shelve
-set my_example_mbtrashed = $my_example/trash
 
-folder-hook $my_example 'source ~/.mutt/accounts/example_hook'
+folder-hook $my_example ' \
+    set my_base = $my_example; \
+    source ~/.mutt/accounts/example_hook \
+'
 
-# alternates <regexp>...
+# alternates -group me <regexp>...
 
 mailboxes $my_example
-mailboxes $my_example_spoolfile
+mailboxes $my_example/INBOX
 
 # imap
-set my_example_imap = imaps://<user>@<host>:993/
+set my_example_imap = imaps://<user>@<host>:993
 set my_example_imap_pass = "`authinfo <machine> <login>`"
+
 account-hook $my_example_imap 'set imap_pass = $my_example_imap_pass'
-folder-hook $my_example_imap 'set folder = $my_example_imap; \
-                              set read_only'
+
+folder-hook $my_example_imap ' \
+    set my_base = $my_example_imap; \
+    set folder = $my_base; \
+    source ~/.mutt/accounts/example_hook \
+'

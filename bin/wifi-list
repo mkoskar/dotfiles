@@ -1,4 +1,6 @@
 #!/bin/bash
 
+set -e
+
 ip link set wlan0 up
 iwlist wlan0 scan

@@ -1,5 +1,13 @@
 # vim: ft=conf
 
+MaxMessages 5000
+Create Slave
+Expunge Both
+SyncState *
+
+# example
+# -------
+
 IMAPAccount example
 Host <host>
 User <user>
@@ -19,6 +27,3 @@ Channel example
 Master :example-remote:
 Slave :example-local:
 Patterns *
-Create Both
-Expunge Both
-SyncState *

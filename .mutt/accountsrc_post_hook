@@ -3,6 +3,10 @@
 unhook save-hook
 save-hook . $my_base/%O
 
+# $spoolfile and $record mailboxes can be referenced by ! and < shortcuts
+# respectively, nevertheless corresponding macros are left (and redefined)
+# here for consistency
+
 macro index,pager \e1 "<change-folder>$spoolfile<enter>" 'go to spoolfile mailbox'
 macro browser \e1 <exit>\e1 'go to spoolfile mailbox'
 

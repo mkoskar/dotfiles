@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Session lock script with `slock` as backend.
+# Session lock script with ``slock`` as backend.
 #
 # * disable SysRq
 # * disable VT switching
@@ -9,10 +9,12 @@
 # :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
 # :License: BSD 2-Clause
 
-set -e
+set -eu
 
-basedir=$(dirname "$(realpath "$0")")
-export PATH="$basedir:$PATH"
+[ "${BASH_SOURCE:-}" ] && src=$(realpath -seq "$BASH_SOURCE") || exit 2
+
+srcdir=$(dirname "$src")
+export PATH="$srcdir:$PATH"
 
 # target user
 user='miro'

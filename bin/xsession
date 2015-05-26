@@ -2,6 +2,9 @@
 
 set -e
 
+cleanup() { kill $(jobs -p); }
+trap cleanup EXIT
+
 # startx unsets DBUS_SESSION_BUS_ADDRESS, let's set it back
 export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
 
@@ -31,9 +34,9 @@ if [ "$(xserverq name)" = 'Xorg' ]; then
 fi
 
 _main() {
-    xrun osdd
-    xrun dunst
-    xrun keynav
+    xrun osdd &
+    xrun dunst &
+    #xrun keynav &
     _xmonad
 }
 
@@ -42,12 +45,12 @@ _herbstluftwm() {
 }
 
 _openbox() {
-    xrun tint2
+    xrun tint2 &
     openbox
 }
 
 _xmonad() {
-    xrun tray
+    xrun tray &
     xmonad
 }
 
@@ -58,6 +61,6 @@ case $session in
         _$session
         ;;
     *)
-        [ $# -eq 0 ] || "$@"
+        [ $# -eq 0 ] || command "$@"
         ;;
 esac

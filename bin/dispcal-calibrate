@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# TODO: repeatable, unattended calibration & profiling
-
 set -e
 
 cd ~/.local/share/icc

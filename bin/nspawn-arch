@@ -3,12 +3,12 @@
 set -e
 
 if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") name"
+    echo "usage: $(basename "$0") name" >&2
     exit 2
 fi
 
 if [ $(id -u) -ne 0 ]; then
-    sudo -- "$0" "$@"
+    sudo -- nspawn-arch "$@"
     exit
 fi
 
@@ -21,7 +21,7 @@ cd "$homedir"
 
 # ----------------------------------------
 
-(exec 8<"$(realpath "$0")"
+(exec 8>"$XDG_RUNTIME_DIR/nspawn-arch.lock"
 flock 8
 (exec 8<&-
 

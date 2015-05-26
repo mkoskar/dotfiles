@@ -4,7 +4,7 @@
 
 -- {{{ Imports
 
-import Data.List (isPrefixOf)
+import Data.List (elemIndex, isPrefixOf)
 import Data.Maybe (fromMaybe)
 import Data.Monoid (mempty, All(..), appEndo)
 import Graphics.X11.Xinerama (getScreenInfo)
@@ -64,6 +64,10 @@ workspaceOnScreen p w = do
 screenCount :: X Int
 screenCount = withDisplay $ io . (fmap length) . getScreenInfo
 
+xmobarActionWrap :: String -> String -> String
+xmobarActionWrap "" m = m
+xmobarActionWrap a m  = wrap ("<action=`" ++ a ++ "`>") "</action>" m
+
 myStatusBar conf = statusBar "statusbar" myPP myToggleStrutsKey conf
   where
     --color = dzenColor
@@ -73,7 +77,7 @@ myStatusBar conf = statusBar "statusbar" myPP myToggleStrutsKey conf
         , ppVisible = color "#FEED6A" "" . wrap "(" ")"
         , ppUrgent = color "#BB4455" "#FEEF6A" . pad
         , ppSep = " "
-        , ppTitle = color "#EFEFEF" "" . shorten 100
+        , ppTitle = color "#EFEFEF" "" . shorten 100 . xmobarStrip
         , ppOrder = \(workspaces : layout : title : extras) -> [workspaces, title]
         , ppSort = getSortByXineramaPhysicalRule
         }
@@ -110,7 +114,6 @@ myConfig = defaultConfig
         checkKeymap myConfig myEZKeys
         ewmhDesktopsStartup
         setWMName "LG3D"
-        spawn "xsession-hook startup"
         n <- screenCount
         case n of
             1 -> do
@@ -124,6 +127,7 @@ myConfig = defaultConfig
                 workspaceOnScreen 1 "3"
                 workspaceOnScreen 2 "2"
                 viewScreen 1
+        spawn "xsession-hook startup"
 
     myLogHook = ewmhDesktopsLogHook
                 <+> updatePointer (Relative 0.5 0.5)
@@ -340,13 +344,15 @@ myConfig = defaultConfig
         , ("M-; M-b", spawn "bluetooth-toggle")
         , ("M-; M-d", spawn "dpms-toggle")
         , ("M-; M-l", spawn "sudo lockx")
-        , ("M-; M-s", spawn "selfie")
         , ("M-; M-w", spawn "wifi-toggle")
         , ("M-S-b", spawn "backlight-toggle")
 
         , ("M-; M-a", spawn "b http://apod.nasa.gov/")
         , ("M-; M-i", spawn "notify -u low \"$(status)\"")
-        , ("M-; M-p", do workspaceOnScreen 0 "9"; spawn "playx")
+        , ("M-; M-m", spawn "markx-url")
+        , ("M-; M-S-m", spawn "markx")
+        , ("M-; M-p", spawn "playx")
+        , ("M-; M-s", spawn "selfie")
         , ("M-S-<Home>", spawn $ myTerminal ++ " - trun wow")
 
         , ("<XF86AudioLowerVolume>", spawn "audio playback_down")

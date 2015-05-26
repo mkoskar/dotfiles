@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# pr - convert text files for printing
+# fold - wrap each input line to fit in specified width
+# fmt - simple optimal text formatter
+# wrap - filter to word-wrap text
+# par - filter for reformatting paragraphs
+
+width=${1:-79}
+
+has-cmd par && exec par -w "$width"
+has-cmd fmt && exec fmt -u -w "$width"
+has-cmd fold && exec fold -s -w "$width"
+
+exit 1

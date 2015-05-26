@@ -7,4 +7,4 @@ if [ "$(basename "$0")" = 'b0' ]; then
     args=(ffp quarantine)
 fi
 
-exec "${args[@]}" "$@" >/dev/null 2>&1 &
+exec "${args[@]}" "$@" &>/dev/null &

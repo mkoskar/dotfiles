@@ -11,7 +11,6 @@ case $- in *i*) ;; *) return ;; esac
 
 [ -e ~/bin/shx.sh ] && . ~/bin/shx.sh
 
-CDPATH='.:..:~'
 HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
 HISTSIZE=500
 SAVEHIST=5000
@@ -24,6 +23,7 @@ typeset -gU path fpath cdpath
 
 zmodload zsh/attr
 zmodload zsh/complist
+zmodload zsh/system
 zmodload -F zsh/stat b:zstat
 
 autoload -Uz add-zsh-hook
@@ -136,23 +136,27 @@ zstyle ':completion:*:ssh:*' group-order users hosts-domain hosts-host hosts-ipa
 zstyle ':completion:*:ssh:*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
 
 # custom
+compctl -F fn
+compctl -FBmwa i
+compctl -f paco
 compctl -k "(10m 15m 20m 25m 30m)" a
 compctl -m on
+compctl -m pacoc
 compctl -m pgx
 compctl -m pth
+compctl -m ptha
 compctl -m rep
-compctl -m spth
+compctl -m torsocks
 compctl -m xrun
 compctl -m xrun0
-compctl -f paco
-compctl -m pacoc
+compctl -v v
 
 function _pacl {
     local -a packages_long
     packages_long=(/var/lib/pacman/local/"$1"*(/))
     reply=(${${packages_long#/var/lib/pacman/local/}%-*-*})
 }
-compctl -K _pacl pacl pacd pacp pacw paci
+compctl -K _pacl pacl pacd pacp pacw paci pkgmark
 
 #========== window-title
 

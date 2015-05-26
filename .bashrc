@@ -11,7 +11,7 @@ case $- in *i*) ;; *) return ;; esac
 
 [ -e ~/bin/shx.sh ] && . ~/bin/shx.sh
 
-shopt -s autocd checkjobs checkwinsize cmdhist dotglob histappend \
+shopt -s autocd checkjobs checkwinsize cmdhist dotglob gnu_errfmt histappend \
          histreedit histverify lithist no_empty_cmd_completion
 
 bind -m vi-insert   '"\C-e": shell-expand-line'
@@ -27,24 +27,26 @@ HISTFILESIZE=5000
 HISTIGNORE='exit'
 HISTSIZE=500
 
-CDPATH='.:..:~'
-
 _title='\[\e]0;\u@\h:\w\a\]'
 PS1="$_title\$?:\W\$ "
 if [ -n "$(hostname-label)" ]; then
     PS1="$_title\$?:\h:\W\$ "
 fi
 
+complete -o nospace -A function fn
 complete -o nospace -W '10m 15m 20m 25m 30m' a
+complete -o nospace -c i
 complete -o nospace -c on
+complete -o nospace -c pacoc
 complete -o nospace -c pgx
 complete -o nospace -c pth
+complete -o nospace -c ptha
 complete -o nospace -c rep
-complete -o nospace -c spth
+complete -o nospace -c torsocks
 complete -o nospace -c xrun
 complete -o nospace -c xrun0
 complete -o nospace -f paco
-complete -o nospace -c pacoc
+complete -o nospace -v v
 
 _pacl() {
     COMPREPLY=()
@@ -53,4 +55,4 @@ _pacl() {
     _get_comp_words_by_ref cur prev
     _pacman_pkg Qq
 }
-complete -o nospace -F _pacl pacl pacd pacp pacw paci
+complete -o nospace -F _pacl pacl pacd pacp pacw paci pkgmark

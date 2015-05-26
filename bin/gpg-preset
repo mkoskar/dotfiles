@@ -3,7 +3,7 @@
 set -e
 
 _preset() {
-    IFS= read -s -r -p "Passphrase for (${1:0:8}...): " pass </dev/tty
+    IFS= read -rsp "Passphrase for (${1:0:8}...): " pass </dev/tty
     echo
     [ -z "$pass" ] && return 1
     gpg-connect-agent <<<"PRESET_PASSPHRASE $1 -1 $(echo -n "$pass" | xxd -ps)"
@@ -15,11 +15,8 @@ _clear() {
 
 # ----------------------------------------
 
-ids=()
 [ -t 0 ] && src="$HOME/.gnupg/gpg-preset-ids" || src='/dev/stdin'
-while IFS= read -r line; do
-    ids+=("$line")
-done <"$src"
+readarray -t ids <"$src"
 
 if [ ${#ids[@]} -eq 0 ]; then
     exit 1

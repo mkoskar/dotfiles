@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+prgname=$(basename "$0")
+
+case $prgname in
+    msmtp-noproxy)
+        opts=()
+        ;;
+    msmtp-tor)
+        opts=(--proxy-host=127.0.0.1 --proxy-port=9050)
+        ;;
+    *)
+        opts=(--proxy-host=127.0.0.1 --proxy-port=1081)
+        ;;
+esac
+
+/usr/bin/msmtp "${opts[@]}" "$@"

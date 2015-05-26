@@ -5,16 +5,20 @@ Config {
     ,bgColor = "#000000"
     ,fgColor = "#C0C0C0"
     ,position = TopP 0 100
+    ,border = BottomB
+    ,borderWidth = 3
+    ,borderColor = "#000000"
+    ,textOffset = 13
     ,commands = [
-         Run StdinReader
+         Run UnsafeStdinReader
         ,Run CommandReader "statusbar-mail" "mail"
         ,Run Battery ["-t", "<watts>|<left>|<timeleft>", "-L", "15", "-H", "50", "-l", "#FF5555", "-n", "#EFEFEF", "--",
                       "-L", "0", "-H", "12", "-m", "#55FF55", "-h", "#FF5555"] 50
         ,Run Wireless "wlan0" ["-t", "q<quality>"] 50
-        ,Run Cpu ["-t", "<total>", "-L", "8", "-H", "30", "-n", "#EFEFEF", "-h", "#FF5555", "-p", "2", "-c", "0"] 30
-        ,Run Memory ["-t", "<usedratio>", "-p", "2", "-c", "0"] 50
+        ,Run Cpu ["-t", "<total>", "-L", "8", "-H", "30", "-n", "#EFEFEF", "-h", "#FF5555", "-p", "3"] 30
+        ,Run Memory ["-t", "<usedratio>", "-a", "r", "-p", "3"] 50
         ,Run Date "%a|%d.%m|%H:%M" "date" 600
     ]
     ,alignSep = "}{"
-    ,template = "%StdinReader% }{ %mail%  %battery%  %wlan0wi%  %cpu%|%memory%  %date%"
+    ,template = "%UnsafeStdinReader% }{ %mail%  %battery%  %wlan0wi% %cpu%|%memory% %date%"
 }

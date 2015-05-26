@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Wrapper script to use Vim as a pager.
-# Install by running `export PAGER='pg'`.
+# Install by running ``export PAGER='pg'``.
 #
 # :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
 # :License: BSD 2-Clause

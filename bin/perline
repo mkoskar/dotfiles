@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eu
+
+IFS= while read -r line; do
+    if [[ "$line" =~ ^[[:blank:]]*$ ]]; then
+        echo "$line"
+    else
+        "$@" "$line"
+    fi
+done

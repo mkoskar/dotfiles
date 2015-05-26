@@ -3,14 +3,15 @@
 set -e
 
 target=~/tmp/selfie.jpg
-pidfile="$XDG_RUNTIME_DIR/selfie.pid"
+preview_pidfile="$XDG_RUNTIME_DIR/selfie_preview.pid"
+preview_cleanup() { rm -rf "$preview_pidfile"; }
 
 preview() {
-    echo $$ >"$pidfile"
-    trap 'rm -f "$pidfile"' RETURN
+    echo $$ >"$preview_pidfile"
+    trap preview_cleanup RETURN
     qiv -tiGfl --vikeys -T "$target"
 }
 
 fswebcam -q -r 5000x5000 "$target"
 
-[ -e "$pidfile" ] || preview &
+[ -e "$preview_pidfile" ] || { preview & }

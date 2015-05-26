@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e -o pipefail
+
+prgname=$(basename "$0")
+subname=${prgname##markx}
+
+xselmenu "$prgname" | mark"$subname"

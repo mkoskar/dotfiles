@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -eq 0 ]; then
+    echo "usage: $(basename "$0") user" >&2
+    exit 2
+fi
+
+github-repos "$@" | while read -r line; do
+    git clone "$line" || true
+done

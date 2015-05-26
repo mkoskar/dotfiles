@@ -5,10 +5,10 @@
 # * move from /etc/cron.hourly to systemd
 # * mail on exit code != 2
 
-set -eu
+set -e
 
 if [ $(id -u) -ne 0 ]; then
-    echo 'This script must be run with root privileges.'
+    echo 'This script must be run with root privileges.' >&2
     exit 1
 fi
 
@@ -34,7 +34,7 @@ if [ "$(basename "$0")" = 'backup-setup' ]; then
     fi
 
     if [ ! "$(realpath "$mapper")" = "$(realpath "$fs")" ]; then
-        echo "$mapper: mapper misconfigured"
+        echo "$mapper: mapper misconfigured" >&2
         exit 1
     fi
 
@@ -53,9 +53,7 @@ log() {
     echo "$log_prefix: $*" >&2
 }
 
-cleanup() {
-    log "exiting ($?)"
-}
+cleanup() { log "exiting ($?)"; }
 trap cleanup EXIT
 
 loghome='/var/log/local'

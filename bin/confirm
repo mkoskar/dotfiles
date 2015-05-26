@@ -8,7 +8,7 @@
 set -e
 
 if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") prompt [default]"
+    echo "usage: $(basename "$0") prompt [default]" >&2
     exit 2
 fi
 
@@ -27,9 +27,9 @@ case $default in
         ;;
 esac
 
-while read -N1 -s -p "$prompt" input; do
-    input=${input:-$default}
-    case $input in
+while read -N1 -rsp "$prompt" sel; do
+    sel=${sel:-$default}
+    case $sel in
         [yY])
             echo y
             exit 0

@@ -1,7 +1,9 @@
 #!/bin/bash
 
+set -e
+
 if [ $# -gt 0 ]; then
     opts=(-p "$1" -a)
 fi
 
-lsof -n "${opts[@]}" -itcp -o -iudp
+lsof -nP "${opts[@]}" -itcp -o -iudp

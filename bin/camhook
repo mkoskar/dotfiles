@@ -3,11 +3,12 @@
 set -e
 
 target=~/tmp/camhook.jpg
-pidfile="$XDG_RUNTIME_DIR/camhook.pid"
+preview_pidfile="$XDG_RUNTIME_DIR/camhook_preview.pid"
+preview_cleanup() { rm -rf "$preview_pidfile"; }
 
 preview() {
-    echo $$ >"$pidfile"
-    trap 'rm -f "$pidfile" "$target"' RETURN
+    echo $$ >"$preview_pidfile"
+    trap preview_cleanup RETURN
     qiv -tiGfl --vikeys -T "$target"
 }
 
@@ -18,7 +19,7 @@ case $ACTION in
         ;;
     download)
         cp "$ARGUMENT" "$target"
-        [ -e "$pidfile" ] || preview &
+        [ -e "$preview_pidfile" ] || { preview & }
         ;;
     stop)
         ;;

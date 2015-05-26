@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 ids=$(xdotool search --class 'skype')
 
 for id in $ids; do

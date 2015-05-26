@@ -11,7 +11,7 @@ case $prgname in
         curl -s --create-dirs -o "$path" "$(apod)"
         ;;
     apod-bg)
-        command -v apod-bgset >/dev/null 2>&1 \
+        has-cmd apod-bgset \
             && apod-bgset "$path" \
             || feh --bg-max --no-fehbg "$path"
         ;;

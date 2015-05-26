@@ -3,7 +3,7 @@
 set -e
 
 if [ $(id -u) -ne 0 ]; then
-    echo 'This script must be run with root privileges.'
+    echo 'This script must be run with root privileges.' >&2
     exit 1
 fi
 
@@ -12,7 +12,7 @@ list() {
     src="/proc/net/${family}_tables_names"
 
     [ -e "$src" ] || return 0
-    while read table; do
+    while read -r table; do
         echo $'\n--------------------------------------------------'
         echo -e "> $family table $table:\n"
         "${family}tables" -t "$table" -nvL

@@ -6,7 +6,7 @@ prgname=$(basename "$0")
 
 case $prgname in
     vlcdo0)
-        exec >/dev/null 2>&1
+        exec &>/dev/null
         ;;
     vlcdo-add)
         vlcdo0 add "$1"
@@ -24,7 +24,7 @@ args=(--quiet --no-video-title-show)
 
 if [ ! -e "$sock" ]; then
     mkdir -p -m 700 "${sock%/*}"
-    setsid /usr/bin/vlc --extraintf oldrc --rc-fake-tty --rc-unix "$sock" "${args[@]}" >/dev/null 2>&1 &
+    setsid /usr/bin/vlc --extraintf oldrc --rc-fake-tty --rc-unix "$sock" "${args[@]}" &>/dev/null &
     sleep 0.2
 fi
 

@@ -2,6 +2,8 @@
 
 set -e
 
+# TODO: don't use `...` process substitution
+
 echo
 echo `tput sgr0`normal
 echo `tput bold`bold`tput sgr0`
@@ -28,12 +30,12 @@ echo $'\n--------------------------------------------------'
 stty -a | perl -n -e '/\b(erase = .*?);/ && print "stty $1\n"'
 
 echo $'\n--------------------------------------------------'
-read -N1 -p 'Press BS:            '
+read -N1 -rp 'Press BS:            '
 echo
-read -N1 -p 'Press CTRL+BS:       '
+read -N1 -rp 'Press CTRL+BS:       '
 echo
-read -N1 -p 'Press CTRL+H:        '
+read -N1 -rp 'Press CTRL+H:        '
 echo
-read -N1 -p 'Press CTRL+SHIFT+H:  '
+read -N1 -rp 'Press CTRL+SHIFT+H:  '
 echo
 echo

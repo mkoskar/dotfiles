@@ -3,5 +3,5 @@
 .netrwhist
 .swap
 .undo
-.viminfo
+.viminfo*
 bundle*

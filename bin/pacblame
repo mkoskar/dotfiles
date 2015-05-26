@@ -4,14 +4,15 @@ set -e
 
 prgname=$(basename "$0")
 
-err_usage() {
+_usage() {
     cat <<-EOF
 	usage: $prgname         - blame by "install size"
 	       $prgname -d      - blame by "depends on"
 	       $prgname -r      - blame by "required by"
 	EOF
-    exit 2
 }
+usage() { _usage; exit 0; }
+usage_err() { _usage >&2; exit 2; }
 
 cmd="expac -H M -l '\n' '%m %n' | sort -k1nr"
 
@@ -23,8 +24,11 @@ while getopts 'drh' opt; do
         r)
             cmd="expac -l ' ' '%n %N' | awk '{print NF - 1, \$1}' | sort -k1nr"
             ;;
+        h)
+            usage
+            ;;
         *)
-            err_usage
+            usage_err
             ;;
     esac
 done

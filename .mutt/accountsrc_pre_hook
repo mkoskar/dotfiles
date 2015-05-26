@@ -1,7 +1,7 @@
 # vim: ft=muttrc
 
-set folder = $my_mail
 set my_base = $my_mail
+set folder = $my_base
 
 set copy
 set postpone = ask-yes
@@ -21,9 +21,10 @@ set my_mbarchived = _archived_
 set my_mbtrashed = _trashed_
 
 # other
-reset query_command
-reset sendmail
+unset query_command
+unset sendmail
 
-bind index q quit
+# key bindings / macros
 bind index,pager A noop
 bind index,pager \ez noop
+macro index q <change-folder>!<enter> 'go to spoolfile mailbox'

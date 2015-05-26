@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e -o pipefail
+
 if [ $# -eq 0 ]; then
     exit 2
 fi

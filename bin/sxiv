@@ -3,11 +3,12 @@
 set -e
 
 tmpfile=$(mktemp)
-trap 'rm -f "$tmpfile"' EXIT
+cleanup() { rm -f "$tmpfile"; }
+trap cleanup EXIT
 
 /usr/bin/sxiv -o "$@" >"$tmpfile"
 
 [ -s "$tmpfile" ] || exit 0
 
 mkdir .marked
-xargs -a "$tmpfile" -d '\n' -I{} mv {} -t .marked
+xargs -d '\n' -r -I{} -a "$tmpfile" mv {} -t .marked

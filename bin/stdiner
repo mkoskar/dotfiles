@@ -2,10 +2,11 @@
 
 set -e
 
-err_usage() {
+_usage() {
     echo "usage: $(basename "$0") [-t | -T] [arg]..."
-    exit 2
 }
+usage() { _usage; exit 0; }
+usage_err() { _usage >&2; exit 2; }
 
 while getopts 'tTh' opt; do
     case $opt in
@@ -15,8 +16,11 @@ while getopts 'tTh' opt; do
         T)
             Topt=1
             ;;
+        h)
+            usage
+            ;;
         *)
-            err_usage
+            usage_err
             ;;
     esac
 done
@@ -31,7 +35,8 @@ fi
 
 if [ -n "$topt$Topt" ]; then
     file=$(mktemp -t 'stdiner.XXXXXXXXXX')
-    trap 'rm -f "$file"' EXIT
+    cleanup() { rm -f "$file"; }
+    trap cleanup EXIT
     cat >"$file"
 else
     exec 8<&0
@@ -52,10 +57,10 @@ done
 "${args[@]}"
 
 if [ -n "$Topt" ]; then
-    trap - EXIT
-    (
-        trap 'rm -f "$file"' EXIT
+    {
+        trap cleanup EXIT
         sleep 30
         while fuser "$file"; do sleep 1; done
-    ) &
+    } &
+    trap - EXIT
 fi

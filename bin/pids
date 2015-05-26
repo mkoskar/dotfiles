@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -eq 0 ]; then
+    echo "usage: $(basename "$0") ppid" >&2
+    exit 2
+fi
+
+process() {
+    local pid
+    for pid in $(ps --ppid "$1" -o pid=); do
+        process "$pid"
+        echo "$pid"
+    done
+}
+
+process "$1"

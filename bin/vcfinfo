@@ -1,6 +1,10 @@
 #!/bin/bash
 
 awk -F: '
-/FN:/ { print "\n" $2 }
-/TEL;/ { print $2 }
+/FN:/ {
+    print "\n" $2
+}
+/TEL;/ {
+    print $2
+}
 '

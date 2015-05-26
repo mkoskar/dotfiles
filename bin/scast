@@ -5,6 +5,8 @@
 # -x <n|list>   select the Xinerama head of ID n
 # -i            combine regions by intersection
 
+set -e
+
 if [ $# -eq 0 ]; then
     set -- -w
 fi

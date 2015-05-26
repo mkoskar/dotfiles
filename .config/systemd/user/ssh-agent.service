@@ -1,0 +1,12 @@
+[Unit]
+Description=ssh-agent service
+IgnoreOnIsolate=true
+
+[Service]
+Type=forking
+SyslogIdentifier=ssh-agent
+ExecStart=/bin/bash -lc 'ssh-agent -a ~/.ssh/S.ssh-agent >/dev/null'
+Restart=on-abort
+
+[Install]
+WantedBy=default.target

@@ -24,8 +24,9 @@ optsline="$mode-${resolution}dpi-jq$quality"
 # --mode auto|Color|Gray|Lineart [Color]
 # --resolution auto|75|150|300|600|1200|2400dpi [75]
 
-tmpfile=$(mktemp --suffix=.tiff 2>/dev/null)
-trap 'rm -f "$tmpfile"' EXIT
+tmpfile=$(mktemp --suffix=.tiff)
+cleanup() { rm -f "$tmpfile"; }
+trap cleanup EXIT
 
 #export SANE_DEBUG_PIXMA=1
 #export SANE_DEBUG_BJNP=1

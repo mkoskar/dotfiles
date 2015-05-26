@@ -8,7 +8,7 @@
 set -e
 
 if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") mountpoint [device] [type] [option]"
+    echo "usage: $(basename "$0") mountpoint [device] [type] [option]" >&2
     exit 2
 fi
 

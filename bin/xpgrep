@@ -2,24 +2,33 @@
 
 set -e
 
-err_usage() {
-    echo "usage: $(basename "$0") [-f] pattern"
-    exit 2
-}
+_usage() {
+    cat <<-EOF
+	usage: $(basename "$0") [-f] pattern
 
-while getopts 'f' opt; do
+	Match processes whose names (or command line if -f is specified) exactly
+	match the pattern and have a matching DISPLAY environment variable set.
+	EOF
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage >&2; exit 2; }
+
+while getopts 'fh' opt; do
     case $opt in
         f)
             fopt='-f'
             ;;
+        h)
+            usage
+            ;;
         *)
-            err_usage
+            usage_err
             ;;
     esac
 done
 shift $((OPTIND-1))
 
-[ $# -eq 0 ] && err_usage
+[ $# -eq 0 ] && usage_err
 
 pgrep_opts=(-x $fopt)
 pids=$(pgrep "${pgrep_opts[@]}" "$1")

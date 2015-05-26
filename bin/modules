@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -eu
+
+prgname=$(basename "$0")
+
+case $prgname in
+    modules-builtin)
+        </lib/modules/$(uname -r)/modules.builtin "$PAGER"
+        ;;
+    *)
+        </lib/modules/$(uname -r)/modules.order "$PAGER"
+        ;;
+esac

@@ -1,5 +1,0 @@
-#!/bin/bash
-
-exec /usr/bin/anyremote \
-    -s bluetooth:19,tcp:5197 -name anyremote -password -log \
-    -f ~/.anyRemote/default.cfg

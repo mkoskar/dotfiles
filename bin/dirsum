@@ -12,9 +12,10 @@ if [ $# -gt 0 ]; then
     shift
 fi
 
-tmp_meta=$(mktemp)
-tmp_files=$(mktemp)
-trap 'rm -f "$tmp_meta" "$tmp_files"' EXIT
+tmpfile_meta=$(mktemp)
+tmpfile_files=$(mktemp)
+cleanup() { rm -f "$tmpfile_meta" "$tmpfile_files"; }
+trap cleanup EXIT
 
 meta_format='%y %u %g %m %p %l\0'
 if [ "$(basename "$0")" = 'dirsum0' ]; then
@@ -22,9 +23,9 @@ if [ "$(basename "$0")" = 'dirsum0' ]; then
 fi
 
 find . "$@" \
-     \( -fprintf "$tmp_meta" "$meta_format" \) \
-     \( -type f -fprintf "$tmp_files" '%p\0' \)
+     \( -fprintf "$tmpfile_meta" "$meta_format" \) \
+     \( -type f -fprintf "$tmpfile_files" '%p\0' \)
 (
-    sort -z "$tmp_meta"
-    sort -z "$tmp_files" | xargs -0 md5sum
+    sort -z "$tmpfile_meta"
+    sort -z "$tmpfile_files" | xargs -0 -r md5sum
 ) | md5sum | awk '{print $1}'

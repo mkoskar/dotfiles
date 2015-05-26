@@ -1,0 +1,3 @@
+#!/bin/bash
+
+expand -t 4 "$@"

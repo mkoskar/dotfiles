@@ -24,10 +24,12 @@ set save_history = 100
 set sleep_time = 0
 set ssl_force_tls
 set ssl_starttls
+set time_inc = 500
 set timeout = 5
 set use_envelope_from
 set wrap = -1
 unset confirmappend
+unset header_cache_compress
 unset help
 unset mail_check_recent
 unset mark_old
@@ -40,7 +42,7 @@ set alias_format = ' %2n %t %-40.40r    %a'
 set compose_format = "mutt-hstatus '%v' '-- Mutt: Compose [Approx. msg size: %l   Atts: %a]'|"
 set date_format = '!%b %d %I:%M'
 set folder_format = ' %2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f'
-set index_format = '%?M?+& ?[%Z]  %D  %-25.25F  %s'
+set index_format = '%?M?+& ?[%Z]  %D  %?y?%-25.25y&%-25.25L?  %s'
 set pager_format = '[%Z] (%C/%m) %n: %s%*  -- (%P)'
 set query_format = ' %2c %t %-40.40a    %n %?e?(%e)?'
 set status_format = "mutt-hstatus '%v' '[%r] %f (%n/%m)%?d? deleted:%d?%?t? tagged:%t?%?F? flagged:%F?%?p? postponed:%p? %l %?V?-- limit (%M): %V? %> %s/%S (%P)'|"
@@ -77,16 +79,9 @@ set reverse_name
 set signature = ~/.mutt/signature
 
 # headers
-hdr_order from: to: cc: date: subject:
+hdr_order from: to: cc: list-id: list-archive: date: subject:
 ignore *
-unignore from: to: cc: date: subject:
-
-# global includes
-source $alias_file
-source ~/.mutt/colors
-source ~/.mutt/gpg
-source ~/.mutt/accountsrc
-source ~/.mutt/notmuch
+unignore from: to: cc: list-id: list-archive: date: subject:
 
 # key bindings
 bind generic        *           noop
@@ -111,11 +106,12 @@ bind generic        zt          current-top
 bind generic,pager  (           previous-entry
 bind generic,pager  )           next-entry
 
+bind index          x           noop
 bind index          L           bottom-page         # generic
 bind index          gg          first-entry         # generic
 bind index          G           last-entry          # generic
-bind index          zC          collapse-all
-bind index          zO          collapse-all
+bind index          zm          collapse-all
+bind index          zr          collapse-all
 bind index          zc          collapse-thread
 bind index          zo          collapse-thread
 bind index,pager    &           noop
@@ -175,12 +171,12 @@ bind editor         \e<space>   buffy-cycle
 bind attach         o           view-attach
 
 # macros
-macro generic \ej )))
+macro generic,index \ej )))
 macro generic,index \ek (((
 macro generic,pager <F1> '<shell-escape>pg /usr/share/doc/mutt/manual.txt<enter>' 'show manual'
 macro index \'1 '<limit>~d \=0d<enter>' 'limit today messages'
 macro index \'2 '<limit>~d \=1d<enter>' 'limit 1 day old messages'
-macro index \'3 '<limit>~d \=2d<enter>' 'limit 2 days old messages'
+macro index \'3 '<limit>~d \>2d<enter>' 'limit 2 days old messages'
 macro index \'\' '<limit>all<enter>' 'cancel limit'
 macro index,pager Z '<shell-escape>mbsync &<enter>' 'trigger mailboxes synchronization'
 macro index,pager * <tag-pattern>~A<enter> 'tag all'
@@ -219,6 +215,12 @@ macro index,pager \ep <sidebar-prev> 'sidebar-prev'
 macro index,pager \cN <sidebar-next><sidebar-open> 'sidebar-next & sidebar-open'
 macro index,pager \cP <sidebar-prev><sidebar-open> 'sidebar-prev & sidebar-open'
 macro index,pager ~ '<enter-command>toggle sidebar_visible<enter>' 'toggle sidebar'
+
+# global includes
+source $alias_file
+source ~/.mutt/colors
+source ~/.mutt/gpg
+source ~/.mutt/accountsrc
 
 # trigger mailboxes synchronization
 push Z

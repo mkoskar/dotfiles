@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eu
 
 maybe_cd() {
     cd "$1" >/dev/null 2>&1
@@ -42,12 +42,7 @@ from_vba() {
 }
 
 cd ~/.vim
-
-mkdir -p .backup
-mkdir -p .undo
-mkdir -p .swap
-
-mkdir -p autoload
+mkdir -p .backup .swap .undo autoload
 ln -sf ../bundle/vim-pathogen/autoload/pathogen.vim autoload
 
 (

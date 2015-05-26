@@ -33,7 +33,7 @@ if [ $# -eq 0 ]; then
     echo 'o) openbox'
     echo 'x) xmonad'
 
-    read -N1 -s -p ': ' sel
+    read -N1 -rsp ': ' sel
     [ -n "$sel" ] || sel=m
     case $sel in
         [mM])

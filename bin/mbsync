@@ -1,11 +1,17 @@
 #!/bin/bash
 
-set -e
+set -eu
+
+sdu() { systemctl --user "$@"; }
 
 if [ "$(basename "$0")" = 'mbsync-off' ]; then
-    systemctl --user stop mbsync.timer
+    sdu stop mbsync@head.timer
+    sdu stop mbsync@tail.timer
     exit
 fi
 
-systemctl --user start mbsync.timer
-systemctl --user start mbsync.service
+sdu start mbsync@head.timer
+sdu start mbsync@tail.timer
+
+# trigger head
+sdu start mbsync@head
