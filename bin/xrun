@@ -1,13 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") cmd [arg]..." >&2
+prgname=${0##*/}
+
+if (( ! $# )); then
+    echo "usage: $prgname cmd [arg]..." >&2
     exit 2
 fi
 
-if [ "$(basename "$0")" = 'xrun' ]; then
+if [[ $prgname = 'xrun' ]] && xpgrep "$1" >/dev/null; then
     xkillall "$1"
     sleep 1
 fi
@@ -15,5 +17,5 @@ fi
 if ! xpgrep "$1" >/dev/null; then
     pid=$$
     pgid=$(ps --pid "$pid" -o pgid=)
-    [ $pid -eq $pgid ] && exec "$@" || exec setsid "$@"
+    [[ $pid = "$pgid" ]] && exec "$@" || exec setsid "$@"
 fi

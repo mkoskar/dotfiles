@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e -o pipefail
+set -eu -o pipefail
 
 xev "$@" |
     grep -EA2 --line-buffered '^Key(Press|Release)'

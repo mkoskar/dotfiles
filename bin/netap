@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
 iface=${1:-eth0}
 gpg -d ~/.netap.gpg | sudo create_ap -w 2 wlan0 "$iface"

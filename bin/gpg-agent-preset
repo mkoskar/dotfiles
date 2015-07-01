@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+preset() {
+    IFS= read -rsp "Passphrase for (${1:0:8}...): " pass </dev/tty
+    echo
+    [[ $pass ]] || return 1
+    gpg-connect-agent <<<"PRESET_PASSPHRASE $1 -1 $(printf '%s' "$pass" | xxd -p)"
+}
+
+# ----------------------------------------
+
+[[ -t 0 ]] && src="$HOME/.gnupg/gpg-agent.presets" || src='/dev/stdin'
+
+while read -r keygrip; do
+    preset "$keygrip"
+done <"$src"

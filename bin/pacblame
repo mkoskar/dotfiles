@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-prgname=$(basename "$0")
+prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
@@ -12,7 +12,7 @@ _usage() {
 	EOF
 }
 usage() { _usage; exit 0; }
-usage_err() { _usage >&2; exit 2; }
+usage_err() { _usage; exit 2; } >&2
 
 cmd="expac -H M -l '\n' '%m %n' | sort -k1nr"
 
@@ -34,9 +34,9 @@ while getopts 'drh' opt; do
 done
 shift $((OPTIND-1))
 
-if [ -t 1 ]; then
-    export PAGER_TITLE=$(basename "$0")
-    exec pgx sh -c "$cmd"
+if [[ -t 1 ]]; then
+    export PAGER_TITLE=$prgname
+    exec pgx bash -c "$cmd"
 fi
 
 eval "$cmd"

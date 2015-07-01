@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu
 
-prgname=$(basename "$0")
+prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
@@ -13,7 +13,7 @@ _usage() {
 	  -d delay  - wait for 'delay' milliseconds; <0 = wait forever, 0 = don't wait at all (default: -1)
 	  -t        - terminate if 'cmd' finished in less than 'delta' milliseconds
 	  -T delta  - (default: 400)
-	  -o output - redirect stdin and sterr to 'output'
+	  -o output - redirect stdout and sterr to 'output'
 	  -a        - don't truncate 'output' but do append instead
 	  -i        - inline (don't use alternate screen)
 	  -I        - don't hide cursor
@@ -24,11 +24,11 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-if [ "$prgname" = 'respawn' ]; then
+if [[ $prgname = 'respawn' ]]; then
     set -- -d0 -t "$@"
 fi
 
-dopt= term= Topt= redir= output= inline= cur= copt= quiet=
+dopt= term=0 Topt= redir= output= inline=0 cur=0 quiet=0
 while getopts 'd:tT:o:aiIcCqh' opt; do
     case $opt in
         d)
@@ -61,12 +61,6 @@ while getopts 'd:tT:o:aiIcCqh' opt; do
         I)
             cur=1
             ;;
-        c)
-            copt=1
-            ;;
-        C)
-            copt=0
-            ;;
         q)
             quiet=1
             ;;
@@ -80,16 +74,14 @@ while getopts 'd:tT:o:aiIcCqh' opt; do
 done
 shift $((OPTIND-1))
 
-if [ $# -eq 0 ]; then
-    usage_err
-fi
+(( $# )) || usage_err
 
 delay=${dopt:--1}
 term_delta=${Topt:-400}
 
-notty=1
-if [ ! -t 0 ]; then
-    if ((delay < 0)); then
+notty=0
+if [[ ! -t 0 ]]; then
+    if (( delay < 0 )); then
         echo "$prgname: stdin not being a tty doesn't go with negative delay" >&2
         exit 2
     fi
@@ -97,51 +89,51 @@ if [ ! -t 0 ]; then
 fi
 
 read_opts=(-N1 -rs)
-if ((delay > 0)); then
+if (( delay > 0 )); then
     delay_s=$(bc -l <<<"scale=2; $delay/1000")
     read_opts+=(-t "$delay_s")
 fi
 
-eval_opts=
-if [ -n "$output" ]; then
-    eval_opts+=("$redir" "$output" '2>&1')
-fi
+ti_el=$(tput el)
 
-if [ -z "$inline" ]; then
+if (( ! inline )); then
     tput smcup
     tput clear
-    [ -n "$cur" ] || tput civis
-
-    cleanup() {
-        tput cnorm
-        tput rmcup
-    }
+    tput sc
+    (( cur )) || tput civis
+    cleanup() { tput cnorm; tput rmcup; }
     trap cleanup EXIT
 fi
 
 while true; do
-    [ -z "$inline" ] && tput clear
-    [ -z "$quiet" ] && printf -- '> started: %s\n' "$(date '+%H:%M:%S')" >&2
-    [ -n "$term" ] && t_begin=$(date +%s.%N)
+    (( ! inline )) && tput rc
+    (( ! quiet )) && printf "> started: %s${ti_el}\n" "$(date '+%H:%M:%S')" >&2
+    (( term )) && t_begin=$(date +%s.%N)
 
-    bashx -c "$(shell-escape "$@")" "${eval_opts[@]}"
-
-    if [ -n "$term" ]; then
-        t_end=$(date +%s.%N)
-        [ "$(bc -l <<<"($t_end-$t_begin) < $term_delta/1000")" -eq 1 ] && break
+    if [[ $output ]]; then
+        bashx -c "$(shell-escape "$@")" "$redir" "$output" 2>&1
+    else
+        bashx -c "$(shell-escape "$@")" 2>&1 | sed "s/\$/$ti_el/"
     fi
 
-    if [ -n "$notty" -a $delay -gt 0 ]; then
+    if (( term )); then
+        t_end=$(date +%s.%N)
+        (( $(bc -l <<<"($t_end-$t_begin) < $term_delta/1000") == 1 )) && break
+    fi
+
+    if (( notty && delay > 0 )); then
+        (( ! inline )) && tput ed
         sleep "$delay_s"
         continue
     fi
 
-    if [ $delay -ne 0 ]; then
-        if [ -z "$quiet" ]; then
+    if (( delay != 0 )); then
+        if (( ! quiet )); then
             h=
-            [ $delay -gt 0 ] && h="waiting for ${delay}ms, "
+            (( delay > 0 )) && h="waiting for ${delay}ms, "
             h="${h}press any key to start or q|Q to quit"
-            printf -- '> finished: %s (%s)\n' "$(date '+%H:%M:%S')" "$h" >&2
+            printf "> finished: %s (%s)${ti_el}\n" "$(date '+%H:%M:%S')" "$h" >&2
+            (( ! inline )) && tput ed
         fi
         read "${read_opts[@]}" c || continue
         case $c in q|Q) break ;; esac

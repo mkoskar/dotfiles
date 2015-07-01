@@ -1,17 +1,24 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu
 
 sdu() { systemctl --user "$@"; }
 
-if [ "$(basename "$0")" = 'mbsync-off' ]; then
-    sdu stop mbsync@head.timer
-    sdu stop mbsync@tail.timer
-    exit
-fi
+prgname=${0##*/}
 
-sdu start mbsync@head.timer
-sdu start mbsync@tail.timer
-
-# trigger head
-sdu start mbsync@head
+case $prgname in
+    mbsync-on)
+        sdu start mbsync@head.timer
+        sdu start mbsync@tail.timer
+        ;;
+    mbsync-off)
+        sdu stop mbsync@head.timer
+        sdu stop mbsync@tail.timer
+        sdu stop mbsync@head.service
+        sdu stop mbsync@tail.service
+        ;;
+    *)
+        sdu start mbsync@head.service
+        sdu start mbsync@tail.service
+        ;;
+esac

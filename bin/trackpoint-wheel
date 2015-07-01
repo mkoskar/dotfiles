@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+prgname=${0##*/}
+
+name='TPPS/2 IBM TrackPoint'
+prop='libinput Button Scrolling Button'
+valset=2
+
+declare -i val
+val=$(xinput list-props "$name" | awk -F: "/^\s*$prop \(.*\):/ {print \$2}")
+(( $val == $valset )) && valset=0
+
+retstat=$?
+[[ $prgname != 'trackpoint-wheel-toggle' ]] && exit $retstat
+
+xinput set-prop "$name" "$prop" "$valset"
+
+status-osd trackpoint-wheel

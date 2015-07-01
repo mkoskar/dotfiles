@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if (( $EUID )); then
+    echo 'This script must be run with root privileges.' >&2
+    exit 1
+fi
+
+prgname=${0##*/}
+
+if (( ! $# )); then
+    echo "usage: $prgname device (e.g., /dev/sda)" >&2
+    exit 2
+fi
+
+target=$1
+
+if [[ ! -e $target ]]; then
+    echo "$prgname: cannot access $target: No such device" >&2
+    exit 1
+fi
+
+echo $'\n--------------------------------------------------'
+echo "> hdparm -I -- $target"
+
+hdparm -I -- "$target"
+
+echo $'\n--------------------------------------------------'
+echo -e "> smartctl -a -- $target\n"
+
+smartctl -a -- "$target"

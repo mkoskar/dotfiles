@@ -1,10 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-[ $# -eq 0 ] && exit 2
+prgname=${0##*/}
 
-if [ "$(basename "$0")" = 'ssh-tunnel-off' ]; then
+if (( ! $# )); then
+    echo "usage: $prgname host" >&2
+    exit 2
+fi
+
+if [[ $prgname = 'ssh-tunnel-off' ]]; then
     systemctl --user stop "ssh-tunnel@$1"
     exit
 fi

@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -eu
 
 input=${1:--}
 output=${2:--}
 
-gpg -q -e -r CDC91131 -o "$output" "$input"
+gpg -q -e -o "$output" "$input"

@@ -1,0 +1,16 @@
+" vim: ft=vim fdm=marker
+
+let $VIMRC = expand('<sfile>:p')
+source ~/.vim/vimrc_ext
+
+"set cscopetag
+"set cscopequickfix=s-,d-,c-,t-,e-,i-
+
+"nnoremap <silent> <C-_>s :lcs find s <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>g :lcs find g <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>d :lcs find d <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>c :lcs find c <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>t :lcs find t <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>e :lcs find e <C-R>=expand('<cword>')<CR><CR>
+"nnoremap <silent> <C-_>f :lcs find f <C-R>=expand('<cfile>')<CR><CR>
+"nnoremap <silent> <C-_>i :lcs find i ^<C-R>=expand('<cfile>')<CR>$<CR>

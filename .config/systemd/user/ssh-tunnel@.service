@@ -4,9 +4,8 @@ Description=ssh-tunnel(%i) service
 [Service]
 Type=simple
 SyslogIdentifier=ssh-tunnel(%i)
-ExecStart=/bin/bash -lc 'ssh -F ~/.ssh/config.tunnels -N "%i"'
-Restart=always
-RestartSec=10s
+ExecStart=/bin/bash -lc 'autossh -M 0 -F ~/.ssh/config.tunnels -N "%i"'
+Restart=on-failure
 
 [Install]
 WantedBy=default.target

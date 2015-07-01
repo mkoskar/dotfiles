@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
-# Scrolls through passed arguments.
-# Current item (argument) is printed in the status line on
-# stderr and send to stdout for processing.
+# Scrolls through arguments or stdin lines if none arguments were passed.
+# Current item is printed in the status line on stderr and send to stdout
+# for further processing.
 #
 # Navigation:
 #
@@ -15,22 +15,27 @@
 # :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
 # :License: BSD 2-Clause
 
-# TODO: args-scroll / line-scroll
+set -eu
 
-set -e
+if (( $# )); then
+    items=("$@")
+else
+    readarray -t items
+fi
 
-[ -t 0 ] || exit 1
-items=("$@")
+exec </dev/tty
+
+len=${#items[@]}
 i=0
-l=${#items[@]}
+
 while true; do
-    ((l > 0)) || break
+    (( len > 0 )) || break
     item=${items[i]}
 
     printf '\e[1G%s\e[0K' "$((i+1)) : $item" >&2
-    echo "$item"
+    printf '%s\n' "$item"
 
-    ((l > 1)) || break
+    (( len > 1 )) || break
     read -N1 -rs c
     case $c in
         q|Q)
@@ -40,7 +45,7 @@ while true; do
             i=0
             ;;
         G|$)
-            i=$((l-1))
+            i=$((len-1))
             ;;
         k|K)
             i=$((i-1))
@@ -49,7 +54,7 @@ while true; do
             i=$((i+1))
             ;;
     esac
-    ((i < 0)) && i=$((l-1))
-    ((i > l-1)) && i=0
+    (( i < 0 )) && i=$((len-1))
+    (( i > len-1 )) && i=0
 done
 echo >&2

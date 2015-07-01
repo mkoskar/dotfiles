@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+tmpdir="${TMPDIR:-/tmp}/pacman-disowned-$UID-$$"
+cleanup() { rm -rf "$tmpdir"; }
+trap cleanup EXIT
+
+mkdir "$tmpdir"
+cd "$tmpdir"
+
+pacman -Qlq | sort -u >db
+
+find / -mindepth 1 \
+    -type d \( \
+        -name lost+found -o \
+        -path /dev -o \
+        -path /home -o \
+        -path /mnt -o \
+        -path /proc -o \
+        -path /run -o \
+        -path /srv/ftp -o \
+        -path /srv/http -o \
+        -path /sys -o \
+        -path /tmp -o \
+        -path /var/abs -o \
+        -path /var/cache/fontconfig -o \
+        -path /var/cache/man -o \
+        -path /var/cache/pacman -o \
+        -path /var/lib/pacman -o \
+        -path /var/log/local -o \
+        -path /var/spool \
+    \) -prune -false -o \( -type d -printf '%p/\n' -o -print \) | sort >fs
+
+comm -23 fs db

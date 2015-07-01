@@ -8,4 +8,4 @@ Type=simple
 SyslogIdentifier=apod
 ExecStart=/bin/bash -lc 'apod-get && { xdisplay apod-bg || true; }'
 Restart=on-failure
-RestartSec=3600
+RestartSec=1800

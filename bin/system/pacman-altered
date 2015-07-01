@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+tmpdir="${TMPDIR:-/tmp}/pacman-altered-$UID-$$"
+cleanup() { rm -rf "$tmpdir"; }
+trap cleanup EXIT
+
+mkdir "$tmpdir"
+cd "$tmpdir"
+
+pacman -Qkk >out 2>err || true
+cat out err | sed -nr -e 's/^backup file: //p' \
+                      -e 's/^warning: //p' | sort
+
+paccheck --quiet --files --file-properties \
+         --backup --noextract --noupgrade | sort >&2

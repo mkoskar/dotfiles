@@ -1,24 +1,52 @@
 -- vim: ft=haskell
 
-Config {
-     font = "xft:local_statusbar"
-    ,bgColor = "#000000"
-    ,fgColor = "#C0C0C0"
-    ,position = TopP 0 100
-    ,border = BottomB
-    ,borderWidth = 3
-    ,borderColor = "#000000"
-    ,textOffset = 13
-    ,commands = [
-         Run UnsafeStdinReader
-        ,Run CommandReader "statusbar-mail" "mail"
-        ,Run Battery ["-t", "<watts>|<left>|<timeleft>", "-L", "15", "-H", "50", "-l", "#FF5555", "-n", "#EFEFEF", "--",
-                      "-L", "0", "-H", "12", "-m", "#55FF55", "-h", "#FF5555"] 50
-        ,Run Wireless "wlan0" ["-t", "q<quality>"] 50
-        ,Run Cpu ["-t", "<total>", "-L", "8", "-H", "30", "-n", "#EFEFEF", "-h", "#FF5555", "-p", "3"] 30
-        ,Run Memory ["-t", "<usedratio>", "-a", "r", "-p", "3"] 50
-        ,Run Date "%a|%d.%m|%H:%M" "date" 600
-    ]
-    ,alignSep = "}{"
-    ,template = "%UnsafeStdinReader% }{ %mail%  %battery%  %wlan0wi% %cpu%|%memory% %date%"
-}
+Config { font = "xft:local_statusbar"
+       , additionalFonts = ["xft:Symbola"]
+       , bgColor = "#000000"
+       , fgColor = "#C0C0C0"
+       , alpha = 255
+       , position = TopP 0 100
+       , textOffset = 13
+       , allDesktops = True
+       , border = BottomB
+       , borderColor = "#000000"
+       , borderWidth = 4
+       , commands = [ Run UnsafeStdinReader
+                    , Run CommandReader "statusbar-mail" "mail"
+                    , Run Kbd
+                        [ ("us(cz_sk_de)", "us")
+                        , ("sk(qwerty)", "<fc=#FEED6A>sk</fc>")
+                        , ("cz(qwerty)", "<fc=#FEED6A>cz</fc>")
+                        ]
+                    , Run Battery
+                        [ "-t", "<watts>❘<left>❘<timeleft>"
+                        , "-l", "#FF5555", "-L", "15"
+                        , "-n", "#EFEFEF", "-H", "50"
+                        , "--"
+                        , "-L", "0"
+                        , "-m", "#55FF55", "-H", "12"
+                        , "-h", "#FF5555"
+                        ] 50
+                    , Run Wireless "wlan0"
+                        [ "-t", "¡<quality>"
+                        , "-l", "#FF5555", "-L", "30"
+                        , "-n", "#FEED6A", "-H", "60"
+                        , "-h", "#EFEFEF"
+                        ] 50
+                    , Run Cpu
+                        [ "-t", "<total>", "-p", "3"
+                        , "-L", "10"
+                        , "-n", "#EFEFEF", "-H", "30"
+                        , "-h", "#FF5555"
+                        ] 30
+                    , Run Memory
+                        [ "-t", "<usedratio>", "-a", "r", "-p", "3"
+                        , "-L", "10"
+                        , "-n", "#EFEFEF", "-H", "50"
+                        , "-h", "#FF5555"
+                        ] 50
+                    , Run Date "%a❘%d.%m❘%H:%M" "date" 600
+                    ]
+       , alignSep = "}{"
+       , template = "%UnsafeStdinReader% }{ %mail%  %cpu%❘%memory%  %wlan0wi%❘%kbd%  %battery%  %date%"
+       }

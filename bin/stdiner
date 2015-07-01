@@ -1,13 +1,25 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
+
+prgname=${0##*/}
 
 _usage() {
-    echo "usage: $(basename "$0") [-t | -T] [arg]..."
+    cat <<-EOF
+	usage: $prgname [-t | -T] cmd [arg]..."
+
+	Execute 'cmd [arg]...' with stdin reference replacing '{}' placehoder/s
+	or as last dynamic argument if no '{}' placeholder was used.
+
+	  -t    - read stdin to temporary file first which will be removed on EXIT
+	  -T    - same as 't' but temporary file is removed with some timeout
+	  -h    - show this help message and exit
+	EOF
 }
 usage() { _usage; exit 0; }
-usage_err() { _usage >&2; exit 2; }
+usage_err() { _usage; exit 2; } >&2
 
+topt=0 Topt=0
 while getopts 'tTh' opt; do
     case $opt in
         t)
@@ -26,15 +38,15 @@ while getopts 'tTh' opt; do
 done
 shift $((OPTIND-1))
 
-if [ -t 0 ]; then
+if [[ -t 0 ]]; then
     echo 'stdin is a tty' >&2
     exit 1
 fi
 
-[ $# -eq 0 ] && set -- cat {}
+(( $# )) || set -- cat {}
 
-if [ -n "$topt$Topt" ]; then
-    file=$(mktemp -t 'stdiner.XXXXXXXXXX')
+if (( topt || Topt )); then
+    readonly file=$(mktemp -t 'stdiner.XXXXXXXXXX')
     cleanup() { rm -f "$file"; }
     trap cleanup EXIT
     cat >"$file"
@@ -42,21 +54,22 @@ else
     exec 8<&0
     file='/dev/fd/8'
 fi
-exec 0</dev/tty
 
+exec </dev/tty
+
+farg=0
 args=("$@")
 for i in "${!args[@]}"; do
-    if [ "${args[$i]}" = '{}' ]; then
+    if [[ ${args[$i]} = '{}' ]]; then
         args[$i]=$file
         farg=1
     fi
 done
+(( farg )) || args+=("$file")
 
-[ -z "$farg" ] && args+=("$file")
+(exec "${args[@]}")
 
-"${args[@]}"
-
-if [ -n "$Topt" ]; then
+if (( Topt )); then
     {
         trap cleanup EXIT
         sleep 30

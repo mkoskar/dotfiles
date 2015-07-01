@@ -1,9 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
-
-if [ $# -gt 0 ]; then
-    opts=(-p "$1" -a)
-fi
-
-lsof -nP "${opts[@]}" -itcp -o -iudp
+(( $# )) && opts=(-p "$1" -a)
+exec lsof -nP "${opts[@]}" -itcp -o -iudp

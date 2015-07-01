@@ -1,22 +1,24 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") file" >&2
+prgname=${0##*/}
+
+if (( ! $# )); then
+    echo "usage: $prgname file" >&2
     exit 2
 fi
 
-file=$(realpath "$1")
-basename=$(basename "$file")
+file=$(realpath -- "$1")
+basename=${file##*/}
 path_hash=$(sha1sum <<<"$file" | awk '{print $1}')
 
-if [ ! -f "$file" ]; then
+if [[ ! -f $file ]]; then
     echo 'regular file expected' >&2
     exit 1
 fi
 
-if [ "${file%%\.gpg}" = "$file" ]; then
+if [[ ${file%%\.gpg} = "$file" ]]; then
     echo 'should end with .gpg' >&2
     exit 1
 fi
@@ -29,10 +31,10 @@ cp -af "$file" "$file.bak"
 egpg "$file" || true
 chmod "$mode_expected" "$file"
 
-mtime1="$(stat -c '%Y' "$file.bak")"
-mtime2="$(stat -c '%Y' "$file")"
+mtime1=$(stat -c '%Y' "$file.bak")
+mtime2=$(stat -c '%Y' "$file")
 
-if [ "$mtime1" = "$mtime2" ]; then
+if [[ $mtime1 = "$mtime2" ]]; then
     echo 'not touched' >&2
 else
     cp -af "$file.bak" ~/archive/gpg-edit/"${path_hash: -8}__$basename.$mtime1"

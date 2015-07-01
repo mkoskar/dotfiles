@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
 name=${1:-custom}
 repo_dir="$HOME/packages/$name"
@@ -14,7 +14,7 @@ cd "$repo_dir"
 
 rm -rf "$repo_db"*
 
-if [ ! -e "$repo_db" ]; then
+if [[ ! -e $repo_db ]]; then
     pacrepo-init "$name"
 fi
 

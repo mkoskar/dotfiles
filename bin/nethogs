@@ -1,6 +1,18 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-ifaces=($(ip -o -0 link show up | awk -F ': ' '!/lo/ {print $2}'))
+cd /sys/class/net
+
+ifaces=()
+for i in *; do
+    [[ $(<"$i/operstate") = 'up' ]] || continue
+    ifaces+=($i)
+done
+
+if (( ! ${#ifaces[@]} )); then
+    echo 'There are no operational interfaces to be found.' >&2
+    exit 1
+fi
+
 sudo /usr/bin/nethogs "$@" "${ifaces[@]}"

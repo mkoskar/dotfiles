@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+#
+# Simple seat lock script with ``away`` as backend.
+#
+# * disable SysRq
+# * switch to VT 8
+# * disable VT switching
+# * run backend
+#
+# :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
+# :License: BSD 2-Clause
+
+set -eu
+
+if (( $EUID )); then
+    echo 'This script must be run with root privileges.' >&2
+    exit 1
+fi
+
+prgname=${0##*/}
+user=${1:-${SUDO_USER:-$USER}}
+
+if [[ $user = 'root' ]]; then
+    echo 'Refusing to lock for root.' >&2
+    exit 1
+fi
+
+export TERM='linux'
+
+# ----------------------------------------
+
+vtno_old=$(fgconsole)
+vtno_new=8
+vtnew="/dev/tty$vtno_new"
+
+exec <>"$vtnew" >&0 2>&1
+
+sysrq_path='/proc/sys/kernel/sysrq'
+sysrq_old=$(<"$sysrq_path")
+echo 0 >"$sysrq_path"
+
+cleanup() {
+    clear
+    printf '%d' "$sysrq_old" >"$sysrq_path"
+    vtswitch-lock -u
+    chvt "$vtno_old"
+}
+trap cleanup EXIT
+
+clear
+tput civis
+
+chvt "$vtno_new"
+vtswitch-lock
+chown -- "$user" "$vtnew"
+
+su - "$user" -c 'away -C away'
+read

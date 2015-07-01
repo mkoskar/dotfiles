@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
-prgname=$(basename "$0")
+prgname=${0##*/}
 
 # ----------------------------------------
 
@@ -96,7 +96,7 @@ _mon() {
     neww -n sstat 'trun pgx sstat' \
         \; setw remain-on-exit on
 
-    neww 'trun iftop' \
+    neww -n iftop 'trun iftop' \
         \; setw remain-on-exit on
 
     neww -n logs -c /var/log
@@ -116,27 +116,42 @@ _wrk() {
 
 # ----------------------------------------
 
-attach=1
-if [ $# -gt 0 -a -z "${1##-*}" ]; then
-    [ "$1" = '-d' ] || exit 2
-    unset attach
-    shift
-fi
+_usage() {
+    echo "usage: $prgname [-d] [session] [socket]"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
 
-session=$1
-if [ -z "$session" ]; then
+declare -i dopt=0
+while getopts 'dh' opt; do
+    case $opt in
+        d)
+            dopt=1
+            ;;
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+attach=$((!dopt))
+session=${1-}
+socket=${2-}
+
+if [[ ! $session ]]; then
     session=$(sed -r "s,^$HOME(/|$),~\1," <<<"$PWD")
-    if [ "$session" != '/' -a "$session" != '~' ]; then
+    if [[ $session != '/' && $session != '~' ]]; then
         sdigest=$(sha1sum <<<"$session" | awk '{print $1}')
         session=$(tr '.:' _ <<<"$session")
         session="=${session##*/}_#${sdigest: -2}"
     fi
 fi
 
-socket=$2
-
-(exec 8>"$XDG_RUNTIME_DIR/s.lock"
-
+(exec 8>"$XDG_RUNTIME_DIR/s.lck"
 if ! flock -w 30 8; then
     exit 3
 fi
@@ -156,6 +171,6 @@ fi
 
 ))
 
-if [ -n "$attach" ]; then
-    cmd attach -t "$session"
+if (( $attach )); then
+    exec tmux -L "${socket:-default}" attach -t "$session"
 fi

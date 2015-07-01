@@ -114,17 +114,12 @@ hc keybind $Mod-F1 spawn xkb us
 hc keybind $Mod-F2 spawn xkb sk
 hc keybind $Mod-F3 spawn xkb cz
 
-# selections
-hc keybind $Mod-F5 spawn bash -c 'xsel | xsel -ib'
-hc keybind $Mod-F6 spawn bash -c 'xsel -b | xsel -i'
-hc keybind $Mod-F7 spawn bash -c 'xsel | xsel -i'
-hc keybind $Mod-F8 spawn bash -c 'xsel -b | xsel -ib'
-
 # other
+hc keybind $Mod-F9 spawn bash -c 'xscreen0 && herbstclient reload'
 hc keybind $Mod-F10 spawn bash -c 'xscreen && herbstclient reload'
 hc keybind $Mod-Shift-F10 spawn bash -c 'xscreen-mobile && herbstclient reload'
-hc keybind $Mod-F12 spawn bash -c 'grabc 2>&1 | xsel -i'
-hc keybind $Mod-Shift-F12 spawn bash -c 'xmeasure | xsel -i'
+hc keybind $Mod-F12 spawn bash -c 'grabc 2>&1 | clipi'
+hc keybind $Mod-Shift-F12 spawn bash -c 'xmeasure | clipi'
 hc keybind $Mod-Shift-Home spawn term -e trun wow
 hc keybind $Mod-Shift-b spawn backlight-toggle
 #hc keybind $Mod-; M-l spawn sudo lockx

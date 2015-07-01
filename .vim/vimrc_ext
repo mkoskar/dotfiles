@@ -2,28 +2,6 @@
 
 source ~/.vim/vimrc_base
 
-if exists("$BASEDIR")
-    exec 'set tags^='.$BASEDIR.'/tags'
-endif
-
-"set cscopetag
-"set cscopequickfix=s-,d-,c-,t-,e-,i-
-
-"nnoremap <silent> <C-_>s :lcs find s <C-R>=expand('<cword>')<CR><CR>
-"nnoremap <silent> <C-_>g :lcs find g <C-R>=expand('<cword>')<CR><CR>
-"nnoremap <silent> <C-_>d :lcs find d <C-R>=expand('<cword>')<CR><CR>
-"nnoremap <silent> <C-_>c :lcs find c <C-R>=expand('<cword>')<CR><CR>
-"nnoremap <silent> <C-_>t :lcs find t <C-R>=expand('<cword>')<CR><CR>
-"nnoremap <silent> <C-_>e :lcs find e <C-R>=expand('<cword>')<CR><CR>
-"nnoremap <silent> <C-_>f :lcs find f <C-R>=expand('<cfile>')<CR><CR>
-"nnoremap <silent> <C-_>i :lcs find i ^<C-R>=expand('<cfile>')<CR>$<CR>
-
-if exists("$BASEDIR")
-    nnoremap <silent> <F12> :!$BASEDIR/tags.sh<CR>
-endif
-
-" ----------------------------------------
-
 exec pathogen#infect()
 
 if has('gui_running')
@@ -69,7 +47,13 @@ let miniBufExplorerMoreThanOne = 1000
 noremap <silent> <Leader>bb :MiniBufExplorer<CR>
 
 " ========== nerdcommenter
-"let NERDSpaceDelims = 1
+"let g:NERDSpaceDelims = 1
+let g:NERDCreateDefaultMappings = 0
+
+map <Leader>cA <Plug>NERDCommenterAppend
+map <Leader>ca <Plug>NERDCommenterAltDelims
+map <Leader>cc <Plug>NERDCommenterAlignBoth
+map <Leader>cu <Plug>NERDCommenterUncomment
 
 " ========== nerdtree
 let NERDTreeAutoDeleteBuffer = 1
@@ -103,12 +87,6 @@ highlight TagbarHighlight cterm=reverse
 
 nnoremap <silent> <F8> :Tagbar<CR>
 
-" ========== tagfinder
-"runtime plugin/tagfinder.vim
-"DefineTagFinder FindClass c
-
-"nnoremap <C-N> :FindClass<Space>
-
 " ========== taglist
 "let Tlist_Close_On_Select = 1
 let Tlist_Display_Tag_Scope = 0
@@ -118,7 +96,7 @@ let Tlist_Show_One_File = 1
 let Tlist_Use_Right_Window = 1
 let Tlist_WinWidth = 35
 
-nnoremap <silent> <F8> :TlistToggle<CR>
+"nnoremap <silent> <F8> :TlistToggle<CR>
 
 " ========== vim-airline
 let airline#extensions#tabline#enabled = 1
@@ -128,12 +106,14 @@ let airline#extensions#tabline#enabled = 1
 if has('autocmd')
 augroup VIMRC_EXT
     autocmd!
+
     autocmd BufWinEnter -MiniBufExplorer- call BufferSettings_Special()
     autocmd BufWinEnter -MiniBufExplorer- nnoremap <silent> <buffer> q :q<CR>
     autocmd BufWinEnter \[BufExplorer\] call BufferSettings_Special()
     autocmd BufWinEnter __Tag_List__ call BufferSettings_Special()
     autocmd BufWritePost ~/.Xresources !xrdb -load ~/.Xresources
     autocmd FileType nerdtree call BufferSettings_Special()
+
 augroup END
 endif
 

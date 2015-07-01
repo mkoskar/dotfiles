@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # these are useful just for less(1)
 export LESS_TERMCAP_md=$'\e[1;37m'

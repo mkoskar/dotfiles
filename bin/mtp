@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Simple ``jmtpfs`` frontend.
 #
@@ -8,16 +8,15 @@
 set -euf -o pipefail
 
 readarray -t mounts < <(grep -P '^jmtpfs ' /proc/mounts | sort -u)
-if [ ${#mounts[@]} -gt 0 ]; then
+if (( ${#mounts[@]} > 0 )); then
     echo -e "\nMounts:\n${mounts[@]}"
     echo
-
     if confirm 'Unmount?' y; then
         PS3='Select: '
         select sel in "${mounts[@]}"; do
             break
         done
-        [ -n "$sel" ] || exit 2
+        [[ $sel ]] || exit 2
 
         sel=($sel)
         target=${sel[1]}
@@ -28,21 +27,22 @@ if [ ${#mounts[@]} -gt 0 ]; then
 fi
 
 readarray -t devices < <(jmtpfs -l 2>/dev/null | grep -P '^\d, .*' | sort -u)
-if [ ${#devices[@]} -gt 0 ]; then
-    echo $'\nMount:'
+if (( ${#devices[@]} > 0 )); then
+    echo
+    if confirm 'Mount?' y; then
+        PS3='Select: '
+        select sel in "${devices[@]}"; do
+            break
+        done
+        [[ $sel ]] || exit 2
 
-    PS3='Select: '
-    select sel in "${devices[@]}"; do
-        break
-    done
-    [ -n "$sel" ] || exit 2
+        device=($(awk -F ', ' '{print $1 " " $2}' <<<"$sel"))
+        target="$HOME/tmp/mtp-${device[0]}-${device[1]}"
 
-    device=($(awk -F ', ' '{print $1 " " $2}' <<<"$sel"))
-    target="$HOME/tmp/mtp-${device[0]}-${device[1]}"
-
-    mounted "$target" &>/dev/null && exit 2
-
-    [ -d "$target" ] || mkdir "$target"
-    jmtpfs "-device=${device[0]},${device[1]}" "$target" &>/dev/null
+        if ! mounted "$target" &>/dev/null; then
+            [[ -d $target ]] || mkdir "$target"
+            jmtpfs "-device=${device[0]},${device[1]}" "$target" &>/dev/null
+        fi
+    fi
 fi
 echo

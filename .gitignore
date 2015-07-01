@@ -14,6 +14,7 @@
 !.config/bpython
 !.config/bpython/config
 !.config/bpython/custom.theme
+!.config/clean-chroot-manager.conf
 !.config/compton.conf
 !.config/dunst
 !.config/dunst/dunstrc
@@ -21,6 +22,7 @@
 !.config/fontconfig/fonts.conf
 !.config/gtk-3.0
 !.config/gtk-3.0/bookmarks
+!.config/gtk-3.0/gtk.css
 !.config/gtk-3.0/settings.ini
 !.config/herbstluftwm
 !.config/herbstluftwm/autostart
@@ -37,6 +39,7 @@
 !.config/openbox/rc.xml
 !.config/pulse
 !.config/pulse/client.conf
+!.config/pulse/daemon.conf
 !.config/pulse/default.pa
 !.config/ranger
 !.config/surfraw
@@ -61,6 +64,7 @@
 !.gitignore
 !.gitmessage
 !.gnupg
+!.gnupg/dirmngr.conf
 !.gnupg/gpg-agent.conf
 !.gnupg/gpg.conf
 !.goobookrc.example
@@ -84,8 +88,9 @@
 !.local/share/applications/mimeapps.list
 !.local/share/applications/vlc-enqueue.desktop
 !.local/share/applications/vlc.desktop
+!.local/share/dbus-1
 !.local/share/fonts
-!.local/share/fonts/make.sh
+!.local/share/fonts/make
 !.macromedia
 !.makepkg.conf
 !.mbsyncrc.example
@@ -128,6 +133,8 @@
 !.tmux.conf
 !.toprc
 !.urlview
+!.urxvt
+!.urxvt/ext
 !.vim
 !.vimperatorrc
 !.w3m

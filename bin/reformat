@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -eu
 
 # pr - convert text files for printing
 # fold - wrap each input line to fit in specified width

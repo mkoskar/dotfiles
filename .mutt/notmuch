@@ -18,11 +18,11 @@ macro index <F9> \
 <enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
 'notmuch: reconstruct thread'
 
-macro index <F6> \
-"<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
-<pipe-message>notmuch-mutt tag -- -inbox<enter>\
-<enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
-'notmuch: remove message from inbox'
+#macro index <F6> \
+#"<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
+#<pipe-message>notmuch-mutt tag -- -inbox<enter>\
+#<enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
+#'notmuch: remove message from inbox'
 
 # map 'q' to '<space>' - change to selected sidebar mailbox
 folder-hook "$my_notmuch_results" 'macro index q <space>'

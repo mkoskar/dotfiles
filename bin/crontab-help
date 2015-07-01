@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 cat <<-EOF
 
@@ -12,7 +12,7 @@ The time and date fields are:
     minute          0-59
     hour            0-23
     day of month    1-31
-    month           1-12 (or names, see below)
-    day of week     0-7 (0 or 7 is Sunday, or use names)
+    month           1-12    (or names)
+    day of week     0-7     (0 or 7 is Sunday, or names)
 
 EOF

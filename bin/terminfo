@@ -1,21 +1,19 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
-
-# TODO: don't use `...` process substitution
+set -e -o pipefail
 
 echo
-echo `tput sgr0`normal
-echo `tput bold`bold`tput sgr0`
-echo `tput smso`standout`tput sgr0`
-echo `tput smul`underline`tput sgr0`
-echo `tput sitm`italics`tput sgr0`
-echo `tput blink`blink`tput sgr0`
-echo `tput rev`reverse`tput sgr0`
+echo "$(tput sgr0)normal"
+echo "$(tput bold)bold$(tput sgr0)"
+echo "$(tput smso)standout$(tput sgr0)"
+echo "$(tput smul)underline$(tput sgr0)"
+echo "$(tput sitm)italics$(tput sgr0)"
+echo "$(tput blink)blink$(tput sgr0)"
+echo "$(tput rev)reverse$(tput sgr0)"
 
 echo $'\n--------------------------------------------------'
 echo "TERM = $TERM"
-echo "TERMOLD = $TERMOLD"
+echo "TERMORIG = $TERMORIG"
 echo "TERMINFO = $TERMINFO"
 echo "TERMINFO_DIRS = $TERMINFO_DIRS"
 echo

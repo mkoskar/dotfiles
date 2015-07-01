@@ -13,10 +13,11 @@
 
 from sys import stderr, exit
 from urllib.parse import urljoin
-from urllib.request import urlopen
+from urllib.request import HTTPCookieProcessor
 import argparse
 import re
 import textwrap
+import urllib.request
 
 from pyquery import PyQuery
 
@@ -39,7 +40,12 @@ args = parser.parse_args()
 
 try:
     url = 'http://apod.nasa.gov/'
-    resp = urlopen(url)
+    opener = urllib.request.build_opener(HTTPCookieProcessor())
+    opener.addheaders = [
+        ('User-Agent', 'Mozilla/5.0'),
+        ('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
+    ]
+    resp = opener.open(url)
     html = resp.read().decode('ISO-8859-1')
 
     pq = PyQuery(html)
@@ -63,5 +69,4 @@ try:
 
     print(urljoin(url, result))
 except Exception as e:
-    print('{}: error: {}'.format(parser.prog, e), file=stderr)
     exit(1)

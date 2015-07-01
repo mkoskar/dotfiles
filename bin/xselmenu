@@ -1,12 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
-prgname=$(basename "$0")
+prgname=${0##*/}
 prompt=${1:-$prgname}
 
-tmpfile_psel=$(mktemp)
-tmpfile_clip=$(mktemp)
+readonly tmpfile_psel=$(mktemp)
+readonly tmpfile_clip=$(mktemp)
 cleanup() { rm -f "$tmpfile_psel" "$tmpfile_clip"; }
 trap cleanup EXIT
 
@@ -15,17 +15,19 @@ id_psel="psel$sep"
 id_clip="clip$sep"
 
 out() {
-    local id=$1
-    local tmpfile=$2
+    local id tmpfile
+    id=$1
+    tmpfile=$2
     read -r lines bytes <<<"$(wc -cl <"$tmpfile")"
-    [ $bytes -gt 0 ] && \
-        printf "$id$lines/$bytes$sep%s$sep\n" "$(head -c 30 <"$tmpfile" | oneline)"
+    if (( $bytes > 0 )); then
+        printf "%s%d/%d$sep%s$sep\n" \
+            "$id" "$lines" "$bytes" "$(head -c 30 <"$tmpfile" | oneline)"
+    fi
 }
 
 sel=$({
     xclip -o >"$tmpfile_psel"
     out "$id_psel" "$tmpfile_psel"
-
     xclip -o -selection clipboard >"$tmpfile_clip"
     out "$id_clip" "$tmpfile_clip"
 } | dmenu1 "$prompt")
@@ -38,6 +40,6 @@ case $sel in
         cat "$tmpfile_clip"
         ;;
     *)
-        echo "$sel"
+        printf '%s' "$sel"
         ;;
 esac

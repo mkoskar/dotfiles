@@ -5,8 +5,9 @@
 
 [ -e ~/bin/term.sh ] && . ~/bin/term.sh
 
-# continue only in case of interactive shell
-# ------------------------------------------
+# interactive shell only
+# ----------------------------------------
+
 case $- in *i*) ;; *) return ;; esac
 
 [ -e ~/bin/shx.sh ] && . ~/bin/shx.sh
@@ -27,11 +28,20 @@ HISTFILESIZE=5000
 HISTIGNORE='exit'
 HISTSIZE=500
 
-_title='\[\e]0;\u@\h:\w\a\]'
-PS1="$_title\$?:\W\$ "
+__title='\[\e]0;\u@\h:\w\a\]'
+PS1="$__title\$?\$__statstr:\W\$ "
 if [ -n "$(hostname-label)" ]; then
-    PS1="$_title\$?:\h:\W\$ "
+    PS1="$__title\$?\$__statstr:\h:\W\$ "
 fi
+
+__prompt_command() {
+    local pstatus=("${PIPESTATUS[@]}")
+    __statstr=
+    if (( ${#pstatus[@]} > 1 )); then
+        __statstr=":${pstatus[0]}$(printf '|%d' "${pstatus[@]:1}")"
+    fi
+}
+PROMPT_COMMAND='__prompt_command'
 
 complete -o nospace -A function fn
 complete -o nospace -W '10m 15m 20m 25m 30m' a
@@ -56,3 +66,8 @@ _pacl() {
     _pacman_pkg Qq
 }
 complete -o nospace -F _pacl pacl pacd pacp pacw paci pkgmark
+
+# finalize
+# ----------------------------------------
+
+[ -e ~/bin/login.sh ] && . ~/bin/login.sh || true

@@ -1,10 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
-if [ $# -eq 0 ]; then
-    set -- .
-fi
+(( $# )) || set -- .
 
 server=${VIMSERVER:-$TMUX}
 vim --serverlist | grep -Fxiq "$server" || exit 1

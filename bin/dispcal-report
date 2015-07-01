@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu -o pipefail
 
-prgname=$(basename "$0")
+prgname=${0##*/}
 
 echo $'\n> Check X display root window _ICC_PROFILE atoms:'
 xprop -root -len 8 _ICC_PROFILE _ICC_PROFILE_1 _ICC_PROFILE_2
@@ -12,7 +12,7 @@ echo '> Select display / monitor to continue:'
 
 _dall=$(dispcal -h |& LC_ALL=C grep -F Output | sed 's/^\s*//')
 IFS=$'\n' eval 'dall=($_dall)'
-echo "$_dall"
+printf '%s\n' "$_dall"
 echo
 
 read -N1 -rsp 'Your choice: ' dsel
@@ -21,7 +21,7 @@ echo
 if [[ ! "$dsel" =~ ^[1-9]$ ]] || ((dsel > ${#dall[@]})); then
     echo "$prgname: error: invalid choice" && exit 2
 fi
-echo "${dall[$((dsel-1))]}"
+print '%s\n' "${dall[$((dsel-1))]}"
 
 # -H                Use high resolution spectrum mode (if available)
 # -F                Fill whole screen with black background

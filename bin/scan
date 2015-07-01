@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
 output=$(dialog --keep-tite --backtitle 'scan' \
     --no-items --nocancel --default-item Gray --menu 'Mode:' 12 28 12 \
@@ -17,14 +17,16 @@ output=($output)
 mode=${output[0]}
 resolution=${output[1]}
 quality=${output[2]}
-[ -z "$mode" -o -z "$resolution" -o -z "$quality" ] && exit 1
+
+[[ ! $mode || ! $resolution || ! $quality ]] && exit 1
+
 optsline="$mode-${resolution}dpi-jq$quality"
 
 # --source Flatbed|Automatic Document Feeder|ADF Duplex [Flatbed]
 # --mode auto|Color|Gray|Lineart [Color]
 # --resolution auto|75|150|300|600|1200|2400dpi [75]
 
-tmpfile=$(mktemp --suffix=.tiff)
+readonly tmpfile=$(mktemp --suffix=.tiff)
 cleanup() { rm -f "$tmpfile"; }
 trap cleanup EXIT
 

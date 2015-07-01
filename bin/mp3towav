@@ -1,5 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -eu
 
 for i in *.mp3; do
-    lame --decode "$i" "$(basename "$i" .mp3)".wav
+    base=${i##*/}
+    lame --decode "$i" "${base%\.mp3}.wav"
 done

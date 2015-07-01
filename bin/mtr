@@ -1,7 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-if [ $# -eq 0 ]; then
-    set -- -n 8.8.8.8
-fi
-
+(( $# )) || set -- -n 8.8.8.8
 exec /usr/bin/mtr "$@"

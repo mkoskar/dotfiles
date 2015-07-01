@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -eu
 
 echo
 for socket in "$TMPDIR/tmux-$UID/"*; do

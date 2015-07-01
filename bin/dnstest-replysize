@@ -1,6 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-[ "$1" ] && args=("@$1")
-dig +short "${args[@]}" rs.dns-oarc.net txt
+args=(+short)
+
+(( $# )) && args+=("@$1")
+
+args+=(rs.dns-oarc.net txt)
+
+dig "${args[@]}"

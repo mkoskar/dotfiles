@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
 echo $'\n--------------------------------------------------'
 base='/sys/class/power_supply/BAT0/uevent'
 echo -e "> $base:\n"
-cat "$base"
+cat -- "$base"
 
 echo $'\n--------------------------------------------------'
 echo -e '> batcap [%]:\n'

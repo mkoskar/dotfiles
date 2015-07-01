@@ -1,22 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Set passed font or scroll through predefined list.
 #
 # :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
 # :License: BSD 2-Clause
 
-set -e
-
-format='%s\e\\'
-if [ -n "$TMUX" ]; then
-    format='\ePtmux;\e%s\a\e\\'
-elif [ "${TERM%%-*}" = 'screen' ]; then
-    format='\eP%s\a\e\\'
-fi
+set -eu -o pipefail
 
 process() {
     printf -v seq '\e]50;%s' "$1"
-    printf "$format" "$seq"
+    ctrlseq "$seq"
 }
 
 processor() {
@@ -25,21 +18,22 @@ processor() {
     done
 }
 
-if [ -z "$1" ]; then
-    scroller 'xft:local_terminal_sized' \
-             'xft:local_terminal:pixelsize=20' \
-             'xft:local_terminal:pixelsize=28' \
-             'xft:local_terminal:pixelsize=32' \
-             'xft:DejaVu Sans Mono:size=8' \
-             'xft:DejaVu Sans Mono:size=10' \
-             'xft:DejaVu Sans Mono:size=11' \
-             'xft:DejaVu Sans Mono:pixelsize=14' \
-             'xft:MonteCarlo' \
-             'xft:Monaco:size=10' \
-             'xft:Monaco:size=11' \
-             'xft:Source\ Code\ Pro:size=10' \
-             'xft:Envy\ Code\ R:size=11' \
-             | processor
+if (( ! $# )); then
+    (scroller | processor) <<-EOF
+	xft:local_terminal_sized
+	xft:local_terminal:pixelsize=20
+	xft:local_terminal:pixelsize=28
+	xft:local_terminal:pixelsize=32
+	xft:DejaVu Sans Mono:size=8
+	xft:DejaVu Sans Mono:size=10
+	xft:DejaVu Sans Mono:size=11
+	xft:DejaVu Sans Mono:pixelsize=14
+	xft:MonteCarlo
+	xft:Monaco:size=10
+	xft:Monaco:size=11
+	xft:Source Code Pro:size=10
+	xft:Envy Code R:size=11
+	EOF
 else
     process "$1"
 fi

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -eu
+
+sysrqf='/proc/sys/kernel/sysrq'
+
+if (( $# )); then
+    printf '%d' "$1" >"$sysrqf"
+fi
+
+cat "$sysrqf"

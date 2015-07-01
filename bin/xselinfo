@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 
@@ -6,10 +6,11 @@ set -e
 #       "echo 'something' | xsel -o" should print content of
 #       primary selection, but it will instead read stdin into it
 
-echo $'\n---------- Primary ----------'
+echo $'\n--------- Primary --------------------------------'
 xclip -o
 
-echo $'\n---------- Clipboard ----------'
+echo $'\n--------- Clipboard ------------------------------'
 xclip -o -selection clipboard
 
+echo $'\n--------------------------------------------------'
 echo

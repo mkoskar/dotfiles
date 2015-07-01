@@ -1,9 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") package" >&2
+prgname=${0##*/}
+
+if (( ! $# )); then
+    echo "usage: $prgname package" >&2
     exit 2
 fi
 

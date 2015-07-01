@@ -1,15 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
 target=~/.tor-browser-en/INSTALL/Browser
 
-if [ -d "$target" ]; then
+if [[ -d $target ]]; then
     cd "$target"
-    [ -L .gtkrc-2.0 ] || ln -s ~/.gtkrc-2.0
-    [ -L .icons ] || ln -s ~/.icons
-    [ -L .vimperatorrc ] || ln -s ~/.vimperatorrc
-    [ -L Downloads ] || ln -s ~/download Downloads
+    [[ -L .gtkrc-2.0 ]] || ln -s ~/.gtkrc-2.0
+    [[ -L .icons ]] || ln -s ~/.icons
+    [[ -L .vimperatorrc ]] || ln -s ~/.vimperatorrc
+    [[ -L Downloads ]] || ln -s ~/download Downloads
 fi
 
 /usr/bin/tor-browser-en

@@ -28,6 +28,8 @@ set time_inc = 500
 set timeout = 5
 set use_envelope_from
 set wrap = -1
+unset beep
+unset collapse_unread
 unset confirmappend
 unset header_cache_compress
 unset help
@@ -42,10 +44,10 @@ set alias_format = ' %2n %t %-40.40r    %a'
 set compose_format = "mutt-hstatus '%v' '-- Mutt: Compose [Approx. msg size: %l   Atts: %a]'|"
 set date_format = '!%b %d %I:%M'
 set folder_format = ' %2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f'
-set index_format = '%?M?+& ?[%Z]  %D  %?y?%-25.25y&%-25.25L?  %s'
 set pager_format = '[%Z] (%C/%m) %n: %s%*  -- (%P)'
 set query_format = ' %2c %t %-40.40a    %n %?e?(%e)?'
 set status_format = "mutt-hstatus '%v' '[%r] %f (%n/%m)%?d? deleted:%d?%?t? tagged:%t?%?F? flagged:%F?%?p? postponed:%p? %l %?V?-- limit (%M): %V? %> %s/%S (%P)'|"
+source ~/.mutt/index_format1
 
 # index settings
 set reply_regexp = '^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*'
@@ -96,6 +98,8 @@ bind generic        \cF         next-page
 bind generic        \cB         previous-page
 bind generic        \cD         half-down
 bind generic        \cU         half-up
+bind generic        \cP         previous-entry
+bind generic        \cN         next-entry
 bind generic        \e?         help
 bind generic        gg          first-entry
 bind generic        G           last-entry
@@ -107,6 +111,7 @@ bind generic,pager  (           previous-entry
 bind generic,pager  )           next-entry
 
 bind index          x           noop
+bind index          P           noop
 bind index          L           bottom-page         # generic
 bind index          gg          first-entry         # generic
 bind index          G           last-entry          # generic
@@ -118,7 +123,7 @@ bind index,pager    &           noop
 bind index,pager    \#          noop
 bind index,pager    o           noop
 bind index,pager    O           noop
-bind index,pager    ,           next-unread-mailbox
+bind index          ,           next-unread-mailbox
 bind index,pager    I           imap-fetch-mail
 bind index,pager    J           next-unread
 bind index,pager    K           previous-unread
@@ -128,12 +133,16 @@ bind index,pager    \cF         next-page           # generic
 bind index,pager    \cB         previous-page       # generic
 bind index,pager    \cD         half-down           # generic
 bind index,pager    \cU         half-up             # generic
+bind index,pager    \cP         previous-undeleted  # generic
+bind index,pager    \cN         next-undeleted      # generic
 bind index,pager    s           sort-mailbox
 bind index,pager    S           sort-reverse
 bind index,pager    [           previous-subthread
 bind index,pager    ]           next-subthread
 bind index,pager    {           previous-thread
 bind index,pager    }           next-thread
+bind index,pager    p           parent-message
+bind pager          P           print-message
 
 bind pager          Q           noop
 bind pager          \e?         help
@@ -141,9 +150,11 @@ bind pager          gg          top
 bind pager          G           bottom
 bind pager          <down>      next-line
 bind pager          <up>        previous-line
-bind pager          j           next-line
-bind pager          k           previous-line
+bind pager          >           next-line
+bind pager          <           previous-line
 bind pager          <return>    exit
+bind pager          ,           next-unread
+bind pager          .           previous-unread
 
 bind alias          <tab>       exit
 
@@ -180,7 +191,7 @@ macro index \'3 '<limit>~d \>2d<enter>' 'limit 2 days old messages'
 macro index \'\' '<limit>all<enter>' 'cancel limit'
 macro index,pager Z '<shell-escape>mbsync &<enter>' 'trigger mailboxes synchronization'
 macro index,pager * <tag-pattern>~A<enter> 'tag all'
-macro index,pager 0 <tag-pattern>~N<enter> 'tag new'
+macro index,pager 0 <tag-pattern>~(~N)<enter> 'tag new'
 macro index,pager \c? <untag-pattern>~A<enter> 'untag all'
 macro index,pager w <tag-prefix><set-flag> 'set a status flag on all tagged messages'
 macro index,pager W <tag-prefix><clear-flag> 'clear a status flag on all tagged messages'
@@ -189,8 +200,8 @@ macro index,pager \ea '<change-folder>!!<enter>' 'go to previous mailbox'
 macro index,pager y <change-folder>?<toggle-mailboxes> 'show mailboxes list'
 macro index,pager,attach O <pipe-message>w3m<enter> 'view in w3m'
 macro index,pager,attach \cO '<pipe-message>stdiner -T b0<enter>' 'view in browser'
-macro pager \ej jjjjj
-macro pager \ek kkkkk
+macro pager j >>>>>
+macro pager k <<<<<
 macro browser \ea <exit>\ea 'go to previous mailbox'
 macro browser u /^\\.\\.$<enter><enter> 'go up a dir'
 macro compose Y pfy 'send the message without PGP'
@@ -209,18 +220,17 @@ set sidebar_format = '%B%?F? [%F]?%* %?N?%N?%C'
 set sidebar_shortpath
 set sidebar_visible
 set sidebar_width = 20
-bind index,pager <space> sidebar-open
-macro index,pager \en <sidebar-next> 'sidebar-next'
-macro index,pager \ep <sidebar-prev> 'sidebar-prev'
-macro index,pager \cN <sidebar-next><sidebar-open> 'sidebar-next & sidebar-open'
-macro index,pager \cP <sidebar-prev><sidebar-open> 'sidebar-prev & sidebar-open'
+bind index <space> sidebar-open
+macro index,pager \eN <sidebar-next> 'sidebar-next'
+macro index,pager \eP <sidebar-prev> 'sidebar-prev'
+macro index,pager \en <sidebar-next><sidebar-open> 'sidebar-next & sidebar-open'
+macro index,pager \ep <sidebar-prev><sidebar-open> 'sidebar-prev & sidebar-open'
 macro index,pager ~ '<enter-command>toggle sidebar_visible<enter>' 'toggle sidebar'
 
 # global includes
 source $alias_file
 source ~/.mutt/colors
-source ~/.mutt/gpg
+source ~/.mutt/pgp
 source ~/.mutt/accountsrc
 
-# trigger mailboxes synchronization
-push Z
+push '<shell-escape>mbsync-on &<enter>'

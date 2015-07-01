@@ -5,8 +5,8 @@ IgnoreOnIsolate=true
 [Service]
 Type=forking
 SyslogIdentifier=ssh-agent
-ExecStart=/bin/bash -lc 'ssh-agent -a ~/.ssh/S.ssh-agent >/dev/null'
-Restart=on-abort
+ExecStart=/bin/bash -lc 'ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null'
+Restart=on-failure
 
 [Install]
 WantedBy=default.target

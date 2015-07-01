@@ -21,10 +21,20 @@ set my_mbarchived = _archived_
 set my_mbtrashed = _trashed_
 
 # other
+unset hostname
+unset pgp_sign_as # this will use GPG's default-key
 unset query_command
 unset sendmail
+
+# headers
+my_hdr OpenPGP: url=https://keybase.io/mkoskar/key.asc
+unmy_hdr Organization
 
 # key bindings / macros
 bind index,pager A noop
 bind index,pager \ez noop
 macro index q <change-folder>!<enter> 'go to spoolfile mailbox'
+
+# collapse all threads by default
+source ~/.mutt/sort_threads
+push <collapse-all>

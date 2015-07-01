@@ -1,12 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
+
+prgname=${0##*/}
 
 _usage() {
-    echo "usage: $(basename "$0") [-p port] [arg]..."
+    echo "usage: $prgname [-p port] [arg]..."
 }
 usage() { _usage; exit 0; }
-usage_err() { _usage >&2; exit 2; }
+usage_err() { _usage; exit 2; } >&2
 
 while getopts 'p:h' opt; do
     case $opt in

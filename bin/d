@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # -u    output NUM (default 3) lines of unified context
 # -d    try hard to find a smaller set of changes
@@ -7,13 +7,15 @@
 # -N    treat absent files as empty
 # -a    treat all files as text
 
-set -e -o pipefail
+set -eu
+
+# TODO: this dosn't play with pipefail, also it doesn't preserve diff's exit status
 
 set -- -udprN "$@"
 cmd=(diff "$@")
-prgname=$(basename "$0")
+prgname=${0##*/}
 
-process() {
+main() {
     case $prgname in
         d0)
             "${cmd[@]}"
@@ -22,12 +24,11 @@ process() {
             tmpfile=$(mktemp)
             trap 'rm -f "$tmpfile"' EXIT
             echo '---'
-            "${cmd[@]}" | filterdiff -v --remove-timestamps --annotate \
-                                        --strip=1 \
-                                        --addoldprefix=a/ \
-                                        --addnewprefix=b/ \
-                        | tee "$tmpfile" \
-                        | diffstat -p1
+            "${cmd[@]}" |
+                    filterdiff -v --remove-timestamps --annotate --strip=1 \
+                                  --addoldprefix=a/ --addnewprefix=b/ |
+                    tee "$tmpfile" |
+                    diffstat -p1
             echo
             cat "$tmpfile"
             ;;
@@ -35,4 +36,4 @@ process() {
 }
 
 # execute explicitly in subshell to workaround not firing trap
-( process ) | PAGER_TITLE=${cmd[@]} pg -c 'set ft=diff'
+( main ) | PAGER_TITLE=${cmd[@]} pg -c 'set ft=diff'

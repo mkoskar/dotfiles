@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu
 
-IFS= while read -r line; do
-    if [[ "$line" =~ ^[[:blank:]]*$ ]]; then
-        echo "$line"
+while IFS= read -r line; do
+    if [[ $line =~ ^[[:blank:]]*$ ]]; then
+        printf '%s\n' "$line"
     else
         "$@" "$line"
     fi

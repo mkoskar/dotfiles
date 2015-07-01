@@ -1,8 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-case $1 in -h|--help)
+prgname=${0##*/}
+
+case ${1-} in -h|--help)
     cat <<-EOF
 	usage: ff | firefox [arg]...
 	       ffp [profile] [arg]...
@@ -12,11 +14,10 @@ case $1 in -h|--help)
     ;;
 esac
 
-prgname=$(basename "$0")
-
 # ----------------------------------------
 
 bin='/usr/bin/firefox'
+profile=
 
 case $prgname in
     ff | firefox)
@@ -33,12 +34,12 @@ esac
 
 # ----------------------------------------
 
-if [ -z "$profile" ]; then
+if [[ ! $profile ]]; then
     profiles=($(awk -F = '/Name/ {print $2}' <~/.mozilla/firefox/profiles.ini | grep -P "$regexp" | sort))
 
-    if [ $# -gt 0 ]; then
+    if (( $# )); then
         for p in "${profiles[@]}"; do
-            if [ "$p" = "$1" ]; then
+            if [[ $p = "$1" ]]; then
                 profile=$1
                 shift
                 break
@@ -46,11 +47,11 @@ if [ -z "$profile" ]; then
         done
     fi
 
-    if [ -z "$profile" ]; then
+    if [[ ! $profile ]]; then
         profile=$(IFS=$'\n'; echo "${profiles[*]}" | dmenu1 "$prgname")
     fi
 
-    [ -z "$profile" ] && exit 1
+    [[ ! $profile ]] && exit 1
 fi
 
 export LOGNAME="$USER.$profile"

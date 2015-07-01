@@ -1,10 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
-if [ $# -gt 0 ]; then
-    target=$(realpath "$1")
-    if [ ! -d "$target" ]; then
+prgname=${0##*/}
+
+if (( $# )); then
+    target=$(realpath -- "$1")
+    if [[ ! -d $target ]]; then
         echo "$target is not a directory" >&2
         exit 2
     fi
@@ -12,13 +14,13 @@ if [ $# -gt 0 ]; then
     shift
 fi
 
-tmpfile_meta=$(mktemp)
-tmpfile_files=$(mktemp)
+readonly tmpfile_meta=$(mktemp)
+readonly tmpfile_files=$(mktemp)
 cleanup() { rm -f "$tmpfile_meta" "$tmpfile_files"; }
 trap cleanup EXIT
 
 meta_format='%y %u %g %m %p %l\0'
-if [ "$(basename "$0")" = 'dirsum0' ]; then
+if [[ $prgname = 'dirsum0' ]]; then
     meta_format='%y %u %g %m %T@ %p %l\0'
 fi
 

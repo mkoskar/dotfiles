@@ -1,14 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 shopt -s nullglob
 
 get() {
-    local sep=${3:-/}
-    local in="$1$sep$2"
-    local out="_$2"
-    typeset -g "$out"=
-    [ ! -e "$in" ] || typeset -g "$out"="$(<"$in")"
+    local sep in out
+    sep=${3:-/}
+    in="$1$sep$2"
+    out="_$2"
+    typeset -g "$out="
+    [[ ! -e $in ]] || typeset -g "$out=$(<"$in")"
 }
 
 get_() {
@@ -16,7 +17,8 @@ get_() {
 }
 
 uconv() {
-    [ -z "$1" ] || typeset -g "$2"=$(($1/(1000*1000)))
+    typeset -g "$2="
+    [[ ! $1 ]] || typeset -g "$2=$(($1/(1000*1000)))"
 }
 
 echo $'\n--------------------------------------------------'
@@ -31,8 +33,8 @@ echo $'\n--------------------------------------------------'
 base='/sys/class/powercap'
 echo -e "> $base:\n"
 
-for rapl in "$base"/*; do
-    [ ! -e "$rapl/name" ] && continue
+for rapl in "$base/"*; do
+    [[ -e $rapl/name ]] || continue
     _rapl=${rapl##*/}
 
     get "$rapl" name
@@ -51,19 +53,19 @@ for rapl in "$base"/*; do
 
     get "$rapl" enabled
 
-    [ "$_enabled" -eq 1 ] && _enabled='*' || _enabled=' '
+    (( _enabled )) && _enabled='*' || _enabled=' '
 
-    printf $'(%s) %-16s : %-15s %8sJ / %8sJ : %8sW / %8sW\n' \
+    printf '(%s) %-16s : %-15s %8sJ / %8sJ : %8sW / %8sW\n' \
         "$_enabled" "$_rapl" "$_name" \
         "$_energy" "$_max_energy_range" \
         "$_power" "$_max_power_range"
 
-    for i in $(seq 0 9); do
+    for ((i=0; i<10; i++)); do
         _base="$rapl/constraint_$i"
 
         get_ "$_base" name
 
-        [ -z "$_name" ] && break
+        [[ $_name ]] || break
 
         get_ "$_base" time_window_us
         uconv "$_time_window_us" _time_window
@@ -74,7 +76,7 @@ for rapl in "$base"/*; do
         get_ "$_base" max_power_uw
         uconv "$_max_power_uw" _max_power
 
-        printf "    %-16s : %-15s %19sus : %8sW / %8sW\n" \
+        printf '    %-16s : %-15s %19sus : %8sW / %8sW\n' \
             "constraint_$i" "$_name" \
             "$_time_window_us" "$_power_limit" "$_max_power"
     done
@@ -89,7 +91,7 @@ get "$base" min_perf_pct
 get "$base" max_perf_pct
 get "$base" no_turbo
 
-printf $'%-25s %-25s %-25s\n' \
+printf '%-25s %-25s %-25s\n' \
     "min_perf_pct: $_min_perf_pct" \
     "max_perf_pct: $_max_perf_pct" \
     "no_turbo: $_no_turbo"

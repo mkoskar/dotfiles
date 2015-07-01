@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -e -o pipefail
 
 # 1) speech-dispatcher
 #spd-say -e -r -30 -p +50 -i -25 -t male1 -P notification

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # X session startup script.
 #
@@ -10,23 +10,32 @@
 # * allocates VT passed in XDG_VTNR (which by default corresponds to active VT)
 # * dislay number will be the same as VT number
 # * continue only if display number is not used already
-# * startx ~/bin/xsession "$@" -- /usr/bin/X
+# * xinit ~/bin/xsession "$@" -- /usr/bin/X
 #
 # If started as 'xx':
 #
 # * dislay number will be the first free starting with 91
-# * startx ~/bin/xsession "$@" -- /usr/bin/Xephyr
+# * xinit ~/bin/xsession "$@" -- /usr/bin/Xephyr
 #
 # :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
 # :License: BSD 2-Clause
 
-set -e
+set -eu
+
+prgname=${0##*/}
+
+if (( $EUID == 0 )); then
+    echo 'This script must NOT be run as root.' >&2
+    exit 1
+fi
 
 ti_reset=$'\e[m'
 ti_hi0=$'\e[1;37m'
 ti_hi1=$'\e[1;32m'
 
-if [ $# -eq 0 ]; then
+# ----------------------------------------
+
+if (( ! $# )); then
     echo
     echo "${ti_hi0}m) main ${ti_hi1}[default]${ti_reset}"
     echo 'h) herbstluftwm'
@@ -34,8 +43,7 @@ if [ $# -eq 0 ]; then
     echo 'x) xmonad'
 
     read -N1 -rsp ': ' sel
-    [ -n "$sel" ] || sel=m
-    case $sel in
+    case ${sel:=m} in
         [mM])
             set -- main
             ;;
@@ -56,32 +64,62 @@ if [ $# -eq 0 ]; then
     echo -e "$sel\n"
 fi
 
-# -------- /usr/bin/Xephyr
+# ----------------------------------------
 
-if [ "$(basename "$0")" = 'xx' ]; then
-    dispno=91
-    while true; do
-        [ -e "/tmp/.X$dispno-lock" ] || break
-        dispno=$((dispno+1))
+rundir="$XDG_RUNTIME_DIR/xorg"
+mkdir -p "$rundir"
+
+datadir="${XDG_DATA_HOME:-$HOME/.local/share}/xorg"
+mkdir -p "$datadir"
+
+xauthset() {
+    local dispno cookie
+    dispno=$1
+    cookie=$(mcookie)
+
+    # server's X authority file (global)
+    xauthf="$rundir/X$dispno-Xauthority"
+    xauth -q -f "$xauthf" add ":$dispno" . "$cookie" &>/dev/null
+
+    # user's X authority file
+    xauth -q add ":$dispno" . "$cookie" &>/dev/null
+}
+
+unset SESSION_MANAGER
+
+# /usr/bin/Xephyr
+# ----------------------------------------
+
+if [[ $prgname = 'xx' ]]; then
+    for (( dispno=91; 1; dispno++ )); do
+        [[ -e /tmp/.X$dispno-lock ]] || break
     done
 
-    startx ~/bin/xsession "$@" -- \
-        /usr/bin/Xephyr ":$dispno" -nolisten tcp -dpi 96 -resizeable \
-        &>"$HOME/.xsession$dispno.out" &
+    xauthset "$dispno"
+
+    xinit ~/bin/xsession "$@" -- \
+        /usr/bin/Xephyr ":$dispno" \
+        -nolisten tcp -auth "$xauthf" -dpi 96 -resizeable \
+        &>"$datadir/xsession.$dispno.out" &
     exit
 fi
 
-# -------- /usr/bin/X
+# /usr/bin/X
+# ----------------------------------------
 
-vtno=$XDG_VTNR # vtno=$(fgconsole)
+vtno=$XDG_VTNR
 dispno=$vtno
 lockfile="/tmp/.X$dispno-lock"
 
-if [ -e "$lockfile" ]; then
-    echo -e "Display $dispno is currently in use (pid=$(cat "$lockfile" | sed 's/\s//g')).\n"
+if [[ -e $lockfile ]]; then
+    read -ra pid <"$lockfile"
+    echo -e "Display $dispno is currently in use (pid=$pid).\n"
     exit 1
 fi
 
-exec startx ~/bin/xsession "$@" -- \
-    /usr/bin/X ":$dispno" "vt$vtno" -keeptty -nolisten tcp -dpi 96 \
-    &>"$HOME/.xsession$dispno.out"
+xauthset "$dispno"
+
+exec xinit ~/bin/xsession "$@" -- \
+    /usr/bin/X ":$dispno" "vt$vtno" \
+    -keeptty -nolisten tcp -auth "$xauthf" -dpi 96 \
+    &>"$datadir/xsession.$dispno.out"

@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 exec picocom -b 115200 -f n -p n -d 8 /dev/buspirate

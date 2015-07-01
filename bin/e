@@ -1,12 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-if [ ! -t 0 ]; then
+prgname=${0##*/}
+
+if [[ ! -t 0 ]]; then
     set -- "$@" -
 fi
 
-if [ "$(basename "$0")" = 'e0' ]; then
+if [[ $prgname = 'e0' ]]; then
     set -- -u ~/.vim/vimrc_base
 fi
 

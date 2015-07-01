@@ -6,3 +6,4 @@ Requires=dbus.socket
 Type=simple
 SyslogIdentifier=dbus
 ExecStart=/bin/bash -lc 'dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation'
+Restart=on-failure

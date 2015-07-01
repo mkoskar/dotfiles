@@ -12,8 +12,9 @@
 """
 
 from sys import stderr, exit
-from urllib.request import urlopen
+from urllib.request import HTTPCookieProcessor
 import argparse
+import urllib.request
 
 from bs4 import BeautifulSoup
 
@@ -63,7 +64,13 @@ def output(string):
 
 try:
     url = args.url.strip()
-    soup = BeautifulSoup(urlopen(url))
+    opener = urllib.request.build_opener(HTTPCookieProcessor())
+    opener.addheaders = [
+        ('User-Agent', 'Mozilla/5.0'),
+        ('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
+    ]
+    resp = opener.open(url)
+    soup = BeautifulSoup(resp)
 
     output(
         meta_by_property(soup, 'og:url') or \

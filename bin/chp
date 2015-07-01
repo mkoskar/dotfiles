@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-prgname=$(basename "$0")
+prgname=${0##*/}
 
-case $1 in -h|--help)
+case ${1-} in -h|--help)
     echo "usage: $prgname [profile] [arg]..."
     exit
     ;;
@@ -21,20 +21,20 @@ profiles=(
     proxy-tor
 )
 
-if [ $# -gt 0 ]; then
+profile=
+if (( $# )); then
     for p in "${profiles[@]}"; do
-        if [ "$p" = "$1" ]; then
-            profile=$1
-            shift
-            break
-        fi
+        [[ $p = "$1" ]] || continue
+        profile=$1
+        shift
+        break
     done
 fi
 
-if [ -z "$profile" ]; then
-    profile=$(IFS=$'\n'; echo "${profiles[*]}" | dmenu1 "$prgname")
+if [[ ! $profile ]]; then
+    profile=$(IFS=$'\n'; dmenu1 "$prgname" <<<"${profiles[*]}")
 fi
 
-[ -z "$profile" ] && exit 1
+[[ ! $profile ]] && exit 1
 
 exec ch0 --user-data-dir="$HOME/.config/google-chrome-$profile" "$@"

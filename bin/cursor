@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -eu
+
+(( ! $# )) && set -- reset
+
+# Cursor's default color and style are hardcoded below.
+# Style can be restored by e.g., CSI save/restore and color can
+# be reset by Xterm OSC '\e]112;\e\\' (not supported by urxvt).
+
+color() { printf '\e]12;%s\e\\' "${1:-#dddddd}"; }
+style() { printf '\e[%d q' "${1:-2}"; }
+
+for arg in "$@"; do
+    case $arg in
+        block)          style 2 ;;
+        underline)      style 4 ;;
+        bar)            style 6 ;;
+        reset-style)    style ;;
+        reset-color)    color ;;
+        reset)          style; color ;;
+        *)              color "$1" ;;
+    esac
+done

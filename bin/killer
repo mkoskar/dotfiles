@@ -1,13 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
+
+prgname=${0##*/}
 
 _usage() {
-    echo "usage: $(basename "$0") [-g] [-s sigspec] pid..."
+    echo "usage: $prgname [-g] [-s sigspec] pid..."
 }
 usage() { _usage; exit 0; }
-usage_err() { _usage >&2; exit 2; }
+usage_err() { _usage; exit 2; } >&2
 
+declare -i gopt=0
 while getopts 'gs:h' opt; do
     case $opt in
         g)
@@ -26,11 +29,11 @@ while getopts 'gs:h' opt; do
 done
 shift $((OPTIND-1))
 
-[ $# -eq 0 ] && usage_err
+(( $# )) || usage_err
 
 sig=${sopt:-SIGTERM}
 
-if [ -n "$gopt" ]; then
+if (( gopt )); then
     for pid in "$@"; do
         pgid=$(ps --pid "$pid" -o pgid=) && kill -s "$sig" -"${pgid##* }"
     done

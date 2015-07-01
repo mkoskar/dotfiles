@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-if [ -z "$DISPLAY" ]; then
-    export DISPLAY=':1'
-fi
+set -eu
 
-if [ $# -eq 0 ]; then
-    echo "$DISPLAY"
+export DISPLAY="${DISPLAY:-:1}"
+
+if (( ! $# )); then
+    printf '%s\n' "$DISPLAY"
     exit
 fi
 

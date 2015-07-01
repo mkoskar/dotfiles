@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -eu
+
+[[ -t 0 ]] && src="$HOME/.ssh/ssh-agent.presets" || src='/dev/stdin'
+
+cd ~
+
+while read -ra params; do
+    ssh-add "${params[@]}" </dev/tty
+done <"$src"

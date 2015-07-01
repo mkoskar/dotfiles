@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-[ $# -eq 0 ] && exit 2
+(( $# )) || exit 2
 
 for i in "$@"; do
     printf '%d ' "0x$i"

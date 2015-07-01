@@ -1,14 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu
 
-prgname=$(basename "$0")
+prgname=${0##*/}
 
 case $prgname in
     modules-builtin)
-        </lib/modules/$(uname -r)/modules.builtin "$PAGER"
+        "$PAGER" </lib/modules/$(uname -r)/modules.builtin
         ;;
     *)
-        </lib/modules/$(uname -r)/modules.order "$PAGER"
+        "$PAGER" </lib/modules/$(uname -r)/modules.order
         ;;
 esac

@@ -1,36 +1,35 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-cleanup() { kill $(jobs -p); }
+cleanup() {
+    local pids
+    pids=($(jobs -p))
+    (( ${#pids[@]} )) && kill "${pids[@]}"
+}
 trap cleanup EXIT
 
-# startx unsets DBUS_SESSION_BUS_ADDRESS, let's set it back
-export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
-
-if [ -d /etc/X11/xinit/xinitrc.d ]; then
+if [[ -d /etc/X11/xinit/xinitrc.d ]]; then
     for i in /etc/X11/xinit/xinitrc.d/* ; do
-        [ -f "$i" ] && . "$i"
+        [[ -f $i ]] && . "$i"
     done
 fi
 
 xresources="$HOME/.Xresources"
-if [ -e "$xresources" ]; then
+if [[ -e $xresources ]]; then
     xrdb -load "$xresources"
 fi
 
 xmodmap="$HOME/.Xmodmap"
-if [ -e "$xmodmap" ]; then
+if [[ -e $xmodmap ]]; then
     xmodmap "$xmodmap"
 fi
 
-xkb
 xscreen
 audio pulse_init
 
-if [ "$(xserverq name)" = 'Xorg' ]; then
-    #compton
-    :
+if [[ $(xserverq name) = 'Xorg' ]]; then
+    xrun compton &
 fi
 
 _main() {
@@ -61,6 +60,6 @@ case $session in
         _$session
         ;;
     *)
-        [ $# -eq 0 ] || command "$@"
+        (( $# )) && command "$@"
         ;;
 esac

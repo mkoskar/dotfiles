@@ -2,5 +2,5 @@
 Description=mbsync(tail) timer
 
 [Timer]
-OnCalendar=*:30:00
+OnCalendar=*:00,30
 Persistent=yes

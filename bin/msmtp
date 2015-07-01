@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 
-prgname=$(basename "$0")
+prgname=${0##*/}
 
 case $prgname in
     msmtp-noproxy)

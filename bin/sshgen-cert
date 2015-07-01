@@ -1,13 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
+
+prgname=${0##*/}
 
 usage_err() {
-    echo "usage: $(basename "$0") ca_key pub_key identity principals" >&2
+    echo "usage: $prgname ca_key pub_key identity principals [ssh-keygen opts]" >&2
     exit 2
 }
 
-[ $# -ne 4 ] && usage_err
+(( $# < 4 )) && usage_err
 
 ca_key=$1
 pub_key=$2
@@ -15,7 +17,7 @@ identity=$3
 principals=$4   # Multiple principals may be specified, separated by commas.
 
 opts=()
-if [ "$(basename "$0")" = 'sshgen-hostcert' ]; then
+if [[ $prgname = 'sshgen-hostcert' ]]; then
     identity="host_$identity"
     opts+=(-h)
 else
@@ -29,4 +31,15 @@ opts+=(
     -V +52w
 )
 
-ssh-keygen "${opts[@]}" "$pub_key"
+if [[ $prgname = 'sshgen-cert-port-forwarding-only' ]]; then
+    opts+=(
+        -O no-agent-forwarding
+        -O no-pty
+        -O no-user-rc
+        -O no-x11-forwarding
+    )
+fi
+
+shift 4
+
+ssh-keygen "${opts[@]}" "$@" "$pub_key"

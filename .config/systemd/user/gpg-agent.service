@@ -6,7 +6,7 @@ IgnoreOnIsolate=true
 Type=forking
 SyslogIdentifier=gpg-agent
 ExecStart=/bin/bash -lc 'gpg-agent --daemon'
-Restart=on-abort
+Restart=on-failure
 
 [Install]
 WantedBy=default.target

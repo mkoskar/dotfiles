@@ -1,14 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-cache_home=${XDG_CACHE_HOME:-$HOME/.cache}
-path="$cache_home/apod/latest"
-prgname=$(basename "$0")
+prgname=${0##*/}
+
+path="${XDG_CACHE_HOME:-$HOME/.cache}/apod/latest"
 
 case $prgname in
     apod-get)
-        curl -s --create-dirs -o "$path" "$(apod)"
+        curl -sLf --create-dirs -z "$path" -o "$path" "$(apod)" || exit 1
         ;;
     apod-bg)
         has-cmd apod-bgset \

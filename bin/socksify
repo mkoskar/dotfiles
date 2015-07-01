@@ -1,8 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-prgname=$(basename "$0")
+prgname=${0##*/}
 
-# proxychains
-exec /usr/bin/proxychains -q -f ~/.proxychains/"$prgname.conf" "$@"
+exec /usr/bin/proxychains -q -f "$HOME/.proxychains/$prgname.conf" "$@"

@@ -1,11 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-cleanup() { kill 0; }
+cleanup() {
+    local pids
+    pids=($(jobs -p))
+    (( ${#pids[@]} )) && kill "${pids[@]}"
+}
 trap cleanup EXIT
 
-[ -t 1 ] || exec 2>/dev/null
+[[ -t 1 ]] || exec 2>/dev/null
 
 skyped -s -n -H 127.0.0.1 &
 /usr/bin/skype

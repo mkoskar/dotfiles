@@ -1,9 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -eu
 
 export RXVT_SOCKET="$HOME/.urxvt/urxvtd-$DISPLAY"
 
 /usr/bin/urxvtc "$@"
-if [ $? -eq 2 ]; then
+if (( $? == 2 )); then
     urxvtd -q -o -f
     /usr/bin/urxvtc "$@"
 fi

@@ -1,14 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-prgname=$(basename "$0")
+prgname=${0##*/}
 
 (
-    [ -t 1 ] || exec 2>/dev/null
+    [[ -t 1 ]] || exec 2>/dev/null
 
-    if [ "$prgname" != 'xscreen0' -a "$(xserverq name)" = 'Xorg' ]; then
-        if [ "$prgname" = 'xscreen-mobile' ]; then
+    if [[ $prgname != 'xscreen0' && $(xserverq name) = 'Xorg' ]]; then
+        if [[ $prgname = 'xscreen-mobile' ]]; then
             autorandr -l mobile --force
         else
             autorandr -c -d mobile --force
@@ -17,8 +17,6 @@ prgname=$(basename "$0")
 )
 
 xset b off s off dpms 0 0 300
-
-xset m 4 2
 xsetroot -cursor_name left_ptr
 
 has-cmd hsetroot && hsetroot || xsetroot -solid black

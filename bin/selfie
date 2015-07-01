@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-target=~/tmp/selfie.jpg
-preview_pidfile="$XDG_RUNTIME_DIR/selfie_preview.pid"
+target="$HOME/tmp/selfie.jpg"
+
+readonly preview_pidfile="$XDG_RUNTIME_DIR/selfie_preview.pid"
 preview_cleanup() { rm -rf "$preview_pidfile"; }
 
 preview() {
@@ -14,4 +15,4 @@ preview() {
 
 fswebcam -q -r 5000x5000 "$target"
 
-[ -e "$preview_pidfile" ] || { preview & }
+[[ -e $preview_pidfile ]] || { preview & }

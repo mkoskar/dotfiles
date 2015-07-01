@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
 bluetooth toggle &>/dev/null
 
 state=$(bluetooth | awk '{print $3}')
-if [ "$state" = 'on' ]; then
+if [[ $state = 'on' ]]; then
     sleep 1
 
 #    dbus-send --system --type=method_call --dest=org.bluez \

@@ -1,9 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-if [ $# -eq 0 ]; then
-    set -- -
-fi
+(( $# )) || set -- -
 
 LC_ALL=C grep --color=auto '[^ -~]' "$@"

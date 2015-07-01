@@ -1,15 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-prgname=$(basename "$0")
+prgname=${0##*/}
 
-if [ $# -eq 0 ]; then
+if (( ! $# )); then
     echo "usage: $prgname cmd" >&2
     exit 2
 fi
 
-if [ "$prgname" = 'ptha' ]; then
+if [[ $prgname = 'ptha' ]]; then
     type -Pa "$1"
 else
     type -P "$1"

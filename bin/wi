@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
 ti_reset=$'\e[m'
 ti_hi0=$'\e[1;37m'
@@ -21,10 +21,11 @@ Sun:                    %s / %S
 "
 
 get() {
-    local opts=(-m -l "$1")
-    local opts_digest=$(md5sum <<<"${opts[*]}" | awk '{print $1}')
-    local cache="$HOME/.cache/shaman-${opts_digest: -7}.json"
-    touch "$cache"
+    local opts opts_digest cache
+    opts=(-m -l "$1")
+    opts_digest=$(IFS=$'\n'; md5sum <<<"${opts[*]}" | awk '{print $1}')
+    cache="$HOME/.cache/shaman-${opts_digest: -7}.json"
+    [[ -e $cache ]] || touch "$cache"
     shaman "${opts[@]}" -f "$format" -c "$cache"
 }
 

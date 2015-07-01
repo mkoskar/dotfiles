@@ -5,8 +5,9 @@
 
 [ -e ~/bin/term.sh ] && . ~/bin/term.sh
 
-# continue only in case of interactive shell
-# ------------------------------------------
+# interactive shell only
+# ----------------------------------------
+
 case $- in *i*) ;; *) return ;; esac
 
 [ -e ~/bin/shx.sh ] && . ~/bin/shx.sh
@@ -72,7 +73,8 @@ unsetopt flow_control
 unsetopt hist_beep
 unsetopt hup
 
-#========== completion
+# completion
+# ----------------------------------------
 
 compinit
 
@@ -158,7 +160,8 @@ function _pacl {
 }
 compctl -K _pacl pacl pacd pacp pacw paci pkgmark
 
-#========== window-title
+# window-title
+# ----------------------------------------
 
 function set-window-title {
     local title
@@ -167,14 +170,15 @@ function set-window-title {
 }
 add-zsh-hook precmd set-window-title
 
-#========== zle
+# zle
+# ----------------------------------------
 
 KEYTIMEOUT=1
 WORDCHARS='*?_-.[]~&;!#$%^(){}<>'
 
-PROMPT='$_vimode%?:%1~%(!.#.$) '
+PROMPT='$__vimode%?$__statstr:%1~%(!.#.$) '
 if [ -n "$(hostname-label)" ]; then
-    PROMPT='$_vimode%?:%m:%1~%(!.#.$) '
+    PROMPT='$__vimode%?$__statstr:%m:%1~%(!.#.$) '
 fi
 
 function expand-dot-to-parent-directory-path {
@@ -193,10 +197,20 @@ function overwrite-mode-select {
     zle zle-keymap-select
 }
 
-function zle-line-init zle-keymap-select {
-    _vimode=':'
+function zle-line-init {
+    # use global var since it's not possible to declare and assign local in one step
+    __pstatus=("${pipestatus[@]}")
+    __statstr=
+    if (( ${#__pstatus[@]} > 1 )); then
+        __statstr=":${__pstatus[1]}$(printf '|%s' "${__pstatus[@]:1}")"
+    fi
+    zle-keymap-select
+}
+
+function zle-keymap-select {
+    __vimode=':'
     if [ ! "$KEYMAP" = 'vicmd' ]; then
-        [[ "$ZLE_STATE" == *overwrite* ]] && _vimode='^' || _vimode='+'
+        [[ "$ZLE_STATE" == *overwrite* ]] && __vimode='^' || __vimode='+'
     fi
     zle reset-prompt
 }
@@ -301,11 +315,12 @@ bindkey -M vicmd -s '^Xa' 'a!!:*\e'
 bindkey -M vicmd -s '^Xl' 'a!!:$\e'
 bindkey -M vicmd -s '^Xs' 'a!!:gs/'
 
-#========== zsh-syntax-highlighting
+# zsh-syntax-highlighting
+# ----------------------------------------
 
-_src=/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-if [ -e "$_src" ]; then
-    . "$_src"
+__src=/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -e "$__src" ]; then
+    . "$__src"
     ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
     #ZSH_HIGHLIGHT_STYLES[default]='none'
     #ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red,bold'
@@ -331,16 +346,25 @@ if [ -e "$_src" ]; then
     ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]='fg=15'
     ZSH_HIGHLIGHT_STYLES[assign]='fg=11'
 fi
+unset __src
 
-#========== zsh-history-substring-search
+# zsh-history-substring-search
+# ----------------------------------------
 
-_src=~/opt/zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
-if [ -e "$_src" ]; then
-    . "$_src"
+__src=~/opt/zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+if [ -e "$__src" ]; then
+    . "$__src"
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=8,fg=15'
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=red,fg=15'
 fi
+unset __src
 
-#========== aliases
+# aliases
+# ----------------------------------------
 
 alias help='run-help'
+
+# finalize
+# ----------------------------------------
+
+[ -e ~/bin/login.sh ] && . ~/bin/login.sh || true

@@ -1,3 +1,5 @@
+! vim: ft=xdefaults
+
 #include "default"
 
 *.background: #0D0D10

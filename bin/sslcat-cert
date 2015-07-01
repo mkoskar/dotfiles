@@ -1,3 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-openssl x509 -text -noout -in "$1"
+set -eu
+
+openssl x509 -text -fingerprint -noout -in "$1"

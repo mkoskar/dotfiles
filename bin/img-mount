@@ -1,18 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
+
+prgname=${0##*/}
 
 devname='nbd0'
 dev="/dev/$devname"
 
-if [ "$(basename "$0")" = 'img-umount' ]; then
+if [[ $prgname  = 'img-umount' ]]; then
     umountall "$devname"
     qemu-nbd -d "$dev"
     exit
 fi
 
-if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") image" >&2
+if (( ! $# )); then
+    echo "usage: $prgname image" >&2
     exit 2
 fi
 

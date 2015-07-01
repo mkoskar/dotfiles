@@ -1,9 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-src=/proc/sys/kernel/random/entropy_avail
+prgname=${0##*/}
 
-[ "$(basename "$0")" = 'entropy-watch' ] \
+src='/proc/sys/kernel/random/entropy_avail'
+
+[[ $prgname = 'entropy-watch' ]] \
     && watch -n1 -t cat "$src" \
     || cat "$src"

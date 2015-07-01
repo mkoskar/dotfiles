@@ -1,9 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo $'\n--------------------------------------------------'
 echo $'> Setup backup:\n'
 sudo backup-setup
 sudo bay-standby
+
+echo $'\n--------------------------------------------------'
+echo $'> Setup SSH tunnels:\n'
+sshup
 
 echo $'\n--------------------------------------------------'
 echo '> Start X session:'

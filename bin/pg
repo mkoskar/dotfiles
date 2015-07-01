@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Wrapper script to use Vim as a pager.
 # Install by running ``export PAGER='pg'``.
@@ -6,27 +6,29 @@
 # :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
 # :License: BSD 2-Clause
 
-set -e
+set -eu
 
-if [ ! -t 1 ]; then
+prgname=${0##*/}
+
+if [[ ! -t 1 ]]; then
     cat
     exit
 fi
 
 run() {
-    if [ "$(basename "$0")" = 'pg0' ]; then
+    if [[ $prgname = 'pg0' ]]; then
         set -- -c 'syntax off | filetype off | filetype plugin off' "$@"
     else
         set -- "$@" -c 'AnsiEsc'
     fi
-    if [ -n "$PAGER_TITLE" ]; then
+    if [[ $PAGER_TITLE ]]; then
         vim -NO -u ~/.vim/vimrc_pg "$@" -c "redraw | file ${PAGER_TITLE//\ /\\ }"
     else
         vim -NO -u ~/.vim/vimrc_pg "$@"
     fi
 }
 
-if [ -t 0 ]; then
+if [[ -t 0 ]]; then
     run "$@"
     exit
 fi

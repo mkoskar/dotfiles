@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 
-ssh-add -t 10m
+ssh-agent-preset
 ssh-tunnel baobab

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+loghome='/var/log/local'
+mkdir -p "$loghome"
+cd "$loghome"
+
+# ----------------------------------------
+
+logbase='pacman-disowned'
+pacman-disowned >"$logbase.$(date '+%Y-%m-%d.%s')"
+
+# ----------------------------------------
+
+last2=($(ls "$logbase"* | tail -n2))
+if (( ${#last2[@]} == 2 )); then
+    diff -U 0 "${last2[@]}" | filterdiff --remove-timestamps
+fi

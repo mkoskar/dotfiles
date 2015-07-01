@@ -1,14 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
 cd ~/projects/notes/src/09-policy
 
 output() {
-    local files=([0-9]*) l=${#files[@]}
+    local files count
+    files=([0-9]*)
+    count=${#files[@]}
     for i in "${!files[@]}"; do
         cat "${files[i]}"
-        ((i != l-1)) && echo
+        (( i != count-1 )) && echo
     done
 }
 

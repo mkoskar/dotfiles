@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+
+format='%s\e\\'
+if [[ ${TMUX-} ]]; then
+    format='\ePtmux;\e%s\a\e\\'
+elif [[ ${TERM%%-*} = 'screen' ]]; then
+    format='\eP%s\a\e\\'
+fi
+
+printf "$format" "$1"

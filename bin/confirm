@@ -1,19 +1,21 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Simple confirmation dialog.
 #
 # :Copyright: (c) 2014 Miroslav Koskar (http://mkoskar.com/)
 # :License: BSD 2-Clause
 
-set -e
+set -eu
 
-if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") prompt [default]" >&2
+prgname=${0##*/}
+
+if (( ! $# )); then
+    echo "usage: $prgname prompt [default]" >&2
     exit 2
 fi
 
 prompt=$1
-default=$2
+default=${2-}
 
 case $default in
     [yY])

@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
 playback_up() {
     amixer -q set Master 5%+
@@ -26,7 +26,7 @@ pulse_init() {
     systemctl --user start pulseaudio.service
 }
 
-case $1 in
+case ${1:-} in
     playback_up | playback_down | \
     playback_toggle | playback_dock_toggle | \
     capture_toggle)

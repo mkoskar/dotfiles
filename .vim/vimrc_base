@@ -28,6 +28,11 @@ set smartcase
 " ========== tags
 set tags=./tags,tags
 
+if exists("$BASEDIR")
+    exec 'set tags^='.$BASEDIR.'/tags'
+    nnoremap <silent> <F12> :!$BASEDIR/maketags<CR>
+endif
+
 " ========== displaying text
 set scrolloff=5
 set nowrap
@@ -36,13 +41,13 @@ set sidescrolloff=15
 set list
 set listchars=eol:¬,tab:>-,trail:-,extends:>,precedes:<
 
-nnoremap <Leader>l :set <C-R>=&list ? 'nolist' : 'list'<CR><CR>
-nnoremap <Leader>w :set <C-R>=&wrap ? 'nowrap' : 'wrap'<CR><CR>
+nnoremap <Leader>L :set <C-R>=&list ? 'nolist' : 'list'<CR><CR>
+nnoremap <Leader>W :set <C-R>=&wrap ? 'nowrap' : 'wrap'<CR><CR>
 
 " ========== syntax, highlighting and spelling
 set background=dark
 set hlsearch
-set colorcolumn=79,84
+set colorcolumn=+1,84
 set spelllang=en_us
 
 let g:option_colorcolumn = &cc
@@ -51,7 +56,9 @@ nnoremap <silent> <Space> :nohls<Bar>echo<CR>
 nnoremap <silent> # :let @/ = "<C-R>=escape(escape(expand('<cWORD>'), '/\.*$^~["'), '''/\.*$^~["')<CR>"<Bar>set hls<CR>
 nnoremap <silent> * :let @/ = "<C-R>=escape(escape(expand('<cword>'), '/\.*$^~["'), '''/\.*$^~["')<CR>"<Bar>set hls<CR>
 nnoremap <Leader>sp :set <C-R>=&spell ? 'nospell' : 'spell'<CR><CR>
-nnoremap col :set <C-R>=&cc ? 'cc=' : 'cc='.g:option_colorcolumn<CR><CR>
+nnoremap col :set <C-R>=!empty(&cc) ? 'cc=' : 'cc='.g:option_colorcolumn<CR><CR>
+nnoremap cuc :set <C-R>=&cuc ? 'nocuc' : 'cuc'<CR><CR>
+nnoremap cul :set <C-R>=&cul ? 'nocul' : 'cul'<CR><CR>
 
 " ========== multiple windows
 set laststatus=2
@@ -59,6 +66,7 @@ set statusline=
 set statusline+=%n
 set statusline+=\ %<%f
 set statusline+=%(\ [%M%W%R]%)
+set statusline+=\ [%{&fo}]
 set statusline+=%(\ %y%)
 set statusline+=%=
 set statusline+=0x%-3B
@@ -106,6 +114,16 @@ set t_ut=
 " ========== using the mouse
 set mouse=a
 
+noremap <MiddleMouse> <Nop>
+noremap <2-MiddleMouse> <Nop>
+noremap <3-MiddleMouse> <Nop>
+noremap <4-MiddleMouse> <Nop>
+
+inoremap <MiddleMouse> <Nop>
+inoremap <2-MiddleMouse> <Nop>
+inoremap <3-MiddleMouse> <Nop>
+inoremap <4-MiddleMouse> <Nop>
+
 " ========== GUI
 set guicursor+=a:blinkon0
 set guifont=Monaco\ 12
@@ -124,9 +142,9 @@ set ruler
 set novisualbell
 
 " ========== editing text
-set textwidth=79
+set textwidth=78
 set backspace=indent,eol,start
-set formatoptions=tcroqln21j
+set formatoptions=croqln21j
 set completeopt=longest,menuone
 set tildeop
 set showmatch
@@ -176,17 +194,50 @@ set shellredir=>%s\ 2>&1
 set shellpipe=2>&1\|\ tee
 set grepprg=grep\ -n\ --exclude-dir='.svn'\ --exclude-dir='.git'\ --exclude='*.swp'\ --exclude='*~'\ $*\ /dev/null
 
+nnoremap <silent> <F9> :make!<CR>
+
+nnoremap <silent> <Leader>cl :copen<CR>
+nnoremap <silent> <Leader>ll :lopen<CR>
+
+nnoremap <silent> <Leader>j :cnext<CR>
+nnoremap <silent> <Leader>k :cprevious<CR>
+
+nnoremap <silent> <Leader>J :lnext<CR>
+nnoremap <silent> <Leader>K :lprevious<CR>
+
 " ========== multi-byte characters
 set encoding=utf-8
 
+" ========== clipboard
+
+function! s:Pipe2(cmd, bang) range abort
+    if empty(a:bang)
+        exec a:firstline.','.a:lastline.' yank '.v:register
+    endif
+    call system(a:cmd, getreg())
+endfunction
+command! -register -range -bang -nargs=1 Pipe2 Preserve <line1>,<line2> call s:Pipe2(<q-args>, <q-bang>)
+command! -register -range -bang Pipe2Primary Preserve <line1>,<line2> call s:Pipe2('xclip -i', <q-bang>)
+command! -register -range -bang Pipe2Clipboard Preserve <line1>,<line2> call s:Pipe2('xclip -i -selection clipboard', <q-bang>)
+
+nnoremap <silent> <Leader>xxP :Pipe2Primary!<CR>
+nnoremap <silent> <Leader>xxp yy:Pipe2Primary!<CR>
+vnoremap <silent> <Leader>xxp y:Pipe2Primary!<CR>
+
+nnoremap <silent> <Leader>xxC :Pipe2Clipboard!<CR>
+nnoremap <silent> <Leader>xxc yy:Pipe2Clipboard!<CR>
+vnoremap <silent> <Leader>xxc y:Pipe2Clipboard!<CR>
+
 " ========== various
-set virtualedit=block
 set gdefault
+set virtualedit=block
 exec "set viminfo='100,<50,s10,h,n".$VIMDIR."/.viminfo"
 
 nnoremap cov :set <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
 
 " ========== other
+let g:load_doxygen_syntax = 1
+
 syntax on
 filetype plugin indent on
 
@@ -212,8 +263,8 @@ nnoremap <C-c> <silent> <C-c>
 noremap j gj
 noremap k gk
 
-noremap <M-j> 5j
-noremap <M-k> 5k
+map <M-j> 5j
+map <M-k> 5k
 
 noremap <M-C-H> 15h
 noremap <M-C-L> 15l
@@ -251,7 +302,8 @@ inoremap <C-F>d <C-R>=expand('%:r')<CR>
 
 nnoremap <Leader>a ggVG
 vnoremap <Leader>a <Esc>ggVG
-nnoremap <Leader>hh :tab help<Space>
+nnoremap <Leader>h :tab help<Space>
+nnoremap <Leader>H :tab lhelpgrep<Space>
 
 nnoremap <silent> <C-X> :q<CR>
 nnoremap <silent> <C-Q> :bd<CR>
@@ -259,6 +311,9 @@ nnoremap <silent> <Leader>ee :e<CR>
 nnoremap <silent> <Leader>EE :e!<CR>
 nnoremap <Leader>rr :setl noreadonly modifiable<CR>
 
+nnoremap <expr> gp '`['.getregtype()[0].'`]'
+
+" sorting
 vnoremap <silent> <Leader>ss :sort<CR>
 vnoremap <silent> <Leader>su :sort u<CR>
 vnoremap <silent> <Leader>sd :sort!<CR>
@@ -270,22 +325,24 @@ nnoremap <silent> <Leader>d; :,diffget<CR>
 nnoremap <silent> <Leader>d: :,diffput<CR>
 
 " XML prettify
-vnoremap <silent> <Leader>px !tidy -config ~/.tidyrc -xml<CR>
+vnoremap <silent> <Leader>px :!tidy -config ~/.tidyrc -xml<CR>
 nnoremap <silent> <Leader>px :%!tidy -config ~/.tidyrc -xml<CR>
 
 " reformat paragraph
-vnoremap <silent> <Leader>pr !reformat<CR>
+vnoremap <silent> <Leader>pr :!reformat<CR>
 nnoremap <silent> <Leader>pr :%!reformat<CR>
 
 " strip_lines / squash
-vnoremap <silent> <Leader>ps !strip_lines<CR>
+vnoremap <silent> <Leader>ps :!strip_lines<CR>
 nnoremap <silent> <Leader>ps :%!strip_lines<CR>
-vnoremap <silent> <Leader>pS !squash<CR>
+vnoremap <silent> <Leader>pS :!squash<CR>
 nnoremap <silent> <Leader>pS :%!squash<CR>
 
 " fast editing / reloading of the 'vimrc'
 exec 'nnoremap <silent> <Leader>rc :vs '.$VIMRC.'<CR>'
 exec 'nnoremap <Leader>so :source '.$VIMRC.'<CR>'
+
+nnoremap <silent> <Leader>ft :exec 'set ft='.&ft<CR>
 
 " ----------------------------------------
 
@@ -309,7 +366,7 @@ let netrw_winsize = 30
 
 " Echos given error message.
 function! EchoError(errmsg) abort
-    if a:errmsg != ''
+    if empty(a:errmsg)
         redraw
         echohl ErrorMsg | echomsg a:errmsg | echohl None
     endif
@@ -328,13 +385,13 @@ function! EchoLastError() abort
     call EchoError(v:errmsg)
 endfunction
 
-" Performs exec of passed command in try/catch block catching all errors.
-function! TryCatchAll(command) abort
-    try
-        exec a:command
-    catch
-        call EchoException()
-    endtry
+" Performs exec of passed command in try/catch block catching matching errors.
+function! TryCatch(cmd, ...) abort
+    let pattern = '.*'
+    if a:0
+        let pattern = a:1
+    endif
+    exec 'try | '.a:cmd.' | catch /'.pattern.'/ | call EchoException() | endtry'
 endfunction
 
 function! BufferSettings_Man()
@@ -421,15 +478,15 @@ silent call MetaSetup(1)
 " {{{ Restore cursor position, window position,
 " and last search pattern after running a command.
 
-function! Preserve(command) abort
+function! Preserve(cmd) abort
     " save
     let last_search = @/
-    let cursor_pos = getpos('.')
+    let cursor_pos = getcurpos()
     normal H
     let window_pos = getpos('.')
     call setpos('.', cursor_pos)
     try
-        exec a:command
+        exec a:cmd
     finally
         " restore
         call setpos('.', window_pos)
@@ -438,9 +495,10 @@ function! Preserve(command) abort
         let @/ = last_search
     endtry
 endfunction
-nnoremap <silent> <Leader>pp :call Preserve('%s/\s\+$//e')<CR>
-vnoremap <silent> <Leader>pp :call Preserve("'<,'>s/\\s\\+$//e")<CR>
-nnoremap <silent> <Leader>== :call Preserve('normal gg=G')<CR>
+command! -nargs=1 Preserve call Preserve(<q-args>)
+nnoremap <silent> <Leader>pp :Preserve %s/\s\+$//e<CR>
+vnoremap <silent> <Leader>pp :Preserve '<,'>s/\\s\\+$//e<CR>
+nnoremap <silent> <Leader>== :Preserve normal gg=G<CR>
 
 " }}}
 
@@ -449,11 +507,11 @@ nnoremap <silent> <Leader>== :call Preserve('normal gg=G')<CR>
 function! s:QuitTab(bang) abort
     try
         exec 'tabclose'.a:bang
-    catch /E784/
+    catch /:E784:/
         exec 'qall'.a:bang
     endtry
 endfunction
-command! -bang QuitTab call TryCatchAll("silent call s:QuitTab('<bang>')")
+command! -bang QuitTab call TryCatch('silent call s:QuitTab(<q-bang>)')
 nnoremap <silent> QQ :QuitTab<CR>
 nnoremap <silent> QA :QuitTab!<CR>
 
@@ -573,15 +631,35 @@ nnoremap <silent> <M-L> :MoveToNextTab<CR>
 if has('autocmd')
 augroup VIMRC_BASE
     autocmd!
-    autocmd BufWinEnter NetrwMessage nnoremap <silent> <buffer> q :q<CR>
-    autocmd BufWinEnter quickfix call BufferSettings_Special()
+
     autocmd BufWritePre * let &backupext = '_'.substitute(expand('%:p:h'), '/', '%', 'g')
     autocmd CmdwinEnter * call BufferSettings_Special()
+    autocmd TermChanged * silent call MetaSetup(meta_enabled)
+
+    autocmd BufWinEnter NetrwMessage nnoremap <silent> <buffer> q :q<CR>
+
+    " Quickfix List / Location List
+    autocmd BufEnter * match none
+    autocmd BufWinEnter quickfix
+        \  call BufferSettings_Special()
+        \| map <buffer> <silent> o <CR>
+        \| map <buffer> <silent> go <CR>:match IncSearch /\k*\%#\k*/<CR><C-W>p
+        \| map <buffer> <silent> < :try \| call TryCatch('lolder', '^\(.*:E776:.*\)\@!') \| catch \| call TryCatch('colder') \| endtry<CR>
+        \| map <buffer> <silent> > :try \| call TryCatch('lnewer', '^\(.*:E776:.*\)\@!') \| catch \| call TryCatch('cnewer') \| endtry<CR>
+        \| map <buffer> <silent> q <C-W>q<CR>
+
+    " ----------------------------------------
+
+    " C/C++
+    autocmd FileType {c,cpp}{,.*} let &l:path = '/usr/include'
+
+    " other
+    autocmd FileType mail setl tw=72
     autocmd FileType make setl ts=4 sts=0 sw=4 noexpandtab
     autocmd FileType man call BufferSettings_Man()
     autocmd FileType netrw call BufferSettings_Special()
     autocmd FileType tar call BufferSettings_Special()
     autocmd FileType zip call BufferSettings_Special()
-    autocmd TermChanged * silent call MetaSetup(meta_enabled)
+
 augroup END
 endif

@@ -1,16 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
 name=()
 for arg in "$@"; do
     shift
-    [ "$arg" = '-' ] && break
+    [[ $arg = '-' ]] && break
     name+=("$arg")
 done
 name=${name[*]:-term}
 
-[ $# -eq 0 ] && set -- shell
+(( ! $# )) && set -- shell
 
 #exec st -c "$name" -e "$@"
+#exec termite --name "$name" -e "$(shell-escape "$@")"
 exec urxvt -name "$name" -e "$@"

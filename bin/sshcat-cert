@@ -1,3 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -eu
 
 ssh-keygen -L -f "$1"

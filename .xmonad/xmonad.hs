@@ -325,25 +325,26 @@ myConfig = defaultConfig
         , ("M-C-p", spawn "playctl-bluetooth play-pause")
 
           -- setxkbmap
-        , ("M-<F1>", spawn "xkb us")
-        , ("M-<F2>", spawn "xkb sk")
-        , ("M-<F3>", spawn "xkb cz")
+        , ("M-<F1>", spawn "xkb 0")
+        , ("M-<F2>", spawn "xkb 1")
+        , ("M-<F3>", spawn "xkb 2")
 
           -- selections
-        , ("M-<Insert>", spawn "xclipboard")
-        , ("M-S-<Insert>", spawn "xclipboard from-primary && notify 'PRIMARY -> CLIPBOARD'")
+        , ("M-<Insert>", spawn "clip")
+        , ("M-S-<Insert>", spawn "clipp && notify 'PRIMARY -> CLIPBOARD'")
 
           -- other
         , ("M-<F9>", spawn "xscreen0 && xmonad --restart")
         , ("M-<F10>", spawn "xscreen && xmonad --restart")
         , ("M-S-<F10>", spawn "xscreen-mobile && xmonad --restart")
 
-        , ("M-<F12>", spawn "grabc 2>&1 | xclipboard from-stdin")
-        , ("M-S-<F12>", spawn "xmeasure | xclipboard from-stdin")
+        , ("M-<F12>", spawn "grabc 2>&1 | clipi")
+        , ("M-S-<F12>", spawn "xmeasure | clipi")
 
         , ("M-; M-b", spawn "bluetooth-toggle")
         , ("M-; M-d", spawn "dpms-toggle")
         , ("M-; M-l", spawn "sudo lockx")
+        , ("M-; M-t", spawn "trackpoint-wheel-toggle")
         , ("M-; M-w", spawn "wifi-toggle")
         , ("M-S-b", spawn "backlight-toggle")
 

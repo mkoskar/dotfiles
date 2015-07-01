@@ -1,17 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
+
+prgname=${0##*/}
 
 _usage() {
-    echo "usage: $(basename "$0") [-f] pattern"
+    echo "usage: $prgname [-f] pattern"
 }
 usage() { _usage; exit 0; }
-usage_err() { _usage >&2; exit 2; }
+usage_err() { _usage; exit 2; } >&2
 
+declare -i fopt=0
 while getopts 'fh' opt; do
     case $opt in
         f)
-            fopt='-f'
+            fopt=1
             ;;
         h)
             usage
@@ -23,7 +26,10 @@ while getopts 'fh' opt; do
 done
 shift $((OPTIND-1))
 
-[ $# -eq 0 ] && usage_err
+(( ! $# )) && usage_err
 
-xpgrep_opts=($fopt)
-xpgrep "${xpgrep_opts[@]}" "$1" | xargs -r killer -g
+xpgrep_args=()
+(( $fopt )) && xpgrep_args+=(-f)
+xpgrep_args+=(-- "$1")
+
+xpgrep "${xpgrep_args[@]}" | xargs -r killer -g

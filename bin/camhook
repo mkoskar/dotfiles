@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-target=~/tmp/camhook.jpg
-preview_pidfile="$XDG_RUNTIME_DIR/camhook_preview.pid"
+target="$HOME/tmp/camhook.jpg"
+
+readonly preview_pidfile="$XDG_RUNTIME_DIR/camhook_preview.pid"
 preview_cleanup() { rm -rf "$preview_pidfile"; }
 
 preview() {
@@ -18,8 +19,8 @@ case $ACTION in
     start)
         ;;
     download)
-        cp "$ARGUMENT" "$target"
-        [ -e "$preview_pidfile" ] || { preview & }
+        cp -- "$ARGUMENT" "$target"
+        [[ -e $preview_pidfile ]] || { preview & }
         ;;
     stop)
         ;;

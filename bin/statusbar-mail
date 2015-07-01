@@ -1,18 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
 newdirs=(~/mail/*/INBOX/new/)
+prevnew=0
 
 out() {
-    local new=$(find "${newdirs[@]}" -type f | wc -l)
-    if [[ $new > 0 ]]; then
+    local new
+    new=$(find "${newdirs[@]}" -type f | wc -l)
+    if (( $new > 0 )); then
         printf '<fc=#55FF55>%d</fc>' $new
-        [ $new_ ] && delta=$((new-new_))
-        [[ $delta > 0 ]] && printf '<fc=#FEED6A>(+%d)</fc>' $delta
+        delta=$((new-prevnew))
+        (( $delta > 0 )) && printf '<fc=#FEED6A>(+%d)</fc>' $delta
     fi
     echo
-    new_=$new
+    prevnew=$new
 }
 
 while true; do

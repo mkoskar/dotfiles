@@ -1,10 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-[ -e ~/bin/term.sh ] && . ~/bin/term.sh
+prgname=${0##*/}
 
-if [ "${TERM%%-*}" != 'screen' ]; then
+if (( ! $# )); then
+    echo "usage: $prgname cmd [arg]..." >&2
+    exit 2
+fi
+
+[[ -e ~/bin/term.sh ]] && . ~/bin/term.sh
+
+if [[ ${TERM%%-*} != 'screen' ]]; then
     # wait a bit for WM geometry to kick-in
     sleep 0.05
 fi

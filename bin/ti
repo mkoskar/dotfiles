@@ -1,24 +1,28 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
 tzprint() {
+    local tz
     for tz in "$@"; do
-        if [ "$tz" = '-' ]; then
-            echo $'\n---------------------------------------------------------'
-            continue
-        fi
-        if [ "$tz" = '+' ]; then
-            echo
-            continue
-        fi
-        if [ "$tz" = 'local' ]; then
-            tz=$(readlink -f /etc/localtime)
-            tz=${tz#/usr/share/zoneinfo/}
-        else
-            export TZ=$tz
-        fi
-        printf $'%-25s %s\n' "$tz" "$(date -R)"
+        case $tz in
+            -)
+                echo $'\n---------------------------------------------------------'
+                continue
+                ;;
+            +)
+                echo
+                continue
+                ;;
+            local)
+                tz=$(readlink -f /etc/localtime)
+                tz=${tz#/usr/share/zoneinfo/}
+                ;;
+            *)
+                export TZ=$tz
+                ;;
+        esac
+        printf '%-25s %s\n' "$tz" "$(date -R)"
     done
 }
 

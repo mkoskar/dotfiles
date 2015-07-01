@@ -3,4 +3,4 @@ Description=mbsync(head) timer
 
 [Timer]
 OnActiveSec=0
-OnUnitInactiveSec=5m
+OnUnitInactiveSec=10m

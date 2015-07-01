@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 exec chp proxy-tor --incognito \
     --proxy-server='socks://127.0.0.1:9050' \

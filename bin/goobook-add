@@ -1,12 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-prgname=$(basename "$0")
+prgname=${0##*/}
 
 cleanup() {
-    exitcode=$?
-    if [ $exitcode -eq 0 ]; then
+    local retstat=$?
+    if (( $retstat == 0 )); then
         notify "___ $prgname ___"
     else
         notify "___ $prgname FAIL ___"
@@ -14,10 +14,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# ----------------------------------------
-
 input=$(grep -P '^From:')
-
 {
     goobook add <<<"$input"
     goobook reload

@@ -1,18 +1,18 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
+
+prgname=${0##*/}
 
 opts=(
     -Dawt.useSystemAAFontSettings=on
     -Dswing.aatext=true
 )
-export _JAVA_OPTIONS="$_JAVA_OPTIONS ${opts[*]}"
+export _JAVA_OPTIONS="${_JAVA_OPTIONS:+"$_JAVA_OPTIONS "}${opts[*]}"
 
-prgname=$(basename "$0")
-if [ "$prgname" = '_java_options_aa' ]; then
-    [ $# -eq 0 ] || exec "$@"
-else
-    basedir=$(dirname "$0")
-    export PATH=$(sed "s,:?$basedir:?,:,g" <<<"$PATH")
-    exec "$prgname" "$@"
+if [[ $prgname != '_java_options_aa' ]]; then
+    export PATH=$(sed "s,:?$HOME/bin:?,:,g" <<<"$PATH")
+    set -- "$prgname" "$@"
 fi
+
+exec "$@"

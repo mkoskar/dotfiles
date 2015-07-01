@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
 interval=${1:-0}
 gphoto2 --quiet --capture-image-and-download \

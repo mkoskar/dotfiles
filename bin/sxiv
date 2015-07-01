@@ -1,14 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-tmpfile=$(mktemp)
+readonly tmpfile=$(mktemp)
 cleanup() { rm -f "$tmpfile"; }
 trap cleanup EXIT
 
 /usr/bin/sxiv -o "$@" >"$tmpfile"
 
-[ -s "$tmpfile" ] || exit 0
+[[ -s $tmpfile ]] || exit 0
 
 mkdir .marked
 xargs -d '\n' -r -I{} -a "$tmpfile" mv {} -t .marked

@@ -1,10 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") cmd [arg]..." >&2
+prgname=${0##*/}
+
+if (( ! $# )); then
+    echo "usage: $prgname cmd [arg]..." >&2
     exit 2
+fi
+
+if [[ ! -t 1 ]]; then
+    exec bashx -c "$(shell-escape "$@")"
 fi
 
 CMD=$(shell-escape "$@") PAGER_TITLE=${PAGER_TITLE:-"$ $CMD"} pg -c ReloadX

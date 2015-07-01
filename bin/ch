@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # http://peter.sh/experiments/chromium-command-line-switches/
 #
@@ -12,22 +12,28 @@
 
 set -e
 
-proxy=(
-    --proxy-server='127.0.0.1:8118'
-    #--proxy-bypass-list='<local>'
-)
+prgname=${0##*/}
 
-if [ "$(basename "$0")" = 'ch0' ]; then
-    proxy=()
+proxy=()
+if [[ $prgname != 'ch0' ]]; then
+    proxy=(
+        --proxy-server='127.0.0.1:8118'
+        #--proxy-bypass-list='<local>'
+    )
 fi
 
-logging=(
-    #--enable-logging=stderr
-    #--enable-logging
-    #--v=1
-)
+logging=()
+if [[ $CH_DEBUG ]]; then
+    logging=(
+        --debug-plugin-loading
+        --enable-extension-activity-logging
+        --enable-logging=stderr
+        --v=1
+    )
+fi
 
 exec google-chrome-stable \
+    --force-device-scale-factor=1 \
     --force-gpu-rasterization \
     --ignore-gpu-blacklist \
     --restore-last-session \

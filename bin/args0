@@ -1,8 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
 args=("$0" "$@")
+
 for i in "${!args[@]}"; do
-    printf $'%s : %s\n' "$i" "${args[$i]}"
+    printf '%s : %s\n' "$i" "${args[$i]}"
 done

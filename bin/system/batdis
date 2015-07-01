@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if (( $EUID )); then
+    echo 'This script must be run with root privileges.' >&2
+    exit 1
+fi
+
+prgname=${0##*/}
+
+declare -i val=1
+if [[ $prgname = 'batdis-off' ]]; then
+    val=0
+fi
+
+tpacpi-bat -s FD 1 "$val"

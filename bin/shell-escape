@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
 printf -v out "${IFS:0:1}%q" "$@"
-printf "%s\n" "${out:1}"
+printf '%s\n' "${out:1}"

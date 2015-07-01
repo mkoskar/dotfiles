@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 trayer --edge top --align right \
        --width 100 --widthtype pixel \

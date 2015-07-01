@@ -1,8 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
-[ $(basename "$0") = 'playctl-bluetooth' ] && blue=1
+prgname=${0##*/}
+
+declare -i blue=0
+[[ $prgname = 'playctl-bluetooth' ]] && blue=1
 
 bluectl() {
     # hack which happens to workaround bluetooth-player input issues
@@ -10,7 +13,8 @@ bluectl() {
 }
 
 play_pause_blue() {
-    local status=$(bluectl show | awk '/Status:/ {print $2}')
+    local status
+    status=$(bluectl show | awk '/Status:/ {print $2}')
     case $status in
         playing)
             bluectl pause >/dev/null
@@ -21,8 +25,8 @@ play_pause_blue() {
     esac
 }
 
-case $1 in
+case ${1-} in
     play-pause)
-        [ -z "$blue" ] && playerctl play-pause || play_pause_blue
+        (( blue )) && play_pause_blue || playerctl play-pause
         ;;
 esac

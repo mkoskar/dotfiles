@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if (( $EUID )); then
+    echo 'This script must be run with root privileges.' >&2
+    exit 1
+fi
+
+gw=${1:-192.168.88.5}
+dev=${2:-tun0}
+
+while read -r line; do
+    [[ $line ]] || continue
+    ip route add "$line" via "$gw" dev "$dev"
+done

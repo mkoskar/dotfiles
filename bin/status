@@ -1,36 +1,38 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
-if [ "$(basename "$0")" = 'status-osd' ]; then
+prgname=${0##*/}
+
+if [[ $prgname = 'status-osd' ]]; then
     out=$(status "$@")
-    [ -t 1 ] && echo "$out"
+    [[ -t 1 ]] && printf '%s\n' "$out"
     osd "$out" || true
     exit 0
 fi
 
 status_audio() {
-    local pval=$(amixer get Master \
+    local pval rval
+    pval=$(amixer get Master \
         | gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {print a[2] " " a[1]}' \
         | head -n1)
     amixer -c 0 get Headphone,1 | grep -Fq 'Playback [on]' && pval="$pval +dock"
-
-    local rval=$(amixer get Capture \
+    rval=$(amixer get Capture \
         | gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {print a[2] " " a[1]}' \
         | head -n1)
-
     printf 'audio: %s / %s\n' "$pval" "$rval"
 }
 
 status_backlight() {
-    local val
-    local src='/sys/class/backlight/acpi_video0'
+    local src val
+    src='/sys/class/backlight/acpi_video0'
     printf -v val '%s / %s' "$(<"$src/brightness")" "$(<"$src/max_brightness")"
     printf 'backlight: %s\n' "$val"
 }
 
 status_bluetooth() {
-    local val=$(bluetooth | awk -F= '{gsub(/^[ \t]+/, "", $2); print $2}')
+    local val
+    val=$(bluetooth | awk -F= '{gsub(/^[ \t]+/, "", $2); print $2}')
     printf 'bluetooth: %s\n' "$val"
 }
 
@@ -42,20 +44,29 @@ status_dpms() {
     printf 'dpms: %s\n' "$val"
 }
 
+status_trackpoint_wheel() {
+    local val='-'
+    if xset q &>/dev/null; then
+        trackpoint-wheel && val='on' || val='off'
+    fi
+    printf 'trackpoint wheel: %s\n' "$val"
+}
+
 status_wifi() {
-    local val=$(wifi | awk -F= '{gsub(/^[ \t]+/, "", $2); print $2}')
+    local val
+    val=$(wifi | awk -F= '{gsub(/^[ \t]+/, "", $2); print $2}')
     printf 'wifi: %s\n' "$val"
 }
 
 status_xkb() {
     local val='-'
     if xset q &>/dev/null; then
-        val=$(setxkbmap -query | grep -F 'layout:' | awk '{print $2}')
+        val=$(xkblayout-state print '%s')
     fi
     printf 'xkb: %s\n' "$val"
 }
 
-case $1 in
+case ${1-} in
     audio)
         status_audio
         ;;
@@ -68,6 +79,9 @@ case $1 in
     dpms)
         status_dpms
         ;;
+    trackpoint-wheel)
+        status_trackpoint_wheel
+        ;;
     wifi)
         status_wifi
         ;;
@@ -79,6 +93,7 @@ case $1 in
         status_backlight
         status_bluetooth
         status_dpms
+        status_trackpoint_wheel
         status_wifi
         status_xkb
         ;;

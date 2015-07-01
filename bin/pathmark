@@ -1,27 +1,29 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
-if [ $# -eq 0 ]; then
-    echo "usage: $(basename "$0") path" >&2
+prgname=${0##*/}
+
+if (( ! $# )); then
+    echo "usage: $prgname path" >&2
     exit 2
 fi
 
 exec 2>/dev/null
 
 path=$(realpath "$1")
-basename=$(basename "$path")
+basename=${path##*/}
 
 echo "$path"
 
 # TODO: use $ man -f instead?
 
 if manp=$(man -w "$path") && \
-    [ "$manp" != "$path" ]; then
+    [[ $manp != "$path" ]]; then
     man "$path" | sed -nr '/^NAME/{n;s/^\s*//p}'
 else
     if manp=$(man -w "$basename") && \
-        [ "$manp" != "$basename" ]; then
+        [[ $manp != "$basename" ]]; then
         man "$basename" | sed -nr '/^NAME/{n;s/^\s*//p}'
     fi
 fi

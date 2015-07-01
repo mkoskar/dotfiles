@@ -1,20 +1,24 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-s() {
-    local sname=$1
-    local wname="s_$sname"
+attach() {
+    local sname wname
+    sname=$1
+    wname="s_$sname"
     xdotool search --classname "$wname" >/dev/null \
         || { term "$wname" - trun s "$sname" & }
 }
 
-s wrk
-sleep 0.3
+s -d aux
+s -d tmp
+s -d wrk
 
-s tmp
-sleep 0.3
+attach tmp
+attach wrk
 
-s aux
+# wait a bit for tmp -> aux ordering
+sleep 0.5
+attach aux
 
 wait

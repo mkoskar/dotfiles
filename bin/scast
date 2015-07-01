@@ -1,15 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # -w            select a window by mouse click
 # -s            select a rectangular region by mouse
 # -x <n|list>   select the Xinerama head of ID n
 # -i            combine regions by intersection
 
-set -e
+set -eu -o pipefail
 
-if [ $# -eq 0 ]; then
-    set -- -w
-fi
+(( ! $# )) && set -- -w
 
 cd ~/tmp
 
@@ -17,7 +15,7 @@ echo 'Press [q] to stop, [?] for help'
 ffcast -q "$@" rec
 
 last=$(find -type f -name 'screencast-*' | sort -r | sed '2,$d')
-if [ -n "$last" ]; then
+if [[ $last ]]; then
     echo "> $last"
-    mpv --loop inf "$last"
+    mpv --loop=inf "$last"
 fi

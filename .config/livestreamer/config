@@ -1,4 +1,12 @@
 default-stream=best
+hds-live-edge 15
+hds-segment-threads 5
+hds-segment-timeout 1
+hls-live-edge 15
+hls-segment-threads 5
+hls-segment-timeout 1
 http-no-ssl-verify
 player-no-close
-player=mpv --cache 2048
+player=mpv --cache=yes --cache-secs=20
+stream-segment-threads 5
+stream-segment-timeout 1

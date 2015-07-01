@@ -1,3 +1,0 @@
-#!/bin/bash
-
-sudo tpacpi-bat -s FD 1 1

@@ -8,11 +8,11 @@ set -o noclobber
 # non-POSIX but supported by ``bash`` and ``zsh`` at least
 set -o pipefail || true
 
-readonly ti_hi0=$'\e[1;37m'
-readonly ti_hi1=$'\e[1;32m'
-readonly ti_hi2=$'\e[1;31m'
-readonly ti_hi3=$'\e[1;33m'
-readonly ti_reset=$'\e[m'
+ti_hi0=$'\e[1;37m'
+ti_hi1=$'\e[1;32m'
+ti_hi2=$'\e[1;31m'
+ti_hi3=$'\e[1;33m'
+ti_reset=$'\e[m'
 
 CDPATH='.:..:~'
 PS4=$'+\n$ti_hi1>$ti_reset [$(date +%T)] $ti_hi3$BASH_SOURCE:$LINENO$ti_reset\n$ti_hi1>$ti_reset $ti_hi0$BASH_COMMAND$ti_reset\n$ti_hi1>$ti_reset '
@@ -24,7 +24,7 @@ if [ "$BASH_VERSION" ]; then
 fi
 
 # ls
-# --
+# ----------------------------------------
 
 alias ls='ls --group-directories-first --color=auto'
 alias l='ls -1A'
@@ -38,7 +38,7 @@ alias lu='lt -u'
 alias lx='ll -XB'
 
 # ack / ag / grep
-# ---------------
+# ----------------------------------------
 
 alias ack='ack --color'
 alias ag='ag --color --color-path=36 --color-line-number=33 --color-match=41 --follow --nobreak --smart-case --noheading'
@@ -49,13 +49,13 @@ alias gr="g -r --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exc
 alias gri='gr -i'
 
 # python
-# ------
+# ----------------------------------------
 
 alias py='python'
 alias ipy='ipython'
 
 # docker
-# ------
+# ----------------------------------------
 
 alias dk='docker'
 alias dkb='docker build'
@@ -71,7 +71,7 @@ alias dkri='docker run -i -t -P'
 
 dkip() {
     local target=${1:-$(docker ps -lq)}
-    [ -z "$target" ] && return 2
+    [ ! "$target" ] && return 2
     docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$target"
 }
 
@@ -86,17 +86,17 @@ dkstop() {
 }
 
 # java
-# ----
+# ----------------------------------------
 
 alias java-info='java -XshowSettings:all -version'
 
 # groovy
-# ------
+# ----------------------------------------
 
 alias groovy-grape-verbose='groovy -Dgroovy.grape.report.downloads=true'
 
 # maven
-# -----
+# ----------------------------------------
 
 alias mvn-effective-pom='mvn help:effective-pom'
 alias mvn-effective-settings='mvn help:effective-settings'
@@ -108,18 +108,18 @@ mvn-describe-plugin() {
 }
 
 # gradle
-# ------
+# ----------------------------------------
 
 alias gradle-tasks='gradle -q tasks --all'
 alias gradle-dependencies='gradle -q dependencies'
 
 # node
-# ----
+# ----------------------------------------
 
 alias npmg='npm -g'
 
 # pacman
-# ------
+# ----------------------------------------
 
 # finds what package provides file or directory
 paco() {
@@ -163,12 +163,12 @@ pacw() {
 paci() {
     [ $# -eq 0 ] && return 2
     local p=$(expac %n "$1")
-    [ -z "$p" ] && return 1
+    [ ! "$p" ] && return 1
     pacman -Qii "$p"
 }
 
 # other
-# -----
+# ----------------------------------------
 
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -195,8 +195,9 @@ alias lsblk='lsblk -o NAME,KNAME,MAJ:MIN,ROTA,RM,RO,TYPE,SIZE,FSTYPE,MOUNTPOINT,
 alias lsdiff='lsdiff -s'
 alias ltime='date +%T'
 alias manl="MANPAGER='less -s' man"
+alias mpv-debug='command mpv --msg-level=all=trace'
+alias mutt-debug='mutt -d 2'
 alias mv='mv -i'
-alias ntpdq='sudo ntpd -q && sudo hwclock -w'
 alias od='od -Ad -tc -tx1 -v -w16'
 alias odd='od -td1'
 alias odo='od -to1'
@@ -206,6 +207,7 @@ alias pactree='pactree --color'
 alias patch0='patch -Np0'
 alias patch1='patch -Np1'
 alias psa='ps auxf'
+alias pulse-streams='pacmd list-sink-inputs'
 alias qiv='qiv -uLtiGfl --vikeys'
 alias rm='rm -I --one-file-system'
 alias sd='sudo systemctl'
@@ -213,7 +215,7 @@ alias sdu='systemctl --user'
 alias se='sudoedit'
 alias ss='ss -napstu'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
-alias tree='tree --dirsfirst'
+alias sudo0='sudo -K && sudo -k'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias watch='watch -n1 -t -c'
 alias wtc='curl --silent http://whatthecommit.com/index.txt'
@@ -242,23 +244,34 @@ date() {
 }
 
 lsmod() {
-    [ -t 1 ] && set -- -R
     pgx command lsmod "$@"
 }
 
-pstree() {
-    set -- -ahglnpsSuU "$@"
+lspci() {
+    pgx command lspci -vv -nn "$@"
+}
+
+lsusb() {
+    pgx command lsusb -v "$@"
+}
+
+tree() {
+    set -- --dirsfirst -a -I '.git|.svn' --noreport -x
     if [ -t 1 ]; then
-        pgx command pstree "$@"
+        pgx command tree -C "$@"
     else
-        command pstree "$@"
+        command tree "$@"
     fi
 }
 
-mplayer() { /usr/bin/mplayer -really-quiet -msglevel all=1 "$@" 2>/dev/null; }
-mpv() { /usr/bin/mpv --really-quiet --msg-level=all=error "$@" 2>/dev/null; }
-smplayer() { /usr/bin/smplayer "$@" >/dev/null 2>&1; }
-vlc() { /usr/bin/vlc "$@" 2>/dev/null; }
+pstree() {
+    pgx command pstree -ahglnpsSuU "$@"
+}
+
+mplayer() { command mplayer -really-quiet -msglevel all=1 "$@" 2>/dev/null; }
+mpv() { command mpv --really-quiet --msg-level=all=error "$@" 2>/dev/null; }
+smplayer() { command smplayer "$@" >/dev/null 2>&1; }
+vlc() { command vlc "$@" 2>/dev/null; }
 
 on() {
     [ $# -eq 0 ] && return 2
@@ -296,22 +309,14 @@ fn() {
     fi
 }
 
-env() {
-    if [ $# -eq 0 -a -t 1 ]; then
-        env | "$PAGER"
-    else
-        command env "$@"
-    fi
-}
-
 setpid() {
     PID=
-    if [ -n "$BASH_VERSION" ]; then
+    if [ "$BASH_VERSION" ]; then
         PID=$BASHPID
-    elif [ -n "$ZSH_VERSION" ]; then
+    elif [ "$ZSH_VERSION" ]; then
         PID=${sysparams[pid]}
     fi
-    [ -n "$PID" ] || return 1
+    [ "$PID" ] || return 1
 }
 
 shi() {
@@ -362,7 +367,7 @@ stacktrace() {
 }
 
 ifs() {
-    printf "$IFS" | \od -An -ta -tx1
+    printf '%s' "$IFS" | \od -An -ta -tx1
 }
 
 ifs0() {
@@ -381,19 +386,19 @@ reexec() {
 reload() {
     [ -e ~/.profile ] && . ~/.profile
     local rc=~/bin/shx.sh
-    if [ -n "$BASH_VERSION" ]; then
+    if [ "$BASH_VERSION" ]; then
         rc=~/.bashrc
-    elif [ -n "$ZSH_VERSION" ]; then
+    elif [ "$ZSH_VERSION" ]; then
         rc=~/.zshrc
     fi
     [ -e "$rc" ] && . "$rc"
 }
 
-# continue only in case of Bourne-like shell
-# ------------------------------------------
+# Bourne-like shell only
+# ----------------------------------------
 
-eval 'function _bourne_test { true; }' 2>/dev/null || return
-unset _bourne_test
+eval 'function __bourne_test { true; }' 2>/dev/null || return
+unset __bourne_test
 
 # virtualenvwrapper
 if [ -e /usr/bin/virtualenvwrapper.sh ]; then
@@ -401,11 +406,11 @@ if [ -e /usr/bin/virtualenvwrapper.sh ]; then
     alias mkvirtualenv2="mkvirtualenv -p '$(pth python2)'"
     alias mkvirtualenv3="mkvirtualenv -p '$(pth python3)'"
     alias wo='workon'
-    if [ -n "$BASH_VERSION" ]; then
-        _virtualenvwrapper_load() {
+    if [ "$BASH_VERSION" ]; then
+        __virtualenvwrapper_load() {
             virtualenvwrapper_load
             complete -o default -o nospace -F _virtualenvs wo
         }
-        complete -o nospace -F _virtualenvwrapper_load wo
+        complete -o nospace -F __virtualenvwrapper_load wo
     fi
 fi

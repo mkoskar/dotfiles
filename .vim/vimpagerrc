@@ -6,9 +6,7 @@ set viminfo=
 syntax on
 filetype plugin on
 
-if has('gui_running')
-    colorscheme bclear
-elseif &t_Co == 256
+if &t_Co == 256
     colorscheme luciusblack
 else
     colorscheme desert

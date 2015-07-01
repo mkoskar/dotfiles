@@ -1,25 +1,25 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-prgname=$(basename "$0")
+prgname=${0##*/}
 
-if [ $# -lt 2 ]; then
+if (( $# < 2 )); then
     echo "usage: $prgname a b" >&2
     exit 2
 fi
 
-a=$(realpath -se "$1")
-b=$(realpath -se "$2")
+a=$(realpath -se -- "$1")
+b=$(realpath -se -- "$2")
 
-para=$(dirname "$a")
-if [ ! -w "$para" ]; then
+para=${a##*/}
+if [[ ! -w $para ]]; then
     echo "$prgname: $para: Write permission is not granted" >&2
     exit 1
 fi
 
-parb=$(dirname "$b")
-if [ ! -w "$parb" ]; then
+parb=${b##*/}
+if [[ ! -w $parb ]]; then
     echo "$prgname: $parb: Write permission is not granted" >&2
     exit 1
 fi

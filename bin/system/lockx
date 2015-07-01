@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+#
+# Simple seat lock script with ``slock`` as backend.
+#
+# * disable SysRq
+# * disable VT switching
+# * run backend on display ':{current VT}'
+#
+# :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
+# :License: BSD 2-Clause
+
+set -eu
+
+if (( $EUID )); then
+    echo 'This script must be run with root privileges.' >&2
+    exit 1
+fi
+
+prgname=${0##*/}
+user=${1:-${SUDO_USER:-$USER}}
+
+if [[ $user = 'root' ]]; then
+    echo 'Refusing to lock for root.' >&2
+    exit 1
+fi
+
+# ----------------------------------------
+
+sysrq_path='/proc/sys/kernel/sysrq'
+sysrq_old=$(<"$sysrq_path")
+echo 0 >"$sysrq_path"
+
+cleanup() {
+    printf '%d' "$sysrq_old" >"$sysrq_path"
+    vtswitch-lock -u
+}
+trap cleanup EXIT
+
+vtswitch-lock
+
+vtno=$(fgconsole)
+su - "$user" -c "export DISPLAY=':$vtno'
+                 export XAUTHORITY=~/.Xauthority
+                 slock"

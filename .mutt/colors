@@ -25,6 +25,12 @@ color body          color255        default       '^-.*'
 color body          color110        default       '^--- .*'
 color body          color110        default       '^\+\+\+ .*'
 color body          color228        default       '^@@ .* @@$'
+color body          color174        default       '^gpg: .*'
+color body          color167        default       '^gpg: Good signature .*'
+color body          color255        red           '^gpg: BAD signature .*'
+color body          color167        default       "^gpg: Can't check signature: .*"
+color body          color174        default       '^Primary key fingerprint: .*'
+color body          color174        default       '^     Subkey fingerprint: .*'
 
 color body          brightwhite     default       '\*+[^*]+\*+'
 color body          color167        default       '\++[^\+]+\++'

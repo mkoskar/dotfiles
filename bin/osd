@@ -1,15 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
+
+prgname=${0##*/}
 
 name='default'
 dispno=$(xserverq dispno)
 pipe="$TMPDIR/osd-$UID/$name$dispno"
 
-if [ "$(basename "$0")" = 'osdd' ]; then
-    if [ -e "$pipe" ]; then
-        exit 3
-    fi
+if [[ $prgname = 'osdd' ]]; then
+    [[ -e $pipe ]] && exit 3
 
     mkdir -p -m 700 "${pipe%/*}"
     mkfifo -m 600 "$pipe"
@@ -29,5 +29,5 @@ if [ "$(basename "$0")" = 'osdd' ]; then
     exit
 fi
 
-[ ! -p "$pipe" ] && exit 1
+[[ ! -p $pipe ]] && exit 1
 echo "$*" >"$pipe"

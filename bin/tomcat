@@ -1,13 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
+
+prgname=${0##*/}
 
 log() {
-    echo "$*" >&2
+    printf '%s\n' "$*" >&2
 }
 
 setup() {
-    [ -e "$CATALINA_BASE" ] && return
+    [[ -e $CATALINA_BASE ]] && return
 
     log 'Setting up instance...'
     mkdir -p "$CATALINA_BASE" && cd "$CATALINA_BASE"
@@ -52,18 +54,16 @@ jdb() {
 # ----------------------------------------
 
 CATALINA_HOME=${CATALINA_HOME:-$(ls -d ~/opt/apache-tomcat-* | tail -n1)}
-export CATALINA_HOME=$(realpath "$CATALINA_HOME")
+export CATALINA_HOME=$(realpath -- "$CATALINA_HOME")
 
 CATALINA_BASE=${CATALINA_BASE:-instance}
-export CATALINA_BASE=$(realpath "$CATALINA_BASE")
+export CATALINA_BASE=$(realpath -- "$CATALINA_BASE")
 
 setup
 
 cd "$CATALINA_BASE"
 
-if [ $# -eq 0 ]; then
-    set -- run
-fi
+(( $# )) || set -- run
 
 case $1 in
     run)
@@ -76,7 +76,7 @@ case $1 in
         jdb
         ;;
     *)
-        echo "usage: $(basename "$0") {run | debug | jdb}" >&2
+        echo "usage: $prgname {run | debug | jdb}" >&2
         exit 2
         ;;
 esac

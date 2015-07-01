@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # SEEALSO: http://wiki.archlinux.org/index.php/Pacman_tips
 

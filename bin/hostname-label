@@ -1,5 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-if [ "$HOSTNAME" != 'mirci' ]; then
-    echo "$HOSTNAME "
+set -eu
+
+if [[ $HOSTNAME != 'mirci' ]]; then
+    printf '%s ' "$HOSTNAME"
 fi
