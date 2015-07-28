@@ -77,15 +77,16 @@ done <<-EOF
     imdb            sr imdb {}
     imperial        b https://en.wikipedia.org/wiki/Imperial_units
     iojs            b https://iojs.org/api/
-    java            b file:///usr/share/doc/jdk-docs/technotes/tools/unix/java.html
+    java            b file:///usr/share/doc/java/jdk/technotes/tools/unix/java.html
     java-apis       b http://www.oracle.com/technetwork/java/api-141528.html
+    java-changes    b file:///usr/share/doc/java/jdk/technotes/guides/language/enhancements.html
     java-specs      b http://docs.oracle.com/javase/specs/index.html
     java-tutorials  b http://docs.oracle.com/javase/tutorial/reallybigindex.html
     javase          b http://www.oracle.com/technetwork/java/javase/overview/index.html
-    jdk             b file:///usr/share/doc/jdk-docs/index.html
-    jdk-api         b file:///usr/share/doc/jdk-docs/api/index.html
+    jdk             b file:///usr/share/doc/java/jdk/index.html
+    jdk-api         b file:///usr/share/doc/java/jdk/api/index.html
     jdk-relnotes    b http://www.oracle.com/technetwork/java/javase/jdk-relnotes-index-2162236.html
-    jdk-tools       b file:///usr/share/doc/jdk-docs/technotes/tools/index.html
+    jdk-tools       b file:///usr/share/doc/java/jdk/technotes/tools/index.html
     jdk7            b http://docs.oracle.com/javase/7/docs/index.html
     jdk7-api        b http://docs.oracle.com/javase/7/docs/api/index.html
     jee             b http://www.oracle.com/technetwork/java/javaee/overview/index.html
@@ -126,7 +127,7 @@ done <<-EOF
     privoxy         b file:///usr/share/doc/privoxy/user-manual/index.html
     python          b file:///usr/share/doc/python/html/index.html
     python2         b file:///usr/share/doc/python2/html/index.html
-    regexp-java     b file:///usr/share/doc/jdk-docs/api/java/util/regex/Pattern.html
+    regexp-java     b file:///usr/share/doc/java/jdk/api/java/util/regex/Pattern.html
     regexp-js       b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
     regexp-pcre     b file:///usr/share/doc/pcre/html/pcresyntax.html
     regexp-posix    b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap09.html
@@ -172,7 +173,7 @@ done <<-EOF
 
 EOF
 
-k=${1:-}
+k=${1-}
 if [[ ! $k ]]; then
     read -r k q <<<"$(IFS=$'\n'; echo "${!map[*]}" | sort | dmenu1 "$prgname")"
     [[ $k ]] || exit 1

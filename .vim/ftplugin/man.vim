@@ -1,7 +1,7 @@
 " Vim filetype plugin file
 " Language:	man
 " Maintainer:	SungHyun Nam <goweol@gmail.com>
-" Last Change:	2013 Jul 17
+" Last Change:	2014 Dec 29
 
 " To make the ":Man" command available before editing a manual page, source
 " this script from your startup vimrc file.
@@ -63,7 +63,9 @@ endtry
 func <SID>PreGetPage(cnt)
   if a:cnt == 0
     let old_isk = &iskeyword
-    setl iskeyword+=(,)
+    if &ft == 'man'
+      setl iskeyword+=(,)
+    endif
     let str = expand("<cword>")
     let &l:iskeyword = old_isk
     let page = substitute(str, '(*\(\k\+\).*', '\1', '')
@@ -122,12 +124,10 @@ func <SID>GetPage(...)
     echohl ErrorMsg | echo "No manual entry for ".page | echohl None
     return
   endif
-  if &filetype == "man"
-    exec "let s:man_tag_buf_".s:man_tag_depth." = ".bufnr("%")
-    exec "let s:man_tag_lin_".s:man_tag_depth." = ".line(".")
-    exec "let s:man_tag_col_".s:man_tag_depth." = ".col(".")
-    let s:man_tag_depth = s:man_tag_depth + 1
-  endif
+  exec "let s:man_tag_buf_".s:man_tag_depth." = ".bufnr("%")
+  exec "let s:man_tag_lin_".s:man_tag_depth." = ".line(".")
+  exec "let s:man_tag_col_".s:man_tag_depth." = ".col(".")
+  let s:man_tag_depth = s:man_tag_depth + 1
 
   " Use an existing "man" window if it exists, otherwise open a new one.
   if &filetype != "man"
@@ -150,23 +150,25 @@ func <SID>GetPage(...)
       setl nonu fdc=0
     endif
   endif
-  if sect != ""
-    silent exec "edit man".sect."(".page.")"
-  else
-    silent exec "edit man(".page.")"
-  endif
+  silent exec "edit man".sect."(".page.")"
   " Avoid warning for editing the dummy file twice
   setl buftype=nofile noswapfile
 
   setl ma nonu nornu nofen
-  silent normal! %d
+  silent exec "norm 1GdG"
   let $MANWIDTH = winwidth(0)
-  silent exec "1r!/usr/bin/man ".s:GetCmdArg(sect, page)." | col -b"
-  silent normal! 1Gdd
-  setl ft=man nomod noma
+  silent exec "r!/usr/bin/man ".s:GetCmdArg(sect, page)." | col -b"
+  " Remove blank lines from top and bottom.
+  while getline(1) =~ '^\s*$'
+    silent keepj norm ggdd
+  endwhile
+  while getline('$') =~ '^\s*$'
+    silent keepj norm Gdd
+  endwhile
+  1
+  setl ft=man nomod
   setl bufhidden=hide
   setl nobuflisted
-  file
 endfunc
 
 func <SID>PopPage()

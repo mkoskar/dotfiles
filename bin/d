@@ -7,9 +7,7 @@
 # -N    treat absent files as empty
 # -a    treat all files as text
 
-set -eu
-
-# TODO: this dosn't play with pipefail, also it doesn't preserve diff's exit status
+set -eu -o pipefail
 
 set -- -udprN "$@"
 cmd=(diff "$@")
@@ -23,14 +21,18 @@ main() {
         *)
             tmpfile=$(mktemp)
             trap 'rm -f "$tmpfile"' EXIT
+
+            retstat=0
+            "${cmd[@]}" >"$tmpfile" || retstat=$?
+
             echo '---'
-            "${cmd[@]}" |
-                    filterdiff -v --remove-timestamps --annotate --strip=1 \
-                                  --addoldprefix=a/ --addnewprefix=b/ |
-                    tee "$tmpfile" |
-                    diffstat -p1
+            diffstat -p1 <"$tmpfile"
+
             echo
-            cat "$tmpfile"
+            filterdiff -v --remove-timestamps --annotate --strip=1 \
+                       --addoldprefix=a/ --addnewprefix=b/ <"$tmpfile"
+
+            return $retstat
             ;;
     esac
 }

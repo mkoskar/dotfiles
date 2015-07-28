@@ -1,21 +1,20 @@
 " vim: ft=vim fdm=marker
 
-if !exists('$VIMDIR')
-    let $VIMDIR = '~/.vim'
-endif
+let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
+let vimdir = has('nvim') ? '~/.nvim' : '~/.vim'
 
-if !exists('$VIMRC')
-    let $VIMRC = expand('<sfile>:p')
-endif
+let $VIMDIR = get(g:, '$VIMDIR', vimdir)
 
-" ========== important
+" ========== Important
+
 set nocompatible
 set pastetoggle=<F6>
-set timeout timeoutlen=1000 ttimeoutlen=10
+
 let mapleader = ','
 let maplocalleader = ';'
 
-" ========== moving around, searching and patterns
+" ========== Moving Around, Searching and Patterns
+
 set whichwrap=b,s,<,>,[,]
 " .       - current file directory
 " (empty) - current working directory
@@ -25,42 +24,80 @@ set incsearch
 set ignorecase
 set smartcase
 
-" ========== tags
-set tags=./tags,tags
+noremap <silent> j gj
+noremap <silent> k gk
 
-if exists("$BASEDIR")
-    exec 'set tags^='.$BASEDIR.'/tags'
-    nnoremap <silent> <F12> :!$BASEDIR/maketags<CR>
+map <silent> <M-j> 5j
+map <silent> <M-k> 5k
+
+noremap <silent> <M-C-H> 15h
+noremap <silent> <M-C-L> 15l
+
+noremap <silent> <C-E> 5<C-E>
+noremap <silent> <C-Y> 5<C-Y>
+
+noremap <silent> zh 15zh
+noremap <silent> zl 15zl
+
+" Move visual block <http://vimrcfu.com/snippet/77>
+vnoremap J :m '>+1<CR>gv
+vnoremap K :m '<-2<CR>gv
+
+" ========== Tags
+
+if has('path_extra')
+    setg tags-=./tags tags-=./tags; tags^=./tags;
 endif
 
-" ========== displaying text
+if exists('$BASEDIR')
+    call system('touch '.$BASEDIR.'/tags')
+    nnoremap <silent> <F12> :call system('mktags') \
+        \| echohl WarningMsg \| echo 'tags: done' \| echohl None<CR>
+endif
+
+nnoremap <Leader>lt :ltag /
+
+" ========== Displaying Text
+
 set scrolloff=5
 set nowrap
 set sidescroll=15
 set sidescrolloff=15
+set display=lastline
 set list
-set listchars=eol:¬,tab:>-,trail:-,extends:>,precedes:<
+set listchars=eol:¬,tab:>-,trail:-,extends:>,precedes:<,nbsp:+
 
-nnoremap <Leader>L :set <C-R>=&list ? 'nolist' : 'list'<CR><CR>
-nnoremap <Leader>W :set <C-R>=&wrap ? 'nowrap' : 'wrap'<CR><CR>
+nnoremap <Leader>W :setl <C-R>=&wrap ? 'nowrap' : 'wrap'<CR><CR>
+nnoremap <Leader>U :setl display<C-R>=&display =~# 'uhex' ? '-' : '+'<CR>=uhex<CR>
+nnoremap <Leader>L :setl <C-R>=&list ? 'nolist' : 'list'<CR><CR>
 
-" ========== syntax, highlighting and spelling
+" ========== Syntax, Highlighting and Spelling
+
 set background=dark
 set hlsearch
 set colorcolumn=+1,84
 set spelllang=en_us
 
-let g:option_colorcolumn = &cc
+let option_colorcolumn = &cc
+let load_doxygen_syntax = 1
 
-nnoremap <silent> <Space> :nohls<Bar>echo<CR>
-nnoremap <silent> # :let @/ = "<C-R>=escape(escape(expand('<cWORD>'), '/\.*$^~["'), '''/\.*$^~["')<CR>"<Bar>set hls<CR>
-nnoremap <silent> * :let @/ = "<C-R>=escape(escape(expand('<cword>'), '/\.*$^~["'), '''/\.*$^~["')<CR>"<Bar>set hls<CR>
-nnoremap <Leader>sp :set <C-R>=&spell ? 'nospell' : 'spell'<CR><CR>
-nnoremap col :set <C-R>=!empty(&cc) ? 'cc=' : 'cc='.g:option_colorcolumn<CR><CR>
-nnoremap cuc :set <C-R>=&cuc ? 'nocuc' : 'cuc'<CR><CR>
-nnoremap cul :set <C-R>=&cul ? 'nocul' : 'cul'<CR><CR>
+nnoremap <silent> <Space> :nohls \| echo<CR>
+nnoremap <silent> # :let @/ = "<C-R>=escape(escape(expand('<cWORD>'), '/\.*$^~["'), '''/\.*$^~["')<CR>" \| set hls<CR>
+nnoremap <silent> * :let @/ = "<C-R>=escape(escape(expand('<cword>'), '/\.*$^~["'), '''/\.*$^~["')<CR>" \| set hls<CR>
 
-" ========== multiple windows
+nnoremap col :setl <C-R>=!empty(&cc) ? 'cc=' : 'cc='.option_colorcolumn<CR><CR>
+nnoremap cul :setl <C-R>=&cul ? 'nocul' : 'cul'<CR><CR>
+nnoremap cuc :setl <C-R>=&cuc ? 'nocuc' : 'cuc'<CR><CR>
+nnoremap <Leader>sp :setl <C-R>=&spell ? 'nospell' : 'spell'<CR><CR>
+
+if &t_Co == 256
+    colorscheme luciusblack
+else
+    colorscheme desert
+endif
+
+" ========== Multiple Windows
+
 set laststatus=2
 set statusline=
 set statusline+=%n
@@ -75,12 +112,11 @@ set statusline+=\ %P
 set splitbelow
 set splitright
 
-" spatial navigation
-nnoremap <C-J> <C-W>j
-nnoremap <C-K> <C-W>k
-nnoremap <C-H> <C-W>h
-nnoremap <C-L> <C-W>l
-nmap <BS> <C-H>
+nnoremap <silent> <C-J> <C-W>j
+nnoremap <silent> <C-K> <C-W>k
+nnoremap <silent> <C-H> <C-W>h
+nnoremap <silent> <C-L> <C-W>l
+nmap <silent> <BS> <C-H>
 
 nnoremap <silent> c<C-J> :below sp<CR>
 nnoremap <silent> c<C-K> :above sp<CR>
@@ -88,30 +124,53 @@ nnoremap <silent> c<C-H> :lefta vsp<CR>
 nnoremap <silent> c<C-L> :rightb vsp<CR>
 nmap c<BS> c<C-H>
 
-nnoremap d<C-J> <C-W>j<C-W>c
-nnoremap d<C-K> <C-W>k<C-W>c
-nnoremap d<C-H> <C-W>h<C-W>c
-nnoremap d<C-L> <C-W>l<C-W>c
-nmap d<BS> d<C-H>
+nnoremap <silent> d<C-J> <C-W>j<C-W>c
+nnoremap <silent> d<C-K> <C-W>k<C-W>c
+nnoremap <silent> d<C-H> <C-W>h<C-W>c
+nnoremap <silent> d<C-L> <C-W>l<C-W>c
+nmap <silent> d<BS> d<C-H>
 
-nnoremap <C-_> <C-W>_
-nnoremap g<C-J> <C-W>j<C-W>_
-nnoremap g<C-K> <C-W>k<C-W>_
-nnoremap g<C-H> <C-W>h<C-W>_
-nnoremap g<C-L> <C-W>l<C-W>_
-nmap g<BS> g<C-H>
+nnoremap <silent> <C-_> <C-W>_
+nnoremap <silent> g<C-J> <C-W>j<C-W>_
+nnoremap <silent> g<C-K> <C-W>k<C-W>_
+nnoremap <silent> g<C-H> <C-W>h<C-W>_
+nnoremap <silent> g<C-L> <C-W>l<C-W>_
+nmap <silent> g<BS> g<C-H>
 
-" faster resizing
-nnoremap <silent> - :resize -5<CR>
+nnoremap <silent> _ :resize -5<CR>
 nnoremap <silent> + :resize +5<CR>
 nnoremap <silent> <C-W>, :vert resize -5<CR>
 nnoremap <silent> <C-W>. :vert resize +5<CR>
 
-" ========== terminal
-set nottybuiltin
+" ========== Multiple Tab Pages
+
+set tabpagemax=50
+
+nnoremap <silent> <M-n> :tabnew<CR>
+nnoremap <silent> <M-l> gt
+nnoremap <silent> <M-h> gT
+nnoremap <silent> <M-1> 1gt
+nnoremap <silent> <M-2> 2gt
+nnoremap <silent> <M-3> 3gt
+nnoremap <silent> <M-4> 4gt
+nnoremap <silent> <M-5> 5gt
+nnoremap <silent> <M-6> 6gt
+nnoremap <silent> <M-7> 7gt
+nnoremap <silent> <M-8> 8gt
+nnoremap <silent> <M-9> 9gt
+nnoremap <silent> <M-0> :tablast<CR>
+
+" ========== Terminal
+
+if !has('nvim')
+    set nottybuiltin
+endif
+
+set title
 set t_ut=
 
-" ========== using the mouse
+" ========== Using the Mouse
+
 set mouse=a
 
 noremap <MiddleMouse> <Nop>
@@ -125,6 +184,7 @@ inoremap <3-MiddleMouse> <Nop>
 inoremap <4-MiddleMouse> <Nop>
 
 " ========== GUI
+
 set guicursor+=a:blinkon0
 set guifont=Monaco\ 12
 set guioptions+=c
@@ -134,81 +194,24 @@ set guioptions-=r
 set guioptions-=L
 set guioptions-=T
 
-" ========== messages and info
+" ========== Messages and Info
+
 set shortmess=aoOtTWI
 set showcmd
 set showmode
 set ruler
 set novisualbell
 
-" ========== editing text
-set textwidth=78
-set backspace=indent,eol,start
-set formatoptions=croqln21j
-set completeopt=longest,menuone
-set tildeop
-set showmatch
+" ========== Selecting Text
 
-" ========== tabs and indenting
-set tabstop=4
-set shiftwidth=4
-set smarttab
-set softtabstop=0
-set expandtab
-set autoindent
-set smartindent
-set copyindent
-set preserveindent
+" Yank from cursor to the line end (consistent with D, C)
+nnoremap <silent> Y y$
 
-" ========== folding
-set foldcolumn=0
+" Select last yanked area (linewise)
+nnoremap <silent> <expr> gp '`['.getregtype()[0].'`]'
 
-nnoremap <Leader>ff :set fdm=manual<CR>
-nnoremap <Leader>fi :set fdm=indent<CR>
-nnoremap <Leader>fs :set fdm=syntax<CR>
-nnoremap <Leader>fm :set fdm=marker<CR>
-
-" ========== reading and writing files
-set modeline
-set backup
-exec 'set backupdir='.$VIMDIR.'/.backup'
-set autoread
-
-" ========== the swap file
-exec 'set directory=~/.vim/.swap//,'.$TMPDIR.'//'
-set swapfile
-
-" ========== command line editing
-set history=500
-set wildmode=list:longest,full
-set wildignore=
-set wildmenu
-set undofile
-exec 'set undodir='.$VIMDIR.'/.undo'
-
-" ========== executing external commands
-set shell=~/bin/bashx
-set shellredir=>%s\ 2>&1
-
-" ========== running make and jumping to errors
-set shellpipe=2>&1\|\ tee
-set grepprg=grep\ -n\ --exclude-dir='.svn'\ --exclude-dir='.git'\ --exclude='*.swp'\ --exclude='*~'\ $*\ /dev/null
-
-nnoremap <silent> <F9> :make!<CR>
-
-nnoremap <silent> <Leader>cl :copen<CR>
-nnoremap <silent> <Leader>ll :lopen<CR>
-
-nnoremap <silent> <Leader>j :cnext<CR>
-nnoremap <silent> <Leader>k :cprevious<CR>
-
-nnoremap <silent> <Leader>J :lnext<CR>
-nnoremap <silent> <Leader>K :lprevious<CR>
-
-" ========== multi-byte characters
-set encoding=utf-8
-
-" ========== clipboard
+" Select all
+noremap <silent> <Leader>a <Esc>:keepjumps normal! ggVG<CR>
 
 function! s:Pipe2(cmd, bang) range abort
     if empty(a:bang)
@@ -220,115 +223,178 @@ command! -register -range -bang -nargs=1 Pipe2 Preserve <line1>,<line2> call s:P
 command! -register -range -bang Pipe2Primary Preserve <line1>,<line2> call s:Pipe2('xclip -i', <q-bang>)
 command! -register -range -bang Pipe2Clipboard Preserve <line1>,<line2> call s:Pipe2('xclip -i -selection clipboard', <q-bang>)
 
+" Piping to Primary selection directly
 nnoremap <silent> <Leader>xxP :Pipe2Primary!<CR>
 nnoremap <silent> <Leader>xxp yy:Pipe2Primary!<CR>
 vnoremap <silent> <Leader>xxp y:Pipe2Primary!<CR>
 
+" Piping to Clipboard selection directly
 nnoremap <silent> <Leader>xxC :Pipe2Clipboard!<CR>
 nnoremap <silent> <Leader>xxc yy:Pipe2Clipboard!<CR>
 vnoremap <silent> <Leader>xxc y:Pipe2Clipboard!<CR>
 
-" ========== various
-set gdefault
-set virtualedit=block
-exec "set viminfo='100,<50,s10,h,n".$VIMDIR."/.viminfo"
+" ========== Editing Text
 
-nnoremap cov :set <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
+set textwidth=78
+set backspace=indent,eol,start
+set formatoptions=croqln21j
+set complete-=i
+set completeopt=longest,menuone
+set tildeop
+set showmatch
+set nrformats-=octal
 
-" ========== other
-let g:load_doxygen_syntax = 1
+inoremap <C-U> <C-G>u<C-U>
 
-syntax on
-filetype plugin indent on
+inoremap <silent> <C-F>f <C-R>=expand('%:t')<CR>
+inoremap <silent> <C-F>n <C-R>=expand('%:t:r')<CR>
+inoremap <silent> <C-F>p <C-R>=expand('%:p')<CR>
+inoremap <silent> <C-F>d <C-R>=expand('%:r')<CR>
 
-if &t_Co == 256
-    colorscheme luciusblack
-else
-    colorscheme desert
-endif
+" ========== Tabs and Indenting
 
-" make Man available
-runtime ftplugin/man.vim
+set tabstop=4
+set shiftwidth=4
+set smarttab
+set softtabstop=0
+set expandtab
+set autoindent
+set smartindent
+set copyindent
+set preserveindent
 
-" let Y yank not entire line, but from cursor to the end (consistent with D, C)
-nnoremap Y y$
-" no Ex mode
-nnoremap Q <nop>
-" no Man lookup
-nnoremap K <nop>
-" no useless help messages
-nnoremap <C-c> <silent> <C-c>
+" ========== Folding
 
-" operate on display lines not file lines
-noremap j gj
-noremap k gk
+set foldcolumn=0
 
-map <M-j> 5j
-map <M-k> 5k
+nnoremap <Leader>ff :setl fdm=manual<CR>
+nnoremap <Leader>fi :setl fdm=indent<CR>
+nnoremap <Leader>fs :setl fdm=syntax<CR>
+nnoremap <Leader>fm :setl fdm=marker<CR>
 
-noremap <M-C-H> 15h
-noremap <M-C-L> 15l
+" ========== Mapping
 
-noremap <C-E> 5<C-E>
-noremap <C-Y> 5<C-Y>
+set timeout
+set timeoutlen=1000
+set ttimeoutlen=10
 
-noremap zh 15zh
-noremap zl 15zl
+" ========== Reading and Writing Files
 
-nnoremap <M-n> :tabnew<CR>
-nnoremap <M-l> gt
-nnoremap <M-h> gT
-nnoremap <M-1> 1gt
-nnoremap <M-2> 2gt
-nnoremap <M-3> 3gt
-nnoremap <M-4> 4gt
-nnoremap <M-5> 5gt
-nnoremap <M-6> 6gt
-nnoremap <M-7> 7gt
-nnoremap <M-8> 8gt
-nnoremap <M-9> 9gt
-nnoremap <silent> <M-0> :tablast<CR>
+set modeline
+set fileformats+=mac
+set backup
+exec 'set backupdir='.$VIMDIR.'/.backup'
+set autoread
+
+" ========== The Swap File
+
+exec 'set directory='.vimdir.'/.swap//,'.$TMPDIR.'//'
+set swapfile
+set updatetime=1000 " also used for CursorHold
+
+" ========== Command Line Editing
+
+set history=1000
+set wildmode=list:longest,full
+set wildignore=
+set wildmenu
+set undofile
+exec 'set undodir='.$VIMDIR.'/.undo'
 
 cnoremap %% <C-R>=expand('%:h').'/'<CR>
+
+" ========== Executing External Commands
+
+set shell=/bin/bash
+set shellredir=>%s\ 2>&1
+
+" ========== Running 'make' and Jumping To Errors
+
+set shellpipe=2>&1\|\ tee
+set grepprg=grep\ -n\ --exclude-dir='.svn'\ --exclude-dir='.git'\ --exclude='*.swp'\ --exclude='*~'\ $*
+
+nnoremap <silent> <F9> :make!<CR>
+
+nnoremap <silent> <Leader>cl :copen<CR>
+nnoremap <silent> <Leader>ll :lopen<CR>
+
+nnoremap <silent> <Leader>j :try \| call TryCatch('lnext', '^\(.*:E776:.*\)\@!') \| catch \| call TryCatch('cnext') \| endtry<CR>
+nnoremap <silent> <Leader>k :try \| call TryCatch('lNext', '^\(.*:E776:.*\)\@!') \| catch \| call TryCatch('cNext') \| endtry<CR>
+
+nnoremap <silent> <Leader>J :cnext<CR>
+nnoremap <silent> <Leader>K :cNext<CR>
+
+" ========== Multi-byte Characters
+
+set encoding=utf-8
+
+" ========== Various
+
+set virtualedit=block
+set gdefault
+set sessionoptions-=blank
+set sessionoptions-=options
+exec "set viminfo=!,'100,<50,s10,h,n".$VIMDIR."/.viminfo"
+
+nnoremap cov :setl <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
+
+" Disable Ex mode
+nnoremap Q <Nop>
+
+" Disable Man lookup
+nnoremap K <Nop>
+
+" Disable useless help messages
+nnoremap <silent> <C-c> <C-c>
+
+" Open files faster
 nmap <Leader>ew :e %%
 nmap <Leader>es :sp %%
 nmap <Leader>ev :vsp %%
 nmap <Leader>et :tabe %%
-
-inoremap <C-F>f <C-R>=expand('%:t')<CR>
-inoremap <C-F>n <C-R>=expand('%:t:r')<CR>
-inoremap <C-F>p <C-R>=expand('%:p')<CR>
-inoremap <C-F>d <C-R>=expand('%:r')<CR>
-
-nnoremap <Leader>a ggVG
-vnoremap <Leader>a <Esc>ggVG
-nnoremap <Leader>h :tab help<Space>
-nnoremap <Leader>H :tab lhelpgrep<Space>
-
-nnoremap <silent> <C-X> :q<CR>
-nnoremap <silent> <C-Q> :bd<CR>
 nnoremap <silent> <Leader>ee :e<CR>
-nnoremap <silent> <Leader>EE :e!<CR>
+nnoremap <silent> <Leader>e0 :e ++binary<CR>
+nnoremap <silent> <Leader>E :e!<CR>
+
+" Unload current buffer and delete if from buffer list
+nnoremap <silent> <C-Q> :bd<CR>
+
+" Switch off 'readonly'
 nnoremap <Leader>rr :setl noreadonly modifiable<CR>
 
-nnoremap <expr> gp '`['.getregtype()[0].'`]'
+" Reload filetype
+nnoremap <silent> <Leader>ft :exec 'set ft='.&ft<CR>
 
-" sorting
+" Sorting
 vnoremap <silent> <Leader>ss :sort<CR>
 vnoremap <silent> <Leader>su :sort u<CR>
 vnoremap <silent> <Leader>sd :sort!<CR>
 vnoremap <silent> <Leader>sb :!sort-blocks<CR>
 
-" working on diffs
+" Working with diffs
 nnoremap <silent> <Leader>du :diffup<CR>
 nnoremap <silent> <Leader>d; :,diffget<CR>
 nnoremap <silent> <Leader>d: :,diffput<CR>
+
+" Help in new tab page
+nnoremap <Leader>h :tab help<Space>
+nnoremap <Leader>H :tab lhelpgrep<Space>
+
+" Edit / Reload 'vimrc'
+exec 'nnoremap <silent> <Leader>rc :vs '.vimrc.'<CR>'
+exec 'nnoremap <Leader>so :source '.vimrc.'<CR>'
+
+" xxd
+vnoremap <silent> <Leader>xxd :!xxd<CR>
+nnoremap <silent> <Leader>xxd :%!xxd<CR>
+vnoremap <silent> <Leader>xxD :!xxd -r<CR>
+nnoremap <silent> <Leader>xxD :%!xxd -r<CR>
 
 " XML prettify
 vnoremap <silent> <Leader>px :!tidy -config ~/.tidyrc -xml<CR>
 nnoremap <silent> <Leader>px :%!tidy -config ~/.tidyrc -xml<CR>
 
-" reformat paragraph
+" Reformat paragraph
 vnoremap <silent> <Leader>pr :!reformat<CR>
 nnoremap <silent> <Leader>pr :%!reformat<CR>
 
@@ -338,31 +404,9 @@ nnoremap <silent> <Leader>ps :%!strip_lines<CR>
 vnoremap <silent> <Leader>pS :!squash<CR>
 nnoremap <silent> <Leader>pS :%!squash<CR>
 
-" fast editing / reloading of the 'vimrc'
-exec 'nnoremap <silent> <Leader>rc :vs '.$VIMRC.'<CR>'
-exec 'nnoremap <Leader>so :source '.$VIMRC.'<CR>'
-
-nnoremap <silent> <Leader>ft :exec 'set ft='.&ft<CR>
-
 " ----------------------------------------
 
-" ========== netrw
-let netrw_alto = 1
-let netrw_altv = 1
-let netrw_banner = 1
-let netrw_bufsettings = 'noma nomod nonu nowrap ro nolist cc=0 fdc=0'
-let netrw_fastbrowse = 2
-let netrw_list_cmd = 'sshm USEPORT HOSTNAME ls -Fa -I .'
-let netrw_liststyle = 0
-let netrw_preview = 1
-let netrw_retmap = 1
-let netrw_scp_cmd = 'scpm -q'
-let netrw_sftp_cmd = 'sftpm'
-let netrw_silent = 1
-let netrw_special_syntax = 1
-let netrw_winsize = 30
-
-" ----------------------------------------
+" {{{ Utils
 
 " Echos given error message.
 function! EchoError(errmsg) abort
@@ -387,25 +431,95 @@ endfunction
 
 " Performs exec of passed command in try/catch block catching matching errors.
 function! TryCatch(cmd, ...) abort
-    let pattern = '.*'
-    if a:0
-        let pattern = a:1
-    endif
+    let pattern = get(a:, '1', '.*')
     exec 'try | '.a:cmd.' | catch /'.pattern.'/ | call EchoException() | endtry'
 endfunction
 
-function! BufferSettings_Man()
-    call BufferSettings_Special()
+function! BufSpecialSetup() abort
+    setl nonumber norelativenumber nowrap nolist cc=0 fdc=0
+endfunction
+
+function! BufManSetup() abort
+    call BufSpecialSetup()
     setl noma ts=8
 endfunction
 
-function! BufferSettings_Special()
-    setl nonu nowrap nolist cc=0 fdc=0
+function! VimrcFinalize() abort
+    return "if vimrc == expand('<sfile>:p') | doautocmd User VimrcFinalize | endif"
 endfunction
 
-" ----------------------------------------
+" }}}
 
-" {{{ Toggles diff mode of current buffer.
+" {{{ Quickfix utils
+
+function! QfOldest(prefix) abort
+    try | exec a:prefix.'older 999' | catch | endtry
+endfunction
+
+function! QfNewest(prefix) abort
+    try | exec a:prefix.'newer 999' | catch | endtry
+endfunction
+
+function! QfOlder(prefix) abort
+    try
+        exec a:prefix.'older'
+    catch /:E380:/
+        redraw | call QfNewest(a:prefix)
+    endtry
+endfunction
+
+function! QfNewer(prefix) abort
+    try
+        exec a:prefix.'newer'
+    catch /:E381:/
+        redraw | call QfOldest(a:prefix)
+    endtry
+endfunction
+
+function! QfSetup() abort
+    if exists('w:QfSetup') | return | endif
+    let w:QfSetup = 1
+    let b:locl = 1
+    try | lopen | catch /:E776:/ | let b:locl = 0 | endtry
+    unlet w:QfSetup
+    let b:prefix = b:locl ? 'l' : 'c'
+
+    call BufSpecialSetup()
+    setl number nobuflisted
+    wincmd J
+
+    noremap <buffer> - <Nop>
+    noremap <buffer> <F1> <Nop>
+    noremap <buffer> <F2> <Nop>
+    noremap <buffer> <F4> <Nop>
+    noremap <buffer> <F8> <Nop>
+    noremap <buffer> <Leader>tf <Nop>
+    noremap <buffer> <Leader>tt <Nop>
+    noremap <buffer> <Leader>bb <Nop>
+    noremap <buffer> <Leader>gg <Nop>
+    noremap <buffer> <Leader>G <Nop>
+
+    nmap <buffer> <silent> o <CR>
+    nnoremap <buffer> <silent> q :close<CR>
+    exec 'nnoremap <buffer> <silent> go :exec "normal! \<lt>cr>" \| match IncSearch /\k*\%#\k*/ \| '.b:prefix.'open<CR>'
+    nnoremap <buffer> <silent> << :call QfOlder(b:prefix)<CR>
+    nnoremap <buffer> <silent> >> :call QfNewer(b:prefix)<CR>
+    nnoremap <buffer> <silent> <Leader>< :call QfOldest(b:prefix)<CR>
+    nnoremap <buffer> <silent> <Leader>> :call QfNewest(b:prefix)<CR>
+endfunction
+
+" }}}
+
+" {{{ Add single plugin using 'pathogen'
+
+function! s:Plugin(name) abort
+    call pathogen#surround('~/.vim/bundle/'.a:name)
+endfunction
+command! -nargs=1 Plugin call s:Plugin(<args>)
+
+" }}}
+
+" {{{ Toggles diff mode of current buffer
 
 function! s:DiffToggle() abort
    if &diff
@@ -419,7 +533,7 @@ nnoremap <silent> <Leader>dd :DiffToggle<CR>
 
 " }}}
 
-" {{{ Starts diff of current buffer with another file.
+" {{{ Starts diff of current buffer with another file
 
 function! s:Diff2(file) abort
     if !filereadable(a:file)
@@ -438,7 +552,7 @@ nnoremap <Leader>df :Diff2 <C-R>=expand('%')<CR>
 
 " }}}
 
-" {{{ Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding.
+" {{{ Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding
 
 function! MetaSetup(enable) abort
     " Meta + [0-z]
@@ -475,22 +589,21 @@ silent call MetaSetup(1)
 
 " }}}
 
-" {{{ Restore cursor position, window position,
-" and last search pattern after running a command.
+" {{{ Preserve cursor / window position, last search pattern, and the others
 
 function! Preserve(cmd) abort
     " save
     let last_search = @/
     let cursor_pos = getcurpos()
-    normal H
+    normal! H
     let window_pos = getpos('.')
     call setpos('.', cursor_pos)
     try
-        exec a:cmd
+        exec 'keepalt keepjumps keepmarks keeppatterns '.a:cmd
     finally
         " restore
         call setpos('.', window_pos)
-        normal zt
+        normal! zt
         call setpos('.', cursor_pos)
         let @/ = last_search
     endtry
@@ -498,11 +611,11 @@ endfunction
 command! -nargs=1 Preserve call Preserve(<q-args>)
 nnoremap <silent> <Leader>pp :Preserve %s/\s\+$//e<CR>
 vnoremap <silent> <Leader>pp :Preserve '<,'>s/\\s\\+$//e<CR>
-nnoremap <silent> <Leader>== :Preserve normal gg=G<CR>
+nnoremap <silent> <Leader>== :Preserve normal! gg=G<CR>
 
 " }}}
 
-" {{{ Closes current or last tab.
+" {{{ Closes current or last tab
 
 function! s:QuitTab(bang) abort
     try
@@ -517,7 +630,7 @@ nnoremap <silent> QA :QuitTab!<CR>
 
 " }}}
 
-" {{{ Walks through list of colorschemes (q/C-C=quit, k=prev, default=next).
+" {{{ Walks through list of colorschemes (q/C-C=quit, k=prev, default=next)
 
 function! s:Themes() abort
     let themes = ['luciusblack', 'hybrid', 'bclear']
@@ -547,13 +660,10 @@ nnoremap <silent> <Leader>th :Themes<CR>
 
 " }}}
 
-" {{{ Write with elevated privileges.
+" {{{ Write with elevated privileges
 
 function! s:Write(...) abort
-    let file = '%'
-    if a:0
-        let file = a:1
-    endif
+    let file = get(a:, 'a:1', '%')
     exec 'silent write !sudo tee >/dev/null '.file
     edit!
 endfunction
@@ -561,7 +671,7 @@ command! -nargs=? W call s:Write(<f-args>)
 
 " }}}
 
-" {{{ Zoom / Restore window.
+" {{{ Zoom / Restore window
 
 function! s:ZoomToggle() abort
     if exists('t:zoomed') && t:zoomed
@@ -580,7 +690,7 @@ nnoremap <silent> <M-m> :ZoomToggle<CR>
 
 " }}}
 
-" {{{ http://vim.wikia.com/wiki/Move_current_window_between_tabs
+" {{{ MoveToTab <http://vim.wikia.com/wiki/Move_current_window_between_tabs>
 
 function! s:MoveToPrevTab() abort
     if tabpagenr('$') == 1 && winnr('$') == 1
@@ -626,27 +736,98 @@ nnoremap <silent> <M-L> :MoveToNextTab<CR>
 
 " }}}
 
+" {{{ Prev/NextClosedFold <https://stackoverflow.com/questions/9403098/is-it-possible-to-jump-to-closed-folds-in-vim>
+
+function! s:MoveToClosedFold(next) abort
+    let cmd = 'normal! z'.(a:next ? 'j' : 'k')
+    let view = winsaveview()
+    let [l0, l, open] = [0, view.lnum, 1]
+    while l != l0 && open
+        exec cmd
+        let [l0, l] = [l, line('.')]
+        let open = foldclosed(l) < 0
+    endwhile
+    if open
+        call winrestview(view)
+    endif
+endfunction
+command! PrevClosedFold call s:MoveToClosedFold(0)
+command! NextClosedFold call s:MoveToClosedFold(1)
+nnoremap <silent> <Leader>zk :PrevClosedFold<CR>
+nnoremap <silent> <Leader>zj :NextClosedFold<CR>
+
+" }}}
+
+" ----------------------------------------
+
+" make Man available
+runtime ftplugin/man.vim
+
+" ========== netrw
+
+let loaded_netrwPlugin = 1 " just get rid of it
+let netrw_alto = 1
+let netrw_altv = 1
+let netrw_banner = 0
+let netrw_bufsettings = 'noma nomod nonu nowrap ro nobl nolist cc=0 fdc=0'
+let netrw_fastbrowse = 1
+let netrw_list_cmd = 'sshm USEPORT HOSTNAME ls -Fa -I .'
+let netrw_liststyle = 0
+let netrw_preview = 1
+let netrw_scp_cmd = 'scpm -q'
+let netrw_sftp_cmd = 'sftpm'
+let netrw_silent = 1
+let netrw_special_syntax = 1
+
+" ----------------------------------------
+
+Plugin 'AnsiEsc'
+Plugin 'colorschemes'
+
+if has('gui_running')
+    colorscheme bclear
+endif
+
 " ----------------------------------------
 
 if has('autocmd')
-augroup VIMRC_BASE
+augroup vimrc_base
     autocmd!
 
+    autocmd User VimrcFinalize
+        \  filetype plugin indent on
+        \| if has('syntax') && !exists('g:syntax_on') | syntax on | endif
+
+    autocmd BufEnter,BufWinEnter * match none | set titlestring=
     autocmd BufWritePre * let &backupext = '_'.substitute(expand('%:p:h'), '/', '%', 'g')
-    autocmd CmdwinEnter * call BufferSettings_Special()
+    autocmd CmdwinEnter * call BufSpecialSetup()
     autocmd TermChanged * silent call MetaSetup(meta_enabled)
 
-    autocmd BufWinEnter NetrwMessage nnoremap <silent> <buffer> q :q<CR>
+    if has('nvim')
+        autocmd TermOpen * call BufSpecialSetup()
+    endif
+
+    " tabpagecd <https://github.com/kana/vim-tabpagecd>
+    autocmd TabEnter *
+        \  if exists('t:cwd')
+        \|     cd `=t:cwd`
+        \| endif
+    autocmd TabLeave *
+        \ let t:cwd = getcwd()
 
     " Quickfix List / Location List
-    autocmd BufEnter * match none
-    autocmd BufWinEnter quickfix
-        \  call BufferSettings_Special()
-        \| map <buffer> <silent> o <CR>
-        \| map <buffer> <silent> go <CR>:match IncSearch /\k*\%#\k*/<CR><C-W>p
-        \| map <buffer> <silent> < :try \| call TryCatch('lolder', '^\(.*:E776:.*\)\@!') \| catch \| call TryCatch('colder') \| endtry<CR>
-        \| map <buffer> <silent> > :try \| call TryCatch('lnewer', '^\(.*:E776:.*\)\@!') \| catch \| call TryCatch('cnewer') \| endtry<CR>
-        \| map <buffer> <silent> q <C-W>q<CR>
+    autocmd BufEnter,BufWinEnter *
+        \  if &ft == 'qf' && exists('w:quickfix_title')
+        \|     let &titlestring = '%t '.w:quickfix_title.' - '.(!empty(v:servername) ? v:servername : 'VIM')
+        \| endif
+    autocmd FileType qf call QfSetup()
+    autocmd QuickFixCmdPost [^l]* cwindow
+
+    " netrw
+    autocmd FileType netrw
+        \  call BufSpecialSetup()
+        \| nmap <buffer> <silent> o <CR>
+        \| keepjumps normal! gg
 
     " ----------------------------------------
 
@@ -656,10 +837,13 @@ augroup VIMRC_BASE
     " other
     autocmd FileType mail setl tw=72
     autocmd FileType make setl ts=4 sts=0 sw=4 noexpandtab
-    autocmd FileType man call BufferSettings_Man()
-    autocmd FileType netrw call BufferSettings_Special()
-    autocmd FileType tar call BufferSettings_Special()
-    autocmd FileType zip call BufferSettings_Special()
+    autocmd FileType man call BufManSetup()
+    autocmd FileType tar call BufSpecialSetup()
+    autocmd FileType zip call BufSpecialSetup()
 
 augroup END
 endif
+
+" ----------------------------------------
+
+execute VimrcFinalize()

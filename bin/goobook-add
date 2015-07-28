@@ -6,7 +6,7 @@ prgname=${0##*/}
 
 cleanup() {
     local retstat=$?
-    if (( $retstat == 0 )); then
+    if (( ! retstat )); then
         notify "___ $prgname ___"
     else
         notify "___ $prgname FAIL ___"

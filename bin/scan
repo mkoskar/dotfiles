@@ -47,4 +47,4 @@ scanimage -d pixma:MX920_pyrite \
     >"$tmpfile"
 
 tiff2pdf -j -q "$quality" \
-    -o ~/download/_scanner/scan-$(date '+%Y-%m-%d.%s')_$optsline.pdf "$tmpfile"
+    -o "$HOME/download/_scanner/scan-$(date +%F.%s)_$optsline.pdf" "$tmpfile"

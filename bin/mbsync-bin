@@ -12,7 +12,7 @@ cleanup() {
     local retstat=$?
     local t_end; t_end=$(date +%s)
     echo "exiting after $(((t_end-t_begin)/60)) minutes, $(((t_end-t_begin)%60)) seconds ($retstat)"
-    if (( $retstat == 0 )); then
+    if (( ! retstat )); then
         notify "___ $prgname ___"
     else
         notify "___ $prgname FAIL ___"

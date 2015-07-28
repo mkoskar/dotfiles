@@ -3,7 +3,7 @@
 set -eu -o pipefail
 
 input=$*
-(( $# )) || input="$(head -c 500)"
+(( $# )) || input=$(head -c 255)
 [[ $input ]] || exit 1
 
 prgname=${0##*/}

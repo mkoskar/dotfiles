@@ -45,6 +45,8 @@
 !.config/surfraw
 !.config/surfraw/conf
 !.config/systemd
+!.config/termite
+!.config/termite/config
 !.config/tint2
 !.config/tint2/tint2rc
 !.config/user-dirs.dirs
@@ -55,6 +57,7 @@
 !.config/zathura
 !.config/zathura/zathurarc
 !.conkyrc
+!.ctags
 !.dialogrc
 !.fbtermrc
 !.festivalrc
@@ -110,6 +113,7 @@
 !.newsbeuter
 !.newsbeuter/config
 !.npmrc.example
+!.nvim
 !.pinforc
 !.podget
 !.podget/podgetrc

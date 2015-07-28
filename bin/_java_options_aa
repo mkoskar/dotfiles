@@ -11,7 +11,7 @@ opts=(
 export _JAVA_OPTIONS="${_JAVA_OPTIONS:+"$_JAVA_OPTIONS "}${opts[*]}"
 
 if [[ $prgname != '_java_options_aa' ]]; then
-    export PATH=$(sed "s,:?$HOME/bin:?,:,g" <<<"$PATH")
+    export PATH=$(sed -r "s,:?$HOME/bin:?,:,g" <<<"$PATH")
     set -- "$prgname" "$@"
 fi
 

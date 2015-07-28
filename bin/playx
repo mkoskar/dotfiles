@@ -2,7 +2,17 @@
 
 set -eu
 
+prgname=${0##*/}
+
 [[ -t 1 ]] || exec >/dev/null
+
+cleanup() {
+    local retstat=$?
+    if (( retstat )); then
+        notify "___ $prgname FAIL ___"
+    fi
+}
+trap cleanup EXIT
 
 src=${1:-$(xclip -o | head -c 255)}
 

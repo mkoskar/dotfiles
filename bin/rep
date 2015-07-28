@@ -107,7 +107,7 @@ fi
 
 while true; do
     (( ! inline )) && tput rc
-    (( ! quiet )) && printf "> started: %s${ti_el}\n" "$(date '+%H:%M:%S')" >&2
+    (( ! quiet )) && printf "> started: %s${ti_el}\n" "$(date +%T)" >&2
     (( term )) && t_begin=$(date +%s.%N)
 
     if [[ $output ]]; then
@@ -132,7 +132,7 @@ while true; do
             h=
             (( delay > 0 )) && h="waiting for ${delay}ms, "
             h="${h}press any key to start or q|Q to quit"
-            printf "> finished: %s (%s)${ti_el}\n" "$(date '+%H:%M:%S')" "$h" >&2
+            printf "> finished: %s (%s)${ti_el}\n" "$(date +%T)" "$h" >&2
             (( ! inline )) && tput ed
         fi
         read "${read_opts[@]}" c || continue

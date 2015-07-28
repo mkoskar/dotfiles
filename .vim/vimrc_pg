@@ -1,7 +1,9 @@
 " vim: ft=vim fdm=marker
 
-let $VIMRC = expand('<sfile>:p')
+let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 source ~/.vim/vimrc_base
+
+" ----------------------------------------
 
 set nomodifiable
 set buftype=nowrite
@@ -16,22 +18,17 @@ set nobackup
 set noswapfile
 set noundofile
 set undolevels=-1
-exec "set viminfo='100,<50,s10,h,n".$VIMDIR."/.viminfo_pg"
-
-filetype plugin indent off
+exec "set viminfo=!,'100,<50,s10,h,n".$VIMDIR."/.viminfo_pg"
 
 noremap <silent> q :qa<CR>
 
-set runtimepath^=~/.vim/bundle/vim-AnsiEsc
+map <silent> r :Preserve edit<CR>
 nnoremap <silent> <C-A> :AnsiEsc<CR>
 
-let g:loaded_getscriptPlugin = 1
-let g:loaded_netrwPlugin = 1
-let g:loaded_rrhelper = 1
-let g:loaded_spellfile_plugin = 1
-let g:loaded_vimballPlugin = 1
-
-map <silent> r :call Preserve('edit')<CR>
+let loaded_getscriptPlugin = 1
+let loaded_rrhelper = 1
+let loaded_spellfile_plugin = 1
+let loaded_vimballPlugin = 1
 
 " {{{ Reloads buffer after number (defaults to 1) of seconds have passed.
 
@@ -44,9 +41,9 @@ function! Reload(...) abort
         echohl WarningMsg | echo 'Reload in '.d.'s (interrupt to abort)' | echohl None
         exec 'sleep '.d
         if exists(':ReloadX')
-            call Preserve('silent call _ReloadX()')
+            Preserve silent call _ReloadX()
         else
-            call Preserve('edit')
+            Preserve edit
         endif
     finally
         redraw
@@ -59,7 +56,7 @@ map <silent> F :Reload<CR>GF<CR>
 
 " }}}
 
-if exists("$CMD")
+if exists('$CMD')
 
 " {{{ Reloads buffer from $CMD.
 
@@ -67,16 +64,16 @@ function! _ReloadX() abort
     try
         setl modifiable
         exec 'silent 0read! '.escape($CMD, '%')
-        silent normal! jdG
+        silent keepjumps normal! jdG
         setl noma
     endtry
 endfunction
 
 function! ReloadX() abort
-    call Preserve('silent call _ReloadX()')
+    Preserve silent call _ReloadX()
     if !has('vim_starting')
         redraw
-        echohl WarningMsg | echo '['.strftime("%H:%M:%S").'] '.$PAGER_TITLE | echohl None
+        echohl WarningMsg | echo '['.strftime('%H:%M:%S').'] '.$PAGER_TITLE | echohl None
     endif
 endfunction
 command! ReloadX call ReloadX()
@@ -85,3 +82,7 @@ map <silent> r :ReloadX<CR>
 " }}}
 
 endif
+
+" ----------------------------------------
+
+execute VimrcFinalize()

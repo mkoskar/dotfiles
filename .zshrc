@@ -1,16 +1,16 @@
 # ~/.zshrc
 # - executed by zsh(1) for interactive shells
 
-[ -n "$SHRC_DEBUG" ] && echo '~/.zshrc' >&2
+[[ $SHRC_DEBUG ]] && echo '~/.zshrc' >&2
 
-[ -e ~/bin/term.sh ] && . ~/bin/term.sh
+[[ -e ~/bin/term.sh ]] && . ~/bin/term.sh
 
 # interactive shell only
 # ----------------------------------------
 
 case $- in *i*) ;; *) return ;; esac
 
-[ -e ~/bin/shx.sh ] && . ~/bin/shx.sh
+[[ -e ~/bin/shx.sh ]] && . ~/bin/shx.sh
 
 HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
 HISTSIZE=500
@@ -166,7 +166,7 @@ compctl -K _pacl pacl pacd pacp pacw paci pkgmark
 function set-window-title {
     local title
     zformat -f title '%n@%m:%s' "s:${PWD/#$HOME/~}"
-    printf '\e]0;%s\e\' "${(V%)title}"
+    printf '\e]2;%s\e\' "${(V%)title}"
 }
 add-zsh-hook precmd set-window-title
 
@@ -175,14 +175,15 @@ add-zsh-hook precmd set-window-title
 
 KEYTIMEOUT=1
 WORDCHARS='*?_-.[]~&;!#$%^(){}<>'
+ZLE_SPACE_SUFFIX_CHARS='&|'
 
-PROMPT='$__vimode%?$__statstr:%1~%(!.#.$) '
-if [ -n "$(hostname-label)" ]; then
-    PROMPT='$__vimode%?$__statstr:%m:%1~%(!.#.$) '
+PROMPT='$__vimode%?$__statstr:${BASEDIR:+(${BASEDIR##*/}):}%1~%(!.#.$) '
+if [[ $(hostname-label) ]]; then
+    PROMPT='$__vimode%?$__statstr:%m:${BASEDIR:+(${BASEDIR##*/}):}%1~%(!.#.$) '
 fi
 
 function expand-dot-to-parent-directory-path {
-    [[ "$LBUFFER" = *.. ]] && LBUFFER+='/..' || LBUFFER+='.'
+    [[ $LBUFFER = *.. ]] && LBUFFER+='/..' || LBUFFER+='.'
 }
 
 function expand-word-alias {
@@ -209,8 +210,8 @@ function zle-line-init {
 
 function zle-keymap-select {
     __vimode=':'
-    if [ ! "$KEYMAP" = 'vicmd' ]; then
-        [[ "$ZLE_STATE" == *overwrite* ]] && __vimode='^' || __vimode='+'
+    if [[ ! $KEYMAP = 'vicmd' ]]; then
+        [[ $ZLE_STATE == *overwrite* ]] && __vimode='^' || __vimode='+'
     fi
     zle reset-prompt
 }
@@ -231,37 +232,37 @@ bindkey -r '^A' '^B' '^C' '^F' '^Q' '^T' '^X' '^Y' '^Z' '^\' '^]' '^^' '^_'
 typeset -A key
 
 key[Home]=${terminfo[khome]}
-if [ -n "${key[Home]}" ]; then
+if [[ ${key[Home]} ]]; then
     bindkey "${key[Home]}" beginning-of-line
     bindkey -M vicmd "${key[Home]}" beginning-of-line
 fi
 
 key[End]=${terminfo[kend]}
-if [ -n "${key[End]}" ]; then
+if [[ ${key[End]} ]]; then
     bindkey "${key[End]}" end-of-line
     bindkey -M vicmd "${key[End]}" end-of-line
 fi
 
 key[Insert]=${terminfo[kich1]}
-if [ -n "${key[Insert]}" ]; then
+if [[ ${key[Insert]} ]]; then
     bindkey "${key[Insert]}" overwrite-mode-select
     bindkey -M vicmd "${key[Insert]}" vi-insert
 fi
 
 key[Delete]=${terminfo[kdch1]}
-if [ -n "${key[Delete]}" ]; then
+if [[ ${key[Delete]} ]]; then
     bindkey "${key[Delete]}" delete-char
     bindkey -M vicmd "${key[Delete]}" delete-char
 fi
 
 key[PageUp]=${terminfo[kpp]}
-if [ -n "${key[PageUp]}" ]; then
+if [[ ${key[PageUp]} ]]; then
     bindkey "${key[PageUp]}" noop
     bindkey -M vicmd "${key[PageUp]}" noop
 fi
 
 key[PageDown]=${terminfo[knp]}
-if [ -n "${key[PageDown]}" ]; then
+if [[ ${key[PageDown]} ]]; then
     bindkey "${key[PageDown]}" noop
     bindkey -M vicmd "${key[PageDown]}" noop
 fi
@@ -319,7 +320,7 @@ bindkey -M vicmd -s '^Xs' 'a!!:gs/'
 # ----------------------------------------
 
 __src=/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-if [ -e "$__src" ]; then
+if [[ -e $__src ]]; then
     . "$__src"
     ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
     #ZSH_HIGHLIGHT_STYLES[default]='none'
@@ -352,7 +353,7 @@ unset __src
 # ----------------------------------------
 
 __src=~/opt/zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
-if [ -e "$__src" ]; then
+if [[ -e "$__src" ]]; then
     . "$__src"
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=8,fg=15'
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=red,fg=15'
@@ -367,4 +368,6 @@ alias help='run-help'
 # finalize
 # ----------------------------------------
 
-[ -e ~/bin/login.sh ] && . ~/bin/login.sh || true
+[[ -e ~/bin/login.sh ]] && . ~/bin/login.sh
+
+return 0

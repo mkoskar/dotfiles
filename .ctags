@@ -1,0 +1,4 @@
+--extra=fq
+--fields=afiklmnsSzt
+--links=yes
+--recurse=yes

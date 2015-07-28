@@ -6,15 +6,15 @@ prgname=${0##*/}
 
 case $prgname in
     paste-ix)
-        exec curl -sF "f:1=@${1:--}" http://ix.io/
+        exec curl -sLF "f:1=@${1:--}" http://ix.io/
         ;;
     paste-ptpb)
         # syntax highlighting: <url>/<pygments-lexer>
-        exec curl -sF "c=@${1:--}" -w '%{redirect_url}\n' -o /dev/null 'https://ptpb.pw/?r=1'
+        exec curl -sLF "c=@${1:--}" -w '%{redirect_url}\n' -o /dev/null 'https://ptpb.pw/?r=1'
         ;;
     paste-sprunge)
         # syntax highlighting: <url>?<pygments-lexer>
-        exec curl -sF "sprunge=@${1:--}" http://sprunge.us/
+        exec curl -sLF "sprunge=@${1:--}" http://sprunge.us/
         ;;
     pastex)
         paste-ptpb "$@" | clipif

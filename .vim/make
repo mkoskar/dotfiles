@@ -7,9 +7,9 @@ maybe_cd() {
 }
 
 from_git() {(
-    local name=${1##*/}
-    name=${name%%.git}
-    echo "> $name : $1"
+    local name=$1
+    shift
+    echo "> $name : $*"
 
     if maybe_cd "$name"; then
         git fetch --all
@@ -19,75 +19,63 @@ from_git() {(
             git merge --ff-only
         fi
     else
-        git clone "$1"
-        if [[ ${2:-} ]]; then
-            cd "$name"
-            git checkout -b local "$2"
-        fi
+        git clone "$@" "$name"
     fi
 )}
 
-from_vba() {
-    local vba=${1##*/} name=${vba%%.vba.gz}
-    echo "> $name : $1"
-
-    local http_code=$(curl -sL "$1" -o "$vba" -z "$vba" -w '%{http_code}')
-    if [[ $http_code = '200' ]]; then
-        rm -rf "$name"
-        mkdir "$name"
-        # Vimball doesn't work in Ex mode.
-        # Let's keep it interactive to double check everything went OK.
-        vim -N -X -i NONE -u NORC "$vba" -c "UseVimball $name" -c 'noremap q :quitall<CR>'
-    fi
-}
-
 cd ~/.vim
-mkdir -p .backup .swap .undo autoload
-ln -sf ../bundle/vim-pathogen/autoload/pathogen.vim autoload
 
-(
-    mkdir -p bundle; cd bundle
-    from_git https://github.com/Lokaltog/vim-easymotion.git
-    from_git https://github.com/SirVer/ultisnips.git
-    from_git https://github.com/chriskempson/base16-vim.git
-    from_git https://github.com/flazz/vim-colorschemes.git
-    from_git https://github.com/jakar/vim-AnsiEsc.git
-    from_git https://github.com/kana/vim-tabpagecd.git
-    from_git https://github.com/kien/ctrlp.vim.git
-    from_git https://github.com/majutsushi/tagbar.git
-    from_git https://github.com/scrooloose/nerdcommenter.git
-    from_git https://github.com/scrooloose/nerdtree.git
-    from_git https://github.com/sjl/gundo.vim.git
-    from_git https://github.com/tommcdo/vim-exchange.git
-    from_git https://github.com/tpope/vim-fugitive.git
-    from_git https://github.com/tpope/vim-pathogen.git
-    from_git https://github.com/tpope/vim-repeat.git
-    from_git https://github.com/tpope/vim-surround.git
-    from_git https://github.com/vim-scripts/bufexplorer.zip.git
-    from_git https://github.com/vim-scripts/minibufexpl.vim.git
-    from_git https://github.com/vim-scripts/textobj-line
-    from_git https://github.com/vim-scripts/textobj-user
-    from_git https://github.com/vimoutliner/vimoutliner.git
-)
+mkdir -p .backup .swap .undo autoload bundle
+ln -sf ../bundle/pathogen/autoload/pathogen.vim autoload
 
-(
-    mkdir -p bundle_gpg; cd bundle_gpg
-    from_git https://github.com/jamessan/vim-gnupg.git
-)
+cd bundle
 
-#from_git https://github.com/AndrewRadev/tagfinder.vim.git
-#from_git https://github.com/Raimondi/delimitMate
-#from_git https://github.com/Shougo/unite.vim.git
-#from_git https://github.com/Valloric/YouCompleteMe.git
-#from_git https://github.com/airblade/vim-gitgutter.git
-#from_git https://github.com/bling/vim-airline.git
-#from_git https://github.com/justinmk/vim-gtfo
-#from_git https://github.com/mattn/emmet-vim.git
-#from_git https://github.com/mhinz/vim-signify.git
-#from_git https://github.com/msanders/snipmate.vim.git
-#from_git https://github.com/scrooloose/syntastic.git
-#from_git https://github.com/tpope/vim-git.git
-#from_git https://github.com/tpope/vim-markdown.git
-#from_git https://github.com/tpope/vim-ragtag.git
-#from_git https://github.com/tpope/vim-unimpaired.git
-#from_git https://github.com/yuratomo/w3m.vim.git
+from_git AnsiEsc            https://github.com/jakar/vim-AnsiEsc.git
+from_git NERD_tree          https://github.com/scrooloose/nerdtree.git
+from_git bufexplorer        https://github.com/vim-scripts/bufexplorer.zip.git
+from_git colorschemes       https://github.com/flazz/vim-colorschemes.git
+from_git ctrlp              https://github.com/ctrlpvim/ctrlp.vim.git
+from_git dispatch           https://github.com/tpope/vim-dispatch.git
+from_git easy_align         https://github.com/junegunn/vim-easy-align.git
+from_git easymotion         https://github.com/Lokaltog/vim-easymotion.git
+from_git easytags           https://github.com/xolox/vim-easytags.git
+from_git emmet              https://github.com/mattn/emmet-vim.git
+from_git exchange           https://github.com/tommcdo/vim-exchange.git
+from_git filebeagle         https://github.com/jeetsukumaran/vim-filebeagle.git
+from_git gnupg              https://github.com/jamessan/vim-gnupg.git
+from_git gundo              https://github.com/sjl/gundo.vim.git
+from_git minibufexpl        https://github.com/vim-scripts/minibufexpl.vim.git
+from_git misc               https://github.com/xolox/vim-misc.git
+from_git multiple_cursors   https://github.com/terryma/vim-multiple-cursors.git
+from_git pathogen           https://github.com/tpope/vim-pathogen.git
+from_git repeat             https://github.com/tpope/vim-repeat.git
+from_git speeddating        https://github.com/tpope/vim-speeddating.git
+from_git surround           https://github.com/tpope/vim-surround.git
+from_git syntastic          https://github.com/scrooloose/syntastic.git
+from_git tagbar             https://github.com/majutsushi/tagbar.git
+from_git tcomment           https://github.com/tomtom/tcomment_vim.git
+from_git unimpaired         https://github.com/tpope/vim-unimpaired.git
+from_git unite              https://github.com/Shougo/unite.vim.git
+from_git visualrepeat       https://github.com/vim-scripts/visualrepeat.git
+
+# from_git UltiSnips          https://github.com/SirVer/ultisnips.git
+# from_git fugitive           https://github.com/tpope/vim-fugitive.git
+# from_git snippets           https://github.com/honza/vim-snippets.git
+# from_git vimoutliner        https://github.com/vimoutliner/vimoutliner.git
+
+# https://github.com/Raimondi/delimitMate.git
+# https://github.com/Shougo/neomru.vim
+# https://github.com/Shougo/unite-outline.git
+# https://github.com/Shougo/vimfiler.vim.git
+# https://github.com/Valloric/YouCompleteMe.git
+# https://github.com/Yggdroot/indentLine.git
+# https://github.com/airblade/vim-gitgutter.git
+# https://github.com/dahu/vimple.git
+# https://github.com/davidhalter/jedi-vim.git
+# https://github.com/klen/python-mode.git
+# https://github.com/mhinz/vim-signify.git
+# https://github.com/mhinz/vim-startify.git
+# https://github.com/rking/ag.vim.git
+# https://github.com/svermeulen/vim-easyclip.git
+# https://github.com/thinca/vim-ref.git
+# https://github.com/tpope/vim-abolish.git

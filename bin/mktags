@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if [[ ${BASEDIR-} ]]; then
+    cd "$BASEDIR"
+fi
+
+ctags
+
+# vim: ft=sh

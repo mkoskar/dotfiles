@@ -10,7 +10,7 @@ case $prgname in
         if (( ! $# )); then
             size=$(isosize "$dev")
             blocks=$((size/2048))
-            output="sr0_$(date '+%Y-%m-%d.%s').iso"
+            output="sr0_$(date +%F.%s).iso"
             echo "Creating $output of following size: $((blocks/512)) MB"
             dd if="$dev" of="$output" bs=2048 count=$blocks
         else

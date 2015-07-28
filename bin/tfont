@@ -8,8 +8,7 @@
 set -eu -o pipefail
 
 process() {
-    printf -v seq '\e]50;%s' "$1"
-    ctrlseq "$seq"
+    printf '\e]50;%s' "$1" | ctrlseq
 }
 
 processor() {

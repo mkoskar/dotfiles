@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+if (( $# < 2 )); then
+    echo "usage: $prgname file cmd [arg]..." >&2
+    exit 2
+fi
+
+file=$1
+shift
+
+exec 3>&1 4>&2
+(
+    "$@" > >(tee /dev/fd/3) 2> >(tee /dev/fd/4 >&2)
+) >"$file" 2>&1

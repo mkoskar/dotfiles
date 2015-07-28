@@ -55,7 +55,7 @@ are listed below.
 `pg <bin/pg>`_, `pg0 <bin/pg0>`_, `pgx <bin/pgx>`_, `manpg <bin/manpg>`_
     Wrapper script to use Vim as a man(1) pager.
 
-`mounted <bin/mounted>`_
+`mounted <bin/system/mounted>`_
     Is device mounted on mountpoint of some type with a specific mount option?
 
 `mtp <bin/mtp>`_
@@ -67,10 +67,10 @@ are listed below.
 `pacinfo <bin/pacinfo>`_
     Pretty pacman status report.
 
-`pacman-altered <bin/pacman-altered>`_, `pacman-altered-job <bin/pacman-altered-job>`_
+`pacman-altered <bin/system/pacman-altered>`_, `pacman-altered-job <bin/system/pacman-altered-job>`_
     Run this daily and receive report of what files has changed.
 
-`pacman-disowned <bin/pacman-disowned>`_, `pacman-disowned-job <bin/pacman-disowned-job>`_
+`pacman-disowned <bin/system/pacman-disowned>`_, `pacman-disowned-job <bin/system/pacman-disowned-job>`_
     Run this daily and receive report of what files has became "untracked".
 
 `xpgrep <bin/xpgrep>`_
@@ -107,7 +107,7 @@ are listed below.
 `tfont <bin/tfont>`_
     Set passed font or scroll through predefined list.
 
-`umountall <bin/umountall>`_
+`umountall <bin/system/umountall>`_
     Recursively umount and disassemble a device chain.
 
 `xfocusinfo <bin/xfocusinfo>`_

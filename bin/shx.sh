@@ -218,7 +218,7 @@ alias stat="stat -c '%A %a %h %U %G %s %y %N'"
 alias sudo0='sudo -K && sudo -k'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias watch='watch -n1 -t -c'
-alias wtc='curl --silent http://whatthecommit.com/index.txt'
+alias wtc='curl -sL http://whatthecommit.com/index.txt'
 
 # simple alarm (defaults to 5 minutes)
 a() {

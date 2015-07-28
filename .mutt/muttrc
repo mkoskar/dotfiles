@@ -227,10 +227,10 @@ macro index,pager \en <sidebar-next><sidebar-open> 'sidebar-next & sidebar-open'
 macro index,pager \ep <sidebar-prev><sidebar-open> 'sidebar-prev & sidebar-open'
 macro index,pager ~ '<enter-command>toggle sidebar_visible<enter>' 'toggle sidebar'
 
+push '<shell-escape>mbsync-on &<enter>'
+
 # global includes
 source $alias_file
 source ~/.mutt/colors
 source ~/.mutt/pgp
 source ~/.mutt/accountsrc
-
-push '<shell-escape>mbsync-on &<enter>'

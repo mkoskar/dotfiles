@@ -9,4 +9,8 @@ elif [[ ${TERM%%-*} = 'screen' ]]; then
     format='\eP%s\a\e\\'
 fi
 
+if (( ! $# )); then
+    set -- "$(head -c 255)"
+fi
+
 printf "$format" "$1"

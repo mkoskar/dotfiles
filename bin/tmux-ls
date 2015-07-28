@@ -5,6 +5,6 @@ set -eu
 echo
 for socket in "$TMPDIR/tmux-$UID/"*; do
     echo "> $socket"
-    tmux -S "$socket" ls
+    tmux -S "$socket" ls || true
     echo
 done

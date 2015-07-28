@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-exec /usr/bin/vimdiff --noplugin "$@"
+exec /usr/bin/vimdiff -u ~/.vim/vimrc_base "$@"

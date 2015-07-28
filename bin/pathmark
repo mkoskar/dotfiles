@@ -11,12 +11,10 @@ fi
 
 exec 2>/dev/null
 
-path=$(realpath "$1")
+path=$(realpath -- "$1")
 basename=${path##*/}
 
 echo "$path"
-
-# TODO: use $ man -f instead?
 
 if manp=$(man -w "$path") && \
     [[ $manp != "$path" ]]; then

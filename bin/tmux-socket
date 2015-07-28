@@ -10,7 +10,7 @@ IFS=, read -ra var <<<"$TMUX"
 socket=${var[0]##*/}
 
 if [[ $prgname = 'tmux-socket-label' ]]; then
-    [[ $socket = 'default' ]] || printf '%s\n' "$socket"
+    [[ $socket = 'default' ]] || printf '%s ' "$socket"
 else
     printf '%s\n' "$socket"
 fi

@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 #
 # This is rather abusive in calling ``ps`` per each process in process tree.
-# Strange alternative could be to parse ``pstree``.
-#
-# TODO: find better alternative
 
 set -eu -o pipefail
 

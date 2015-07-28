@@ -9,7 +9,7 @@ cd "$loghome"
 # ----------------------------------------
 
 logbase='pacman-disowned'
-pacman-disowned >"$logbase.$(date '+%Y-%m-%d.%s')"
+pacman-disowned >"$logbase.$(date +%F.%s)"
 
 # ----------------------------------------
 

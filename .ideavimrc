@@ -1,46 +1,63 @@
-"========== moving around, searching and patterns
+" vim: ft=vim fdm=marker
+
+" ========== Moving Around, Searching and Patterns
+
 set nowrapscan
 set ignorecase
 set smartcase
 
-"========== displaying text
-set scrolloff=10
-set sidescroll=10
-set sidescrolloff=10
+nnoremap <A-j> 5j
+nnoremap <A-k> 5k
+
+noremap <A-C-H> 15h
+noremap <A-C-L> 15l
+
+noremap <C-E> 5<C-E>
+noremap <C-Y> 5<C-Y>
+
+noremap zh 15zh
+noremap zl 15zl
+
+" ========== Displaying Text
+
+set scrolloff=5
+set sidescroll=15
+set sidescrolloff=15
 set nonumber
 
-"========== syntax, highlighting and spelling
+" ========== Syntax, Highlighting and Spelling
+
 set hlsearch
 
 nmap <Space> :nohls<Bar>echo<CR>
 
-" spatial navigation
+" ========== Multiple Windows
+
 nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-H> <C-W>h
 nnoremap <C-L> <C-W>l
 
-"========== messages and info
+" ========== Messages and Info
+
 set showmode
 set novisualbell
 
-"========== command line editing
-set history=500
+" ========== Selecting Text
 
-"========== various
-set gdefault
-
-" let Y yank not entire line, but from cursor to the end (consistent with D, C)
+" Yank from cursor to the line end (consistent with D, C)
 nnoremap Y y$
 
-nnoremap <A-j> 5j
-nnoremap <A-k> 5k
-vnoremap <A-j> 5j
-vnoremap <A-k> 5k
+" ========== Command Line Editing
+
+set history=1000
+
+" ========== Various
+
+set gdefault
 
 nmap QQ :q<CR>
 nmap QA :qall<CR>
-nmap <C-X> :q<CR>
 
 nmap <A-l> :action NextTab<CR>
 nmap <A-h> :action PreviousTab<CR>

@@ -1,16 +1,16 @@
 # ~/.bashrc
 # - executed by bash(1) for interactive non-login shells
 
-[ -n "$SHRC_DEBUG" ] && echo '~/.bashrc' >&2
+[[ $SHRC_DEBUG ]] && echo '~/.bashrc' >&2
 
-[ -e ~/bin/term.sh ] && . ~/bin/term.sh
+[[ -e ~/bin/term.sh ]] && . ~/bin/term.sh
 
 # interactive shell only
 # ----------------------------------------
 
 case $- in *i*) ;; *) return ;; esac
 
-[ -e ~/bin/shx.sh ] && . ~/bin/shx.sh
+[[ -e ~/bin/shx.sh ]] && . ~/bin/shx.sh
 
 shopt -s autocd checkjobs checkwinsize cmdhist dotglob gnu_errfmt histappend \
          histreedit histverify lithist no_empty_cmd_completion
@@ -28,10 +28,10 @@ HISTFILESIZE=5000
 HISTIGNORE='exit'
 HISTSIZE=500
 
-__title='\[\e]0;\u@\h:\w\a\]'
-PS1="$__title\$?\$__statstr:\W\$ "
-if [ -n "$(hostname-label)" ]; then
-    PS1="$__title\$?\$__statstr:\h:\W\$ "
+__title='\[\e]2;\u@\h:\w\a\]'
+PS1="$__title\$?\$__statstr:\${BASEDIR:+(\${BASEDIR##*/}):}\W\$ "
+if [[ $(hostname-label) ]]; then
+    PS1="$__title\$?\$__statstr:\h:\${BASEDIR:+(\${BASEDIR##*/}):}\W\$ "
 fi
 
 __prompt_command() {
@@ -70,4 +70,6 @@ complete -o nospace -F _pacl pacl pacd pacp pacw paci pkgmark
 # finalize
 # ----------------------------------------
 
-[ -e ~/bin/login.sh ] && . ~/bin/login.sh || true
+[[ -e ~/bin/login.sh ]] && . ~/bin/login.sh
+
+return 0

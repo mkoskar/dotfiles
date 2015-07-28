@@ -1,0 +1,37 @@
+# vim: ft=dosini
+
+[options]
+cursor_blink = off
+font = local_terminal_sized
+mouse_autohide = true
+scrollback_lines = 8192
+
+[colors]
+foreground = #aeaeae
+foreground_bold = #dddddd
+background = #000000
+
+color0 = #050505
+color1 = #9d2d2d
+color2 = #45a345
+color3 = #db9c2e
+color4 = #384580
+color5 = #a43fa4
+color6 = #229f9f
+color7 = #aeaeae
+color8 = #4d4d4d
+color9 = #c04f4f
+color10 = #70c066
+color11 = #d4c668
+color12 = #606cb5
+color13 = #be63be
+color14 = #68bbbb
+color15 = #dddddd
+
+[hints]
+font = monospace bold 8
+foreground = #dddddd
+background = #4d4d4d
+border_width = 0
+roundness = 4
+padding = 2

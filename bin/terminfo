@@ -2,14 +2,16 @@
 
 set -e -o pipefail
 
+ti_reset=$(tput sgr0)
+
 echo
-echo "$(tput sgr0)normal"
-echo "$(tput bold)bold$(tput sgr0)"
-echo "$(tput smso)standout$(tput sgr0)"
-echo "$(tput smul)underline$(tput sgr0)"
-echo "$(tput sitm)italics$(tput sgr0)"
-echo "$(tput blink)blink$(tput sgr0)"
-echo "$(tput rev)reverse$(tput sgr0)"
+echo "${ti_reset}normal"
+echo "$(tput bold)bold${ti_reset}"
+echo "$(tput smso)standout${ti_reset}"
+echo "$(tput smul)underline${ti_reset}"
+echo "$(tput sitm)italics${ti_reset}"
+echo "$(tput blink)blink${ti_reset}"
+echo "$(tput rev)reverse${ti_reset}"
 
 echo $'\n--------------------------------------------------'
 echo "TERM = $TERM"

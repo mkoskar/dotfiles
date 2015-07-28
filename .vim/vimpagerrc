@@ -3,8 +3,8 @@
 set noloadplugins
 set viminfo=
 
-syntax on
 filetype plugin on
+syntax on
 
 if &t_Co == 256
     colorscheme luciusblack

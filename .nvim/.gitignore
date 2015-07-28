@@ -1,0 +1,7 @@
+!*
+.backup
+.netrwhist
+.swap
+.undo
+.viminfo*
+tags

@@ -7,7 +7,7 @@ prgname=${0##*/}
 # ----------------------------------------
 
 cmd() {
-    tmux -L "${socket:-default}" "$@"
+    tmux -L "$socket" "$@"
 }
 
 exists () {
@@ -60,8 +60,8 @@ _aux() {
         \; splitw -h -c "$notesdir" \
         \; setw main-pane-width 121 \
         \; selectl main-vertical \
-        \; selectp -t :.0 \
-        \; resize-pane -Z
+        \; selectp -t :.0
+        #\; resize-pane -Z
 
     neww -n mail 'trun mutt' \
         \; setw remain-on-exit on
@@ -117,16 +117,19 @@ _wrk() {
 # ----------------------------------------
 
 _usage() {
-    echo "usage: $prgname [-d] [session] [socket]"
+    echo "usage: $prgname [-d] [-s socket] [session]"
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-declare -i dopt=0
-while getopts 'dh' opt; do
+attach=1 socket='default'
+while getopts 'ds:h' opt; do
     case $opt in
         d)
-            dopt=1
+            attach=0
+            ;;
+        s)
+            socket=$OPTARG
             ;;
         h)
             usage
@@ -138,9 +141,7 @@ while getopts 'dh' opt; do
 done
 shift $((OPTIND-1))
 
-attach=$((!dopt))
 session=${1-}
-socket=${2-}
 
 if [[ ! $session ]]; then
     session=$(sed -r "s,^$HOME(/|$),~\1," <<<"$PWD")
@@ -172,5 +173,5 @@ fi
 ))
 
 if (( $attach )); then
-    exec tmux -L "${socket:-default}" attach -t "$session"
+    exec tmux -L "$socket" attach -t "$session"
 fi
