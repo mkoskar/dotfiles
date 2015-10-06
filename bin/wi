@@ -31,5 +31,7 @@ get() {
 
 echo
 get 'Prague,CZ'
+get 'Bratislava,SK'
 get 'Berlin,DE'
 get 'London,GB'
+get 'Sydney,AU'

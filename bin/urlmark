@@ -70,7 +70,7 @@ try:
         ('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
     ]
     resp = opener.open(url)
-    soup = BeautifulSoup(resp)
+    soup = BeautifulSoup(resp, 'lxml')
 
     output(
         meta_by_property(soup, 'og:url') or \

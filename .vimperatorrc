@@ -1,8 +1,11 @@
 " vim: ft=vim
 
 set autocomplete=false
-set gui=none,tabs,navigation
+set followhints=1
 set hlsearch
+set showmode
+set toolbars=none,tabs,navigation
+set wildmode=list:longest,full
 
 noremap <A-j> 5j
 noremap <A-k> 5k

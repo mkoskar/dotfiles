@@ -98,13 +98,17 @@ alias groovy-grape-verbose='groovy -Dgroovy.grape.report.downloads=true'
 # maven
 # ----------------------------------------
 
+alias mvn-dependency-tree='mvn dependency:tree'
 alias mvn-effective-pom='mvn help:effective-pom'
 alias mvn-effective-settings='mvn help:effective-settings'
-alias mvn-dependency-tree='mvn dependency:tree'
 
 mvn-describe-plugin() {
     [ $# -eq 0 ] && return 2
     mvn help:describe -Dplugin="$1"
+}
+
+mvn-archetype-generate() {
+    mvn archetype:generate -Dfilter="$1"
 }
 
 # gradle
@@ -198,14 +202,16 @@ alias manl="MANPAGER='less -s' man"
 alias mpv-debug='command mpv --msg-level=all=trace'
 alias mutt-debug='mutt -d 2'
 alias mv='mv -i'
-alias od='od -Ad -tc -tx1 -v -w16'
+alias od='od -Ax -tc -tx1 -v -w16'
 alias odd='od -td1'
 alias odo='od -to1'
+alias odx='/usr/bin/od -Ax -tx2z -v -w16'
 alias pac='pacman'
 alias paccheck='paccheck --files --file-properties --backup --noextract --noupgrade'
 alias pactree='pactree --color'
 alias patch0='patch -Np0'
 alias patch1='patch -Np1'
+alias ping-mtu='ping -M do -s 2000'
 alias psa='ps auxf'
 alias pulse-streams='pacmd list-sink-inputs'
 alias qiv='qiv -uLtiGfl --vikeys'
@@ -217,7 +223,7 @@ alias ss='ss -napstu'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
 alias sudo0='sudo -K && sudo -k'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
-alias watch='watch -n1 -t -c'
+alias watch='watch -n 1 -t -c'
 alias wtc='curl -sL http://whatthecommit.com/index.txt'
 
 # simple alarm (defaults to 5 minutes)
@@ -272,6 +278,17 @@ mplayer() { command mplayer -really-quiet -msglevel all=1 "$@" 2>/dev/null; }
 mpv() { command mpv --really-quiet --msg-level=all=error "$@" 2>/dev/null; }
 smplayer() { command smplayer "$@" >/dev/null 2>&1; }
 vlc() { command vlc "$@" 2>/dev/null; }
+
+xserver-log() {
+    [ "$(xserverq name)" = 'Xorg' ] || return 1
+    $PAGER ~/.local/share/xorg/Xorg."$(xserverq dispno)".log
+}
+
+xsession-out() {
+    local dispno=$(xserverq dispno)
+    [ "$dispno" ] || return 1
+    $PAGER ~/.local/share/xorg/xsession."$dispno".out
+}
 
 on() {
     [ $# -eq 0 ] && return 2

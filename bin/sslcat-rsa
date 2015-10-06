@@ -2,4 +2,11 @@
 
 set -eu
 
+prgname=${0##*/}
+
+if (( ! $# )) || [[ ! -e $1 ]]; then
+    echo "usage: $prgname rsa_filename" >&2
+    exit 2
+fi
+
 openssl rsa -in "$1"

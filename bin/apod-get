@@ -8,7 +8,7 @@ path="${XDG_CACHE_HOME:-$HOME/.cache}/apod/latest"
 
 case $prgname in
     apod-get)
-        curl -sL --create-dirs -z "$path" -o "$path" "$(apod)" || exit 1
+        curl -sL --create-dirs -o "$path" "$(apod)" || exit 1
         ;;
     apod-bg)
         has-cmd apod-bgset \

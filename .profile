@@ -30,14 +30,13 @@ export TMPDIR="/tmp/$USER"
 
 eval "$(TERM=ansi dircolors)"
 
+export JDK_HOME='/usr/lib/jvm/default'
 export IDEA_JDK='/usr/lib/jvm/java-7-jdk'
 export JAVA_HOME=$JDK_HOME
-export JDK_HOME='/usr/lib/jvm/default'
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 export ASPROOT="$HOME/.cache/asp"
 export BROWSER='b'
-export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
 export EDITOR='e'
 export GRADLE_HOME='/usr/share/java/gradle'
 export GREP_COLORS='sl=:cx=:mt=41:fn=36:ln=33:bn=33:se=:ne'

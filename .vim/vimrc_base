@@ -398,11 +398,11 @@ nnoremap <silent> <Leader>px :%!tidy -config ~/.tidyrc -xml<CR>
 vnoremap <silent> <Leader>pr :!reformat<CR>
 nnoremap <silent> <Leader>pr :%!reformat<CR>
 
-" strip_lines / squash
-vnoremap <silent> <Leader>ps :!strip_lines<CR>
-nnoremap <silent> <Leader>ps :%!strip_lines<CR>
-vnoremap <silent> <Leader>pS :!squash<CR>
-nnoremap <silent> <Leader>pS :%!squash<CR>
+" strip / squash lines
+vnoremap <silent> <Leader>ps :!striplns<CR>
+nnoremap <silent> <Leader>ps :%!striplns<CR>
+vnoremap <silent> <Leader>pS :!squashlns<CR>
+nnoremap <silent> <Leader>pS :%!squashlns<CR>
 
 " ----------------------------------------
 

@@ -10,14 +10,11 @@ case $prgname in
         ;;
     paste-ptpb)
         # syntax highlighting: <url>/<pygments-lexer>
-        exec curl -sLF "c=@${1:--}" -w '%{redirect_url}\n' -o /dev/null 'https://ptpb.pw/?r=1'
+        exec curl -sF "c=@${1:--}" -w '%{redirect_url}\n' -o /dev/null 'https://ptpb.pw/?r=1'
         ;;
     paste-sprunge)
         # syntax highlighting: <url>?<pygments-lexer>
         exec curl -sLF "sprunge=@${1:--}" http://sprunge.us/
-        ;;
-    pastex)
-        paste-ptpb "$@" | clipif
         ;;
     *)
         paste-ptpb "$@"

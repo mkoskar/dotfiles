@@ -6,8 +6,8 @@ set nowrapscan
 set ignorecase
 set smartcase
 
-nnoremap <A-j> 5j
-nnoremap <A-k> 5k
+map <A-j> 5j
+map <A-k> 5k
 
 noremap <A-C-H> 15h
 noremap <A-C-L> 15l

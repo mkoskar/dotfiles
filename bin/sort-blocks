@@ -2,7 +2,7 @@
 
 set -e -o pipefail
 
-squash |
+squashlns |
 gawk -v RS='(\n{2,}|\n$)' -v ORS='\x0' '{print $0}' |
 sort -z |
 gawk -v RS='\x0' -v ORS='\n\n' '{print $0}' |

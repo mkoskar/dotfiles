@@ -42,7 +42,6 @@ tzs=(
     America/New_York
     -
     WET
-    CEST
     CET
     EET
     +
@@ -63,6 +62,8 @@ tzs=(
     Australia/South
     +
     Australia/Sydney
+    -
+    Pacific/Auckland
 )
 tzprint "${tzs[@]}"
 

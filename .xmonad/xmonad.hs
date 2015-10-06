@@ -114,6 +114,7 @@ myConfig = defaultConfig
         checkKeymap myConfig myEZKeys
         ewmhDesktopsStartup
         setWMName "LG3D"
+        spawn "wmname LG3D || true"
         n <- screenCount
         case n of
             1 -> do
@@ -155,6 +156,7 @@ myConfig = defaultConfig
                        , className =? "Firefox (default)" -?> doShiftView "3"
                        , className =? "MPlayer" -?> doShiftView "9"
                        , className =? "Tor Browser" -?> doShiftView "3"
+                       , className =? "jetbrains-idea" -?> doShiftView "1"
                        , className =? "mpv" -?> doShiftView "9"
                        , title =? "qiv" -?> doShiftView "9"
                        ]
@@ -354,6 +356,7 @@ myConfig = defaultConfig
         , ("M-; M-S-m", spawn "markx")
         , ("M-; M-p", spawn "playx")
         , ("M-; M-s", spawn "selfie")
+        , ("M-; M-u", spawn "notify -u low \"$(url-resolve)\"")
         , ("M-S-<Home>", spawn $ myTerminal ++ " - trun wow")
 
         , ("<XF86AudioLowerVolume>", spawn "audio playback_down")

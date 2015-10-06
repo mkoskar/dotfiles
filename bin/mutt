@@ -4,4 +4,6 @@
 # to be used (otherwise you will get "Enter PGP passphrase:" prompt).
 export GPG_AGENT_INFO=
 
+mbsync-on
+
 exec /usr/bin/mutt "$@"

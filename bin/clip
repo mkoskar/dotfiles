@@ -23,8 +23,9 @@ case $prgname in
         (IFS=$'\n'; printf '%s' "$*" | xclip -i -f | xclip -i -selection clipboard)
         ;;
     *)
-        # Choose item from history (or take content of CLIPBOARD)
-        # and host it in PRIMARY and CLIPBOARD.
-        xclip -o -selection clipboard | xclip -i
+        tmpfile=$(mktemp)
+        trap 'rm -f "$tmpfile"' EXIT
+        xselmenu "$prgname" >"$tmpfile"
+        clipi <"$tmpfile"
         ;;
 esac

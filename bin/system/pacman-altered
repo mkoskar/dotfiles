@@ -13,5 +13,5 @@ pacman -Qkk >out 2>err || true
 cat out err | sed -nr -e 's/^backup file: //p' \
                       -e 's/^warning: //p' | sort
 
-paccheck --quiet --files --file-properties \
-         --backup --noextract --noupgrade | sort >&2
+{ paccheck --quiet --files --file-properties \
+           --backup --noextract --noupgrade || true; } | sort >&2

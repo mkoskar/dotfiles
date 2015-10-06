@@ -6,16 +6,16 @@ prgname=${0##*/}
 
 name='default'
 dispno=$(xserverq dispno)
-pipe="$TMPDIR/osd-$UID/$name$dispno"
+fifo="$TMPDIR/osd-$UID/$name$dispno"
 
 if [[ $prgname = 'osdd' ]]; then
-    [[ -e $pipe ]] && exit 3
+    [[ -e $fifo ]] && exit 3
 
-    mkdir -p -m 700 "${pipe%/*}"
-    mkfifo -m 600 "$pipe"
+    mkdir -p -m 700 "${fifo%/*}"
+    mkfifo -m 600 "$fifo"
 
     cleanup() {
-        rm -f "$pipe"
+        rm -f "$fifo"
         kill 0
     }
     trap cleanup EXIT
@@ -25,9 +25,9 @@ if [[ $prgname = 'osdd' ]]; then
              -B black -R yellow \
              -f 0 -u 1000 -o 0 \
              -l 1 \
-             -k -m -i "$pipe"
+             -k -m -i "$fifo"
     exit
 fi
 
-[[ ! -p $pipe ]] && exit 1
-echo "$*" >"$pipe"
+[[ ! -p $fifo ]] && exit 1
+echo "$*" >"$fifo"

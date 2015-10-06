@@ -32,7 +32,7 @@ if [[ $CH_DEBUG ]]; then
     )
 fi
 
-exec google-chrome-stable \
+exec /opt/google/chrome/google-chrome \
     --force-device-scale-factor=1 \
     --force-gpu-rasterization \
     --ignore-gpu-blacklist \
