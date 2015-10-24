@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+printf '\n> %s\n\n' "$PWD"
+
+repos=()
+while IFS= read -d $'\0' entry; do
+    repos+=("$entry")
+    printf '%s\n' "$entry"
+done < <(find -mindepth 1 -maxdepth 2 -type d -name '.git' -printf '%h\0' | sort -z)
+
+if (( ! ${#repos[@]} )); then
+    echo -e 'Nothing to do here.\n'
+    exit 0
+fi
+echo
+
+confirm 'Update?' n || {
+    echo
+    exit 0
+}
+
+for repo in "${repos[@]}"; do
+    (
+        echo -e "\n> $repo"
+        cd "$repo"
+        git fetch --all
+        if [[ $(git rev-parse --abbrev-ref HEAD) = 'local' ]]; then
+            echo '> _local_ branch - not merging!'
+        else
+            git merge --ff-only
+        fi
+    )
+done
+echo

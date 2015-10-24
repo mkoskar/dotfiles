@@ -1,31 +1,26 @@
 #!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
-echo $'\n--------------------------------------------------'
-echo $'> ARP/NDISC cache:\n'
+prgname=${0##*/}
 
-ip neigh
+# http://checkip.amazonaws.com/
+# https://api.ipify.org/
+# https://ip.anysrc.net/banner
+# https://ip.anysrc.net/json
+# https://wtfismyip.com/json
 
-echo $'\n--------------------------------------------------'
-echo $'> Addressing:\n'
+if [[ $prgname = 'ipinfo-tor' ]]; then
+    if (( ! $# )); then
+        echo "usage: $prgname hostname" >&2
+        exit 2
+    fi
+    resolve() { tor-resolve "$@" 2>/dev/null; }
+fi
 
-ip addr
-echo
-
-ip maddr
-echo
-
-brctl show
-
-echo $'\n--------------------------------------------------'
-echo $'> Routing:\n'
-
-ip rule
-echo
-
-routel local
-echo
-
-routel main
-echo
+if (( $# )); then
+    ip=$(resolve "$1")
+    torify curl -sL "http://ip-api.com/json/$ip" | jshon
+else
+    curl -sL 'http://ip-api.com/json' | jshon
+fi

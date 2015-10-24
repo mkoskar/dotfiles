@@ -22,20 +22,12 @@ capture_toggle() {
     amixer -q set Capture toggle
 }
 
-pulse_init() {
-    systemctl --user start pulseaudio.service
-}
-
 case ${1-} in
     playback_up | playback_down | \
     playback_toggle | playback_dock_toggle | \
     capture_toggle)
         $1
         status-osd audio
-        exit
-        ;;
-    pulse_init)
-        $1
         exit
         ;;
 esac

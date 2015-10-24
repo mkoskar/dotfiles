@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+from cgi import parse_header
+from sys import stdin, stderr, exit
+from urllib.parse import urljoin
+import argparse
+import re
+import textwrap
+
+from bs4 import BeautifulSoup
+import requests
+
+parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent(
+        """
+        Claims and downloads your Free Learning Packt Publishing eBook.'
+        Email and password are read as separate lines from stdin.
+        """
+    )
+)
+args = parser.parse_args()
+
+try:
+    email = stdin.readline().strip()
+    passwd = stdin.readline().strip()
+
+    base_url = 'https://www.packtpub.com/'
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    }
+    s = requests.Session()
+    s.headers = headers
+
+    resp = s.get(base_url)
+    if not resp.ok:
+        raise Exception('GET {} ({})'.format(base_url, resp.status_code))
+
+    soup = BeautifulSoup(resp.text, 'lxml')
+    form = soup.find('form', id='packt-user-login-form')
+    i1 = form.find('input', attrs={'name': 'form_build_id'})
+    i2 = form.find('input', attrs={'name': 'form_id'})
+
+    resp = s.post(base_url, data={
+        'email' : email,
+        'password' : passwd,
+        'op' : 'Login',
+        i1['name'] : i1['value'],
+        i2['name'] : i2['value'],
+    })
+    if not resp.ok:
+        raise Exception('POST {} ({})'.format(base_url, resp.status_code))
+
+    offer_url = urljoin(base_url, '/packt/offers/free-learning')
+    resp = s.get(offer_url)
+    if not resp.ok:
+        raise Exception('GET {} ({})'.format(offer_url, resp.status_code))
+
+    soup = BeautifulSoup(resp.content, 'lxml')
+    claim_link = soup.select('div.free-ebook a[href^=/freelearning-claim/]')[0]
+    claim_link_href = claim_link['href']
+    book_id = re.match('/freelearning-claim/(\d+)/', claim_link_href).group(1)
+
+    claim_url = urljoin(base_url, claim_link_href)
+    resp = s.get(claim_url)
+    if not resp.ok:
+        raise Exception('GET {} ({})'.format(claim_url, resp.status_code))
+
+    down_url = urljoin(base_url, '/ebook_download/{}/pdf'.format(book_id))
+    resp = s.get(down_url, stream=True)
+    if not resp.ok:
+        raise Exception('GET {} ({})'.format(down_url, resp.status_code))
+
+    value, params = parse_header(resp.headers['Content-Disposition'])
+    filename = params['filename'].replace(' ', '_')
+
+    with open(filename, 'wb') as f:
+        for chunk in resp.iter_content(1024):
+            f.write(chunk)
+
+except Exception as e:
+    print('{}: error: {}'.format(parser.prog, e), file=stderr)
+    exit(1)

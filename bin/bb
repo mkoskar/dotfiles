@@ -25,6 +25,7 @@ done <<-EOF
     ascii           b https://en.wikipedia.org/wiki/ASCII
     aur             sr aur {}
     awk             b https://www.gnu.org/software/gawk/manual/gawk.html
+    awk1            b http://awk.freeshell.org/
     bash-abs        b file:///usr/share/doc/bash/index.html
     bash-faq        b http://mywiki.wooledge.org/BashFAQ
     bash-guide      b http://mywiki.wooledge.org/FullBashGuide
@@ -112,6 +113,7 @@ done <<-EOF
     mutt-regexp     b file:///usr/share/doc/mutt/manual.html#regexp
     nasatv          b http://www.ustream.tv/nasahdtv
     netfilter       b http://www.netfilter.org/documentation/index.html
+    netfilter-flow  b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
     nodejs          b file:///usr/share/doc/nodejs/index.html
     notes           b file://$HOME/projects/notes/_build/html/index.html
     ntrs            sr ntrs {}
@@ -151,12 +153,16 @@ done <<-EOF
     sqlite-lang     b file:///usr/share/doc/sqlite/lang.html
     sysrq           b file:///lib/modules/$kernel_release/build/Documentation/sysrq.txt
     systemd-news    b https://github.com/systemd/systemd/blob/master/NEWS
-    tomcat          b file:///var/lib/tomcat8/webapps/docs/index.html
+    torspec         b https://gitweb.torproject.org/torspec.git/tree/
     tr              sr translate {}
     tweets          b https://tweetdeck.twitter.com/
+    types-eth       b file:///etc/ethertypes
+    types-ip        b file:///etc/protocols
+    types-ports     b file:///etc/services
     ud              sr urban {}
     unicode         b https://en.wikipedia.org/wiki/Plane_(Unicode)
     unix-history    b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
+    util-linux      b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
     w               sr wikipedia {}
     weechat         b file:///usr/share/doc/weechat/weechat_user.en.html
     yt              sr youtube {}

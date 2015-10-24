@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+if (( ! $# )); then
+    echo "usage: $prgname hostname [port]" >&2
+    exit 2
+fi
+
+socat readline,history=/dev/null "TCP-CONNECT:$1:${2:-80}"

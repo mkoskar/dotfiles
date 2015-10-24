@@ -9,7 +9,7 @@ if [[ ! -t 0 ]]; then
 fi
 
 if [[ $prgname = 'e0' ]]; then
-    set -- -u ~/.vim/vimrc_base
+    set -- -u ~/.vim/vimrc_base "$@"
 fi
 
 exec vim -NO "$@"

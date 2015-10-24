@@ -2,7 +2,7 @@
 
 set -eu
 
-targetdir="$HOME/.local/share/fonts"
+targetdir=$HOME/.local/share/fonts
 
 readonly tmpdir=$(mktemp -d)
 cleanup() { rm -rf "$tmpdir"; }
@@ -15,7 +15,6 @@ get() {
     fname=$(curl -sLfJO -w '%{filename_effective}' "$1")
     unzip -qq "$fname" -d out
     find out -iregex '.*\.\(ttf\|otf\)' -exec mv {} "$targetdir" \;
-    rm -rf out
 }
 
 get http://www.fontsquirrel.com/fonts/download/Anonymous

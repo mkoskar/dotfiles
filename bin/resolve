@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+prgname=${0##*/}
+
+if (( ! $# )); then
+    echo "usage: $prgname hostname" >&2
+    exit 2
+fi
+
+trap 'exit 1' ERR
+
+if [[ $prgname != 'resolve-all' ]]; then
+    exec > >(head -n1)
+fi
+
+getent ahostsv4 "$1" | awk '{print $1}' | uniq

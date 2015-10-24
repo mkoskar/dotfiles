@@ -154,11 +154,24 @@ compctl -m xrun0
 compctl -v v
 
 function _pacl {
-    local -a packages_long
-    packages_long=(/var/lib/pacman/local/"$1"*(/))
-    reply=(${${packages_long#/var/lib/pacman/local/}%-*-*})
+    local -a packages
+    read -cA words
+    if [ "${#words}" -eq 2 ]; then
+        packages=(/var/lib/pacman/local/"$1"*(/))
+    fi
+    reply=(${${packages#/var/lib/pacman/local/}%-*-*})
 }
 compctl -K _pacl pacl pacd pacp pacw paci pkgmark
+
+function _mkvirtualenv-pyenv {
+    local -a versions
+    read -cA words
+    if [ "${#words}" -eq 2 ]; then
+        versions=($PYENV_ROOT/versions/"$1"*(/))
+    fi
+    reply=(${${versions#$PYENV_ROOT/versions/}%-*-*})
+}
+compctl -K _mkvirtualenv-pyenv mkvirtualenv-pyenv
 
 # window-title
 # ----------------------------------------

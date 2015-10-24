@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -e
+
+echo $'\n--------------------------------------------------'
+echo $'> ARP/NDISC cache:\n'
+
+ip neigh
+
+echo $'\n--------------------------------------------------'
+echo $'> Addressing:\n'
+
+ip addr
+echo
+
+ip maddr
+echo
+
+brctl show
+
+echo $'\n--------------------------------------------------'
+echo $'> Routing:\n'
+
+ip rule
+echo
+
+routel local
+echo
+
+routel main
+echo

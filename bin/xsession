@@ -26,7 +26,7 @@ if [[ -e $xmodmap ]]; then
 fi
 
 xscreen
-audio pulse_init
+/usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
 
 if [[ $(xserverq name) = 'Xorg' ]]; then
     xrun compton &

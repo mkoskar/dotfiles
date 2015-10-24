@@ -35,7 +35,7 @@ esac
 # ----------------------------------------
 
 if [[ ! $profile ]]; then
-    profiles=($(awk -F = '/Name/ {print $2}' <~/.mozilla/firefox/profiles.ini | grep -P "$regexp" | sort))
+    profiles=($(awk -F= '/Name/ {print $2}' <~/.mozilla/firefox/profiles.ini | grep -P "$regexp" | sort))
 
     if (( $# )); then
         for p in "${profiles[@]}"; do

@@ -9,7 +9,7 @@ maybe_cd() {
 from_git() {(
     local name=$1
     shift
-    echo "> $name : $*"
+    echo -e "\n> $name : $*"
 
     if maybe_cd "$name"; then
         git fetch --all
@@ -79,3 +79,8 @@ from_git visualrepeat       https://github.com/vim-scripts/visualrepeat.git
 # https://github.com/svermeulen/vim-easyclip.git
 # https://github.com/thinca/vim-ref.git
 # https://github.com/tpope/vim-abolish.git
+
+# https://github.com/mattboehm/vim-accordion
+# https://github.com/spolu/dwm.vim.git
+
+echo

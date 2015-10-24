@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+echo $'\n--------------------------------------------------'
+echo $'> Config:\n'
+
+(
+    printf 'AUTHENTICATE\r\n'
+    printf 'GETINFO config-text\r\n'
+    printf 'QUIT\r\n'
+) | socat - TCP:127.0.0.1:9051
+
+echo $'\n--------------------------------------------------'
+echo $'> Exit:\n'
+
+torify ipinfo
+echo

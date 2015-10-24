@@ -53,6 +53,18 @@ alias gri='gr -i'
 
 alias py='python'
 alias ipy='ipython'
+alias q='deactivate'
+
+# pyenv
+# ----------------------------------------
+
+if [ -d "$PYENV_ROOT" ]; then
+    if [ "$BASH_VERSION" ]; then
+        source "$PYENV_ROOT/completions/pyenv.bash"
+    elif [ "$ZSH_VERSION" ]; then
+        source "$PYENV_ROOT/completions/pyenv.zsh"
+    fi
+fi
 
 # docker
 # ----------------------------------------
@@ -420,14 +432,15 @@ unset __bourne_test
 # virtualenvwrapper
 if [ -e /usr/bin/virtualenvwrapper.sh ]; then
     . /usr/bin/virtualenvwrapper_lazy.sh
+
     alias mkvirtualenv2="mkvirtualenv -p '$(pth python2)'"
     alias mkvirtualenv3="mkvirtualenv -p '$(pth python3)'"
     alias wo='workon'
-    if [ "$BASH_VERSION" ]; then
-        __virtualenvwrapper_load() {
-            virtualenvwrapper_load
-            complete -o default -o nospace -F _virtualenvs wo
-        }
-        complete -o nospace -F __virtualenvwrapper_load wo
-    fi
+
+    mkvirtualenv-pyenv() {
+        [ $# -eq 0 ] && return 2
+        local ver=$1
+        shift
+        mkvirtualenv -p "$PYENV_ROOT/versions/$ver/bin/python" "$@"
+    }
 fi

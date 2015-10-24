@@ -67,6 +67,12 @@ _pacl() {
 }
 complete -o nospace -F _pacl pacl pacd pacp pacw paci pkgmark
 
+__virtualenvwrapper_load() {
+    virtualenvwrapper_load
+    complete -o default -o nospace -F _virtualenvs wo
+}
+complete -o nospace -F __virtualenvwrapper_load wo
+
 # finalize
 # ----------------------------------------
 

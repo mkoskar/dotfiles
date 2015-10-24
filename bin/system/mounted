@@ -23,4 +23,4 @@ mount | awk -v mountpoint="$_mountpoint" \
             -v device="$_device" \
             -v type="$_type" \
             -v option="$_option" \
-            '$0 ~ "^" device " on " mountpoint " type " type " .*[(,]" option "[,)].*$" {print $0; f=1} END {exit !f}'
+            '$0 ~ "^" device " on " mountpoint " type " type " .*[(,]" option "[,)].*$" {print $0; f = 1} END {exit !f}'
