@@ -4,9 +4,10 @@ set -eu
 
 prgname=${0##*/}
 
-args=(ff)
 if [[ $prgname = 'b0' ]]; then
-    args=(ffp quarantine)
+    args=(ffp quarantine --private-window)
+else
+    args=("${BBIN:-ff}")
 fi
 
 exec "${args[@]}" "$@" &>/dev/null &

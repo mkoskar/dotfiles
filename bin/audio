@@ -37,19 +37,19 @@ while true; do
 
     read -N1 -rs c
     case $c in
-        k|K)
+        [kK])
             playback_up
             ;;
-        j|J)
+        [jJ])
             playback_down
             ;;
-        m|M)
+        [mM])
             playback_toggle
             ;;
-        n|N)
+        [nN])
             playback_dock_toggle
             ;;
-        r|R)
+        [rR])
             capture_toggle
             ;;
         *)

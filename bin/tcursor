@@ -1,6 +1,32 @@
 #!/usr/bin/env bash
+#
+# Change terminal cursor style and color.
+#
+# :Copyright: (c) 2015 Miroslav Koskar <http://mkoskar.com/>
+# :License: BSD 2-Clause
 
 set -eu
+
+prgname=${0##*/}
+
+case ${1-} in -h|--help)
+    cat <<-EOF
+	usage: $prgname [-h | block | underline | ...]
+
+	  -h            - show this help message and exit
+	  block         - block cursor
+	  underline     - underline cursor
+	  bar           - bar cursor
+	  reset-style   - reset style
+	  reset-color   - reset color
+	  reset         - reset style and color (default)
+	  *             - color name or its #rgb value
+	EOF
+    exit
+    ;;
+esac
+
+# ----------------------------------------
 
 (( ! $# )) && set -- reset
 

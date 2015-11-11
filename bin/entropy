@@ -6,6 +6,8 @@ prgname=${0##*/}
 
 src='/proc/sys/kernel/random/entropy_avail'
 
-[[ $prgname = 'entropy-watch' ]] \
-    && watch -n1 -t cat "$src" \
-    || cat "$src"
+if [[ $prgname = 'entropy-watch' ]]; then
+    watch -n1 -t cat "$src"
+else
+    cat "$src"
+fi

@@ -2,23 +2,27 @@
 
 set -eu -o pipefail
 
-bluetooth toggle &>/dev/null
+state=$(status bluetooth | awk '{print $2}')
+case $state in
+    on)
+        rfkill block bluetooth
+        sleep 1
 
-state=$(bluetooth | awk '{print $3}')
-if [[ $state = 'on' ]]; then
-    sleep 1
-
-#    dbus-send --system --type=method_call --dest=org.bluez \
-#        /org/bluez/hci0 \
-#        org.freedesktop.DBus.Properties.Set \
-#        string:org.bluez.Adapter1 string:Powered variant:boolean:true
+#        dbus-send --system --type=method_call --dest=org.bluez \
+#            /org/bluez/hci0 \
+#            org.freedesktop.DBus.Properties.Set \
+#            string:org.bluez.Adapter1 string:Powered variant:boolean:true
 #
-#    dbus-send --system --type=method_call --dest=org.bluez \
-#        /org/bluez/hci0 \
-#        org.freedesktop.DBus.Properties.Set \
-#        string:org.bluez.Adapter1 string:Pairable variant:boolean:false
+#        dbus-send --system --type=method_call --dest=org.bluez \
+#            /org/bluez/hci0 \
+#            org.freedesktop.DBus.Properties.Set \
+#            string:org.bluez.Adapter1 string:Pairable variant:boolean:false
 
-    bluetoothctl <<<$'power on\npairable off' >/dev/null
-fi
+        bluetoothctl <<<$'power on\npairable off' >/dev/null
+        ;;
+    off)
+        rfkill unblock bluetooth
+        ;;
+esac
 
 status-osd bluetooth

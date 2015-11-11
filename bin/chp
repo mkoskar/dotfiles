@@ -1,38 +1,41 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s nullglob
 
 prgname=${0##*/}
 
-case ${1-} in -h|--help)
-    echo "usage: $prgname [profile] [arg]..."
+case ${1-} in -h | --help)
+    echo "usage: $prgname [profile [arg]...]"
     exit
     ;;
 esac
 
 # ----------------------------------------
 
-profiles=(
-    devel
-    lab
-    plain
-    proxy
-    proxy-socks
-    proxy-tor
-)
-
 profile=
+regexp='^(?!proxy-socks$)(?!proxy-tor$).*$'
+
 if (( $# )); then
-    for p in "${profiles[@]}"; do
-        [[ $p = "$1" ]] || continue
-        profile=$1
-        shift
-        break
-    done
+    profile=$1
+    shift
 fi
 
 if [[ ! $profile ]]; then
-    profile=$(IFS=$'\n'; dmenu1 "$prgname" <<<"${profiles[*]}")
+    profiles=(
+        devel
+        lab
+        plain
+        proxy
+    )
+    for p in ~/.config/google-chrome-*; do
+        profiles+=("${p#*google-chrome-}")
+    done
+    profile=$(
+        IFS=$'\n'; echo "${profiles[*]}" |
+        sort -u | grep -P "$regexp" |
+        dmenu1 "$prgname"
+    )
 fi
 
 [[ ! $profile ]] && exit 1

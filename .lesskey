@@ -1,7 +1,6 @@
-#command
+# See also: lesskey(1)
+
 h       left-scroll
 l       right-scroll
 \40     undo-hilite
-
-#line-edit
 ^W      word-backspace

@@ -4,7 +4,7 @@ set -eu
 
 target="$HOME/tmp/camhook.jpg"
 
-readonly preview_pidfile="$XDG_RUNTIME_DIR/camhook_preview.pid"
+preview_pidfile="$XDG_RUNTIME_DIR/camhook_preview.pid"
 preview_cleanup() { rm -rf "$preview_pidfile"; }
 
 preview() {

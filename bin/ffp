@@ -4,11 +4,11 @@ set -eu
 
 prgname=${0##*/}
 
-case ${1-} in -h|--help)
+case ${1-} in -h | --help)
     cat <<-EOF
 	usage: ff | firefox [arg]...
-	       ffp [profile] [arg]...
-	       ffa | firefox-aurora [profile] [arg]...
+	       ffa | firefox-aurora [profile [arg]...]
+	       ffp [profile [arg]...]
 	EOF
     exit
     ;;
@@ -16,8 +16,8 @@ esac
 
 # ----------------------------------------
 
-bin='/usr/bin/firefox'
 profile=
+bin='/usr/bin/firefox'
 
 case $prgname in
     ff | firefox)
@@ -34,25 +34,30 @@ esac
 
 # ----------------------------------------
 
-if [[ ! $profile ]]; then
-    profiles=($(awk -F= '/Name/ {print $2}' <~/.mozilla/firefox/profiles.ini | grep -P "$regexp" | sort))
-
-    if (( $# )); then
-        for p in "${profiles[@]}"; do
-            if [[ $p = "$1" ]]; then
-                profile=$1
-                shift
-                break
-            fi
-        done
-    fi
-
-    if [[ ! $profile ]]; then
-        profile=$(IFS=$'\n'; echo "${profiles[*]}" | dmenu1 "$prgname")
-    fi
-
-    [[ ! $profile ]] && exit 1
+if [[ ! $profile ]] && (( $# )); then
+    profile=$1
+    shift
 fi
 
-export LOGNAME="$USER.$profile"
+if [[ ! $profile ]]; then
+    profiles=(
+        devel
+        lab
+        plain
+        proxy
+        quarantine
+    )
+    profiles+=($(awk -F= '/Name/ {print $2}' <~/.mozilla/firefox/profiles.ini))
+    profile=$(
+        IFS=$'\n'; echo "${profiles[*]}" |
+        sort -u | grep -P "$regexp" |
+        dmenu1 "$prgname"
+    )
+fi
+
+[[ ! $profile ]] && exit 1
+
+# Workaround to ensure separate instance per profile.
+#export LOGNAME="$USER.$profile"
+
 exec "$bin" --class "Firefox ($profile)" -P "$profile" "$@"

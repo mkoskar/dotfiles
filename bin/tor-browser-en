@@ -2,7 +2,7 @@
 
 set -eu
 
-target=~/.tor-browser-en/INSTALL/Browser
+target="$HOME/.tor-browser-en/INSTALL/Browser"
 
 if [[ -d $target ]]; then
     cd "$target"

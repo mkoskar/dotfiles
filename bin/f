@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
 find -mindepth 1 \
-     -type d \( -name .svn -o -name .git -o -name .idea \) \
-     -prune -false -o -true "$@"
+    -type d \( \
+        -name .git -o \
+        -name .idea -o \
+        -name .svn -o \
+        -name .vim -o \
+    -false \) -prune -false -o -true "$@"

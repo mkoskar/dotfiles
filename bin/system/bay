@@ -30,7 +30,6 @@ if [[ $(<"$dock/docked") = '0' ]]; then
     echo 'undocked' >&2
 else
     echo 'docked' >&2
-    # lspci | grep -i ata
     sysdev='/sys/devices/pci0000:00/0000:00:1f.2/ata2/host1/target1:0:0/1:0:0:0'
     devname=("$sysdev/block/"*)
 

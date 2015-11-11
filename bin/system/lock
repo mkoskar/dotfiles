@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 #
-# Simple seat lock script with ``away`` as backend.
+# Simple seat lock script with 'away' as backend.
 #
 # * disable SysRq
 # * switch to VT 8
 # * disable VT switching
 # * run backend
 #
-# :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
+# :Copyright: (c) 2013 Miroslav Koskar <http://mkoskar.com/>
 # :License: BSD 2-Clause
 
 set -eu

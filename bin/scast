@@ -14,7 +14,7 @@ cd ~/tmp
 echo 'Press [q] to stop, [?] for help'
 ffcast -q "$@" rec
 
-last=$(find -type f -name 'screencast-*' | sort -r | sed '2,$d')
+last=$(find -maxdepth 1 -type f -name 'screencast-*' -print0 | sort -zr | sed -zn '1p')
 if [[ $last ]]; then
     echo "> $last"
     mpv --loop=inf "$last"

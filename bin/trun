@@ -9,7 +9,7 @@ if (( ! $# )); then
     exit 2
 fi
 
-[[ -e ~/bin/term.sh ]] && . ~/bin/term.sh
+. ~/bin/term.sh
 
 if [[ ${TERM%%-*} != 'screen' ]]; then
     # wait a bit for WM geometry to kick-in

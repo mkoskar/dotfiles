@@ -1,9 +1,8 @@
-# ~/.zprofile
-# - executed by zsh(1) for login shells
+# Executed by zsh(1) for login shells.
 
 [[ $SHRC_DEBUG ]] && echo '~/.zprofile' >&2
 
-[[ -e ~/.profile ]] && . ~/.profile
+. ~/.profile
 
 {
     # compile the completion dump to increase startup speed
@@ -13,5 +12,3 @@
         zcompile "$zcompdump"
     fi
 } &!
-
-return 0

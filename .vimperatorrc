@@ -10,8 +10,7 @@ set wildmode=list:longest,full
 noremap <A-j> 5j
 noremap <A-k> 5k
 
-nnoremap <A-l> gt
-nnoremap <A-h> gT
+nnoremap <A-0> :tablast<CR>
 nnoremap <A-1> 1gt
 nnoremap <A-2> 2gt
 nnoremap <A-3> 3gt
@@ -21,9 +20,13 @@ nnoremap <A-6> 6gt
 nnoremap <A-7> 7gt
 nnoremap <A-8> 8gt
 nnoremap <A-9> 9gt
-nnoremap <silent> <A-0> :tablast<CR>
+nnoremap <A-h> gT
+nnoremap <A-l> gt
 
-nnoremap <silent> <C-Space> :nohls<CR>
+nnoremap H :back<CR>
+nnoremap L :forward<CR>
+
+nnoremap <C-Space> :nohls<CR>
 
 cnoremap <C-o> <Tab>
 cnoremap <C-k> <S-Tab>

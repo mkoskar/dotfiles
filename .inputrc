@@ -28,6 +28,7 @@ $if bash
     "\C-xa": "\ea!!:*\e"
     "\C-xl": "\ea!!:$\e"
     "\C-xs": "\ea!!:gs/"
+    "\C-xc": "--color=auto "
 $endif
 
 $if python

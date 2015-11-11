@@ -2,5 +2,10 @@
 
 set -e -o pipefail
 
-xset -q | grep -Fq 'DPMS is Enabled' && xset -dpms || xset +dpms
+if xset -q | grep -Fq 'DPMS is Enabled'; then
+    xset -dpms
+else
+    xset +dpms
+fi
+
 status-osd dpms

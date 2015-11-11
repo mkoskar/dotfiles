@@ -1,6 +1,8 @@
 !*
-*.pyc
+
+*.py[co]
 __pycache__
-bookmarks
-history
-tagged
+
+/bookmarks
+/history
+/tagged

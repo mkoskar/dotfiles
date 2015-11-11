@@ -22,10 +22,11 @@ done <<-EOF
     arch-lists      sr google site:lists.archlinux.org {}
     arch-wiki       sr archwiki {}
     arxiv           sr arxiv {}
-    ascii           b https://en.wikipedia.org/wiki/ASCII
+    ascii           b https://en.wikipedia.org/wiki/ASCII#ASCII_printable_code_chart
     aur             sr aur {}
     awk             b https://www.gnu.org/software/gawk/manual/gawk.html
     awk1            b http://awk.freeshell.org/
+    basedir         b http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
     bash-abs        b file:///usr/share/doc/bash/index.html
     bash-faq        b http://mywiki.wooledge.org/BashFAQ
     bash-guide      b http://mywiki.wooledge.org/FullBashGuide
@@ -64,6 +65,7 @@ done <<-EOF
     groovy          b file:///usr/share/doc/groovy-2.4.3/html/documentation/index.html
     groovy-api      b file:///usr/share/doc/groovy-2.4.3/html/api/overview-summary.html
     groovy-gapi     b file:///usr/share/doc/groovy-2.4.3/html/gapi/overview-summary.html
+    grub            b https://www.gnu.org/software/grub/manual/grub.html
     guava           b http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/index.html
     haskell         b file:///usr/share/doc/ghc/html/libraries/index.html
     hibernate-orm   b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
@@ -133,6 +135,9 @@ done <<-EOF
     pypi            b https://pypi.python.org/pypi
     python          b file:///usr/share/doc/python/html/index.html
     python2         b file:///usr/share/doc/python2/html/index.html
+    qt              b http://doc.qt.io/
+    qutebrowser     b http://qutebrowser.org/img/cheatsheet-big.png
+    regexp-gnu      b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html
     regexp-java     b file:///usr/share/doc/java/jdk/api/java/util/regex/Pattern.html
     regexp-js       b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
     regexp-pcre     b file:///usr/share/doc/pcre/html/pcresyntax.html
@@ -144,6 +149,7 @@ done <<-EOF
     rust            b http://doc.rust-lang.org/reference.html
     rust-api        b http://doc.rust-lang.org/std/
     scala           b http://www.scala-lang.org/api/current/
+    sed             b https://www.gnu.org/software/sed/manual/sed.html
     spock           b http://docs.spockframework.org/
     spring          b http://docs.spring.io/spring/docs/current/spring-framework-reference/html/
     spring-api      b http://docs.spring.io/spring/docs/current/javadoc-api/overview-summary.html

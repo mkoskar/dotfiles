@@ -1,8 +1,9 @@
 !*
-.backup
-.netrwhist
-.swap
-.undo
-.viminfo*
-bundle*
-tags
+
+/.backup
+/.netrwhist
+/.swap
+/.undo
+/.viminfo*
+/bundle*
+/tags

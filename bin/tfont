@@ -2,7 +2,7 @@
 #
 # Set passed font or scroll through predefined list.
 #
-# :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
+# :Copyright: (c) 2013 Miroslav Koskar <http://mkoskar.com/>
 # :License: BSD 2-Clause
 
 set -eu -o pipefail

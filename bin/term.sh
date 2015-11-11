@@ -8,7 +8,7 @@ export TTY=$(tty)
 [ "$TERMDONE" = "$TTY" ] && return
 
 export GPG_TTY=$TTY
-export TERMORIG=${TERMORIG:-$TERM}
+export TERMORIG=$TERM
 
 if [ "${TERM%%-*}" = 'screen' ]; then
     export TERM='screen-256color'

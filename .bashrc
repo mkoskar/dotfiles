@@ -1,16 +1,15 @@
-# ~/.bashrc
-# - executed by bash(1) for interactive non-login shells
+# Executed by bash(1) for interactive non-login shells.
 
 [[ $SHRC_DEBUG ]] && echo '~/.bashrc' >&2
 
-[[ -e ~/bin/term.sh ]] && . ~/bin/term.sh
+. ~/bin/term.sh
 
 # interactive shell only
 # ----------------------------------------
 
 case $- in *i*) ;; *) return ;; esac
 
-[[ -e ~/bin/shx.sh ]] && . ~/bin/shx.sh
+. ~/bin/shx.sh
 
 shopt -s autocd checkjobs checkwinsize cmdhist dotglob gnu_errfmt histappend \
          histreedit histverify lithist no_empty_cmd_completion
@@ -76,6 +75,4 @@ complete -o nospace -F __virtualenvwrapper_load wo
 # finalize
 # ----------------------------------------
 
-[[ -e ~/bin/login.sh ]] && . ~/bin/login.sh
-
-return 0
+. ~/bin/login.sh

@@ -12,7 +12,7 @@
 # * k / K       - previous
 # * (default)   - next
 #
-# :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
+# :Copyright: (c) 2013 Miroslav Koskar <http://mkoskar.com/>
 # :License: BSD 2-Clause
 
 set -eu
@@ -38,16 +38,16 @@ while true; do
     (( len > 1 )) || break
     read -N1 -rs c
     case $c in
-        q|Q)
+        [qQ])
             break
             ;;
-        g|0)
+        [g0])
             i=0
             ;;
-        G|$)
+        [G$])
             i=$((len-1))
             ;;
-        k|K)
+        [kK])
             i=$((i-1))
             ;;
         *)

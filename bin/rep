@@ -136,6 +136,6 @@ while true; do
             (( ! inline )) && tput ed
         fi
         read "${read_opts[@]}" c || continue
-        case $c in q|Q) break ;; esac
+        case $c in [qQ]) break ;; esac
     fi
 done

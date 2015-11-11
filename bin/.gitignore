@@ -1,4 +1,6 @@
 !*
-*.pyc
+
+*.py[co]
 __pycache__
-gitconf-setemail
+
+/gitconf-setemail

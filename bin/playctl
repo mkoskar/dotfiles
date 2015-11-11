@@ -4,29 +4,38 @@ set -eu -o pipefail
 
 prgname=${0##*/}
 
-declare -i blue=0
+declare -i blue=
 [[ $prgname = 'playctl-bluetooth' ]] && blue=1
 
 bluectl() {
+    if [[ $1 = 'play-pause' ]]; then
+        local status; status=$(bluectl show | awk '/Status:/ {print $2}')
+        case $status in
+            playing)
+                bluectl pause
+                ;;
+            *)
+                bluectl play
+                ;;
+        esac
+        return
+    fi
     # hack which happens to workaround bluetooth-player input issues
     (sleep 0.01; echo "$1"; sleep 0.01) | bluetooth-player 2>/dev/null
 }
 
-play_pause_blue() {
-    local status
-    status=$(bluectl show | awk '/Status:/ {print $2}')
-    case $status in
-        playing)
-            bluectl pause >/dev/null
-            ;;
-        *)
-            bluectl play >/dev/null
-            ;;
-    esac
-}
+# ----------------------------------------
+
+exec >/dev/null
+
+(( blue )) && ctl='bluectl' || ctl='playerctl'
 
 case ${1-} in
-    play-pause)
-        (( blue )) && play_pause_blue || playerctl play-pause
+    play | pause | play-pause | stop | next | previous)
+        $ctl $1
+        ;;
+    *)
+        echo "usage: $prgname [play | pause | play-pause | stop | next | previous]" >&2
+        exit 2
         ;;
 esac

@@ -2,11 +2,11 @@
 
 set -eu
 
-# using ``command`` builtin (POSIX compatible)
+# using 'command' builtin (POSIX compatible)
 command -v "$1" &>/dev/null
 
-# alternatively using ``type`` builtin
+# alternatively using 'type' builtin
 #type "$1" &>/dev/null
 
-# alternatively using ``hash`` builtin
+# alternatively using 'hash' builtin
 #hash "$1" &>/dev/null

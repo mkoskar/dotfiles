@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu -o pipefail
+shopt -s nullglob
 
 prgname=${0##*/}
 
@@ -31,9 +32,7 @@ status_backlight() {
 }
 
 status_bluetooth() {
-    local val
-    val=$(bluetooth | awk -F= '{gsub(/^[ \t]+/, "", $2); print $2}')
-    printf 'bluetooth: %s\n' "$val"
+    printf 'bluetooth: %s\n' "$(status_rfkill bluetooth)"
 }
 
 status_dpms() {
@@ -42,6 +41,25 @@ status_dpms() {
         xset q | grep -Fq 'DPMS is Enabled' && val='on' || val='off'
     fi
     printf 'dpms: %s\n' "$val"
+}
+
+status_rfkill() {
+    local i type=$1 rfkill=()
+    for i in /sys/class/rfkill/rfkill*; do
+        [[ $(<"$i/type") = "$type" ]] || continue
+        rfkill+=("$i")
+    done
+    if (( ${#rfkill[@]} )); then
+        if (( $(<"$rfkill/hard") )); then
+            echo 'off (hardware)'
+        elif (( $(<"$rfkill/soft") )); then
+            echo 'off (software)'
+        else
+            echo 'on'
+        fi
+    else
+        echo 'unknown'
+    fi
 }
 
 status_trackpoint_wheel() {
@@ -53,9 +71,7 @@ status_trackpoint_wheel() {
 }
 
 status_wifi() {
-    local val
-    val=$(wifi | awk -F= '{gsub(/^[ \t]+/, "", $2); print $2}')
-    printf 'wifi: %s\n' "$val"
+    printf 'wifi: %s\n' "$(status_rfkill wlan)"
 }
 
 status_xkb() {

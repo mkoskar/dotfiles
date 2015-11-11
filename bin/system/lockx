@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #
-# Simple seat lock script with ``slock`` as backend.
+# Simple seat lock script with 'slock' as backend.
 #
 # * disable SysRq
 # * disable VT switching
 # * run backend on display ':{current VT}'
 #
-# :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
+# :Copyright: (c) 2013 Miroslav Koskar <http://mkoskar.com/>
 # :License: BSD 2-Clause
 
 set -eu

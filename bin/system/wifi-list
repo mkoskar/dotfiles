@@ -8,4 +8,4 @@ if (( $EUID )); then
 fi
 
 ip link set wlan0 up
-iwlist wlan0 scan
+iw dev wlan0 scan

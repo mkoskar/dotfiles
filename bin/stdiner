@@ -46,7 +46,7 @@ fi
 (( $# )) || set -- cat {}
 
 if (( topt || Topt )); then
-    readonly file=$(mktemp -t 'stdiner.XXXXXXXXXX')
+    file=$(mktemp -t 'stdiner.XXXXXXXXXX')
     cleanup() { rm -f "$file"; }
     trap cleanup EXIT
     cat >"$file"

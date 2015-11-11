@@ -52,9 +52,6 @@ are listed below.
 `grep-nonascii <bin/grep-nonascii>`_
     Filter out lines containing non-ASCII characters.
 
-`pg <bin/pg>`_, `pg0 <bin/pg0>`_, `pgx <bin/pgx>`_, `manpg <bin/manpg>`_
-    Wrapper script to use Vim as a man(1) pager.
-
 `mounted <bin/system/mounted>`_
     Is device mounted on mountpoint of some type with a specific mount option?
 
@@ -73,8 +70,11 @@ are listed below.
 `pacman-disowned <bin/system/pacman-disowned>`_, `pacman-disowned-job <bin/system/pacman-disowned-job>`_
     Run this daily and receive report of what files has became "untracked".
 
-`xpgrep <bin/xpgrep>`_
-    ``pgrep -x`` filtered for current ``$DISPLAY``.
+`pg <bin/pg>`_, `pg0 <bin/pg0>`_, `pgx <bin/pgx>`_, `manpg <bin/manpg>`_
+    Wrapper script to use Vim as a man(1) pager.
+
+`powersave <bin/system/powersave>`_
+    Simple way to switch power saving on or off.
 
 `rep <bin/rep>`_, `respawn <bin/respawn>`_
     Execute ``cmd [arg]...`` repeatedly.
@@ -97,9 +97,15 @@ are listed below.
 `stdiner <bin/stdiner>`_
     Convert STDIN to positional command argument.
 
+`striplns <bin/striplns>`_, `squashlns <bin/squashlns>`_
+    Strip and squash whitespace lines.
+
 `tcolors-sel <bin/tcolors-sel>`_
     Scrolls through argument list (or predefined one if there are no arguments)
     and process each item by ``tcolors x``, hence changing ANSI terminal colors.
+
+`tcursor <bin/tcursor>`_
+    Change terminal cursor style and color.
 
 `terminfo <bin/terminfo>`_
     Print various information about current terminal.
@@ -107,12 +113,27 @@ are listed below.
 `tfont <bin/tfont>`_
     Set passed font or scroll through predefined list.
 
+`tor-exitcc <bin/tor-exitcc>`_
+    Request Tor exit node by passed country code.
+
+`torinfo <bin/torinfo>`_
+    Print Tor config and current exit node.
+
 `umountall <bin/system/umountall>`_
     Recursively umount and disassemble a device chain.
+
+`vtswitch-lock <bin/system/vtswitch-lock>`_
+    Locks (or unlocks) VT switching.
+
+`x <bin/x>`_, `xx <bin/xx>`_
+    X session startup script (for X and Xephyr respectively).
 
 `xfocusinfo <bin/xfocusinfo>`_
     Determines and prints out (in shell eval format) focused X screen,
     Xinerama head, root window id, and target window id.
+
+`xpgrep <bin/xpgrep>`_
+    ``pgrep -x`` filtered for current ``$DISPLAY``.
 
 `xserverq <bin/xserverq>`_
     Get information about X server (based on DISPLAY environment variable).

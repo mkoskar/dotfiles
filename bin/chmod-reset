@@ -5,4 +5,4 @@ set -e
 confirm 'Careful! Continue?' n || exit 0
 
 find -mindepth 1 -type d -exec chmod 755 '{}' \;
-find -mindepth 1 -type f -exec chmod 644 '{}' \;
+find -type f -exec chmod 644 '{}' \;

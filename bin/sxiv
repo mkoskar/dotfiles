@@ -2,7 +2,7 @@
 
 set -eu
 
-readonly tmpfile=$(mktemp)
+tmpfile=$(mktemp)
 cleanup() { rm -f "$tmpfile"; }
 trap cleanup EXIT
 

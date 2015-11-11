@@ -4,10 +4,10 @@
     apod
     ~~~~
 
-    Prints http://apod.nasa.gov/ image URL.
+    Prints <http://apod.nasa.gov/> image URL.
 
     :Compatibility: 3.2
-    :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
+    :Copyright: (c) 2013 Miroslav Koskar <http://mkoskar.com/>
     :License: BSD 2-Clause
 """
 
@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser(
     formatter_class=argparse.RawDescriptionHelpFormatter,
     description=textwrap.dedent(
         """
-        Prints http://apod.nasa.gov/ image URL.
+        Prints <http://apod.nasa.gov/> image URL.
         If target URL doesn't end with recognized format extension (gif, jpeg, png)
         preview image URL is returned instead (this covers situations when target
         URL points to a video file instead of an image).

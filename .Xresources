@@ -1,7 +1,8 @@
-! xcolors --------------------------------------------------------------------
+! See also: xrdb(1), appres(1)
+
 #include ".xcolors/default"
 
-! xterm ----------------------------------------------------------------------
+! XTerm ----------------------------------------------------------------------
 XTerm.termName:                 xterm-256color
 XTerm.ptyInitialErase:          false
 
@@ -11,7 +12,7 @@ XTerm*vt100.colorBDMode:        true
 XTerm*vt100.dynamicColors:      true
 XTerm*vt100.veryBoldColors:     4
 
-! Since xterm does not support font fallback (only single font),
+! Since xterm does not support font fallback (only single font)
 ! it is reasonable to choose a font with a large set of glyphs.
 XTerm*vt100.faceName:           xft:DejaVu Sans Mono:size=10
 
@@ -27,7 +28,7 @@ XTerm*vt100.translations:       #override \n \
                                 ~Shift <Key>Print: print() \n \
                                 Shift <Key>Print: print-everything()
 
-! urxvt ----------------------------------------------------------------------
+! URxvt ----------------------------------------------------------------------
 URxvt.termName:         rxvt-unicode-256color
 
 !URxvt.intensityStyles:  false
@@ -37,17 +38,18 @@ URxvt.colorIT:          #d4c668
 URxvt.cursorColor2:     1
 URxvt.scrollColor:      gray20
 
-! urxvt supports font fallback (for missing glyphs),
+! Since urxvt supports font fallback (for missing glyphs)
 ! every font resource can in fact contain font list.
 URxvt.font:             xft:local_terminal_sized, \
-                        xft:Symbola
+                        xft:Symbola:pixelsize, \
+                        xft:Symbola:pixelsize=9
 
 URxvt.scrollstyle:      plain
 URxvt.thickness:        5
 URxvt.saveLines:        8192
 URxvt.pointerBlank:     true
 URxvt.urgentOnBell:     true
-URxvt.iso14755:         false
+URxvt.iso14755:         true
 URxvt.iso14755_52:      false
 URxvt.cutchars:         '"()*,<>[]{}|\''
 URxvt.print-pipe:       cat > $(mktemp -p ~/tmp urxvt.XXXXXX)
@@ -77,11 +79,11 @@ URxvt.keysym.M-C-slash:         perl:keyboard-select:search
 URxvt.keysym.M-C-u:             perl:url-select:select_next
 URxvt.keysym.M-C-o:             perl:url-picker
 
-! xcursor --------------------------------------------------------------------
+! Xcursor --------------------------------------------------------------------
 Xcursor.theme:          Grounation
 Xcursor.size:           22
 
-! xft ------------------------------------------------------------------------
+! Xft ------------------------------------------------------------------------
 Xft.dpi:                96
 Xft.antialias:          1
 Xft.hinting:            1

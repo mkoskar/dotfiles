@@ -4,34 +4,34 @@
 *.background:        #000000
 *.cursorColor:       #DDDDDD
 
-!black
+! black
 *.color0:            #000000
 *.color8:            #555555
 
-!red
+! red
 *.color1:            #990000
 *.color9:            #DD5555
 
-!green
+! green
 *.color2:            #1A991A
 *.color10:           #55DD55
 
-!yellow
+! yellow
 *.color3:            #FDB436
 *.color11:           #FEED6A
 
-!blue
+! blue
 *.color4:            #3A4CA6
 *.color12:           #4E5DB5
 
-!magenta
+! magenta
 *.color5:            #AA00AA
 *.color13:           #DD55DD
 
-!cyan
+! cyan
 *.color6:            #00AAAA
 *.color14:           #55DDDD
 
-!white
+! white
 *.color7:            #C0C0C0
 *.color15:           #DDDDDD

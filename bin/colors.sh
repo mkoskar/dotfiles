@@ -1,2 +1,2 @@
-# Source this file to define color related constants and functions.
+# Source this file for color related constants and functions.
 # :Compatibility: POSIX

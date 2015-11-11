@@ -1,4 +1,5 @@
-#info
+# See also: infokey(1)
+
 l       forward-char
 h       backward-char
 0       beginning-of-line

@@ -5,7 +5,7 @@
 
 set -o noclobber
 
-# non-POSIX but supported by ``bash`` and ``zsh`` at least
+# non-POSIX but supported by bash(1) and zsh(1) at least
 set -o pipefail || true
 
 ti_hi0=$'\e[1;37m'
@@ -37,6 +37,23 @@ alias lt='ll -tr'
 alias lu='lt -u'
 alias lx='ll -XB'
 
+# man
+# ----------------------------------------
+
+alias man-less="MANPAGER='less -s' man"
+
+alias man-1p='man -s 1p'
+alias man-3p='man -s 3p'
+alias man-posix='man -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
+
+man-all() {
+    pgx man -k . "$@"
+}
+
+alias man-all-1p='man-all -s 1p'
+alias man-all-3p='man-all -s 3p'
+alias man-all-posix='man-all -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
+
 # ack / ag / grep
 # ----------------------------------------
 
@@ -60,9 +77,9 @@ alias q='deactivate'
 
 if [ -d "$PYENV_ROOT" ]; then
     if [ "$BASH_VERSION" ]; then
-        source "$PYENV_ROOT/completions/pyenv.bash"
+        . "$PYENV_ROOT/completions/pyenv.bash"
     elif [ "$ZSH_VERSION" ]; then
-        source "$PYENV_ROOT/completions/pyenv.zsh"
+        . "$PYENV_ROOT/completions/pyenv.zsh"
     fi
 fi
 
@@ -82,7 +99,7 @@ alias dkrd='docker run -d -P'
 alias dkri='docker run -i -t -P'
 
 dkip() {
-    local target=${1:-$(docker ps -lq)}
+    local target; target=${1:-$(docker ps -lq)}
     [ ! "$target" ] && return 2
     docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$target"
 }
@@ -93,7 +110,6 @@ dkrm() {
 }
 
 dkstop() {
-    local ids
     docker ps -aq | xargs -r docker stop
 }
 
@@ -140,7 +156,7 @@ alias npmg='npm -g'
 # finds what package provides file or directory
 paco() {
     [ $# -eq 0 ] && return 2
-    local p=$(realpath -s "$1")
+    local p; p=$(realpath -s "$1")
     pacman -Qo "$p"
     [ -L "$p" ] && pacman -Qo "$(realpath "$1")"
 }
@@ -178,7 +194,7 @@ pacw() {
 # target detailed info
 paci() {
     [ $# -eq 0 ] && return 2
-    local p=$(expac %n "$1")
+    local p; p=$(expac %n "$1")
     [ ! "$p" ] && return 1
     pacman -Qii "$p"
 }
@@ -210,7 +226,6 @@ alias llib='tree ~/.local/lib'
 alias lsblk='lsblk -o NAME,KNAME,MAJ:MIN,ROTA,RM,RO,TYPE,SIZE,FSTYPE,MOUNTPOINT,MODEL'
 alias lsdiff='lsdiff -s'
 alias ltime='date +%T'
-alias manl="MANPAGER='less -s' man"
 alias mpv-debug='command mpv --msg-level=all=trace'
 alias mutt-debug='mutt -d 2'
 alias mv='mv -i'
@@ -292,20 +307,20 @@ smplayer() { command smplayer "$@" >/dev/null 2>&1; }
 vlc() { command vlc "$@" 2>/dev/null; }
 
 xserver-log() {
-    [ "$(xserverq name)" = 'Xorg' ] || return 1
-    $PAGER ~/.local/share/xorg/Xorg."$(xserverq dispno)".log
+    local dispno; dispno=${1:-$(xserverq dispno)}
+    [ "$dispno" ] || return 1
+    $PAGER ~/.local/share/xorg/Xorg."$dispno".log
 }
 
 xsession-out() {
-    local dispno=$(xserverq dispno)
+    local dispno; dispno=${1:-$(xserverq dispno)}
     [ "$dispno" ] || return 1
     $PAGER ~/.local/share/xorg/xsession."$dispno".out
 }
 
 on() {
     [ $# -eq 0 ] && return 2
-    local p
-    p=$(pth "$1") || return 1
+    local p; p=$(pth "$1") || return 1
     shift
     eval "${*:-ls -la}" "$p"
 }
@@ -377,10 +392,9 @@ debug() {
 
 # TODO: still some unbound variables?
 stacktrace() {
-    local exitstatus=$?
-    local ti_header=$ti_hi1
-    [ "$exitstatus" -gt 0 ] && ti_header=$ti_hi2
-    echo "$ti_header> Traceback ($exitstatus):$ti_reset"
+    local retstat=$? ti_header=$ti_hi1
+    [ "$retstat" -gt 0 ] && ti_header=$ti_hi2
+    echo "$ti_header> Traceback ($retstat):$ti_reset"
     shopt -q extdebug || echo '> WARN: extdebug not set!'
     for ((i=1, argvo=0; i<${#FUNCNAME[@]}; i++, argvo+=argc)); do
         argc=${BASH_ARGC[$i]}
@@ -413,14 +427,14 @@ reexec() {
 }
 
 reload() {
-    [ -e ~/.profile ] && . ~/.profile
-    local rc=~/bin/shx.sh
+    . ~/.profile
     if [ "$BASH_VERSION" ]; then
-        rc=~/.bashrc
+        . ~/.bashrc
     elif [ "$ZSH_VERSION" ]; then
-        rc=~/.zshrc
+        . ~/.zshrc
+    else
+        . ~/bin/shx.sh
     fi
-    [ -e "$rc" ] && . "$rc"
 }
 
 # Bourne-like shell only

@@ -8,16 +8,16 @@
 # By default:
 #
 # * allocates VT passed in XDG_VTNR (which by default corresponds to active VT)
-# * dislay number will be the same as VT number
+# * display number will be the same as VT number
 # * continue only if display number is not used already
 # * xinit ~/bin/xsession "$@" -- /usr/bin/X
 #
 # If started as 'xx':
 #
-# * dislay number will be the first free starting with 91
+# * display number will be the first free starting with 91
 # * xinit ~/bin/xsession "$@" -- /usr/bin/Xephyr
 #
-# :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
+# :Copyright: (c) 2013 Miroslav Koskar <http://mkoskar.com/>
 # :License: BSD 2-Clause
 
 set -eu
@@ -73,9 +73,8 @@ datadir="${XDG_DATA_HOME:-$HOME/.local/share}/xorg"
 mkdir -p "$datadir"
 
 xauthset() {
-    local dispno cookie
-    dispno=$1
-    cookie=$(mcookie)
+    local dispno=$1
+    local cookie; cookie=$(mcookie)
 
     # server's X authority file (global)
     xauthf="$rundir/X$dispno-Xauthority"

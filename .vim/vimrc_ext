@@ -149,6 +149,7 @@ noremap <silent> <Leader>T :TagbarOpenAutoClose<CR>
 " ========== tcomment
 
 let tcommentMaps = 0
+let tcommentOptions = {'col': 1, 'whitespace': 'no'}
 
 nnoremap <silent> <Leader>cc :TComment<CR>
 nnoremap <silent> <Leader>C :TCommentBlock<CR>

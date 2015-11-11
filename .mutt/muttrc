@@ -20,6 +20,7 @@ set pipe_decode
 set quit
 set recall = ask-no
 set reverse_alias
+set reverse_name
 set save_history = 100
 set sleep_time = 0
 set ssl_force_tls
@@ -35,6 +36,7 @@ unset header_cache_compress
 unset help
 unset mail_check_recent
 unset mark_old
+unset reverse_realname
 unset use_domain
 unset user_agent
 unset wait_key
@@ -205,7 +207,7 @@ macro pager k <<<<<
 macro browser \ea <exit>\ea 'go to previous mailbox'
 macro browser u /^\\.\\.$<enter><enter> 'go up a dir'
 macro compose Y pfy 'send the message without PGP'
-macro compose v '<edit-from>^Uidentity_<tab>' 'select from'
+macro compose v '<edit-from>^Ume.<tab>' 'select from'
 
 macro index o <enter>
 macro pager o q

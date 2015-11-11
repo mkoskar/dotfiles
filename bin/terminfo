@@ -19,7 +19,9 @@ echo "TERMORIG = $TERMORIG"
 echo "TERMINFO = $TERMINFO"
 echo "TERMINFO_DIRS = $TERMINFO_DIRS"
 echo
-infocmp -1 | sed -n '1,2p;/\bkbs=/p;/\bkdch1=/p;/\bsmso=/p;/\bsitm=/p'
+infocmp -D
+echo
+infocmp -1 | sed -nr '1,2p;/\b(kbs|kdch1|smso|sitm)=/p'
 
 echo $'\n--------------------------------------------------'
 echo "> infocmp -A /usr/share/terminfo $TERM $TERM"

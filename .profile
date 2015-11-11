@@ -1,6 +1,5 @@
-# ~/.profile
-# - executed by the command interpreter for login shells
-# - not read by bash(1), if ~/.bash_profile or ~/.bash_login exists
+# Executed by login shells.
+# Not read by bash(1), if ~/.bash_profile or ~/.bash_login exists.
 # :Compatibility: POSIX
 
 [ "$SHRC_DEBUG" ] && echo '~/.profile' >&2
@@ -26,6 +25,9 @@ export IDEA_JDK='/usr/lib/jvm/java-7-jdk'
 export JAVA_HOME=$JDK_HOME
 export _JAVA_AWT_WM_NONREPARENTING=1
 
+export GTK_IM_MODULE='xim'
+export QT_IM_MODULE='xim'
+
 export ASPROOT="$HOME/.cache/asp"
 export BROWSER='b'
 export EDITOR='e'
@@ -42,6 +44,7 @@ export PARINIT='T4 w79 prbgqR B=.,?_A_a Q=_s>|'
 export PYENV_ROOT="$HOME/opt/pyenv"
 export SSH_AUTH_SOCK="$HOME/.ssh/S.ssh-agent"
 export STDERRED_ESC_CODE=$(tput setaf 3)
+export TERMINFO_DIRS='/etc/terminfo:'
 export VDPAU_DRIVER='va_gl'
 export XAUTHORITY="$HOME/.Xauthority"
 

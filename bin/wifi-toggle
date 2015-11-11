@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
-wifi toggle &>/dev/null
+state=$(status wifi | awk '{print $2}')
+case $state in
+    on)
+        rfkill block wifi
+        ;;
+    off)
+        rfkill unblock wifi
+        ;;
+esac
 
 status-osd wifi

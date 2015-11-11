@@ -2,7 +2,7 @@
 #
 # Get information about X server (based on DISPLAY environment variable).
 #
-# :Copyright: (c) 2013 Miroslav Koskar (http://mkoskar.com/)
+# :Copyright: (c) 2013 Miroslav Koskar <http://mkoskar.com/>
 # :License: BSD 2-Clause
 
 set -eu
@@ -16,22 +16,19 @@ xserver_dispno() {
 }
 
 xserver_pid() {
-    local dispno lockfile
-    dispno=$(xserver_dispno)
-    lockfile="/tmp/.X$dispno-lock"
+    local dispno; dispno=$(xserver_dispno)
+    local lockfile="/tmp/.X$dispno-lock"
     [[ -e $lockfile ]] || exit 1
-    sed 's/\s//g' "$lockfile"
+    sed -r 's/\s+//g' "$lockfile"
 }
 
 xserver_cmd() {
-    local pid
-    pid=$(xserver_pid)
+    local pid; pid=$(xserver_pid)
     ps --pid "$pid" -o cmd=
 }
 
 xserver_name() {
-    local pid
-    pid=$(xserver_pid)
+    local pid; pid=$(xserver_pid)
     ps --pid "$pid" -o comm=
 }
 

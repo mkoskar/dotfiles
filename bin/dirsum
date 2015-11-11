@@ -14,8 +14,8 @@ if (( $# )); then
     shift
 fi
 
-readonly tmpfile_meta=$(mktemp)
-readonly tmpfile_files=$(mktemp)
+tmpfile_meta=$(mktemp)
+tmpfile_files=$(mktemp)
 cleanup() { rm -f "$tmpfile_meta" "$tmpfile_files"; }
 trap cleanup EXIT
 
@@ -25,8 +25,8 @@ if [[ $prgname = 'dirsum0' ]]; then
 fi
 
 find . "$@" \
-     \( -fprintf "$tmpfile_meta" "$meta_format" \) \
-     \( -type f -fprintf "$tmpfile_files" '%p\0' \)
+    \( -fprintf "$tmpfile_meta" "$meta_format" \) \
+    \( -type f -fprintf "$tmpfile_files" '%p\0' \)
 (
     sort -z "$tmpfile_meta"
     sort -z "$tmpfile_files" | xargs -0 -r md5sum

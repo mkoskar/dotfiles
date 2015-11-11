@@ -15,7 +15,8 @@ if (( ! $# )); then
               -option keypad:pointerkeys \
               -option nbsp:zwnj2nb3zwj4
 
-    # See:
+    # See also:
+    #
     # * /usr/share/X11/xkb/rules/evdev.lst
     # * /usr/share/X11/xkb/symbols/typo
     # * /usr/share/X11/locale/compose.dir

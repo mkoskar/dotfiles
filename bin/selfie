@@ -4,7 +4,7 @@ set -eu
 
 target="$HOME/tmp/selfie.jpg"
 
-readonly preview_pidfile="$XDG_RUNTIME_DIR/selfie_preview.pid"
+preview_pidfile="$XDG_RUNTIME_DIR/selfie_preview.pid"
 preview_cleanup() { rm -rf "$preview_pidfile"; }
 
 preview() {

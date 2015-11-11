@@ -12,6 +12,18 @@ name=${name[*]:-term}
 
 (( ! $# )) && set -- shell
 
-#exec st -c "$name" -e "$@"
-#exec termite --name "$name" -e "$(shell-escape "$@")"
-exec urxvt -name "$name" -e "$@"
+bin=${TERMBIN:-urxvt}
+case $bin in
+    st)
+        exec $bin -c "$name" -e "$@"
+        ;;
+    termite)
+        exec $bin --name "$name" -e "$(shell-escape "$@")"
+        ;;
+    urxvt | urxvtc)
+        exec $bin -name "$name" -e "$@"
+        ;;
+    *)
+        exit 2
+        ;;
+esac

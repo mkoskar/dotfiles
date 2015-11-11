@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -eu
+
+cd ~/.terminfo
+
+make() {
+    { infocmp -1 -A /usr/share/terminfo "$1"; cat; } >"$1"
+}
+
+make linux <<-EOF
+# ----------------------------------------
+    cnorm=\E[?25h\E[?8c,
+    is2=\E[?25h\E[?8c,
+EOF
+
+make screen-256color <<-EOF
+# ----------------------------------------
+    hs,
+    dsl=\E]2;\007,
+    fsl=^G,
+    ritm=\E[23m,
+    rmso=\E[27m,
+    sitm=\E[3m,
+    smso=\E[7m,
+    tsl=\E]2;,
+EOF
+
+make xterm-256color <<-EOF
+# ----------------------------------------
+    hs,
+    clear=\E[H\E[J,
+    dsl=\E]2;\007,
+    fsl=^G,
+    tsl=\E]2;,
+EOF

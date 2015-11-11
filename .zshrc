@@ -1,16 +1,15 @@
-# ~/.zshrc
-# - executed by zsh(1) for interactive shells
+# Executed by zsh(1) for interactive shells.
 
 [[ $SHRC_DEBUG ]] && echo '~/.zshrc' >&2
 
-[[ -e ~/bin/term.sh ]] && . ~/bin/term.sh
+. ~/bin/term.sh
 
 # interactive shell only
 # ----------------------------------------
 
 case $- in *i*) ;; *) return ;; esac
 
-[[ -e ~/bin/shx.sh ]] && . ~/bin/shx.sh
+. ~/bin/shx.sh
 
 HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
 HISTSIZE=500
@@ -319,6 +318,7 @@ bindkey -M viins -s '^Xh' "\eddihistory 25 | gi ''\ei"
 bindkey -M viins -s '^Xa' '\ea!!:*\e'
 bindkey -M viins -s '^Xl' '\ea!!:$\e'
 bindkey -M viins -s '^Xs' '\ea!!:gs/'
+bindkey -M viins -s '^Xc' '--color=auto '
 
 bindkey -M vicmd -r '^X'
 bindkey -M vicmd -s '^Xp' 'Ipgx \e0'
@@ -365,7 +365,7 @@ unset __src
 # zsh-history-substring-search
 # ----------------------------------------
 
-__src=~/opt/zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+__src=~/opt/zsh-history-substring-search/zsh-history-substring-search.zsh
 if [[ -e "$__src" ]]; then
     . "$__src"
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=8,fg=15'
@@ -381,6 +381,4 @@ alias help='run-help'
 # finalize
 # ----------------------------------------
 
-[[ -e ~/bin/login.sh ]] && . ~/bin/login.sh
-
-return 0
+. ~/bin/login.sh

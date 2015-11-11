@@ -7,7 +7,7 @@
     Get info on URL content (url, title, description, type).
 
     :Compatibility: 3.2
-    :Copyright: (c) 2015 Miroslav Koskar (http://mkoskar.com/)
+    :Copyright: (c) 2015 Miroslav Koskar <http://mkoskar.com/>
     :License: BSD 2-Clause
 """
 

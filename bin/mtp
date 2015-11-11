@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
-# Simple ``jmtpfs`` frontend.
+# Simple 'jmtpfs' frontend.
 #
-# :Copyright: (c) 2014 Miroslav Koskar (http://mkoskar.com/)
+# :Copyright: (c) 2014 Miroslav Koskar <http://mkoskar.com/>
 # :License: BSD 2-Clause
 
 set -euf -o pipefail

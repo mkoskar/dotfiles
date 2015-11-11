@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s nullglob
 
 for i in *.mp3; do
     base=${i##*/}

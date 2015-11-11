@@ -11,16 +11,16 @@ cmd() {
 }
 
 exists () {
-    cmd has -t "$session" &>/dev/null
+    cmd has -t "=$session" &>/dev/null
 }
 
 new() {
     cmd new -d -s "$session" true \; setw remain-on-exit on
-    cmd setenv -t "$session" SHOME "$PWD" \; neww -kt :0 "$@"
+    cmd setenv -t "=$session" SHOME "$PWD" \; neww -kt :0 "$@"
 }
 
 neww() {
-    cmd neww -t "$session:" "$@"
+    cmd neww -t "=$session" "$@"
 }
 
 # ----------------------------------------
@@ -145,11 +145,6 @@ session=${1-}
 
 if [[ ! $session ]]; then
     session=$(sed -r "s,^$HOME(/|$),~\1," <<<"$PWD")
-    if [[ $session != '/' && $session != '~' ]]; then
-        sdigest=$(sha1sum <<<"$session" | awk '{print $1}')
-        session=$(tr '.:' _ <<<"$session")
-        session="=${session##*/}_#${sdigest: -2}"
-    fi
 fi
 
 (exec 8>"$XDG_RUNTIME_DIR/s.lck"
@@ -173,5 +168,5 @@ fi
 ))
 
 if (( $attach )); then
-    exec tmux -L "$socket" attach -t "$session"
+    exec tmux -L "$socket" attach -t "=$session"
 fi

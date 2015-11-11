@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from ranger.gui.color import *
-
 from ranger.colorschemes.default import Default
+from ranger.gui.color import *
 
 
 class Scheme(Default):

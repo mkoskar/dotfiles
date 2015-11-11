@@ -2,6 +2,13 @@
 
 set -eu
 
+prgname=${0##*/}
+
+if (( ! $# )); then
+    echo "usage: $prgname cmd [arg]..." >&2
+    exit 2
+fi
+
 while IFS= read -r line; do
     if [[ $line =~ ^[[:blank:]]*$ ]]; then
         printf '%s\n' "$line"

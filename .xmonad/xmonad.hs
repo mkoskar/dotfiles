@@ -73,11 +73,11 @@ myStatusBar conf = statusBar "statusbar" myPP myToggleStrutsKey conf
     --color = dzenColor
     color = xmobarColor
     myPP = defaultPP
-        { ppCurrent = color "#55FF55" "" . wrap "[" "]"
-        , ppVisible = color "#FEED6A" "" . wrap "(" ")"
-        , ppUrgent = color "#BB4455" "#FEEF6A" . pad
+        { ppCurrent = color "#55ff55" "" . wrap "[" "]"
+        , ppVisible = color "#feed6a" "" . wrap "(" ")"
+        , ppUrgent = color "#bb4455" "#feef6a" . pad
         , ppSep = " "
-        , ppTitle = color "#EFEFEF" "" . shorten 100 . xmobarStrip
+        , ppTitle = color "#efefef" "" . shorten 100 . xmobarStrip
         , ppOrder = \(workspaces : layout : title : extras) -> [workspaces, title]
         , ppSort = getSortByXineramaPhysicalRule
         }
@@ -86,7 +86,7 @@ myStatusBar conf = statusBar "statusbar" myPP myToggleStrutsKey conf
 myConfig = defaultConfig
     { borderWidth = 1
     , normalBorderColor = "#000000"
-    , focusedBorderColor = "#FF3333"
+    , focusedBorderColor = "#ff3333"
     , modMask = myModMask
     , terminal = myTerminal
     , workspaces = myWorkspaces
@@ -184,12 +184,12 @@ myConfig = defaultConfig
             { activeBorderColor = activeColor myTheme
             , inactiveBorderColor = inactiveColor myTheme
             , urgentBorderColor = urgentColor myTheme
-            , activeTextColor = "#87CEFA"
+            , activeTextColor = "#87cefa"
             , inactiveTextColor = "#888888"
-            , urgentTextColor = "#BB4455"
+            , urgentTextColor = "#bb4455"
             , activeColor = "#000000"
-            , inactiveColor = "#333333"
-            , urgentColor = "#FEEF6A"
+            , inactiveColor = "#3a3a3a"
+            , urgentColor = "#feef6a"
             , fontName = "xft:local_xmonad"
             , decoWidth = 500
             , decoHeight = 15
@@ -299,7 +299,7 @@ myConfig = defaultConfig
           -- other
         , ("M-S-y", warpToWindow 0.005 0.005)
         , ("M-C-y", warpToWindow 0.995 0.995)
-        , ("M-y", spawn "xdotool getwindowfocus click --clearmodifiers 1")
+        , ("M-y", spawn "xdotool mousedown --clearmodifiers 1 mouseup --clearmodifiers 1")
 
           -- Launchers
           -- =========
@@ -361,8 +361,14 @@ myConfig = defaultConfig
 
         , ("<XF86AudioLowerVolume>", spawn "audio playback_down")
         , ("<XF86AudioMute>", spawn "audio playback_toggle")
+        , ("<XF86AudioNext>", spawn "playctl next")
+        , ("<XF86AudioPause>", spawn "playctl pause")
+        , ("<XF86AudioPlay>", spawn "playctl play-pause")
+        , ("<XF86AudioPrev>", spawn "playctl previous")
         , ("<XF86AudioRaiseVolume>", spawn "audio playback_up")
+        , ("<XF86AudioStop>", spawn "playctl stop")
         , ("<XF86Display>", spawn "xscreen && xmonad --restart")
+        , ("<XF86Launch1>", spawn myTerminal)
         , ("<XF86ScreenSaver>", spawn "sudo lockx")
         , ("<XF86WebCam>", spawn "selfie")
         ]

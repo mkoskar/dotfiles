@@ -2,8 +2,8 @@
 
 set -eu
 
-for i in /sys/class/backlight/*; do
-    if [[ -d $i ]]; then
-        echo "$i: $(<"$i/brightness") from $(<"$i/max_brightness")"
+for dev in /sys/class/backlight/*; do
+    if [[ -d $dev ]]; then
+        echo "$dev: $(<"$dev/brightness") from $(<"$dev/max_brightness")"
     fi
 done

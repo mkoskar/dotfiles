@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# SEEALSO: http://wiki.archlinux.org/index.php/Pacman_tips
+# See also: http://wiki.archlinux.org/index.php/Pacman_tips
 
 echo $'\n--------------------------------------------------'
 echo $'> Foreign & Explicit:\n'

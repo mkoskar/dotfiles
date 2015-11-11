@@ -5,12 +5,11 @@ set -eu -o pipefail
 cd ~/projects/notes/src/09-policy
 
 output() {
-    local files count
-    files=([0-9]*)
-    count=${#files[@]}
+    local files=([0-9]*)
+    local count=${#files[@]}
     for i in "${!files[@]}"; do
         cat "${files[i]}"
-        (( i != count-1 )) && echo
+        (( i == count-1 )) || echo
     done
 }
 
