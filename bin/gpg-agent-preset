@@ -9,8 +9,6 @@ preset() {
     gpg-connect-agent <<<"PRESET_PASSPHRASE $1 -1 $(printf '%s' "$pass" | xxd -p)"
 }
 
-# ----------------------------------------
-
 [[ -t 0 ]] && src="$HOME/.gnupg/gpg-agent.presets" || src='/dev/stdin'
 
 while read -r keygrip; do

@@ -1,11 +1,13 @@
 " vim: ft=vim fdm=marker
 
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
-let vimdir = has('nvim') ? '~/.nvim' : '~/.vim'
+let vimdir = has('nvim') ? '~/.config/nvim' : '~/.vim'
 
 let $VIMDIR = get(g:, '$VIMDIR', vimdir)
 
-" ========== Important
+
+" Important
+" ----------------------------------------
 
 set nocompatible
 set pastetoggle=<F6>
@@ -13,7 +15,9 @@ set pastetoggle=<F6>
 let mapleader = ','
 let maplocalleader = ';'
 
-" ========== Moving Around, Searching and Patterns
+
+" Moving Around, Searching and Patterns
+" ----------------------------------------
 
 set whichwrap=b,s,<,>,[,]
 " .       - current file directory
@@ -39,11 +43,13 @@ noremap <silent> <C-Y> 5<C-Y>
 noremap <silent> zh 15zh
 noremap <silent> zl 15zl
 
-" Move visual block <http://vimrcfu.com/snippet/77>
+" Move visual block: <http://vimrcfu.com/snippet/77>
 vnoremap J :m '>+1<CR>gv
 vnoremap K :m '<-2<CR>gv
 
-" ========== Tags
+
+" Tags
+" ----------------------------------------
 
 if has('path_extra')
     setg tags-=./tags tags-=./tags; tags^=./tags;
@@ -57,7 +63,9 @@ endif
 
 nnoremap <Leader>lt :ltag /
 
-" ========== Displaying Text
+
+" Displaying Text
+" ----------------------------------------
 
 set scrolloff=5
 set nowrap
@@ -71,7 +79,9 @@ nnoremap <Leader>W :setl <C-R>=&wrap ? 'nowrap' : 'wrap'<CR><CR>
 nnoremap <Leader>U :setl display<C-R>=&display =~# 'uhex' ? '-' : '+'<CR>=uhex<CR>
 nnoremap <Leader>L :setl <C-R>=&list ? 'nolist' : 'list'<CR><CR>
 
-" ========== Syntax, Highlighting and Spelling
+
+" Syntax, Highlighting and Spelling
+" ----------------------------------------
 
 set background=dark
 set hlsearch
@@ -96,7 +106,9 @@ else
     colorscheme desert
 endif
 
-" ========== Multiple Windows
+
+" Multiple Windows
+" ----------------------------------------
 
 set laststatus=2
 set statusline=
@@ -142,7 +154,9 @@ nnoremap <silent> + :resize +5<CR>
 nnoremap <silent> <C-W>, :vert resize -5<CR>
 nnoremap <silent> <C-W>. :vert resize +5<CR>
 
-" ========== Multiple Tab Pages
+
+" Multiple Tab Pages
+" ----------------------------------------
 
 set tabpagemax=50
 
@@ -160,7 +174,9 @@ nnoremap <silent> <M-8> 8gt
 nnoremap <silent> <M-9> 9gt
 nnoremap <silent> <M-0> :tablast<CR>
 
-" ========== Terminal
+
+" Terminal
+" ----------------------------------------
 
 if !has('nvim')
     set nottybuiltin
@@ -169,7 +185,9 @@ endif
 set title
 set t_ut=
 
-" ========== Using the Mouse
+
+" Using the Mouse
+" ----------------------------------------
 
 set mouse=a
 
@@ -183,7 +201,9 @@ inoremap <2-MiddleMouse> <Nop>
 inoremap <3-MiddleMouse> <Nop>
 inoremap <4-MiddleMouse> <Nop>
 
-" ========== GUI
+
+" GUI
+" ----------------------------------------
 
 set guicursor+=a:blinkon0
 set guifont=Monaco\ 12
@@ -194,7 +214,9 @@ set guioptions-=r
 set guioptions-=L
 set guioptions-=T
 
-" ========== Messages and Info
+
+" Messages and Info
+" ----------------------------------------
 
 set shortmess=aoOtTWI
 set showcmd
@@ -202,7 +224,9 @@ set showmode
 set ruler
 set novisualbell
 
-" ========== Selecting Text
+
+" Selecting Text
+" ----------------------------------------
 
 " Yank from cursor to the line end (consistent with D, C)
 nnoremap <silent> Y y$
@@ -233,7 +257,9 @@ nnoremap <silent> <Leader>xxC :Pipe2Clipboard!<CR>
 nnoremap <silent> <Leader>xxc yy:Pipe2Clipboard!<CR>
 vnoremap <silent> <Leader>xxc y:Pipe2Clipboard!<CR>
 
-" ========== Editing Text
+
+" Editing Text
+" ----------------------------------------
 
 set textwidth=78
 set backspace=indent,eol,start
@@ -251,7 +277,9 @@ inoremap <silent> <C-F>n <C-R>=expand('%:t:r')<CR>
 inoremap <silent> <C-F>p <C-R>=expand('%:p')<CR>
 inoremap <silent> <C-F>d <C-R>=expand('%:r')<CR>
 
-" ========== Tabs and Indenting
+
+" Tabs and Indenting
+" ----------------------------------------
 
 set tabstop=4
 set shiftwidth=4
@@ -263,7 +291,9 @@ set smartindent
 set copyindent
 set preserveindent
 
-" ========== Folding
+
+" Folding
+" ----------------------------------------
 
 set foldcolumn=0
 
@@ -272,13 +302,17 @@ nnoremap <Leader>fi :setl fdm=indent<CR>
 nnoremap <Leader>fs :setl fdm=syntax<CR>
 nnoremap <Leader>fm :setl fdm=marker<CR>
 
-" ========== Mapping
+
+" Mapping
+" ----------------------------------------
 
 set timeout
 set timeoutlen=1000
 set ttimeoutlen=10
 
-" ========== Reading and Writing Files
+
+" Reading and Writing Files
+" ----------------------------------------
 
 set modeline
 set fileformats+=mac
@@ -286,13 +320,17 @@ set backup
 exec 'set backupdir='.$VIMDIR.'/.backup'
 set autoread
 
-" ========== The Swap File
+
+" The Swap File
+" ----------------------------------------
 
 exec 'set directory='.vimdir.'/.swap//,'.$TMPDIR.'//'
 set swapfile
 set updatetime=1000 " also used for CursorHold
 
-" ========== Command Line Editing
+
+" Command Line Editing
+" ----------------------------------------
 
 set history=1000
 set wildmode=list:longest,full
@@ -303,12 +341,16 @@ exec 'set undodir='.$VIMDIR.'/.undo'
 
 cnoremap %% <C-R>=expand('%:h').'/'<CR>
 
-" ========== Executing External Commands
+
+" Executing External Commands
+" ----------------------------------------
 
 set shell=/bin/bash
 set shellredir=>%s\ 2>&1
 
-" ========== Running 'make' and Jumping To Errors
+
+" Running 'make' and Jumping To Errors
+" ----------------------------------------
 
 set shellpipe=2>&1\|\ tee
 set grepprg=grep\ -n\ --exclude-dir='.svn'\ --exclude-dir='.git'\ --exclude='*.swp'\ --exclude='*~'\ $*
@@ -324,11 +366,15 @@ nnoremap <silent> <Leader>k :try \| call TryCatch('lNext', '^\(.*:E776:.*\)\@!')
 nnoremap <silent> <Leader>J :cnext<CR>
 nnoremap <silent> <Leader>K :cNext<CR>
 
-" ========== Multi-byte Characters
+
+" Multi-byte Characters
+" ----------------------------------------
 
 set encoding=utf-8
 
-" ========== Various
+
+" Various
+" ----------------------------------------
 
 set virtualedit=block
 set gdefault
@@ -403,6 +449,7 @@ vnoremap <silent> <Leader>ps :!striplns<CR>
 nnoremap <silent> <Leader>ps :%!striplns<CR>
 vnoremap <silent> <Leader>pS :!squashlns<CR>
 nnoremap <silent> <Leader>pS :%!squashlns<CR>
+
 
 " ----------------------------------------
 
@@ -760,10 +807,7 @@ nnoremap <silent> <Leader>zj :NextClosedFold<CR>
 
 " ----------------------------------------
 
-" make Man available
 runtime ftplugin/man.vim
-
-" ========== netrw
 
 let loaded_netrwPlugin = 1 " just get rid of it
 let netrw_alto = 1
@@ -779,16 +823,12 @@ let netrw_sftp_cmd = 'sftpm'
 let netrw_silent = 1
 let netrw_special_syntax = 1
 
-" ----------------------------------------
-
 Plugin 'AnsiEsc'
 Plugin 'colorschemes'
 
 if has('gui_running')
     colorscheme bclear
 endif
-
-" ----------------------------------------
 
 if has('autocmd')
 augroup vimrc_base
@@ -807,7 +847,7 @@ augroup vimrc_base
         autocmd TermOpen * call BufSpecialSetup()
     endif
 
-    " tabpagecd <https://github.com/kana/vim-tabpagecd>
+    " tabpagecd: <https://github.com/kana/vim-tabpagecd>
     autocmd TabEnter *
         \  if exists('t:cwd')
         \|     cd `=t:cwd`
@@ -829,6 +869,8 @@ augroup vimrc_base
         \| nmap <buffer> <silent> o <CR>
         \| keepjumps normal! gg
 
+    autocmd BufWritePost ~/.Xresources !xrdb -load ~/.Xresources
+
     " ----------------------------------------
 
     " C/C++
@@ -843,7 +885,5 @@ augroup vimrc_base
 
 augroup END
 endif
-
-" ----------------------------------------
 
 execute VimrcFinalize()

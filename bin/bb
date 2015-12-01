@@ -76,6 +76,8 @@ done <<-EOF
     imdb            sr imdb {}
     imperial        b https://en.wikipedia.org/wiki/Imperial_units
     iojs            b https://iojs.org/api/
+    irc-docs        b https://github.com/grawity/irc-docs
+    irc-specs       b http://ircv3.net/irc/
     java            b file:///usr/share/doc/java/jdk/technotes/tools/unix/java.html
     java-apis       b http://www.oracle.com/technetwork/java/api-141528.html
     java-changes    b file:///usr/share/doc/java/jdk/technotes/guides/language/enhancements.html
@@ -132,6 +134,7 @@ done <<-EOF
     posix-utils     b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/utilities/contents.html
     postgresql      b file:///usr/share/doc/postgresql/html/index.html
     privoxy         b file:///usr/share/doc/privoxy/user-manual/index.html
+    pygments        b http://pygments.org/docs/lexers/
     pypi            b https://pypi.python.org/pypi
     python          b file:///usr/share/doc/python/html/index.html
     python2         b file:///usr/share/doc/python2/html/index.html
@@ -158,8 +161,8 @@ done <<-EOF
     sqlite          b file:///usr/share/doc/sqlite/docs.html
     sqlite-lang     b file:///usr/share/doc/sqlite/lang.html
     sysrq           b file:///lib/modules/$kernel_release/build/Documentation/sysrq.txt
-    systemd-news    b https://github.com/systemd/systemd/blob/master/NEWS
-    torspec         b https://gitweb.torproject.org/torspec.git/tree/
+    systemd-changes b https://github.com/systemd/systemd/blob/master/NEWS
+    tor-specs       b https://gitweb.torproject.org/torspec.git/tree/
     tr              sr translate {}
     tweets          b https://tweetdeck.twitter.com/
     types-eth       b file:///etc/ethertypes
@@ -167,10 +170,17 @@ done <<-EOF
     types-ports     b file:///etc/services
     ud              sr urban {}
     unicode         b https://en.wikipedia.org/wiki/Plane_(Unicode)
+    unicode-charts  b http://unicode.org/charts/
+    unicode-convert b https://r12a.github.io/apps/conversion/
+    unicode-emoji   b http://www.unicode.org/emoji/charts/full-emoji-list.html
+    unicode-fonts   b http://www.unicode.org/resources/fonts.html
+    unicode-fonts1  b http://www.wazu.jp/
     unix-history    b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
     util-linux      b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
     w               sr wikipedia {}
     weechat         b file:///usr/share/doc/weechat/weechat_user.en.html
+    weechat-api     b file:///usr/share/doc/weechat/weechat_plugin_api.en.html
+    weechat-changes b https://github.com/weechat/weechat/blob/master/ChangeLog.asciidoc
     yt              sr youtube {}
 
     fahrenheit      sr google {} fahrenheit in celsius

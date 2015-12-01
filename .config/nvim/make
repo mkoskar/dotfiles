@@ -2,7 +2,7 @@
 
 set -eu
 
-cd ~/.nvim
+cd ~/.config/nvim
 
 mkdir -p .backup .swap .undo
 

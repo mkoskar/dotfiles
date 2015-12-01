@@ -3,5 +3,5 @@
 set from = $USER
 set my_base = $my_local
 
-# mailboxes
+# Mailboxes
 set spoolfile = $my_local/INBOX

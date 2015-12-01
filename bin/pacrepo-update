@@ -10,8 +10,6 @@ repo_dbgz="$name.db.tar.gz"
 mkdir -p "$repo_dir"
 cd "$repo_dir"
 
-# ----------------------------------------
-
 rm -rf "$repo_db"*
 
 if [[ ! -e $repo_db ]]; then

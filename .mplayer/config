@@ -1,12 +1,13 @@
-# video
+# Video
 double=yes
 vo=vaapi
 
-# audio
-softvol-max=400
+# Audio
+softvol-max=1000
 softvol=yes
+volume=50
 
-# osd / subtitles
+# OSD / Subtitles
 ffactor=1
 spuaa=4
 spualign=-1
@@ -22,7 +23,7 @@ subpos=100
 unicode=yes
 utf8=yes
 
-# other
+# Other
 ar=no
 lirc=no
 mouse-movements=yes

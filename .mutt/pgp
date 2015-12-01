@@ -12,40 +12,40 @@
 #
 # %r    One or more key IDs.
 
-# decode application/pgp
+# Decode application/pgp
 set pgp_decode_command = 'gpg --no-verbose --quiet --batch --status-fd=2 %?p?--passphrase-fd 0? --trust-model always --no-auto-check-trustdb --verify-options show-primary-uid-only,no-show-policy-urls --output - %f'
 
-# decrypt a pgp/mime attachment
+# Decrypt a pgp/mime attachment
 set pgp_decrypt_command = 'gpg --no-verbose --quiet --batch --status-fd=2 %?p?--passphrase-fd 0? --output - %f'
 
-# verify a pgp/mime signature
+# Verify a pgp/mime signature
 set pgp_verify_command = 'gpg --no-verbose --quiet --batch --status-fd=2 --trust-model always --no-auto-check-trustdb --verify-options show-primary-uid-only,no-show-policy-urls --verify --output - %s %f'
 
-# create a pgp/mime signed attachment
+# Create a pgp/mime signed attachment
 set pgp_sign_command = 'gpg --no-verbose --quiet --batch %?p?--passphrase-fd 0? --armor --textmode --detach-sign %?a?-u %a? --output - %f'
 
-# create a application/pgp signed (old-style) message
+# Create a application/pgp signed (old-style) message
 set pgp_clearsign_command = 'gpg --no-verbose --quiet --batch %?p?--passphrase-fd 0? --armor --textmode --clearsign %?a?-u %a? --output - %f'
 
-# create a pgp/mime encrypted attachment
+# Create a pgp/mime encrypted attachment
 set pgp_encrypt_only_command = 'pgpewrap gpg --no-verbose --quiet --batch --armor --textmode --trust-model always --encrypt --output - -- -r %r -- %f'
 
-# create a pgp/mime encrypted and signed attachment
+# Create a pgp/mime encrypted and signed attachment
 set pgp_encrypt_sign_command = 'pgpewrap gpg --no-verbose --quiet --batch %?p?--passphrase-fd 0? --armor --textmode --trust-model always --encrypt --sign %?a?-u %a? --output - -- -r %r -- %f'
 
-# import a key into the public key ring
+# Import a key into the public key ring
 set pgp_import_command = 'gpg --no-verbose --import %f'
 
-# export a key from the public key ring
+# Export a key from the public key ring
 set pgp_export_command = 'gpg --no-verbose --armor --export %r'
 
-# verify a key
+# Verify a key
 set pgp_verify_key_command = 'gpg --verbose --batch --fingerprint --check-sigs %r'
 
-# read in the public key ring
+# Read in the public key ring
 set pgp_list_pubring_command = 'gpg --no-verbose --quiet --batch --with-colons --list-keys %r'
 
-# read in the secret key ring
+# Read in the secret key ring
 set pgp_list_secring_command = 'gpg --no-verbose --quiet --batch --with-colons --list-secret-keys %r'
 
 set crypt_autosign

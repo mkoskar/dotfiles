@@ -1,7 +1,6 @@
 # vim: ft=conf
 
 dns-resolution: yes
-port-resolution: no
 port-display: on
+port-resolution: no
 show-totals: yes
-#log-scale: yes

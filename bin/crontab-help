@@ -15,4 +15,8 @@ The time and date fields are:
     month           1-12    (or names)
     day of week     0-7     (0 or 7 is Sunday, or names)
 
+List:   "0,1,2,5,6,7" or "0-2,5-7"
+Range:  "0-4", "*" (full range)
+Step:   "0-23/2" or "*/2" - step of 2 (e.g., every two hours)
+
 EOF

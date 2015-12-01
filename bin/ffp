@@ -14,8 +14,6 @@ case ${1-} in -h | --help)
     ;;
 esac
 
-# ----------------------------------------
-
 profile=
 bin='/usr/bin/firefox'
 
@@ -31,8 +29,6 @@ case $prgname in
         regexp='^(?!default$)(?!dev-edition-default$)(?!aurora).*$'
         ;;
 esac
-
-# ----------------------------------------
 
 if [[ ! $profile ]] && (( $# )); then
     profile=$1

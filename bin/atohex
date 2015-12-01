@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu -o pipefail
-
-if (( $# )); then
-    printf '%s' "$1" | xxd -p
-else
-    xxd -p
-fi

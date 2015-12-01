@@ -15,4 +15,4 @@ shift
 exec 3>&1 4>&2
 (
     "$@" > >(tee /dev/fd/3) 2> >(tee /dev/fd/4 >&2)
-) >"$file" 2>&1
+) &>"$file"

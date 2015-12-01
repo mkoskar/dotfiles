@@ -15,7 +15,7 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-fopt=0
+declare -i fopt=
 while getopts 'fh' opt; do
     case $opt in
         f)
@@ -39,7 +39,7 @@ pgrep_args+=(-- "$1")
 
 pids=$(pgrep "${pgrep_args[@]}")
 
-retstat=1
+declare -i retstat=1
 for i in $pids; do
     env="/proc/$i/environ"
     if [[ -r $env ]] && grep -Fzxq "DISPLAY=$DISPLAY" "$env"; then

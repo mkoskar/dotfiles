@@ -24,8 +24,6 @@ bluectl() {
     (sleep 0.01; echo "$1"; sleep 0.01) | bluetooth-player 2>/dev/null
 }
 
-# ----------------------------------------
-
 exec >/dev/null
 
 (( blue )) && ctl='bluectl' || ctl='playerctl'

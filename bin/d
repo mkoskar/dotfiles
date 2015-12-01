@@ -22,7 +22,7 @@ main() {
             tmpfile=$(mktemp)
             trap 'rm -f "$tmpfile"' EXIT
 
-            retstat=0
+            declare -i retstat=
             "${cmd[@]}" >"$tmpfile" || retstat=$?
 
             echo '---'

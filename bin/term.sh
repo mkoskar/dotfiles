@@ -1,11 +1,13 @@
 # Source this file to initialize terminal.
 # :Compatibility: POSIX
 
+unset TERMDONE
+
 [ ! -t 0 ] && return
 
 export TTY=$(tty)
 
-[ "$TERMDONE" = "$TTY" ] && return
+[ "${TTYDONE-}" = "$TTY" ] && return
 
 export GPG_TTY=$TTY
 export TERMORIG=$TERM
@@ -15,8 +17,6 @@ if [ "${TERM%%-*}" = 'screen' ]; then
 fi
 
 tput reset
-
-# turn off flow control
 stty -ixon -ixoff
 
 if [ "$TERM" = 'linux' -o \
@@ -41,4 +41,5 @@ if [ "$TERM" = 'linux' -o \
     } >/dev/tty
 fi
 
-export TERMDONE=$TTY
+export TERMDONE=1
+export TTYDONE=$TTY

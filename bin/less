@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# these are useful just for less(1)
 export LESS_TERMCAP_md=$'\e[1;37m'
 export LESS_TERMCAP_so=$'\e[1;37;41m'
 export LESS_TERMCAP_se=$'\e[0m'

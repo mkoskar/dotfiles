@@ -5,7 +5,6 @@
 . ~/.profile
 
 {
-    # compile the completion dump to increase startup speed
     zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
     if [[ -e "$zcompdump" && (! -f "${zcompdump}.zwc" ||
             "$zcompdump" -nt "${zcompdump}.zwc") ]]; then

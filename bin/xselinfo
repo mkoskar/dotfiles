@@ -4,7 +4,7 @@ set -e
 
 # xsel version 1.2.0 is broken!
 # "echo 'something' | xsel -o" should print content of
-# primary selection, but it will instead read stdin into it
+# primary selection, but it will instead read stdin into it.
 
 echo $'\n--------- Primary --------------------------------'
 xclip -o

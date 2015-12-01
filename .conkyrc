@@ -1,6 +1,6 @@
 # vim: ft=conf fdm=marker
 
-# settings {{{
+# Settings {{{
 out_to_console no
 out_to_ncurses yes
 short_units yes
@@ -19,7 +19,7 @@ ${color white}
  $utime UTC
  $uptime
 
-# cpu {{{
+# CPU {{{
 ${color cyan}\
  cpu: $cpu% (${cpu cpu1} ${cpu cpu2} ${cpu cpu3} ${cpu cpu4})\
 ${color white}
@@ -42,7 +42,7 @@ ${if_match ${top cpu 3} >= 20}${color yellow}${endif}\
 ${color white}
 # }}}
 
-# mem {{{
+# MEM {{{
 ${color cyan}\
  mem: $memperc% ($mem / $memmax)\
 ${color white}
@@ -64,7 +64,7 @@ ${if_match ${to_bytes ${top_mem mem_res 3}} >= 209715200}${color yellow}${endif}
 ${color white}
 # }}}
 
-# io {{{
+# IO {{{
 ${color cyan}\
  /dev/sda (${ioscheduler sda}): ${diskio_read /dev/sda} / ${diskio_write /dev/sda}\
 ${color white}

@@ -6,14 +6,21 @@ prgname=${0##*/}
 
 case $prgname in
     paste-ix)
+        cat >&2 <<-EOF
+		# /<id>[+/]<lexer>#n-<line>
+		EOF
         exec curl -sLF "f:1=@${1:--}" http://ix.io/
         ;;
     paste-ptpb)
-        # syntax highlighting: <url>/<pygments-lexer>
+        cat >&2 <<-EOF
+		# /<id>/<lexer>/<formatter>#L-<line>
+		EOF
         exec curl -sF "c=@${1:--}" -w '%{redirect_url}\n' -o /dev/null 'https://ptpb.pw/?r=1'
         ;;
     paste-sprunge)
-        # syntax highlighting: <url>?<pygments-lexer>
+        cat >&2 <<-EOF
+		# /<id>?<lexer>#n-<line>
+		EOF
         exec curl -sLF "sprunge=@${1:--}" http://sprunge.us/
         ;;
     *)

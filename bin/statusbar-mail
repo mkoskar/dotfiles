@@ -3,7 +3,7 @@
 set -eu -o pipefail
 
 newdirs=(~/mail/*/INBOX/new/)
-prevnew=0
+declare -i prevnew=
 
 out() {
     local new; new=$(find "${newdirs[@]}" -type f | wc -l)

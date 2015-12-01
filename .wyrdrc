@@ -1,4 +1,4 @@
-# Wyrd configuration file
+# vim: ft=conf
 
 include "/etc/wyrdrc"
 
@@ -6,23 +6,23 @@ set busy_level1="0"
 set number_weeks="true"
 set week_starts_monday="true"
 
-# templates for creating new appointments
+# Templates for creating new appointments
 set timed_template="REM %monname% %mday% %year% AT %hour%:%min% DURATION 1:00 MSG %E[_1()][_2()][_3()]: %\"message%\""
 set untimed_template="REM %monname% %mday% %year% MSG %E[_1()][_2()][_3()]: %\"message%\""
 
-# weekly recurrence
+# Weekly recurrence
 set template0="REM %wdayname% AT %hour%:%min% DURATION 1:00 MSG %E[_1()][_2()][_3()]: %\"message%\""
 set template1="REM %wdayname% MSG %E[_1()][_2()][_3()]: %\"message%\""
 
-# monthly recurrence
+# Monthly recurrence
 set template2="REM %mday% AT %hour%:%min% DURATION 1:00 MSG %E[_1()][_2()][_3()]: %\"message%\""
 set template3="REM %mday% MSG %E[_1()][_2()][_3()]: %\"message%\""
 
-# key bindings
+# Key bindings
 bind "a"                 quick_add
 bind "q"                 quit
 
-# colors
+# Colors
 color help               yellow black
 color timed_default      white black
 color timed_current      white red

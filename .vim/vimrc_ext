@@ -3,7 +3,7 @@
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 source ~/.vim/vimrc_base
 
-" ----------------------------------------
+"Plugin 'easytags'
 
 Plugin 'NERD_tree'
 Plugin 'bufexplorer'
@@ -11,7 +11,6 @@ Plugin 'ctrlp'
 Plugin 'dispatch'
 Plugin 'easy_align'
 Plugin 'easymotion'
-Plugin 'easytags'
 Plugin 'emmet'
 Plugin 'exchange'
 Plugin 'filebeagle'
@@ -31,7 +30,8 @@ Plugin 'visualrepeat'
 
 " {{{
 
-" ========== NERD_tree
+" NERD_tree
+" ----------------------------------------
 
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeBookmarksFile = $VIMDIR.'/.NERDTreeBookmarks'
@@ -49,14 +49,18 @@ noremap <silent> <F2> :NERDTreeToggle<CR>
 noremap <silent> <Leader>tf :NERDTreeFind<CR>
 noremap <silent> <Leader>tt :NERDTreeToggle<CR>
 
-" ========== bufexplorer
+
+" bufexplorer
+" ----------------------------------------
 
 let bufExplorerFindActive = 0
 let bufExplorerShowRelativePath = 1
 
 nnoremap <silent> <Leader>bb :BufExplorer<CR>
 
-" ========== ctrlp
+
+" ctrlp
+" ----------------------------------------
 
 let ctrlp_arg_map = 1
 let ctrlp_lazy_update = 0
@@ -73,12 +77,16 @@ let ctrlp_prompt_mappings = {
 
 nnoremap <silent> <M-e> :CtrlPMRUFiles<CR>
 
-" ========== easy_align
+
+" easy_align
+" ----------------------------------------
 
 vmap <Enter> <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-" ========== easytags
+
+" easytags
+" ----------------------------------------
 
 let easytags_always_enabled = 1
 let easytags_async = 1
@@ -87,7 +95,9 @@ let easytags_file = '~/.cache/tags'
 let easytags_resolve_links = 1
 let easytags_suppress_report = 1
 
-" ========== filebeagle
+
+" filebeagle
+" ----------------------------------------
 
 let filebeagle_show_hidden = 1
 let filebeagle_show_line_numbers = 1
@@ -96,15 +106,21 @@ let filebeagle_suppress_keymaps = 1
 nmap <silent> - <Plug>FileBeagleOpenCurrentBufferDir
 nmap <silent> <Leader>gg <Plug>FileBeagleOpenCurrentWorkingDir
 
-" ========== fugitive
+
+" fugitive
+" ----------------------------------------
 
 nnoremap <Leader>G :G
 
-" ========== gundo
+
+" gundo
+" ----------------------------------------
 
 nnoremap <silent> <F4> :silent GundoToggle<CR>
 
-" ========== minibufexpl
+
+" minibufexpl
+" ----------------------------------------
 
 let miniBufExplModSelTarget = 1
 let miniBufExplUseSingleClick = 1
@@ -112,7 +128,9 @@ let miniBufExplorerMoreThanOne = 1000
 
 noremap <silent> <Leader>B :MiniBufExplorer<CR>
 
-" ========== syntastic
+
+" syntastic
+" ----------------------------------------
 
 set statusline+=%(\ %#ErrorMsg#%{SyntasticStatuslineFlag()}%*%)
 
@@ -133,7 +151,9 @@ nnoremap <silent> <Leader>SS :SyntasticCheck<CR>
 nnoremap <silent> <Leader>Si :SyntasticInfo<CR>
 nnoremap <silent> <Leader>Sr :SyntasticReset<CR>
 
-" ========== tagbar
+
+" tagbar
+" ----------------------------------------
 
 let tagbar_autofocus = 1
 let tagbar_iconchars = ['▸', '▾']
@@ -146,7 +166,9 @@ highlight TagbarHighlight cterm=reverse
 noremap <silent> <F8> :Tagbar<CR>
 noremap <silent> <Leader>T :TagbarOpenAutoClose<CR>
 
-" ========== tcomment
+
+" tcomment
+" ----------------------------------------
 
 let tcommentMaps = 0
 let tcommentOptions = {'col': 1, 'whitespace': 'no'}
@@ -156,9 +178,12 @@ nnoremap <silent> <Leader>C :TCommentBlock<CR>
 vnoremap <silent> <Leader>cc :TComment<CR>
 vnoremap <silent> <Leader>C :TCommentBlock<CR>
 
-" ========== unite
+
+" unite
+" ----------------------------------------
 
 nnoremap <silent> <Leader>u :Unite<CR>
+
 
 " ----------------------------------------
 
@@ -172,8 +197,6 @@ augroup vimrc_ext
 
     autocmd BufWinEnter \[BufExplorer\] call BufSpecialSetup()
 
-    autocmd BufWritePost ~/.Xresources !xrdb -load ~/.Xresources
-
     autocmd User FileBeagleReadPre
         \  unmap <buffer> <BS>
         \| nmap <buffer> <silent> u <Plug>(FileBeagleBufferFocusOnPrevious)
@@ -185,7 +208,5 @@ augroup END
 endif
 
 " }}}
-
-" ----------------------------------------
 
 execute VimrcFinalize()

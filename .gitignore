@@ -36,6 +36,7 @@
 !/.config/mpv/mpv.conf
 !/.config/mpv/scripts
 !/.config/mpv/scripts/custom.lua
+!/.config/nvim
 !/.config/openbox
 !/.config/openbox/menu.xml
 !/.config/openbox/rc.xml
@@ -113,7 +114,6 @@
 !/.newsbeuter
 !/.newsbeuter/config
 !/.npmrc.example
-!/.nvim
 !/.pinforc
 !/.podget
 !/.podget/podgetrc
@@ -144,6 +144,7 @@
 !/.w3m
 !/.w3m/config
 !/.w3m/keymap
+!/.weechat.skel
 !/.wgetrc
 !/.wyrdrc
 !/.xcolors

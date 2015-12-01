@@ -26,8 +26,6 @@ case ${1-} in -h|--help)
     ;;
 esac
 
-# ----------------------------------------
-
 (( ! $# )) && set -- reset
 
 # Cursor's default color and style are hardcoded below.

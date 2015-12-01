@@ -102,9 +102,9 @@ myConfig = defaultConfig
     myTerminal = "term"
     myWorkspaces = map show [0..9]
     myScratchpads =
-        [ NS "sp0" (myTerminal ++ " sp0 - trun s adm") (resource =? "sp0")
+        [ NS "sp0" ("term -n sp0 trun s adm") (resource =? "sp0")
           (customFloating $ W.RationalRect 0.03 0.03 0.94 0.94)
-        , NS "sp1" (myTerminal ++ " sp1 - trun s mon") (resource =? "sp1")
+        , NS "sp1" ("term -n sp1 trun s mon") (resource =? "sp1")
           (customFloating $ W.RationalRect 0.03 0.03 0.94 0.94)
         ]
 
@@ -219,7 +219,7 @@ myConfig = defaultConfig
         [ ("M-q", spawn "xmonad --recompile && xmonad --restart")
         , ("M-S-q", io (exitWith ExitSuccess))
 
-          -- screens & workspaces
+          -- Screens & Workspaces
         , ("M-w", onPrevNeighbour W.view)
         , ("M-e", onNextNeighbour W.view)
         , ("M-S-w", onPrevNeighbour W.shift)
@@ -239,7 +239,7 @@ myConfig = defaultConfig
 
         , ("M-a", toggleWS' ["NSP"])
 
-          -- stack navigation
+          -- Stack navigation
         , ("M-j", focusDown)
         , ("M-k", focusUp)
         , ("M-<Tab>", focusDown)
@@ -250,7 +250,7 @@ myConfig = defaultConfig
         , ("M-S-k", windows W.swapUp)   -- ! breaks BoringWindows
         , ("M-<Return>", windows W.swapMaster)
 
-          -- spatial navigation
+          -- Spatial navigation
         , ("M-C-l", sendMessage $ Go R)
         , ("M-C-h", sendMessage $ Go L)
         , ("M-C-k", sendMessage $ Go U)
@@ -261,7 +261,7 @@ myConfig = defaultConfig
         , ("M-C-S-k", sendMessage $ Swap U)
         , ("M-C-S-j", sendMessage $ Swap D)
 
-          -- windows & layouts
+          -- Windows & Layouts
         , ("M-n", refresh)
         , ("M-S-c", kill)
         , ("M-<Backspace>", focusUrgent)
@@ -274,7 +274,7 @@ myConfig = defaultConfig
         , ("M-,", sendMessage $ IncMasterN 1)
         , ("M-.", sendMessage $ IncMasterN (-1))
 
-          -- floating layer
+          -- Floating layer
         , ("M-t", withFocused $ windows . W.sink)
         , ("M-; M-f", toggleHookNext "doFloat")
         , ("M-M1-k", withFocused $ keysMoveWindow (0, -50))
@@ -286,38 +286,49 @@ myConfig = defaultConfig
         , ("M-M1-S-h", withFocused $ keysResizeWindow (-50, 0) (0, 0))
         , ("M-M1-S-l", withFocused $ keysResizeWindow (50, 0) (0, 0))
 
-          -- layout modifiers
+          -- Layout modifiers
         , ("M-f M-b", sendMessage $ Toggle NOBORDERS)
         , ("M-f M-f", sendMessage $ Toggle FULL)
         , ("M-f M-r", sendMessage $ Toggle MIRROR)
 
-          -- minimize, maximize
+          -- Minimize / Maximize
         , ("M-f M--", withFocused minimizeWindow)
         , ("M-f M-=", sendMessage RestoreNextMinimizedWin)
         , ("M-[", withFocused (sendMessage . maximizeRestore))
 
-          -- other
-        , ("M-S-y", warpToWindow 0.005 0.005)
-        , ("M-C-y", warpToWindow 0.995 0.995)
+          -- Other
         , ("M-y", spawn "xdotool mousedown --clearmodifiers 1 mouseup --clearmodifiers 1")
+        , ("M-C-y", spawn "xdotool mousedown --clearmodifiers 2 mouseup --clearmodifiers 2")
+        , ("M-S-y", spawn "xdotool mousedown --clearmodifiers 3 mouseup --clearmodifiers 3")
+        , ("M-C-M1-y", warpToWindow 0.500 0.500)
+        , ("M-C-M1-u", warpToWindow 0.005 0.005)
+        , ("M-C-M1-i", warpToWindow 0.500 0.005)
+        , ("M-C-M1-o", warpToWindow 0.995 0.005)
+        , ("M-C-M1-j", warpToWindow 0.005 0.500)
+        , ("M-C-M1-k", warpToWindow 0.500 0.500)
+        , ("M-C-M1-l", warpToWindow 0.995 0.500)
+        , ("M-C-M1-m", warpToWindow 0.005 0.995)
+        , ("M-C-M1-,", warpToWindow 0.500 0.995)
+        , ("M-C-M1-.", warpToWindow 0.995 0.995)
+
 
           -- Launchers
-          -- =========
+          -- ----------------------------------------
 
         , ("M-p", spawn "dmenu_run")
         , ("M-'", spawn "bb")
         , ("M-S-'", spawn "bb dd")
         , ("M-S-<Return>", spawn myTerminal)
 
-          -- scratchpads
+          -- Scratchpads
         , ("M-S-;", namedScratchpadAction myScratchpads "sp0")
         , ("M-; M-;", namedScratchpadAction myScratchpads "sp1")
 
-          -- screenshots
+          -- Screenshots
         , ("M-<Print>", spawn "sshot")
         , ("M-S-<Print>", spawn "sshot -s")
 
-          -- audio
+          -- Audio
         , ("M-S-]", spawn "audio playback_up")
         , ("M-S-[", spawn "audio playback_down")
         , ("M-S-m", spawn "audio playback_toggle")
@@ -326,16 +337,16 @@ myConfig = defaultConfig
         , ("M-S-p", spawn "playctl play-pause")
         , ("M-C-p", spawn "playctl-bluetooth play-pause")
 
-          -- setxkbmap
+          -- XKB
         , ("M-<F1>", spawn "xkb 0")
         , ("M-<F2>", spawn "xkb 1")
         , ("M-<F3>", spawn "xkb 2")
 
-          -- selections
+          -- Selections
         , ("M-<Insert>", spawn "clip")
         , ("M-S-<Insert>", spawn "clipp && notify 'PRIMARY -> CLIPBOARD'")
 
-          -- other
+          -- Other
         , ("M-<F9>", spawn "xscreen0 && xmonad --restart")
         , ("M-<F10>", spawn "xscreen && xmonad --restart")
         , ("M-S-<F10>", spawn "xscreen-mobile && xmonad --restart")
@@ -357,7 +368,7 @@ myConfig = defaultConfig
         , ("M-; M-p", spawn "playx")
         , ("M-; M-s", spawn "selfie")
         , ("M-; M-u", spawn "notify -u low \"$(url-resolve)\"")
-        , ("M-S-<Home>", spawn $ myTerminal ++ " - trun wow")
+        , ("M-S-<Home>", spawn "term trun wow")
 
         , ("<XF86AudioLowerVolume>", spawn "audio playback_down")
         , ("<XF86AudioMute>", spawn "audio playback_toggle")

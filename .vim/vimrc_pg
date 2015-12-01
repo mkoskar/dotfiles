@@ -3,8 +3,6 @@
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 source ~/.vim/vimrc_base
 
-" ----------------------------------------
-
 set nomodifiable
 set buftype=nowrite
 
@@ -82,7 +80,5 @@ map <silent> r :ReloadX<CR>
 " }}}
 
 endif
-
-" ----------------------------------------
 
 execute VimrcFinalize()

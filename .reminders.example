@@ -10,4 +10,3 @@ FSET _3() choose(1 + (trigtime() != 0 && diff_d() == 0), "", " (%1)")
 #
 # REM Feb 01 2015 AT 08:00 MSG %E[_1()][_2()][_3()]: %"message%"
 # REM Feb 01 2015          MSG %E[_1()][_2()][_3()]: %"message%"
-#

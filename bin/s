@@ -122,7 +122,8 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-attach=1 socket='default'
+socket='default'
+declare -i attach=1
 while getopts 'ds:h' opt; do
     case $opt in
         d)
@@ -140,6 +141,14 @@ while getopts 'ds:h' opt; do
     esac
 done
 shift $((OPTIND-1))
+
+if [[ ${TMUX-} ]]; then
+    IFS=, read -ra var <<<"$TMUX"
+    if [[ $socket == "${var[0]##*/}" ]]; then
+        echo "$prgname: cannot operate from within session of the same target socket" >&2
+        exit 1
+    fi
+fi
 
 session=${1-}
 

@@ -11,7 +11,7 @@ fi
 
 . ~/bin/term.sh
 
-if [[ ${TERM%%-*} != 'screen' ]]; then
+if [[ ${TERMDONE-} && ! $TERM =~ ^(screen|tmux)(-|$) ]]; then
     # wait a bit for WM geometry to kick-in
     sleep 0.05
 fi

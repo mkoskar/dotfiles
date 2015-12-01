@@ -2,17 +2,34 @@
 
 set -eu
 
-name=()
-for arg in "$@"; do
-    shift
-    [[ $arg = '-' ]] && break
-    name+=("$arg")
+prgname=${0##*/}
+
+_usage() {
+    echo "usage: $prgname [-n name] [cmd] [arg]..."
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+while getopts 'n:h' opt; do
+    case $opt in
+        n)
+            name=$OPTARG
+            ;;
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
 done
-name=${name[*]:-term}
+shift $((OPTIND-1))
 
 (( ! $# )) && set -- shell
 
 bin=${TERMBIN:-urxvt}
+name=${name:-term}
+
 case $bin in
     st)
         exec $bin -c "$name" -e "$@"

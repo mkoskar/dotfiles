@@ -86,6 +86,7 @@ xauthset() {
 
 unset SESSION_MANAGER
 
+
 # /usr/bin/Xephyr
 # ----------------------------------------
 
@@ -102,6 +103,7 @@ if [[ $prgname = 'xx' ]]; then
         &>"$datadir/xsession.$dispno.out" &
     exit
 fi
+
 
 # /usr/bin/X
 # ----------------------------------------
@@ -120,5 +122,6 @@ xauthset "$dispno"
 
 exec xinit ~/bin/xsession "$@" -- \
     /usr/bin/X ":$dispno" "vt$vtno" \
-    -keeptty -nolisten tcp -auth "$xauthf" -dpi 96 \
+    -config "${XCONFIG:-xorg.conf.$HOSTNAME}" \
+    -keeptty -novtswitch -nolisten tcp -auth "$xauthf" \
     &>"$datadir/xsession.$dispno.out"

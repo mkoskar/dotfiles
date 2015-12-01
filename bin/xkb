@@ -20,7 +20,7 @@ if (( ! $# )); then
     # * /usr/share/X11/xkb/rules/evdev.lst
     # * /usr/share/X11/xkb/symbols/typo
     # * /usr/share/X11/locale/compose.dir
-    # * /usr/share/X11/locale/en_US.UTF-8/Compose
+    # * /usr/share/X11/locale/$LANG/Compose
     #
     # grp:alt_shift_toggle          Switching to another layout: Alt+Shift
     # lv3:ralt_switch_multikey      Right Alt (3rd level), Shift+Right Alt key is Compose.

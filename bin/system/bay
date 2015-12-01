@@ -16,7 +16,7 @@ if [[ ! -d $dock || ! -r $dock/docked ]]; then
     exit 1
 fi
 
-declare -i undock=0 standby=0
+declare -i undock= standby=
 case $prgname in
     bay-undock)
         undock=1

@@ -1,6 +1,5 @@
 # See also: Compose(5)
 
-# /usr/share/X11/locale/$LANG/Compose
 include "%L"
 
 <Multi_key> <8> <8>                     : "∞"   U221e               # 8 8 INFINITY

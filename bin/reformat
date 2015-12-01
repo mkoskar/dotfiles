@@ -10,8 +10,8 @@ set -eu
 
 width=${1:-79}
 
-has-cmd par && exec par -w "$width"
-has-cmd fmt && exec fmt -u -w "$width"
-has-cmd fold && exec fold -s -w "$width"
+type par &>/dev/null && exec par -w "$width"
+type fmt &>/dev/null && exec fmt -u -w "$width"
+type fold &>/dev/null && exec fold -s -w "$width"
 
 exit 1

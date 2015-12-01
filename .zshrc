@@ -4,7 +4,6 @@
 
 . ~/bin/term.sh
 
-# interactive shell only
 # ----------------------------------------
 
 case $- in *i*) ;; *) return ;; esac
@@ -18,7 +17,6 @@ TMPPREFIX="${TMPDIR:-/tmp}/zsh"
 
 fpath=(~/.zfunctions $fpath)
 
-# ensure path arrays do not contain duplicates
 typeset -gU path fpath cdpath
 
 zmodload zsh/attr
@@ -72,7 +70,14 @@ unsetopt flow_control
 unsetopt hist_beep
 unsetopt hup
 
-# completion
+
+# Aliases
+# ----------------------------------------
+
+alias help='run-help'
+
+
+# Completion
 # ----------------------------------------
 
 compinit
@@ -106,28 +111,23 @@ zstyle ':completion:*:warnings' format ' %F{yellow}-- no matches found --%f'
 zstyle ':completion::complete:*' cache-path "${ZDOTDIR:-$HOME}/.zcompcache"
 zstyle ':completion::complete:*' use-cache on
 
-# environment variables
 zstyle ':completion::*:(-command-|export):*' fake-parameters ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}
 
-# hosts
 zstyle -e ':completion:*:hosts' hosts 'reply=(
     ${=${=${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) 2>/dev/null)"}%%[#| ]*}//\]:[0-9]*/ }//,/ }//\[/ }
     ${=${(f)"$(cat /etc/hosts(|)(N) <<(ypcat hosts 2>/dev/null))"}%%\#*}
     ${=${${${${(@M)${(f)"$(cat ~/.ssh/config 2>/dev/null)"}:#Host *}#Host }:#*\**}:#*\?*}}
 )'
 
-# ignore multiple entries
 zstyle ':completion:*:(rm|kill|diff):*' ignore-line other
 zstyle ':completion:*:rm:*' file-patterns '*:all-files'
 
-# kill
 zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm -w'
 zstyle ':completion:*:*:kill:*' force-list always
 zstyle ':completion:*:*:kill:*' insert-ids single
 zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;36=0=01'
 
-# ssh / scp / rsync
 zstyle ':completion:*:(scp|rsync):*' group-order users files all-files hosts-domain hosts-host hosts-ipaddr
 zstyle ':completion:*:(scp|rsync):*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
 zstyle ':completion:*:(ssh|scp|rsync):*:hosts-domain' ignored-patterns '<->.<->.<->.<->' '^[-[:alnum:]]##(.[-[:alnum:]]##)##' '*@*'
@@ -136,7 +136,6 @@ zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<-
 zstyle ':completion:*:ssh:*' group-order users hosts-domain hosts-host hosts-ipaddr
 zstyle ':completion:*:ssh:*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
 
-# custom
 compctl -F fn
 compctl -FBmwa i
 compctl -f paco
@@ -172,7 +171,8 @@ function _mkvirtualenv-pyenv {
 }
 compctl -K _mkvirtualenv-pyenv mkvirtualenv-pyenv
 
-# window-title
+
+# Window Title
 # ----------------------------------------
 
 function set-window-title {
@@ -182,7 +182,8 @@ function set-window-title {
 }
 add-zsh-hook precmd set-window-title
 
-# zle
+
+# ZLE
 # ----------------------------------------
 
 KEYTIMEOUT=1
@@ -309,7 +310,6 @@ bindkey -M isearch . self-insert
 
 bindkey -M menuselect '^U' send-break
 
-# macros
 bindkey -M viins -r '^X'
 bindkey -M viins -s '^Xp' '\eIpgx \e0'
 bindkey -M viins -s '^XP' '\eA | pg\eF|h'
@@ -329,7 +329,8 @@ bindkey -M vicmd -s '^Xa' 'a!!:*\e'
 bindkey -M vicmd -s '^Xl' 'a!!:$\e'
 bindkey -M vicmd -s '^Xs' 'a!!:gs/'
 
-# zsh-syntax-highlighting
+
+# Plugin: zsh-syntax-highlighting
 # ----------------------------------------
 
 __src=/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -362,7 +363,8 @@ if [[ -e $__src ]]; then
 fi
 unset __src
 
-# zsh-history-substring-search
+
+# Plugin: zsh-history-substring-search
 # ----------------------------------------
 
 __src=~/opt/zsh-history-substring-search/zsh-history-substring-search.zsh
@@ -373,12 +375,7 @@ if [[ -e "$__src" ]]; then
 fi
 unset __src
 
-# aliases
-# ----------------------------------------
 
-alias help='run-help'
-
-# finalize
 # ----------------------------------------
 
 . ~/bin/login.sh

@@ -4,7 +4,6 @@
 
 . ~/bin/term.sh
 
-# interactive shell only
 # ----------------------------------------
 
 case $- in *i*) ;; *) return ;; esac
@@ -72,7 +71,6 @@ __virtualenvwrapper_load() {
 }
 complete -o nospace -F __virtualenvwrapper_load wo
 
-# finalize
 # ----------------------------------------
 
 . ~/bin/login.sh

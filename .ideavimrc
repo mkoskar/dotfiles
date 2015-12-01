@@ -1,6 +1,7 @@
 " vim: ft=vim fdm=marker
 
-" ========== Moving Around, Searching and Patterns
+" Moving Around, Searching and Patterns
+" ----------------------------------------
 
 set nowrapscan
 set ignorecase
@@ -18,41 +19,55 @@ noremap <C-Y> 5<C-Y>
 noremap zh 15zh
 noremap zl 15zl
 
-" ========== Displaying Text
+
+" Displaying Text
+" ----------------------------------------
 
 set scrolloff=5
 set sidescroll=15
 set sidescrolloff=15
 set nonumber
 
-" ========== Syntax, Highlighting and Spelling
+
+" Syntax, Highlighting and Spelling
+" ----------------------------------------
 
 set hlsearch
 
 nmap <Space> :nohls<Bar>echo<CR>
 
-" ========== Multiple Windows
+
+" Multiple Windows
+" ----------------------------------------
 
 nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-H> <C-W>h
 nnoremap <C-L> <C-W>l
 
-" ========== Messages and Info
+
+" Messages and Info
+" ----------------------------------------
 
 set showmode
 set novisualbell
 
-" ========== Selecting Text
+
+" Selecting Text
+" ----------------------------------------
 
 " Yank from cursor to the line end (consistent with D, C)
 nnoremap Y y$
 
-" ========== Command Line Editing
+
+" Command Line Editing
+" ----------------------------------------
 
 set history=1000
 
-" ========== Various
+
+" Various
+" ----------------------------------------
 
 set gdefault
 

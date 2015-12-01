@@ -5,8 +5,9 @@ Create Slave
 Expunge Both
 SyncState *
 
+
 # example
-# -------
+# ----------------------------------------
 
 IMAPAccount example
 Host <host>

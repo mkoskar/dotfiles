@@ -43,10 +43,10 @@ color index         color167        default       ~F
 color index         color243        default       ~D
 color index         brightyellow    default       ~T
 
-# colorindex patch
+# Colorindex patch
 #color index_author  color255        default       '~d <1d'
 #color index_author  color156        default       '~d >1d ~d <2d'
 #color index_author  color180        default       '~d >2d ~d <3d'
 
-# sidebar patch
+# Sidebar patch
 color sidebar_new   brightwhite     default

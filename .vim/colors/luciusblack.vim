@@ -8,227 +8,241 @@ let colors_name = 'luciusblack'
 
 set background=dark
 
-hi Normal           guifg=#aeaeae           guibg=#050505
-hi Normal           ctermfg=7               ctermbg=0
+hi Normal           guifg=#aeaeae       guibg=#050505
+hi Normal           ctermfg=7           ctermbg=0
 
-hi Comment          guifg=#909090                                   gui=NONE
-hi Comment          ctermfg=245                                     cterm=NONE
+hi Comment          guifg=#909090                           gui=NONE
+hi Comment          ctermfg=245                             cterm=NONE
 
-hi Constant         guifg=#d78787                                   gui=NONE
-hi Constant         ctermfg=174                                     cterm=NONE
+hi Constant         guifg=#d78787                           gui=NONE
+hi Constant         ctermfg=174                             cterm=NONE
 
-hi Identifier       guifg=#afff87                                   gui=NONE
-hi Identifier       ctermfg=156                                     cterm=NONE
+hi Identifier       guifg=#afff87                           gui=NONE
+hi Identifier       ctermfg=156                             cterm=NONE
 
-hi Statement        guifg=#ffff87                                   gui=NONE
-hi Statement        ctermfg=228                                     cterm=NONE
+hi Statement        guifg=#ffff87                           gui=NONE
+hi Statement        ctermfg=228                             cterm=NONE
 
-hi PreProc          guifg=#d75f5f                                   gui=NONE
-hi PreProc          ctermfg=167                                     cterm=NONE
+hi PreProc          guifg=#d75f5f                           gui=NONE
+hi PreProc          ctermfg=167                             cterm=NONE
 
-hi Type             guifg=#87afdf                                   gui=NONE
-hi Type             ctermfg=110                                     cterm=NONE
+hi Type             guifg=#87afdf                           gui=NONE
+hi Type             ctermfg=110                             cterm=NONE
 
-hi Special          guifg=#eeeeee                                   gui=NONE
-hi Special          ctermfg=255                                     cterm=NONE
+hi Special          guifg=#eeeeee                           gui=NONE
+hi Special          ctermfg=255                             cterm=NONE
 
-" ========== Text Markup
 
-" text that stands out, html links
-hi Underlined       guifg=fg                                        gui=underline
-hi Underlined       ctermfg=fg                                      cterm=underline
+" Text Markup
+" ----------------------------------------
 
-" any erroneous construct
-hi Error            guifg=#d75f5f           guibg=#303030           gui=NONE
-hi Error            ctermfg=167             ctermbg=236             cterm=NONE
+" Text that stands out, html links
+hi Underlined       guifg=fg                                gui=underline
+hi Underlined       ctermfg=fg                              cterm=underline
 
-" todo, fixme, note, xxx
-hi Todo             guifg=#d7d787           guibg=NONE              gui=underline
-hi Todo             ctermfg=186             ctermbg=NONE            cterm=underline
+" Any erroneous construct
+hi Error            guifg=#d75f5f       guibg=#303030       gui=NONE
+hi Error            ctermfg=167         ctermbg=236         cterm=NONE
 
-" match parenthesis, brackets
-hi MatchParen       guifg=#00ff00           guibg=NONE              gui=bold
-hi MatchParen       ctermfg=46              ctermbg=NONE            cterm=bold
+" TODO, FIXME, NOTE, etc.
+hi Todo             guifg=#d7d787       guibg=NONE          gui=underline
+hi Todo             ctermfg=186         ctermbg=NONE        cterm=underline
 
-" the '~' and '@' and showbreak, '>' double wide char doesn't fit on line
+" Match parenthesis, brackets
+hi MatchParen       guifg=#00ff00       guibg=NONE          gui=bold
+hi MatchParen       ctermfg=46          ctermbg=NONE        cterm=bold
+
+" The '~' and '@' and showbreak, '>' double wide char doesn't fit on line
 hi NonText          guifg=#4e4e4e
 hi NonText          ctermfg=239
 
-" meta and special keys used with map, unprintable characters
+" Meta and special keys used with map, unprintable characters
 hi SpecialKey       guifg=#4e4e4e
 hi SpecialKey       ctermfg=239
 
-" titles for output from :set all, :autocmd, etc
-hi Title            guifg=#5fafd7                                   gui=NONE
-hi Title            ctermfg=74                                      cterm=NONE
+" Titles for output from :set all, :autocmd, etc
+hi Title            guifg=#5fafd7                           gui=NONE
+hi Title            ctermfg=74                              cterm=NONE
 
-" ========== Text Selection
 
-" character under the cursor
-hi Cursor           guifg=bg                guibg=#afd7ff
-hi Cursor           ctermfg=bg              ctermbg=153
+" Text Selection
+" ----------------------------------------
 
-" like cursor, but used when in IME mode
-hi CursorIM         guifg=bg                guibg=#87d7d7
-hi CursorIM         ctermfg=bg              ctermbg=116
+" Character under the cursor
+hi Cursor           guifg=bg            guibg=#afd7ff
+hi Cursor           ctermfg=bg          ctermbg=153
 
-" cursor column
-hi CursorColumn     guifg=NONE              guibg=#303030           gui=NONE
-hi CursorColumn     ctermfg=NONE            ctermbg=236             cterm=NONE
+" Like cursor, but used when in IME mode
+hi CursorIM         guifg=bg            guibg=#87d7d7
+hi CursorIM         ctermfg=bg          ctermbg=116
 
-" cursor line/row
-hi CursorLine       guifg=NONE              guibg=#303030           gui=NONE
-hi CursorLine       ctermfg=NONE            ctermbg=236             cterm=NONE
+" Cursor column
+hi CursorColumn     guifg=NONE          guibg=#303030       gui=NONE
+hi CursorColumn     ctermfg=NONE        ctermbg=236         cterm=NONE
 
-" visual mode selection
-hi Visual           guifg=NONE              guibg=#262626
-hi Visual           ctermfg=NONE            ctermbg=235
+" Cursor line/row
+hi CursorLine       guifg=NONE          guibg=#303030       gui=NONE
+hi CursorLine       ctermfg=NONE        ctermbg=236         cterm=NONE
 
-" visual mode selection when vim is not owning the selection (x11 only)
-hi VisualNOS        guifg=fg                                        gui=underline
-hi VisualNOS        ctermfg=fg                                      cterm=underline
+" Visual mode selection
+hi Visual           guifg=NONE          guibg=#262626
+hi Visual           ctermfg=NONE        ctermbg=235
 
-" highlight incremental search text; also highlight text replaced with :s///c
-hi IncSearch        guifg=#eeeeee                                   gui=reverse
-hi IncSearch        ctermfg=255                                     cterm=reverse
+" Visual mode selection when vim is not owning the selection (x11 only)
+hi VisualNOS        guifg=fg                                gui=underline
+hi VisualNOS        ctermfg=fg                              cterm=underline
 
-" hlsearch (last search pattern), also used for quickfix
-hi Search                                    guibg=#ffaf00          gui=NONE
-hi Search                                    ctermbg=214            cterm=NONE
+" Highlight incremental search text; also highlight text replaced with :s///c
+hi IncSearch        guifg=#eeeeee                           gui=reverse
+hi IncSearch        ctermfg=255                             cterm=reverse
 
-" ========== UI
+" Last search pattern (hlsearch), also used for quickfix
+hi Search                               guibg=#ffaf00       gui=NONE
+hi Search                               ctermbg=214         cterm=NONE
 
-" normal item in popup
-hi Pmenu            guifg=#dadada           guibg=#121212           gui=NONE
-hi Pmenu            ctermfg=253             ctermbg=233             cterm=NONE
 
-" selected item in popup
-hi PmenuSel         guifg=#d7d787           guibg=#3a3a3a           gui=NONE
-hi PmenuSel         ctermfg=186             ctermbg=237             cterm=NONE
+" UI
+" ----------------------------------------
 
-" scrollbar in popup
-hi PMenuSbar                                guibg=#5f5f5f           gui=NONE
-hi PMenuSbar                                ctermbg=59              cterm=NONE
+" Normal item in popup
+hi Pmenu            guifg=#dadada       guibg=#121212       gui=NONE
+hi Pmenu            ctermfg=253         ctermbg=233         cterm=NONE
 
-" thumb of the scrollbar in the popup
-hi PMenuThumb                               guibg=#878787           gui=NONE
-hi PMenuThumb                               ctermbg=102             cterm=NONE
+" Selected item in popup
+hi PmenuSel         guifg=#d7d787       guibg=#3a3a3a       gui=NONE
+hi PmenuSel         ctermfg=186         ctermbg=237         cterm=NONE
 
-" status line for current window
-hi StatusLine       guifg=#e4e4e4           guibg=#3a3a3a           gui=bold
-hi StatusLine       ctermfg=254             ctermbg=237             cterm=bold
+" Scrollbar in popup
+hi PMenuSbar                            guibg=#5f5f5f       gui=NONE
+hi PMenuSbar                            ctermbg=59          cterm=NONE
 
-" status line for non-current windows
-hi StatusLineNC     guifg=#808080           guibg=#3a3a3a           gui=NONE
-hi StatusLineNC     ctermfg=244             ctermbg=237             cterm=NONE
+" Thumb of the scrollbar in the popup
+hi PMenuThumb                           guibg=#878787       gui=NONE
+hi PMenuThumb                           ctermbg=102         cterm=NONE
 
-" tab pages line, not active tab page label
-hi TabLine          guifg=#808080           guibg=#303030           gui=NONE
-hi TabLine          ctermfg=244             ctermbg=236             cterm=NONE
+" Status line for current window
+hi StatusLine       guifg=#e4e4e4       guibg=#3a3a3a       gui=bold
+hi StatusLine       ctermfg=254         ctermbg=237         cterm=bold
 
-" tab pages line, where there are no labels
-hi TabLineFill      guifg=#d7d7af           guibg=#303030           gui=NONE
-hi TabLineFill      ctermfg=187             ctermbg=236             cterm=NONE
+" Status line for non-current windows
+hi StatusLineNC     guifg=#808080       guibg=#3a3a3a       gui=NONE
+hi StatusLineNC     ctermfg=244         ctermbg=237         cterm=NONE
 
-" tab pages line, active tab page label
-hi TabLineSel       guifg=#e4e4e4           guibg=#303030           gui=bold
-hi TabLineSel       ctermfg=254             ctermbg=236             cterm=bold
+" Tab pages line, not active tab page label
+hi TabLine          guifg=#808080       guibg=#303030       gui=NONE
+hi TabLine          ctermfg=244         ctermbg=236         cterm=NONE
 
-" column separating vertically split windows
-hi VertSplit        guifg=#767676           guibg=#3a3a3a           gui=NONE
-hi VertSplit        ctermfg=243             ctermbg=237             cterm=NONE
+" Tab pages line, where there are no labels
+hi TabLineFill      guifg=#d7d7af       guibg=#303030       gui=NONE
+hi TabLineFill      ctermfg=187         ctermbg=236         cterm=NONE
 
-" line used for closed folds
-hi Folded           guifg=#909090           guibg=NONE              gui=NONE
-hi Folded           ctermfg=245             ctermbg=NONE            cterm=NONE
+" Tab pages line, active tab page label
+hi TabLineSel       guifg=#e4e4e4       guibg=#303030       gui=bold
+hi TabLineSel       ctermfg=254         ctermbg=236         cterm=bold
 
-" column on side used to indicated open and closed folds
-hi FoldColumn       guifg=#bcbcbc           guibg=#444444           gui=NONE
-hi FoldColumn       ctermfg=250             ctermbg=238             cterm=NONE
+" Column separating vertically split windows
+hi VertSplit        guifg=#767676       guibg=#3a3a3a       gui=NONE
+hi VertSplit        ctermfg=243         ctermbg=237         cterm=NONE
 
-" ========== Spelling
+" Line used for closed folds
+hi Folded           guifg=#909090       guibg=NONE          gui=NONE
+hi Folded           ctermfg=245         ctermbg=NONE        cterm=NONE
 
-" word not recognized
-hi SpellBad         guisp=#ee0000                                   gui=undercurl
-hi SpellBad                                 ctermbg=196             cterm=undercurl
+" Column on side used to indicated open and closed folds
+hi FoldColumn       guifg=#bcbcbc       guibg=#444444       gui=NONE
+hi FoldColumn       ctermfg=250         ctermbg=238         cterm=NONE
 
-" word not capitalized
-hi SpellCap         guisp=#eeee00                                   gui=undercurl
-hi SpellCap                                 ctermbg=226             cterm=undercurl
 
-" rare word
-hi SpellRare        guisp=#ffa500                                   gui=undercurl
-hi SpellRare                                ctermbg=214             cterm=undercurl
+" Spelling
+" ----------------------------------------
 
-" wrong spelling for selected region
-hi SpellLocal       guisp=#ffa500                                   gui=undercurl
-hi SpellLocal                               ctermbg=214             cterm=undercurl
+" Word not recognized
+hi SpellBad         guisp=#ee0000                           gui=undercurl
+hi SpellBad                             ctermbg=196         cterm=undercurl
 
-" ========== Diff
+" Word not capitalized
+hi SpellCap         guisp=#eeee00                           gui=undercurl
+hi SpellCap                             ctermbg=226         cterm=undercurl
 
-" added line
-hi DiffAdd          guifg=fg                guibg=#005f00           gui=NONE
-hi DiffAdd          ctermfg=fg              ctermbg=22              cterm=NONE
+" Rare word
+hi SpellRare        guisp=#ffa500                           gui=undercurl
+hi SpellRare                            ctermbg=214         cterm=undercurl
 
-" changed line
-hi DiffChange       guifg=fg                guibg=#5f0000           gui=NONE
-hi DiffChange       ctermfg=fg              ctermbg=52              cterm=NONE
+" Wrong spelling for selected region
+hi SpellLocal       guisp=#ffa500                           gui=undercurl
+hi SpellLocal                           ctermbg=214         cterm=undercurl
 
-" deleted line
-hi DiffDelete       guifg=fg                guibg=#5f5f00           gui=NONE
-hi DiffDelete       ctermfg=fg              ctermbg=58              cterm=NONE
 
-" changed text within line
-hi DiffText         guifg=#ff5f5f           guibg=#5f0000           gui=bold
-hi DiffText         ctermfg=203             ctermbg=52              cterm=bold
+" Diff
+" ----------------------------------------
 
-" ========== Misc
+" Added line
+hi DiffAdd          guifg=fg            guibg=#005f00       gui=NONE
+hi DiffAdd          ctermfg=fg          ctermbg=22          cterm=NONE
 
-" directory names and other special names in listings
-hi Directory        guifg=#afdfaf                                   gui=NONE
-hi Directory        ctermfg=151                                     cterm=NONE
+" Changed line
+hi DiffChange       guifg=fg            guibg=#5f0000       gui=NONE
+hi DiffChange       ctermfg=fg          ctermbg=52          cterm=NONE
 
-" error messages on the command line
-hi ErrorMsg         guifg=#eeeeee           guibg=#9d2d2d           gui=NONE
-hi ErrorMsg         ctermfg=255             ctermbg=1               cterm=NONE
+" Deleted line
+hi DiffDelete       guifg=fg            guibg=#5f5f00       gui=NONE
+hi DiffDelete       ctermfg=fg          ctermbg=58          cterm=NONE
 
-" columns where signs are displayed (used in IDEs)
-hi SignColumn       guifg=#afafaf           guibg=#121212           gui=NONE
-hi SignColumn       ctermfg=145             ctermbg=233             cterm=NONE
+" Changed text within line
+hi DiffText         guifg=#ff5f5f       guibg=#5f0000       gui=bold
+hi DiffText         ctermfg=203         ctermbg=52          cterm=bold
 
-" line numbers
-hi LineNr           guifg=#909090           guibg=#121212
-hi LineNr           ctermfg=245             ctermbg=233
 
-" the 'more' prompt when output takes more than one line
-hi MoreMsg          guifg=#00875f                                   gui=NONE
-hi MoreMsg          ctermfg=29                                      cterm=NONE
+" Misc
+" ----------------------------------------
 
-" text showing what mode you are in
-hi ModeMsg          guifg=#87d7ff           guibg=NONE              gui=NONE
-hi ModeMsg          ctermfg=117             ctermbg=NONE            cterm=NONE
+" Directory names and other special names in listings
+hi Directory        guifg=#afdfaf                           gui=NONE
+hi Directory        ctermfg=151                             cterm=NONE
 
-" the hit-enter prompt (show more output) and yes/no questions
-hi Question         guifg=fg                                        gui=NONE
-hi Question         ctermfg=fg                                      cterm=NONE
+" Error messages on the command line
+hi ErrorMsg         guifg=#eeeeee       guibg=#9d2d2d       gui=NONE
+hi ErrorMsg         ctermfg=255         ctermbg=1           cterm=NONE
 
-" warning messages
-hi WarningMsg       guifg=#ffff87                                   gui=NONE
-hi WarningMsg       ctermfg=228                                     cterm=NONE
+" Columns where signs are displayed (used in IDEs)
+hi SignColumn       guifg=#afafaf       guibg=#121212       gui=NONE
+hi SignColumn       ctermfg=145         ctermbg=233         cterm=NONE
 
-" current match in the wildmenu completion
-hi WildMenu         guifg=#000000           guibg=#d7d787           gui=bold,underline
-hi WildMenu         ctermfg=16              ctermbg=186             cterm=bold
+" Line numbers
+hi LineNr           guifg=#909090       guibg=#121212
+hi LineNr           ctermfg=245         ctermbg=233
 
-" color column highlighting
-hi ColorColumn      guifg=NONE              guibg=#303030           gui=NONE
-hi ColorColumn      ctermfg=NONE            ctermbg=236             cterm=NONE
+" The 'more' prompt when output takes more than one line
+hi MoreMsg          guifg=#00875f                           gui=NONE
+hi MoreMsg          ctermfg=29                              cterm=NONE
 
-" left blank, Hidden
+" Text showing what mode you are in
+hi ModeMsg          guifg=#87d7ff       guibg=NONE          gui=NONE
+hi ModeMsg          ctermfg=117         ctermbg=NONE        cterm=NONE
+
+" The hit-enter prompt (show more output) and yes/no questions
+hi Question         guifg=fg                                gui=NONE
+hi Question         ctermfg=fg                              cterm=NONE
+
+" Warning messages
+hi WarningMsg       guifg=#ffff87                           gui=NONE
+hi WarningMsg       ctermfg=228                             cterm=NONE
+
+" Current match in the wildmenu completion
+hi WildMenu         guifg=#000000       guibg=#d7d787       gui=bold,underline
+hi WildMenu         ctermfg=16          ctermbg=186         cterm=bold
+
+" Color column highlighting
+hi ColorColumn      guifg=NONE          guibg=#303030       gui=NONE
+hi ColorColumn      ctermfg=NONE        ctermbg=236         cterm=NONE
+
+" Left blank, Hidden
 hi Ignore           guifg=bg
 hi Ignore           ctermfg=bg
 
-" ========== Vimwiki Colors
+
+" Vimwiki Colors
+" ----------------------------------------
 
 hi link VimwikiHeader1 PreProcBold
 hi link VimwikiHeader2 ConstantBold

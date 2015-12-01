@@ -3,14 +3,14 @@
 set from = '<email>'
 set my_imap = $my_example_imap
 
-# mailboxes
+# Mailboxes
 set spoolfile = $my_base/INBOX
 set record = $my_base/sent
 set postponed = $my_base/drafts
 set my_mbarchived = $my_base/shelve
 set my_mbtrashed = $my_base/trash
 
-# other
+# Other
 set query_command = "goobook query '%s'"
 set sendmail = msmtp
 

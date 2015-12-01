@@ -6,9 +6,8 @@ prgname=${0##*/}
 
 name='TPPS/2 IBM TrackPoint'
 prop='libinput Button Scrolling Button'
-valset=2
 
-declare -i val
+declare -i val= valset=2
 val=$(xinput list-props "$name" | awk -F: "/^\s*$prop \(.*\):/ {print \$2}")
 (( $val == $valset )) && valset=0
 

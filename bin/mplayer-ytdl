@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-set -e -o pipefail
-
-(( $# )) || exit 2
-
-exec 2>/dev/null
-youtube-dl --playlist-end 1 -o - "$1" | mplayer -really-quiet -

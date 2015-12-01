@@ -6,5 +6,4 @@ case $- in *l*) ;; *) return ;; esac
 
 if [ "$TTY" = '/dev/tty1' ]; then
     up
-    . ~/bin/term.sh
 fi

@@ -3,8 +3,6 @@
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 source ~/.vim/vimrc_base
 
-" ----------------------------------------
-
 set nobackup
 set noswapfile
 set noundofile
@@ -14,8 +12,6 @@ set viminfo=
 " ----------------------------------------
 
 Plugin 'gnupg'
-
-" ========== gnupg
 
 let GPGDefaultRecipients = ['CDC91131']
 let GPGUsePipes = 1

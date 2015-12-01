@@ -11,7 +11,7 @@ output=$(dialog --keep-tite --backtitle 'scan' \
     --and-widget \
     --no-items --nocancel --default-item 75 --menu 'JPEG Quality:' 12 28 12 \
         50 75 90 95 100 \
-    2>&1 >/dev/tty)
+    &>/dev/tty)
 
 output=($output)
 mode=${output[0]}

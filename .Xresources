@@ -2,7 +2,10 @@
 
 #include ".xcolors/default"
 
-! XTerm ----------------------------------------------------------------------
+
+! XTerm
+! ----------------------------------------
+
 XTerm.termName:                 xterm-256color
 XTerm.ptyInitialErase:          false
 
@@ -28,7 +31,10 @@ XTerm*vt100.translations:       #override \n \
                                 ~Shift <Key>Print: print() \n \
                                 Shift <Key>Print: print-everything()
 
-! URxvt ----------------------------------------------------------------------
+
+! URxvt
+! ----------------------------------------
+
 URxvt.termName:         rxvt-unicode-256color
 
 !URxvt.intensityStyles:  false
@@ -79,15 +85,19 @@ URxvt.keysym.M-C-slash:         perl:keyboard-select:search
 URxvt.keysym.M-C-u:             perl:url-select:select_next
 URxvt.keysym.M-C-o:             perl:url-picker
 
-! Xcursor --------------------------------------------------------------------
+
+! Xcursor
+! ----------------------------------------
+
 Xcursor.theme:          Grounation
 Xcursor.size:           22
 
-! Xft ------------------------------------------------------------------------
-Xft.dpi:                96
+
+! Xft
+! ----------------------------------------
 Xft.antialias:          1
+Xft.autohint:           0
 Xft.hinting:            1
 Xft.hintstyle:          hintslight
-Xft.autohint:           0
-Xft.rgba:               rgb
 Xft.lcdfilter:          lcddefault
+Xft.rgba:               rgb

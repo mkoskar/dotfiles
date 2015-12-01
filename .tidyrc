@@ -1,6 +1,6 @@
 # See also: http://tidy.sourceforge.net/docs/quickref.html
 
-# HTML, XHTML, XML Options Reference
+# HTML, XHTML, XML
 anchor-as-name: no
 doctype: omit
 drop-empty-paras: no
@@ -18,26 +18,26 @@ quote-ampersand: no
 quote-nbsp: no
 show-body-only: auto
 
-# Diagnostics Options Reference
+# Diagnostics
 show-errors: 0
 show-warnings: 0
 
-# Pretty Print Options Reference
+# Format
 break-before-br: yes
-indent: yes
 indent-spaces: 4
+indent: yes
 tab-size: 4
 vertical-space: yes
-wrap: 80
 wrap-asp: no
 wrap-jste: no
 wrap-php: no
 wrap-sections: no
+wrap: 80
 
-# Character Encoding Options Reference
+# Character encoding
 char-encoding: utf8
 
-# Miscellaneous Options Reference
+# Miscellaneous
 force-output: yes
 quiet: yes
 tidy-mark: no

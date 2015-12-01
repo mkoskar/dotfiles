@@ -6,5 +6,4 @@ EXPORT=1
 EXPORTSRC=0
 USECOLOR=2
 
-# makepkg overrides
 PKGDEST=~/packages

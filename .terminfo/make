@@ -26,6 +26,12 @@ make screen-256color <<-EOF
     tsl=\E]2;,
 EOF
 
+make tmux-256color <<-EOF
+# ----------------------------------------
+    dsl=\E]2;\007,
+    tsl=\E]2;,
+EOF
+
 make xterm-256color <<-EOF
 # ----------------------------------------
     hs,

@@ -12,7 +12,7 @@ folder-hook $my_example ' \
 mailboxes $my_example
 mailboxes $my_example/INBOX
 
-# imap
+# IMAP
 set my_example_imap = imaps://<user>@<host>:993
 set my_example_imap_pass = "`authinfo <machine> <login>`"
 

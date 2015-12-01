@@ -11,8 +11,6 @@ case ${1-} in -h | --help)
     ;;
 esac
 
-# ----------------------------------------
-
 profile=
 regexp='^(?!proxy-socks$)(?!proxy-tor$).*$'
 

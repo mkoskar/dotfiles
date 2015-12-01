@@ -6,23 +6,31 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname         - blame by "install size"
-	       $prgname -d      - blame by "depends on"
-	       $prgname -r      - blame by "required by"
+	usage: $prgname [-e] [-d|-r]
+
+	Blame by "install size".
+
+	  -e    - restrict to explicitly installed packages
+	  -d    - blame by "depends on"
+	  -r    - blame by "required by"
 	EOF
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-cmd="expac -H M -l '\n' '%m %n' | sort -k1nr"
+cmd="expac -H M '%w %m %n'"
 
-while getopts 'drh' opt; do
+declare -i explicit=
+while getopts 'edrh' opt; do
     case $opt in
+        e)
+            explicit=1
+            ;;
         d)
-            cmd="expac -l ' ' '%n %E' | awk '{print NF - 1, \$1}' | sort -k1nr"
+            cmd="expac -l ' ' '%w %n %E' | awk '{print \$1, NF - 2, \$2}'"
             ;;
         r)
-            cmd="expac -l ' ' '%n %N' | awk '{print NF - 1, \$1}' | sort -k1nr"
+            cmd="expac -l ' ' '%w %n %N' | awk '{print \$1, NF - 2, \$2}'"
             ;;
         h)
             usage
@@ -34,9 +42,9 @@ while getopts 'drh' opt; do
 done
 shift $((OPTIND-1))
 
-if [[ -t 1 ]]; then
-    export PAGER_TITLE=$prgname
-    exec pgx bash -c "$cmd"
-fi
-
-eval "$cmd"
+eval "$cmd" | awk -v explicit=$explicit '
+{
+    $1=substr($1, 1, 1)
+    if ($1 == "e" || !explicit) print $0
+}
+' | sort -k2nr

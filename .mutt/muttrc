@@ -1,6 +1,6 @@
 # vim: ft=muttrc
 
-# global settings
+# Global
 set abort_nosubject = ask-no
 set abort_unmodified = no
 set alias_file = ~/.mutt/aliases
@@ -41,7 +41,7 @@ unset use_domain
 unset user_agent
 unset wait_key
 
-# formats
+# Formats
 set alias_format = ' %2n %t %-40.40r    %a'
 set compose_format = "mutt-hstatus '%v' '-- Mutt: Compose [Approx. msg size: %l   Atts: %a]'|"
 set date_format = '!%b %d %I:%M'
@@ -51,12 +51,12 @@ set query_format = ' %2c %t %-40.40a    %n %?e?(%e)?'
 set status_format = "mutt-hstatus '%v' '[%r] %f (%n/%m)%?d? deleted:%d?%?t? tagged:%t?%?F? flagged:%F?%?p? postponed:%p? %l %?V?-- limit (%M): %V? %> %s/%S (%P)'|"
 source ~/.mutt/index_format1
 
-# index settings
+# Index
 set reply_regexp = '^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*'
 set sort_aux = reverse-date-received
 source ~/.mutt/sort_threads
 
-# pager settings
+# Pager
 alternative_order text/plain text/enriched text/html
 auto_view text/html
 set menu_scroll
@@ -67,7 +67,7 @@ set quote_regexp = '^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+'
 set tilde
 unset markers
 
-# compose settings
+# Compose
 set askcc
 set attribution = 'On %d, %n wrote:'
 set edit_headers
@@ -82,12 +82,12 @@ set reply_to
 set reverse_name
 set signature = ~/.mutt/signature
 
-# headers
+# Headers
 hdr_order from: to: cc: list-id: list-archive: date: subject:
 ignore *
 unignore from: to: cc: list-id: list-archive: date: subject:
 
-# key bindings
+# Key bindings
 bind generic        *           noop
 bind generic        ?           noop
 bind generic        =           noop
@@ -183,7 +183,7 @@ bind editor         \e<space>   buffy-cycle
 
 bind attach         o           view-attach
 
-# macros
+# Macros
 macro generic,index \ej )))
 macro generic,index \ek (((
 macro generic,pager <F1> '<shell-escape>pg /usr/share/doc/mutt/manual.txt<enter>' 'show manual'
@@ -215,7 +215,7 @@ macro pager o q
 macro index \c_ <tag-prefix><save-message> 'save messages'
 macro pager \c_ <save-message> 'save message'
 
-# sidebar patch
+# Sidebar patch
 set sidebar_delim = ' '
 set sidebar_folderindent
 set sidebar_format = '%B%?F? [%F]?%* %?N?%N?%C'
@@ -229,7 +229,7 @@ macro index,pager \en <sidebar-next><sidebar-open> 'sidebar-next & sidebar-open'
 macro index,pager \ep <sidebar-prev><sidebar-open> 'sidebar-prev & sidebar-open'
 macro index,pager ~ '<enter-command>toggle sidebar_visible<enter>' 'toggle sidebar'
 
-# global includes
+# Global includes
 source $alias_file
 source ~/.mutt/colors
 source ~/.mutt/pgp

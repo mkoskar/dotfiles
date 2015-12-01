@@ -4,13 +4,13 @@ set -eu
 
 odir="$HOME/.local/share/fonts"
 
-readonly tmpdir=$(mktemp -d)
+tmpdir=$(mktemp -d)
 cleanup() { rm -rf "$tmpdir"; }
 trap cleanup EXIT
 
 cd "$tmpdir"
 
-get() {
+from_zip() {
     local fname
     fname=$(curl -sLfJO -w '%{filename_effective}' "$1")
     unzip -qq "$fname" -d out
@@ -18,11 +18,11 @@ get() {
     rm -rf out
 }
 
-get http://www.fontsquirrel.com/fonts/download/Anonymous
-get http://www.fontsquirrel.com/fonts/download/BPmono
-get http://www.fontsquirrel.com/fonts/download/MonospaceTypewriter
-get http://www.fontsquirrel.com/fonts/download/cuprum
-get http://www.fontsquirrel.com/fonts/download/jura1
-get http://www.fontsquirrel.com/fonts/download/lekton
-get http://www.fontsquirrel.com/fonts/download/oxygen-mono
-get http://www.fontsquirrel.com/fonts/download/pt-mono
+from_zip http://www.fontsquirrel.com/fonts/download/Anonymous
+from_zip http://www.fontsquirrel.com/fonts/download/BPmono
+from_zip http://www.fontsquirrel.com/fonts/download/MonospaceTypewriter
+from_zip http://www.fontsquirrel.com/fonts/download/cuprum
+from_zip http://www.fontsquirrel.com/fonts/download/jura1
+from_zip http://www.fontsquirrel.com/fonts/download/lekton
+from_zip http://www.fontsquirrel.com/fonts/download/oxygen-mono
+from_zip http://www.fontsquirrel.com/fonts/download/pt-mono

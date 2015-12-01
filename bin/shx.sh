@@ -23,6 +23,7 @@ if [ "$BASH_VERSION" ]; then
     unset BASH_ENV
 fi
 
+
 # ls
 # ----------------------------------------
 
@@ -36,6 +37,7 @@ alias lr='ll -R'
 alias lt='ll -tr'
 alias lu='lt -u'
 alias lx='ll -XB'
+
 
 # man
 # ----------------------------------------
@@ -54,6 +56,7 @@ alias man-all-1p='man-all -s 1p'
 alias man-all-3p='man-all -s 3p'
 alias man-all-posix='man-all -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
 
+
 # ack / ag / grep
 # ----------------------------------------
 
@@ -65,12 +68,14 @@ alias gi='g -i'
 alias gr="g -r --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exclude='*~'"
 alias gri='gr -i'
 
+
 # python
 # ----------------------------------------
 
 alias py='python'
 alias ipy='ipython'
 alias q='deactivate'
+
 
 # pyenv
 # ----------------------------------------
@@ -82,6 +87,7 @@ if [ -d "$PYENV_ROOT" ]; then
         . "$PYENV_ROOT/completions/pyenv.zsh"
     fi
 fi
+
 
 # docker
 # ----------------------------------------
@@ -113,15 +119,18 @@ dkstop() {
     docker ps -aq | xargs -r docker stop
 }
 
+
 # java
 # ----------------------------------------
 
 alias java-info='java -XshowSettings:all -version'
 
+
 # groovy
 # ----------------------------------------
 
 alias groovy-grape-verbose='groovy -Dgroovy.grape.report.downloads=true'
+
 
 # maven
 # ----------------------------------------
@@ -139,67 +148,67 @@ mvn-archetype-generate() {
     mvn archetype:generate -Dfilter="$1"
 }
 
+
 # gradle
 # ----------------------------------------
 
 alias gradle-tasks='gradle -q tasks --all'
 alias gradle-dependencies='gradle -q dependencies'
 
+
 # node
 # ----------------------------------------
 
 alias npmg='npm -g'
 
+
 # pacman
 # ----------------------------------------
 
-# finds what package provides file or directory
+# Finds what package provides file or directory
 paco() {
     [ $# -eq 0 ] && return 2
-    local p; p=$(realpath -s "$1")
-    pacman -Qo "$p"
-    [ -L "$p" ] && pacman -Qo "$(realpath "$1")"
+    pacman -Qo -- "$@"
 }
 
-# finds what package provides command
+# Finds what package provides command
 pacoc() {
     [ $# -eq 0 ] && return 2
     ptha "$1" | xargs -d '\n' -r pacman -Qo
 }
 
-# files provided by package
+# Files provided by package
 pacl() {
     [ $# -eq 0 ] && return 2
-    pacman -Qql "$1"
+    pacman -Qql -- "$1"
 }
 
-# target 'depends on'
+# Target's 'depends on'
 pacd() {
     [ $# -eq 0 ] && return 2
     expac -l '\n' %D "$1"
 }
 
-# target 'provides'
+# Target's 'provides'
 pacp() {
     [ $# -eq 0 ] && return 2
     expac -l '\n' %P "$1"
 }
 
-# target 'required by' (what depends on target)
+# Target's 'required by' (what depends on target)
 pacw() {
     [ $# -eq 0 ] && return 2
     expac -l '\n' %N "$1"
 }
 
-# target detailed info
+# Target's detailed info
 paci() {
     [ $# -eq 0 ] && return 2
-    local p; p=$(expac %n "$1")
-    [ ! "$p" ] && return 1
-    pacman -Qii "$p"
+    pacman -Qii -- "$@"
 }
 
-# other
+
+# Other
 # ----------------------------------------
 
 alias ..='cd ..'
@@ -226,7 +235,8 @@ alias llib='tree ~/.local/lib'
 alias lsblk='lsblk -o NAME,KNAME,MAJ:MIN,ROTA,RM,RO,TYPE,SIZE,FSTYPE,MOUNTPOINT,MODEL'
 alias lsdiff='lsdiff -s'
 alias ltime='date +%T'
-alias mpv-debug='command mpv --msg-level=all=trace'
+alias mpv-debug='command mpv --msg-level=all=debug'
+alias mpv-verbose='command mpv --msg-level=all=v'
 alias mutt-debug='mutt -d 2'
 alias mv='mv -i'
 alias od='od -Ax -tc -tx1 -v -w16'
@@ -242,6 +252,7 @@ alias ping-mtu='ping -M do -s 2000'
 alias psa='ps auxf'
 alias pulse-streams='pacmd list-sink-inputs'
 alias qiv='qiv -uLtiGfl --vikeys'
+alias rax='rax2'
 alias rm='rm -I --one-file-system'
 alias sd='sudo systemctl'
 alias sdu='systemctl --user'
@@ -252,15 +263,16 @@ alias sudo0='sudo -K && sudo -k'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias watch='watch -n 1 -t -c'
 alias wtc='curl -sL http://whatthecommit.com/index.txt'
+alias youtube-dl-stdout='youtube-dl -o -'
 
-# simple alarm (defaults to 5 minutes)
+# Simple alarm (defaults to 5 minutes)
 a() {
     local d=${1:-5m}
     printf '%s ... alarm after %s\n' "$(\date -R)" "$d"
     sleep "${1:-5m}"
     echo 'Beep...'
     notify-send -u critical 'Beep...' "Time's up!"
-    mpv --loop inf /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
+    mpv --loop=10 --keep-open=no /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
 }
 
 base() { export BASEDIR=${1:-$PWD}; }
@@ -289,7 +301,7 @@ lsusb() {
 }
 
 tree() {
-    set -- --dirsfirst -a -I '.git|.svn' --noreport -x
+    set -- --dirsfirst -a -I '.git|.svn' --noreport -x "$@"
     if [ -t 1 ]; then
         pgx command tree -C "$@"
     else
@@ -305,6 +317,14 @@ mplayer() { command mplayer -really-quiet -msglevel all=1 "$@" 2>/dev/null; }
 mpv() { command mpv --really-quiet --msg-level=all=error "$@" 2>/dev/null; }
 smplayer() { command smplayer "$@" >/dev/null 2>&1; }
 vlc() { command vlc "$@" 2>/dev/null; }
+
+xrandr() {
+    if [ $# -eq 0 -a -t 1 ]; then
+        pgx command xrandr --properties --verbose
+    else
+        command xrandr "$@"
+    fi
+}
 
 xserver-log() {
     local dispno; dispno=${1:-$(xserverq dispno)}
@@ -436,6 +456,7 @@ reload() {
         . ~/bin/shx.sh
     fi
 }
+
 
 # Bourne-like shell only
 # ----------------------------------------
