@@ -131,7 +131,7 @@ myConfig = defaultConfig
         spawn "xsession-hook startup"
 
     myLogHook = ewmhDesktopsLogHook
-                <+> updatePointer (Relative 0.5 0.5)
+                <+> updatePointer (0.5, 0.5) (0, 0)
 
     myHandleEventHook = ewmhDesktopsEventHook
                         <+> docksEventHook
@@ -154,6 +154,7 @@ myConfig = defaultConfig
                        , appName =? "vlc" -?> doShiftView "9"
                        , appName =? "zathura" -?> doShiftView "8"
                        , className =? "Firefox (default)" -?> doShiftView "3"
+                       , className =? "Gxmessage" -?> doFloat
                        , className =? "MPlayer" -?> doShiftView "9"
                        , className =? "Tor Browser" -?> doShiftView "3"
                        , className =? "jetbrains-idea" -?> doShiftView "1"
@@ -359,7 +360,9 @@ myConfig = defaultConfig
         , ("M-; M-l", spawn "sudo lockx")
         , ("M-; M-t", spawn "trackpoint-wheel-toggle")
         , ("M-; M-w", spawn "wifi-toggle")
-        , ("M-S-b", spawn "backlight-toggle")
+        , ("M-C-M1-b", spawn "backlight0 prev")
+        , ("M-C-b", spawn "backlight0 next")
+        , ("M-S-b", spawn "backlight next")
 
         , ("M-; M-a", spawn "b http://apod.nasa.gov/")
         , ("M-; M-i", spawn "notify -u low \"$(status)\"")
@@ -375,12 +378,15 @@ myConfig = defaultConfig
         , ("<XF86AudioNext>", spawn "playctl next")
         , ("<XF86AudioPause>", spawn "playctl pause")
         , ("<XF86AudioPlay>", spawn "playctl play-pause")
-        , ("<XF86AudioPrev>", spawn "playctl previous")
+        , ("<XF86AudioPrev>", spawn "playctl prev")
         , ("<XF86AudioRaiseVolume>", spawn "audio playback_up")
         , ("<XF86AudioStop>", spawn "playctl stop")
+        , ("<XF86MonBrightnessDown>", spawn "backlight0 prev")
+        , ("<XF86MonBrightnessUp>", spawn "backlight0 next")
+        , ("<XF86ScreenSaver>", spawn "sudo lock")
+
         , ("<XF86Display>", spawn "xscreen && xmonad --restart")
         , ("<XF86Launch1>", spawn myTerminal)
-        , ("<XF86ScreenSaver>", spawn "sudo lockx")
         , ("<XF86WebCam>", spawn "selfie")
         ]
 

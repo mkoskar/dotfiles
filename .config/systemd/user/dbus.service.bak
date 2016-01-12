@@ -1,9 +1,0 @@
-[Unit]
-Description=D-Bus Session Message Bus service
-Requires=dbus.socket
-
-[Service]
-Type=simple
-SyslogIdentifier=dbus
-ExecStart=/bin/bash -lc 'dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation'
-Restart=on-failure

@@ -1,5 +1,5 @@
 [Unit]
-Description=apod timer
+Description=%N timer
 
 [Timer]
 OnCalendar=8:00

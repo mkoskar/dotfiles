@@ -9,6 +9,7 @@
 case $- in *i*) ;; *) return ;; esac
 
 . ~/bin/shx.sh
+. ~/bin/shrc-pre.sh
 
 HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
 HISTSIZE=500
@@ -77,101 +78,6 @@ unsetopt hup
 alias help='run-help'
 
 
-# Completion
-# ----------------------------------------
-
-compinit
-
-zstyle ':completion:*' completer _complete _match
-zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' matcher-list 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*' squeeze-slashes true
-zstyle ':completion:*:*:*:*:*' menu select
-zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
-zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
-zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
-zstyle ':completion:*:-tilde-:*' group-order named-directories path-directories users expand
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*:default' list-prompt '%S%M matches%s'
-zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
-zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
-zstyle ':completion:*:history-words' list false
-zstyle ':completion:*:history-words' menu yes
-zstyle ':completion:*:history-words' remove-all-dups yes
-zstyle ':completion:*:history-words' stop yes
-zstyle ':completion:*:manuals' separate-sections true
-zstyle ':completion:*:manuals.(^1*)' insert-sections true
-zstyle ':completion:*:match:*' original only
-zstyle ':completion:*:matches' group 'yes'
-zstyle ':completion:*:messages' format ' %F{purple}-- %d --%f'
-zstyle ':completion:*:options' auto-description '%d'
-zstyle ':completion:*:options' description 'yes'
-zstyle ':completion:*:warnings' format ' %F{yellow}-- no matches found --%f'
-zstyle ':completion::complete:*' cache-path "${ZDOTDIR:-$HOME}/.zcompcache"
-zstyle ':completion::complete:*' use-cache on
-
-zstyle ':completion::*:(-command-|export):*' fake-parameters ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}
-
-zstyle -e ':completion:*:hosts' hosts 'reply=(
-    ${=${=${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) 2>/dev/null)"}%%[#| ]*}//\]:[0-9]*/ }//,/ }//\[/ }
-    ${=${(f)"$(cat /etc/hosts(|)(N) <<(ypcat hosts 2>/dev/null))"}%%\#*}
-    ${=${${${${(@M)${(f)"$(cat ~/.ssh/config 2>/dev/null)"}:#Host *}#Host }:#*\**}:#*\?*}}
-)'
-
-zstyle ':completion:*:(rm|kill|diff):*' ignore-line other
-zstyle ':completion:*:rm:*' file-patterns '*:all-files'
-
-zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm -w'
-zstyle ':completion:*:*:kill:*' force-list always
-zstyle ':completion:*:*:kill:*' insert-ids single
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;36=0=01'
-
-zstyle ':completion:*:(scp|rsync):*' group-order users files all-files hosts-domain hosts-host hosts-ipaddr
-zstyle ':completion:*:(scp|rsync):*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-domain' ignored-patterns '<->.<->.<->.<->' '^[-[:alnum:]]##(.[-[:alnum:]]##)##' '*@*'
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*(.|:)*' loopback ip6-loopback localhost ip6-localhost broadcasthost
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<->.<->.<->|(|::)([[:xdigit:].]##:(#c,2))##(|%*))' '127.0.0.<->' '255.255.255.255' '::1' 'fe80::*'
-zstyle ':completion:*:ssh:*' group-order users hosts-domain hosts-host hosts-ipaddr
-zstyle ':completion:*:ssh:*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
-
-compctl -F fn
-compctl -FBmwa i
-compctl -f paco
-compctl -k "(10m 15m 20m 25m 30m)" a
-compctl -m on
-compctl -m pacoc
-compctl -m pgx
-compctl -m pth
-compctl -m ptha
-compctl -m rep
-compctl -m torsocks
-compctl -m xrun
-compctl -m xrun0
-compctl -v v
-
-function _pacl {
-    local -a packages
-    read -cA words
-    if [ "${#words}" -eq 2 ]; then
-        packages=(/var/lib/pacman/local/"$1"*(/))
-    fi
-    reply=(${${packages#/var/lib/pacman/local/}%-*-*})
-}
-compctl -K _pacl pacl pacd pacp pacw paci pkgmark
-
-function _mkvirtualenv-pyenv {
-    local -a versions
-    read -cA words
-    if [ "${#words}" -eq 2 ]; then
-        versions=($PYENV_ROOT/versions/"$1"*(/))
-    fi
-    reply=(${${versions#$PYENV_ROOT/versions/}%-*-*})
-}
-compctl -K _mkvirtualenv-pyenv mkvirtualenv-pyenv
-
-
 # Window Title
 # ----------------------------------------
 
@@ -187,7 +93,7 @@ add-zsh-hook precmd set-window-title
 # ----------------------------------------
 
 KEYTIMEOUT=1
-WORDCHARS='*?_-.[]~&;!#$%^(){}<>'
+WORDCHARS='!#$%&()*-;<>?[]^_{}~'
 ZLE_SPACE_SUFFIX_CHARS='&|'
 
 PROMPT='$__vimode%?$__statstr:${BASEDIR:+(${BASEDIR##*/}):}%1~%(!.#.$) '
@@ -330,6 +236,104 @@ bindkey -M vicmd -s '^Xl' 'a!!:$\e'
 bindkey -M vicmd -s '^Xs' 'a!!:gs/'
 
 
+# Completion
+# ----------------------------------------
+
+compinit
+
+zstyle ':completion:*' completer _complete _match
+zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' matcher-list 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' squeeze-slashes true
+zstyle ':completion:*:*:*:*:*' menu select
+zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
+zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
+zstyle ':completion:*:-tilde-:*' group-order named-directories path-directories users expand
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
+zstyle ':completion:*:history-words' list false
+zstyle ':completion:*:history-words' menu yes
+zstyle ':completion:*:history-words' remove-all-dups yes
+zstyle ':completion:*:history-words' stop yes
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals.(^1*)' insert-sections true
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:matches' group 'yes'
+zstyle ':completion:*:messages' format ' %F{purple}-- %d --%f'
+zstyle ':completion:*:options' auto-description '%d'
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:warnings' format ' %F{yellow}-- no matches found --%f'
+zstyle ':completion::complete:*' cache-path "${ZDOTDIR:-$HOME}/.zcompcache"
+zstyle ':completion::complete:*' use-cache on
+
+zstyle ':completion::*:(-command-|export):*' fake-parameters ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}
+
+zstyle -e ':completion:*:hosts' hosts 'reply=(
+    ${=${=${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) 2>/dev/null)"}%%[#| ]*}//\]:[0-9]*/ }//,/ }//\[/ }
+    ${=${(f)"$(cat /etc/hosts(|)(N) <<(ypcat hosts 2>/dev/null))"}%%\#*}
+    ${=${${${${(@M)${(f)"$(cat ~/.ssh/config 2>/dev/null)"}:#Host *}#Host }:#*\**}:#*\?*}}
+)'
+
+zstyle ':completion:*:(rm|kill|diff):*' ignore-line other
+zstyle ':completion:*:rm:*' file-patterns '*:all-files'
+
+zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm -w'
+zstyle ':completion:*:*:kill:*' force-list always
+zstyle ':completion:*:*:kill:*' insert-ids single
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;36=0=01'
+
+zstyle ':completion:*:(scp|rsync):*' group-order users files all-files hosts-domain hosts-host hosts-ipaddr
+zstyle ':completion:*:(scp|rsync):*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts-domain' ignored-patterns '<->.<->.<->.<->' '^[-[:alnum:]]##(.[-[:alnum:]]##)##' '*@*'
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*(.|:)*' loopback ip6-loopback localhost ip6-localhost broadcasthost
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<->.<->.<->|(|::)([[:xdigit:].]##:(#c,2))##(|%*))' '127.0.0.<->' '255.255.255.255' '::1' 'fe80::*'
+zstyle ':completion:*:ssh:*' group-order users hosts-domain hosts-host hosts-ipaddr
+zstyle ':completion:*:ssh:*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
+
+compctl -F fn
+compctl -FBmwa i
+compctl -f paco
+compctl -k "(10m 15m 20m 25m 30m)" a
+compctl -m on
+compctl -m pacoc
+compctl -m pgx
+compctl -m pth
+compctl -m ptha
+compctl -m rep
+compctl -m torsocks
+compctl -v v
+
+function _pacl {
+    local -a packages
+    read -cA words
+    if [ "${#words}" -eq 2 ]; then
+        packages=(/var/lib/pacman/local/"$1"*(/))
+    fi
+    reply=(${${packages#/var/lib/pacman/local/}%-*-*})
+}
+compctl -K _pacl pacl pacd pacp pacw paci pkgmark
+
+function _mkvirtualenv-pyenv {
+    local -a versions
+    read -cA words
+    if [ "${#words}" -eq 2 ]; then
+        versions=($PYENV_ROOT/versions/"$1"*(/))
+    fi
+    reply=(${${versions#$PYENV_ROOT/versions/}%-*-*})
+}
+compctl -K _mkvirtualenv-pyenv mkvirtualenv-pyenv
+
+function _systemd-dot {
+    reply=(${${(f)"$(systemctl --full --no-legend --no-pager list-units --all)"}%% *})
+}
+compctl -K _systemd-dot systemd-dot
+
+
 # Plugin: zsh-syntax-highlighting
 # ----------------------------------------
 
@@ -378,4 +382,4 @@ unset __src
 
 # ----------------------------------------
 
-. ~/bin/login.sh
+. ~/bin/shrc-post.sh

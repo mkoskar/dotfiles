@@ -9,6 +9,35 @@ set -eu
 
 prgname=${0##*/}
 
+_usage() {
+    cat <<-EOF
+	usage: $prgname [cmd | dispno | name | pid]
+
+	Get information about X server (based on DISPLAY environment variable).
+
+	  cmd     - get command-line
+	  dispno  - get display number
+	  name    - get command name
+	  pid     - get PID
+	EOF
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+while getopts 'h' opt; do
+    case $opt in
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# ----------------------------------------
+
 xserver_dispno() {
     xset q &>/dev/null || exit 1
     [[ "$DISPLAY" =~ ^:([0-9]+)(\.[0-9]+)?$ ]] || exit 1
@@ -46,14 +75,6 @@ case ${1-} in
         xserver_pid
         ;;
     *)
-        cat >&2 <<-EOF
-		usage: $prgname cmd     - get command-line
-		       $prgname dispno  - get display number
-		       $prgname name    - get command name
-		       $prgname pid     - get PID
-
-		Get information about X server (based on DISPLAY environment variable).
-		EOF
-        exit 2
+        usage_err
         ;;
 esac

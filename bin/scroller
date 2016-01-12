@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Scrolls through arguments or stdin lines if none arguments were passed.
+# Scrolls through arguments or stdin lines if no arguments were passed.
 # Current item is printed in the status line on stderr and send to stdout
 # for further processing.
 #

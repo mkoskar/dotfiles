@@ -180,16 +180,16 @@ nnoremap <silent> <M-0> :tablast<CR>
 
 if !has('nvim')
     set nottybuiltin
+    set t_ut=
 endif
 
 set title
-set t_ut=
 
 
 " Using the Mouse
 " ----------------------------------------
 
-set mouse=a
+set mouse=
 
 noremap <MiddleMouse> <Nop>
 noremap <2-MiddleMouse> <Nop>
@@ -508,19 +508,11 @@ function! QfNewest(prefix) abort
 endfunction
 
 function! QfOlder(prefix) abort
-    try
-        exec a:prefix.'older'
-    catch /:E380:/
-        redraw | call QfNewest(a:prefix)
-    endtry
+    try | exec a:prefix.'older' | catch | endtry
 endfunction
 
 function! QfNewer(prefix) abort
-    try
-        exec a:prefix.'newer'
-    catch /:E381:/
-        redraw | call QfOldest(a:prefix)
-    endtry
+    try | exec a:prefix.'newer' | catch | endtry
 endfunction
 
 function! QfSetup() abort
@@ -559,10 +551,10 @@ endfunction
 
 " {{{ Add single plugin using 'pathogen'
 
-function! s:Plugin(name) abort
-    call pathogen#surround('~/.vim/bundle/'.a:name)
+function! s:Plugin(bang, name) abort
+    call pathogen#surround((empty(a:bang) ? '~/.vim/bundle/' : '').a:name)
 endfunction
-command! -nargs=1 Plugin call s:Plugin(<args>)
+command! -bang -nargs=1 Plugin call s:Plugin(<q-bang>, <args>)
 
 " }}}
 
@@ -646,7 +638,7 @@ function! Preserve(cmd) abort
     let window_pos = getpos('.')
     call setpos('.', cursor_pos)
     try
-        exec 'keepalt keepjumps keepmarks keeppatterns '.a:cmd
+        call TryCatch('keepalt keepjumps keepmarks keeppatterns '.a:cmd)
     finally
         " restore
         call setpos('.', window_pos)
@@ -886,4 +878,4 @@ augroup vimrc_base
 augroup END
 endif
 
-execute VimrcFinalize()
+exec VimrcFinalize()

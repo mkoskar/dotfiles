@@ -13,4 +13,4 @@ output() {
     done
 }
 
-output | PAGER_TITLE='Words Of Wisdom' pg -c 'set ft=rst fdm=marker'
+output | PAGER_TITLE='Words Of Wisdom' PAGER_EX='set ft=rst fdm=marker' pg0

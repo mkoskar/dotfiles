@@ -97,6 +97,7 @@ if [[ $prgname = 'xx' ]]; then
 
     xauthset "$dispno"
 
+    unset XSESSION
     xinit ~/bin/xsession "$@" -- \
         /usr/bin/Xephyr ":$dispno" \
         -nolisten tcp -auth "$xauthf" -dpi 96 -resizeable \

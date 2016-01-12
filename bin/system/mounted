@@ -9,10 +9,27 @@ set -eu
 
 prgname=${0##*/}
 
-if (( ! $# )); then
-    echo "usage: $prgname mountpoint [device] [type] [option]" >&2
-    exit 2
-fi
+_usage() {
+    echo "usage: $prgname mountpoint [device] [type] [option]"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+while getopts 'h' opt; do
+    case $opt in
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+(( $# )) || usage_err
+
+# ----------------------------------------
 
 _mountpoint=$(realpath -- "$1")
 _device=${2:-.*}

@@ -25,7 +25,9 @@ while getopts 'n:h' opt; do
 done
 shift $((OPTIND-1))
 
-(( ! $# )) && set -- shell
+(( $# )) || set -- shell
+
+# ----------------------------------------
 
 bin=${TERMBIN:-urxvt}
 name=${name:-term}

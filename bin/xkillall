@@ -5,7 +5,12 @@ set -eu -o pipefail
 prgname=${0##*/}
 
 _usage() {
-    echo "usage: $prgname [-f] pattern"
+    cat <<-EOF
+	usage: $prgname [-f] pattern
+
+	Kill processes whose names (or command line if -f is specified) exactly
+	match the pattern and have a matching DISPLAY environment variable set.
+	EOF
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
@@ -26,7 +31,7 @@ while getopts 'fh' opt; do
 done
 shift $((OPTIND-1))
 
-(( ! $# )) && usage_err
+(( $# )) || usage_err
 
 xpgrep_args=()
 (( $fopt )) && xpgrep_args+=(-f)

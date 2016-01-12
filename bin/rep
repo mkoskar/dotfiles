@@ -77,6 +77,8 @@ shift $((OPTIND-1))
 
 (( $# )) || usage_err
 
+# ----------------------------------------
+
 delay=${dopt:--1}
 term_delta=${Topt:-400}
 
@@ -106,10 +108,12 @@ if (( ! inline )); then
     trap cleanup EXIT
 fi
 
+declare -i long=
 while true; do
     (( ! inline )) && tput rc
     (( ! quiet )) && printf "> started: %s${ti_el}\n" "$(date +%T)" >&2
-    (( term )) && t_begin=$(date +%s.%N)
+    (( ! inline && long )) && tput ed
+    t_begin=$(date +%s.%N)
 
     if [[ $output ]]; then
         bashx -c "$(shell-escape "$@")" "$redir" "$output" 2>&1
@@ -117,8 +121,10 @@ while true; do
         bashx -c "$(shell-escape "$@")" |& sed "s/\$/$ti_el/"
     fi
 
+    t_end=$(date +%s.%N)
+    (( $(bc -l <<<"($t_end-$t_begin) > 1") == 1 )) && long=1
+
     if (( term )); then
-        t_end=$(date +%s.%N)
         (( $(bc -l <<<"($t_end-$t_begin) < $term_delta/1000") == 1 )) && break
     fi
 

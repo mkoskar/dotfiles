@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+levels=(40 70 100)
+if [[ $prgname = 'backlight0' ]]; then
+    levels=(10 20 30 40 50 60 70 80 90 100)
+fi
+
+_usage() {
+    cat <<-EOF
+	usage: $prgname [prev | next]
+
+	Cycle over predefined backlight levels: ${levels[@]}
+	EOF
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+while getopts 'h' opt; do
+    case $opt in
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+(( $# )) || set -- next
+
+# ----------------------------------------
+
+src='/sys/class/backlight/acpi_video0/brightness'
+
+declare -i val prev next
+val=$(<"$src")
+prev="${levels[-1]}"
+next="${levels[0]}"
+
+for level in "${levels[@]}"; do
+    if ((level < val)); then
+        prev="$level"
+        continue
+    fi
+    if ((level > val)); then
+        next="$level"
+        break
+    fi
+done
+
+case $1 in
+    prev)
+        val=$prev
+        ;;
+    next)
+        val=$next
+        ;;
+    *)
+        usage_err
+        ;;
+esac
+echo "$val" >"$src"
+
+status-osd backlight

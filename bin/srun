@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+_usage() {
+    cat <<-EOF
+	usage: $prgname [-n name] [-r] [-x] cmd [arg]...
+
+	Execute 'cmd [arg]...' as transient service inside user's service manager.
+
+	  -n name   - name of the target (default: cmd)
+	  -r        - stop target first
+	  -x        - target is \$DISPLAY specific
+	EOF
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+declare -i ropt= xopt=
+while getopts 'n:rxh' opt; do
+    case $opt in
+        n)
+            name=$OPTARG
+            ;;
+        r)
+            ropt=1
+            ;;
+        x)
+            xopt=1
+            ;;
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+(( $# )) || usage_err
+
+name=${name:-$1}
+if (( $xopt )); then
+    name="$name$DISPLAY"
+fi
+name="$name.service"
+
+sdu() { systemctl --user "$@"; }
+
+if sdu --quiet is-active "$name"; then
+    (( $ropt )) || exit 0
+    sdu stop "$name"
+elif sdu --quiet is-failed "$name"; then
+    sdu reset-failed "$name"
+fi
+
+systemd-run --user --no-ask-password \
+            --setenv=DISPLAY="$DISPLAY" \
+            --unit="$name" -- "$@"

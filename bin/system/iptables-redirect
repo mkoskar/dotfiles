@@ -34,6 +34,8 @@ shift $((OPTIND-1))
 
 (( $# != 2 )) && usage_err
 
+# ----------------------------------------
+
 IFS=':' read -ra from <<<"$1"
 declare -i from_len=${#from[@]}
 

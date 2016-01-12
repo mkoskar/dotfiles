@@ -25,9 +25,9 @@ status_audio() {
 }
 
 status_backlight() {
-    local src val
-    src='/sys/class/backlight/acpi_video0'
-    printf -v val '%s / %s' "$(<"$src/brightness")" "$(<"$src/max_brightness")"
+    local dev val
+    dev='/sys/class/backlight/acpi_video0'
+    printf -v val '%s / %s' "$(<"$dev/brightness")" "$(<"$dev/max_brightness")"
     printf 'backlight: %s\n' "$val"
 }
 

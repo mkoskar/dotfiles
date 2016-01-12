@@ -4,10 +4,27 @@ set -eu
 
 prgname=${0##*/}
 
-if (( ! $# )); then
-    echo "usage: $prgname block-device-name (e.g., sda, dm-0)" >&2
-    exit 2
-fi
+_usage() {
+    echo "usage: $prgname block-device-name (e.g., sda, dm-0)"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+while getopts 'h' opt; do
+    case $opt in
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+(( $# )) || usage_err
+
+# ----------------------------------------
 
 # teardown a single device by node name
 #   $1: device node name e.g., md0, dm-2

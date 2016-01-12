@@ -156,7 +156,7 @@ if [[ ! $session ]]; then
     session=$(sed -r "s,^$HOME(/|$),~\1," <<<"$PWD")
 fi
 
-(exec 8>"$XDG_RUNTIME_DIR/s.lck"
+(exec 8>"$XDG_RUNTIME_DIR/s-lock"
 if ! flock -w 30 8; then
     exit 3
 fi

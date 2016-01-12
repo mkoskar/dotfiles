@@ -38,4 +38,4 @@ main() {
 }
 
 # execute explicitly in subshell to workaround not firing trap
-( main ) | PAGER_TITLE=${cmd[@]} pg -c 'set ft=diff'
+( main ) | PAGER_TITLE=${cmd[@]} PAGER_EX='set ft=diff' pg0

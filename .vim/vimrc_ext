@@ -4,7 +4,6 @@ let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 source ~/.vim/vimrc_base
 
 "Plugin 'easytags'
-
 Plugin 'NERD_tree'
 Plugin 'bufexplorer'
 Plugin 'ctrlp'
@@ -14,10 +13,12 @@ Plugin 'easymotion'
 Plugin 'emmet'
 Plugin 'exchange'
 Plugin 'filebeagle'
+Plugin 'fzf'
 Plugin 'gundo'
 Plugin 'minibufexpl'
 Plugin 'misc'
 Plugin 'multiple_cursors'
+Plugin 'neomake'
 Plugin 'repeat'
 Plugin 'speeddating'
 Plugin 'surround'
@@ -27,6 +28,7 @@ Plugin 'tcomment'
 Plugin 'unimpaired'
 Plugin 'unite'
 Plugin 'visualrepeat'
+Plugin! '~/opt/fzf'
 
 " {{{
 
@@ -201,6 +203,7 @@ augroup vimrc_ext
         \  unmap <buffer> <BS>
         \| nmap <buffer> <silent> u <Plug>(FileBeagleBufferFocusOnPrevious)
 
+    autocmd FileType filebeagle call BufSpecialSetup() | setl number
     autocmd FileType nerdtree call BufSpecialSetup()
     autocmd FileType tagbar call BufSpecialSetup()
 
@@ -209,4 +212,4 @@ endif
 
 " }}}
 
-execute VimrcFinalize()
+exec VimrcFinalize()

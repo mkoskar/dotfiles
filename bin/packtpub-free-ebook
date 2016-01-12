@@ -3,7 +3,7 @@
 
 from cgi import parse_header
 from sys import stdin, stderr, exit
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 import argparse
 import re
 import textwrap
@@ -74,7 +74,11 @@ try:
         raise Exception('GET {} ({})'.format(down_url, resp.status_code))
 
     value, params = parse_header(resp.headers['Content-Disposition'])
-    filename = params['filename'].replace(' ', '_')
+    filename = params.get('filename')
+    if not filename:
+        filename = urlparse(resp.request.url).path.split('/')[-1]
+        filename = re.match('(\d+-)?(.*)', filename).group(2)
+    filename = filename.replace(' ', '_')
 
     with open(filename, 'wb') as f:
         for chunk in resp.iter_content(1024):

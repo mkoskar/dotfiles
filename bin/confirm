@@ -1,18 +1,34 @@
 #!/usr/bin/env bash
-#
-# Simple confirmation dialog.
-#
-# :Copyright: (c) 2014 Miroslav Koskar <http://mkoskar.com/>
-# :License: BSD 2-Clause
 
 set -eu
 
 prgname=${0##*/}
 
-if (( ! $# )); then
-    echo "usage: $prgname prompt [default]" >&2
-    exit 2
-fi
+_usage() {
+    cat <<-EOF
+	usage: $prgname prompt [default]
+
+	Simple confirmation dialog.
+	EOF
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+while getopts 'h' opt; do
+    case $opt in
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+(( $# )) || usage_err
+
+# ----------------------------------------
 
 prompt=$1
 default=${2-}

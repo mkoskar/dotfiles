@@ -2,9 +2,9 @@
 
 set -eu
 
-sdu() { systemctl --user "$@"; }
-
 prgname=${0##*/}
+
+sdu() { systemctl --user "$@"; }
 
 case $prgname in
     mbsync-on)

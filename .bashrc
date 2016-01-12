@@ -9,17 +9,7 @@
 case $- in *i*) ;; *) return ;; esac
 
 . ~/bin/shx.sh
-
-shopt -s autocd checkjobs checkwinsize cmdhist dotglob gnu_errfmt histappend \
-         histreedit histverify lithist no_empty_cmd_completion
-
-bind -m vi-insert   '"\C-e": shell-expand-line'
-bind -m vi-command  '"\C-e": shell-expand-line'
-bind -m vi-insert   '"\ee":  history-and-alias-expand-line'
-bind -m vi-command  '"\ee":  history-and-alias-expand-line'
-bind -m vi-insert   '"\ei":  complete-filename'
-bind -m vi-insert   '"\e\t": dynamic-complete-history'
-bind -m vi-insert   '"\eq":  dabbrev-expand'
+. ~/bin/shrc-pre.sh
 
 HISTCONTROL='ignorespace:erasedups'
 HISTFILESIZE=5000
@@ -41,6 +31,20 @@ __prompt_command() {
 }
 PROMPT_COMMAND='__prompt_command'
 
+shopt -s autocd checkjobs checkwinsize cmdhist dotglob gnu_errfmt histappend \
+         histreedit histverify lithist no_empty_cmd_completion
+
+# some can't detect editing-mode set in ~/.inputrc early enough (e.g., fzf)
+set -o vi
+
+bind -m vi-insert   '"\C-e": shell-expand-line'
+bind -m vi-command  '"\C-e": shell-expand-line'
+bind -m vi-insert   '"\ee":  history-and-alias-expand-line'
+bind -m vi-command  '"\ee":  history-and-alias-expand-line'
+bind -m vi-insert   '"\ei":  complete-filename'
+bind -m vi-insert   '"\e\t": dynamic-complete-history'
+bind -m vi-insert   '"\eq":  dabbrev-expand'
+
 complete -o nospace -A function fn
 complete -o nospace -W '10m 15m 20m 25m 30m' a
 complete -o nospace -c i
@@ -51,8 +55,6 @@ complete -o nospace -c pth
 complete -o nospace -c ptha
 complete -o nospace -c rep
 complete -o nospace -c torsocks
-complete -o nospace -c xrun
-complete -o nospace -c xrun0
 complete -o nospace -f paco
 complete -o nospace -v v
 
@@ -65,12 +67,6 @@ _pacl() {
 }
 complete -o nospace -F _pacl pacl pacd pacp pacw paci pkgmark
 
-__virtualenvwrapper_load() {
-    virtualenvwrapper_load
-    complete -o default -o nospace -F _virtualenvs wo
-}
-complete -o nospace -F __virtualenvwrapper_load wo
-
 # ----------------------------------------
 
-. ~/bin/login.sh
+. ~/bin/shrc-post.sh

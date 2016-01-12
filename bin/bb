@@ -127,6 +127,8 @@ done <<-EOF
     perf            b http://www.brendangregg.com/perf.html
     perl            b http://perldoc.perl.org/
     pkg             sr archpkg {}
+    playlist        playlist {}
+    playlist-1      playlist 1
     posix           b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/index.html
     posix-defs      b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/contents.html
     posix-env       b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap08.html

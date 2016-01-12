@@ -15,4 +15,4 @@ nnoremap <silent> <C-_>i :lcs find i ^<C-R>=expand('<cfile>')<CR>$<CR>
 nnoremap <silent> <C-_>s :lcs find s <C-R>=expand('<cword>')<CR><CR>
 nnoremap <silent> <C-_>t :lcs find t <C-R>=expand('<cword>')<CR><CR>
 
-execute VimrcFinalize()
+exec VimrcFinalize()

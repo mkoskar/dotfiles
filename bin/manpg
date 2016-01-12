@@ -1,16 +1,1 @@
-#!/usr/bin/env bash
-#
-# Wrapper script to use Vim as a man(1) pager.
-# Install by running "export MANPAGER='manpg'".
-#
-# :Copyright: (c) 2013 Miroslav Koskar <http://mkoskar.com/>
-# :License: BSD 2-Clause
-
-set -e -o pipefail
-
-if [[ -t 0 ]]; then
-    echo 'stdin is a tty' >&2
-    exit 1
-fi
-
-col -b | PAGER_TITLE=$MAN_PN pg -c 'set ft=man'
+pg

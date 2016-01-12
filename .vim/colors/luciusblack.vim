@@ -8,8 +8,8 @@ let colors_name = 'luciusblack'
 
 set background=dark
 
-hi Normal           guifg=#aeaeae       guibg=#050505
-hi Normal           ctermfg=7           ctermbg=0
+hi Normal           guifg=#aeaeae       guibg=#000000
+hi Normal           ctermfg=7           ctermbg=16
 
 hi Comment          guifg=#909090                           gui=NONE
 hi Comment          ctermfg=245                             cterm=NONE
@@ -97,8 +97,8 @@ hi IncSearch        guifg=#eeeeee                           gui=reverse
 hi IncSearch        ctermfg=255                             cterm=reverse
 
 " Last search pattern (hlsearch), also used for quickfix
-hi Search                               guibg=#ffaf00       gui=NONE
-hi Search                               ctermbg=214         cterm=NONE
+hi Search           guifg=bg            guibg=#ffaf00       gui=NONE
+hi Search           ctermfg=bg          ctermbg=214         cterm=NONE
 
 
 " UI
@@ -239,14 +239,3 @@ hi ColorColumn      ctermfg=NONE        ctermbg=236         cterm=NONE
 " Left blank, Hidden
 hi Ignore           guifg=bg
 hi Ignore           ctermfg=bg
-
-
-" Vimwiki Colors
-" ----------------------------------------
-
-hi link VimwikiHeader1 PreProcBold
-hi link VimwikiHeader2 ConstantBold
-hi link VimwikiHeader3 StatementBold
-hi link VimwikiHeader4 IdentifierBold
-hi link VimwikiHeader5 SpecialBold
-hi link VimwikiHeader6 TypeBold

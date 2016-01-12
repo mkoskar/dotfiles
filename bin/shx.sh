@@ -3,20 +3,18 @@
 #
 # TODO: cleanup bashisms
 
+[ "$SHRC_DEBUG" ] && echo '~/bin/shx.sh' >&2
+
 set -o noclobber
 
 # non-POSIX but supported by bash(1) and zsh(1) at least
-set -o pipefail || true
+set -o pipefail
 
 ti_hi0=$'\e[1;37m'
 ti_hi1=$'\e[1;32m'
 ti_hi2=$'\e[1;31m'
 ti_hi3=$'\e[1;33m'
 ti_reset=$'\e[m'
-
-CDPATH='.:..:~'
-PS4=$'+\n$ti_hi1>$ti_reset [$(date +%T)] $ti_hi3$BASH_SOURCE:$LINENO$ti_reset\n$ti_hi1>$ti_reset $ti_hi0$BASH_COMMAND$ti_reset\n$ti_hi1>$ti_reset '
-unset MAILCHECK
 
 if [ "$BASH_VERSION" ]; then
     shopt -s expand_aliases
@@ -39,6 +37,18 @@ alias lu='lt -u'
 alias lx='ll -XB'
 
 
+# grep / ack / ag / pt
+# ----------------------------------------
+
+alias grep='LC_ALL=C grep --color=auto'
+alias g='grep -n --color=always'
+alias gi='g -i'
+alias gr="g -r --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exclude='*~'"
+alias gri='gr -i'
+alias ack='ack --color'
+alias ag='ag --color --color-path=36 --color-line-number=33 --color-match=41 --follow --nobreak --smart-case --noheading'
+
+
 # man
 # ----------------------------------------
 
@@ -57,84 +67,13 @@ alias man-all-3p='man-all -s 3p'
 alias man-all-posix='man-all -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
 
 
-# ack / ag / grep
+# java / groovy / maven / gradle
 # ----------------------------------------
 
-alias ack='ack --color'
-alias ag='ag --color --color-path=36 --color-line-number=33 --color-match=41 --follow --nobreak --smart-case --noheading'
-alias grep='LC_ALL=C grep --color=auto'
-alias g='grep -n --color=always'
-alias gi='g -i'
-alias gr="g -r --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exclude='*~'"
-alias gri='gr -i'
-
-
-# python
-# ----------------------------------------
-
-alias py='python'
-alias ipy='ipython'
-alias q='deactivate'
-
-
-# pyenv
-# ----------------------------------------
-
-if [ -d "$PYENV_ROOT" ]; then
-    if [ "$BASH_VERSION" ]; then
-        . "$PYENV_ROOT/completions/pyenv.bash"
-    elif [ "$ZSH_VERSION" ]; then
-        . "$PYENV_ROOT/completions/pyenv.zsh"
-    fi
-fi
-
-
-# docker
-# ----------------------------------------
-
-alias dk='docker'
-alias dkb='docker build'
-alias dkc='docker ps'
-alias dkca='docker ps -a'
-alias dkcl='docker ps -l -q'
-alias dke='docker exec -i -t'
-alias dki='docker images'
-alias dkia='docker images -a'
-alias dkr='docker run -P'
-alias dkrd='docker run -d -P'
-alias dkri='docker run -i -t -P'
-
-dkip() {
-    local target; target=${1:-$(docker ps -lq)}
-    [ ! "$target" ] && return 2
-    docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$target"
-}
-
-dkrm() {
-    confirm 'Remove ALL containers (with volumes). Continue?' n || return 0
-    docker ps -aq | xargs -r docker rm -v -f
-}
-
-dkstop() {
-    docker ps -aq | xargs -r docker stop
-}
-
-
-# java
-# ----------------------------------------
-
-alias java-info='java -XshowSettings:all -version'
-
-
-# groovy
-# ----------------------------------------
-
+alias gradle-dependencies='gradle -q dependencies'
+alias gradle-tasks='gradle -q tasks --all'
 alias groovy-grape-verbose='groovy -Dgroovy.grape.report.downloads=true'
-
-
-# maven
-# ----------------------------------------
-
+alias java-info='java -XshowSettings:all -version'
 alias mvn-dependency-tree='mvn dependency:tree'
 alias mvn-effective-pom='mvn help:effective-pom'
 alias mvn-effective-settings='mvn help:effective-settings'
@@ -149,17 +88,12 @@ mvn-archetype-generate() {
 }
 
 
-# gradle
+# python
 # ----------------------------------------
 
-alias gradle-tasks='gradle -q tasks --all'
-alias gradle-dependencies='gradle -q dependencies'
-
-
-# node
-# ----------------------------------------
-
-alias npmg='npm -g'
+alias py='python'
+alias ipy='ipython'
+alias q='deactivate'
 
 
 # pacman
@@ -222,6 +156,7 @@ alias callgrind='valgrind --tool=callgrind'
 alias cower='cower --color=auto'
 alias cp='cp -ai'
 alias date0='date -Ins'
+alias dd='dd status=progress'
 alias df='df -h'
 alias dmesg='dmesg -HTx'
 alias dstat='dstat -cglmnpry --tcp'
@@ -239,6 +174,7 @@ alias mpv-debug='command mpv --msg-level=all=debug'
 alias mpv-verbose='command mpv --msg-level=all=v'
 alias mutt-debug='mutt -d 2'
 alias mv='mv -i'
+alias npmg='npm -g'
 alias od='od -Ax -tc -tx1 -v -w16'
 alias odd='od -td1'
 alias odo='od -to1'
@@ -260,89 +196,49 @@ alias se='sudoedit'
 alias ss='ss -napstu'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
 alias sudo0='sudo -K && sudo -k'
+alias tail-cat='tail -n+1'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias watch='watch -n 1 -t -c'
 alias wtc='curl -sL http://whatthecommit.com/index.txt'
 alias youtube-dl-stdout='youtube-dl -o -'
 
-# Simple alarm (defaults to 5 minutes)
 a() {
     local d=${1:-5m}
     printf '%s ... alarm after %s\n' "$(\date -R)" "$d"
     sleep "${1:-5m}"
     echo 'Beep...'
-    notify-send -u critical 'Beep...' "Time's up!"
-    mpv --loop=10 --keep-open=no /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
+    notify -u critical 'Beep...' "Time's up!"
+    mpv --loop=5 --keep-open=no /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
 }
-
-base() { export BASEDIR=${1:-$PWD}; }
-unbase() { unset BASEDIR; }
 
 alias cd='__cd'
 __cd() {
     [ $# -eq 0 ] && \cd "${BASEDIR:-${SHOME:-$HOME}}" || \cd "$@"
 }
 
+base() { export BASEDIR=${1:-$PWD}; }
+unbase() { unset BASEDIR; }
+
 date() {
     [ $# -eq 0 ] && set -- -R
     command date "$@"
 }
 
-lsmod() {
-    pgx command lsmod "$@"
+debug() {
+    shopt -s extdebug
+    set -o errtrace
+    set -o functrace
+    trap stacktrace ERR
 }
 
-lspci() {
-    pgx command lspci -vv -nn "$@"
-}
-
-lsusb() {
-    pgx command lsusb -v "$@"
-}
-
-tree() {
-    set -- --dirsfirst -a -I '.git|.svn' --noreport -x "$@"
-    if [ -t 1 ]; then
-        pgx command tree -C "$@"
+fn() {
+    if [ $# -eq 0 ]; then
+        declare -f | $PAGER
     else
-        command tree "$@"
+        declare -f -- "$1" || return 1
+        [ "$BASH_VERSION" ] && \
+            (shopt -s extdebug; printf '# '; declare -F -- "$1")
     fi
-}
-
-pstree() {
-    pgx command pstree -ahglnpsSuU "$@"
-}
-
-mplayer() { command mplayer -really-quiet -msglevel all=1 "$@" 2>/dev/null; }
-mpv() { command mpv --really-quiet --msg-level=all=error "$@" 2>/dev/null; }
-smplayer() { command smplayer "$@" >/dev/null 2>&1; }
-vlc() { command vlc "$@" 2>/dev/null; }
-
-xrandr() {
-    if [ $# -eq 0 -a -t 1 ]; then
-        pgx command xrandr --properties --verbose
-    else
-        command xrandr "$@"
-    fi
-}
-
-xserver-log() {
-    local dispno; dispno=${1:-$(xserverq dispno)}
-    [ "$dispno" ] || return 1
-    $PAGER ~/.local/share/xorg/Xorg."$dispno".log
-}
-
-xsession-out() {
-    local dispno; dispno=${1:-$(xserverq dispno)}
-    [ "$dispno" ] || return 1
-    $PAGER ~/.local/share/xorg/xsession."$dispno".out
-}
-
-on() {
-    [ $# -eq 0 ] && return 2
-    local p; p=$(pth "$1") || return 1
-    shift
-    eval "${*:-ls -la}" "$p"
 }
 
 i() {
@@ -355,21 +251,68 @@ i() {
     fi
 }
 
-v() {
+ifs() {
+    printf '%s' "$IFS" | \od -An -ta -tx1
+}
+
+ifs0() {
+    IFS=$' \t\n'
+}
+
+lsmod() {
+    pgx command lsmod "$@"
+}
+
+lsof-pid() {
+    setpid
+    command lsof -p "${1:-$PID}"
+}
+
+lspci() {
+    pgx command lspci -vv -nn "$@"
+}
+
+lsusb() {
+    pgx command lsusb -v "$@"
+}
+
+mpv() {
+    command mpv --really-quiet --msg-level=all=error "$@" 2>/dev/null
+}
+
+on() {
+    [ $# -eq 0 ] && return 2
+    local p; p=$(pth "$1") || return 1
+    shift
+    eval "${*:-ls -la}" "$p"
+}
+
+optset() {
     if [ $# -eq 0 ]; then
-        declare -p | "$PAGER"
+        set +o
     else
-        declare -p -- "$1"
+        [ "${#1}" -gt 1 ] && return 2
+        case $- in *$1*) ;; *) return 1 ;; esac
     fi
 }
 
-fn() {
-    if [ $# -eq 0 ]; then
-        declare -f | "$PAGER"
+pstree() {
+    pgx command pstree -ahglnpsSuU "$@"
+}
+
+reexec() {
+    exec $(cmdline)
+}
+
+reload() {
+    . /etc/profile
+    . ~/.profile
+    if [ "$BASH_VERSION" ]; then
+        . ~/.bashrc
+    elif [ "$ZSH_VERSION" ]; then
+        . ~/.zshrc
     else
-        declare -f -- "$1" || return 1
-        [ "$BASH_VERSION" ] && \
-            (shopt -s extdebug; printf '# '; declare -F -- "$1")
+        . ~/bin/shx.sh
     fi
 }
 
@@ -394,23 +337,12 @@ shi() {
     printf 'VERSION: %s\n' "${BASH_VERSION:-$ZSH_VERSION}"
 }
 
-optset() {
-    if [ $# -eq 0 ]; then
-        set +o
-    else
-        [ "${#1}" -gt 1 ] && return 2
-        case $- in *$1*) ;; *) return 1 ;; esac
+source_opt() {
+    if [ -e "$1" ]; then
+        . "$1"
     fi
 }
 
-debug() {
-    shopt -s extdebug
-    set -o errtrace
-    set -o functrace
-    trap stacktrace ERR
-}
-
-# TODO: still some unbound variables?
 stacktrace() {
     local retstat=$? ti_header=$ti_hi1
     [ "$retstat" -gt 0 ] && ti_header=$ti_hi2
@@ -429,32 +361,45 @@ stacktrace() {
     done
 }
 
-ifs() {
-    printf '%s' "$IFS" | \od -An -ta -tx1
+systemd-dot() {
+    systemd-analyze dot "$@" | dot -Tsvg | stdiner -T b
 }
 
-ifs0() {
-    IFS=$' \t\n'
-}
-
-lsof() {
-    setpid
-    command lsof -p "${1:-$PID}"
-}
-
-reexec() {
-    exec $(cmdline)
-}
-
-reload() {
-    . ~/.profile
-    if [ "$BASH_VERSION" ]; then
-        . ~/.bashrc
-    elif [ "$ZSH_VERSION" ]; then
-        . ~/.zshrc
+tree() {
+    set -- --dirsfirst -a -I '.git|.svn' --noreport -x "$@"
+    if [ -t 1 ]; then
+        pgx command tree -C "$@"
     else
-        . ~/bin/shx.sh
+        command tree "$@"
     fi
+}
+
+v() {
+    if [ $# -eq 0 ]; then
+        declare -p | $PAGER
+    else
+        declare -p -- "$1"
+    fi
+}
+
+xrandr() {
+    if [ $# -eq 0 -a -t 1 ]; then
+        pgx command xrandr --properties --verbose
+    else
+        command xrandr "$@"
+    fi
+}
+
+xserver-log() {
+    local dispno; dispno=${1:-$(xserverq dispno)}
+    [ "$dispno" ] || return 1
+    $PAGER ~/.local/share/xorg/Xorg."$dispno".log
+}
+
+xsession-out() {
+    local dispno; dispno=${1:-$(xserverq dispno)}
+    [ "$dispno" ] || return 1
+    $PAGER ~/.local/share/xorg/xsession."$dispno".out
 }
 
 

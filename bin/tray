@@ -5,5 +5,4 @@ trayer --edge top --align right \
        --height 19 --heighttype pixel \
        --SetDockType true --SetPartialStrut true \
        --transparent true --alpha 0 --tint 0x000000 \
-       --monitor primary \
-       --expand true
+       --monitor primary

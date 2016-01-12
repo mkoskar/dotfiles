@@ -9,11 +9,12 @@ set -eu
 
 prgname=${0##*/}
 
-case ${1-} in -h|--help)
+_usage() {
     cat <<-EOF
-	usage: $prgname [-h | block | underline | ...]
+	usage: $prgname [block | underline | ...]
 
-	  -h            - show this help message and exit
+	Change terminal cursor style and color.
+
 	  block         - block cursor
 	  underline     - underline cursor
 	  bar           - bar cursor
@@ -22,11 +23,25 @@ case ${1-} in -h|--help)
 	  reset         - reset style and color (default)
 	  *             - color name or its #rgb value
 	EOF
-    exit
-    ;;
-esac
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
 
-(( ! $# )) && set -- reset
+while getopts 'h' opt; do
+    case $opt in
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+(( $# )) || set -- reset
+
+# ----------------------------------------
 
 # Cursor's default color and style are hardcoded below.
 # Style can be restored by e.g., CSI save/restore and color can

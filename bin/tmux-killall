@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s nullglob
 
 [[ ${TMUX-} ]] && exit 1
 
 echo
-for socket in "$TMPDIR/tmux-$UID/"*; do
+for socket in "${TMUX_TMPDIR:-${TMPDIR:-/tmp}}/tmux-$UID/"*; do
     echo "> $socket"
     tmux -S "$socket" kill-server || true
     echo

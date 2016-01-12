@@ -8,12 +8,6 @@
 
 set -eu -o pipefail
 
-processor() {
-    while read -rs line; do
-        tcolors x "$line"
-    done
-}
-
 if (( ! $# )); then
     set -- ~/.xcolors/default \
            ~/.xcolors/default1 \
@@ -21,4 +15,6 @@ if (( ! $# )); then
            ~/.xcolors/default3
 fi
 
-scroller "$@" | processor
+scroller "$@" | while read -rs line; do
+    tcolors x "$line"
+done

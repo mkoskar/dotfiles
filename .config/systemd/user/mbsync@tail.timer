@@ -1,5 +1,5 @@
 [Unit]
-Description=mbsync(tail) timer
+Description=%N timer
 
 [Timer]
 OnCalendar=*:00,30

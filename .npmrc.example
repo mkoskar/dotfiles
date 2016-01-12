@@ -1,4 +1,6 @@
-depth=0
-init-author-name=Miroslav Koskar
-init-author-url=http://mkoskar.com/
-prefix=~/.npm-global
+# vim: ft=dosini
+
+depth = 0
+init-author-name = Miroslav Koskar
+init-author-url = http://mkoskar.com/
+prefix = ~/.npm-global

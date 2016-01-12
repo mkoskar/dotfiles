@@ -5,7 +5,7 @@ vo=vaapi
 # Audio
 softvol-max=1000
 softvol=yes
-volume=50
+volume=75
 
 # OSD / Subtitles
 ffactor=1

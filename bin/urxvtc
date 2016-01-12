@@ -2,10 +2,12 @@
 
 set -eu
 
-export RXVT_SOCKET="$HOME/.urxvt/urxvtd-$DISPLAY"
+export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd$DISPLAY"
 
-/usr/bin/urxvtc "$@"
-if (( $? == 2 )); then
+declare -i retstat=
+/usr/bin/urxvtc "$@" 2>/dev/null || retstat=$?
+
+if (( $retstat == 2 )); then
     urxvtd -q -o -f
     /usr/bin/urxvtc "$@"
 fi

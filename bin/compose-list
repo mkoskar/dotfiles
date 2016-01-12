@@ -12,4 +12,4 @@ set -eu -o pipefail
     echo -e "> /usr/share/X11/locale/$LANG/Compose:\n"
 
     grep '^\s*<' "/usr/share/X11/locale/$LANG/Compose" | sort
-} | "$PAGER"
+} | $PAGER

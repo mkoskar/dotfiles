@@ -10,19 +10,36 @@ fi
 
 prgname=${0##*/}
 
-case ${1-} in
+_usage() {
+    echo "usage: $prgname [1 | on | true | 0 | off | false | auto]"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+while getopts 'h' opt; do
+    case $opt in
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+(( $# )) || set -- auto
+
+# ----------------------------------------
+
+case $1 in
     1 | on | true)
         set -- 1
         ;;
     0 | off | false)
         set -- 0
         ;;
-    *)
-        if (( $# )); then
-            echo "usage: $prgname [1 | on | true | 0 | off | false]" >&2
-            exit 2
-        fi
-
+    auto)
         declare -i online=
         for dev in /sys/class/power_supply/*; do
             [[ $(<"$dev/type") = 'Mains' ]] || continue
@@ -30,8 +47,10 @@ case ${1-} in
             online=1
             break
         done
-
         set -- $((!online))
+        ;;
+    *)
+        usage_err
         ;;
 esac
 

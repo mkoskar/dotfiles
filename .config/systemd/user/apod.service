@@ -1,11 +1,8 @@
 [Unit]
-Description=apod service
-Requires=dbus.socket
-After=dbus.socket
+Description=%N service
 
 [Service]
-Type=simple
-SyslogIdentifier=apod
-ExecStart=/bin/bash -lc 'apod-get && { xdisplay apod-bg || true; }'
+SyslogIdentifier=%N
+ExecStart=/bin/bash -c 'apod-get && { apod-bg || true; }'
 Restart=on-failure
 RestartSec=1800

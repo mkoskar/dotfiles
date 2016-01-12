@@ -5,10 +5,3 @@ set -eu
 cd ~/.config/nvim
 
 mkdir -p .backup .swap .undo
-
-ln -sf ~/.vim/after
-ln -sf ~/.vim/autoload
-ln -sf ~/.vim/colors
-ln -sf ~/.vim/ftplugin
-
-ln -sf ~/.vim/filetype.vim

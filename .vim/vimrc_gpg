@@ -18,4 +18,4 @@ let GPGUsePipes = 1
 
 " ----------------------------------------
 
-execute VimrcFinalize()
+exec VimrcFinalize()

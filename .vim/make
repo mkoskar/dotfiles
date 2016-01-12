@@ -25,8 +25,7 @@ from_git() {(
 
 cd ~/.vim
 
-mkdir -p .backup .swap .undo autoload bundle
-ln -sf ../bundle/pathogen/autoload/pathogen.vim autoload
+mkdir -p .backup .swap .undo bundle
 
 cd bundle
 
@@ -42,11 +41,13 @@ from_git easytags           https://github.com/xolox/vim-easytags.git
 from_git emmet              https://github.com/mattn/emmet-vim.git
 from_git exchange           https://github.com/tommcdo/vim-exchange.git
 from_git filebeagle         https://github.com/jeetsukumaran/vim-filebeagle.git
+from_git fzf                https://github.com/junegunn/fzf.vim.git
 from_git gnupg              https://github.com/jamessan/vim-gnupg.git
 from_git gundo              https://github.com/sjl/gundo.vim.git
 from_git minibufexpl        https://github.com/vim-scripts/minibufexpl.vim.git
 from_git misc               https://github.com/xolox/vim-misc.git
 from_git multiple_cursors   https://github.com/terryma/vim-multiple-cursors.git
+from_git neomake            https://github.com/benekastah/neomake.git
 from_git pathogen           https://github.com/tpope/vim-pathogen.git
 from_git repeat             https://github.com/tpope/vim-repeat.git
 from_git speeddating        https://github.com/tpope/vim-speeddating.git

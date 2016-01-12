@@ -1,5 +1,5 @@
 [Unit]
-Description=mbsync(head) timer
+Description=%N timer
 
 [Timer]
 OnActiveSec=0

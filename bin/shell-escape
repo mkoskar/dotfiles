@@ -2,5 +2,7 @@
 
 set -eu
 
+(( $# )) || exit 0
+
 printf -v out "${IFS:0:1}%q" "$@"
 printf '%s\n' "${out:1}"

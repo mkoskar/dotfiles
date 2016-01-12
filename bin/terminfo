@@ -4,20 +4,24 @@ set -e -o pipefail
 
 ti_reset=$(tput sgr0)
 
-echo
-echo "${ti_reset}normal"
-echo "$(tput bold)bold${ti_reset}"
-echo "$(tput smso)standout${ti_reset}"
-echo "$(tput smul)underline${ti_reset}"
-echo "$(tput sitm)italics${ti_reset}"
-echo "$(tput blink)blink${ti_reset}"
-echo "$(tput rev)reverse${ti_reset}"
+cat <<-EOF
 
-echo $'\n--------------------------------------------------'
-echo "TERM = $TERM"
-echo "TERMORIG = $TERMORIG"
-echo "TERMINFO = $TERMINFO"
-echo "TERMINFO_DIRS = $TERMINFO_DIRS"
+${ti_reset}normal
+$(tput bold)bold${ti_reset}
+$(tput smso)standout${ti_reset}
+$(tput smul)underline${ti_reset}
+$(tput sitm)italics${ti_reset}
+$(tput blink)blink${ti_reset}
+$(tput rev)reverse${ti_reset}
+
+--------------------------------------------------
+TERM = $TERM
+TERMORIG = $TERMORIG
+TERMINFO = $TERMINFO
+TERMINFO_DIRS = $TERMINFO_DIRS
+
+EOF
+
 echo
 infocmp -D
 echo

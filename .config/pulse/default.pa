@@ -162,3 +162,6 @@ load-module module-filter-apply
 ### Make some devices default
 #set-default-sink output
 #set-default-source input
+
+#load-module module-equalizer-sink
+#load-module module-dbus-protocol

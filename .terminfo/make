@@ -14,6 +14,11 @@ make linux <<-EOF
     is2=\E[?25h\E[?8c,
 EOF
 
+make rxvt-unicode-256color <<-EOF
+# ----------------------------------------
+    clear=\E[H\E[J,
+EOF
+
 make screen-256color <<-EOF
 # ----------------------------------------
     hs,

@@ -11,28 +11,28 @@ process() {
     printf '\e]50;%s' "$1" | ctrlseq
 }
 
-processor() {
+if (( ! $# )); then
     while read -rs line; do
         process "$line"
-    done
-}
-
-if (( ! $# )); then
-    (scroller | processor) <<-EOF
+    done < <(
+    scroller <<-EOF
 	xft:local_terminal_sized
 	xft:local_terminal:pixelsize=20
 	xft:local_terminal:pixelsize=28
 	xft:local_terminal:pixelsize=32
-	xft:DejaVu Sans Mono:size=8
-	xft:DejaVu Sans Mono:size=10
-	xft:DejaVu Sans Mono:size=11
-	xft:DejaVu Sans Mono:pixelsize=14
-	xft:MonteCarlo
+	xft:MonteCarlo:pixelsize=10
+	xft:Tamsyn:pixelsize=12
+	xft:Tamsyn:pixelsize=14
 	xft:Monaco:size=10
 	xft:Monaco:size=11
 	xft:Source Code Pro:size=10
 	xft:Envy Code R:size=11
+	xft:DejaVu Sans Mono:size=8
+	xft:DejaVu Sans Mono:size=10
+	xft:DejaVu Sans Mono:size=11
+	xft:DejaVu Sans Mono:pixelsize=14
 	EOF
+    )
 else
     process "$1"
 fi

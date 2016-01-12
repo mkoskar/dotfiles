@@ -42,6 +42,8 @@ while getopts 'edrh' opt; do
 done
 shift $((OPTIND-1))
 
+# ----------------------------------------
+
 eval "$cmd" | awk -v explicit=$explicit '
 {
     $1=substr($1, 1, 1)

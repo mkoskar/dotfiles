@@ -33,6 +33,8 @@ shift $((OPTIND-1))
 
 (( $# )) || usage_err
 
+# ----------------------------------------
+
 pgrep_args=(-x)
 (( fopt )) && pgrep_args+=(-f)
 pgrep_args+=(-- "$1")

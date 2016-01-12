@@ -6,6 +6,9 @@ prgname=${0##*/}
 dev='/dev/sr0'
 
 case $prgname in
+    sr0-blank)
+        wodim dev="$dev" blank=all
+        ;;
     sr0-iso)
         if (( ! $# )); then
             size=$(isosize "$dev")

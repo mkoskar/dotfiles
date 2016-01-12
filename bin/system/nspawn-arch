@@ -47,5 +47,5 @@ cleanup() {
 }
 trap cleanup EXIT
 
-exec systemd-nspawn --quiet --boot --link-journal=guest \
-                    -M "$machine" --directory="$root"
+systemd-nspawn --quiet --boot --link-journal=guest \
+               -M "$machine" --directory="$root"

@@ -27,8 +27,8 @@ are listed below.
 `authinfo <bin/authinfo>`_
     Reads ``~/.authinfo.gpg`` to provide login credentials.
 
-`backlight-toggle <bin/backlight-toggle>`_
-    Simple command-line interface for 3 state backlight control.
+`backlight <bin/backlight>`_, `backlight0 <bin/backlight0>`_
+    Simple command-line interface for backlight control.
 
 `chp <bin/chp>`_
     Enables one to run and manipulate multiple Google Chrome / Chromium profiles
@@ -71,7 +71,7 @@ are listed below.
     Run this daily and receive report of what files has became "untracked".
 
 `pg <bin/pg>`_, `pg0 <bin/pg0>`_, `pgx <bin/pgx>`_, `manpg <bin/manpg>`_
-    Wrapper script to use Vim as a man(1) pager.
+    Wrapper script to use Vim as a pager.
 
 `powersave <bin/system/powersave>`_
     Simple way to switch power saving on or off.

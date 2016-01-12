@@ -5,8 +5,7 @@ set -eu
 prgname=${0##*/}
 
 name='default'
-dispno=$(xserverq dispno)
-fifo="$TMPDIR/osd-$UID/$name$dispno"
+fifo="$XDG_RUNTIME_DIR/osdd/$name$DISPLAY"
 
 if [[ $prgname = 'osdd' ]]; then
     [[ -e $fifo ]] && exit 3
@@ -30,4 +29,4 @@ if [[ $prgname = 'osdd' ]]; then
 fi
 
 [[ ! -p $fifo ]] && exit 1
-echo "$*" >"$fifo"
+printf '%s\n' "$*" >"$fifo"

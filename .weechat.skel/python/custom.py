@@ -222,9 +222,6 @@ def cb_command_layout_reset(data, buffer, args):
         cmd('/window splith 15')
         cmd('/buffer perl.highmon')
         cmd('/window down')
-        cmd('/window splith')
-        cmd('/buffer bitlbee.#twitter')
-        cmd('/window down')
         cmd('/buffer bitlbee.&bitlbee')
 
     return weechat.WEECHAT_RC_OK
@@ -277,7 +274,7 @@ def cb_command_tab_go(data, buffer, args):
     tab_dst = maybe_tab(args)
     if tab_dst is None:
         return weechat.WEECHAT_RC_ERROR
-    cmd('/layout apply _zoom')
+    cmd('/layout apply _zoom windows')
     cmd('/layout del _zoom')
     if tab_cur is not None and layout_find(str(tab_cur)):
         cmd('/layout store %s windows' % tab_cur)
@@ -399,6 +396,13 @@ weechat.hook_command('allwin_set_unread', '', '', '', '', 'cb_command_allwin_set
 # Other {{{
 # ----------------------------------------
 
+def cb_command_grep_nick(data, buffer, args):
+    buf = weechat.buffer_get_string(weechat.current_buffer(), 'full_name')
+    cmd('/filter del grep_%s' % buf)
+    if args:
+        cmd('/filter add grep_%s %s !nick_%s *' % (buf, buf, args))
+    return weechat.WEECHAT_RC_OK
+
 
 def cb_command_nicklist_toggle(data, buffer, args):
     nicklist_local = int(weechat.buffer_get_string(buffer, 'localvar_nicklist_local') or 0)
@@ -426,6 +430,7 @@ def cb_command_toggle_string(data, buffer, args):
     return weechat.WEECHAT_RC_OK
 
 
+weechat.hook_command('grep_nick', '', '', '', '', 'cb_command_grep_nick', '')
 weechat.hook_command('nicklist_toggle', '', '', '', '', 'cb_command_nicklist_toggle', '')
 weechat.hook_command('toggle_integer', '', '', '', '', 'cb_command_toggle_integer', '')
 weechat.hook_command('toggle_string', '', '', '', '', 'cb_command_toggle_string', '')

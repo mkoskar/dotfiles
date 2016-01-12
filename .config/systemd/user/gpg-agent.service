@@ -1,11 +1,10 @@
 [Unit]
-Description=gpg-agent service
+Description=%N service
 IgnoreOnIsolate=true
 
 [Service]
 Type=forking
-SyslogIdentifier=gpg-agent
-ExecStart=/bin/bash -lc 'gpg-agent --daemon'
+ExecStart=/usr/bin/gpg-agent --daemon
 Restart=on-failure
 
 [Install]

@@ -106,7 +106,7 @@
 /set weechat.look.color_inactive_window off
 /set weechat.look.hotlist_prefix ""
 /set weechat.look.key_bind_safe off
-/set weechat.look.prefix_align_max 15
+/set weechat.look.prefix_align_max 14
 /set weechat.look.prefix_buffer_align left
 /set weechat.look.prefix_same_nick " "
 /set weechat.look.read_marker_always_show on
@@ -133,6 +133,7 @@
 /script install buffers.pl
 /script install colorize_nicks.py
 /script install go.py
+/script install grep.py
 /script install highmon.pl
 
 /set buffers.color.current_bg 237
@@ -223,7 +224,7 @@
 /filter del -all
 
 /filter add irc_smart * irc_smart_filter *
-/filter add nick_root * nick_root *
+/filter add nick_root irc.bitlbee.* nick_root *
 /filter add welcome_mozilla irc.server.mozilla irc_notice+notify_private You are connected using SSL
 /filter add welcome_oftc irc.server.oftc irc_notice+notify_private Activating Cloak
 
@@ -317,6 +318,9 @@
 /alias add CL /buffer clear
 /alias add CLA /buffer clear -all
 /alias add CLH /buffer clear perl.highmon
+/alias add G /grep --hilight --buffer
+/alias add GG /grep --hilight
+/alias add GNICK /grep_nick
 /alias add NICKSERV /msg NickServ
 /alias add NSERV /msg NickServ
 /alias add S /server jump

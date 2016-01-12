@@ -4,10 +4,27 @@ set -eu
 
 prgname=${0##*/}
 
-if (( ! $# )); then
-    echo "usage: $prgname user" >&2
-    exit 2
-fi
+_usage() {
+    echo "usage: $prgname user"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+while getopts 'h' opt; do
+    case $opt in
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+(( $# )) || usage_err
+
+# ----------------------------------------
 
 github-repos "$@" | while read -r line; do
     git clone "$line" || true

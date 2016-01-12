@@ -1,0 +1,10 @@
+[Unit]
+Description=Update environment
+DefaultDependencies=no
+Conflicts=shutdown.target
+Before=basic.target shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/bash -lc 'unset SHLVL; systemctl --user import-environment'

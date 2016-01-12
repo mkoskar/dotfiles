@@ -1,11 +1,10 @@
 [Unit]
-Description=ssh-agent service
+Description=%N service
 IgnoreOnIsolate=true
 
 [Service]
-Type=forking
-SyslogIdentifier=ssh-agent
-ExecStart=/bin/bash -lc 'rm -f "$SSH_AUTH_SOCK"; ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null'
+ExecStart=/usr/bin/ssh-agent -a %t/ssh-agent -D
+SuccessExitStatus=2
 Restart=on-failure
 
 [Install]
