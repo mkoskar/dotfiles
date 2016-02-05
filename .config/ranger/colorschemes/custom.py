@@ -2,14 +2,22 @@
 
 from ranger.colorschemes.default import Default
 from ranger.gui.color import *
+import os
 
 
 class Scheme(Default):
 
+    def __init__(self):
+        self.is_linux = os.environ['TERM'] == 'linux'
+
     def use(self, context):
         fg, bg, attr = Default.use(self, context)
 
-        if context.in_titlebar:
+        if context.in_browser:
+            if context.selected and self.is_linux:
+                attr &= ~bold
+
+        elif context.in_titlebar:
             attr |= bold
             fg = white
             bg = default

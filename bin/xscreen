@@ -8,15 +8,15 @@ if [[ $(xserverq name) = 'Xorg' ]]; then
     if [[ $prgname != 'xscreen0' ]]; then
         if [[ $prgname = 'xscreen-mobile' ]]; then
             autorandr -l mobile --force
-
         elif xrandr | grep -qE '^LVDS1 connected'; then
             autorandr -c -d mobile --force
-
         else
             autorandr -c --force
         fi
     fi
     xrandr --dpi 96
+    NOOSD=1 touchpad 0
+    NOOSD=1 trackpoint-wheel 2
 fi
 
 xset b off s off dpms 0 0 300

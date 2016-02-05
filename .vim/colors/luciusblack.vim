@@ -6,8 +6,6 @@ if exists('syntax_on')
 endif
 let colors_name = 'luciusblack'
 
-set background=dark
-
 hi Normal           guifg=#aeaeae       guibg=#000000
 hi Normal           ctermfg=7           ctermbg=16
 
@@ -239,3 +237,25 @@ hi ColorColumn      ctermfg=NONE        ctermbg=236         cterm=NONE
 " Left blank, Hidden
 hi Ignore           guifg=bg
 hi Ignore           ctermfg=bg
+
+
+" bufexplorer
+" ----------------------------------------
+
+hi link bufExplorerActBuf Directory
+hi link bufExplorerAltBuf Type
+hi link bufExplorerCurBuf Statement
+hi link bufExplorerHelp String
+hi link bufExplorerHidBuf Normal
+hi link bufExplorerInactBuf Normal
+hi link bufExplorerMapping Identifier
+hi link bufExplorerTitle PreProc
+
+
+" tagbar
+" ----------------------------------------
+
+hi link TagbarHelp String
+
+
+set background=dark

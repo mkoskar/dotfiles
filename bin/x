@@ -16,15 +16,12 @@
 #
 # * display number will be the first free starting with 91
 # * xinit ~/bin/xsession "$@" -- /usr/bin/Xephyr
-#
-# :Copyright: (c) 2013 Miroslav Koskar <http://mkoskar.com/>
-# :License: BSD 2-Clause
 
 set -eu
 
 prgname=${0##*/}
 
-if (( $EUID == 0 )); then
+if (( EUID == 0 )); then
     echo 'This script must NOT be run as root.' >&2
     exit 1
 fi
@@ -38,7 +35,6 @@ ti_hi1=$'\e[1;32m'
 if (( ! $# )); then
     echo
     echo "${ti_hi0}m) main ${ti_hi1}[default]${ti_reset}"
-    echo 'h) herbstluftwm'
     echo 'o) openbox'
     echo 'x) xmonad'
 
@@ -46,9 +42,6 @@ if (( ! $# )); then
     case ${sel:=m} in
         [mM])
             set -- main
-            ;;
-        [hH])
-            set -- herbstluftwm
             ;;
         [oO])
             set -- openbox

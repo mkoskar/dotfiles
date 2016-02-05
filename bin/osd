@@ -28,5 +28,7 @@ if [[ $prgname = 'osdd' ]]; then
     exit
 fi
 
+[[ ${NOOSD-} ]] && exit 0
+
 [[ ! -p $fifo ]] && exit 1
 printf '%s\n' "$*" >"$fifo"

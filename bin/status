@@ -62,6 +62,14 @@ status_rfkill() {
     fi
 }
 
+status_touchpad() {
+    local val='-'
+    if xset q &>/dev/null; then
+        touchpad && val='on' || val='off'
+    fi
+    printf 'touchpad: %s\n' "$val"
+}
+
 status_trackpoint_wheel() {
     local val='-'
     if xset q &>/dev/null; then
@@ -83,32 +91,15 @@ status_xkb() {
 }
 
 case ${1-} in
-    audio)
-        status_audio
-        ;;
-    backlight)
-        status_backlight
-        ;;
-    bluetooth)
-        status_bluetooth
-        ;;
-    dpms)
-        status_dpms
-        ;;
-    trackpoint-wheel)
-        status_trackpoint_wheel
-        ;;
-    wifi)
-        status_wifi
-        ;;
-    xkb)
-        status_xkb
+    audio | backlight | bluetooth | dpms | touchpad | trackpoint_wheel | wifi | xkb)
+        status_$1
         ;;
     *)
         status_audio
         status_backlight
         status_bluetooth
         status_dpms
+        status_touchpad
         status_trackpoint_wheel
         status_wifi
         status_xkb

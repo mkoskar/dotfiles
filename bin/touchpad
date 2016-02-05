@@ -4,17 +4,17 @@ set -eu -o pipefail
 
 prgname=${0##*/}
 
-name='TPPS/2 IBM TrackPoint'
-prop='libinput Button Scrolling Button'
+name='SynPS/2 Synaptics TouchPad'
+prop='Device Enabled'
 id=$(xinput list | grep -F "$name" | xinput-ids | sed -n '$p')
 
 declare -i toggle=0
-[[ $prgname = 'trackpoint-wheel-toggle' ]] && toggle=1
+[[ $prgname = 'touchpad-toggle' ]] && toggle=1
 
 if (( !toggle && $# )); then
     valset=$1
 else
-    declare -i val= valset=2
+    declare -i val= valset=1
     val=$(xinput list-props "$id" | awk -F: "/^\s*$prop \(.*\):/ {print \$2}")
     (( val == valset )) && valset=0
     retstat=$?
@@ -22,4 +22,4 @@ else
 fi
 
 xinput set-prop "$id" "$prop" "$valset"
-status-osd trackpoint_wheel
+status-osd touchpad

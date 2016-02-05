@@ -3,22 +3,13 @@
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 source ~/.vim/vimrc_base
 
-"Plugin 'easytags'
 Plugin 'NERD_tree'
 Plugin 'bufexplorer'
 Plugin 'ctrlp'
-Plugin 'dispatch'
 Plugin 'easy_align'
-Plugin 'easymotion'
-Plugin 'emmet'
 Plugin 'exchange'
 Plugin 'filebeagle'
-Plugin 'fzf'
-Plugin 'gundo'
-Plugin 'minibufexpl'
-Plugin 'misc'
-Plugin 'multiple_cursors'
-Plugin 'neomake'
+
 Plugin 'repeat'
 Plugin 'speeddating'
 Plugin 'surround'
@@ -26,8 +17,20 @@ Plugin 'syntastic'
 Plugin 'tagbar'
 Plugin 'tcomment'
 Plugin 'unimpaired'
-Plugin 'unite'
-Plugin 'visualrepeat'
+
+"Plugin 'dispatch'
+"Plugin 'easymotion'
+"Plugin 'easytags'
+"Plugin 'emmet'
+"Plugin 'fzf'
+"Plugin 'gundo'
+"Plugin 'minibufexpl'
+"Plugin 'misc'
+"Plugin 'multiple_cursors'
+"Plugin 'neomake'
+"Plugin 'unite'
+"Plugin 'visualrepeat'
+
 Plugin! '~/opt/fzf'
 
 " {{{
@@ -41,6 +44,7 @@ let NERDTreeCaseSensitiveSort = 1
 let NERDTreeHijackNetrw = 0
 let NERDTreeIgnore = ['^\.svn$', '^\.git$', '\.swp$', '\~$']
 let NERDTreeMapCWD = 'cD'
+let NERDTreeMapHelp = '<F1>'
 let NERDTreeShowBookmarks = 1
 let NERDTreeShowHidden = 1
 let NERDTreeStatusline = "%{exists('b:NERDTreeRoot')?b:NERDTreeRoot.path._strForUI():''}"
@@ -85,6 +89,16 @@ nnoremap <silent> <M-e> :CtrlPMRUFiles<CR>
 
 vmap <Enter> <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+
+
+" easymotion
+" ----------------------------------------
+
+let EasyMotion_startofline = 0
+let EasyMotion_verbose = 0
+
+map <Leader><Leader>J <Plug>(easymotion-sol-j)
+map <Leader><Leader>K <Plug>(easymotion-sol-k)
 
 
 " easytags
@@ -159,6 +173,7 @@ nnoremap <silent> <Leader>Sr :SyntasticReset<CR>
 
 let tagbar_autofocus = 1
 let tagbar_iconchars = ['▸', '▾']
+let tagbar_map_help = ['<F1>']
 let tagbar_map_jump = ['<CR>', 'o']
 let tagbar_map_togglefold = ['O', 'za']
 let tagbar_sort = 0
@@ -173,7 +188,7 @@ noremap <silent> <Leader>T :TagbarOpenAutoClose<CR>
 " ----------------------------------------
 
 let tcommentMaps = 0
-let tcommentOptions = {'col': 1, 'whitespace': 'no'}
+let tcommentOptions = {'whitespace': 'no'}
 
 nnoremap <silent> <Leader>cc :TComment<CR>
 nnoremap <silent> <Leader>C :TCommentBlock<CR>
@@ -189,7 +204,6 @@ nnoremap <silent> <Leader>u :Unite<CR>
 
 " ----------------------------------------
 
-if has('autocmd')
 augroup vimrc_ext
     autocmd!
 
@@ -208,7 +222,6 @@ augroup vimrc_ext
     autocmd FileType tagbar call BufSpecialSetup()
 
 augroup END
-endif
 
 " }}}
 

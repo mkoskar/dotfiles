@@ -2,7 +2,7 @@
 
 set -eu
 
-if (( $EUID )); then
+if (( EUID )); then
     echo 'This script must be run with root privileges.' >&2
     exit 1
 fi

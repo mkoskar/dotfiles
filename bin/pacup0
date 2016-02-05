@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -eu
+
+cd ~/tmp
+
+echo $'\n--------------------------------------------------'
+echo $'> NPM packages:\n'
+
+pkgs=(
+    bower
+    browserify
+    grunt-cli
+    js-beautify
+    jshint
+    learnyounode
+    semver
+    stream-adventure
+    typescript-formatter
+)
+npm install -g "${pkgs[@]}"
+
+echo $'\n--------------------------------------------------'
+echo $'> Python packages:\n'
+
+pkgs=(
+    pip-autoremove
+    when-changed
+)
+pip install --user -U "${pkgs[@]}"
+
+echo $'\n--------------------------------------------------'
+echo $'> Ruby packages:\n'
+
+pkgs=(
+    ruby-beautify
+    sass
+)
+gem install "${pkgs[@]}"
+
+echo $'\n--------------------------------------------------'
+echo $'> Rust packages:\n'
+
+pkgs=(
+    rustfmt
+)
+cargo install "${pkgs[@]}"

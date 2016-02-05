@@ -71,6 +71,8 @@ export XAUTHORITY="$HOME/.Xauthority"
 
 [ "$_PATH" ] || export _PATH="$PATH"
 PATH="$_PATH"
+PATH="$HOME/.cargo/bin:$PATH"
+PATH="$HOME/.gem/ruby/2.3.0/bin:$PATH"
 PATH="$HOME/.npm-global/bin:$PATH"
 PATH="$HOME/.local/bin:$PATH"
 PATH="$PYENV_ROOT/bin:$PATH"

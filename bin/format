@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+#
+# See also: https://github.com/Chiel92/vim-autoformat
+
+set -eu
+
+ft=${1-}
+filename=${3-}
+firstline=${3-}
+lastline=${4-}
+
+shiftwidth=4
+textwidth=78
+
+try() {
+    type "$1" &>/dev/null && exec "$@"
+}
+
+case $ft in
+    cs)
+        try astyle --mode=cs --style=break --indent-namespaces -pcH -s"$shiftwidth"
+        ;;
+    css)
+        try css-beautify -s "$shiftwidth" -f -
+        ;;
+    c|cpp|objc)
+        args=(
+            --assume-filename="$filename"
+            -style="{BasedOnStyle: WebKit, AlignTrailingComments: true, ColumnLimit: $textwidth, UseTab: Never, IndentWidth: $shiftwidth}"
+        )
+        if [[ $firstline && $lastline ]]; then
+            args+=(-lines="$firstline:$lastline")
+        fi
+        try clang-format "${args[@]}"
+        try astyle --mode=c --style=break -pcH -s"$shiftwidth"
+        ;;
+    dart)
+        try dartfmt
+        ;;
+    go)
+        try gofmt
+        ;;
+    haskell)
+        try stylish-haskell
+        ;;
+    html)
+        try html-beautify -s "$shiftwidth" -f -
+        try tidy -q --show-errors 0 --show-warnings 0 --force-output --indent auto --indent-spaces "$shiftwidth" --vertical-space yes --tidy-mark no -wrap "$textwidth"
+        ;;
+    java)
+        try astyle --mode=java --style=attach -pcH -s"$shiftwidth"
+        ;;
+    javascript)
+        try js-beautify -s "$shiftwidth" -w "$textwidth" -f -
+        ;;
+    json)
+        try js-beautify -s "$shiftwidth" -f -
+        ;;
+    perl)
+        try perltidy --perl-best-practices --format-skipping -q
+        ;;
+    python)
+        args=(
+            --max-line-length="$textwidth"
+        )
+        if [[ $firstline && $lastline ]]; then
+            args+=(--range "$firstline" "$lastline")
+        fi
+        try autopep8 "${args[@]}" -
+        ;;
+    ruby)
+        try rbeautify -s -c "$shiftwidth"
+        ;;
+    rust)
+        try rustfmt
+        ;;
+    scss)
+        try sass-convert -F scss -T scss --indent "$shiftwidth"
+        ;;
+    typescript)
+        try tsfmt --stdin
+        ;;
+    xhtml)
+        try tidy -q --show-errors 0 --show-warnings 0 --force-output --indent auto --indent-spaces "$shiftwidth" --vertical-space yes --tidy-mark no -wrap "$textwidth"
+        ;;
+    xml)
+        try tidy -q -xml --show-errors 0 --show-warnings 0 --force-output --indent auto --indent-spaces "$shiftwidth" --vertical-space yes --tidy-mark no -wrap "$textwidth"
+        ;;
+esac
+
+try par -T"$shiftwidth" -w"$textwidth"
+try pr -e"$shiftwidth" -w "$textwidth"
+try fmt -u -w "$textwidth"
+try fold -s -w "$textwidth"
+try wrap -w "$textwidth"
+
+exit 1

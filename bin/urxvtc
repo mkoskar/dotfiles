@@ -7,7 +7,7 @@ export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd$DISPLAY"
 declare -i retstat=
 /usr/bin/urxvtc "$@" 2>/dev/null || retstat=$?
 
-if (( $retstat == 2 )); then
+if (( retstat == 2 )); then
     urxvtd -q -o -f
     /usr/bin/urxvtc "$@"
 fi

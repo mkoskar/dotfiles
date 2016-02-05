@@ -2,9 +2,6 @@
 #
 # Scrolls through argument list (or predefined one if there are no arguments)
 # and process each item by 'tcolors x', hence changing ANSI terminal colors.
-#
-# :Copyright: (c) 2013 Miroslav Koskar <http://mkoskar.com/>
-# :License: BSD 2-Clause
 
 set -eu -o pipefail
 

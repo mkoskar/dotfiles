@@ -68,9 +68,11 @@ xmobarActionWrap :: String -> String -> String
 xmobarActionWrap "" m = m
 xmobarActionWrap a m  = wrap ("<action=`" ++ a ++ "`>") "</action>" m
 
+matchAppOrClassName :: String -> Query Bool
+matchAppOrClassName n = (appName =? n) <||> (className =? n)
+
 myStatusBar conf = statusBar "statusbar" myPP myToggleStrutsKey conf
   where
-    --color = dzenColor
     color = xmobarColor
     myPP = defaultPP
         { ppCurrent = color "#55ff55" "" . wrap "[" "]"
@@ -102,9 +104,9 @@ myConfig = defaultConfig
     myTerminal = "term"
     myWorkspaces = map show [0..9]
     myScratchpads =
-        [ NS "sp0" ("term -n sp0 trun s adm") (resource =? "sp0")
+        [ NS "sp0" ("term -n '[sp0]' trun s adm") (appName =? "[sp0]")
           (customFloating $ W.RationalRect 0.03 0.03 0.94 0.94)
-        , NS "sp1" ("term -n sp1 trun s mon") (resource =? "sp1")
+        , NS "sp1" ("term -n '[sp1]' trun s mon") (appName =? "[sp1]")
           (customFloating $ W.RationalRect 0.03 0.03 0.94 0.94)
         ]
 
@@ -175,7 +177,6 @@ myConfig = defaultConfig
                    $ mkToggle (single NOBORDERS)
                    $ mkToggle (single FULL)
                    $ mkToggle (single MIRROR)
-                   --layoutHintsWithPlacement (0.5, 0.5)
                    (
                        myTabbed |||
                        myTall
@@ -312,7 +313,6 @@ myConfig = defaultConfig
         , ("M-C-M1-,", warpToWindow 0.500 0.995)
         , ("M-C-M1-.", warpToWindow 0.995 0.995)
 
-
           -- Launchers
           -- ----------------------------------------
 
@@ -359,6 +359,7 @@ myConfig = defaultConfig
         , ("M-; M-d", spawn "dpms-toggle")
         , ("M-; M-l", spawn "sudo lockx")
         , ("M-; M-t", spawn "trackpoint-wheel-toggle")
+        , ("M-; M-S-t", spawn "touchpad-toggle")
         , ("M-; M-w", spawn "wifi-toggle")
         , ("M-C-M1-b", spawn "backlight0 prev")
         , ("M-C-b", spawn "backlight0 next")

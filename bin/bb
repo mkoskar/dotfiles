@@ -49,16 +49,19 @@ done <<-EOF
     docker          b https://docs.docker.com/reference/builder/
     flp             b http://www.feynmanlectures.caltech.edu/
     foldoc          sr foldoc {}
+    freedesktop     b http://standards.freedesktop.org/
     g               sr google {}
     g-operators     b https://support.google.com/websearch/answer/2466433?hl=en&ref_topic=3081620&vid=1-635793825968278780-302114999
     gc              sr gcache {}
     gg              sr google -G {}
     gh              sr github {}
+    gh-repos        b https://github.com/mkoskar?tab=repositories
     gi              sr google -i {}
     gimp            b file:///usr/share/gimp/2.0/help/en/index.html
     gmail-nolabel   b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:chats+-in:inbox+-in:sent+-in:draft+-in:trash/n100
     gmail-search    b https://support.google.com/mail/answer/7190
     go              b https://golang.org/ref/spec
+    gpg-search      b https://sks-keyservers.net/i/#extract
     gradle          b file:///usr/share/java/gradle/docs/userguide/userguide.html
     gradle-dsl      b file:///usr/share/java/gradle/docs/dsl/index.html
     graphviz        b file:///usr/share/graphviz/doc
@@ -67,6 +70,7 @@ done <<-EOF
     groovy-gapi     b file:///usr/share/doc/groovy-2.4.3/html/gapi/overview-summary.html
     grub            b https://www.gnu.org/software/grub/manual/grub.html
     guava           b http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/index.html
+    hangouts        b https://hangouts.google.com/
     haskell         b file:///usr/share/doc/ghc/html/libraries/index.html
     hibernate-orm   b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
     html            b https://html.spec.whatwg.org/multipage/
@@ -105,6 +109,7 @@ done <<-EOF
     linux-howtos    b file:///usr/share/linux-howtos/INDEX
     linux-specs     b http://refspecs.linuxfoundation.org/
     linux-src       b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/?id=$kernel_version
+    lists           b http://gmane.org/find.php
     maven           b http://maven.apache.org/plugins/index.html
     maven-central   b https://search.maven.org/
     maven-jcenter   b https://bintray.com/bintray/jcenter
@@ -137,6 +142,7 @@ done <<-EOF
     postgresql      b file:///usr/share/doc/postgresql/html/index.html
     privoxy         b file:///usr/share/doc/privoxy/user-manual/index.html
     pygments        b http://pygments.org/docs/lexers/
+    pypa            b https://www.pypa.io/
     pypi            b https://pypi.python.org/pypi
     python          b file:///usr/share/doc/python/html/index.html
     python2         b file:///usr/share/doc/python2/html/index.html

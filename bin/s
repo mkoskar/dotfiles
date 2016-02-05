@@ -176,6 +176,6 @@ fi
 
 ))
 
-if (( $attach )); then
+if (( attach )); then
     exec tmux -L "$socket" attach -t "=$session"
 fi

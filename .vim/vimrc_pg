@@ -35,7 +35,6 @@ function! NoFileSetup() abort
     noremap <buffer> r <Nop>
     noremap <buffer> R <Nop>
     noremap <buffer> F <Nop>
-    redraw
     file $PAGER_TITLE
 endfunction
 
@@ -92,7 +91,6 @@ map <silent> r :ReloadX<CR>
 
 endif
 
-if has('autocmd')
 augroup vimrc_pg
     autocmd!
 
@@ -104,6 +102,5 @@ augroup vimrc_pg
     endif
 
 augroup END
-endif
 
 exec VimrcFinalize()

@@ -118,4 +118,4 @@ linux|linux console,
 	vpa=\E[%i%p1%dd,
 # ----------------------------------------
     cnorm=\E[?25h\E[?8c,
-    is2=\E[?25h\E[?8c,
+    rs2=\E[?25h\E[?8c\E]P0000000\E]P19d2d2d\E]P245a345\E]P3db9c2e\E]P4384580\E]P5a43fa4\E]P6229f9f\E]P7aeaeae\E]P84d4d4d\E]P9c04f4f\E]PA70c066\E]PBd4c668\E]PC606cb5\E]PDbe63be\E]PE68bbbb\E]PFdddddd,

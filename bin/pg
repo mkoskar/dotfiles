@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 #
 # Wrapper script to use Vim as a pager.
-#
-# :Copyright: (c) 2013 Miroslav Koskar <http://mkoskar.com/>
-# :License: BSD 2-Clause
 
 set -eu
 

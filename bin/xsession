@@ -29,35 +29,33 @@ if [[ $(xserverq name) = 'Xephyr' ]]; then
 fi
 
 xscreen
+
 /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
+#sxhkd &
 
 if [[ $(xserverq name) = 'Xorg' ]]; then
-    srun -x compton
+    compton &
 fi
 
 _main() {
-    srun -x osdd
+    osdd &
     _xmonad
 }
 
-_herbstluftwm() {
-    herbstluftwm --locked
-}
-
 _openbox() {
-    srun -x tint2
+    tint2 &
     openbox
 }
 
 _xmonad() {
-    srun -x tray
+    tray &
     xmonad
 }
 
 session=$1
 export XSESSION=$session
 case $session in
-    main | herbstluftwm | openbox | xmonad)
+    main | openbox | xmonad)
         _$session
         ;;
     *)

@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 #
 # Change terminal cursor style and color.
-#
-# :Copyright: (c) 2015 Miroslav Koskar <http://mkoskar.com/>
-# :License: BSD 2-Clause
 
 set -eu
 

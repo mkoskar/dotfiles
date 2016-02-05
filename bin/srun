@@ -43,7 +43,7 @@ shift $((OPTIND-1))
 (( $# )) || usage_err
 
 name=${name:-$1}
-if (( $xopt )); then
+if (( xopt )); then
     name="$name$DISPLAY"
 fi
 name="$name.service"
@@ -51,12 +51,12 @@ name="$name.service"
 sdu() { systemctl --user "$@"; }
 
 if sdu --quiet is-active "$name"; then
-    (( $ropt )) || exit 0
+    (( ropt )) || exit 0
     sdu stop "$name"
 elif sdu --quiet is-failed "$name"; then
     sdu reset-failed "$name"
 fi
 
 systemd-run --user --no-ask-password \
-            --setenv=DISPLAY="$DISPLAY" \
+            --setenv=DISPLAY="${DISPLAY-}" \
             --unit="$name" -- "$@"

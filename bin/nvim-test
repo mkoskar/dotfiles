@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -eu
+
+export TERMBIN=${1-}
+
+term trun nvim -u ~/.config/nvim/init-test.vim &
+term trun vim -u ~/.config/nvim/init-test.vim &

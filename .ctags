@@ -1,3 +1,7 @@
+--exclude=*.swp
+--exclude=*~
+--exclude=.git
+--exclude=.svn
 --extra=fq
 --fields=afiklmnsSzt
 --links=yes

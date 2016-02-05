@@ -43,7 +43,7 @@ noremap <silent> <C-Y> 5<C-Y>
 noremap <silent> zh 15zh
 noremap <silent> zl 15zl
 
-" Move visual block: <http://vimrcfu.com/snippet/77>
+" Move visual block <http://vimrcfu.com/snippet/77>
 vnoremap J :m '>+1<CR>gv
 vnoremap K :m '<-2<CR>gv
 
@@ -153,6 +153,7 @@ nnoremap <silent> _ :resize -5<CR>
 nnoremap <silent> + :resize +5<CR>
 nnoremap <silent> <C-W>, :vert resize -5<CR>
 nnoremap <silent> <C-W>. :vert resize +5<CR>
+nnoremap <silent> <Leader>q :close<CR>
 
 
 " Multiple Tab Pages
@@ -182,8 +183,6 @@ if !has('nvim')
     set nottybuiltin
     set t_ut=
 endif
-
-set title
 
 
 " Using the Mouse
@@ -235,7 +234,7 @@ nnoremap <silent> Y y$
 nnoremap <silent> <expr> gp '`['.getregtype()[0].'`]'
 
 " Select all
-noremap <silent> <Leader>a <Esc>:keepjumps normal! ggVG<CR>
+noremap <silent> <Leader>aa <Esc>:keepjumps normal! ggVG<CR>
 
 function! s:Pipe2(cmd, bang) range abort
     if empty(a:bang)
@@ -243,9 +242,9 @@ function! s:Pipe2(cmd, bang) range abort
     endif
     call system(a:cmd, getreg())
 endfunction
-command! -register -range -bang -nargs=1 Pipe2 Preserve <line1>,<line2> call s:Pipe2(<q-args>, <q-bang>)
-command! -register -range -bang Pipe2Primary Preserve <line1>,<line2> call s:Pipe2('xclip -i', <q-bang>)
-command! -register -range -bang Pipe2Clipboard Preserve <line1>,<line2> call s:Pipe2('xclip -i -selection clipboard', <q-bang>)
+command! -register -range -bang -nargs=1 Pipe2 Preserve silent <line1>,<line2> call s:Pipe2(<q-args>, <q-bang>)
+command! -register -range -bang Pipe2Primary Preserve silent <line1>,<line2> call s:Pipe2('xclip -i', <q-bang>)
+command! -register -range -bang Pipe2Clipboard Preserve silent <line1>,<line2> call s:Pipe2('xclip -i -selection clipboard', <q-bang>)
 
 " Piping to Primary selection directly
 nnoremap <silent> <Leader>xxP :Pipe2Primary!<CR>
@@ -263,7 +262,7 @@ vnoremap <silent> <Leader>xxc y:Pipe2Clipboard!<CR>
 
 set textwidth=78
 set backspace=indent,eol,start
-set formatoptions=croqln21j
+set formatoptions=tcroqln21j
 set complete-=i
 set completeopt=longest,menuone
 set tildeop
@@ -297,10 +296,10 @@ set preserveindent
 
 set foldcolumn=0
 
-nnoremap <Leader>ff :setl fdm=manual<CR>
-nnoremap <Leader>fi :setl fdm=indent<CR>
-nnoremap <Leader>fs :setl fdm=syntax<CR>
-nnoremap <Leader>fm :setl fdm=marker<CR>
+nnoremap <Leader>ff :setl fdm=manual \| normal! zM<CR>
+nnoremap <Leader>fi :setl fdm=indent \| normal! zM<CR>
+nnoremap <Leader>fs :setl fdm=syntax \| normal! zM<CR>
+nnoremap <Leader>fm :setl fdm=marker \| normal! zM<CR>
 
 
 " Mapping
@@ -345,7 +344,7 @@ cnoremap %% <C-R>=expand('%:h').'/'<CR>
 " Executing External Commands
 " ----------------------------------------
 
-set shell=/bin/bash
+set shell=bashx
 set shellredir=>%s\ 2>&1
 
 
@@ -353,18 +352,20 @@ set shellredir=>%s\ 2>&1
 " ----------------------------------------
 
 set shellpipe=2>&1\|\ tee
-set grepprg=grep\ -n\ --exclude-dir='.svn'\ --exclude-dir='.git'\ --exclude='*.swp'\ --exclude='*~'\ $*
+set grepprg=grep\ -nH\ --exclude-dir='.svn'\ --exclude-dir='.git'\ --exclude='*.swp'\ --exclude='*~'\ $*
+set grepprg=ag\ --vimgrep\ $*
+set grepformat=%f:%l:%c:%m
 
-nnoremap <silent> <F9> :make!<CR>
+nnoremap <F9> :make!<CR>
 
-nnoremap <silent> <Leader>cl :copen<CR>
-nnoremap <silent> <Leader>ll :lopen<CR>
+nnoremap <Leader>cl :copen<CR>
+nnoremap <Leader>ll :lopen<CR>
 
-nnoremap <silent> <Leader>j :try \| call TryCatch('lnext', '^\(.*:E776:.*\)\@!') \| catch \| call TryCatch('cnext') \| endtry<CR>
-nnoremap <silent> <Leader>k :try \| call TryCatch('lNext', '^\(.*:E776:.*\)\@!') \| catch \| call TryCatch('cNext') \| endtry<CR>
+nnoremap <silent> <Leader>j :try \| echo \| call TryCatch('lnext', '^\(.*:E776:.*\)\@!') \| catch \| call TryCatch('cnext') \| endtry<CR>
+nnoremap <silent> <Leader>k :try \| echo \| call TryCatch('lNext', '^\(.*:E776:.*\)\@!') \| catch \| call TryCatch('cNext') \| endtry<CR>
 
-nnoremap <silent> <Leader>J :cnext<CR>
-nnoremap <silent> <Leader>K :cNext<CR>
+nnoremap <Leader>J :cnext<CR>
+nnoremap <Leader>K :cNext<CR>
 
 
 " Multi-byte Characters
@@ -377,21 +378,15 @@ set encoding=utf-8
 " ----------------------------------------
 
 set virtualedit=block
-set gdefault
 set sessionoptions-=blank
 set sessionoptions-=options
 exec "set viminfo=!,'100,<50,s10,h,n".$VIMDIR."/.viminfo"
-
-nnoremap cov :setl <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
 
 " Disable Ex mode
 nnoremap Q <Nop>
 
 " Disable Man lookup
 nnoremap K <Nop>
-
-" Disable useless help messages
-nnoremap <silent> <C-c> <C-c>
 
 " Open files faster
 nmap <Leader>ew :e %%
@@ -402,14 +397,19 @@ nnoremap <silent> <Leader>ee :e<CR>
 nnoremap <silent> <Leader>e0 :e ++binary<CR>
 nnoremap <silent> <Leader>E :e!<CR>
 
+" Read / Filter faster
+nnoremap <Leader>% :%!
+nnoremap <Leader>rr :r!
+
 " Unload current buffer and delete if from buffer list
 nnoremap <silent> <C-Q> :bd<CR>
 
-" Switch off 'readonly'
-nnoremap <Leader>rr :setl noreadonly modifiable<CR>
+" Readonly / Modifiable
+nnoremap <Leader>ro :setl ro noma<CR>
+nnoremap <Leader>ma :setl ma noro<CR>
 
 " Reload filetype
-nnoremap <silent> <Leader>ft :exec 'set ft='.&ft<CR>
+nnoremap <silent> <Leader>ft :exec 'setf '.&ft<CR>
 
 " Sorting
 vnoremap <silent> <Leader>ss :sort<CR>
@@ -436,15 +436,15 @@ nnoremap <silent> <Leader>xxd :%!xxd<CR>
 vnoremap <silent> <Leader>xxD :!xxd -r<CR>
 nnoremap <silent> <Leader>xxD :%!xxd -r<CR>
 
+" Format
+vnoremap <silent> <Leader>fo :Format<CR>
+nnoremap <silent> <Leader>fo :%Format<CR>
+
 " XML prettify
 vnoremap <silent> <Leader>px :!tidy -config ~/.tidyrc -xml<CR>
 nnoremap <silent> <Leader>px :%!tidy -config ~/.tidyrc -xml<CR>
 
-" Reformat paragraph
-vnoremap <silent> <Leader>pr :!reformat<CR>
-nnoremap <silent> <Leader>pr :%!reformat<CR>
-
-" strip / squash lines
+" Strip / Squash lines
 vnoremap <silent> <Leader>ps :!striplns<CR>
 nnoremap <silent> <Leader>ps :%!striplns<CR>
 vnoremap <silent> <Leader>pS :!squashlns<CR>
@@ -479,7 +479,7 @@ endfunction
 " Performs exec of passed command in try/catch block catching matching errors.
 function! TryCatch(cmd, ...) abort
     let pattern = get(a:, '1', '.*')
-    exec 'try | '.a:cmd.' | catch /'.pattern.'/ | call EchoException() | endtry'
+    exec 'try | exec "'.escape(a:cmd, '"').'" | catch /'.pattern.'/ | call EchoException() | endtry'
 endfunction
 
 function! BufSpecialSetup() abort
@@ -497,7 +497,18 @@ endfunction
 
 " }}}
 
-" {{{ Quickfix utils
+" {{{ Formatting
+
+function! s:Format(...) range abort
+    let ft = get(a:, '1', &ft)
+    let filename = expand('%')
+    exec join([a:firstline.','.a:lastline, '!format', ft, shellescape(filename)])
+endfunction
+command! -range -nargs=? Format Preserve silent <line1>,<line2> call s:Format(<f-args>)
+
+" }}}
+
+" {{{ Improve Quickfix
 
 function! QfOldest(prefix) abort
     try | exec a:prefix.'older 999' | catch | endtry
@@ -552,7 +563,8 @@ endfunction
 " {{{ Add single plugin using 'pathogen'
 
 function! s:Plugin(bang, name) abort
-    call pathogen#surround((empty(a:bang) ? '~/.vim/bundle/' : '').a:name)
+    let path = fnamemodify((empty(a:bang) ? '~/.vim/bundle/' : '').a:name, ':p:s?[\\/]\=$??')
+    call pathogen#surround(path)
 endfunction
 command! -bang -nargs=1 Plugin call s:Plugin(<q-bang>, <args>)
 
@@ -591,6 +603,8 @@ nnoremap <Leader>df :Diff2 <C-R>=expand('%')<CR>
 
 " }}}
 
+if !has('nvim')
+
 " {{{ Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding
 
 function! MetaSetup(enable) abort
@@ -628,6 +642,8 @@ silent call MetaSetup(1)
 
 " }}}
 
+endif
+
 " {{{ Preserve cursor / window position, last search pattern, and the others
 
 function! Preserve(cmd) abort
@@ -648,9 +664,10 @@ function! Preserve(cmd) abort
     endtry
 endfunction
 command! -nargs=1 Preserve call Preserve(<q-args>)
-nnoremap <silent> <Leader>pp :Preserve %s/\s\+$//e<CR>
-vnoremap <silent> <Leader>pp :Preserve '<,'>s/\\s\\+$//e<CR>
-nnoremap <silent> <Leader>== :Preserve normal! gg=G<CR>
+nnoremap <silent> <Leader>pp :Preserve %s/\\s\\+$//e<CR>
+vnoremap <silent> <Leader>pp :<C-U>Preserve '<,'>s/\\s\\+$//e<CR>
+nnoremap <silent> <Leader>== :Preserve silent normal! gg=G<CR>
+nnoremap <silent> <Leader>gq :Preserve silent normal! gggqG<CR>
 
 " }}}
 
@@ -702,8 +719,8 @@ nnoremap <silent> <Leader>th :Themes<CR>
 " {{{ Write with elevated privileges
 
 function! s:Write(...) abort
-    let file = get(a:, 'a:1', '%')
-    exec 'silent write !sudo tee >/dev/null '.file
+    let filename = get(a:, '1', expand('%'))
+    exec 'silent write !sudo tee >/dev/null '.shellescape(filename)
     edit!
 endfunction
 command! -nargs=? W call s:Write(<f-args>)
@@ -822,7 +839,6 @@ if has('gui_running')
     colorscheme bclear
 endif
 
-if has('autocmd')
 augroup vimrc_base
     autocmd!
 
@@ -839,7 +855,7 @@ augroup vimrc_base
         autocmd TermOpen * call BufSpecialSetup()
     endif
 
-    " tabpagecd: <https://github.com/kana/vim-tabpagecd>
+    " tabpagecd <https://github.com/kana/vim-tabpagecd>
     autocmd TabEnter *
         \  if exists('t:cwd')
         \|     cd `=t:cwd`
@@ -876,6 +892,5 @@ augroup vimrc_base
     autocmd FileType zip call BufSpecialSetup()
 
 augroup END
-endif
 
 exec VimrcFinalize()

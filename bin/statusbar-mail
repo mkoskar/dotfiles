@@ -7,10 +7,10 @@ declare -i prevnew=
 
 out() {
     local new; new=$(find "${newdirs[@]}" -type f | wc -l)
-    if (( $new > 0 )); then
+    if (( new > 0 )); then
         printf '<fc=#55FF55>%d</fc>' $new
         delta=$((new-prevnew))
-        (( $delta > 0 )) && printf '<fc=#FEED6A>(+%d)</fc>' $delta
+        (( delta > 0 )) && printf '<fc=#FEED6A>(+%d)</fc>' $delta
     fi
     echo
     prevnew=$new

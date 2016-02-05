@@ -2,7 +2,7 @@
 
 set -eu
 
-if (( $EUID )); then
+if (( EUID )); then
     sudo hostsblock "${0##*/}"
     exit
 fi

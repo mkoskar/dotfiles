@@ -3,7 +3,7 @@
 [options]
 cursor_blink = off
 font = local_terminal_sized
-mouse_autohide = true
+mouse_autohide = false
 scrollback_lines = 8192
 
 [colors]

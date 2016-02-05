@@ -34,7 +34,7 @@ shift $((OPTIND-1))
 (( $# )) || usage_err
 
 xpgrep_args=()
-(( $fopt )) && xpgrep_args+=(-f)
+(( fopt )) && xpgrep_args+=(-f)
 xpgrep_args+=(-- "$1")
 
 xpgrep "${xpgrep_args[@]}" | xargs -r killer -g

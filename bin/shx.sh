@@ -22,19 +22,35 @@ if [ "$BASH_VERSION" ]; then
 fi
 
 
-# ls
+# docker
 # ----------------------------------------
 
-alias ls='ls --group-directories-first --color=auto'
-alias l='ls -1A'
-alias la='ll -A'
-alias lc='lt -c'
-alias lk='ll -Sr'
-alias ll='ls -lh'
-alias lr='ll -R'
-alias lt='ll -tr'
-alias lu='lt -u'
-alias lx='ll -XB'
+alias dk='docker'
+alias dkb='docker build'
+alias dkc='docker ps'
+alias dkca='docker ps -a'
+alias dkcl='docker ps -l -q'
+alias dke='docker exec -i -t'
+alias dki='docker images'
+alias dkia='docker images -a'
+alias dkr='docker run -P'
+alias dkrd='docker run -d -P'
+alias dkri='docker run -i -t -P'
+
+dkip() {
+    local target; target=${1:-$(docker ps -lq)}
+    [ ! "$target" ] && return 2
+    docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$target"
+}
+
+dkrm() {
+    confirm 'Remove ALL containers (with volumes). Continue?' n || return 0
+    docker ps -aq | xargs -r docker rm -v -f
+}
+
+dkstop() {
+    docker ps -aq | xargs -r docker stop
+}
 
 
 # grep / ack / ag / pt
@@ -47,24 +63,6 @@ alias gr="g -r --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exc
 alias gri='gr -i'
 alias ack='ack --color'
 alias ag='ag --color --color-path=36 --color-line-number=33 --color-match=41 --follow --nobreak --smart-case --noheading'
-
-
-# man
-# ----------------------------------------
-
-alias man-less="MANPAGER='less -s' man"
-
-alias man-1p='man -s 1p'
-alias man-3p='man -s 3p'
-alias man-posix='man -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
-
-man-all() {
-    pgx man -k . "$@"
-}
-
-alias man-all-1p='man-all -s 1p'
-alias man-all-3p='man-all -s 3p'
-alias man-all-posix='man-all -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
 
 
 # java / groovy / maven / gradle
@@ -88,12 +86,37 @@ mvn-archetype-generate() {
 }
 
 
-# python
+# ls
 # ----------------------------------------
 
-alias py='python'
-alias ipy='ipython'
-alias q='deactivate'
+alias ls='ls --group-directories-first --color=auto'
+alias l='ls -1A'
+alias la='ll -A'
+alias lc='lt -c'
+alias lk='ll -Sr'
+alias ll='ls -lh'
+alias lr='ll -R'
+alias lt='ll -tr'
+alias lu='lt -u'
+alias lx='ll -XB'
+
+
+# man
+# ----------------------------------------
+
+alias man-less="MANPAGER='less -s' man"
+
+alias man-1p='man -s 1p'
+alias man-3p='man -s 3p'
+alias man-posix='man -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
+
+man-all() {
+    pgx man -k . "$@"
+}
+
+alias man-all-1p='man-all -s 1p'
+alias man-all-3p='man-all -s 3p'
+alias man-all-posix='man-all -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
 
 
 # pacman
@@ -140,6 +163,14 @@ paci() {
     [ $# -eq 0 ] && return 2
     pacman -Qii -- "$@"
 }
+
+
+# python
+# ----------------------------------------
+
+alias py='python'
+alias ipy='ipython'
+alias q='deactivate'
 
 
 # Other

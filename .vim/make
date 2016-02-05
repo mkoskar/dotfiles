@@ -59,29 +59,4 @@ from_git unimpaired         https://github.com/tpope/vim-unimpaired.git
 from_git unite              https://github.com/Shougo/unite.vim.git
 from_git visualrepeat       https://github.com/vim-scripts/visualrepeat.git
 
-# from_git UltiSnips          https://github.com/SirVer/ultisnips.git
-# from_git fugitive           https://github.com/tpope/vim-fugitive.git
-# from_git snippets           https://github.com/honza/vim-snippets.git
-# from_git vimoutliner        https://github.com/vimoutliner/vimoutliner.git
-
-# https://github.com/Raimondi/delimitMate.git
-# https://github.com/Shougo/neomru.vim
-# https://github.com/Shougo/unite-outline.git
-# https://github.com/Shougo/vimfiler.vim.git
-# https://github.com/Valloric/YouCompleteMe.git
-# https://github.com/Yggdroot/indentLine.git
-# https://github.com/airblade/vim-gitgutter.git
-# https://github.com/dahu/vimple.git
-# https://github.com/davidhalter/jedi-vim.git
-# https://github.com/klen/python-mode.git
-# https://github.com/mhinz/vim-signify.git
-# https://github.com/mhinz/vim-startify.git
-# https://github.com/rking/ag.vim.git
-# https://github.com/svermeulen/vim-easyclip.git
-# https://github.com/thinca/vim-ref.git
-# https://github.com/tpope/vim-abolish.git
-
-# https://github.com/mattboehm/vim-accordion
-# https://github.com/spolu/dwm.vim.git
-
 echo

@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 #
 # Is device mounted on mountpoint of some type with a specific mount option?
-#
-# :Copyright: (c) 2014 Miroslav Koskar <http://mkoskar.com/>
-# :License: BSD 2-Clause
 
 set -eu
 

@@ -17,7 +17,7 @@ id_clip="clip$sep"
 out() {
     local id=$1 tmpfile=$2
     read -r lines bytes <<<"$(wc -cl <"$tmpfile")"
-    if (( $bytes > 0 )); then
+    if (( bytes > 0 )); then
         printf "%s%d/%d$sep%s$sep\n" \
             "$id" "$lines" "$bytes" "$(head -c 30 <"$tmpfile" | oneline)"
     fi

@@ -34,12 +34,15 @@ name=${name:-term}
 
 case $bin in
     st)
-        exec $bin -c "$name" -e "$@"
+        exec $bin -n "$name" -e "$@"
         ;;
     termite)
         exec $bin --name "$name" -e "$(shell-escape "$@")"
         ;;
     urxvt | urxvtc)
+        exec $bin -name "$name" -e "$@"
+        ;;
+    xterm)
         exec $bin -name "$name" -e "$@"
         ;;
     *)

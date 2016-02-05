@@ -22,10 +22,11 @@ XTerm*vt100.faceName:           xft:DejaVu Sans Mono:size=10
 XTerm*vt100.bellIsUrgent:       true
 XTerm*vt100.bellOnReset:        false
 XTerm*vt100.metaSendsEscape:    true
-XTerm*vt100.saveLines:          8192
-XTerm*vt100.utf8:               2
 XTerm*vt100.printAttributes:    0
 XTerm*vt100.printerCommand:     cat > $(mktemp -p ~/tmp xterm.XXXXXX)
+XTerm*vt100.saveLines:          8192
+XTerm*vt100.utf8:               2
+
 XTerm*vt100.translations:       #override \n \
                                 Ctrl ~Alt Shift <Key>H: string(\177) \n \
                                 ~Shift <Key>Print: print() \n \
@@ -50,15 +51,16 @@ URxvt.font:             xft:local_terminal_sized, \
                         xft:Symbola:pixelsize, \
                         xft:Symbola:pixelsize=9
 
-URxvt.scrollstyle:      plain
-URxvt.thickness:        5
-URxvt.saveLines:        8192
-URxvt.pointerBlank:     true
-URxvt.urgentOnBell:     true
+URxvt.cutchars:         '"()*,<>[]{}|\''
 URxvt.iso14755:         true
 URxvt.iso14755_52:      false
-URxvt.cutchars:         '"()*,<>[]{}|\''
+URxvt.pointerBlank:     true
 URxvt.print-pipe:       cat > $(mktemp -p ~/tmp urxvt.XXXXXX)
+URxvt.saveLines:        8192
+URxvt.scrollBar:        false
+URxvt.scrollstyle:      plain
+URxvt.thickness:        5
+URxvt.urgentOnBell:     true
 
 ! ASCII BS  == 8   == \010 == ^H
 ! ASCII DEL == 127 == \177 == ^?

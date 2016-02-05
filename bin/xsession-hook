@@ -9,8 +9,7 @@ startup() {
     case $session in
         main)
             apod-bg &
-            srun clementine
-            srun workrave
+            srun -x clementine
             xup &
             ;;
     esac
