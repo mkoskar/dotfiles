@@ -1,9 +1,30 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
+set -eu
+
+if [[ ! ${VIMSERVER-} && ${TMUX-} ]]; then
+    IFS=, read -ra var <<<"$TMUX"
+    export VIMSERVER="$TMPDIR/nvim-tmux-${var[1]}-${var[2]}"
+fi
+[[ ${VIMSERVER-} ]] || exit 1
 
 (( $# )) || set -- .
 
-server=${VIMSERVER:-$TMUX}
-vim --serverlist | grep -Fxiq "$server" || exit 1
-vim --servername "$server" --remote-tab-silent "$@"
+VIMBIN=${VIMBIN:-vim}
+case $VIMBIN in
+    vim)
+        exec vim --servername "$VIMSERVER" \
+            --remote-tab-silent "$@"
+        ;;
+    nvim)
+        if [[ -e $VIMSERVER ]]; then
+            nvr --servername "$VIMSERVER" \
+                --remote-tab "$@" \
+                -c 'doau BufEnter' &>/dev/null && exit 0
+        fi
+        exec nvim --cmd 'call serverstart($VIMSERVER)' "$@"
+        ;;
+    *)
+        exit 2
+        ;;
+esac

@@ -60,6 +60,7 @@ done <<-EOF
     gimp            b file:///usr/share/gimp/2.0/help/en/index.html
     gmail-nolabel   b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:chats+-in:inbox+-in:sent+-in:draft+-in:trash/n100
     gmail-search    b https://support.google.com/mail/answer/7190
+    gnome-api       b https://developer.gnome.org/references
     go              b https://golang.org/ref/spec
     gpg-search      b https://sks-keyservers.net/i/#extract
     gradle          b file:///usr/share/java/gradle/docs/userguide/userguide.html
@@ -82,16 +83,16 @@ done <<-EOF
     iojs            b https://iojs.org/api/
     irc-docs        b https://github.com/grawity/irc-docs
     irc-specs       b http://ircv3.net/irc/
-    java            b file:///usr/share/doc/java/jdk/technotes/tools/unix/java.html
+    java            b file:///usr/share/doc/java/technotes/tools/unix/java.html
     java-apis       b http://www.oracle.com/technetwork/java/api-141528.html
-    java-changes    b file:///usr/share/doc/java/jdk/technotes/guides/language/enhancements.html
-    java-specs      b http://docs.oracle.com/javase/specs/index.html
-    java-tutorials  b http://docs.oracle.com/javase/tutorial/reallybigindex.html
+    java-changes    b file:///usr/share/doc/java/technotes/guides/language/enhancements.html
+    java-specs      b https://docs.oracle.com/javase/specs/index.html
+    java-tutorials  b https://docs.oracle.com/javase/tutorial/reallybigindex.html
     javase          b http://www.oracle.com/technetwork/java/javase/overview/index.html
-    jdk             b file:///usr/share/doc/java/jdk/index.html
-    jdk-api         b file:///usr/share/doc/java/jdk/api/overview-summary.html
+    jdk             b file:///usr/share/doc/java/index.html
+    jdk-api         b file:///usr/share/doc/java/api/overview-summary.html
     jdk-relnotes    b http://www.oracle.com/technetwork/java/javase/jdk-relnotes-index-2162236.html
-    jdk-tools       b file:///usr/share/doc/java/jdk/technotes/tools/index.html
+    jdk-tools       b file:///usr/share/doc/java/technotes/tools/index.html
     jdk7            b http://docs.oracle.com/javase/7/docs/index.html
     jdk7-api        b http://docs.oracle.com/javase/7/docs/api/overview-summary.html
     jee             b http://www.oracle.com/technetwork/java/javaee/overview/index.html
@@ -149,7 +150,7 @@ done <<-EOF
     qt              b http://doc.qt.io/
     qutebrowser     b http://qutebrowser.org/img/cheatsheet-big.png
     regexp-gnu      b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html
-    regexp-java     b file:///usr/share/doc/java/jdk/api/java/util/regex/Pattern.html
+    regexp-java     b file:///usr/share/doc/java/api/java/util/regex/Pattern.html
     regexp-js       b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
     regexp-pcre     b file:///usr/share/doc/pcre/html/pcresyntax.html
     regexp-posix    b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap09.html

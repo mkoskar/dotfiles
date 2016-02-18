@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-gphoto2 --auto-detect
+set -e
+
+gphoto2 --quiet --auto-detect
 echo
 
-gphoto2 --abilities
+gphoto2 --quiet --summary &>/dev/null || true
+gphoto2 --quiet --summary
+
+gphoto2 --quiet --abilities

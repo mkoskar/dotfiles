@@ -80,7 +80,7 @@ if ! mounted "$target" "$mapper" >/dev/null; then
     exit 12
 fi
 
-exec 8>/var/run/backup.lck
+exec 8>/var/run/backup.lock
 if ! flock -n 8; then
     log "$target: full-backup in progress"
     exit 3

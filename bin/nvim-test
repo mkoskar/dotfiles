@@ -2,7 +2,11 @@
 
 set -eu
 
-export TERMBIN=${1-}
+prgname=${0##*/}
 
-term trun nvim -u ~/.config/nvim/init-test.vim &
-term trun vim -u ~/.config/nvim/init-test.vim &
+cd ~/tmp
+
+config="$HOME/.config/nvim/init-test.vim"
+
+vim -u "$config"; nvim -u "$config"
+tmux -L "$prgname" new "vim -u '$config'; nvim -u '$config'"

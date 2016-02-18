@@ -3,6 +3,7 @@
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 source ~/.vim/vimrc_base
 
+"Plugin 'dirvish'
 Plugin 'NERD_tree'
 Plugin 'bufexplorer'
 Plugin 'ctrlp'
@@ -84,6 +85,12 @@ let ctrlp_prompt_mappings = {
 nnoremap <silent> <M-e> :CtrlPMRUFiles<CR>
 
 
+" dirvish
+" ----------------------------------------
+
+let dirvish_hijack_netrw = 0
+
+
 " easy_align
 " ----------------------------------------
 
@@ -115,8 +122,9 @@ let easytags_suppress_report = 1
 " filebeagle
 " ----------------------------------------
 
+let filebeagle_hijack_netrw = 0
 let filebeagle_show_hidden = 1
-let filebeagle_show_line_numbers = 1
+let filebeagle_show_line_numbers = 0
 let filebeagle_suppress_keymaps = 1
 
 nmap <silent> - <Plug>FileBeagleOpenCurrentBufferDir
@@ -217,7 +225,7 @@ augroup vimrc_ext
         \  unmap <buffer> <BS>
         \| nmap <buffer> <silent> u <Plug>(FileBeagleBufferFocusOnPrevious)
 
-    autocmd FileType filebeagle call BufSpecialSetup() | setl number
+    autocmd FileType filebeagle call BufSpecialSetup()
     autocmd FileType nerdtree call BufSpecialSetup()
     autocmd FileType tagbar call BufSpecialSetup()
 

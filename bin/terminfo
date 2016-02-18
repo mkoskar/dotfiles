@@ -25,7 +25,7 @@ EOF
 echo
 infocmp -D
 echo
-infocmp -1 | sed -nr '1,2p;/\b(kbs|kdch1|smso|sitm)=/p'
+infocmp -1 | sed -nr '1,2p;/\b(bce,kbs|kdch1|smso|sitm)=/p'
 
 echo $'\n--------------------------------------------------'
 echo "> infocmp -A /usr/share/terminfo $TERM $TERM"

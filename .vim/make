@@ -34,6 +34,7 @@ from_git NERD_tree          https://github.com/scrooloose/nerdtree.git
 from_git bufexplorer        https://github.com/vim-scripts/bufexplorer.zip.git
 from_git colorschemes       https://github.com/flazz/vim-colorschemes.git
 from_git ctrlp              https://github.com/ctrlpvim/ctrlp.vim.git
+from_git dirvish            https://github.com/justinmk/vim-dirvish.git
 from_git dispatch           https://github.com/tpope/vim-dispatch.git
 from_git easy_align         https://github.com/junegunn/vim-easy-align.git
 from_git easymotion         https://github.com/Lokaltog/vim-easymotion.git
@@ -50,6 +51,7 @@ from_git multiple_cursors   https://github.com/terryma/vim-multiple-cursors.git
 from_git neomake            https://github.com/benekastah/neomake.git
 from_git pathogen           https://github.com/tpope/vim-pathogen.git
 from_git repeat             https://github.com/tpope/vim-repeat.git
+from_git sneak              https://github.com/justinmk/vim-sneak.git
 from_git speeddating        https://github.com/tpope/vim-speeddating.git
 from_git surround           https://github.com/tpope/vim-surround.git
 from_git syntastic          https://github.com/scrooloose/syntastic.git

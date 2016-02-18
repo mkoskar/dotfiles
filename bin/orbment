@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -eu
+
+case $TTY in /dev/tty[1-9]) unset DISPLAY ;; esac
+
+/usr/bin/orbment --log ~/.local/orbment.log

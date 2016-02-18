@@ -3,11 +3,24 @@
 set -eu
 
 export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd$DISPLAY"
+bin='/usr/bin/urxvtc'
 
 declare -i retstat=
-/usr/bin/urxvtc "$@" 2>/dev/null || retstat=$?
-
+"$bin" "$@" &>/dev/null || retstat=$?
 if (( retstat == 2 )); then
-    urxvtd -q -o -f
-    /usr/bin/urxvtc "$@"
+
+    (exec 8>"$RXVT_SOCKET.lock"
+    if ! flock -w 30 8; then
+        exit 3
+    fi
+    (exec 8<&-
+
+    retstat=
+    "$bin" "$@" &>/dev/null || retstat=$?
+    if (( retstat == 2 )); then
+        urxvtd -q -o -f
+        "$bin" "$@" &>/dev/null
+    fi
+
+    ))
 fi

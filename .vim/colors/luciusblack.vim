@@ -9,6 +9,10 @@ let colors_name = 'luciusblack'
 hi Normal           guifg=#aeaeae       guibg=#000000
 hi Normal           ctermfg=7           ctermbg=16
 
+if has('nvim') && $TERM =~# '^\(screen\|tmux\)[-$]'
+    hi Normal       ctermfg=7           ctermbg=NONE
+endif
+
 hi Comment          guifg=#909090                           gui=NONE
 hi Comment          ctermfg=245                             cterm=NONE
 
@@ -68,11 +72,11 @@ hi Title            ctermfg=74                              cterm=NONE
 
 " Character under the cursor
 hi Cursor           guifg=bg            guibg=#afd7ff
-hi Cursor           ctermfg=bg          ctermbg=153
+hi Cursor           ctermfg=0           ctermbg=153
 
 " Like cursor, but used when in IME mode
 hi CursorIM         guifg=bg            guibg=#87d7d7
-hi CursorIM         ctermfg=bg          ctermbg=116
+hi CursorIM         ctermfg=0           ctermbg=116
 
 " Cursor column
 hi CursorColumn     guifg=NONE          guibg=#303030       gui=NONE
@@ -96,7 +100,7 @@ hi IncSearch        ctermfg=255                             cterm=reverse
 
 " Last search pattern (hlsearch), also used for quickfix
 hi Search           guifg=bg            guibg=#ffaf00       gui=NONE
-hi Search           ctermfg=bg          ctermbg=214         cterm=NONE
+hi Search           ctermfg=0           ctermbg=214         cterm=NONE
 
 
 " UI
@@ -236,7 +240,7 @@ hi ColorColumn      ctermfg=NONE        ctermbg=236         cterm=NONE
 
 " Left blank, Hidden
 hi Ignore           guifg=bg
-hi Ignore           ctermfg=bg
+hi Ignore           ctermfg=0
 
 
 " bufexplorer

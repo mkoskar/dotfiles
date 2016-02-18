@@ -1,5 +1,4 @@
 defscrollback 8192
-hardstatus string '(%n: %t) - %h'
 caption always '%{=}%-Lw%{=b .W}%n%f %t%{-}%+Lw %= %h'
 startup_message off
 vbell off

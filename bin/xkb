@@ -13,7 +13,7 @@ if (( ! $# )); then
               -option caps:ctrl_modifier \
               -option shift:both_capslock_cancel \
               -option keypad:pointerkeys \
-              -option nbsp:zwnj2nb3zwj4
+              -option nbsp:level3
 
     # See also:
     #
@@ -29,9 +29,7 @@ if (( ! $# )); then
     # shift:both_capslock_cancel    Both Shift keys together activate Caps Lock,
     #                               one Shift key deactivates.
     # keypad:pointerkeys            Shift+NumLock toggles PointerKeys.
-    # nbsp:zwnj2nb3zwj4             Zero-width non-joiner character at second level,
-    #                               non-breakable space character at third level,
-    #                               zero-width joiner at fourth level.
+    # nbsp:level3                   Non-breakable space character at third level.
 
     set -- 0
 fi

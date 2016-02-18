@@ -10,7 +10,7 @@ tmpfile_clip=$(mktemp)
 cleanup() { rm -f "$tmpfile_psel" "$tmpfile_clip"; }
 trap cleanup EXIT
 
-sep=$'\x1F' # ASCII Unit Separator
+sep=$'\x19'
 id_psel="psel$sep"
 id_clip="clip$sep"
 
@@ -18,8 +18,8 @@ out() {
     local id=$1 tmpfile=$2
     read -r lines bytes <<<"$(wc -cl <"$tmpfile")"
     if (( bytes > 0 )); then
-        printf "%s%d/%d$sep%s$sep\n" \
-            "$id" "$lines" "$bytes" "$(head -c 30 <"$tmpfile" | oneline)"
+        printf "%s%d:%d$sep%s\n" \
+            "$id" "$lines" "$bytes" "$(head -c 50 <"$tmpfile" | oneline)"
     fi
 }
 

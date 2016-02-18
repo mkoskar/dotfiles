@@ -216,7 +216,6 @@ alias pactree='pactree --color'
 alias patch0='patch -Np0'
 alias patch1='patch -Np1'
 alias ping-mtu='ping -M do -s 2000'
-alias psa='ps auxf'
 alias pulse-streams='pacmd list-sink-inputs'
 alias qiv='qiv -uLtiGfl --vikeys'
 alias rax='rax2'
@@ -231,6 +230,7 @@ alias tail-cat='tail -n+1'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias watch='watch -n 1 -t -c'
 alias wtc='curl -sL http://whatthecommit.com/index.txt'
+alias youtube-dl-playlist="youtube-dl --yes-playlist -o '~/download/_youtube-dl/%(playlist)s/[%(playlist_index)s] %(title)s'"
 alias youtube-dl-stdout='youtube-dl -o -'
 
 a() {

@@ -2,8 +2,7 @@
 
 cat <<-EOF
 
-This is quick and dirty crontab format help.
-See crontab(5) for more details.
+This is quick and dirty crontab(5) format help.
 
 The time and date fields are:
 

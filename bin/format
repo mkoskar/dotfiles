@@ -45,7 +45,7 @@ case $ft in
         ;;
     html)
         try html-beautify -s "$shiftwidth" -f -
-        try tidy -q --show-errors 0 --show-warnings 0 --force-output --indent auto --indent-spaces "$shiftwidth" --vertical-space yes --tidy-mark no -wrap "$textwidth"
+        try tidy -config ~/.tidyrc --indent-spaces "$shiftwidth" -wrap "$textwidth"
         ;;
     java)
         try astyle --mode=java --style=attach -pcH -s"$shiftwidth"
@@ -81,10 +81,10 @@ case $ft in
         try tsfmt --stdin
         ;;
     xhtml)
-        try tidy -q --show-errors 0 --show-warnings 0 --force-output --indent auto --indent-spaces "$shiftwidth" --vertical-space yes --tidy-mark no -wrap "$textwidth"
+        try tidy -config ~/.tidyrc --indent-spaces "$shiftwidth" -wrap "$textwidth"
         ;;
     xml)
-        try tidy -q -xml --show-errors 0 --show-warnings 0 --force-output --indent auto --indent-spaces "$shiftwidth" --vertical-space yes --tidy-mark no -wrap "$textwidth"
+        try tidy -config ~/.tidyrc -xml --indent-spaces "$shiftwidth" -wrap "$textwidth"
         ;;
 esac
 

@@ -29,7 +29,7 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-bin=${TERMBIN:-urxvt}
+bin=${TERMBIN:-urxvtc}
 name=${name:-term}
 
 case $bin in

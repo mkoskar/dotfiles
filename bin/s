@@ -36,7 +36,7 @@ _sp() {
         \; setw main-pane-height 30 \
         \; selectl main-horizontal
 
-    neww 'trun vim --servername "$TMUX"' \
+    neww 'trun ee' \
         \; setw remain-on-exit on \
         \; splitw -h \
         \; setw main-pane-width 84 \
@@ -156,7 +156,7 @@ if [[ ! $session ]]; then
     session=$(sed -r "s,^$HOME(/|$),~\1," <<<"$PWD")
 fi
 
-(exec 8>"$XDG_RUNTIME_DIR/s-lock"
+(exec 8>"$XDG_RUNTIME_DIR/s.lock"
 if ! flock -w 30 8; then
     exit 3
 fi

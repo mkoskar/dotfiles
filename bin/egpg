@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
 
-exec vim -NO -u ~/.vim/vimrc_gpg "$@"
+set -eu
+
+VIMBIN=${VIMBIN:-vim}
+exec "$VIMBIN" -O -u ~/.vim/vimrc_gpg "$@"

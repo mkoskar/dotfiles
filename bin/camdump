@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-gphoto2 --quiet --get-all-files
+set -eu
+
+if [[ $(find . -maxdepth 0 ! -empty) ]]; then
+    confirm 'Careful! Working directory is NOT empty. Continue?' n || exit 2
+fi
+
+gphoto2 --get-all-files --force-overwrite

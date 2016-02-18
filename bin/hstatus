@@ -2,4 +2,4 @@
 
 set -eu
 
-printf '\e]2;%s\e\\' "$1"
+printf '\e]0;%s\e\\' "$1"

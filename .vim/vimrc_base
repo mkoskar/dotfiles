@@ -100,6 +100,8 @@ nnoremap cul :setl <C-R>=&cul ? 'nocul' : 'cul'<CR><CR>
 nnoremap cuc :setl <C-R>=&cuc ? 'nocuc' : 'cuc'<CR><CR>
 nnoremap <Leader>sp :setl <C-R>=&spell ? 'nospell' : 'spell'<CR><CR>
 
+command! Hitest call MetaLess('silent source $VIMRUNTIME/syntax/hitest.vim')
+
 if &t_Co == 256
     colorscheme luciusblack
 else
@@ -184,6 +186,8 @@ if !has('nvim')
     set t_ut=
 endif
 
+set title
+
 
 " Using the Mouse
 " ----------------------------------------
@@ -218,7 +222,7 @@ set guioptions-=T
 " ----------------------------------------
 
 set shortmess=aoOtTWI
-set showcmd
+set noshowcmd
 set showmode
 set ruler
 set novisualbell
@@ -332,7 +336,7 @@ set updatetime=1000 " also used for CursorHold
 " ----------------------------------------
 
 set history=1000
-set wildmode=list:longest,full
+set wildmode=longest,full
 set wildignore=
 set wildmenu
 set undofile
@@ -397,6 +401,8 @@ nnoremap <silent> <Leader>ee :e<CR>
 nnoremap <silent> <Leader>e0 :e ++binary<CR>
 nnoremap <silent> <Leader>E :e!<CR>
 
+nnoremap <silent> - :e!<CR>
+
 " Read / Filter faster
 nnoremap <Leader>% :%!
 nnoremap <Leader>rr :r!
@@ -407,6 +413,9 @@ nnoremap <silent> <C-Q> :bd<CR>
 " Readonly / Modifiable
 nnoremap <Leader>ro :setl ro noma<CR>
 nnoremap <Leader>ma :setl ma noro<CR>
+
+" Scratch buffer
+nnoremap <Leader>sc :setl bt=nofile bh=delete<CR>
 
 " Reload filetype
 nnoremap <silent> <Leader>ft :exec 'setf '.&ft<CR>
@@ -441,8 +450,8 @@ vnoremap <silent> <Leader>fo :Format<CR>
 nnoremap <silent> <Leader>fo :%Format<CR>
 
 " XML prettify
-vnoremap <silent> <Leader>px :!tidy -config ~/.tidyrc -xml<CR>
-nnoremap <silent> <Leader>px :%!tidy -config ~/.tidyrc -xml<CR>
+vnoremap <silent> <Leader>px :!format xml<CR>
+nnoremap <silent> <Leader>px :%!format xml<CR>
 
 " Strip / Squash lines
 vnoremap <silent> <Leader>ps :!striplns<CR>
@@ -504,6 +513,7 @@ function! s:Format(...) range abort
     let filename = expand('%')
     exec join([a:firstline.','.a:lastline, '!format', ft, shellescape(filename)])
 endfunction
+
 command! -range -nargs=? Format Preserve silent <line1>,<line2> call s:Format(<f-args>)
 
 " }}}
@@ -566,6 +576,7 @@ function! s:Plugin(bang, name) abort
     let path = fnamemodify((empty(a:bang) ? '~/.vim/bundle/' : '').a:name, ':p:s?[\\/]\=$??')
     call pathogen#surround(path)
 endfunction
+
 command! -bang -nargs=1 Plugin call s:Plugin(<q-bang>, <args>)
 
 " }}}
@@ -579,6 +590,7 @@ function! s:DiffToggle() abort
         diffthis
     endif
 endfunction
+
 command! DiffToggle call s:DiffToggle()
 nnoremap <silent> <Leader>dd :DiffToggle<CR>
 
@@ -598,6 +610,7 @@ function! s:Diff2(file) abort
     exec 'setl bt=nofile bh=wipe nobl noswf ft='.filetype
     exec 'silent file DIFF_'.a:file
 endfunction
+
 command! -nargs=1 -complete=file Diff2 call s:Diff2(<f-args>)
 nnoremap <Leader>df :Diff2 <C-R>=expand('%')<CR>
 
@@ -636,6 +649,17 @@ function! MetaSetup(enable) abort
         echohl WarningMsg | echo 'Meta '.(g:meta_enabled ? 'ON' : 'OFF') | echohl None
     endif
 endfunction
+
+function! MetaLess(cmd) abort
+    if g:meta_enabled
+        silent call MetaSetup(0)
+        call TryCatch(a:cmd)
+        silent call MetaSetup(1)
+    else
+        call TryCatch(a:cmd)
+    endif
+endfunction
+
 command! MetaToggle call MetaSetup(!meta_enabled)
 nnoremap <silent> <Leader>mm :MetaToggle<CR>
 silent call MetaSetup(1)
@@ -663,6 +687,7 @@ function! Preserve(cmd) abort
         let @/ = last_search
     endtry
 endfunction
+
 command! -nargs=1 Preserve call Preserve(<q-args>)
 nnoremap <silent> <Leader>pp :Preserve %s/\\s\\+$//e<CR>
 vnoremap <silent> <Leader>pp :<C-U>Preserve '<,'>s/\\s\\+$//e<CR>
@@ -680,6 +705,7 @@ function! s:QuitTab(bang) abort
         exec 'qall'.a:bang
     endtry
 endfunction
+
 command! -bang QuitTab call TryCatch('silent call s:QuitTab(<q-bang>)')
 nnoremap <silent> QQ :QuitTab<CR>
 nnoremap <silent> QA :QuitTab!<CR>
@@ -711,6 +737,7 @@ function! s:Themes() abort
     let s:themes_last_index = i
     redraw | echo
 endfunction
+
 command! Themes call s:Themes()
 nnoremap <silent> <Leader>th :Themes<CR>
 
@@ -723,6 +750,7 @@ function! s:Write(...) abort
     exec 'silent write !sudo tee >/dev/null '.shellescape(filename)
     edit!
 endfunction
+
 command! -nargs=? W call s:Write(<f-args>)
 
 " }}}
@@ -740,6 +768,7 @@ function! s:ZoomToggle() abort
         let t:zoomed = 1
     endif
 endfunction
+
 command! ZoomToggle call s:ZoomToggle()
 nnoremap <silent> <M-z> :ZoomToggle<CR>
 nnoremap <silent> <M-m> :ZoomToggle<CR>
@@ -766,8 +795,6 @@ function! s:MoveToPrevTab() abort
     endif
     exe 'b'.cur_buf
 endfunc
-command! MoveToPrevTab call s:MoveToPrevTab()
-nnoremap <silent> <M-H> :MoveToPrevTab<CR>
 
 function! s:MoveToNextTab() abort
     if tabpagenr('$') == 1 && winnr('$') == 1
@@ -787,7 +814,10 @@ function! s:MoveToNextTab() abort
     endif
     exe 'b'.cur_buf
 endfunc
+
+command! MoveToPrevTab call s:MoveToPrevTab()
 command! MoveToNextTab call s:MoveToNextTab()
+nnoremap <silent> <M-H> :MoveToPrevTab<CR>
 nnoremap <silent> <M-L> :MoveToNextTab<CR>
 
 " }}}
@@ -807,6 +837,7 @@ function! s:MoveToClosedFold(next) abort
         call winrestview(view)
     endif
 endfunction
+
 command! PrevClosedFold call s:MoveToClosedFold(0)
 command! NextClosedFold call s:MoveToClosedFold(1)
 nnoremap <silent> <Leader>zk :PrevClosedFold<CR>
@@ -818,7 +849,16 @@ nnoremap <silent> <Leader>zj :NextClosedFold<CR>
 
 runtime ftplugin/man.vim
 
-let loaded_netrwPlugin = 1 " just get rid of it
+" just get rid of these
+let loaded_getscript = 1
+let loaded_getscriptPlugin = 1
+let loaded_logipat = 1
+let loaded_netrw = 1
+let loaded_netrwPlugin = 1
+let loaded_rrhelper = 1
+let loaded_vimball = 1
+let loaded_vimballPlugin = 1
+
 let netrw_alto = 1
 let netrw_altv = 1
 let netrw_banner = 0
@@ -849,7 +889,10 @@ augroup vimrc_base
     autocmd BufEnter,BufWinEnter * match none | set titlestring=
     autocmd BufWritePre * let &backupext = '_'.substitute(expand('%:p:h'), '/', '%', 'g')
     autocmd CmdwinEnter * call BufSpecialSetup()
-    autocmd TermChanged * silent call MetaSetup(meta_enabled)
+
+    if !has('nvim')
+        autocmd TermChanged * silent call MetaSetup(meta_enabled)
+    endif
 
     if has('nvim')
         autocmd TermOpen * call BufSpecialSetup()

@@ -25,7 +25,7 @@ show-warnings: 0
 # Format
 break-before-br: yes
 indent-spaces: 4
-indent: yes
+indent: auto
 tab-size: 4
 vertical-space: yes
 wrap-asp: no

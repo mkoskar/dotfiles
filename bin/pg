@@ -6,6 +6,8 @@ set -eu
 
 prgname=${0##*/}
 
+VIMBIN=${VIMBIN:-vim}
+
 run() {
     if [[ $prgname = 'manpg' ]]; then
         export PAGER_TITLE=${MAN_PN-}
@@ -19,7 +21,7 @@ run() {
     fi
     args+=(-- "$@")
     export PRGNAME=$prgname
-    exec -a "($prgname)" vim -NO -u ~/.vim/vimrc_pg "${args[@]}"
+    exec -a "($prgname)" "$VIMBIN" -O -u ~/.vim/vimrc_pg "${args[@]}"
 }
 
 if [[ $prgname = 'pgx' ]]; then

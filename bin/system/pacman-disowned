@@ -27,6 +27,8 @@ find / -mindepth 1 \
         -path /var/cache/fontconfig -o \
         -path /var/cache/man -o \
         -path /var/cache/pacman -o \
+        -path /var/lib/docker -o \
+        -path /var/lib/machines -o \
         -path /var/lib/pacman -o \
         -path /var/log/local -o \
         -path /var/spool -o \
