@@ -8,8 +8,8 @@ session=$XSESSION
 startup() {
     case $session in
         main)
-            apod-bg &
-            srun -x clementine
+            srun clementine
+            srun workrave
             xup &
             ;;
     esac

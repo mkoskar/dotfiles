@@ -7,7 +7,6 @@ set completion-prefix-display-length 2
 set editing-mode vi
 set keyseq-timeout 10
 set mark-symlinked-directories on
-set show-all-if-ambiguous on
 set show-all-if-unmodified on
 set show-mode-in-prompt on
 set skip-completed-text on

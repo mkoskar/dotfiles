@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -u
 
 prgname=${0##*/}
 
@@ -23,3 +23,6 @@ xset b off s off dpms 0 0 300
 xsetroot -cursor_name left_ptr
 
 type hsetroot &>/dev/null && hsetroot || xsetroot -solid black
+apod-bg &
+
+true

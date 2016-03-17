@@ -14,7 +14,7 @@ if has('nvim') && $TERM =~# '^\(screen\|tmux\)[-$]'
 endif
 
 hi Comment          guifg=#909090                           gui=NONE
-hi Comment          ctermfg=245                             cterm=NONE
+hi Comment          ctermfg=242                             cterm=NONE
 
 hi Constant         guifg=#d78787                           gui=NONE
 hi Constant         ctermfg=174                             cterm=NONE
@@ -148,7 +148,7 @@ hi VertSplit        ctermfg=243         ctermbg=237         cterm=NONE
 
 " Line used for closed folds
 hi Folded           guifg=#909090       guibg=NONE          gui=NONE
-hi Folded           ctermfg=245         ctermbg=NONE        cterm=NONE
+hi Folded           ctermfg=242         ctermbg=NONE        cterm=NONE
 
 " Column on side used to indicated open and closed folds
 hi FoldColumn       guifg=#bcbcbc       guibg=#444444       gui=NONE
@@ -212,7 +212,7 @@ hi SignColumn       ctermfg=145         ctermbg=233         cterm=NONE
 
 " Line numbers
 hi LineNr           guifg=#909090       guibg=#121212
-hi LineNr           ctermfg=245         ctermbg=233
+hi LineNr           ctermfg=244         ctermbg=233
 
 " The 'more' prompt when output takes more than one line
 hi MoreMsg          guifg=#00875f                           gui=NONE

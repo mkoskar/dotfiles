@@ -17,7 +17,6 @@ set noswapfile
 set noundofile
 set undolevels=-1
 
-set shell=~/bin/bashx
 exec "set viminfo=!,'100,<50,s10,h,n".$VIMDIR."/.viminfo_pg"
 
 noremap <silent> q :qa<CR>
@@ -102,5 +101,3 @@ augroup vimrc_pg
     endif
 
 augroup END
-
-exec VimrcFinalize()

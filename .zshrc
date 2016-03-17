@@ -306,6 +306,8 @@ compctl -m pth
 compctl -m ptha
 compctl -m rep
 compctl -m torsocks
+compctl -m x
+compctl -m xx
 compctl -v v
 
 function _pacl {

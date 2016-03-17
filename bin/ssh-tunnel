@@ -9,9 +9,11 @@ if (( ! $# )); then
     exit 2
 fi
 
+sdu() { systemctl --user "$@"; }
+
 if [[ $prgname = 'ssh-tunnel-off' ]]; then
-    systemctl --user stop "ssh-tunnel@$1"
+    sdu stop "ssh-tunnel@$1"
     exit
 fi
 
-systemctl --user start "ssh-tunnel@$1"
+sdu start "ssh-tunnel@$1"

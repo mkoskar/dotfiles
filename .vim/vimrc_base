@@ -186,6 +186,7 @@ if !has('nvim')
     set t_ut=
 endif
 
+set ttyfast
 set title
 
 
@@ -393,10 +394,10 @@ nnoremap Q <Nop>
 nnoremap K <Nop>
 
 " Open files faster
-nmap <Leader>ew :e %%
-nmap <Leader>es :sp %%
-nmap <Leader>ev :vsp %%
-nmap <Leader>et :tabe %%
+nmap <Leader>ew :e<Space>
+nmap <Leader>es :sp<Space>
+nmap <Leader>ev :vsp<Space>
+nmap <Leader>et :tabe<Space>
 nnoremap <silent> <Leader>ee :e<CR>
 nnoremap <silent> <Leader>e0 :e ++binary<CR>
 nnoremap <silent> <Leader>E :e!<CR>
@@ -498,10 +499,6 @@ endfunction
 function! BufManSetup() abort
     call BufSpecialSetup()
     setl noma ts=8
-endfunction
-
-function! VimrcFinalize() abort
-    return "if vimrc == expand('<sfile>:p') | doautocmd User VimrcFinalize | endif"
 endfunction
 
 " }}}
@@ -847,6 +844,9 @@ nnoremap <silent> <Leader>zj :NextClosedFold<CR>
 
 " ----------------------------------------
 
+filetype plugin indent on
+syntax on
+
 runtime ftplugin/man.vim
 
 " just get rid of these
@@ -864,11 +864,9 @@ let netrw_altv = 1
 let netrw_banner = 0
 let netrw_bufsettings = 'noma nomod nonu nowrap ro nobl nolist cc=0 fdc=0'
 let netrw_fastbrowse = 1
-let netrw_list_cmd = 'sshm USEPORT HOSTNAME ls -Fa -I .'
+let netrw_list_cmd = 'ssh USEPORT HOSTNAME ls -Fa -I .'
 let netrw_liststyle = 0
 let netrw_preview = 1
-let netrw_scp_cmd = 'scpm -q'
-let netrw_sftp_cmd = 'sftpm'
 let netrw_silent = 1
 let netrw_special_syntax = 1
 
@@ -881,10 +879,6 @@ endif
 
 augroup vimrc_base
     autocmd!
-
-    autocmd User VimrcFinalize
-        \  filetype plugin indent on
-        \| if has('syntax') && !exists('g:syntax_on') | syntax on | endif
 
     autocmd BufEnter,BufWinEnter * match none | set titlestring=
     autocmd BufWritePre * let &backupext = '_'.substitute(expand('%:p:h'), '/', '%', 'g')
@@ -909,7 +903,7 @@ augroup vimrc_base
     " Quickfix List / Location List
     autocmd BufEnter,BufWinEnter *
         \  if &ft == 'qf' && exists('w:quickfix_title')
-        \|     let &titlestring = '%t '.w:quickfix_title.' - '.(!empty(v:servername) ? v:servername : 'VIM')
+        \|     let &titlestring = '%t '.w:quickfix_title
         \| endif
     autocmd FileType qf call QfSetup()
     autocmd QuickFixCmdPost [^l]* cwindow
@@ -922,18 +916,11 @@ augroup vimrc_base
 
     autocmd BufWritePost ~/.Xresources !xrdb -load ~/.Xresources
 
-    " ----------------------------------------
-
-    " C/C++
-    autocmd FileType {c,cpp}{,.*} let &l:path = '/usr/include'
-
-    " other
     autocmd FileType mail setl tw=72
     autocmd FileType make setl ts=4 sts=0 sw=4 noexpandtab
     autocmd FileType man call BufManSetup()
     autocmd FileType tar call BufSpecialSetup()
     autocmd FileType zip call BufSpecialSetup()
+    autocmd FileType {c,cpp}{,.*} let &l:path = '/usr/include'
 
 augroup END
-
-exec VimrcFinalize()

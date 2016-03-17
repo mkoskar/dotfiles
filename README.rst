@@ -61,7 +61,7 @@ are listed below.
 `osd <bin/osd>`_, `osdd <bin/osdd>`_
     OSD based on improved version of ``aosd_cat``.
 
-`pacinfo <bin/pacinfo>`_
+`pacinfo <bin/system/pacinfo>`_
     Pretty pacman status report.
 
 `pacman-altered <bin/system/pacman-altered>`_, `pacman-altered-job <bin/system/pacman-altered-job>`_
@@ -88,7 +88,7 @@ are listed below.
 `scroller <bin/scroller>`_
     Scrolls through passed arguments.
 
-`sstat <bin/sstat>`_
+`sstat <bin/system/sstat>`_
     Pretty print socket info (from ``ss`` and ``netstat``).
 
 `status <bin/status>`_

@@ -15,7 +15,3 @@ Plugin 'gnupg'
 
 let GPGDefaultRecipients = ['CDC91131']
 let GPGUsePipes = 1
-
-" ----------------------------------------
-
-exec VimrcFinalize()

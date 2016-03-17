@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-sftp -oControlPersist=5m "$@"

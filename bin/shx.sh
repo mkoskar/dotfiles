@@ -62,7 +62,7 @@ alias gi='g -i'
 alias gr="g -r --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exclude='*~'"
 alias gri='gr -i'
 alias ack='ack --color'
-alias ag='ag --color --color-path=36 --color-line-number=33 --color-match=41 --follow --nobreak --smart-case --noheading'
+alias ag='ag --color --color-path=36 --color-line-number=33 --color-match=41 --nobreak --smart-case --noheading'
 
 
 # java / groovy / maven / gradle

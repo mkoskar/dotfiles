@@ -54,7 +54,7 @@ source ~/.mutt/index_format1
 # Index
 set reply_regexp = '^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*'
 set sort_aux = reverse-date-received
-source ~/.mutt/sort_threads
+source ~/.mutt/sort_date
 
 # Pager
 alternative_order text/plain text/enriched text/html

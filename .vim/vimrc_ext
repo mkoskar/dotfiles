@@ -219,7 +219,9 @@ augroup vimrc_ext
         \  call BufSpecialSetup()
         \| nnoremap <silent> <buffer> q :close<CR>
 
-    autocmd BufWinEnter \[BufExplorer\] call BufSpecialSetup()
+    autocmd BufWinEnter \[BufExplorer\]
+        \  call BufSpecialSetup()
+        \| normal! 4gg
 
     autocmd User FileBeagleReadPre
         \  unmap <buffer> <BS>
@@ -232,5 +234,3 @@ augroup vimrc_ext
 augroup END
 
 " }}}
-
-exec VimrcFinalize()

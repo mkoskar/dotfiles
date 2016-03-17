@@ -34,13 +34,13 @@ Config { font = "xft:local_statusbar"
                         , "-h", "#efefef"
                         ] 50
                     , Run Cpu
-                        [ "-t", "<total>", "-p", "3"
+                        [ "-t", "<total>"
                         , "-L", "10"
                         , "-n", "#efefef", "-H", "30"
                         , "-h", "#ff5555"
                         ] 30
                     , Run Memory
-                        [ "-t", "<usedratio>", "-a", "r", "-p", "3"
+                        [ "-t", "<usedratio>"
                         , "-L", "10"
                         , "-n", "#efefef", "-H", "50"
                         , "-h", "#ff5555"

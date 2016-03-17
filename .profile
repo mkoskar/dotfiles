@@ -37,7 +37,7 @@ export TERM
 eval "$(TERM=ansi dircolors -b)"
 
 export JDK_HOME='/usr/lib/jvm/default'
-export IDEA_JDK='/usr/lib/jvm/java-7-jdk'
+#export IDEA_JDK='/usr/lib/jvm/java-7-jdk'
 export JAVA_HOME=$JDK_HOME
 export _JAVA_AWT_WM_NONREPARENTING=1
 
@@ -69,7 +69,7 @@ export SYSTEMD_LESS=$LESS
 export TERMINAL='term'
 export TERMINFO_DIRS='/etc/terminfo:/usr/share/terminfo'
 export VDPAU_DRIVER='va_gl'
-#export VIMBIN='nvim'
+export VIMBIN='nvim'
 export XAUTHORITY="$HOME/.Xauthority"
 
 [ "$_PATH" ] || export _PATH="$PATH"

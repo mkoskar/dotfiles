@@ -74,6 +74,7 @@ done <<-EOF
     hangouts        b https://hangouts.google.com/
     haskell         b file:///usr/share/doc/ghc/html/libraries/index.html
     hibernate-orm   b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
+    hn              b https://news.ycombinator.com/
     html            b https://html.spec.whatwg.org/multipage/
     http            b http://tools.ietf.org/html/rfc2616
     i               sr ixquick {}
@@ -114,14 +115,18 @@ done <<-EOF
     maven           b http://maven.apache.org/plugins/index.html
     maven-central   b https://search.maven.org/
     maven-jcenter   b https://bintray.com/bintray/jcenter
+    maven-popular   b http://mvnrepository.com/popular
     mdn             sr mdn {}
+    mime            b https://www.iana.org/assignments/media-types/media-types.xhtml
     mongodb         b http://docs.mongodb.org/manual/reference/
     morse-nato      b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
     music           sr musicbrainz {}
     mutt            b file:///usr/share/doc/mutt/manual.html
     mutt-patterns   b file:///usr/share/doc/mutt/manual.html#patterns
     mutt-regexp     b file:///usr/share/doc/mutt/manual.html#regexp
-    nasatv          b http://www.ustream.tv/nasahdtv
+    nasatv          playx https://www.youtube.com/watch?v=HDh4uK9PvJU
+    nasatv-edu      playx https://www.youtube.com/watch?v=nhORZ6Ep_jE
+    nasatv-media    playx https://www.youtube.com/watch?v=OX9I1KyNa8M
     netfilter       b http://www.netfilter.org/documentation/index.html
     netfilter-flow  b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
     nodejs          b file:///usr/share/doc/nodejs/index.html

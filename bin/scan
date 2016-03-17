@@ -2,34 +2,6 @@
 
 set -eu
 
-output=$(dialog --keep-tite --backtitle 'scan' \
-    --no-items --nocancel --default-item Gray --menu 'Mode:' 12 28 12 \
-        Color Gray \
-    --and-widget \
-    --no-items --nocancel --default-item 150 --menu 'Resolution:' 12 28 12 \
-        75 150 300 600 \
-    --and-widget \
-    --no-items --nocancel --default-item 75 --menu 'JPEG Quality:' 12 28 12 \
-        50 75 90 95 100 \
-    &>/dev/tty)
-
-output=($output)
-mode=${output[0]}
-resolution=${output[1]}
-quality=${output[2]}
-
-[[ ! $mode || ! $resolution || ! $quality ]] && exit 1
-
-optsline="$mode-${resolution}dpi-jq$quality"
-
-# --source Flatbed|Automatic Document Feeder|ADF Duplex [Flatbed]
-# --mode auto|Color|Gray|Lineart [Color]
-# --resolution auto|75|150|300|600|1200|2400dpi [75]
-
-tmpfile=$(mktemp --suffix=.tiff)
-cleanup() { rm -f "$tmpfile"; }
-trap cleanup EXIT
-
 #export SANE_DEBUG_PIXMA=1
 #export SANE_DEBUG_BJNP=1
 
@@ -40,11 +12,46 @@ trap cleanup EXIT
 #
 # See also: /etc/sane.d/pixma.conf
 
-scanimage -d pixma:MX920_pyrite \
-    --progress --format tiff \
-    --mode "$mode" \
-    --resolution "$resolution" \
-    >"$tmpfile"
+readarray -t sel < <(
+    dialog --keep-tite --separate-widget $'\n' --backtitle 'scan' \
+    --no-items --nocancel --default-item 'Flatbed' --menu 'Source:' 12 35 12 \
+        'Flatbed' \
+        'Automatic Document Feeder' \
+        'ADF Duplex' \
+    --and-widget \
+    --no-items --nocancel --default-item 'Gray' --menu 'Mode:' 12 35 12 \
+        'Color' \
+        'Gray' \
+    --and-widget \
+    --no-items --nocancel --default-item 150 --menu 'Resolution:' 12 35 12 \
+        75 150 300 600 \
+    2>&1 >/dev/tty
+)
 
-tiff2pdf -j -q "$quality" \
-    -o "$HOME/download/_scanner/scan-$(date +%F.%s)_$optsline.pdf" "$tmpfile"
+src=${sel[0]}
+mode=${sel[1]}
+resolution=${sel[2]}
+
+[[ ! $src || ! $mode || ! $resolution ]] && exit 1
+
+name="$(date +%F.%s)_$mode-${resolution}dpi"
+
+opts=(
+    -d pixma:MX920_pyrite
+    --source "$src"
+    --mode "$mode"
+    --resolution "$resolution"
+    -x 210
+    -y 297
+    --format=tiff
+    --batch="$name-%d.tiff"
+    --progress
+)
+
+cd ~/download/_scanner
+
+if [[ $src = 'Flatbed' ]]; then
+    scanimage "${opts[@]}" --batch-prompt
+else
+    scanimage "${opts[@]}"
+fi

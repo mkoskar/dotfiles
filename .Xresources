@@ -52,7 +52,7 @@ URxvt.font:             xft:local_terminal_sized, \
                         xft:Symbola:pixelsize=9
 
 URxvt.cutchars:         '"()*,<>[]{}|\''
-URxvt.depth:            32
+!URxvt.depth:            32
 URxvt.iso14755:         true
 URxvt.iso14755_52:      false
 URxvt.pointerBlank:     true

@@ -55,6 +55,8 @@ complete -o nospace -c pth
 complete -o nospace -c ptha
 complete -o nospace -c rep
 complete -o nospace -c torsocks
+complete -o nospace -c x
+complete -o nospace -c xx
 complete -o nospace -f paco
 complete -o nospace -v v
 

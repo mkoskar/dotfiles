@@ -31,7 +31,6 @@ fi
 xscreen
 
 /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
-#sxhkd &
 
 if [[ $(xserverq name) = 'Xorg' ]]; then
     compton &
