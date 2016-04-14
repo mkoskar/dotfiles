@@ -70,6 +70,7 @@ done <<-EOF
     groovy-api      b file:///usr/share/doc/groovy-2.4.3/html/api/overview-summary.html
     groovy-gapi     b file:///usr/share/doc/groovy-2.4.3/html/gapi/overview-summary.html
     grub            b https://www.gnu.org/software/grub/manual/grub.html
+    gtk-running     b https://developer.gnome.org/gtk3/stable/gtk-running.html
     guava           b http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/index.html
     hangouts        b https://hangouts.google.com/
     haskell         b file:///usr/share/doc/ghc/html/libraries/index.html

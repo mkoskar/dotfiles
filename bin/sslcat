@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
+set -eu
 
 prgname=${0##*/}
 
@@ -24,8 +24,19 @@ shift $((OPTIND-1))
 
 (( $# != 2 )) && usage_err
 
-case $1 in dsa | ec | rsa | x509 | req) ;; *) usage_err ;; esac
-
 [[ -e $2 ]] || usage_err
 
-openssl "$1" -modulus -noout -in "$2" | openssl md5 -r -c
+case $1 in
+    dsa | ec | rsa)
+        openssl "$1" -in "$2"
+        ;;
+    x509)
+        openssl "$1" -text -fingerprint -noout -in "$2"
+        ;;
+    req)
+        openssl "$1" -text -noout -in "$2"
+        ;;
+    *)
+        usage_err
+        ;;
+esac

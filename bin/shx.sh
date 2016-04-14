@@ -308,7 +308,7 @@ lsusb() {
 }
 
 mpv() {
-    command mpv --really-quiet --msg-level=all=error "$@" 2>/dev/null
+    command mpv "$@" 2>/dev/null
 }
 
 on() {

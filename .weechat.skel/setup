@@ -106,7 +106,8 @@
 /set weechat.look.color_inactive_window off
 /set weechat.look.hotlist_prefix ""
 /set weechat.look.key_bind_safe off
-/set weechat.look.prefix_align_max 14
+/set weechat.look.prefix_align_max 12
+/set weechat.look.prefix_align_min 8
 /set weechat.look.prefix_buffer_align left
 /set weechat.look.prefix_same_nick " "
 /set weechat.look.read_marker_always_show on

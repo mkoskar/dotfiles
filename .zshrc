@@ -305,6 +305,8 @@ compctl -m pgx
 compctl -m pth
 compctl -m ptha
 compctl -m rep
+compctl -m socksify
+compctl -m torify
 compctl -m torsocks
 compctl -m x
 compctl -m xx

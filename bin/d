@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 
-# -u    output NUM (default 3) lines of unified context
-# -d    try hard to find a smaller set of changes
-# -p    show which C function each change is in
-# -r    recursively compare any subdirectories found
-# -N    treat absent files as empty
-# -a    treat all files as text
-
 set -eu -o pipefail
 
 set -- -udprN "$@"

@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
-
-# http://peter.sh/experiments/chromium-command-line-switches/
 #
-# --disable-software-rasterizer
-# --force-gpu-rasterization
-# --ignore-gpu-blacklist
-# --no-experiments
-# --num-raster-threads
-# --silent-launch
-# --video-threads
+# See also: http://peter.sh/experiments/chromium-command-line-switches/
 
 set -e
 

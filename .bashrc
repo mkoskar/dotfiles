@@ -46,17 +46,9 @@ bind -m vi-insert   '"\e\t": dynamic-complete-history'
 bind -m vi-insert   '"\eq":  dabbrev-expand'
 
 complete -o nospace -A function fn
-complete -o nospace -W '10m 15m 20m 25m 30m' a
 complete -o nospace -c i
 complete -o nospace -c on
 complete -o nospace -c pacoc
-complete -o nospace -c pgx
-complete -o nospace -c pth
-complete -o nospace -c ptha
-complete -o nospace -c rep
-complete -o nospace -c torsocks
-complete -o nospace -c x
-complete -o nospace -c xx
 complete -o nospace -f paco
 complete -o nospace -v v
 

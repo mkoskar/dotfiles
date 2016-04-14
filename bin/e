@@ -13,4 +13,6 @@ if [[ $prgname = 'e0' ]]; then
 fi
 
 VIMBIN=${VIMBIN:-vim}
+type -P "$VIMBIN" &>/dev/null || VIMBIN='vim'
+
 exec "$VIMBIN" -O "$@"

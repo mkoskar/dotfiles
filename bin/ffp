@@ -1,32 +1,45 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s nullglob
 
 prgname=${0##*/}
 
-case ${1-} in -h | --help)
+_usage() {
     cat <<-EOF
-	usage: ff | firefox [arg]...
-	       ffa | firefox-aurora [profile [arg]...]
+	usage: ff [arg]...
 	       ffp [profile [arg]...]
+	       ffdev [profile [arg]...]
 	EOF
-    exit
-    ;;
-esac
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+while getopts 'h' opt; do
+    case $opt in
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# ----------------------------------------
 
 profile=
 bin='/usr/bin/firefox'
+bin_name='firefox'
 
 case $prgname in
-    ff | firefox)
+    ff)
         profile='default'
         ;;
-    ffa | firefox-aurora)
-        bin='/usr/bin/firefox-aurora'
-        regexp='^aurora'
-        ;;
-    *)
-        regexp='^(?!default$)(?!dev-edition-default$)(?!aurora).*$'
+    ffdev)
+        bin='/usr/bin/firefox-developer'
+        bin_name='firefox-dev'
         ;;
 esac
 
@@ -36,17 +49,21 @@ if [[ ! $profile ]] && (( $# )); then
 fi
 
 if [[ ! $profile ]]; then
-    profiles=(
-        devel
-        lab
-        plain
-        proxy
-        quarantine
-    )
-    profiles+=($(awk -F= '/Name/ {print $2}' <~/.mozilla/firefox/profiles.ini))
+    if [[ $bin_name = 'firefox' ]]; then
+        profiles=(
+            devel
+            lab
+            plain
+            proxy
+            quarantine
+        )
+    fi
+    for p in ~/.config/"$bin_name".*; do
+        profiles+=("${p#*"$bin_name".}")
+    done
     profile=$(
-        IFS=$'\n'; echo "${profiles[*]}" |
-        sort -u | grep -P "$regexp" |
+        (set +u; IFS=$'\n'; printf "${profiles[*]}") |
+        sort -u | grep -P "${regexp-}" |
         dmenu1 "$prgname"
     )
 fi
@@ -54,6 +71,23 @@ fi
 [[ ! $profile ]] && exit 1
 
 # Workaround to ensure separate instance per profile.
-#export LOGNAME="$USER.$profile"
+export LOGNAME="$USER.$bin_name.$profile"
 
-exec "$bin" --class "Firefox ($profile)" -P "$profile" "$@"
+path="$HOME/.config/$bin_name"
+[[ $bin_name = 'firefox' && $profile = 'default' ]] || path+=".$profile"
+
+if [[ ! -d "$path" ]]; then
+    mkdir "$path"
+    cd "$path"
+
+    cat >"$path/user.js" <<-EOF
+	user_pref("browser.startup.homepage_override.mstone", "ignore");
+	user_pref("browser.startup.page", 0);
+	user_pref("browser.tabs.closeWindowWithLastTab", false);
+	user_pref("datareporting.healthreport.service.firstRun", false);
+	user_pref("datareporting.healthreport.uploadEnabled", false);
+	user_pref("privacy.donottrackheader.enabled", true);
+	EOF
+fi
+
+exec "$bin" --class "Firefox ($profile)" --profile "$path" "$@"

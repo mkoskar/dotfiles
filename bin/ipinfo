@@ -5,6 +5,7 @@ set -eu -o pipefail
 prgname=${0##*/}
 
 # http://checkip.amazonaws.com/
+# http://ipinfo.io/
 # https://api.ipify.org/
 # https://ip.anysrc.net/banner
 # https://ip.anysrc.net/json
@@ -20,7 +21,7 @@ fi
 
 if (( $# )); then
     ip=$(resolve "$1")
-    torify curl -sL "http://ip-api.com/json/$ip" | jshon
+    torify curl -sL "http://ipinfo.io/$ip" | jshon -QC
 else
-    curl -sL 'http://ip-api.com/json' | jshon
+    curl -sL 'http://ipinfo.io/' | jshon -QC
 fi

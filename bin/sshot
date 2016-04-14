@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#
 # -w            select a window by mouse click
 # -s            select a rectangular region by mouse
 # -x <n|list>   select the Xinerama head of ID n

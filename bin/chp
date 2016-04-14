@@ -40,11 +40,11 @@ if [[ ! $profile ]]; then
         plain
         proxy
     )
-    for p in ~/.config/google-chrome-*; do
-        profiles+=("${p#*google-chrome-}")
+    for p in ~/.config/google-chrome.*; do
+        profiles+=("${p#*google-chrome.}")
     done
     profile=$(
-        IFS=$'\n'; echo "${profiles[*]}" |
+        (set +u; IFS=$'\n'; printf "${profiles[*]}") |
         sort -u | grep -P "$regexp" |
         dmenu1 "$prgname"
     )
@@ -52,4 +52,7 @@ fi
 
 [[ ! $profile ]] && exit 1
 
-exec ch0 --user-data-dir="$HOME/.config/google-chrome-$profile" "$@"
+path="$HOME/.config/google-chrome"
+[[ $profile = 'default' ]] || path+=".$profile"
+
+exec ch0 --user-data-dir="$path" "$@"

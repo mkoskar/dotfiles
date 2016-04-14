@@ -15,4 +15,4 @@ if [[ $prgname != 'resolve-all' ]]; then
     exec > >(head -n1)
 fi
 
-getent ahostsv4 "$1" | awk '{print $1}' | uniq
+getent ahosts "$1" | awk '{print $1}' | uniq

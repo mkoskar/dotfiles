@@ -24,7 +24,7 @@ are listed below.
 `audio <bin/audio>`_
     Simple command-line interface for basic audio controls.
 
-`authinfo <bin/authinfo>`_
+`authinfo <bin/authinfo>`_, `authinfo.py <bin/authinfo.py>`_
     Reads ``~/.authinfo.gpg`` to provide login credentials.
 
 `backlight <bin/backlight>`_, `backlight0 <bin/backlight0>`_

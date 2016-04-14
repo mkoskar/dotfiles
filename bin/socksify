@@ -4,4 +4,9 @@ set -eu
 
 prgname=${0##*/}
 
+if (( ! $# )); then
+    echo "usage: $prgname cmd [arg]..." >&2
+    exit 2
+fi
+
 exec /usr/bin/proxychains -q -f "$HOME/.proxychains/$prgname.conf" "$@"

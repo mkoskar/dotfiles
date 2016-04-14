@@ -3,4 +3,4 @@
 set -eu
 
 list="$HOME/download/playlists/${1:-0}"
-mpv --really-quiet --msg-level=all=error --shuffle --playlist="$list" 2>/dev/null
+mpv --shuffle --playlist="$list" 2>/dev/null
