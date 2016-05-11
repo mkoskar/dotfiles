@@ -20,7 +20,7 @@ PS4=$'+\n$ti_hi1>$ti_reset [$(date +%T)] $ti_hi3$BASH_SOURCE:$LINENO$ti_reset\n$
 unset MAILCHECK
 
 if [ -e /usr/lib/libstderred.so ]; then
-    export LD_PRELOAD='/usr/lib/libstderred.so'
-    export STDERRED_BLACKLIST='^(fzf)$'
-    export STDERRED_ESC_CODE=$(tput setaf 3)
+    alias stderred="LD_PRELOAD=/usr/lib/libstderred.so\${LD_PRELOAD:+:\$LD_PRELOAD}"
+    STDERRED_ESC_CODE=$(tput setaf 3)
+    export STDERRED_ESC_CODE
 fi

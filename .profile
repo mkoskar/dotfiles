@@ -25,7 +25,7 @@ export SHELL=${SHELL:-/bin/bash}
 export XDG_RUNTIME_DIR="/run/user/$UID"
 
 export TMPDIR="/tmp/$USER"
-[ -e "$TMPDIR" ] || mkdir -p -m 700 "$TMPDIR"
+[ -e "$TMPDIR" ] || mkdir -m 700 "$TMPDIR"
 if [ "$(stat --format '%a' "$TMPDIR")" != '700' ]; then
     printf '%s has wrong access rights\n' "$TMPDIR" >&2
     exit 1

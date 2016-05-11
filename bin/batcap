@@ -4,4 +4,7 @@ set -eu
 
 . /sys/class/power_supply/BAT0/uevent
 
-calc -qp -- <<<"round($POWER_SUPPLY_ENERGY_FULL / $POWER_SUPPLY_ENERGY_FULL_DESIGN * 100, 2)"
+full=${POWER_SUPPLY_CHARGE_FULL:-$POWER_SUPPLY_ENERGY_FULL}
+full_design=${POWER_SUPPLY_CHARGE_FULL_DESIGN:-$POWER_SUPPLY_ENERGY_FULL_DESIGN}
+
+calc -qp -- <<<"round($full / $full_design * 100, 2)"

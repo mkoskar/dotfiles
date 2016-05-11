@@ -4,9 +4,11 @@ set -eu -o pipefail
 
 prgname=${0##*/}
 
+export LC_ALL=C
+
 name='TPPS/2 IBM TrackPoint'
 prop='libinput Button Scrolling Button'
-id=$(xinput list | grep -F "$name" | xinput-ids | sed -n '$p')
+id=$(xinput list | grep -F "$name" | xinput-ids | head -n1)
 
 declare -i toggle=0
 [[ $prgname = 'trackpoint-wheel-toggle' ]] && toggle=1
@@ -14,7 +16,7 @@ declare -i toggle=0
 if (( !toggle && $# )); then
     valset=$1
 else
-    declare -i val= valset=2
+    declare -i val=0 valset=2
     val=$(xinput list-props "$id" | awk -F: "/^\s*$prop \(.*\):/ {print \$2}")
     (( val == valset )) && valset=0
     retstat=$?

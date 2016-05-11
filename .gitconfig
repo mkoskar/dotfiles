@@ -1,18 +1,3 @@
-[user]
-    name = Miroslav Koskar
-
-[core]
-    ;autocrlf = input
-    attributesfile = ~/.gitattributes
-    excludesfile = ~/.gitexcludes
-
-[http]
-    ;sslverify = false
-
-[credential]
-    helper = cache --timeout=3600
-    helper = netrc
-
 [alias]
     b = branch --all -vv
     ci = commit
@@ -42,14 +27,17 @@
 [commit]
     template = ~/.gitmessage
 
-[push]
-    default = nothing
+[core]
+    ;autocrlf = input
+    attributesfile = ~/.gitattributes
+    excludesfile = ~/.gitexcludes
 
-[merge]
-    tool = vimdiff
+[credential]
+    helper = cache --timeout=3600
+    helper = netrc
 
-[mergetool "vimdiff"]
-    path = vimdiff
+[difftool "custom"]
+    cmd = difftool "$LOCAL" "$REMOTE"
 
 [format]
     ;signaturefile = ~/.gitsignature
@@ -57,5 +45,21 @@
     signature =
     thread = shallow
 
+[http]
+    ;sslverify = false
+
 [mailinfo]
     scissors = true
+
+[merge]
+    conflictstyle = diff3
+    tool = custom
+
+[mergetool "custom"]
+    cmd = mergetool "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+
+[push]
+    default = nothing
+
+[user]
+    name = Miroslav Koskar

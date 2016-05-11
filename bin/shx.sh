@@ -161,8 +161,8 @@ pacw() {
 # Target's detailed info
 paci() {
     [ $# -eq 0 ] && return 2
-    pacman -Qii -- "$@"
-}
+    pacman -Qii -- "$@" || pacman -Sii -- "$@" || cower -i -- "$@"
+} 2>/dev/null
 
 
 # python
@@ -195,12 +195,14 @@ alias du='du -sh'
 alias feh='feh -F'
 alias fortune='fortune -c'
 alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
+alias headcat='head -vn-0'
 alias info='info --vi-keys'
 alias journal='journalctl -o short-precise -r -b'
 alias llib='tree ~/.local/lib'
 alias lsblk='lsblk -o NAME,KNAME,MAJ:MIN,ROTA,RM,RO,TYPE,SIZE,FSTYPE,MOUNTPOINT,MODEL'
 alias lsdiff='lsdiff -s'
 alias ltime='date +%T'
+alias moon='curl -sL http://wttr.in/moon | head -n-4'
 alias mpv-debug='command mpv --msg-level=all=debug'
 alias mpv-verbose='command mpv --msg-level=all=v'
 alias mutt-debug='mutt -d 2'
@@ -220,15 +222,16 @@ alias pulse-streams='pacmd list-sink-inputs'
 alias qiv='qiv -uLtiGfl --vikeys'
 alias rax='rax2'
 alias rm='rm -I --one-file-system'
-alias sd='sudo systemctl'
+alias sd='systemctl'
 alias sdu='systemctl --user'
 alias se='sudoedit'
 alias ss='ss -napstu'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
-alias sudo0='sudo -K && sudo -k'
-alias tail-cat='tail -n+1'
+alias sudo-off='sudo -K'
+alias sudo-on='sudo -v'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias watch='watch -n 1 -t -c'
+alias wi='curl -sL http://wttr.in/ | head -n-3'
 alias wtc='curl -sL http://whatthecommit.com/index.txt'
 alias youtube-dl-playlist="youtube-dl --yes-playlist -o '~/download/_youtube-dl/%(playlist)s/[%(playlist_index)s] %(title)s'"
 alias youtube-dl-stdout='youtube-dl -o -'
@@ -414,7 +417,7 @@ v() {
 }
 
 xrandr() {
-    if [ $# -eq 0 -a -t 1 ]; then
+    if [ $# -eq 0 ] && [ -t 1 ]; then
         pgx command xrandr --properties --verbose
     else
         command xrandr "$@"

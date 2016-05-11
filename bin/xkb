@@ -2,38 +2,36 @@
 
 set -eu
 
-if (( ! $# )); then
+prgname=${0##*/}
 
-    setxkbmap -rules evdev \
-              -model pc105 \
+if [[ $prgname = 'xkb-reset' ]]; then
+
+    # See also:
+    # * /usr/share/X11/locale/$LANG/Compose
+    # * /usr/share/X11/locale/compose.dir
+    # * /usr/share/X11/xkb/rules/*.lst
+    # * /usr/share/X11/xkb/symbols/typo
+    #
+    # caps:ctrl_modifier            Make Caps Lock an additional Ctrl.
+    # keypad:pointerkeys            Shift+NumLock toggles PointerKeys.
+    # lv3:ralt_switch_multikey      Right Alt (3rd level), Shift+Right Alt key is Compose.
+    # nbsp:level3                   Non-breakable space character at third level.
+    # shift:both_capslock_cancel    Both Shift keys together activate Caps Lock, one Shift key deactivates.
+    # terminate:ctrl_alt_bksp       Key sequence to kill the X server.
+
+    setxkbmap -model pc105 \
               -layout us,sk,cz \
               -variant cz_sk_de,qwerty,qwerty \
               -option \
-              -option lv3:ralt_switch_multikey \
               -option caps:ctrl_modifier \
-              -option shift:both_capslock_cancel \
               -option keypad:pointerkeys \
-              -option nbsp:level3
-
-    # See also:
-    #
-    # * /usr/share/X11/xkb/rules/evdev.lst
-    # * /usr/share/X11/xkb/symbols/typo
-    # * /usr/share/X11/locale/compose.dir
-    # * /usr/share/X11/locale/$LANG/Compose
-    #
-    # grp:alt_shift_toggle          Switching to another layout: Alt+Shift
-    # lv3:ralt_switch_multikey      Right Alt (3rd level), Shift+Right Alt key is Compose.
-    # caps:ctrl_modifier            Make Caps Lock an additional Ctrl.
-    # misc:typo                     Enable extra typographic characters (symbols/typo).
-    # shift:both_capslock_cancel    Both Shift keys together activate Caps Lock,
-    #                               one Shift key deactivates.
-    # keypad:pointerkeys            Shift+NumLock toggles PointerKeys.
-    # nbsp:level3                   Non-breakable space character at third level.
+              -option lv3:ralt_switch_multikey \
+              -option nbsp:level3 \
+              -option shift:both_capslock_cancel \
+              -option terminate:ctrl_alt_bksp
 
     set -- 0
 fi
 
-xkblayout-state set "$1"
-
+xkblayout-state set "${1:-0}"
 status-osd xkb

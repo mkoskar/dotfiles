@@ -208,6 +208,14 @@
 /trigger addreplace url_color modifier weechat_print
 /trigger set url_color regex ;\S+://\S+;${color:yellow}${re:0}${color:reset}
 
+/trigger addreplace last_nick print irc.*;notify_message
+/trigger set last_nick conditions ${tg_displayed} && ${type} == channel && ${tg_tag_nick} != ${nick}
+/trigger set last_nick command /buffer set localvar_set_last_nick ${tg_tag_nick}
+
+/trigger addreplace complete_last_nick command_run "/input complete_next"
+/trigger set complete_last_nick conditions ${type} == channel && ${buffer.input_buffer_length} == 0 && ${last_nick}
+/trigger set complete_last_nick command /input insert ${last_nick}
+
 /print # }}}
 
 

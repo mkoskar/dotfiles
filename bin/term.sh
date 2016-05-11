@@ -5,7 +5,8 @@ unset TERMDONE
 
 [ ! -t 0 ] && return
 
-export TTY=$(tty)
+TTY=$(tty)
+export TTY
 
 [ "${TTYDONE-}" = "$TTY" ] && return
 

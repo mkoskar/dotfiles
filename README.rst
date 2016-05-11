@@ -27,9 +27,6 @@ are listed below.
 `authinfo <bin/authinfo>`_, `authinfo.py <bin/authinfo.py>`_
     Reads ``~/.authinfo.gpg`` to provide login credentials.
 
-`backlight <bin/backlight>`_, `backlight0 <bin/backlight0>`_
-    Simple command-line interface for backlight control.
-
 `chp <bin/chp>`_
     Enables one to run and manipulate multiple Google Chrome / Chromium profiles
     at the same time.
@@ -81,6 +78,9 @@ are listed below.
 
 `reqd <bin/reqd>`_
     Simple HTTP server that replies with request's headers in response body.
+
+`rfkill-state <bin/rfkill-state>`_
+    Report or set rfkill state/s.
 
 `scan <bin/scan>`_
     Simple SANE ``scanimage`` frontend.

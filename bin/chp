@@ -44,7 +44,7 @@ if [[ ! $profile ]]; then
         profiles+=("${p#*google-chrome.}")
     done
     profile=$(
-        (set +u; IFS=$'\n'; printf "${profiles[*]}") |
+        (set +u; IFS=$'\n'; printf '%s' "${profiles[*]}") |
         sort -u | grep -P "$regexp" |
         dmenu1 "$prgname"
     )

@@ -3,7 +3,7 @@
 set -eu
 shopt -s nullglob
 
-for i in *.mp3; do
-    base=${i##*/}
-    lame --decode "$i" "${base%\.mp3}.wav"
+for f in ./*.mp3; do
+    base=${f##*/}
+    lame --decode "$f" "${base%\.mp3}.wav"
 done

@@ -10,20 +10,13 @@ repo_dbgz="$name.db.tar.gz"
 mkdir -p "$repo_dir"
 cd "$repo_dir"
 
-rm -rf "$repo_db"*
-
-if [[ ! -e $repo_db ]]; then
-    pacrepo-init "$name"
+if type repose &>/dev/null; then
+    repose -fz "$name"
+    exit
 fi
 
-#tar -tzf "$repo_dbgz" | sed -n 's,^(.*)-.*-.*/$,\1,p' | sort -u >list.old
-#ls *.pkg.tar.xz | sed -n 's,^(.*)-.*-.*-.*$,\1,p' | sort -u >list.curr
+rm -rf "$repo_db"*
 
-for i in *.pkg.tar.xz; do
-    repo-add -n -q "$repo_dbgz" "$i"
+for pkg in ./*.pkg.tar.xz; do
+    repo-add -n -q "$repo_dbgz" "$pkg"
 done
-
-#while read -r i; do
-#    echo "==> $i removed"
-#    repo-remove -q "$repo_dbgz" "$i"
-#done < <(comm -23 list.old list.curr)

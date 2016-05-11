@@ -15,11 +15,11 @@ pid=${1:-$$}
 oformat='pgid='
 
 recurse() {
-    local ppid=$1 pid= pgid=
+    local ppid=$1
     [[ $ppid = "$$" ]] && return
-    { ps --ppid "$ppid" -o pid= -o "$oformat" || true; } | while read -r pid out; do
+    { ps --ppid "$ppid" -o pid= -o "$oformat" || true; } | while read -r _pid out; do
         echo "$out"
-        recurse "$pid"
+        recurse "$_pid"
     done
 }
 

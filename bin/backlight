@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+#
+# See also:
+# * https://github.com/haikarainen/light
+# * https://github.com/jmesmon/illum
+# * https://github.com/maandree/adjbacklight
 
 set -eu
 

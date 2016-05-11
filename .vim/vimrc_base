@@ -153,8 +153,8 @@ nmap <silent> g<BS> g<C-H>
 
 nnoremap <silent> _ :resize -5<CR>
 nnoremap <silent> + :resize +5<CR>
-nnoremap <silent> <C-W>, :vert resize -5<CR>
-nnoremap <silent> <C-W>. :vert resize +5<CR>
+nnoremap <silent> <C-W>, :vertical resize -5<CR>
+nnoremap <silent> <C-W>. :vertical resize +5<CR>
 nnoremap <silent> <Leader>q :close<CR>
 
 
@@ -337,7 +337,7 @@ set updatetime=1000 " also used for CursorHold
 " ----------------------------------------
 
 set history=1000
-set wildmode=longest,full
+set wildmode=longest:full,full
 set wildignore=
 set wildmenu
 set undofile
@@ -785,7 +785,7 @@ function! s:MoveToPrevTab() abort
         if tab_nr == tabpagenr('$')
             tabprev
         endif
-        vert topleft split
+        vertical topleft split
     else
         close!
         exe '0tabnew'
@@ -804,7 +804,7 @@ function! s:MoveToNextTab() abort
         if tab_nr == tabpagenr('$')
             tabnext
         endif
-        vert topleft split
+        vertical topleft split
     else
         close!
         tabnew
@@ -872,6 +872,8 @@ let netrw_special_syntax = 1
 
 Plugin 'AnsiEsc'
 Plugin 'colorschemes'
+Plugin 'diff-enhanced'
+Plugin 'dirdiff'
 
 if has('gui_running')
     colorscheme bclear

@@ -5,7 +5,7 @@ set -eu -o pipefail
 printf '\n> %s\n\n' "$PWD"
 
 repos=()
-while IFS= read -d $'\0' entry; do
+while IFS= read -rd $'\0' entry; do
     repos+=("$entry")
     printf '%s\n' "$entry"
 done < <(find -mindepth 2 -maxdepth 2 -type d -name '.git' -printf '%h\0' | sort -z)

@@ -7,6 +7,6 @@ hls-segment-threads 5
 hls-segment-timeout 1
 http-no-ssl-verify
 player-no-close
-player=mpv --cache=yes --cache-secs=20
+player=mpv --cache=yes --cache-secs=20 --force-window
 stream-segment-threads 5
 stream-segment-timeout 1

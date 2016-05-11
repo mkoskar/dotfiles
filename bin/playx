@@ -5,6 +5,7 @@ set -eu
 prgname=${0##*/}
 
 [[ -t 1 ]] || exec >/dev/null
+exec 2>/dev/null
 
 cleanup() {
     local retstat=$?
@@ -15,4 +16,4 @@ cleanup() {
 trap cleanup EXIT
 
 src=${1:-$(xclip -o | head -c 255)}
-mpv "$src" 2>/dev/null || livestreamer --loglevel=error "$src" 2>/dev/null
+mpv --force-window "$src" || livestreamer --loglevel=error

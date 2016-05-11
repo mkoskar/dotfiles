@@ -32,7 +32,8 @@ if [[ $prgname = 'pgx' ]]; then
     if [[ ! -t 1 ]]; then
         exec bashx -c "$(shell-escape "$@")"
     fi
-    export CMD=$(shell-escape "$@")
+    CMD=$(shell-escape "$@")
+    export CMD
     export PAGER_TITLE=${PAGER_TITLE:-"$ $CMD"}
     args=(-c ReloadX)
     run
@@ -54,7 +55,7 @@ if [[ $prgname = 'manpg' ]]; then
     filter=(col -b)
 fi
 
-${filter[@]} | {
+"${filter[@]}" | {
     exec 8<&0 0<&1
     export PAGER_TITLE=${PAGER_TITLE:--stdin-}
     args=(-c 'silent e /dev/fd/8')

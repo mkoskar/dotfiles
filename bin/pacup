@@ -3,17 +3,14 @@
 echo $'\n--------------------------------------------------'
 echo $'> Update (official & aur):\n'
 
-yaourt -Syua
-
-echo $'\n--------------------------------------------------'
-echo $'> Update (devel):\n'
-
-yaourt -Su --devel
+pacaur -Syu
 
 echo $'\n--------------------------------------------------'
 echo $'> Cleanup:\n'
 
-yaourt -Qdt
-echo
+if pacman -Qqdt &>/dev/null; then
+    pacman -Qqdt | sudo pacman -Rcsn -
+fi
 
-yaourt -C
+echo
+exit 0

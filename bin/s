@@ -165,11 +165,11 @@ fi
 if ! exists; then
     case $session in
         adm | aux | mon | tmp | wrk)
-            _$session
+            "_$session"
             ;;
         *)
             case $prgname in s | sp) ;; *) exit 2 ;; esac
-            _$prgname
+            "_$prgname"
             ;;
     esac
 fi

@@ -43,7 +43,7 @@ fi
 # backup
 
 log_prefix=$$
-log() { printf "$log_prefix: $*\n"; } >&2
+log() { printf '%s' "$log_prefix: $*\n"; } >&2
 
 cleanup() { log "exiting ($?)"; }
 trap cleanup EXIT
@@ -92,7 +92,7 @@ t_begin=$(date +%s)
 mkdir -p "$target/full-backup"
 rsync -aAHSX / "$target/full-backup/master" \
       --delete \
-      --backup --backup-dir=../$(date +%F.%s) \
+      --backup --backup-dir=../"$(date +%F.%s)" \
       --exclude-from=- <<-EOF
 	*/lost+found
 	/dev/*

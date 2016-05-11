@@ -4,9 +4,9 @@ set -eu
 
 cd "${BASH_SOURCE%/*}"
 
-(( $EUID )) && odir="$PWD" || odir='/etc/terminfo'
+(( EUID )) && odir="$PWD" || odir='/etc/terminfo'
 
-while IFS= read -d $'\0' entry; do
+while IFS= read -rd $'\0' entry; do
     printf -- '-> %s\n' "$entry"
     tic -o "$odir" "$entry"
 done < <(

@@ -20,7 +20,7 @@ pacman -Qdt
 echo $'\n--------------------------------------------------'
 echo $'> Unmet dependencies:\n'
 
-pacman -T $(expac -l '\n' %D | sort -u)
+expac -l '\n' %D | sort -u | pacman -T
 
 echo $'\n--------------------------------------------------'
 echo $'> Modified "Backup Files":\n'

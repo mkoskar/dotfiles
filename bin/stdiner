@@ -18,7 +18,7 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-declare -i topt= Topt=
+declare -i topt=0 Topt=0
 while getopts 'tTh' opt; do
     case $opt in
         t)
@@ -59,7 +59,7 @@ fi
 exec </dev/tty
 
 args=("$@")
-declare -i farg=
+declare -i farg=0
 for i in "${!args[@]}"; do
     if [[ ${args[$i]} = '{}' ]]; then
         args[$i]=$file

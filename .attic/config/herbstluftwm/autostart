@@ -48,7 +48,7 @@ tag_names=( {1..9} )
 tag_keys=( {1..9} )
 
 hc rename default "${tag_names[0]}" || true
-for i in ${!tag_names[@]} ; do
+for i in "${!tag_names[@]}" ; do
     hc add "${tag_names[$i]}"
     key="${tag_keys[$i]}"
     if ! [ -z "$key" ] ; then
@@ -172,5 +172,5 @@ hc unlock
 panel=~/.config/herbstluftwm/panel.sh
 [ -x "$panel" ] || panel=/etc/xdg/herbstluftwm/panel.sh
 for monitor in $(herbstclient list_monitors | cut -d: -f1) ; do
-    "$panel" $monitor &
+    "$panel" "$monitor" &
 done

@@ -18,9 +18,9 @@ case $prgname in
         xclip -i -f | xclip -i -f -selection clipboard
         ;;
     clipa)
-        (( ! $# )) && exit 2
         # Read arguments to PRIMARY and CLIPBOARD.
-        (IFS=$'\n'; printf '%s' "$*" | xclip -i -f | xclip -i -selection clipboard)
+        (( ! $# )) && exit 2
+        IFS=$'\n'; printf '%s' "$*" | clipi
         ;;
     *)
         tmpfile=$(mktemp)

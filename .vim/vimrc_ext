@@ -175,6 +175,9 @@ nnoremap <silent> <Leader>SS :SyntasticCheck<CR>
 nnoremap <silent> <Leader>Si :SyntasticInfo<CR>
 nnoremap <silent> <Leader>Sr :SyntasticReset<CR>
 
+" TODO: shellcheck ignore:
+" * SC1091: Not following
+
 
 " tagbar
 " ----------------------------------------

@@ -4,6 +4,11 @@ set -eu
 
 for dev in /sys/class/backlight/*; do
     if [[ -d $dev ]]; then
-        echo "$dev: $(<"$dev/brightness") from $(<"$dev/max_brightness")"
+        printf '%-40s %-8s %-8s %-8s %s\n' \
+            "$dev" \
+            "$(<"$dev/brightness")" \
+            "$(<"$dev/actual_brightness")" \
+            "$(<"$dev/max_brightness")" \
+            "$(<"$dev/type")"
     fi
 done

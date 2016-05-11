@@ -29,7 +29,7 @@ shift $((OPTIND-1))
 # teardown a single device by node name
 #   $1: device node name e.g., md0, dm-2
 stop_device() {
-    local devtype= devname=
+    local devtype devname
 
     # the device must still be active
     [[ -e $1 ]] || return 1
@@ -64,8 +64,8 @@ stop_device() {
 # recursively umount and disassemble a device chain
 #   $1: device node name e.g., md0, dm-2
 umount_device() {
-    local part= holder= mount=
-    local dev="/dev/$1" dev_mapper=
+    local part holder
+    local dev="/dev/$1" dev_mapper=''
 
     local dm_name_path="$1/dm/name"
     [[ -e $dm_name_path ]] && dev_mapper="/dev/mapper/$(<"$dm_name_path")"

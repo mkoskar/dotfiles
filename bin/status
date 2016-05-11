@@ -12,13 +12,18 @@ if [[ $prgname = 'status-osd' ]]; then
     exit 0
 fi
 
+export LC_ALL=C
+
+declare -i xcon=0
+xset q &>/dev/null && xcon=1
+
 status_audio() {
     local pval rval
-    pval=$(amixer get Master \
+    pval=$(unset DISPLAY; amixer get Master \
         | gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {print a[2] " " a[1]}' \
         | head -n1)
     amixer -c 0 get Headphone,1 | grep -Fq 'Playback [on]' && pval="$pval +dock"
-    rval=$(amixer get Capture \
+    rval=$(unset DISPLAY; amixer get Capture \
         | gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {print a[2] " " a[1]}' \
         | head -n1)
     printf 'audio: %s / %s\n' "$pval" "$rval"
@@ -37,34 +42,35 @@ status_bluetooth() {
 
 status_dpms() {
     local val='-'
-    if xset q &>/dev/null; then
+    if (( xcon )); then
         xset q | grep -Fq 'DPMS is Enabled' && val='on' || val='off'
     fi
     printf 'dpms: %s\n' "$val"
 }
 
 status_rfkill() {
-    local i type=$1 rfkill=()
-    for i in /sys/class/rfkill/rfkill*; do
-        [[ $(<"$i/type") = "$type" ]] || continue
-        rfkill+=("$i")
-    done
-    if (( ${#rfkill[@]} )); then
-        if (( $(<"$rfkill/hard") )); then
-            echo 'off (hardware)'
-        elif (( $(<"$rfkill/soft") )); then
-            echo 'off (software)'
-        else
-            echo 'on'
-        fi
-    else
-        echo 'unknown'
-    fi
+    local val='-'
+    state=$(rfkill-state -a "$1")
+    case $state in
+        -1)
+            val='mixed'
+            ;;
+        0)
+            val='off (software)'
+            ;;
+        1)
+            val='on'
+            ;;
+        2)
+            val='off (hardware)'
+            ;;
+    esac
+    printf '%s' "$val"
 }
 
 status_touchpad() {
     local val='-'
-    if xset q &>/dev/null; then
+    if (( xcon )); then
         touchpad && val='on' || val='off'
     fi
     printf 'touchpad: %s\n' "$val"
@@ -72,7 +78,7 @@ status_touchpad() {
 
 status_trackpoint_wheel() {
     local val='-'
-    if xset q &>/dev/null; then
+    if (( xcon )); then
         trackpoint-wheel && val='on' || val='off'
     fi
     printf 'trackpoint wheel: %s\n' "$val"
@@ -84,7 +90,7 @@ status_wifi() {
 
 status_xkb() {
     local val='-'
-    if xset q &>/dev/null; then
+    if (( xcon )); then
         val=$(xkblayout-state print '%s')
     fi
     printf 'xkb: %s\n' "$val"
@@ -92,7 +98,7 @@ status_xkb() {
 
 case ${1-} in
     audio | backlight | bluetooth | dpms | touchpad | trackpoint_wheel | wifi | xkb)
-        status_$1
+        "status_$1"
         ;;
     *)
         status_audio

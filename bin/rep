@@ -28,8 +28,8 @@ if [[ $prgname = 'respawn' ]]; then
     set -- -d0 -t "$@"
 fi
 
-dopt= Topt= redir= output=
-declare -i term= inline= cur= quiet=
+dopt='' Topt='' redir='' output=''
+declare -i term=0 inline=0 cur=0 quiet=0
 while getopts 'd:tT:o:aiIcCqh' opt; do
     case $opt in
         d)
@@ -82,7 +82,7 @@ shift $((OPTIND-1))
 delay=${dopt:--1}
 term_delta=${Topt:-400}
 
-declare -i notty=
+declare -i notty=0
 if [[ ! -t 0 ]]; then
     if (( delay < 0 )); then
         echo "$prgname: stdin not being a tty doesn't go with negative delay" >&2
@@ -108,7 +108,7 @@ if (( ! inline )); then
     trap cleanup EXIT
 fi
 
-declare -i long=
+declare -i long=0
 while true; do
     (( ! inline )) && tput rc
     (( ! quiet )) && printf "> started: %s${ti_el}\n" "$(date +%T)" >&2

@@ -18,7 +18,7 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-declare -i ropt= xopt=
+declare -i ropt=0 xopt=0
 while getopts 'n:rxh' opt; do
     case $opt in
         n)

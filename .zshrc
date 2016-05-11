@@ -308,6 +308,7 @@ compctl -m rep
 compctl -m socksify
 compctl -m torify
 compctl -m torsocks
+compctl -m watch
 compctl -m x
 compctl -m xx
 compctl -v v

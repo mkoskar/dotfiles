@@ -1,8 +1,7 @@
 [Unit]
 Description=Update environment
 DefaultDependencies=no
-Conflicts=shutdown.target
-Before=basic.target shutdown.target
+Before=basic.target
 
 [Service]
 Type=oneshot

@@ -10,15 +10,14 @@ xprop -root -len 8 _ICC_PROFILE _ICC_PROFILE_1 _ICC_PROFILE_2
 echo $'\n--------------------------------------------------'
 echo '> Select display / monitor to continue:'
 
-_dall=$(dispcal -h |& LC_ALL=C grep -F Output | sed 's/^\s*//')
-IFS=$'\n' eval 'dall=($_dall)'
-printf '%s\n' "$_dall"
+readarray -t dall < <(dispcal -h |& LC_ALL=C grep -F Output | sed 's/^\s*//')
+printf '%s\n' "${dall[@]}"
 echo
 
 read -N1 -rsp 'Your choice: ' dsel
 echo
 
-if [[ ! "$dsel" =~ ^[1-9]$ ]] || ((dsel > ${#dall[@]})); then
+if [[ ! $dsel =~ ^[1-9]$ ]] || ((dsel > ${#dall[@]})); then
     echo "$prgname: error: invalid choice" && exit 2
 fi
 print '%s\n' "${dall[$((dsel-1))]}"
@@ -30,7 +29,7 @@ print '%s\n' "${dall[$((dsel-1))]}"
 # -R                Report on the uncalibrated display then exit
 # -r                Report on the calibrated display then exit
 
-gopts=(-v2 -d$dsel -ye -H -F -P 0.5,0.5,2.0 -Y p)
+gopts=(-v2 -d$dsel -ye -H -F -P '0.5,0.5,2.0' -Y p)
 
 echo $'\n--------------------------------------------------'
 echo '> Uncalibrated display:'

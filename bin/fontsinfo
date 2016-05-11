@@ -3,8 +3,8 @@
 set -eu
 
 match() {
-    for i in "$@"; do
-        printf '%-25s %s\n' "$i" "$(fc-match "$i")"
+    for p in "$@"; do
+        printf '%-25s %s\n' "$p" "$(fc-match "$p")"
     done
 }
 

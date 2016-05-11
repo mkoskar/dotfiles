@@ -14,7 +14,6 @@ if (( EUID )); then
     exit 1
 fi
 
-prgname=${0##*/}
 user=${1:-${SUDO_USER:-$USER}}
 
 if [[ $user = 'root' ]]; then
@@ -52,4 +51,4 @@ vtswitch-lock
 chown -- "$user" "$vtnew"
 
 su - "$user" -c 'away -C away'
-read
+read -rs

@@ -4,7 +4,7 @@ set -eu
 
 prgname=${0##*/}
 
-declare -i squash=
+declare -i squash=0
 [[ $prgname = 'squashlns' ]] && squash=1
 
 awk -v squash=$squash '
@@ -14,7 +14,7 @@ awk -v squash=$squash '
 }
 {
     txt = 1
-    for (i = 0; i < sep; i++) printf "\n"
+    for (i=0; i<sep; i++) printf "\n"
     sep = 0
     print
 }'

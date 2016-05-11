@@ -14,7 +14,7 @@ pacman-altered >"$log" 2>"_$log"
 
 # ----------------------------------------
 
-last2=($(ls "$logbase"* | tail -n2))
-if (( ${#last2[@]} == 2 )); then
-    diff -U 0 "${last2[@]}" | filterdiff --remove-timestamps
+logs=("$logbase"*)
+if (( ${#logs[@]} >= 2 )); then
+    diff -U 0 "${logs[-2]}" "${logs[-1]}" | filterdiff --remove-timestamps
 fi

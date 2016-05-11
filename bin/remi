@@ -17,7 +17,7 @@ if [[ $prgname = 'reminders-to-mail' ]]; then
     ti_hi3='_'; ti_hi3_=$ti_hi3
 fi
 
-rem -q -t${1:-7} -ga | sed -r -f <(
+rem -q -t"${1:-7}" -ga | sed -r -f <(
 cat <<-EOF
 	/^No reminders.$/d
 	s/^(Today.*ago\)):/$ti_hi2\1$ti_hi2_:/

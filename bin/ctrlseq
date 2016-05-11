@@ -2,15 +2,14 @@
 
 set -eu
 
-format='%s\e\\'
-if [[ ${TMUX-} ]]; then
-    format='\ePtmux;\e%s\a\e\\'
-elif [[ ${TERM%%-*} = 'screen' ]]; then
-    format='\eP%s\a\e\\'
-fi
-
 if (( ! $# )); then
     set -- "$(head -c 255)"
 fi
 
-printf "$format" "$1"
+if [[ ${TMUX-} ]]; then
+    printf '\ePtmux;\e%s\a\e\\' "$1"
+elif [[ ${TERM%%-*} = 'screen' ]]; then
+    printf '\eP%s\a\e\\' "$1"
+else
+    printf '%s\e\\' "$1"
+fi

@@ -5,7 +5,6 @@ set -eu -o pipefail
 prgname=${0##*/}
 
 if [[ $prgname = 'dmenu1' ]]; then
-    set -o pipefail
     dmenu "$@" | head -n1
     exit
 fi

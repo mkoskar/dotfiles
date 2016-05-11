@@ -6,9 +6,9 @@ prgname=${0##*/}
 
 case $prgname in
     modules-builtin)
-        $PAGER </lib/modules/$(uname -r)/modules.builtin
+        $PAGER </lib/modules/"$(uname -r)"/modules.builtin
         ;;
     *)
-        $PAGER </lib/modules/$(uname -r)/modules.order
+        $PAGER </lib/modules/"$(uname -r)"/modules.order
         ;;
 esac

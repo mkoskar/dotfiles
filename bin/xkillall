@@ -15,7 +15,7 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-declare -i fopt=
+declare -i fopt=0
 while getopts 'fh' opt; do
     case $opt in
         f)

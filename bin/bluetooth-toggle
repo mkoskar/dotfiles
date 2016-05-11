@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
+set -eu
 
-state=$(status bluetooth | awk '{print $2}')
+state=$(rfkill-state -a bluetooth)
 case $state in
-    on)
-        rfkill block bluetooth
+    -1 | 1)
+        rfkill-state bluetooth 0
+        ;;
+    0)
+        rfkill-state bluetooth 1
         sleep 1
 
 #        dbus-send --system --type=method_call --dest=org.bluez \
@@ -19,9 +22,6 @@ case $state in
 #            string:org.bluez.Adapter1 string:Pairable variant:boolean:false
 
         bluetoothctl <<<$'power on\npairable off' >/dev/null
-        ;;
-    off)
-        rfkill unblock bluetooth
         ;;
 esac
 

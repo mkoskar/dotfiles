@@ -6,7 +6,7 @@ set -euf -o pipefail
 
 readarray -t mounts < <(grep -P '^jmtpfs ' /proc/mounts | sort -u)
 if (( ${#mounts[@]} > 0 )); then
-    echo -e "\nMounts:\n${mounts[@]}"
+    echo -e "\nMounts:\n${mounts[*]}"
     echo
     if confirm 'Unmount?' y; then
         PS3='Select: '

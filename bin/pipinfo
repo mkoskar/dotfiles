@@ -4,8 +4,8 @@ set -eu
 
 check() {
     echo $'\n--------------------------------------------------'
-    echo "$*"
-    echo -e "$("$1" --version)\n"
+    printf '%s\n' "$*"
+    printf '%s\n' "$("$1" --version)"
     "$@"
 }
 

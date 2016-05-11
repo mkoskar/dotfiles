@@ -11,6 +11,8 @@
 !/.bowerrc
 !/.config/
 !/.config/Trolltech.conf
+!/.config/acpi/
+!/.config/acpi/**
 !/.config/beets/
 !/.config/beets/config.yaml
 !/.config/bpython/
@@ -156,7 +158,6 @@
 !/.xmobarrc
 !/.xmonad/
 !/.xmonad/xmonad.hs
-!/.yaourtrc
 !/.zfunctions/
 !/.zprofile
 !/.zshrc

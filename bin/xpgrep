@@ -15,7 +15,7 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-declare -i fopt=
+declare -i fopt=0
 while getopts 'fh' opt; do
     case $opt in
         f)
@@ -39,14 +39,14 @@ pgrep_args=(-x)
 (( fopt )) && pgrep_args+=(-f)
 pgrep_args+=(-- "$1")
 
-pids=$(pgrep "${pgrep_args[@]}")
+pids=($(pgrep "${pgrep_args[@]}"))
 
 declare -i retstat=1
-for i in $pids; do
-    env="/proc/$i/environ"
+for pid in "${pids[@]}"; do
+    env="/proc/$pid/environ"
     if [[ -r $env ]] && grep -Fzxq "DISPLAY=$DISPLAY" "$env"; then
         retstat=0
-        echo "$i"
+        echo "$pid"
     fi
 done
 

@@ -2,13 +2,13 @@
 
 set -eu -o pipefail
 
-state=$(status wifi | awk '{print $2}')
+state=$(rfkill-state -a wlan)
 case $state in
-    on)
-        rfkill block wifi
+    -1 | 1)
+        rfkill-state wlan 0
         ;;
-    off)
-        rfkill unblock wifi
+    0)
+        rfkill-state wlan 1
         ;;
 esac
 

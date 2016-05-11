@@ -49,6 +49,7 @@ complete -o nospace -A function fn
 complete -o nospace -c i
 complete -o nospace -c on
 complete -o nospace -c pacoc
+complete -o nospace -c watch
 complete -o nospace -f paco
 complete -o nospace -v v
 

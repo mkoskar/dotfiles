@@ -26,7 +26,7 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-declare -i blue=
+declare -i blue=0
 [[ $prgname = 'playctl-bluetooth' ]] && blue=1
 
 bluectl() {
@@ -51,8 +51,11 @@ exec >/dev/null
 (( blue )) && ctl='bluectl' || ctl='playerctl'
 
 case $1 in
-    play | pause | play-pause | stop | next | prev)
-        $ctl $1
+    prev)
+        set -- previous
+        ;&
+    play | pause | play-pause | stop | next)
+        "$ctl" "$1"
         ;;
     *)
         usage_err

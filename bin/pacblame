@@ -20,7 +20,7 @@ usage_err() { _usage; exit 2; } >&2
 
 cmd="expac -H M '%w %m %n'"
 
-declare -i explicit=
+declare -i explicit=0
 while getopts 'edrh' opt; do
     case $opt in
         e)

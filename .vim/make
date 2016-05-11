@@ -6,7 +6,8 @@ maybe_cd() {
     cd "$1" >/dev/null 2>&1
 }
 
-from_git() {(
+from_git() {
+(
     local name=$1
     shift
     echo -e "\n> $name : $*"
@@ -16,7 +17,7 @@ from_git() {(
         if [[ $(git rev-parse --abbrev-ref HEAD) = 'local' ]]; then
             echo '> _local_ branch - not merging!'
         else
-            git merge --ff-only
+            git merge --ff-only || true
         fi
     else
         git clone "$@" "$name"
@@ -34,6 +35,8 @@ from_git NERD_tree          https://github.com/scrooloose/nerdtree.git
 from_git bufexplorer        https://github.com/vim-scripts/bufexplorer.zip.git
 from_git colorschemes       https://github.com/flazz/vim-colorschemes.git
 from_git ctrlp              https://github.com/ctrlpvim/ctrlp.vim.git
+from_git diff-enhanced      https://github.com/chrisbra/vim-diff-enhanced.git
+from_git dirdiff            https://github.com/will133/vim-dirdiff.git
 from_git dirvish            https://github.com/justinmk/vim-dirvish.git
 from_git dispatch           https://github.com/tpope/vim-dispatch.git
 from_git easy_align         https://github.com/junegunn/vim-easy-align.git

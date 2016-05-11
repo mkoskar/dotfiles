@@ -13,7 +13,7 @@ shiftwidth=4
 textwidth=78
 
 try() {
-    type "$1" &>/dev/null && exec "$@"
+    ! type "$1" &>/dev/null || exec "$@"
 }
 
 case $ft in
@@ -86,12 +86,14 @@ case $ft in
     xml)
         try tidy -config ~/.tidyrc -xml --indent-spaces "$shiftwidth" -wrap "$textwidth"
         ;;
+    *)
+        try par -T"$shiftwidth" -w"$textwidth"
+        try pr -e"$shiftwidth" -w "$textwidth"
+        try fmt -u -w "$textwidth"
+        try fold -s -w "$textwidth"
+        try wrap -w "$textwidth"
+        ;;
 esac
 
-try par -T"$shiftwidth" -w"$textwidth"
-try pr -e"$shiftwidth" -w "$textwidth"
-try fmt -u -w "$textwidth"
-try fold -s -w "$textwidth"
-try wrap -w "$textwidth"
-
+cat
 exit 1

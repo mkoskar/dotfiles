@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu -o pipefail
+shopt -s nullglob
 
 input=$*
 (( $# )) || input=$(head -c 255)
@@ -13,7 +14,7 @@ cd ~/projects/notes/src/02-marks
 
 outs=(
     "$subname.rst"
-    $(ls "$subname"-*.rst 2>/dev/null || true)
+    "$subname"-*.rst
 )
 out="${outs[0]}"
 

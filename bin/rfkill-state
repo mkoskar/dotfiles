@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+
+set -eu
+shopt -s extglob
+
+prgname=${0##*/}
+
+_usage() {
+    cat <<-EOF
+	usage: $prgname [-a] [-n] [-q] [id] [value]
+
+	Report or set rfkill state/s.
+
+	id      - all | [0-9] | rfkill[0-9] | bluetooth | fm | gps | nfc | uwb | wimax | wlan | wwan
+	value   - 0 to block and 1 to unblock
+
+	-a      - aggregate all selected states to one or -1 if it's not possible
+	-n      - interpret 'id' as name strictly
+	-q      - output only state/s
+	EOF
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+declare -i aggregate=0 id_is_name=0 quiet=0
+while getopts 'anqh' opt; do
+    case $opt in
+        a)
+            aggregate=1
+            ;;
+        n)
+            id_is_name=1
+            ;;
+        q)
+            quiet=1
+            ;;
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# ----------------------------------------
+
+id=${1-}
+val=${2-}
+devs=()
+base='/sys/class/rfkill'
+
+if (( id_is_name )); then
+    for dev in "$base"/rfkill*; do
+        [[ $(<"$dev/name") = "$id" ]] || continue
+        devs+=("$dev")
+    done
+else
+    case $id in
+        all | '')
+            devs+=("$base"/rfkill*)
+            ;;
+        +([0-9]))
+            devs+=("$base/rfkill$id")
+            ;;
+        rfkill+([0-9]))
+            devs+=("$base/$id")
+            ;;
+        bluetooth | fm | gps | nfc | uwb | wimax | wlan | wwan)
+            for dev in "$base"/rfkill*; do
+                [[ $(<"$dev/type") = "$id" ]] || continue
+                devs+=("$dev")
+            done
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+fi
+
+(( ${#devs[@]} )) || exit 1
+
+declare -i retstat=0
+
+if [[ $val ]]; then
+    for dev in "${devs[@]}"; do
+        if [[ ! -w "$dev/state" ]]; then
+            echo "$dev/state is not writable" >&2
+            retstat=1
+            continue
+        fi
+        echo "$val" >"$dev/state"
+    done
+else
+    for dev in "${devs[@]}"; do
+        if [[ ! -d $dev ]]; then
+            echo "$dev is missing" >&2
+            retstat=1
+            continue
+        fi
+        if (( aggregate )); then
+            state=$(<"$dev/state")
+            state_=${state_:-$state}
+            if (( state != state_ )); then
+                state=-1
+                break
+            fi
+            continue
+        fi
+        if (( quiet )); then
+            printf '%s\n' "$(<"$dev/state")"
+        else
+            printf '%-30s %-8s %-16s %s\n' \
+                "$dev" \
+                "$(<"$dev/state")" \
+                "$(<"$dev/type")" \
+                "$(<"$dev/name")"
+        fi
+    done
+
+    if (( aggregate )); then
+        printf '%s\n' "$state"
+    fi
+fi
+
+exit $retstat

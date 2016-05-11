@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -eu
+
+(( $# )) || exit 1
+
+# ----------------------------------------
+
+if (( EUID )); then
+    case $1 in
+        button/micmute | button/f20)
+            audio capture_toggle
+            ;;
+        button/mute)
+            audio playback_toggle
+            ;;
+        button/volumedown)
+            audio playback_down
+            ;;
+        button/volumeup)
+            audio playback_up
+            ;;
+        video/brightnessdown)
+            backlight0 prev
+            ;;
+        video/brightnessup)
+            backlight0 next
+            ;;
+    esac
+else
+    case $1 in
+        button/screenlock)
+            lock miro
+            ;;
+    esac
+fi

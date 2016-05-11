@@ -15,15 +15,14 @@ main() {
             tmpfile=$(mktemp)
             trap 'rm -f "$tmpfile"' EXIT
 
-            declare -i retstat=
+            declare -i retstat=0
             "${cmd[@]}" >"$tmpfile" || retstat=$?
 
             echo '---'
             diffstat -p1 <"$tmpfile"
 
             echo
-            filterdiff -v --remove-timestamps --annotate --strip=1 \
-                       --addoldprefix=a/ --addnewprefix=b/ <"$tmpfile"
+            filterdiff -v --remove-timestamps --annotate <"$tmpfile"
 
             return $retstat
             ;;
@@ -31,4 +30,4 @@ main() {
 }
 
 # execute explicitly in subshell to workaround not firing trap
-( main ) | PAGER_TITLE=${cmd[@]} PAGER_EX='set ft=diff' pg0
+( main ) | PAGER_TITLE=${cmd[*]} PAGER_EX='set ft=diff' pg0

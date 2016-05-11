@@ -5,7 +5,7 @@ set -eu -o pipefail
 (
     printf 'AUTHENTICATE\r\n'
 
-    (( $# )) && printf "SETCONF ExitNodes={$1}\r\n" ||
+    (( $# )) && printf 'SETCONF ExitNodes={%s}\r\n' "$1" ||
                 printf 'RESETCONF ExitNodes\r\n'
 
     printf 'SIGNAL NEWNYM\r\n'

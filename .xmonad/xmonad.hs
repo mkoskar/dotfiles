@@ -206,7 +206,7 @@ myConfig = defaultConfig
     myKeys = \conf -> M.union (M.fromList myRawKeys) (mkKeymap conf myEZKeys)
 
     myRawKeys =
-        [ ((0, 0x1008FFB2), spawn "audio capture_toggle") -- <XF86AudioMicMute>
+        [
         ]
 
     myEZKeys =
@@ -357,7 +357,7 @@ myConfig = defaultConfig
 
         , ("M-; M-b", spawn "bluetooth-toggle")
         , ("M-; M-d", spawn "dpms-toggle")
-        , ("M-; M-l", spawn "sudo lockx")
+        , ("M-; M-l", spawn "sudo lock")
         , ("M-; M-t", spawn "trackpoint-wheel-toggle")
         , ("M-; M-S-t", spawn "touchpad-toggle")
         , ("M-; M-w", spawn "wifi-toggle")
@@ -374,18 +374,10 @@ myConfig = defaultConfig
         , ("M-; M-u", spawn "notify -u low \"$(url-resolve)\"")
         , ("M-S-<Home>", spawn "term trun wow")
 
-        , ("<XF86AudioLowerVolume>", spawn "audio playback_down")
-        , ("<XF86AudioMute>", spawn "audio playback_toggle")
         , ("<XF86AudioNext>", spawn "playctl next")
-        , ("<XF86AudioPause>", spawn "playctl pause")
         , ("<XF86AudioPlay>", spawn "playctl play-pause")
         , ("<XF86AudioPrev>", spawn "playctl prev")
-        , ("<XF86AudioRaiseVolume>", spawn "audio playback_up")
         , ("<XF86AudioStop>", spawn "playctl stop")
-        , ("<XF86MonBrightnessDown>", spawn "backlight0 prev")
-        , ("<XF86MonBrightnessUp>", spawn "backlight0 next")
-        , ("<XF86ScreenSaver>", spawn "sudo lock")
-
         , ("<XF86Display>", spawn "xscreen && xmonad --restart")
         , ("<XF86Launch1>", spawn myTerminal)
         , ("<XF86WebCam>", spawn "selfie")

@@ -40,7 +40,7 @@ case $1 in
         set -- 0
         ;;
     auto)
-        declare -i online=
+        declare -i online=0
         for dev in /sys/class/power_supply/*; do
             [[ $(<"$dev/type") = 'Mains' ]] || continue
             (( $(<"$dev/online") )) || continue

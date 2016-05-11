@@ -24,7 +24,7 @@ $0 ~ "\\s+" chain "(\\s*|$)" {
         printf "-D "
     else if ($1 == "-N")
         printf "-X "
-    for (i = 2; i <= NF; i++) printf $i " "
+    for (i=2; i<=NF; i++) printf $i " "
     printf "\n"
 }
 ' | while read -ra args; do

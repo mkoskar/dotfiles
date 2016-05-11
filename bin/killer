@@ -10,7 +10,7 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-declare -i gopt=
+declare -i gopt=0
 while getopts 'gs:h' opt; do
     case $opt in
         g)
