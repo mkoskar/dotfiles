@@ -10,18 +10,32 @@ name='SynPS/2 Synaptics TouchPad'
 prop='Device Enabled'
 id=$(xinput list | grep -F "$name" | xinput-ids | head -n1)
 
-declare -i toggle=0
-[[ $prgname = 'touchpad-toggle' ]] && toggle=1
-
-if (( !toggle && $# )); then
-    valset=$1
-else
-    declare -i val=0 valset=1
+state() {
+    declare -i val=0
     val=$(xinput list-props "$id" | awk -F: "/^\s*$prop \(.*\):/ {print \$2}")
-    (( val == valset )) && valset=0
-    retstat=$?
-    (( !toggle )) && exit $retstat
+    echo $((val > 0))
+}
+
+if [[ $prgname = 'touchpad-toggle' ]]; then
+    case $(state) in 1) set -- 0 ;; *) set -- 1 ;; esac
 fi
+
+case ${1-} in
+    1 | on | true)
+        valset=1
+        ;;
+    0 | off | false)
+        valset=0
+        ;;
+    '')
+        state
+        exit
+        ;;
+    *)
+        echo "usage: $prgname [1 | on | true | 0 | off | false]" >&2
+        exit 2
+        ;;
+esac
 
 xinput set-prop "$id" "$prop" "$valset"
 status-osd touchpad

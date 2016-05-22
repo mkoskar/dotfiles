@@ -361,9 +361,7 @@ myConfig = defaultConfig
         , ("M-; M-t", spawn "trackpoint-wheel-toggle")
         , ("M-; M-S-t", spawn "touchpad-toggle")
         , ("M-; M-w", spawn "wifi-toggle")
-        , ("M-C-M1-b", spawn "backlight0 prev")
-        , ("M-C-b", spawn "backlight0 next")
-        , ("M-S-b", spawn "backlight next")
+        , ("M-S-b", spawn "backlight-toggle")
 
         , ("M-; M-a", spawn "b http://apod.nasa.gov/")
         , ("M-; M-i", spawn "notify -u low \"$(status)\"")

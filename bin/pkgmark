@@ -9,4 +9,4 @@ if (( ! $# )); then
     exit 2
 fi
 
-package-query -f '%n - %d\n%U' -A -Si "$1"
+expac -S '%n - %d\n%u' "$1"

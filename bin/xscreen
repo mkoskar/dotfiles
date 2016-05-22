@@ -15,8 +15,8 @@ if [[ $(xserverq name) = 'Xorg' ]]; then
         fi
     fi
     xrandr --dpi 96
-    NOOSD=1 touchpad 0
-    NOOSD=1 trackpoint-wheel 2
+    NOOSD=1 touchpad off
+    NOOSD=1 trackpoint-wheel on
 fi
 
 xset b off s off dpms 0 0 300

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -eu
+
+PS3='Select: '
+emails=(
+    'mk@mkoskar.com'
+)
+select sel in "${emails[@]}"; do
+    break
+done
+
+git config user.email "$sel"
+git config --local --list

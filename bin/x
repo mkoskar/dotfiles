@@ -62,7 +62,7 @@ fi
 rundir="$XDG_RUNTIME_DIR/xorg"
 mkdir -p "$rundir"
 
-datadir="${XDG_DATA_HOME:-$HOME/.local/share}/xorg"
+datadir="$HOME/.local/share/xorg"
 mkdir -p "$datadir"
 
 xauthset() {

@@ -36,10 +36,10 @@ export TERM
 
 eval "$(TERM=ansi dircolors -b)"
 
+export JAVA_HOME='/usr/lib/jvm/default-runtime'
 export JDK_HOME='/usr/lib/jvm/default'
-#export IDEA_JDK='/usr/lib/jvm/java-7-jdk'
-export JAVA_HOME=$JDK_HOME
 export _JAVA_AWT_WM_NONREPARENTING=1
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.xrender=true -Dswing.aatext=true'
 
 export ASPROOT="$HOME/.cache/asp"
 export BROWSER='b'
@@ -60,7 +60,7 @@ export NO_AT_BRIDGE=1
 export ORACLE_HOME='/opt/instantclient'
 export PACKER_CACHE_DIR="$HOME/.cache/packer"
 export PAGER='pg'
-export PARINIT='T4 w79 prbgqR B=.,?_A_a Q=_s>|'
+export PARINIT='T4 w78 prbgqR B=.,?_A_a Q=_s>|'
 export PYENV_ROOT="$HOME/opt/pyenv"
 export PYTHONSTARTUP="$HOME/.pythonstartup"
 export QT_IM_MODULE='xim'
@@ -70,7 +70,7 @@ export TERMINAL='term'
 export TERMINFO_DIRS='/etc/terminfo:/usr/share/terminfo'
 export VDPAU_DRIVER='va_gl'
 export VIMBIN='nvim'
-export XAUTHORITY="$HOME/.Xauthority"
+export XAUTHORITY="$HOME/.local/share/xorg/Xauthority"
 
 [ "$_PATH" ] || export _PATH="$PATH"
 PATH="$_PATH"

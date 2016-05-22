@@ -24,7 +24,9 @@ case $prgname in
         ;;
     *)
         tmpfile=$(mktemp)
-        trap 'rm -f "$tmpfile"' EXIT
+        cleanup() { rm -f "$tmpfile"; }
+        trap cleanup EXIT
+
         xselmenu "$prgname" >"$tmpfile"
         clipi <"$tmpfile"
         ;;

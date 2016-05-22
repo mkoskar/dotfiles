@@ -14,23 +14,23 @@ if (( EUID )); then
         button/mute)
             audio playback_toggle
             ;;
+        button/screenlock)
+            lock
+            ;;
         button/volumedown)
             audio playback_down
             ;;
         button/volumeup)
             audio playback_up
             ;;
-        video/brightnessdown)
-            backlight0 prev
-            ;;
-        video/brightnessup)
-            backlight0 next
-            ;;
     esac
 else
     case $1 in
-        button/screenlock)
-            lock miro
+        video/brightnessdown)
+            backlight -10
+            ;;
+        video/brightnessup)
+            backlight +10
             ;;
     esac
 fi

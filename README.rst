@@ -27,6 +27,9 @@ are listed below.
 `authinfo <bin/authinfo>`_, `authinfo.py <bin/authinfo.py>`_
     Reads ``~/.authinfo.gpg`` to provide login credentials.
 
+`backlight <bin/system/backlight>`_
+    Simple backlight controller.
+
 `chp <bin/chp>`_
     Enables one to run and manipulate multiple Google Chrome / Chromium profiles
     at the same time.
@@ -131,9 +134,6 @@ are listed below.
 `xfocusinfo <bin/xfocusinfo>`_
     Determines and prints out (in shell eval format) focused X screen,
     Xinerama head, root window id, and target window id.
-
-`xpgrep <bin/xpgrep>`_
-    ``pgrep -x`` filtered for current ``$DISPLAY``.
 
 `xserverq <bin/xserverq>`_
     Get information about X server (based on DISPLAY environment variable).

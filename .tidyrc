@@ -32,7 +32,7 @@ wrap-asp: no
 wrap-jste: no
 wrap-php: no
 wrap-sections: no
-wrap: 80
+wrap: 78
 
 # Character encoding
 char-encoding: utf8

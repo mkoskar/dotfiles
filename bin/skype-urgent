@@ -2,8 +2,6 @@
 
 set -eu
 
-ids=($(xdotool search --class 'skype'))
-
-for id in "${ids[@]}"; do
+for id in $(xdotool search --class 'skype'); do
     seturgent "$id"
 done

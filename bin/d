@@ -13,7 +13,8 @@ main() {
             ;;
         *)
             tmpfile=$(mktemp)
-            trap 'rm -f "$tmpfile"' EXIT
+            cleanup() { rm -f "$tmpfile"; }
+            trap cleanup EXIT
 
             declare -i retstat=0
             "${cmd[@]}" >"$tmpfile" || retstat=$?

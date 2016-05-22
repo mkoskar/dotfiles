@@ -2,6 +2,8 @@
 
 set -eu
 
+prgname=${0##*/}
+
 playback_up() {
     amixer -q set Master 5%+
 }
@@ -29,6 +31,12 @@ case ${1-} in
         $1
         status-osd audio
         exit
+        ;;
+    '')
+        ;;
+    *)
+        echo "usage: $prgname [playback_up | playback_down | playback_toggle | playback_dock_toggle | capture_toggle]" >&2
+        exit 2
         ;;
 esac
 

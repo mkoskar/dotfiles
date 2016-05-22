@@ -15,4 +15,3 @@ set query_command = "goobook query '%s'"
 set sendmail = msmtp
 
 macro index,pager A <pipe-message>goobook-add<enter> 'add sender as contact'
-macro index,pager \ez '<shell-escape>pg ~/.msmtp.log<enter>' 'show msmtp log'

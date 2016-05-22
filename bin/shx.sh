@@ -182,6 +182,7 @@ alias ....='cd ../../..'
 
 alias acpi='acpi -V'
 alias aunpack='aunpack -q'
+alias c='calc'
 alias cal='cal -3 -m'
 alias callgrind='valgrind --tool=callgrind'
 alias cower='cower --color=auto'

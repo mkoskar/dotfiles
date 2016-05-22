@@ -12,6 +12,7 @@ case $- in *i*) ;; *) return ;; esac
 . ~/bin/shrc-pre.sh
 
 HISTCONTROL='ignorespace:erasedups'
+HISTFILE="$HOME/.local/share/bash_history"
 HISTFILESIZE=5000
 HISTIGNORE='exit'
 HISTSIZE=500

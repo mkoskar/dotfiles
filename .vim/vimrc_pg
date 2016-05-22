@@ -3,12 +3,12 @@
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 source ~/.vim/vimrc_base
 
-set nomodifiable
 set buftype=nowrite
+set nomodifiable
 
-set nolist
 set colorcolumn=0
 set laststatus=1
+set nolist
 set tabstop=8
 set virtualedit=all
 
@@ -17,7 +17,7 @@ set noswapfile
 set noundofile
 set undolevels=-1
 
-exec "set viminfo=!,'100,<50,s10,h,n".$VIMDIR."/.viminfo_pg"
+let &viminfo = "!,'100,<50,s10,h,n".$VIMDIR."/.viminfo_pg"
 
 noremap <silent> q :qa<CR>
 

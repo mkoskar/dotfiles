@@ -171,6 +171,7 @@ done <<-EOF
     rust-api        b http://doc.rust-lang.org/std/
     scala           b http://www.scala-lang.org/api/current/
     sed             b https://www.gnu.org/software/sed/manual/sed.html
+    shakespeare     b http://shakespeare.mit.edu/
     spock           b http://docs.spockframework.org/
     spring          b http://docs.spring.io/spring/docs/current/spring-framework-reference/html/
     spring-api      b http://docs.spring.io/spring/docs/current/javadoc-api/overview-summary.html

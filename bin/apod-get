@@ -4,7 +4,7 @@ set -eu
 
 prgname=${0##*/}
 
-path="${XDG_CACHE_HOME:-$HOME/.cache}/apod/latest"
+path="$HOME/.cache/apod/latest"
 
 case $prgname in
     apod-get)

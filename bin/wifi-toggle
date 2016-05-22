@@ -5,10 +5,10 @@ set -eu -o pipefail
 state=$(rfkill-state -a wlan)
 case $state in
     -1 | 1)
-        rfkill-state wlan 0
+        rfkill block wlan
         ;;
     0)
-        rfkill-state wlan 1
+        rfkill unblock wlan
         ;;
 esac
 

@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-set -eu
-
-cd ~/tmp
-
 echo $'\n--------------------------------------------------'
 echo $'> NPM packages:\n'
 
@@ -14,9 +10,9 @@ pkgs=(
     js-beautify
     jshint
     learnyounode
+    remark
     semver
     stream-adventure
-    typescript-formatter
 )
 npm install -g "${pkgs[@]}"
 

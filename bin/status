@@ -9,7 +9,7 @@ if [[ $prgname = 'status-osd' ]]; then
     out=$(status "$@")
     [[ -t 1 ]] && printf '%s\n' "$out"
     osd "$out" || true
-    exit 0
+    exit
 fi
 
 export LC_ALL=C
@@ -30,10 +30,7 @@ status_audio() {
 }
 
 status_backlight() {
-    local dev val
-    dev='/sys/class/backlight/acpi_video0'
-    printf -v val '%s / %s' "$(<"$dev/brightness")" "$(<"$dev/max_brightness")"
-    printf 'backlight: %s\n' "$val"
+    printf 'backlight: %s%%\n' "$(backlight)"
 }
 
 status_bluetooth() {
@@ -71,7 +68,7 @@ status_rfkill() {
 status_touchpad() {
     local val='-'
     if (( xcon )); then
-        touchpad && val='on' || val='off'
+        case $(touchpad) in 1) val='on' ;; 0) val='off' ;; esac
     fi
     printf 'touchpad: %s\n' "$val"
 }
@@ -79,7 +76,7 @@ status_touchpad() {
 status_trackpoint_wheel() {
     local val='-'
     if (( xcon )); then
-        trackpoint-wheel && val='on' || val='off'
+        case $(trackpoint-wheel) in 1) val='on' ;; 0) val='off' ;; esac
     fi
     printf 'trackpoint wheel: %s\n' "$val"
 }

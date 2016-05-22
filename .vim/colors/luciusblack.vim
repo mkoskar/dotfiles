@@ -1,5 +1,6 @@
 " vim: ft=vim fdm=marker
 
+set background=dark
 hi clear
 if exists('syntax_on')
     syntax reset
@@ -260,6 +261,3 @@ hi link bufExplorerTitle PreProc
 " ----------------------------------------
 
 hi link TagbarHelp String
-
-
-set background=dark

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -eu
+
+backlight 40,70,100
+status-osd backlight

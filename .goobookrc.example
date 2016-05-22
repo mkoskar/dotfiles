@@ -1,9 +1,8 @@
 # vim: ft=cfg
 
 [DEFAULT]
-email: <email>
-passwordeval: <passwordeval>
 cache_filename: ~/.cache/goobook
-#cache_expiry_hours: 24
-#filter_groupless_contacts: yes
 default_group: Unsorted
+email: <email>
+oauth_db_filename: ~/.cache/goobook_auth
+passwordeval: <passwordeval>

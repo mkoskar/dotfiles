@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+(( $# )) && set -- git "$@" || set -- :
+
+handle() {
+    local name=$1
+    shift
+    echo -e "\n> $name"
+    cd "$name"
+    "$@"
+}
+export -f handle
+
+find -mindepth 2 -maxdepth 2 -type d -name '.git' -printf '%h\0' |
+    sort -z |
+    parallel -0 handle '{}' "$@"
+
+echo

@@ -5,10 +5,10 @@ set -eu
 state=$(rfkill-state -a bluetooth)
 case $state in
     -1 | 1)
-        rfkill-state bluetooth 0
+        rfkill block bluetooth
         ;;
     0)
-        rfkill-state bluetooth 1
+        rfkill unblock bluetooth
         sleep 1
 
 #        dbus-send --system --type=method_call --dest=org.bluez \

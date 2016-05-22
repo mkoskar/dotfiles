@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-notmuch new --quiet 2>/dev/null

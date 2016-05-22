@@ -4,13 +4,38 @@
 
 set -eu
 
-ft=${1-}
-filename=${3-}
-firstline=${3-}
-lastline=${4-}
+prgname=${0##*/}
 
-shiftwidth=4
-textwidth=78
+_usage() {
+    cat <<-EOF
+	usage: $prgname TODO
+	EOF
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+declare -i shiftwidth=4 textwidth=78
+while getopts 's:t:h' opt; do
+    case $opt in
+        s)
+            shiftwidth=$OPTARG
+            ;;
+        t)
+            textwidth=$OPTARG
+            ;;
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# ----------------------------------------
+
+ft=${1-}
 
 try() {
     ! type "$1" &>/dev/null || exec "$@"
@@ -18,20 +43,16 @@ try() {
 
 case $ft in
     cs)
+        # try uncrustify
         try astyle --mode=cs --style=break --indent-namespaces -pcH -s"$shiftwidth"
         ;;
     css)
         try css-beautify -s "$shiftwidth" -f -
+        try sass-convert --from css --to css --indent "$shiftwidth"
         ;;
-    c|cpp|objc)
-        args=(
-            --assume-filename="$filename"
-            -style="{BasedOnStyle: WebKit, AlignTrailingComments: true, ColumnLimit: $textwidth, UseTab: Never, IndentWidth: $shiftwidth}"
-        )
-        if [[ $firstline && $lastline ]]; then
-            args+=(-lines="$firstline:$lastline")
-        fi
-        try clang-format "${args[@]}"
+    c | cpp | objc)
+        # try clang-format
+        # try uncrustify
         try astyle --mode=c --style=break -pcH -s"$shiftwidth"
         ;;
     dart)
@@ -48,25 +69,26 @@ case $ft in
         try tidy -config ~/.tidyrc --indent-spaces "$shiftwidth" -wrap "$textwidth"
         ;;
     java)
+        # try clang-format
+        # try uncrustify
         try astyle --mode=java --style=attach -pcH -s"$shiftwidth"
         ;;
     javascript)
+        #try clang-format
         try js-beautify -s "$shiftwidth" -w "$textwidth" -f -
         ;;
     json)
         try js-beautify -s "$shiftwidth" -f -
         ;;
+    markdown)
+        try remark --silent --no-color
+        ;;
     perl)
         try perltidy --perl-best-practices --format-skipping -q
         ;;
     python)
-        args=(
-            --max-line-length="$textwidth"
-        )
-        if [[ $firstline && $lastline ]]; then
-            args+=(--range "$firstline" "$lastline")
-        fi
-        try autopep8 "${args[@]}" -
+        try autopep8 --indent-size="$shiftwidth" --max-line-length="$textwidth" -
+        try yapf "--style={based_on_style:pep8, indent_width:$shiftwidth, column_limit=$textwidth}"
         ;;
     ruby)
         try rbeautify -s -c "$shiftwidth"
@@ -74,21 +96,21 @@ case $ft in
     rust)
         try rustfmt
         ;;
-    scss)
-        try sass-convert -F scss -T scss --indent "$shiftwidth"
+    sass)
+        try sass-convert --from sass --to sass --indent "$shiftwidth"
         ;;
-    typescript)
-        try tsfmt --stdin
+    scss)
+        try sass-convert --from scss --to scss --indent "$shiftwidth"
         ;;
     xhtml)
         try tidy -config ~/.tidyrc --indent-spaces "$shiftwidth" -wrap "$textwidth"
         ;;
     xml)
+        # try xmllint
         try tidy -config ~/.tidyrc -xml --indent-spaces "$shiftwidth" -wrap "$textwidth"
         ;;
     *)
         try par -T"$shiftwidth" -w"$textwidth"
-        try pr -e"$shiftwidth" -w "$textwidth"
         try fmt -u -w "$textwidth"
         try fold -s -w "$textwidth"
         try wrap -w "$textwidth"

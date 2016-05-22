@@ -1,7 +1,7 @@
 [Unit]
 Description=Update environment
 DefaultDependencies=no
-Before=basic.target
+Before=sockets.target timers.target paths.target basic.target
 
 [Service]
 Type=oneshot

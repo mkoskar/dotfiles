@@ -22,7 +22,7 @@ fi
 
 exec </dev/tty
 
-declare -i len=${#items[@]} i=
+declare -i len=${#items[@]} i=0
 while true; do
     (( len > 0 )) || break
     item=${items[i]}

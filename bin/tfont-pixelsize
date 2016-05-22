@@ -1,3 +1,1 @@
-#!/usr/bin/env bash
-
-tfont "xft:local_terminal:pixelsize=${1:-16}"
+tfont

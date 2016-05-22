@@ -20,7 +20,7 @@ case $VIMBIN in
         if [[ -e $VIMSERVER ]]; then
             nvr --servername "$VIMSERVER" \
                 --remote-tab "$@" \
-                -c 'doau BufEnter' &>/dev/null && exit 0
+                -c 'doau BufEnter' &>/dev/null && exit
         fi
         exec nvim --cmd 'call serverstart($VIMSERVER)' "$@"
         ;;

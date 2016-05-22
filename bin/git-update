@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -eu
+
+git fetch --all
+if [[ $(git rev-parse --abbrev-ref HEAD) = 'local' ]]; then
+    echo '> _local_ branch - not merging!'
+else
+    git merge --ff-only
+fi

@@ -11,7 +11,7 @@ case $- in *i*) ;; *) return ;; esac
 . ~/bin/shx.sh
 . ~/bin/shrc-pre.sh
 
-HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
+HISTFILE="$HOME/.local/share/zhistory"
 HISTSIZE=500
 SAVEHIST=5000
 TMPPREFIX="${TMPDIR:-/tmp}/zsh"
@@ -239,7 +239,13 @@ bindkey -M vicmd -s '^Xs' 'a!!:gs/'
 # Completion
 # ----------------------------------------
 
-compinit
+zcompdump="$HOME/.cache/zcompdump"
+compinit -d "$zcompdump"
+{
+    if [[ ! -e "$zcompdump.zwc" || "$zcompdump" -nt "$zcompdump.zwc" ]]; then
+        zcompile "$zcompdump"
+    fi
+} &!
 
 zstyle ':completion:*' completer _complete _match
 zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
@@ -267,7 +273,7 @@ zstyle ':completion:*:messages' format ' %F{purple}-- %d --%f'
 zstyle ':completion:*:options' auto-description '%d'
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:warnings' format ' %F{yellow}-- no matches found --%f'
-zstyle ':completion::complete:*' cache-path "${ZDOTDIR:-$HOME}/.zcompcache"
+zstyle ':completion::complete:*' cache-path "$HOME/.cache/zcompcache"
 zstyle ':completion::complete:*' use-cache on
 
 zstyle ':completion::*:(-command-|export):*' fake-parameters ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}

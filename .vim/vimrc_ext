@@ -3,13 +3,12 @@
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 source ~/.vim/vimrc_base
 
-"Plugin 'dirvish'
-Plugin 'NERD_tree'
 Plugin 'bufexplorer'
 Plugin 'ctrlp'
-Plugin 'easy_align'
+Plugin 'easy-align'
 Plugin 'exchange'
 Plugin 'filebeagle'
+Plugin 'nerdtree'
 
 Plugin 'repeat'
 Plugin 'speeddating'
@@ -19,15 +18,21 @@ Plugin 'tagbar'
 Plugin 'tcomment'
 Plugin 'unimpaired'
 
+Plugin 'fugitive'
+Plugin 'undotree'
+
+"Plugin 'ctrlspace'
+"Plugin 'dirvish'
 "Plugin 'dispatch'
 "Plugin 'easymotion'
 "Plugin 'easytags'
 "Plugin 'emmet'
 "Plugin 'fzf'
+"Plugin 'gitgutter'
 "Plugin 'gundo'
 "Plugin 'minibufexpl'
 "Plugin 'misc'
-"Plugin 'multiple_cursors'
+"Plugin 'multiple-cursors'
 "Plugin 'neomake'
 "Plugin 'unite'
 "Plugin 'visualrepeat'

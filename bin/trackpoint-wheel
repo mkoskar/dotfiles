@@ -10,18 +10,32 @@ name='TPPS/2 IBM TrackPoint'
 prop='libinput Button Scrolling Button'
 id=$(xinput list | grep -F "$name" | xinput-ids | head -n1)
 
-declare -i toggle=0
-[[ $prgname = 'trackpoint-wheel-toggle' ]] && toggle=1
-
-if (( !toggle && $# )); then
-    valset=$1
-else
-    declare -i val=0 valset=2
+state() {
+    declare -i val=0
     val=$(xinput list-props "$id" | awk -F: "/^\s*$prop \(.*\):/ {print \$2}")
-    (( val == valset )) && valset=0
-    retstat=$?
-    (( !toggle )) && exit $retstat
+    echo $((val == 2))
+}
+
+if [[ $prgname = 'trackpoint-wheel-toggle' ]]; then
+    case $(state) in 1) set -- 0 ;; *) set -- 1 ;; esac
 fi
+
+case ${1-} in
+    1 | on | true)
+        valset=2
+        ;;
+    0 | off | false)
+        valset=0
+        ;;
+    '')
+        state
+        exit
+        ;;
+    *)
+        echo "usage: $prgname [1 | on | true | 0 | off | false]" >&2
+        exit 2
+        ;;
+esac
 
 xinput set-prop "$id" "$prop" "$valset"
 status-osd trackpoint_wheel

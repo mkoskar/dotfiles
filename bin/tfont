@@ -4,8 +4,19 @@
 
 set -eu -o pipefail
 
+prgname=${0##*/}
+
+case $prgname in
+    tfont-pixelsize)
+        exec tfont "xft:local_terminal:pixelsize=${1:-16}"
+        ;;
+    tfont-size)
+        exec tfont "xft:local_terminal:size=${1:-12}"
+        ;;
+esac
+
 process() {
-    printf '\e]50;%s' "$1" | ctrlseq
+    printf '\e]50;%s' "$1" | tctrlseq
 }
 
 if (( ! $# )); then

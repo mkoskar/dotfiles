@@ -17,7 +17,7 @@ case $prgname in
         rm -f /etc/hostsblock/hosts{,.old.gz}
         rm -rf /var/cache/hostsblock
         /usr/bin/hostsblock
-        exit 0
+        exit
         ;;
     hostsblock-off)
         mv 10-* off

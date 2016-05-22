@@ -15,10 +15,12 @@
     lga = !git lg --all
     ls = ls-files
     ls-untracked = ls-files --others
-    set-email = !gitconf-setemail
+    set-email = !git-set-email
     set-upstream = remote add upstream
     st = status -s
     stu = status -su
+    up = update
+    update = !git-update
 
 [color]
     pager = false
