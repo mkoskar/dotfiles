@@ -11,7 +11,7 @@
     :License: BSD 2-Clause
 """
 
-from sys import stderr, exit
+from sys import exit
 from urllib.parse import urljoin
 from urllib.request import HTTPCookieProcessor
 import argparse

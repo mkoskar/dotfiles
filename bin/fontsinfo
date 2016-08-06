@@ -10,7 +10,7 @@ export -f match
 echo $'\n--------------------------------------------------'
 echo $'> Generic:\n'
 
-parallel match '{}' <<-EOF
+parallel match <<-EOF
 	cursive
 	fantasy
 	monospace
@@ -21,7 +21,7 @@ EOF
 echo $'\n--------------------------------------------------'
 echo $'> Other:\n'
 
-parallel match '{}' <<-EOF
+parallel match <<-EOF
 	Andale Mono
 	Arial
 	Arial Black

@@ -319,6 +319,8 @@ compctl -m x
 compctl -m xx
 compctl -v v
 
+compdef gitall=git
+
 function _pacl {
     local -a packages
     read -cA words

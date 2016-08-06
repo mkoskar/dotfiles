@@ -27,16 +27,18 @@
 /server del bitlbee
 /server add bitlbee localhost
 /set irc.server.bitlbee.autoconnect on
-/set irc.server.bitlbee.autojoin #twitter
-/set irc.server.bitlbee.command "/msg nickserv identify ${sec.data.bitlbee}"
+/set irc.server.bitlbee.autojoin #twitter_mkoskar
 /set irc.server.bitlbee.nicks miro
 /set irc.server.bitlbee.proxy ""
+/set irc.server.bitlbee.sasl_mechanism plain
+/set irc.server.bitlbee.sasl_password ${sec.data.bitlbee}
+/set irc.server.bitlbee.sasl_username miro
 /set irc.server.bitlbee.ssl off
 /set irc.server.bitlbee.username miro
 
 /server del freenode
 /server add freenode chat.freenode.net/6697
-/set irc.server.freenode.autojoin ##linux,##security,#archlinux,#archlinux-offtopic,#bash,#git,#github,#go-nuts,#nginx,#node.js,#pocoo,#python,#scala,#systemd,#tmux,#vim,#web,#weechat,#zsh
+/set irc.server.freenode.autojoin ##linux,##security,#archlinux,#archlinux-offtopic,#bash,#git,#github,#go-nuts,#nginx,#node.js,#pocoo,#python,#scala,#systemd,#tmux,#vim,#vpsfree,#web,#weechat,#zsh
 /set irc.server.freenode.command "/mode mkoskar +iwR"
 /set irc.server.freenode.ssl_dhkey_size 1024
 
@@ -57,6 +59,7 @@
 /server add oftc irc.oftc.net/6697
 /set irc.server.oftc.autojoin #bitlbee,#debian,#suckless,#tor
 /set irc.server.oftc.command "/mode mkoskar +iswR"
+/set irc.server.oftc.sasl_fail continue
 
 /print # /secure passphrase <input-passphrase>
 /print # /secure set bitlbee <input-password-here>
@@ -64,7 +67,6 @@
 /print # /secure set mozilla <input-password-here>
 
 /print # }}}
-
 
 /print # General {{{
 /print # ----------------------------------------
@@ -98,6 +100,7 @@
 /set weechat.color.emphasized black
 /set weechat.color.emphasized_bg brown
 /set weechat.color.input_text_not_found lightred
+/set weechat.color.nicklist_away default
 /set weechat.color.separator 237
 /set weechat.color.status_name yellow
 /set weechat.color.status_name_ssl lightgreen
@@ -125,7 +128,6 @@
 
 /print # }}}
 
-
 /print # Scripts {{{
 /print # ----------------------------------------
 
@@ -148,7 +150,7 @@
 /set buffers.color.queries_default_fg lightcyan
 /set buffers.look.hotlist_counter on
 /set buffers.look.indenting on
-/set buffers.look.name_size_max 10
+/set buffers.look.name_size_max 11
 /set buffers.look.number_char " "
 /set buffers.look.prefix_for_query "/q "
 /set buffers.look.suffix_bufname " "
@@ -165,7 +167,6 @@
 /set plugins.var.python.vimode.no_warn on
 
 /print # }}}
-
 
 /print # Bars {{{
 /print # ----------------------------------------
@@ -197,7 +198,6 @@
 
 /print # }}}
 
-
 /print # Triggers {{{
 /print # ----------------------------------------
 /print # Proper quoting of trigger's arguments is critical!
@@ -218,14 +218,12 @@
 
 /print # }}}
 
-
 /print # Ignores {{{
 /print # ----------------------------------------
 
 /ignore del -all
 
 /print # }}}
-
 
 /print # Filters {{{
 /print # ----------------------------------------
@@ -238,7 +236,6 @@
 /filter add welcome_oftc irc.server.oftc irc_notice+notify_private Activating Cloak
 
 /print # }}}
-
 
 /print # Key Bindings {{{
 /print # ----------------------------------------
@@ -314,7 +311,6 @@
 /key bindctxt search ctrl-P /input search_previous
 
 /print # }}}
-
 
 /print # Aliases {{{
 /print # ----------------------------------------

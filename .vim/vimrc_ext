@@ -1,65 +1,52 @@
 " vim: ft=vim fdm=marker
 
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
+
+call utils#PluginLoad('unimpaired')
+
 source ~/.vim/vimrc_base
 
-Plugin 'bufexplorer'
-Plugin 'ctrlp'
-Plugin 'easy-align'
-Plugin 'exchange'
-Plugin 'filebeagle'
-Plugin 'nerdtree'
+call utils#PluginAdd('bufexplorer')
+call utils#PluginAdd('ctrlp')
+call utils#PluginAdd('easy-align')
+call utils#PluginAdd('exchange')
+call utils#PluginAdd('filebeagle')
+call utils#PluginAdd('nerdtree')
 
-Plugin 'repeat'
-Plugin 'speeddating'
-Plugin 'surround'
-Plugin 'syntastic'
-Plugin 'tagbar'
-Plugin 'tcomment'
-Plugin 'unimpaired'
+call utils#PluginAdd('fugitive')
+call utils#PluginAdd('fzf')
+call utils#PluginAdd('repeat')
+call utils#PluginAdd('simpylfold')
+call utils#PluginAdd('speeddating')
+call utils#PluginAdd('surround')
+call utils#PluginAdd('syntastic')
+call utils#PluginAdd('tagbar')
+call utils#PluginAdd('tcomment')
+call utils#PluginAdd('undotree')
 
-Plugin 'fugitive'
-Plugin 'undotree'
+"call utils#PluginAdd('ctrlspace')
+"call utils#PluginAdd('dirvish')
+"call utils#PluginAdd('dispatch')
+"call utils#PluginAdd('easymotion')
+"call utils#PluginAdd('easytags')
+"call utils#PluginAdd('emmet')
+"call utils#PluginAdd('gitgutter')
+"call utils#PluginAdd('gundo')
+"call utils#PluginAdd('minibufexpl')
+"call utils#PluginAdd('misc')
+"call utils#PluginAdd('multiple-cursors')
+"call utils#PluginAdd('neomake')
+"call utils#PluginAdd('ultisnips')
+"call utils#PluginAdd('unite')
+"call utils#PluginAdd('visualrepeat')
 
-"Plugin 'ctrlspace'
-"Plugin 'dirvish'
-"Plugin 'dispatch'
-"Plugin 'easymotion'
-"Plugin 'easytags'
-"Plugin 'emmet'
-"Plugin 'fzf'
-"Plugin 'gitgutter'
-"Plugin 'gundo'
-"Plugin 'minibufexpl'
-"Plugin 'misc'
-"Plugin 'multiple-cursors'
-"Plugin 'neomake'
-"Plugin 'unite'
-"Plugin 'visualrepeat'
+call utils#PluginAdd('~/opt/fzf')
 
-Plugin! '~/opt/fzf'
-
-" {{{
-
-" NERD_tree
-" ----------------------------------------
-
-let NERDTreeAutoDeleteBuffer = 1
-let NERDTreeBookmarksFile = $VIMDIR.'/.NERDTreeBookmarks'
-let NERDTreeCaseSensitiveSort = 1
-let NERDTreeHijackNetrw = 0
-let NERDTreeIgnore = ['^\.svn$', '^\.git$', '\.swp$', '\~$']
-let NERDTreeMapCWD = 'cD'
-let NERDTreeMapHelp = '<F1>'
-let NERDTreeShowBookmarks = 1
-let NERDTreeShowHidden = 1
-let NERDTreeStatusline = "%{exists('b:NERDTreeRoot')?b:NERDTreeRoot.path._strForUI():''}"
-let NERDTreeWinSize = 36
-
-noremap <silent> <F1> :NERDTreeFind<CR>
-noremap <silent> <F2> :NERDTreeToggle<CR>
-noremap <silent> <Leader>tf :NERDTreeFind<CR>
-noremap <silent> <Leader>tt :NERDTreeToggle<CR>
+augroup vimrc_ext_lazy_plugins
+    autocmd!
+    "autocmd FileType python
+    "    \ call utils#PluginLoad('ycm') | call youcompleteme#Enable()
+augroup END
 
 
 " bufexplorer
@@ -96,7 +83,7 @@ nnoremap <silent> <M-e> :CtrlPMRUFiles<CR>
 let dirvish_hijack_netrw = 0
 
 
-" easy_align
+" easy-align
 " ----------------------------------------
 
 vmap <Enter> <Plug>(EasyAlign)
@@ -158,6 +145,27 @@ let miniBufExplorerMoreThanOne = 1000
 noremap <silent> <Leader>B :MiniBufExplorer<CR>
 
 
+" nerdtree
+" ----------------------------------------
+
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeBookmarksFile = $VIMDIR.'/.NERDTreeBookmarks'
+let NERDTreeCaseSensitiveSort = 1
+let NERDTreeHijackNetrw = 0
+let NERDTreeIgnore = ['^\.svn$', '^\.git$', '\.swp$', '\~$']
+let NERDTreeMapCWD = 'cD'
+let NERDTreeMapHelp = '<F1>'
+let NERDTreeShowBookmarks = 1
+let NERDTreeShowHidden = 1
+let NERDTreeStatusline = "%{exists('b:NERDTreeRoot')?b:NERDTreeRoot.path._strForUI():''}"
+let NERDTreeWinSize = 36
+
+noremap <silent> <F1> :NERDTreeFind<CR>
+noremap <silent> <F2> :NERDTreeToggle<CR>
+noremap <silent> <Leader>tf :NERDTreeFind<CR>
+noremap <silent> <Leader>tt :NERDTreeToggle<CR>
+
+
 " syntastic
 " ----------------------------------------
 
@@ -172,9 +180,9 @@ let syntastic_sort_aggregated_errors = 0
 let syntastic_stl_format = ' %E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w} '
 
 let syntastic_error_symbol = '>'
-let syntastic_warning_symbol = '>'
 let syntastic_style_error_symbol = '>'
 let syntastic_style_warning_symbol = '>'
+let syntastic_warning_symbol = '>'
 
 nnoremap <silent> <Leader>SS :SyntasticCheck<CR>
 nnoremap <silent> <Leader>Si :SyntasticInfo<CR>
@@ -206,10 +214,10 @@ noremap <silent> <Leader>T :TagbarOpenAutoClose<CR>
 let tcommentMaps = 0
 let tcommentOptions = {'whitespace': 'no'}
 
-nnoremap <silent> <Leader>cc :TComment<CR>
 nnoremap <silent> <Leader>C :TCommentBlock<CR>
-vnoremap <silent> <Leader>cc :TComment<CR>
+nnoremap <silent> <Leader>cc :TComment<CR>
 vnoremap <silent> <Leader>C :TCommentBlock<CR>
+vnoremap <silent> <Leader>cc :TComment<CR>
 
 
 " unite
@@ -218,27 +226,30 @@ vnoremap <silent> <Leader>C :TCommentBlock<CR>
 nnoremap <silent> <Leader>u :Unite<CR>
 
 
+" ycm
+" ----------------------------------------
+
+let ycm_autoclose_preview_window_after_completion = 1
+
+
 " ----------------------------------------
 
 augroup vimrc_ext
     autocmd!
 
     autocmd BufWinEnter -MiniBufExplorer-
-        \  call BufSpecialSetup()
+        \  call utils#BufSpecial()
         \| nnoremap <silent> <buffer> q :close<CR>
 
     autocmd BufWinEnter \[BufExplorer\]
-        \  call BufSpecialSetup()
+        \  call utils#BufSpecial()
         \| normal! 4gg
 
     autocmd User FileBeagleReadPre
         \  unmap <buffer> <BS>
         \| nmap <buffer> <silent> u <Plug>(FileBeagleBufferFocusOnPrevious)
 
-    autocmd FileType filebeagle call BufSpecialSetup()
-    autocmd FileType nerdtree call BufSpecialSetup()
-    autocmd FileType tagbar call BufSpecialSetup()
-
+    autocmd FileType filebeagle call utils#BufSpecial()
+    autocmd FileType nerdtree call utils#BufSpecial()
+    autocmd FileType tagbar call utils#BufSpecial()
 augroup END
-
-" }}}

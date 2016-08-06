@@ -124,7 +124,7 @@ def cb_signal_buffer_merged(data, signal, buffer):
 def cb_signal_buffer_opened(data, signal, buffer):
     full_name = weechat.buffer_get_string(buffer, 'full_name')
 
-    if full_name == 'irc.bitlbee.#twitter':
+    if full_name == 'irc.bitlbee.#twitter_mkoskar':
         weechat.buffer_set(buffer, 'highlight_words', '@mkoskar')
 
     elif full_name == 'irc.freenode.#archlinux':

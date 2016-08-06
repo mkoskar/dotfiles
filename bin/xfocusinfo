@@ -24,7 +24,7 @@ import xcffib
 import xcffib.xinerama
 
 
-def intersect(x1, y1, w1, h1, \
+def intersect(x1, y1, w1, h1,
               x2, y2, w2, h2):
     return max(0, min(x1 + w1, x2 + w2) - max(x1, x2)) * \
            max(0, min(y1 + h1, y2 + h2) - max(y1, y2))
@@ -35,7 +35,8 @@ FOCUS_POINTER_ROOT = xcffib.xproto.InputFocus.PointerRoot
 
 parser = argparse.ArgumentParser(
     formatter_class=argparse.RawDescriptionHelpFormatter,
-    description=textwrap.dedent("""
+    description=textwrap.dedent(
+        """
         Determines and prints out (in shell eval format) focused:
 
         * X screen

@@ -27,4 +27,4 @@ Flatten .
 Channel example
 Master :example-remote:
 Slave :example-local:
-Patterns *
+Pattern *

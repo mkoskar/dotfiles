@@ -26,6 +26,9 @@ if (( EUID )); then
     esac
 else
     case $1 in
+        button/prog1)
+            vt-activate 4
+            ;;
         video/brightnessdown)
             backlight -10
             ;;

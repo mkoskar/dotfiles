@@ -1,6 +1,7 @@
 " vim: ft=vim fdm=marker
 
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
+
 source ~/.vim/vimrc_base
 
 set buftype=nowrite
@@ -19,15 +20,14 @@ set undolevels=-1
 
 let &viminfo = "!,'100,<50,s10,h,n".$VIMDIR."/.viminfo_pg"
 
-noremap <silent> q :qa<CR>
+" ----------------------------------------
+
+filetype indent off
+
+nnoremap <silent> q :QuitTab<CR>
 
 map <silent> r :Preserve edit<CR>
 nnoremap <silent> <C-A> :AnsiEsc<CR>
-
-let loaded_getscriptPlugin = 1
-let loaded_rrhelper = 1
-let loaded_spellfile_plugin = 1
-let loaded_vimballPlugin = 1
 
 function! NoFileSetup() abort
     setl buftype=nofile
@@ -45,7 +45,7 @@ function! Reload(...) abort
         let d = a:1
     endif
     try
-        echohl WarningMsg | echo 'Reload in '.d.'s (interrupt to abort)' | echohl None
+        call utils#EchoWarn('Reload in '.d.'s (interrupt to abort)')
         exec 'sleep '.d
         if exists(':ReloadX')
             Preserve silent call _ReloadX()
@@ -57,9 +57,10 @@ function! Reload(...) abort
         echo
     endtry
 endfunction
-command! -nargs=? Reload call Reload(<f-args>)
-map <silent> R :Reload<CR>R<CR>
+
+command! -bar -nargs=? Reload call Reload(<f-args>)
 map <silent> F :Reload<CR>GF<CR>
+map <silent> R :Reload<CR>R<CR>
 
 " }}}
 
@@ -80,10 +81,10 @@ function! ReloadX() abort
     setl buftype=nofile
     silent file $PAGER_TITLE
     Preserve silent call _ReloadX()
-    redraw
-    echohl WarningMsg | echo '['.strftime('%H:%M:%S').'] '.$PAGER_TITLE | echohl None
+    call utils#EchoWarn('['.strftime('%H:%M:%S').'] '.$PAGER_TITLE)
 endfunction
-command! ReloadX call ReloadX()
+
+command! -bar ReloadX call ReloadX()
 map <silent> r :ReloadX<CR>
 
 " }}}
@@ -96,8 +97,6 @@ augroup vimrc_pg
     if exists('$PRGNAME') && $PRGNAME == 'pg0'
         autocmd BufRead * setl noml ft=
     else
-        autocmd BufRead,FilterReadPost * if !exists('b:AnsiEsc') | let b:AnsiEsc = 1 | exec 'AnsiEsc' | endif
-        autocmd BufUnload * if exists('b:AnsiEsc') | exec 'AnsiEsc' | unlet b:AnsiEsc | endif
+        autocmd BufRead,FilterReadPost * AnsiEsc
     endif
-
 augroup END

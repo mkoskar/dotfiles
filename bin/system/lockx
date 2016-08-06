@@ -36,5 +36,5 @@ vtswitch-lock
 
 vtno=$(fgconsole)
 su - "$user" -c "export DISPLAY=':$vtno'
-                 export XAUTHORITY=~/.Xauthority
+                 export XAUTHORITY=~/.local/share/xorg/Xauthority
                  slock"

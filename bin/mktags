@@ -2,10 +2,25 @@
 
 set -eu
 
+cdup() {
+    case $PWD in / | ~) return 1 ;; esac
+    [[ \
+        -d .git ||
+        -d .idea ||
+        -d .svn ||
+        -d .vim \
+    ]] && return
+    cd ..
+    cdup
+}
+
 if [[ ${BASEDIR-} ]]; then
     cd "$BASEDIR"
+else
+    cdup
 fi
 
+touch tags
 ctags
 
 # vim: ft=sh

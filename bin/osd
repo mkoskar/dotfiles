@@ -10,7 +10,7 @@ fifo="$XDG_RUNTIME_DIR/osdd/$name$DISPLAY"
 if [[ $prgname = 'osdd' ]]; then
     [[ -e $fifo ]] && exit 3
 
-    mkdir -m 700 "${fifo%/*}"
+    mkdir -p -m 700 "${fifo%/*}"
     mkfifo -m 600 "$fifo"
 
     cleanup() {

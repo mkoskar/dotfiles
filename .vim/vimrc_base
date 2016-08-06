@@ -2,7 +2,6 @@
 
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 let vimdir = has('nvim') ? $HOME.'/.config/nvim' : $HOME.'/.vim'
-
 let $VIMDIR = get(g:, '$VIMDIR', vimdir)
 
 
@@ -21,7 +20,7 @@ let maplocalleader = ';'
 
 set ignorecase
 set incsearch
-set path=.,,**,
+set path=.,,**
 set smartcase
 set whichwrap=b,s,<,>,[,]
 
@@ -50,12 +49,8 @@ vnoremap K :m '<-2<CR>gv
 
 set tags-=./tags tags-=./tags; tags^=./tags;
 
-if exists('$BASEDIR')
-    call system('touch '.$BASEDIR.'/tags')
-    nnoremap <silent> <F12> :call system('mktags')
-        \ \| echohl WarningMsg \| echo 'mktags finished' \| echohl None<CR>
-endif
-
+nnoremap <silent> <F12> :call system('mktags')
+    \ \| call utils#EchoWarn('mktags finished')<CR>
 nnoremap <Leader>lt :ltag /
 
 
@@ -66,7 +61,7 @@ set display=lastline
 set list
 set listchars=eol:¬,tab:>-,trail:-,extends:>,precedes:<,nbsp:+
 set nowrap
-set scrolloff=5
+set scrolloff=2
 set sidescroll=15
 set sidescrolloff=15
 
@@ -92,11 +87,12 @@ nnoremap <silent> * :let @/ = "<C-R>=escape(escape(expand('<cword>'),
     \ '/\.*$^~["'), '''/\.*$^~["')<CR>" \| set hls<CR>
 
 nnoremap col :setl <C-R>=!empty(&cc) ? 'cc=' : 'cc<'<CR><CR>
+nnoremap cov :setl <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
 nnoremap cuc :setl <C-R>=&cuc ? 'nocuc' : 'cuc'<CR><CR>
 nnoremap cul :setl <C-R>=&cul ? 'nocul' : 'cul'<CR><CR>
 nnoremap <Leader>sp :setl <C-R>=&spell ? 'nospell' : 'spell'<CR><CR>
 
-command! Hitest call s:MetaLess('silent source $VIMRUNTIME/syntax/hitest.vim')
+command! -bar Hitest call s:MetaLess('silent runtime syntax/hitest.vim')
 
 if has('vim_starting')
     if &t_Co == 256
@@ -237,18 +233,18 @@ nnoremap <silent> <expr> gp '`['.getregtype()[0].'`]'
 " Select all
 noremap <silent> <Leader>aa <Esc>:keepjumps normal! ggVG<CR>
 
-function! s:Pipe2(cmd, bang) range abort
+function! Pipe2(cmd, bang) range abort
     if empty(a:bang)
         exec a:firstline.','.a:lastline.' yank '.v:register
     endif
     call system(a:cmd, getreg())
 endfunction
-command! -register -range -bang -nargs=1 Pipe2
-    \ Preserve silent <line1>,<line2> call s:Pipe2(<q-args>, <q-bang>)
-command! -register -range -bang Pipe2Primary
-    \ Preserve silent <line1>,<line2> call s:Pipe2('xclip -i', <q-bang>)
-command! -register -range -bang Pipe2Clipboard
-    \ Preserve silent <line1>,<line2> call s:Pipe2('xclip -i -selection clipboard', <q-bang>)
+command! -bar -register -range -bang -nargs=1 Pipe2
+    \ Preserve silent <line1>,<line2> call Pipe2(<q-args>, <q-bang>)
+command! -bar -register -range -bang Pipe2Primary
+    \ Preserve silent <line1>,<line2> call Pipe2('xclip -i', <q-bang>)
+command! -bar -register -range -bang Pipe2Clipboard
+    \ Preserve silent <line1>,<line2> call Pipe2('xclip -i -selection clipboard', <q-bang>)
 
 " Piping to Primary selection directly
 nnoremap <silent> <Leader>xxP :Pipe2Primary!<CR>
@@ -304,9 +300,9 @@ set tabstop=4
 " ----------------------------------------
 
 nnoremap <Leader>ff :setl fdm=manual \| normal! zM<CR>
-nnoremap <Leader>fi :setl fdm=indent \| normal! zM<CR>
-nnoremap <Leader>fs :setl fdm=syntax \| normal! zM<CR>
+nnoremap <Leader>fi :setl fdm=indent fdn=2 \| normal! zM<CR>
 nnoremap <Leader>fm :setl fdm=marker \| normal! zM<CR>
+nnoremap <Leader>fs :setl fdm=syntax \| normal! zM<CR>
 
 
 " Mapping
@@ -359,9 +355,12 @@ set shellredir=>%s\ 2>&1
 " Running 'make' and Jumping To Errors
 " ----------------------------------------
 
+set grepformat=%f:%l:%m
+set grepprg=grep\ -nH\ --exclude-dir='.svn'\ --exclude-dir='.git'\ --exclude='*.swp'\ --exclude='*~'\ $*
+
 set grepformat=%f:%l:%c:%m
 set grepprg=ag\ --vimgrep\ $*
-set grepprg=grep\ -nH\ --exclude-dir='.svn'\ --exclude-dir='.git'\ --exclude='*.swp'\ --exclude='*~'\ $*
+
 set shellpipe=2>&1\|\ tee
 
 nnoremap <F9> :make!<CR>
@@ -369,10 +368,10 @@ nnoremap <F9> :make!<CR>
 nnoremap <Leader>cl :copen<CR>
 nnoremap <Leader>ll :lopen<CR>
 
-nnoremap <silent> <Leader>j :try \| echo \| call TryCatch('lnext',
-    \ '^\(.*:E776:.*\)\@!') \| catch \| call TryCatch('cnext') \| endtry<CR>
-nnoremap <silent> <Leader>k :try \| echo \| call TryCatch('lNext',
-    \ '^\(.*:E776:.*\)\@!') \| catch \| call TryCatch('cNext') \| endtry<CR>
+nnoremap <silent> <Leader>j :try \| echo \| call utils#TryCatch('lnext',
+    \ '^\(.*:E776:.*\)\@!') \| catch \| call utils#TryCatch('cnext') \| endtry<CR>
+nnoremap <silent> <Leader>k :try \| echo \| call utils#TryCatch('lNext',
+    \ '^\(.*:E776:.*\)\@!') \| catch \| call utils#TryCatch('cNext') \| endtry<CR>
 
 nnoremap <Leader>J :cnext<CR>
 nnoremap <Leader>K :cNext<CR>
@@ -447,10 +446,10 @@ nnoremap <Leader>H :tab lhelpgrep<Space>
 
 " Edit / Reload 'vimrc'
 exec 'nnoremap <silent> <Leader>rc :vs '.fnameescape(vimrc).'<CR>'
-exec 'nnoremap <silent> <Leader>so :new \| source '.fnameescape(vimrc).' \| bw!'
-    \ '\| echohl WarningMsg \| echo "vimrc reloaded" \| echohl None<CR>'
+exec 'nnoremap <silent> <Leader>so :source '.fnameescape(vimrc)
+    \ '\| call utils#EchoWarn("vimrc reloaded")<CR>'
 
-" xxd
+" Hex dump
 vnoremap <silent> <Leader>xxd :!xxd<CR>
 nnoremap <silent> <Leader>xxd :%!xxd<CR>
 vnoremap <silent> <Leader>xxD :!xxd -r<CR>
@@ -470,48 +469,11 @@ nnoremap <silent> <Leader>ps :%!striplns<CR>
 vnoremap <silent> <Leader>pS :!squashlns<CR>
 nnoremap <silent> <Leader>pS :%!squashlns<CR>
 
-
 " ----------------------------------------
 
-" {{{ Utils
+" Formatting {{{
 
-" Echos given error message.
-function! EchoError(errmsg) abort
-    if empty(a:errmsg)
-        redraw
-        echohl ErrorMsg | echomsg a:errmsg | echohl None
-    endif
-endfunction
-
-" Echos most recently caught exception (removing Vim 'class').
-function! EchoException() abort
-    redraw
-    echohl ErrorMsg
-    echo substitute(v:exception, '^Vim(.*):', '', 'g')
-    echohl None
-endfunction
-
-" Echos last given error message.
-function! EchoLastError() abort
-    call EchoError(v:errmsg)
-endfunction
-
-" Performs exec of passed command in try/catch block catching matching errors.
-function! TryCatch(cmd, ...) abort
-    let pattern = get(a:, '1', '.*')
-    exec 'try | exec "'.escape(a:cmd, '"')
-        \ '" | catch /'.pattern.'/ | call EchoException() | endtry'
-endfunction
-
-function! BufSpecialSetup() abort
-    setl nonu nornu nowrap nolist nobl cc=0 fdc=0
-endfunction
-
-" }}}
-
-" {{{ Formatting
-
-function! s:Format(...) range abort
+function! Format(...) range abort
     let ft = get(a:, '1', &ft)
 
     "let filename = shellescape(expand('%'))
@@ -525,94 +487,26 @@ function! s:Format(...) range abort
     exec join([a:firstline.','.a:lastline, '!format', ft])
 endfunction
 
-command! -range -nargs=? Format Preserve silent <line1>,<line2> call s:Format(<f-args>)
+command! -bar -range -nargs=? Format Preserve silent <line1>,<line2> call Format(<f-args>)
 
 " }}}
 
-" {{{ Improve Quickfix
-
-function! s:QfOldest(prefix) abort
-    try | exec a:prefix.'older 999' | catch | endtry
-endfunction
-
-function! s:QfNewest(prefix) abort
-    try | exec a:prefix.'newer 999' | catch | endtry
-endfunction
-
-function! s:QfOlder(prefix) abort
-    try | exec a:prefix.'older' | catch | endtry
-endfunction
-
-function! s:QfNewer(prefix) abort
-    try | exec a:prefix.'newer' | catch | endtry
-endfunction
-
-function! s:QfSetup() abort
-    if exists('w:QfSetup') | return | endif
-    let w:QfSetup = 1
-    let b:locl = 1
-    try | lopen | catch /:E776:/ | let b:locl = 0 | endtry
-    unlet w:QfSetup
-    let b:prefix = b:locl ? 'l' : 'c'
-
-    call BufSpecialSetup()
-    setl nu nobl
-    wincmd J
-
-    noremap <buffer> - <Nop>
-    noremap <buffer> <F1> <Nop>
-    noremap <buffer> <F2> <Nop>
-    noremap <buffer> <F4> <Nop>
-    noremap <buffer> <F8> <Nop>
-    noremap <buffer> <Leader>tf <Nop>
-    noremap <buffer> <Leader>tt <Nop>
-    noremap <buffer> <Leader>bb <Nop>
-    noremap <buffer> <Leader>gg <Nop>
-    noremap <buffer> <Leader>G <Nop>
-
-    nmap <buffer> <silent> o <CR>
-    nnoremap <buffer> <silent> q :close<CR>
-    exec 'nnoremap <buffer> <silent> go :exec "normal! \<lt>cr>" \|
-        \ match IncSearch /\k*\%#\k*/ \| '.b:prefix.'open<CR>'
-    nnoremap <buffer> <silent> << :call QfOlder(b:prefix)<CR>
-    nnoremap <buffer> <silent> >> :call QfNewer(b:prefix)<CR>
-    nnoremap <buffer> <silent> <Leader>< :call QfOldest(b:prefix)<CR>
-    nnoremap <buffer> <silent> <Leader>> :call QfNewest(b:prefix)<CR>
-endfunction
-
-" }}}
-
-" {{{ Add single plugin using 'pathogen'
-
-function! s:Plugin(bang, name) abort
-    let path = fnamemodify((empty(a:bang) ? '~/.vim/bundle/' : '').a:name, ':p')
-    call pathogen#surround(path)
-endfunction
-
-command! -bang -nargs=1 Plugin call s:Plugin(<q-bang>, <args>)
-
-" }}}
-
-" {{{ Toggles diff mode of current buffer
+" Toggles diff mode of current buffer {{{
 
 function! s:DiffToggle() abort
-   if &diff
-        diffoff
-    else
-        diffthis
-    endif
+    exec &diff ? 'diffoff' : 'diffthis'
 endfunction
 
-command! DiffToggle call s:DiffToggle()
+command! -bar DiffToggle call s:DiffToggle()
 nnoremap <silent> <Leader>dd :DiffToggle<CR>
 
 " }}}
 
-" {{{ Starts diff of current buffer with another file
+" Starts diff of current buffer with another file {{{
 
 function! s:Diff2(file) abort
     if !filereadable(a:file)
-        call EchoError("Diff2: can't read ".a:file)
+        call utils#EchoError('Unable to read '.a:file)
         return
     endif
     let filetype = &ft
@@ -629,10 +523,10 @@ nnoremap <Leader>df :Diff2 <C-R>=expand('%')<CR>
 
 " }}}
 
-" {{{ Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding
+" Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding {{{
 
 function! s:MetaLess(cmd) abort
-    call TryCatch(a:cmd)
+    call utils#TryCatch(a:cmd)
 endfunction
 
 if !has('nvim')
@@ -662,22 +556,21 @@ function! s:MetaSetup(enable) abort
     endif
     let g:meta_enabled = a:enable
     if !has('vim_starting')
-        redraw
-        echohl WarningMsg | echo 'Meta '.(g:meta_enabled ? 'ON' : 'OFF') | echohl None
+        call utils#EchoWarn('meta '.(g:meta_enabled ? 'on' : 'off'))
     endif
 endfunction
 
 function! s:MetaLess(cmd) abort
     if g:meta_enabled
         silent call s:MetaSetup(0)
-        call TryCatch(a:cmd)
+        call utils#TryCatch(a:cmd)
         silent call s:MetaSetup(1)
     else
-        call TryCatch(a:cmd)
+        call utils#TryCatch(a:cmd)
     endif
 endfunction
 
-command! MetaToggle call s:MetaSetup(!meta_enabled)
+command! -bar MetaToggle call s:MetaSetup(!meta_enabled)
 nnoremap <silent> <Leader>mm :MetaToggle<CR>
 silent call s:MetaSetup(1)
 
@@ -685,19 +578,17 @@ endif
 
 " }}}
 
-" {{{ Preserve cursor / window position, last search pattern, and the others
+" Preserve cursor / window position, last search pattern, and the others {{{
 
 function! s:Preserve(cmd) abort
-    " save
     let last_search = @/
     let cursor_pos = getcurpos()
     normal! H
     let window_pos = getpos('.')
     call setpos('.', cursor_pos)
     try
-        call TryCatch('keepalt keepjumps keepmarks keeppatterns '.a:cmd)
+        call utils#TryCatch('keepalt keepjumps keepmarks keeppatterns '.a:cmd)
     finally
-        " restore
         call setpos('.', window_pos)
         normal! zt
         call setpos('.', cursor_pos)
@@ -713,9 +604,9 @@ nnoremap <silent> <Leader>gq :Preserve silent normal! gggqG<CR>
 
 " }}}
 
-" {{{ Closes current or last tab
+" Closes current or last tab {{{
 
-function! s:QuitTab(bang) abort
+function! QuitTab(bang) abort
     try
         exec 'tabclose'.a:bang
     catch /:E784:/
@@ -723,13 +614,13 @@ function! s:QuitTab(bang) abort
     endtry
 endfunction
 
-command! -bang QuitTab call TryCatch('silent call s:QuitTab(<q-bang>)')
+command! -bar -bang QuitTab call utils#TryCatch('silent call QuitTab(<q-bang>)')
 nnoremap <silent> QQ :QuitTab<CR>
 nnoremap <silent> QA :QuitTab!<CR>
 
 " }}}
 
-" {{{ Walks through list of colorschemes (q/C-C=quit, k=prev, default=next)
+" Walks through list of colorschemes (q/C-C=quit, k=prev, default=next) {{{
 
 function! s:Themes() abort
     let themes = ['luciusblack', 'hybrid', 'bclear']
@@ -760,7 +651,7 @@ nnoremap <silent> <Leader>th :Themes<CR>
 
 " }}}
 
-" {{{ Write with elevated privileges
+" Write with elevated privileges {{{
 
 function! s:Write(...) abort
     let filename = get(a:, '1', expand('%'))
@@ -772,7 +663,7 @@ command! -nargs=? W call s:Write(<f-args>)
 
 " }}}
 
-" {{{ Zoom / Restore window
+" Zoom / Restore window {{{
 
 function! s:ZoomToggle() abort
     if exists('t:zoomed') && t:zoomed
@@ -786,79 +677,60 @@ function! s:ZoomToggle() abort
     endif
 endfunction
 
-command! ZoomToggle call s:ZoomToggle()
-nnoremap <silent> <M-z> :ZoomToggle<CR>
+command! -bar ZoomToggle call s:ZoomToggle()
 nnoremap <silent> <M-m> :ZoomToggle<CR>
+nnoremap <silent> <M-z> :ZoomToggle<CR>
 
 " }}}
 
-" {{{ MoveToTab <http://vim.wikia.com/wiki/Move_current_window_between_tabs>
+" MoveToTab <http://vim.wikia.com/wiki/Move_current_window_between_tabs> {{{
 
-function! s:MoveToPrevTab() abort
+function! s:MoveToTab(next) abort
     if tabpagenr('$') == 1 && winnr('$') == 1
         return
     endif
     let tab_nr = tabpagenr('$')
     let cur_buf = bufnr('%')
-    if tabpagenr() != 1
+    if a:next ? tabpagenr() < tab_nr : tabpagenr() != 1
         close!
         if tab_nr == tabpagenr('$')
-            tabprev
+            exec a:next ? 'tabnext' : 'tabprev'
         endif
         vertical topleft split
     else
         close!
-        exe '0tabnew'
+        exec a:next ? 'tabnew' : '0tabnew'
     endif
-    exe 'b'.cur_buf
-endfunc
+    exec 'b'.cur_buf
+endfunction
 
-function! s:MoveToNextTab() abort
-    if tabpagenr('$') == 1 && winnr('$') == 1
-        return
-    endif
-    let tab_nr = tabpagenr('$')
-    let cur_buf = bufnr('%')
-    if tabpagenr() < tab_nr
-        close!
-        if tab_nr == tabpagenr('$')
-            tabnext
-        endif
-        vertical topleft split
-    else
-        close!
-        tabnew
-    endif
-    exe 'b'.cur_buf
-endfunc
-
-command! MoveToPrevTab call s:MoveToPrevTab()
-command! MoveToNextTab call s:MoveToNextTab()
+command! -bar MoveToNextTab call s:MoveToTab(1)
+command! -bar MoveToPrevTab call s:MoveToTab(0)
 nnoremap <silent> <M-H> :MoveToPrevTab<CR>
 nnoremap <silent> <M-L> :MoveToNextTab<CR>
 
 " }}}
 
-" {{{ Prev/NextClosedFold <https://stackoverflow.com/questions/9403098/is-it-possible-to-jump-to-closed-folds-in-vim>
+" Prev/NextClosedFold <https://stackoverflow.com/questions/9403098/is-it-possible-to-jump-to-closed-folds-in-vim> {{{
 
 function! s:MoveToClosedFold(next) abort
     let cmd = 'normal! z'.(a:next ? 'j' : 'k')
     let view = winsaveview()
-    let [l0, l, open] = [0, view.lnum, 1]
-    while l != l0 && open
+    let [lnum0, lnum, isopen] = [0, view.lnum, 1]
+    while lnum != lnum0 && isopen
         exec cmd
-        let [l0, l] = [l, line('.')]
-        let open = foldclosed(l) < 0
+        let [lnum0, lnum] = [lnum, line('.')]
+        let isopen = foldclosed(lnum) < 0
     endwhile
-    if open
+    if isopen
         call winrestview(view)
     endif
 endfunction
 
-command! PrevClosedFold call s:MoveToClosedFold(0)
-command! NextClosedFold call s:MoveToClosedFold(1)
-nnoremap <silent> <Leader>zk :PrevClosedFold<CR>
+command! -bar NextClosedFold call s:MoveToClosedFold(1)
+command! -bar PrevClosedFold call s:MoveToClosedFold(0)
 nnoremap <silent> <Leader>zj :NextClosedFold<CR>
+nnoremap <silent> <Leader>zk :PrevClosedFold<CR>
 
 " }}}
 
@@ -868,8 +740,6 @@ filetype plugin indent on
 if !exists('g:syntax_on')
     syntax enable
 endif
-
-runtime ftplugin/man.vim
 
 " just get rid of these
 let loaded_getscript = 1
@@ -881,20 +751,9 @@ let loaded_rrhelper = 1
 let loaded_vimball = 1
 let loaded_vimballPlugin = 1
 
-let netrw_alto = 1
-let netrw_altv = 1
-let netrw_banner = 0
-let netrw_bufsettings = 'nonu nornu nowrap nolist nobl cc=0 fdc=0 noma nomod ro'
-let netrw_fastbrowse = 1
-let netrw_list_cmd = 'ssh USEPORT HOSTNAME ls -Fa -I .'
-let netrw_liststyle = 0
-let netrw_preview = 1
-let netrw_silent = 1
-let netrw_special_syntax = 1
-
-Plugin 'ansiesc'
-Plugin 'colorschemes'
-Plugin 'enhanced-diff'
+call utils#PluginAdd('ansiesc')
+call utils#PluginAdd('colorschemes')
+call utils#PluginLoad('enhanced-diff') | PatienceDiff
 
 if has('gui_running')
     colorscheme bclear
@@ -904,15 +763,15 @@ augroup vimrc_base
     autocmd!
 
     autocmd BufEnter,BufWinEnter * match none | set titlestring=
-    autocmd BufWritePre * let &backupext = '_'.substitute(expand('%:p:h'), '/', '%', 'g')
-    autocmd CmdwinEnter * call BufSpecialSetup()
+    autocmd BufWritePre * let &backupext = substitute(expand('%:p:h'), '/', '%', 'g')
+    autocmd CmdwinEnter * call utils#BufSpecial()
 
     if !has('nvim')
         autocmd TermChanged * silent call s:MetaSetup(meta_enabled)
     endif
 
     if has('nvim')
-        autocmd TermOpen * call BufSpecialSetup()
+        autocmd TermOpen * call utils#BufSpecial()
     endif
 
     " tabpagecd <https://github.com/kana/vim-tabpagecd>
@@ -928,22 +787,14 @@ augroup vimrc_base
         \  if &ft == 'qf' && exists('w:quickfix_title')
         \|     let &titlestring = '%t '.w:quickfix_title
         \| endif
-    autocmd FileType qf call QfSetup()
     autocmd QuickFixCmdPost [^l]* cwindow
-
-    " netrw
-    autocmd FileType netrw
-        \  call BufSpecialSetup()
-        \| nmap <buffer> <silent> o <CR>
-        \| keepjumps normal! gg
 
     autocmd BufWritePost ~/.Xresources !xrdb -load ~/.Xresources
 
     autocmd FileType mail setl tw=72
-    autocmd FileType make setl ts=4 sts=0 sw=4 noexpandtab
-    autocmd FileType man call BufSpecialSetup() | setl noma ts=8
-    autocmd FileType tar call BufSpecialSetup()
-    autocmd FileType zip call BufSpecialSetup()
-    autocmd FileType {c,cpp}{,.*} let &l:path = '/usr/include'
-
+    autocmd FileType make setl ts=4 sts=0 sw=4 noet
+    autocmd FileType man call utils#BufSpecial() | setl noma ts=8 | unmap <buffer> q
+    autocmd FileType tar call utils#BufSpecial()
+    autocmd FileType zip call utils#BufSpecial()
+    autocmd FileType {c,cpp}{,.*} let &l:path = '.,,**,/usr/include'
 augroup END

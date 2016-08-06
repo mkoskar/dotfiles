@@ -16,4 +16,4 @@ cleanup() {
 trap cleanup EXIT
 
 src=${1:-$(xclip -o | head -c 255)}
-mpv --force-window "$src" || livestreamer --loglevel=error
+mpv --force-window -- "$src" || livestreamer --loglevel=error -- "$src"

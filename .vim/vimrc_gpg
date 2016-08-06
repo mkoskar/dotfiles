@@ -1,6 +1,7 @@
 " vim: ft=vim fdm=marker
 
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
+
 source ~/.vim/vimrc_base
 
 set nobackup
@@ -11,7 +12,7 @@ set viminfo=
 
 " ----------------------------------------
 
-Plugin 'gnupg'
+call utils#PluginAdd('gnupg')
 
 let GPGDefaultRecipients = ['CDC91131']
 let GPGUsePipes = 1

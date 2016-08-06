@@ -12,7 +12,4 @@ if [[ $prgname = 'e0' ]]; then
     set -- -u ~/.vim/vimrc_base "$@"
 fi
 
-VIMBIN=${VIMBIN:-vim}
-type -P "$VIMBIN" &>/dev/null || VIMBIN='vim'
-
-exec "$VIMBIN" -O "$@"
+exec "${VIMBIN:-vim}" -O "$@"

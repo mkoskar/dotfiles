@@ -150,6 +150,7 @@ myConfig = defaultConfig
                        , appName =? "s_tmp" -?> doShift "2"
                        , appName =? "s_wrk" -?> doShift "1"
                        , appName =? "skype" -?> doShiftView "9"
+                       , appName =? "skypeforlinux" -?> doShiftView "9"
                        , appName =? "smplayer" -?> doShiftView "9"
                        , appName =? "spacefm" -?> doShiftView "5"
                        , appName =? "sxiv" -?> doShiftView "9"
@@ -377,7 +378,6 @@ myConfig = defaultConfig
         , ("<XF86AudioPrev>", spawn "playctl prev")
         , ("<XF86AudioStop>", spawn "playctl stop")
         , ("<XF86Display>", spawn "xscreen && xmonad --restart")
-        , ("<XF86Launch1>", spawn myTerminal)
         , ("<XF86WebCam>", spawn "selfie")
         ]
 

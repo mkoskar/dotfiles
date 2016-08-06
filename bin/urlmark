@@ -73,19 +73,19 @@ try:
     soup = BeautifulSoup(resp, 'lxml')
 
     output(
-        meta_by_property(soup, 'og:url') or \
-        link_by_rel(soup, 'canonical') or \
+        meta_by_property(soup, 'og:url') or
+        link_by_rel(soup, 'canonical') or
         url
     )
 
     _title = sanitize(
-        meta_by_property(soup, 'og:title') or \
+        meta_by_property(soup, 'og:title') or
         (soup.title and soup.title.string)
     )
     output(_title)
 
     _desc = sanitize(
-        meta_by_property(soup, 'og:description') or \
+        meta_by_property(soup, 'og:description') or
         meta_by_name(soup, 'description')
     )
     if args.no_strip or _desc != _title:

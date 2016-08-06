@@ -8,7 +8,6 @@ if [[ -d $target ]]; then
     cd "$target"
     [[ -L .gtkrc-2.0 ]] || ln -s ~/.gtkrc-2.0
     [[ -L .icons ]] || ln -s ~/.icons
-    [[ -L .vimperatorrc ]] || ln -s ~/.vimperatorrc
     [[ -L Downloads ]] || ln -s ~/download Downloads
 fi
 

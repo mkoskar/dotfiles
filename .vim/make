@@ -9,7 +9,7 @@ from_git() {
     if cd "$name" &>/dev/null; then
         git update
     else
-        git clone "$@" "$name"
+        git clone --recursive --single-branch "$@" "$name"
     fi
 }
 export -f from_git
@@ -20,40 +20,51 @@ mkdir -p .backup .swap .undo bundle
 
 cd bundle
 
-parallel --colsep '\s+' from_git '{1}' '{2}' <<-EOF
-	ansiesc             https://github.com/jakar/vim-AnsiEsc.git
-	bufexplorer         https://github.com/vim-scripts/bufexplorer.zip.git
-	colorschemes        https://github.com/flazz/vim-colorschemes.git
-	ctrlp               https://github.com/ctrlpvim/ctrlp.vim.git
-	dirvish             https://github.com/justinmk/vim-dirvish.git
-	dispatch            https://github.com/tpope/vim-dispatch.git
-	easy-align          https://github.com/junegunn/vim-easy-align.git
-	easymotion          https://github.com/Lokaltog/vim-easymotion.git
-	easytags            https://github.com/xolox/vim-easytags.git
-	emmet               https://github.com/mattn/emmet-vim.git
-	enhanced-diff       https://github.com/chrisbra/vim-diff-enhanced.git
-	exchange            https://github.com/tommcdo/vim-exchange.git
-	filebeagle          https://github.com/jeetsukumaran/vim-filebeagle.git
-	fugitive            https://github.com/tpope/vim-fugitive
-	fzf                 https://github.com/junegunn/fzf.vim.git
-	gnupg               https://github.com/jamessan/vim-gnupg.git
-	minibufexpl         https://github.com/vim-scripts/minibufexpl.vim.git
-	misc                https://github.com/xolox/vim-misc.git
-	multiple-cursors    https://github.com/terryma/vim-multiple-cursors.git
-	neomake             https://github.com/benekastah/neomake.git
-	nerdtree            https://github.com/scrooloose/nerdtree.git
-	pathogen            https://github.com/tpope/vim-pathogen.git
-	repeat              https://github.com/tpope/vim-repeat.git
-	sneak               https://github.com/justinmk/vim-sneak.git
-	speeddating         https://github.com/tpope/vim-speeddating.git
-	surround            https://github.com/tpope/vim-surround.git
-	syntastic           https://github.com/scrooloose/syntastic.git
-	tagbar              https://github.com/majutsushi/tagbar.git
-	tcomment            https://github.com/tomtom/tcomment_vim.git
-	undotree            https://github.com/mbbill/undotree
-	unimpaired          https://github.com/tpope/vim-unimpaired.git
-	unite               https://github.com/Shougo/unite.vim.git
-	visualrepeat        https://github.com/vim-scripts/visualrepeat.git
+parallel --colsep '\t+' from_git <<-EOF
+	ansiesc				https://github.com/jakar/vim-AnsiEsc.git
+	bufexplorer			https://github.com/vim-scripts/bufexplorer.zip.git
+	colorschemes		https://github.com/flazz/vim-colorschemes.git
+	ctrlp				https://github.com/ctrlpvim/ctrlp.vim.git
+	dirvish				https://github.com/justinmk/vim-dirvish.git
+	dispatch			https://github.com/tpope/vim-dispatch.git
+	easy-align			https://github.com/junegunn/vim-easy-align.git
+	easymotion			https://github.com/Lokaltog/vim-easymotion.git
+	easytags			https://github.com/xolox/vim-easytags.git
+	emmet				https://github.com/mattn/emmet-vim.git
+	enhanced-diff		https://github.com/chrisbra/vim-diff-enhanced.git
+	exchange			https://github.com/tommcdo/vim-exchange.git
+	filebeagle			https://github.com/jeetsukumaran/vim-filebeagle.git
+	fugitive			https://github.com/tpope/vim-fugitive
+	fzf					https://github.com/junegunn/fzf.vim.git
+	gnupg				https://github.com/jamessan/vim-gnupg.git
+	minibufexpl			https://github.com/vim-scripts/minibufexpl.vim.git
+	misc				https://github.com/xolox/vim-misc.git
+	multiple-cursors	https://github.com/terryma/vim-multiple-cursors.git
+	neomake				https://github.com/benekastah/neomake.git
+	nerdtree			https://github.com/scrooloose/nerdtree.git
+	pathogen			https://github.com/tpope/vim-pathogen.git
+	repeat				https://github.com/tpope/vim-repeat.git
+	simpylfold			https://github.com/tmhedberg/SimpylFold
+	sneak				https://github.com/justinmk/vim-sneak.git
+	speeddating			https://github.com/tpope/vim-speeddating.git
+	surround			https://github.com/tpope/vim-surround.git
+	syntastic			https://github.com/scrooloose/syntastic.git
+	tagbar				https://github.com/majutsushi/tagbar.git
+	tcomment			https://github.com/tomtom/tcomment_vim.git
+	undotree			https://github.com/mbbill/undotree
+	unimpaired			https://github.com/tpope/vim-unimpaired.git
+	unite				https://github.com/Shougo/unite.vim.git
+	visualrepeat		https://github.com/vim-scripts/visualrepeat.git
+	ycm					https://github.com/Valloric/YouCompleteMe
 EOF
+
+echo
+cd ycm
+
+./install.py \
+    --clang-completer \
+    --gocode-completer \
+    --racer-completer \
+    --tern-completer
 
 echo

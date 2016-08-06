@@ -27,6 +27,7 @@
     ui = auto
 
 [commit]
+    gpgsign = true
     template = ~/.gitmessage
 
 [core]

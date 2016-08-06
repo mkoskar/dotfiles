@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+    vt-activate
+    ~~~~~~~~~~~
+
+    Makes VT active (doesn't wait for it unlike 'chvt').
+
+    :Compatibility: 2.7 / 3.2
+    :Copyright: (c) 2013 Miroslav Koskar <http://mkoskar.com/>
+    :License: BSD 2-Clause
+"""
+
+import argparse
+import fcntl
+
+VT_ACTIVATE = 0x5606
+
+parser = argparse.ArgumentParser(
+    description="Makes VT active (doesn't wait for it unlike 'chvt')."
+)
+parser.add_argument('vtno', type=int, help='VT number')
+args = parser.parse_args()
+
+try:
+    console = open('/dev/console', 'w')
+    fcntl.ioctl(console, VT_ACTIVATE, args.vtno)
+    console.close()
+except Exception as e:
+    print(e)
+    exit(1)

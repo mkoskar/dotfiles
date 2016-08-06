@@ -2,5 +2,4 @@
 
 set -eu
 
-VIMBIN=${VIMBIN:-vim}
-exec "$VIMBIN" -O -u ~/.vim/vimrc_gpg "$@"
+exec "${VIMBIN:-vim}" -O -u ~/.vim/vimrc_gpg "$@"

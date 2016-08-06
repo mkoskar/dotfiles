@@ -44,11 +44,11 @@ try:
     i2 = form.find('input', attrs={'name': 'form_id'})
 
     resp = s.post(base_url, data={
-        'email' : email,
-        'password' : passwd,
-        'op' : 'Login',
-        i1['name'] : i1['value'],
-        i2['name'] : i2['value'],
+        'email': email,
+        'password': passwd,
+        'op': 'Login',
+        i1['name']: i1['value'],
+        i2['name']: i2['value'],
     })
     if not resp.ok:
         raise Exception('POST {} ({})'.format(base_url, resp.status_code))

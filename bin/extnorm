@@ -14,7 +14,6 @@
 from os import path
 import argparse
 import os
-import unicodedata as ud
 
 parser = argparse.ArgumentParser(
     description='Normalizes filename extensions by making them lowercase.'
@@ -41,4 +40,4 @@ for root, dirs, files in os.walk('.'):
                 os.rename(src_path, dst_path)
 
     if not args.recursive:
-        break;
+        break

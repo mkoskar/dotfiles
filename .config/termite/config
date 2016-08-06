@@ -7,9 +7,11 @@ mouse_autohide = false
 scrollback_lines = 8192
 
 [colors]
+background = #000000
+cursor = #dddddd
+cursor_foreground = #9d2d2d
 foreground = #aeaeae
 foreground_bold = #dddddd
-background = #000000
 
 color0 = #050505
 color1 = #9d2d2d
@@ -29,9 +31,9 @@ color14 = #68bbbb
 color15 = #dddddd
 
 [hints]
-font = monospace bold 8
-foreground = #dddddd
 background = #4d4d4d
 border_width = 0
-roundness = 4
+font = monospace bold 8
+foreground = #dddddd
 padding = 2
+roundness = 4

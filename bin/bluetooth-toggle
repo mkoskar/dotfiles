@@ -9,19 +9,6 @@ case $state in
         ;;
     0)
         rfkill unblock bluetooth
-        sleep 1
-
-#        dbus-send --system --type=method_call --dest=org.bluez \
-#            /org/bluez/hci0 \
-#            org.freedesktop.DBus.Properties.Set \
-#            string:org.bluez.Adapter1 string:Powered variant:boolean:true
-#
-#        dbus-send --system --type=method_call --dest=org.bluez \
-#            /org/bluez/hci0 \
-#            org.freedesktop.DBus.Properties.Set \
-#            string:org.bluez.Adapter1 string:Pairable variant:boolean:false
-
-        bluetoothctl <<<$'power on\npairable off' >/dev/null
         ;;
 esac
 

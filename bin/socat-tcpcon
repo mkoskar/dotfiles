@@ -9,4 +9,4 @@ if (( ! $# )); then
     exit 2
 fi
 
-socat readline,history=/dev/null "TCP-CONNECT:$1:${2:-80}"
+socat readline,history=/dev/null "TCP:$1:${2:-80}"

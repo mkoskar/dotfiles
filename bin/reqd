@@ -12,7 +12,6 @@
 """
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from io import StringIO
 import sys
 
 

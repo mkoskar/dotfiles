@@ -221,7 +221,7 @@ set sidebar_folderindent
 set sidebar_format = '%B%?F? [%F]?%* %?N?%N?%C'
 set sidebar_shortpath
 set sidebar_visible
-set sidebar_width = 20
+set sidebar_width = 25
 bind index <space> sidebar-open
 macro index,pager \eN <sidebar-next> 'sidebar-next'
 macro index,pager \eP <sidebar-prev> 'sidebar-prev'

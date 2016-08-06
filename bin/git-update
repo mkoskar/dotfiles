@@ -3,6 +3,8 @@
 set -eu
 
 git fetch --all
+git submodule update --recursive
+
 if [[ $(git rev-parse --abbrev-ref HEAD) = 'local' ]]; then
     echo '> _local_ branch - not merging!'
 else

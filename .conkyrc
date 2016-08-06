@@ -1,15 +1,23 @@
-# vim: ft=conf fdm=marker
+# vim: ft=lua fdm=marker
 
-# Settings {{{
-out_to_console no
-out_to_ncurses yes
-short_units yes
-top_cpu_separate yes
-top_name_width 10
-update_interval 1.5
-# }}}
+conky.config = {
+    background = false,
+    cpu_avg_samples = 2,
+    net_avg_samples = 2,
+    no_buffers = true,
+    out_to_console = false,
+    out_to_ncurses = true,
+    out_to_stderr = false,
+    out_to_x = false,
+    short_units = true,
+    top_cpu_separate = true,
+    top_name_width = 10,
+    update_interval = 1.5,
+    uppercase = false,
+    use_spacer = 'none',
+};
 
-TEXT
+conky.text = [[
 
  $sysname $nodename $kernel $machine
 
@@ -117,3 +125,4 @@ ${if_match ${platform thinkpad_hwmon fan 1} > 0}${color yellow}${endif}\
 ${color white}
  temp core: ${hwmon 2 temp 1} ${hwmon 2 temp 2} ${hwmon 2 temp 3}
 # temp core: ${hwmon 2 temp 1} ${hwmon 2 temp 2} ${hwmon 2 temp 3} | sda: ${hddtemp /dev/sda}
+]];

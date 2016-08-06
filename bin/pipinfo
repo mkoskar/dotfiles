@@ -4,15 +4,15 @@ set -eu
 
 check() {
     echo $'\n--------------------------------------------------'
-    printf '%s\n' "$*"
-    printf '%s\n' "$("$1" --version)"
+    printf '> %s\n' "$*"
+    printf '> %s\n\n' "$("$1" --version)"
     "$@"
 }
 
 if [[ ${VIRTUAL_ENV-} ]]; then
     check pip list
+else
+    check /usr/bin/pip list --user
+    check /usr/bin/pip2 list --user
 fi
-
-check /usr/bin/pip list --user
-check /usr/bin/pip2 list --user
 echo

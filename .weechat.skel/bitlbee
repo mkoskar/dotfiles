@@ -4,9 +4,14 @@ account gtalk set {{{
 ----------------------------------------
 
 activity_timeout = `600'
+anonymous = `false'
 auto_connect = `true'
 auto_reconnect = `true'
 away is empty
+carbons = `true'
+display_name is empty
+mail_notifications = `false'
+mail_notifications_handle is empty
 nick_format = `%full_name_g'
 nick_source = `handle'
 oauth = `on'
@@ -76,12 +81,12 @@ nick_source = `handle'
 oauth = `true'
 password = `********' (hidden)
 show_ids = `true'
-show_old_mentions = `20'
+show_old_mentions = `0'
 stream = `true'
 strip_newlines = `false'
 tag = `twitter'
-target_url_length = `22'
-username = `<username>'
+target_url_length = `23'
+username = `mkoskar'
 
 }}}
 

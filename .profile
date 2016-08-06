@@ -44,7 +44,6 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.xrender=true
 export ASPROOT="$HOME/.cache/asp"
 export BROWSER='b'
 export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
-export DISPLAY=':1'
 export EDITOR='e'
 export FZF_DEFAULT_OPTS='--no-mouse --bind=alt-k:page-up,alt-j:page-down'
 export FZF_TMUX=0

@@ -13,7 +13,8 @@ sigwinch_reentry_ts = 0
 
 
 def usage_err():
-    print('usage: onsigwinch-exec handler [arg]... -- child [arg]...', file=sys.stderr)
+    print('usage: onsigwinch-exec handler [arg]... -- child [arg]...',
+          file=sys.stderr)
     sys.exit(2)
 
 

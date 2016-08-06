@@ -10,8 +10,7 @@ fi
 
 (( $# )) || set -- .
 
-VIMBIN=${VIMBIN:-vim}
-case $VIMBIN in
+case ${VIMBIN:-vim} in
     vim)
         exec vim --servername "$VIMSERVER" \
             --remote-tab-silent "$@"
