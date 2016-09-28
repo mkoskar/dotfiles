@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+# https://www.howsmyssl.com/a/check
+
+curl -sL 'https://www.howsmyssl.com/a/check' | jshon -QC

@@ -1,7 +1,7 @@
 # vim: ft=cfg
 
 [global]
-    font = Monospace 8
+    font = monospace 8
 
     # Allow a small subset of html markup in notifications and formats:
     #   <b>bold</b>

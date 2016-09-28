@@ -118,7 +118,7 @@ while true; do
     if [[ $output ]]; then
         bashx -c "$(shell-escape "$@")" "$redir" "$output" 2>&1
     else
-        bashx -c "$(shell-escape "$@")" |& sed "s/\$/$ti_el/"
+        bashx -c "$(shell-escape "$@")" |& sed -r "s/\$/$ti_el/"
     fi
 
     t_end=$(date +%s.%N)

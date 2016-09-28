@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -e
+
+[[ -t 1 ]] || exec 2>/dev/null
+
+slop -f '%g\n' --opengl --magnify

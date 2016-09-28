@@ -22,9 +22,9 @@ setup() {
     mkdir -p {bin,conf,lib,logs,temp,webapps}
 
     cat >bin/setenv.sh <<-EOF
-	CATALINA_OPTS='-Xms512M -Xmx1024M -Djava.awt.headless=true'
-	CATALINA_OPTS="\$CATALINA_OPTS -Dcom.sun.management.jmxremote.port=10815 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
-	export CATALINA_OPTS
+		CATALINA_OPTS='-Xms512M -Xmx1024M -Djava.awt.headless=true'
+		CATALINA_OPTS="\$CATALINA_OPTS -Dcom.sun.management.jmxremote.port=10815 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+		export CATALINA_OPTS
 	EOF
 
     cd ./conf

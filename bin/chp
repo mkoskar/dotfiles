@@ -6,13 +6,24 @@ shopt -s nullglob
 prgname=${0##*/}
 
 _usage() {
-    echo "usage: $prgname [profile [arg]...]"
+    echo "usage: $prgname [-p profile] [arg]..."
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-while getopts 'h' opt; do
+profile=
+
+case $prgname in
+    ch|ch0)
+        profile='default'
+        ;;
+esac
+
+while getopts 'p:h' opt; do
     case $opt in
+        p)
+            profile=$OPTARG
+            ;;
         h)
             usage
             ;;
@@ -25,27 +36,19 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-profile=
-regexp='^(?!proxy-socks$)(?!proxy-tor$).*$'
-
-if (( $# )); then
-    profile=$1
-    shift
-fi
-
 if [[ ! $profile ]]; then
     profiles=(
         devel
         lab
         plain
-        proxy
     )
     for p in ~/.config/google-chrome.*; do
         profiles+=("${p#*google-chrome.}")
     done
+    filter='^(?!proxy-socks$)(?!proxy-tor$)(?!skel$).*$'
     profile=$(
         (set +u; IFS=$'\n'; printf '%s' "${profiles[*]}") |
-        sort -u | grep -P "$regexp" |
+        sort -u | grep -P "$filter" |
         dmenu1 "$prgname"
     )
 fi
@@ -53,6 +56,76 @@ fi
 [[ ! $profile ]] && exit 1
 
 path="$HOME/.config/google-chrome"
+path_skel="$path.skel"
+
 [[ $profile = 'default' ]] || path+=".$profile"
 
-exec ch0 --user-data-dir="$path" "$@"
+if [[ ! -e $path && $profile != 'skel' ]]; then
+    [[ -d $path_skel ]] && cp -a "$path_skel" "$path"
+
+    if [[ $profile != 'default' ]]; then
+        mkdir -p "$path/theme"
+        cd "$path/theme"
+
+        case $profile in
+            devel)          frame_color='[0, 153, 255]' ;;
+            lab)            frame_color='[255, 34, 0]'  ;;
+            plain)          frame_color='[38, 191, 48]' ;;
+            proxy-socks)    frame_color='[0, 119, 119]' ;;
+            proxy-tor)      frame_color='[50, 50, 50]'  ;;
+            *)              frame_color='[255, 153, 0]' ;;
+        esac
+
+        cat >manifest.json <<-EOF
+		{
+		    "manifest_version": 2,
+		    "name": "theme",
+		    "version": "0.1",
+		    "theme": {
+		        "colors": {
+		            "frame": $frame_color,
+		            "frame_inactive": $frame_color,
+		            "frame_incognito": $frame_color,
+		            "frame_incognito_inactive": $frame_color
+		        },
+		        "images": {
+		            "theme_frame_overlay": "frame.png",
+		            "theme_frame_overlay_inactive": "frame.png",
+		            "theme_ntp_background": "frame.png"
+		        },
+		        "properties": {
+		            "ntp_background_alignment": "top left",
+		            "ntp_logo_alternate": 0
+		        }
+		    }
+		}
+		EOF
+        pango-view -q --font='monospace 8' \
+            --background=transparent --foreground=black --margin='1 2' \
+            -t "$profile" -o frame.png
+        set -- --load-extension="$path/theme" "$@"
+    fi
+fi
+
+if [[ $prgname = 'ch' ]]; then
+    set -- --proxy-server='127.0.0.1:8118' "$@"
+fi
+
+if [[ ${CH_DEBUG-} ]]; then
+    set -- \
+        --debug-plugin-loading \
+        --enable-extension-activity-logging \
+        --enable-logging=stderr \
+        --v=1 \
+        "$@"
+fi
+
+exec google-chrome-stable \
+    --enable-devtools-experiments \
+    --enable-gpu-rasterization \
+    --enable-tab-audio-muting \
+    --force-device-scale-factor=1 \
+    --ignore-gpu-blacklist \
+    --show-component-extension-options \
+    --user-data-dir="$path" \
+    "$@"

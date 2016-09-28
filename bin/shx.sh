@@ -303,14 +303,6 @@ lsof-pid() {
     command lsof -p "${1:-$PID}"
 }
 
-lspci() {
-    pgx command lspci -vv -nn "$@"
-}
-
-lsusb() {
-    pgx command lsusb -v "$@"
-}
-
 mpv() {
     command mpv "$@" 2>/dev/null
 }
@@ -383,13 +375,13 @@ stacktrace() {
     [ "$retstat" -gt 0 ] && ti_header=$ti_hi2
     echo "$ti_header> Traceback ($retstat):$ti_reset"
     shopt -q extdebug || echo '> WARN: extdebug not set!'
-    for ((i=1, argvo=0; i<${#FUNCNAME[@]}; i++, argvo+=argc)); do
+    for (( i=1, argvo=0; i<${#FUNCNAME[@]}; i++, argvo+=argc )); do
         argc=${BASH_ARGC[$i]}
         printf "$ti_hi3%s:%d$ti_reset $ti_hi0%s$ti_reset" \
             "${BASH_SOURCE[$((i+1))]}" \
             "${BASH_LINENO[$i]}" \
             "${FUNCNAME[$i]}"
-        for ((j=argc-1; j>=0; j--)); do
+        for (( j=argc-1; j>=0; j-- )); do
             printf ' %q' "${BASH_ARGV[$((argvo+j))]}"
         done
         echo
@@ -419,7 +411,7 @@ v() {
 
 xrandr() {
     if [ $# -eq 0 ] && [ -t 1 ]; then
-        pgx command xrandr --properties --verbose
+        pgx command xrandr --verbose
     else
         command xrandr "$@"
     fi

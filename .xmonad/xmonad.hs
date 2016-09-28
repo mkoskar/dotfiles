@@ -328,7 +328,6 @@ myConfig = defaultConfig
 
           -- Screenshots
         , ("M-<Print>", spawn "sshot")
-        , ("M-S-<Print>", spawn "sshot -s")
 
           -- Audio
         , ("M-S-]", spawn "audio playback_up")
@@ -353,8 +352,7 @@ myConfig = defaultConfig
         , ("M-<F10>", spawn "xscreen && xmonad --restart")
         , ("M-S-<F10>", spawn "xscreen-mobile && xmonad --restart")
 
-        , ("M-<F12>", spawn "grabc 2>&1 | clipi")
-        , ("M-S-<F12>", spawn "xmeasure | clipi")
+        , ("M-<F12>", spawn "measure | clipi")
 
         , ("M-; M-b", spawn "bluetooth-toggle")
         , ("M-; M-d", spawn "dpms-toggle")

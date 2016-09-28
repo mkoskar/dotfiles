@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 
-(( $# )) && opts=(-p "$1" -a)
-exec lsof -nP "${opts[@]}" -itcp -o -iudp
+set -eu
+
+(( $# )) && set -- -p "$1" -a
+
+exec lsof -nP "$@" -itcp -o -iudp

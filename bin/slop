@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+exec /usr/bin/slop -b 2 -c 1,0,0 --gracetime=1.5 "$@"

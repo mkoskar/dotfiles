@@ -1,6 +1,6 @@
 # Video
 double=yes
-vo=vaapi
+vo=vdpau
 
 # Audio
 softvol-max=1000

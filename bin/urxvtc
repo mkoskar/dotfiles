@@ -10,9 +10,7 @@ declare -i retstat=0
 if (( retstat == 2 )); then
 
     (exec 8>"$RXVT_SOCKET.lock"
-    if ! flock -w 30 8; then
-        exit 3
-    fi
+    flock -w 30 8 || exit 3
     (exec 8<&-
 
     retstat=0

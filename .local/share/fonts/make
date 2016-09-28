@@ -2,7 +2,7 @@
 
 set -eu
 
-odir="$HOME/.local/share/fonts"
+export fdir="$HOME/.local/share/fonts"
 
 tmpdir=$(mktemp -d)
 cleanup() { rm -rf "$tmpdir"; }
@@ -11,18 +11,21 @@ trap cleanup EXIT
 cd "$tmpdir"
 
 from_zip() {
-    local fname
-    fname=$(curl -sLfJO -w '%{filename_effective}' "$1")
-    unzip -qq "$fname" -d out
-    find out -iregex '.*\.\(ttf\|otf\)' -exec mv {} "$odir" \;
-    rm -rf out
+    local furl=$1 fname odir
+    fname=$(curl -sLfJO -w '%{filename_effective}' "$furl")
+    odir=$(md5sum <<<"$fname" | awk '{print $1}')
+    unzip -qq "$fname" -d "$odir"
+    find "$odir" -iregex '.*\.\(ttf\|otf\)' -exec mv {} "$fdir" \;
 }
+export -f from_zip
 
-from_zip http://www.fontsquirrel.com/fonts/download/Anonymous
-from_zip http://www.fontsquirrel.com/fonts/download/BPmono
-from_zip http://www.fontsquirrel.com/fonts/download/MonospaceTypewriter
-from_zip http://www.fontsquirrel.com/fonts/download/cuprum
-from_zip http://www.fontsquirrel.com/fonts/download/jura1
-from_zip http://www.fontsquirrel.com/fonts/download/lekton
-from_zip http://www.fontsquirrel.com/fonts/download/oxygen-mono
-from_zip http://www.fontsquirrel.com/fonts/download/pt-mono
+parallel from_zip <<-EOF
+	http://www.fontsquirrel.com/fonts/download/Anonymous
+	http://www.fontsquirrel.com/fonts/download/BPmono
+	http://www.fontsquirrel.com/fonts/download/MonospaceTypewriter
+	http://www.fontsquirrel.com/fonts/download/cuprum
+	http://www.fontsquirrel.com/fonts/download/jura1
+	http://www.fontsquirrel.com/fonts/download/lekton
+	http://www.fontsquirrel.com/fonts/download/oxygen-mono
+	http://www.fontsquirrel.com/fonts/download/pt-mono
+EOF

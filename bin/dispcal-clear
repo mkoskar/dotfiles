@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
-xprop -root -remove _ICC_PROFILE
-xprop -root -remove _ICC_PROFILE_1
-xprop -root -remove _ICC_PROFILE_2
-
-dispwin -d1 -c
-dispwin -d2 -c
-dispwin -d3 -c
+readarray -t dall < <(dispwin -h |& LC_ALL=C grep -F Output | sed -r 's/^\s*//')
+for (( i=0; i<${#dall[@]}; i++ )); do
+    (( i > 0 )) && atom=_ICC_PROFILE_$i || atom=_ICC_PROFILE
+    xprop -root -remove "$atom"
+    dispwin -d$((i+1)) -c
+done

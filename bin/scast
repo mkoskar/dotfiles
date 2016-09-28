@@ -1,21 +1,30 @@
 #!/usr/bin/env bash
-#
-# -w            select a window by mouse click
-# -s            select a rectangular region by mouse
-# -x <n|list>   select the Xinerama head of ID n
-# -i            combine regions by intersection
 
 set -eu -o pipefail
 
-(( ! $# )) && set -- -w
+prgname=${0##*/}
+
+lockfile="$XDG_RUNTIME_DIR/scast$DISPLAY.lock"
+
+if [[ $prgname = 'scast-off' ]]; then
+    lsof -t -a -c ffmpeg "$lockfile" | xargs -r kill
+    exit
+fi
 
 cd ~/tmp
 
-echo 'Press [q] to stop, [?] for help'
-ffcast -q "$@" rec
+outfile="screencast-$(date +%F.%s).mkv"
 
-last=$(find -maxdepth 1 -type f -name 'screencast-*' -print0 | sort -zr | sed -zn '1p')
-if [[ $last ]]; then
-    echo "> $last"
-    mpv --loop=inf "$last"
+(exec 8>"$lockfile"
+if ! flock -n 8; then
+    notify "___ $prgname ON ___"
+    exit 3
 fi
+
+read -r X Y W H < <(slop -f '%x %y %w %h\n')
+ffmpeg -loglevel quiet \
+    -f x11grab -s "${W}x${H}" -i "$DISPLAY+$X,$Y" \
+    "$outfile"
+) || true
+
+[[ -e $outfile ]] && mpv --loop=inf "$outfile" 2>/dev/null

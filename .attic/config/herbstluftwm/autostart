@@ -78,7 +78,7 @@ hc keybind $Mod-e focus_monitor -r
 hc keybind $Mod-Shift-w shift_to_monitor -l
 hc keybind $Mod-Shift-e shift_to_monitor -r
 
-hc keybind $Mod-d use_index +1 --skip-visible # misssing --skip-empty
+hc keybind $Mod-d use_index +1 --skip-visible # missing --skip-empty
 hc keybind $Mod-s use_index -1 --skip-visible # missing --skip-empty
 
 hc keybind $Mod-u focus_monitor 0
@@ -94,29 +94,10 @@ hc keybind $Mod-a use_previous
 hc keybind $Mod-p spawn dmenu_run
 hc keybind $Mod-Shift-Return spawn term
 
-# Screenshots
-hc keybind $Mod-Print spawn sshot
-hc keybind $Mod-Shift-Print spawn sshot -s
-
-# Audio
-hc keybind $Mod-Shift-bracketright spawn audio playback_up
-hc keybind $Mod-Shift-bracketleft spawn audio playback_down
-hc keybind $Mod-Shift-m spawn audio playback_toggle
-hc keybind $Mod-Shift-n spawn audio playback_dock_toggle
-hc keybind $Mod-Shift-r spawn audio capture_toggle
-
-# XKB
-hc keybind $Mod-F1 spawn xkb us
-hc keybind $Mod-F2 spawn xkb sk
-hc keybind $Mod-F3 spawn xkb cz
-
 # Other
 hc keybind $Mod-F9 spawn bash -c 'xscreen0 && herbstclient reload'
 hc keybind $Mod-F10 spawn bash -c 'xscreen && herbstclient reload'
 hc keybind $Mod-Shift-F10 spawn bash -c 'xscreen-mobile && herbstclient reload'
-hc keybind $Mod-F12 spawn bash -c 'grabc 2>&1 | clipi'
-hc keybind $Mod-Shift-F12 spawn bash -c 'xmeasure | clipi'
-hc keybind $Mod-Shift-b spawn backlight-toggle
 
 
 # Mouse

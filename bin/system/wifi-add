@@ -32,5 +32,5 @@ shift $((OPTIND-1))
 # ----------------------------------------
 
 psk=$(wpa_passphrase "$1" |
-    sed -n '/^network={/,${/^\s*#/d;s/\t/    /g;p}') &&
+    sed -nr '/^network={/,${/^\s*#/d;s/\t/    /g;p}') &&
     printf '\n%s\n' "$psk" >>/etc/wpa_supplicant/wpa_supplicant.conf

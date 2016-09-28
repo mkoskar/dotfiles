@@ -58,7 +58,7 @@ for rapl in "$base/"*; do
         "$_energy" "$_max_energy_range" \
         "$_power" "$_max_power_range"
 
-    for ((i=0; i<10; i++)); do
+    for (( i=0; i<10; i++ )); do
         _base="$rapl/constraint_$i"
 
         get_ "$_base" name

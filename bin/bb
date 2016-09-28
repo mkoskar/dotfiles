@@ -12,225 +12,244 @@ while read -r k v; do
     [[ $k ]] && map["$k"]=$v
 done <<-EOF
 
-    0               b https://mkoskar.com/
-    angularjs       b https://docs.angularjs.org/api
-    ant             b file:///usr/share/doc/apache-ant/index.html
-    apache          b http://httpd.apache.org/docs/
-    arch            b https://www.archlinux.org/
-    arch-bugs       b https://bugs.archlinux.org/
-    arch-forums     b https://bbs.archlinux.org/search.php?action=show_new
-    arch-lists      sr google site:lists.archlinux.org {}
-    arch-wiki       sr archwiki {}
-    arxiv           sr arxiv {}
-    ascii           b https://en.wikipedia.org/wiki/ASCII#ASCII_printable_code_chart
-    aur             sr aur {}
-    awk             b https://www.gnu.org/software/gawk/manual/gawk.html
-    awk1            b http://awk.freeshell.org/
-    basedir         b http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
-    bash-abs        b file:///usr/share/doc/bash/index.html
-    bash-changes    b http://mywiki.wooledge.org/BashFAQ/061
-    bash-faq        b http://mywiki.wooledge.org/BashFAQ
-    bash-guide      b http://mywiki.wooledge.org/FullBashGuide
-    bash-guide1     b http://guide.bash.academy/index.html
-    bash-hackers    b http://wiki.bash-hackers.org/start
-    bash-pitfalls   b http://mywiki.wooledge.org/BashPitfalls
-    bash-sheet      b http://mywiki.wooledge.org/BashSheet
-    calib           b http://www.xrite.com/online-color-test-challenge
-    calib1          b http://www.lagom.nl/lcd-test/gamma_calibration.php
-    charref         b http://dev.w3.org/html5/html-author/charref
-    cite            sr cite {}
-    ctrlseqs        b http://invisible-island.net/xterm/ctlseqs/ctlseqs.html
-    ctrlseqs1       b http://rtfm.etla.org/xterm/ctlseq.html
-    d               sr webster {}
-    dbus            b http://dbus.freedesktop.org/doc/dbus-specification.html
-    dd              sr duckduckgo {}
-    dd-bang         b https://duckduckgo.com/bang_lite.html
-    dd-syntax       b https://duck.co/help/results/syntax
-    deb             sr debpackages {}
-    docker          b https://docs.docker.com/reference/builder/
-    filenames       b http://www.dwheeler.com/essays/filenames-in-shell.html
-    flp             b http://www.feynmanlectures.caltech.edu/
-    foldoc          sr foldoc {}
-    freedesktop     b http://standards.freedesktop.org/
-    g               sr google {}
-    g-operators     b https://support.google.com/websearch/answer/2466433?hl=en&ref_topic=3081620&vid=1-635793825968278780-302114999
-    gc              sr gcache {}
-    gg              sr google -G {}
-    gh              sr github {}
-    gh-repos        b https://github.com/mkoskar?tab=repositories
-    gi              sr google -i {}
-    gimp            b file:///usr/share/gimp/2.0/help/en/index.html
-    gmail-nolabel   b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:chats+-in:inbox+-in:sent+-in:draft+-in:trash/n100
-    gmail-search    b https://support.google.com/mail/answer/7190
-    gnome-api       b https://developer.gnome.org/references
-    go              b https://golang.org/ref/spec
-    google-devs     b https://developers.google.com/
-    google-products b https://developers.google.com/products/
-    gpg-search      b https://sks-keyservers.net/i/#extract
-    gradle          b file:///usr/share/java/gradle/docs/userguide/userguide.html
-    gradle-dsl      b file:///usr/share/java/gradle/docs/dsl/index.html
-    graphviz        b file:///usr/share/graphviz/doc
-    groovy          b file:///usr/share/doc/groovy-2.4.3/html/documentation/index.html
-    groovy-api      b file:///usr/share/doc/groovy-2.4.3/html/api/overview-summary.html
-    groovy-gapi     b file:///usr/share/doc/groovy-2.4.3/html/gapi/overview-summary.html
-    grub            b https://www.gnu.org/software/grub/manual/grub.html
-    gtk-running     b https://developer.gnome.org/gtk3/stable/gtk-running.html
-    guava           b http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/index.html
-    hangouts        b https://hangouts.google.com/
-    haskell         b file:///usr/share/doc/ghc/html/libraries/index.html
-    hibernate-orm   b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
-    hn              b https://news.ycombinator.com/
-    html            b https://html.spec.whatwg.org/multipage/
-    http            b http://tools.ietf.org/html/rfc2616
-    i               sr ixquick {}
-    ii              sr ixquick -search=pics {}
-    imdb            sr imdb {}
-    imperial        b https://en.wikipedia.org/wiki/Imperial_units
-    iojs            b https://iojs.org/api/
-    irc-docs        b https://github.com/grawity/irc-docs
-    irc-specs       b http://ircv3.net/irc/
-    java            b file:///usr/share/doc/java/technotes/tools/unix/java.html
-    java-apis       b http://www.oracle.com/technetwork/java/api-141528.html
-    java-changes    b file:///usr/share/doc/java/technotes/guides/language/enhancements.html
-    java-specs      b https://docs.oracle.com/javase/specs/index.html
-    java-tutorials  b https://docs.oracle.com/javase/tutorial/reallybigindex.html
-    javase          b http://www.oracle.com/technetwork/java/javase/overview/index.html
-    jdk             b file:///usr/share/doc/java/index.html
-    jdk-api         b file:///usr/share/doc/java/api/overview-summary.html
-    jdk-relnotes    b http://www.oracle.com/technetwork/java/javase/jdk-relnotes-index-2162236.html
-    jdk-tools       b file:///usr/share/doc/java/technotes/tools/index.html
-    jdk7            b http://docs.oracle.com/javase/7/docs/index.html
-    jdk7-api        b http://docs.oracle.com/javase/7/docs/api/overview-summary.html
-    jee             b http://www.oracle.com/technetwork/java/javaee/overview/index.html
-    jee-specs       b http://www.oracle.com/technetwork/java/javaee/tech/index.html
-    jee7-api        b file://$HOME/opt/java_ee_sdk-7u1/docs/api/overview-summary.html
-    jee7-samples    b file://$HOME/opt/java_ee_sdk-7u1/samples/docs/list.html
-    jee7-tutorial   b file://$HOME/opt/java_ee_sdk-7u1/docs/javaee-tutorial/doc/index.html
-    jquery          sr jquery {}
-    js              b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
-    js-ecma         b http://www.ecma-international.org/ecma-262/6.0/
-    js-ecma-compat  b https://kangax.github.io/compat-table/es6/
-    jsr             b file://$HOME/archive/lib/00-cs/java/08-jsr/
-    jsr-all         b https://jcp.org/en/jsr/all?sortBy=date
-    latin-greek     b https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English
-    latin-phrases   b https://en.wikipedia.org/wiki/List_of_Latin_phrases
-    linux-docs      b file:///lib/modules/$kernel_release/build/Documentation/00-INDEX
-    linux-howtos    b file:///usr/share/linux-howtos/INDEX
-    linux-params    b file:///lib/modules/$kernel_release/build/Documentation/kernel-parameters.txt
-    linux-specs     b http://refspecs.linuxfoundation.org/
-    linux-src       b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/?id=$kernel_version
-    lists           b http://gmane.org/find.php
-    material-design b https://getmdl.io/
-    maven           b http://maven.apache.org/plugins/index.html
-    maven-central   b https://search.maven.org/
-    maven-jcenter   b https://bintray.com/bintray/jcenter
-    maven-popular   b http://mvnrepository.com/popular
-    mdn             sr mdn {}
-    mime            b https://www.iana.org/assignments/media-types/media-types.xhtml
-    mongodb         b http://docs.mongodb.org/manual/reference/
-    morse-nato      b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
-    music           sr musicbrainz {}
-    mutt            b file:///usr/share/doc/mutt/manual.html
-    mutt-patterns   b file:///usr/share/doc/mutt/manual.html#patterns
-    mutt-regexp     b file:///usr/share/doc/mutt/manual.html#regexp
-    nasatv          playx https://www.youtube.com/watch?v=HDh4uK9PvJU
-    nasatv-edu      playx https://www.youtube.com/watch?v=nhORZ6Ep_jE
-    nasatv-media    playx https://www.youtube.com/watch?v=OX9I1KyNa8M
-    netfilter       b http://www.netfilter.org/documentation/index.html
-    netfilter-flow  b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
-    nodejs          b https://nodejs.org/api/
-    notes           b file://$HOME/projects/notes/_build/html/index.html
-    ntrs            sr ntrs {}
-    oracle-plsql    b https://docs.oracle.com/database/121/LNPLS/toc.htm
-    oracle-sql      b https://docs.oracle.com/database/121/SQLRF/toc.htm
-    pep             b https://www.python.org/dev/peps/
-    perf            b http://www.brendangregg.com/perf.html
-    perl            b http://perldoc.perl.org/
-    pkg             sr archpkg {}
-    playlist        playlist {}
-    playlist-1      playlist 1
-    posix           b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/index.html
-    posix-defs      b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/contents.html
-    posix-env       b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap08.html
-    posix-ifaces    b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/functions/contents.html
-    posix-utils     b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/utilities/contents.html
-    postgresql      b file:///usr/share/doc/postgresql/html/index.html
-    privoxy         b file:///usr/share/doc/privoxy/user-manual/index.html
-    pygments        b http://pygments.org/docs/lexers/
-    pypa            b https://www.pypa.io/
-    pypi            b https://pypi.python.org/pypi
-    python          b file:///usr/share/doc/python/html/index.html
-    python2         b file:///usr/share/doc/python2/html/index.html
-    qt              b http://doc.qt.io/
-    qutebrowser     b http://qutebrowser.org/img/cheatsheet-big.png
-    regexp-gnu      b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html
-    regexp-java     b file:///usr/share/doc/java/api/java/util/regex/Pattern.html
-    regexp-js       b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
-    regexp-pcre     b file:///usr/share/doc/pcre/html/pcresyntax.html
-    regexp-posix    b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap09.html
-    regexp-python   b file:///usr/share/doc/python/html/library/re.html
-    rfc             b https://www.rfc-editor.org/
-    rst             b http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
-    rst-demo        b file://$HOME/projects/lab/docutils/showcase/_build/html/index.html
-    rust            b http://doc.rust-lang.org/reference.html
-    rust-api        b http://doc.rust-lang.org/std/
-    scala           b http://www.scala-lang.org/api/current/
-    sed             b https://www.gnu.org/software/sed/manual/sed.html
-    shakespeare     b http://shakespeare.mit.edu/
-    spock           b http://docs.spockframework.org/
-    spring          b http://docs.spring.io/spring/docs/current/spring-framework-reference/html/
-    spring-api      b http://docs.spring.io/spring/docs/current/javadoc-api/overview-summary.html
-    spring-platform b http://docs.spring.io/platform/docs/current/reference/htmlsingle/#appendix
-    sql-bnf         b file://$HOME/archive/lib/00-cs/dbms/sql-bnf/index.html
-    sqlite          b file:///usr/share/doc/sqlite/docs.html
-    sqlite-lang     b file:///usr/share/doc/sqlite/lang.html
-    sysrq           b file:///lib/modules/$kernel_release/build/Documentation/sysrq.txt
-    systemd-changes b https://github.com/systemd/systemd/blob/master/NEWS
-    tlds            b https://data.iana.org/TLD/tlds-alpha-by-domain.txt
-    tor-specs       b https://gitweb.torproject.org/torspec.git/tree/
-    tr              sr translate {}
-    tweets          b https://tweetdeck.twitter.com/
-    types-eth       b file:///etc/ethertypes
-    types-ip        b file:///etc/protocols
-    types-ports     b file:///etc/services
-    ud              sr urban {}
-    uefi-specs      b http://uefi.org/specifications
-    unicode         b https://en.wikipedia.org/wiki/Plane_(Unicode)
-    unicode-charts  b http://unicode.org/charts/
-    unicode-convert b https://r12a.github.io/apps/conversion/
-    unicode-emoji   b http://www.unicode.org/emoji/charts/full-emoji-list.html
-    unicode-fonts   b http://www.unicode.org/resources/fonts.html
-    unicode-fonts1  b http://www.wazu.jp/
-    unix-history    b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
-    util-linux      b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
-    w               sr wikipedia {}
-    weechat         b file:///usr/share/doc/weechat/weechat_user.en.html
-    weechat-api     b file:///usr/share/doc/weechat/weechat_plugin_api.en.html
-    weechat-changes b https://github.com/weechat/weechat/blob/master/ChangeLog.asciidoc
-    yt              sr youtube {}
+    0                   b https://mkoskar.com/
+    ImageMagick         b file:///usr/share/doc/ImageMagick-6/www/command-line-tools.html
+    ImageMagick-scripts b http://www.fmwconcepts.com/imagemagick/
+    angularjs           b https://docs.angularjs.org/api
+    ant                 b file:///usr/share/doc/apache-ant/index.html
+    apache              b http://httpd.apache.org/docs/
+    arch                b https://www.archlinux.org/
+    arch-bugs           b https://bugs.archlinux.org/
+    arch-forums         b https://bbs.archlinux.org/search.php?action=show_new
+    arch-lists          sr google site:lists.archlinux.org {}
+    arch-wiki           sr archwiki {}
+    arxiv               sr arxiv {}
+    ascii               b https://en.wikipedia.org/wiki/ASCII#ASCII_printable_code_chart
+    aur                 sr aur {}
+    awg                 b https://en.wikipedia.org/wiki/American_wire_gauge#Tables_of_AWG_wire_sizes
+    awk                 b https://www.gnu.org/software/gawk/manual/gawk.html
+    awk1                b http://awk.freeshell.org/
+    basedir             b http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+    bash-abs            b file:///usr/share/doc/bash/index.html
+    bash-changes        b http://mywiki.wooledge.org/BashFAQ/061
+    bash-faq            b http://mywiki.wooledge.org/BashFAQ
+    bash-guide          b http://mywiki.wooledge.org/FullBashGuide
+    bash-guide1         b http://guide.bash.academy/index.html
+    bash-hackers        b http://wiki.bash-hackers.org/start
+    bash-pitfalls       b http://mywiki.wooledge.org/BashPitfalls
+    bash-sheet          b http://mywiki.wooledge.org/BashSheet
+    calib               b http://www.xrite.com/online-color-test-challenge
+    calib1              b http://www.lagom.nl/lcd-test/gamma_calibration.php
+    charref             b http://dev.w3.org/html5/html-author/charref
+    chrome-ext          b https://developer.chrome.com/extensions/devguide
+    chrome-flags        b http://peter.sh/experiments/chromium-command-line-switches/
+    chrome-manifest-app b https://developer.chrome.com/apps/manifest
+    chrome-manifest-ext b https://developer.chrome.com/extensions/manifest
+    chrome-searchcode   b https://cs.chromium.org/
+    chrome-theming      b https://cs.chromium.org/chromium/src/chrome/browser/themes/browser_theme_pack.cc
+    cite                sr cite {}
+    ctrlseqs            b http://invisible-island.net/xterm/ctlseqs/ctlseqs.html
+    ctrlseqs1           b http://rtfm.etla.org/xterm/ctlseq.html
+    d                   sr webster {}
+    dbus                b http://dbus.freedesktop.org/doc/dbus-specification.html
+    dd                  sr duckduckgo {}
+    dd-bang             b https://duckduckgo.com/bang_lite.html
+    dd-syntax           b https://duck.co/help/results/syntax
+    deb                 sr debpackages {}
+    docker              b https://github.com/wsargent/docker-cheat-sheet
+    docker-compose      b https://docs.docker.com/compose/compose-file/
+    docker-flow         b https://docs.docker.com/engine/reference/api/images/event_state.png
+    dockerfile          b https://docs.docker.com/reference/builder/
+    emoji               b https://en.wikipedia.org/wiki/List_of_emoticons
+    filenames           b http://www.dwheeler.com/essays/filenames-in-shell.html
+    flp                 b http://www.feynmanlectures.caltech.edu/
+    foldoc              sr foldoc {}
+    freedesktop         b http://standards.freedesktop.org/
+    freetype            b file:///usr/share/doc/freetype2/documentation.html
+    g                   sr google {}
+    g-operators         b https://support.google.com/websearch/answer/2466433?hl=en&ref_topic=3081620&vid=1-635793825968278780-302114999
+    gc                  sr gcache {}
+    gg                  sr google -G {}
+    gh                  sr github {}
+    gh-repos            b https://github.com/mkoskar?tab=repositories
+    gi                  sr google -i {}
+    gimp                b file:///usr/share/gimp/2.0/help/en/index.html
+    gmail-nolabel       b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:chats+-in:inbox+-in:sent+-in:draft+-in:trash/n100
+    gmail-search        b https://support.google.com/mail/answer/7190
+    gnome-api           b https://developer.gnome.org/references
+    go                  b https://golang.org/ref/spec
+    google-devs         b https://developers.google.com/
+    google-products     b https://developers.google.com/products/
+    gpg-search          b https://sks-keyservers.net/i/#extract
+    gradle              b file:///usr/share/java/gradle/docs/userguide/userguide.html
+    gradle-dsl          b file:///usr/share/java/gradle/docs/dsl/index.html
+    graphviz            b file:///usr/share/graphviz/doc
+    groovy              b file:///usr/share/doc/groovy-2.4.3/html/documentation/index.html
+    groovy-api          b file:///usr/share/doc/groovy-2.4.3/html/api/overview-summary.html
+    groovy-gapi         b file:///usr/share/doc/groovy-2.4.3/html/gapi/overview-summary.html
+    grub                b https://www.gnu.org/software/grub/manual/grub.html
+    gtk-running         b https://developer.gnome.org/gtk3/stable/gtk-running.html
+    guava               b http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/index.html
+    hangouts            b https://hangouts.google.com/
+    haskell             b file:///usr/share/doc/ghc/html/libraries/index.html
+    hibernate-orm       b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
+    hn                  b https://news.ycombinator.com/
+    html                b https://html.spec.whatwg.org/multipage/
+    http                b http://tools.ietf.org/html/rfc2616
+    i                   sr ixquick {}
+    ii                  sr ixquick -search=pics {}
+    imdb                sr imdb {}
+    imperial            b https://en.wikipedia.org/wiki/Imperial_units
+    iojs                b https://iojs.org/api/
+    irc-docs            b https://github.com/grawity/irc-docs
+    irc-specs           b http://ircv3.net/irc/
+    java                b file:///usr/share/doc/java/technotes/tools/unix/java.html
+    java-apis           b http://www.oracle.com/technetwork/java/api-141528.html
+    java-changes        b file:///usr/share/doc/java/technotes/guides/language/enhancements.html
+    java-specs          b https://docs.oracle.com/javase/specs/index.html
+    java-tutorials      b https://docs.oracle.com/javase/tutorial/reallybigindex.html
+    javase              b http://www.oracle.com/technetwork/java/javase/overview/index.html
+    jdk                 b file:///usr/share/doc/java/index.html
+    jdk-api             b file:///usr/share/doc/java/api/overview-summary.html
+    jdk-relnotes        b http://www.oracle.com/technetwork/java/javase/jdk-relnotes-index-2162236.html
+    jdk-tools           b file:///usr/share/doc/java/technotes/tools/index.html
+    jdk7                b http://docs.oracle.com/javase/7/docs/index.html
+    jdk7-api            b http://docs.oracle.com/javase/7/docs/api/overview-summary.html
+    jee                 b http://www.oracle.com/technetwork/java/javaee/overview/index.html
+    jee-specs           b http://www.oracle.com/technetwork/java/javaee/tech/index.html
+    jee7-api            b file://$HOME/opt/java_ee_sdk-7u1/docs/api/overview-summary.html
+    jee7-samples        b file://$HOME/opt/java_ee_sdk-7u1/samples/docs/list.html
+    jee7-tutorial       b file://$HOME/opt/java_ee_sdk-7u1/docs/javaee-tutorial/doc/index.html
+    jquery              sr jquery {}
+    js                  b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
+    js-ecma             b http://www.ecma-international.org/ecma-262/6.0/
+    js-ecma-compat      b https://kangax.github.io/compat-table/es6/
+    jsr                 b file://$HOME/archive/lib/00-cs/java/08-jsr/
+    jsr-all             b https://jcp.org/en/jsr/all?sortBy=date
+    latin-greek         b https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English
+    latin-phrases       b https://en.wikipedia.org/wiki/List_of_Latin_phrases
+    linux-docs          b file:///lib/modules/$kernel_release/build/Documentation/00-INDEX
+    linux-howtos        b file:///usr/share/linux-howtos/INDEX
+    linux-params        b file:///lib/modules/$kernel_release/build/Documentation/kernel-parameters.txt
+    linux-specs         b http://refspecs.linuxfoundation.org/
+    linux-src           b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/?id=$kernel_version
+    lists               b http://gmane.org/find.php
+    material-design     b https://getmdl.io/
+    maven               b http://maven.apache.org/plugins/index.html
+    maven-central       b https://search.maven.org/
+    maven-jcenter       b https://bintray.com/bintray/jcenter
+    maven-popular       b http://mvnrepository.com/popular
+    mdn                 sr mdn {}
+    mime                b https://www.iana.org/assignments/media-types/media-types.xhtml
+    mongodb             b http://docs.mongodb.org/manual/reference/
+    morse-nato          b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
+    music               sr musicbrainz {}
+    mutt                b file:///usr/share/doc/mutt/manual.html
+    mutt-patterns       b file:///usr/share/doc/mutt/manual.html#patterns
+    mutt-regexp         b file:///usr/share/doc/mutt/manual.html#regexp
+    nasatv              playx https://www.youtube.com/watch?v=HDh4uK9PvJU
+    nasatv-edu          playx https://www.youtube.com/watch?v=nhORZ6Ep_jE
+    nasatv-media        playx https://www.youtube.com/watch?v=OX9I1KyNa8M
+    netfilter           b http://www.netfilter.org/documentation/index.html
+    netfilter-flow      b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
+    nodejs              b https://nodejs.org/api/
+    notes               b file://$HOME/projects/notes/_build/html/index.html
+    ntrs                sr ntrs {}
+    oracle-plsql        b https://docs.oracle.com/database/121/LNPLS/toc.htm
+    oracle-sql          b https://docs.oracle.com/database/121/SQLRF/toc.htm
+    patents             b https://patents.google.com/
+    pep                 b https://www.python.org/dev/peps/
+    perf                b http://www.brendangregg.com/perf.html
+    perl                b http://perldoc.perl.org/
+    pkg                 sr archpkg {}
+    playlist            playlist {}
+    playlist-1          playlist 1
+    posix               b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/index.html
+    posix-defs          b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/contents.html
+    posix-env           b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap08.html
+    posix-ifaces        b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/functions/contents.html
+    posix-utils         b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/utilities/contents.html
+    postgresql          b file:///usr/share/doc/postgresql/html/index.html
+    privoxy             b file:///usr/share/doc/privoxy/user-manual/index.html
+    pygments            b http://pygments.org/docs/lexers/
+    pypa                b https://www.pypa.io/
+    pypi                b https://pypi.python.org/pypi
+    python              b file:///usr/share/doc/python/html/index.html
+    python2             b file:///usr/share/doc/python2/html/index.html
+    qt                  b http://doc.qt.io/
+    qutebrowser         b http://qutebrowser.org/img/cheatsheet-big.png
+    regexp-gnu          b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html
+    regexp-java         b file:///usr/share/doc/java/api/java/util/regex/Pattern.html
+    regexp-js           b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+    regexp-pcre         b file:///usr/share/doc/pcre/html/pcresyntax.html
+    regexp-posix        b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap09.html
+    regexp-python       b file:///usr/share/doc/python/html/library/re.html
+    rfc                 b https://www.rfc-editor.org/
+    rst                 b http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
+    rst-demo            b file://$HOME/projects/lab/docutils/showcase/_build/html/index.html
+    rust                b http://doc.rust-lang.org/reference.html
+    rust-api            b http://doc.rust-lang.org/std/
+    scala               b http://www.scala-lang.org/api/current/
+    sed                 b https://www.gnu.org/software/sed/manual/sed.html
+    shakespeare         b http://shakespeare.mit.edu/
+    spock               b http://docs.spockframework.org/
+    spring              b http://docs.spring.io/spring/docs/current/spring-framework-reference/html/
+    spring-api          b http://docs.spring.io/spring/docs/current/javadoc-api/overview-summary.html
+    spring-platform     b http://docs.spring.io/platform/docs/current/reference/htmlsingle/#appendix
+    sql-bnf             b file://$HOME/archive/lib/00-cs/dbms/sql-bnf/index.html
+    sqlite              b file:///usr/share/doc/sqlite/docs.html
+    sqlite-lang         b file:///usr/share/doc/sqlite/lang.html
+    sysrq               b file:///lib/modules/$kernel_release/build/Documentation/sysrq.txt
+    systemd-changes     b https://github.com/systemd/systemd/blob/master/NEWS
+    tex                 b https://ctan.org/
+    tlds                b https://data.iana.org/TLD/tlds-alpha-by-domain.txt
+    tor-specs           b https://gitweb.torproject.org/torspec.git/tree/
+    tr                  sr translate -from=en -to=sk {}
+    tr-de               sr translate -from=de -to=sk {}
+    tweets              b https://tweetdeck.twitter.com/
+    types-eth           b file:///etc/ethertypes
+    types-ip            b file:///etc/protocols
+    types-ports         b file:///etc/services
+    ud                  sr urban {}
+    uefi-specs          b http://uefi.org/specifications
+    unicode             b https://en.wikipedia.org/wiki/Plane_(Unicode)
+    unicode-charts      b http://unicode.org/charts/
+    unicode-convert     b https://r12a.github.io/apps/conversion/
+    unicode-emoji       b http://www.unicode.org/emoji/charts/full-emoji-list.html
+    unicode-fonts       b http://www.unicode.org/resources/fonts.html
+    unicode-fonts1      b http://www.wazu.jp/
+    unix-history        b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
+    usb-connectors      b https://en.wikipedia.org/wiki/USB#Host_and_device_interface_receptacles
+    util-linux          b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
+    w                   sr wikipedia {}
+    weechat             b file:///usr/share/doc/weechat/weechat_user.en.html
+    weechat-api         b file:///usr/share/doc/weechat/weechat_plugin_api.en.html
+    weechat-changes     b https://github.com/weechat/weechat/blob/master/ChangeLog.asciidoc
+    yaml                b http://yaml.org/refcard.html
+    yt                  sr youtube {}
 
-    fahrenheit      sr google {} fahrenheit in celsius
-    foot            sr google {} ft in m
-    gallon          sr google {} gal in l
-    inch            sr google {} in in cm
-    mile            sr google {} mi in km
-    ounce           sr google {} oz in g
-    pint            sr google {} pint in l
-    pound           sr google {} lb in kg
-    yard            sr google {} yd in m
+    fahrenheit          sr google {} fahrenheit in celsius
+    foot                sr google {} ft in m
+    gallon              sr google {} gal in l
+    inch                sr google {} in in cm
+    mile                sr google {} mi in km
+    ounce               sr google {} oz in g
+    pint                sr google {} pint in l
+    pound               sr google {} lb in kg
+    yard                sr google {} yd in m
 
-    czk-eur         sr google {} czk in eur
-    czk-gbp         sr google {} czk in gbp
-    czk-usd         sr google {} czk in usd
-    eur-czk         sr google {} eur in czk
-    eur-gbp         sr google {} eur in gbp
-    eur-usd         sr google {} eur in usd
-    gbp-czk         sr google {} gbp in czk
-    gbp-eur         sr google {} gbp in eur
-    gbp-usd         sr google {} gbp in usd
-    usd-czk         sr google {} usd in czk
-    usd-eur         sr google {} usd in eur
-    usd-gbp         sr google {} usd in gbp
+    czk-eur             sr google {} czk in eur
+    czk-gbp             sr google {} czk in gbp
+    czk-usd             sr google {} czk in usd
+    eur-czk             sr google {} eur in czk
+    eur-gbp             sr google {} eur in gbp
+    eur-usd             sr google {} eur in usd
+    gbp-czk             sr google {} gbp in czk
+    gbp-eur             sr google {} gbp in eur
+    gbp-usd             sr google {} gbp in usd
+    usd-czk             sr google {} usd in czk
+    usd-eur             sr google {} usd in eur
+    usd-gbp             sr google {} usd in gbp
 
 EOF
 

@@ -85,7 +85,6 @@ if ! flock -n 8; then
     log "$target: full-backup in progress"
     exit 3
 fi
-(exec 8<&-
 
 t_begin=$(date +%s)
 
@@ -118,5 +117,3 @@ log "total time: $(((t_end-t_begin)/60)) minutes, $(((t_end-t_begin)%60)) second
 
 echo 'setting standby' >&2
 hdparm -S 12 "$disk" &>/dev/null
-
-)

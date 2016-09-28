@@ -1,20 +1,32 @@
 # vim: ft=lua fdm=marker
 
 conky.config = {
+    alignment = 'top_right',
     background = false,
     cpu_avg_samples = 2,
+    double_buffer = true,
+    font = 'local_terminal_sized',
+    gap_y = 30,
+    max_text_width = 0,
+    maximum_width = 350,
+    minimum_width = 350,
     net_avg_samples = 2,
     no_buffers = true,
     out_to_console = false,
     out_to_ncurses = true,
     out_to_stderr = false,
     out_to_x = false,
+    own_window = true,
+    own_window_argb_visual = true,
+    own_window_transparent = true,
+    own_window_type = 'override',
     short_units = true,
     top_cpu_separate = true,
     top_name_width = 10,
     update_interval = 1.5,
     uppercase = false,
     use_spacer = 'none',
+    use_xft = true,
 };
 
 conky.text = [[

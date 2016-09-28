@@ -84,7 +84,7 @@ unset SESSION_MANAGER
 # ----------------------------------------
 
 if [[ $prgname = 'xx' ]]; then
-    for ((dispno=91; 1; dispno++)); do
+    for (( dispno=91; 1; dispno++ )); do
         [[ -e /tmp/.X$dispno-lock ]] || break
     done
 

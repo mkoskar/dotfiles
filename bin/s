@@ -81,7 +81,7 @@ _aux() {
 _mon() {
     cd ~
 
-    new -n top 'trun onsigwinch-exec tmux selectl -- conky' \
+    new -n top 'trun onsigwinch-exec tmux selectl -- conky -q' \
         \; setw remain-on-exit on \
         \; splitw -h 'trun htop' \
         \; setw main-pane-width 43 \
@@ -144,7 +144,7 @@ shift $((OPTIND-1))
 
 if [[ ${TMUX-} ]]; then
     IFS=, read -ra var <<<"$TMUX"
-    if [[ $socket == "${var[0]##*/}" ]]; then
+    if [[ $socket = "${var[0]##*/}" ]]; then
         echo "$prgname: cannot operate from within session of the same target socket" >&2
         exit 1
     fi
@@ -157,9 +157,7 @@ if [[ ! $session ]]; then
 fi
 
 (exec 8>"$XDG_RUNTIME_DIR/s.lock"
-if ! flock -w 30 8; then
-    exit 3
-fi
+flock -w 30 8 || exit 3
 (exec 8<&-
 
 if ! exists; then

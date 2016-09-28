@@ -6,31 +6,33 @@ ti_reset=$(tput sgr0)
 
 cat <<-EOF
 
-${ti_reset}normal
-$(tput bold)bold${ti_reset}
-$(tput smso)standout${ti_reset}
-$(tput smul)underline${ti_reset}
-$(tput sitm)italics${ti_reset}
-$(tput blink)blink${ti_reset}
-$(tput rev)reverse${ti_reset}
+	${ti_reset}normal
+	$(tput bold)bold${ti_reset}
+	$(tput smso)standout${ti_reset}
+	$(tput smul)underline${ti_reset}
+	$(tput sitm)italics${ti_reset}
+	$(tput blink)blink${ti_reset}
+	$(tput rev)reverse${ti_reset}
 
---------------------------------------------------
-TERM = $TERM
-TERMORIG = $TERMORIG
-TERMINFO = $TERMINFO
-TERMINFO_DIRS = $TERMINFO_DIRS
-
+	--------------------------------------------------
+	TERM = $TERM
+	TERMORIG = $TERMORIG
+	TERMINFO = $TERMINFO
+	TERMINFO_DIRS = $TERMINFO_DIRS
 EOF
 
+echo $'\n--------------------------------------------------'
+echo '> infocmp -D'
 echo
 infocmp -D
-echo
-infocmp -1 | sed -nr '1,2p;/\b(bce,kbs|kdch1|smso|sitm)=/p'
 
-echo $'\n--------------------------------------------------'
+echo
 echo "> infocmp -A /usr/share/terminfo $TERM $TERM"
 echo
 infocmp -A /usr/share/terminfo "$TERM" "$TERM" || true
+
+echo $'\n--------------------------------------------------'
+infocmp -1 | sed -nr '1,2p;/\b(bce|kbs|kdch1|smso|sitm)=/p'
 
 echo $'\n--------------------------------------------------'
 stty -a | perl -n -e '/\b(erase = .*?);/ && print "stty $1\n"'

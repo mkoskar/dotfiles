@@ -4,5 +4,5 @@ set -eu -o pipefail
 
 xev "$@" |
     grep -EA2 --line-buffered '^Key(Press|Release)'
-    #sed -n 's/^.*\(Press\|Release\|keysym[^)]*\).*$/\1/p'
-    #sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'
+    #sed -nr 's/^.*\(Press\|Release\|keysym[^)]*\).*$/\1/p'
+    #sed -nr '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'

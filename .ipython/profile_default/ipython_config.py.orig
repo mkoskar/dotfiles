@@ -146,7 +146,7 @@
 #------------------------------------------------------------------------------
 
 # Whether to display a banner upon starting IPython.
-c.TerminalIPythonApp.display_banner = False
+# c.TerminalIPythonApp.display_banner = True
 
 # If a command or file is given via the command-line, e.g. 'ipython foo.py',
 # start an interactive shell after executing the file or command.
@@ -277,7 +277,7 @@ c.TerminalIPythonApp.display_banner = False
 # c.InteractiveShell.quiet = False
 
 # 
-c.InteractiveShell.separate_in = ''
+# c.InteractiveShell.separate_in = '\n'
 
 # 
 # c.InteractiveShell.separate_out = ''
@@ -305,7 +305,7 @@ c.InteractiveShell.separate_in = ''
 # Set to confirm when you try to exit IPython with an EOF (Control-D in Unix,
 # Control-Z/Enter in Windows). By typing 'exit' or 'quit', you can force a
 # direct exit without any confirmation.
-c.TerminalInteractiveShell.confirm_exit = False
+# c.TerminalInteractiveShell.confirm_exit = True
 
 # 
 # c.TerminalInteractiveShell.display_completions = 'multicolumn'
@@ -314,7 +314,7 @@ c.TerminalInteractiveShell.confirm_exit = False
 # c.TerminalInteractiveShell.display_completions_in_columns = None
 
 # Shortcut style to use at the prompt. 'vi' or 'emacs'.
-c.TerminalInteractiveShell.editing_mode = 'vi'
+# c.TerminalInteractiveShell.editing_mode = 'emacs'
 
 # Set the editor used by IPython (default to $EDITOR/vi/notepad).
 # c.TerminalInteractiveShell.editor = 'e'
@@ -326,7 +326,7 @@ c.TerminalInteractiveShell.editing_mode = 'vi'
 # lovelace, algol_nu, default, manni, native, murphy, tango, pastie, rrt,
 # borland, xcode, colorful, vs, fruity, emacs, paraiso-light, autumn, bw,
 # paraiso-dark, friendly, trac, vim, algol, monokai, igor
-c.TerminalInteractiveShell.highlighting_style = 'rrt'
+# c.TerminalInteractiveShell.highlighting_style = 'legacy'
 
 # Override highlighting format for specific tokens
 # c.TerminalInteractiveShell.highlighting_style_overrides = {}

@@ -48,8 +48,8 @@ URxvt.scrollColor:      gray20
 ! Since urxvt supports font fallback (for missing glyphs)
 ! every font resource can in fact contain font list.
 URxvt.font:             xft:local_terminal_sized, \
-                        xft:Symbola:pixelsize, \
-                        xft:Symbola:pixelsize=9
+                        xft:Symbola, \
+                        xft:Symbola:pixelsize=8
 
 URxvt.cutchars:         '"()*,<>[]{}|\''
 !URxvt.depth:            32

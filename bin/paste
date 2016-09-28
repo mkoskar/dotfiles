@@ -6,21 +6,15 @@ prgname=${0##*/}
 
 case $prgname in
     paste-ix)
-        cat >&2 <<-EOF
-		# /<id>[+/]<lexer>#n-<line>
-		EOF
+        echo '# /<id>[+/]<lexer>#n-<line>' >&2
         exec curl -sLF "f:1=@${1:--}" http://ix.io/
         ;;
     paste-ptpb)
-        cat >&2 <<-EOF
-		# /<id>/<lexer>/<formatter>#L-<line>
-		EOF
+        echo '# /<id>/<lexer>/<formatter>#L-<line>' >&2
         exec curl -sF "c=@${1:--}" -w '%{redirect_url}\n' -o /dev/null 'https://ptpb.pw/?r=1'
         ;;
     paste-sprunge)
-        cat >&2 <<-EOF
-		# /<id>?<lexer>#n-<line>
-		EOF
+        echo '# /<id>?<lexer>#n-<line>' >&2
         exec curl -sLF "sprunge=@${1:--}" http://sprunge.us/
         ;;
     *)

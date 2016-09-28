@@ -5,15 +5,20 @@ set -eu
 prgname=${0##*/}
 
 _usage() {
-    echo "usage: $prgname [-p port] [arg]..."
+    echo "usage: $prgname [-p profile] [-P port] [arg]..."
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-while getopts 'p:h' opt; do
+profile=
+declare -i port=1080
+while getopts 'p:P:h' opt; do
     case $opt in
         p)
-            popt=$OPTARG
+            profile=$OPTARG
+            ;;
+        P)
+            port=$OPTARG
             ;;
         h)
             usage
@@ -25,8 +30,8 @@ while getopts 'p:h' opt; do
 done
 shift $((OPTIND-1))
 
-exec chp proxy-socks \
-    --proxy-server="socks://127.0.0.1:${popt:-1080}" \
+exec chp -p "${profile:-proxy-socks}" -- \
+    --proxy-server="socks://127.0.0.1:$port" \
     --proxy-bypass-list='<local>' \
     --host-resolver-rules='MAP * ~NOTFOUND, EXCLUDE 127.0.0.1, EXCLUDE ::1, EXCLUDE localhost' \
     "$@"

@@ -44,5 +44,5 @@ fi
 (
     flock 1
     echo
-    sed 's/^/    /' <<<"$buf"
+    sed -r 's/^/    /' <<<"$buf"
 ) >>"$out"

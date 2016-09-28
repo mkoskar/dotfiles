@@ -1,16 +1,10 @@
 #!/usr/bin/env bash
-#
-# -w            select a window by mouse click
-# -s            select a rectangular region by mouse
-# -x <n|list>   select the Xinerama head of ID n
-# -i            combine regions by intersection
 
 set -eu -o pipefail
 
-(( ! $# )) && set -- -w
-
 cd ~/tmp
 
-ffcast -q "$@" png
+g="$(slop -n -f '%g\n' --opengl --magnify)"
+maim -g "$g" "screenshot-$(date +%F.%s).png"
 
-find -maxdepth 1 -type f -name 'screenshot-*' -print0 | sort -zr | xargs -0 -x -r sxiv
+find -maxdepth 1 -type f -name 'screenshot-*' | sort -r | sxiv -io
