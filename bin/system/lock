@@ -25,7 +25,8 @@ export TERM='linux'
 
 # ----------------------------------------
 
-vtno_old=$(fgconsole)
+vt=$(</sys/class/tty/tty0/active)
+vtno=${vt##tty}
 vtno_new=8
 vtnew="/dev/tty$vtno_new"
 
@@ -39,7 +40,7 @@ cleanup() {
     clear
     printf '%d' "$sysrq_old" >"$sysrq_path"
     vtswitch-lock -u
-    chvt "$vtno_old"
+    chvt "$vtno"
 }
 trap cleanup EXIT
 

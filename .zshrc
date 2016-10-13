@@ -52,6 +52,7 @@ setopt hist_ignore_space
 setopt hist_save_no_dups
 setopt hist_verify
 setopt inc_append_history
+setopt interactive_comments
 setopt long_list_jobs
 setopt multios
 setopt notify
@@ -110,22 +111,7 @@ function expand-word-alias {
     zle _expand_alias
 }
 
-function noop {}
-
-function overwrite-mode-select {
-    zle overwrite-mode
-    zle zle-keymap-select
-}
-
-function zle-line-init {
-    # use global var since it's not possible to declare and assign local in one step
-    __pstatus=("${pipestatus[@]}")
-    __statstr=
-    if (( ${#__pstatus[@]} > 1 )); then
-        __statstr=":${__pstatus[1]}$(printf '|%s' "${__pstatus[@]:1}")"
-    fi
-    zle-keymap-select
-}
+function noop { }
 
 function zle-keymap-select {
     __vimode=':'
@@ -135,12 +121,21 @@ function zle-keymap-select {
     zle reset-prompt
 }
 
+function zle-line-init {
+    # use global var since it's not possible to declare and assign local in one step
+    __pstatus=("${pipestatus[@]}")
+    __statstr=
+    if (( ${#__pstatus[@]} > 1 )); then
+        __statstr=":${__pstatus[1]}$(printf '|%s' "${__pstatus[@]:1}")"
+    fi
+    zle zle-keymap-select
+}
+
 zle -N copy-earlier-word
 zle -N edit-command-line
 zle -N expand-dot-to-parent-directory-path
 zle -N expand-word-alias
 zle -N noop
-zle -N overwrite-mode-select
 zle -N self-insert url-quote-magic
 zle -N zle-keymap-select
 zle -N zle-line-init
@@ -148,69 +143,63 @@ zle -N zle-line-init
 bindkey -v
 bindkey -r '^A' '^B' '^C' '^F' '^Q' '^T' '^X' '^Y' '^Z' '^\' '^]' '^^' '^_'
 
-typeset -A key
+for k in @ {A..Z} [ \\ ] \^ _; do
+    bindkey "\e^$k" noop
+    bindkey -M vicmd "\e^$k" noop
+done
 
-key[Home]=${terminfo[khome]}
-if [[ ${key[Home]} ]]; then
-    bindkey "${key[Home]}" beginning-of-line
-    bindkey -M vicmd "${key[Home]}" beginning-of-line
-fi
+k=$' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+for (( i=0; i<${#k}; i++ )); do
+    bindkey "\e${k:$i:1}" noop
+    bindkey -M vicmd "\e${k:$i:1}" noop
+done
 
-key[End]=${terminfo[kend]}
-if [[ ${key[End]} ]]; then
-    bindkey "${key[End]}" end-of-line
-    bindkey -M vicmd "${key[End]}" end-of-line
-fi
+for k in {0..9} {A..Z} {a..z}; do
+    bindkey "\e$k" noop
+    bindkey -M vicmd "\e$k" noop
+done
 
-key[Insert]=${terminfo[kich1]}
-if [[ ${key[Insert]} ]]; then
-    bindkey "${key[Insert]}" overwrite-mode-select
-    bindkey -M vicmd "${key[Insert]}" vi-insert
-fi
+for k in kich1 kdch1 kpp knp kf{1..12}; do
+    k=${terminfo[$k]}
+    bindkey "$k" noop
+    bindkey -M vicmd "$k" noop
+done
 
-key[Delete]=${terminfo[kdch1]}
-if [[ ${key[Delete]} ]]; then
-    bindkey "${key[Delete]}" delete-char
-    bindkey -M vicmd "${key[Delete]}" delete-char
-fi
+k=${terminfo[khome]}
+bindkey "$k" beginning-of-line
+bindkey -M vicmd "$k" beginning-of-line
 
-key[PageUp]=${terminfo[kpp]}
-if [[ ${key[PageUp]} ]]; then
-    bindkey "${key[PageUp]}" noop
-    bindkey -M vicmd "${key[PageUp]}" noop
-fi
+k=${terminfo[kend]}
+bindkey "$k" end-of-line
+bindkey -M vicmd "$k" end-of-line
 
-key[PageDown]=${terminfo[knp]}
-if [[ ${key[PageDown]} ]]; then
-    bindkey "${key[PageDown]}" noop
-    bindkey -M vicmd "${key[PageDown]}" noop
-fi
+unset k
 
-bindkey '^O' menu-complete
-bindkey '^K' reverse-menu-complete
-bindkey '^N' history-substring-search-down
+bindkey '^G' send-break
 bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
 bindkey '^R' history-incremental-search-backward
 bindkey '^S' history-incremental-search-forward
-bindkey '^E' expand-word-alias
+bindkey '^O' menu-complete
+bindkey '^K' reverse-menu-complete
 bindkey '^W' backward-kill-word
 bindkey '^H' backward-delete-char
 bindkey '^?' backward-delete-char
+bindkey '^E' expand-word-alias
 bindkey '.' expand-dot-to-parent-directory-path
 bindkey '\e.' insert-last-word
-bindkey '\eh' run-help
 bindkey '\em' copy-earlier-word
 
-bindkey -M vicmd '^N' history-substring-search-down
+bindkey -M vicmd '^G' send-break
 bindkey -M vicmd '^P' history-substring-search-up
-bindkey -M vicmd '^R' redo
-bindkey -M vicmd '^E' expand-word-alias
+bindkey -M vicmd '^N' history-substring-search-down
 bindkey -M vicmd '^W' backward-kill-word
-bindkey -M vicmd 'j' down-history
+bindkey -M vicmd '^E' expand-word-alias
+bindkey -M vicmd '^R' redo
 bindkey -M vicmd 'k' up-history
+bindkey -M vicmd 'j' down-history
 bindkey -M vicmd 'e' edit-command-line
 bindkey -M vicmd 'u' undo
-bindkey -M vicmd '\eh' run-help
 
 bindkey -M isearch . self-insert
 

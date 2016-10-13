@@ -19,10 +19,14 @@ if [[ $(xserverq name) = 'Xorg' ]]; then
     NOOSD=1 trackpoint-wheel on
 fi
 
-xset b off s off dpms 0 0 300
+xset b off s off dpms 0 0 300 r rate 500 35
+
+numlockx on
+
 xsetroot -cursor_name left_ptr
 
-type hsetroot &>/dev/null && hsetroot || xsetroot -solid black
+hsetroot || xsetroot -solid black
+
 apod-bg &
 
 true

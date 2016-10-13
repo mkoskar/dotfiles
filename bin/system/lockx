@@ -4,7 +4,7 @@
 #
 # * disable SysRq
 # * disable VT switching
-# * run backend on display ':{current VT}'
+# * run backend on display ':{current VT number}'
 
 set -eu
 
@@ -34,7 +34,9 @@ trap cleanup EXIT
 
 vtswitch-lock
 
-vtno=$(fgconsole)
+vt=$(</sys/class/tty/tty0/active)
+vtno=${vt##tty}
+
 su - "$user" -c "export DISPLAY=':$vtno'
                  export XAUTHORITY=~/.local/share/xorg/Xauthority
                  slock"

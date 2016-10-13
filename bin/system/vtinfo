@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+    vtinfo
+    ~~~~~~
+
+    Returns some information about the active VT.
+
+    :Compatibility: 2.7 / 3.2
+    :Copyright: (c) 2016 Miroslav Koskar <http://mkoskar.com/>
+    :License: BSD 2-Clause
+"""
+
+import argparse
+import fcntl
+import struct
+
+
+def ioctl(fd, req, fmt):
+    s = struct.Struct(fmt)
+    b = bytearray(s.size)
+    fcntl.ioctl(fd, req, b)
+    return s.unpack(b)
+
+
+parser = argparse.ArgumentParser(
+    description="Returns some information about the active VT."
+)
+args = parser.parse_args()
+
+try:
+    with open('/sys/class/tty/tty0/active', 'r') as f:
+        active_vt = f.read().strip()
+
+    with open('/dev/' + active_vt, 'w') as f:
+        v = ioctl(f, 0x4B3B, 'I')[0]
+        d = {0: 'KD_TEXT', 1: 'KD_GRAPHICS'}
+        print('KDGETMODE: {} ({})'.format(v, d.get(v) or '?'))
+
+        v = ioctl(f, 0x4B44, 'L')[0]
+        d = {0: 'K_RAW', 1: 'K_XLATE', 2: 'K_MEDIUMRAW', 3: 'K_UNICODE', 4: 'K_OFF'}
+        print('KDGKBMODE: {} ({})'.format(v, d.get(v) or '?'))
+
+        v = ioctl(f, 0x4B62, 'L')[0]
+        d = {3: 'K_METABIT', 4: 'K_ESCPREFIX'}
+        print('KDGKBMETA: {} ({})'.format(v, d.get(v) or '?'))
+
+        v = ioctl(f, 0x4B31, 'B')[0]
+        l = []
+        if v & 1:
+            l.append('LED_SCR')
+        if v & 2:
+            l.append('LED_NUM')
+        if v & 4:
+            l.append('LED_CAP')
+        print('KDGETLED: {} ({})'.format(v, ' '.join(l)))
+
+        v = ioctl(f, 0x5601, 'BBHHH')
+        d_mode = {0: 'VT_AUTO', 1: 'VT_PROCESS', 2: 'VT_ACKACQ'}
+        print('VT_GETMODE:')
+        print('  mode: {} ({})'.format(v[0], d_mode.get(v[0]) or '?'))
+        print('  waitv: {}'.format(v[1]))
+        print('  relsig: {}'.format(v[2]))
+        print('  acqsig: {}'.format(v[3]))
+        print('  frsig: {}'.format(v[4]))
+
+        v = ioctl(f, 0x5603, 'HHH')
+        print('VT_GETSTATE:')
+        print('  v_active: {}'.format(v[0]))
+        print('  v_signal: {}'.format(v[1]))
+        print('  v_state: {}'.format(v[2]))
+
+except Exception as e:
+    print(e)
+    exit(1)

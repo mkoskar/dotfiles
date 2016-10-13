@@ -10,7 +10,7 @@ if (( ! $# )); then
 fi
 
 if [[ $prgname = 'ptha' ]]; then
-    type -Pa "$1"
+    type -Pa -- "$1"
 else
-    type -P "$1"
+    type -P -- "$1"
 fi

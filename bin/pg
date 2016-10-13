@@ -43,7 +43,7 @@ if [[ ! -t 1 ]]; then
 fi
 
 if (( $# )) || [[ -t 0 ]]; then
-    exec 0<&- 0<&1
+    exec 0<&1
     run "$@"
     exit
 fi

@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: fdm=marker
 
+import functools
+import re
+
+import weechat
+
 SCRIPT_NAME = 'custom'
 SCRIPT_AUTHOR = 'Miroslav Koskar <http://mkoskar.com/>'
 SCRIPT_VERSION = '0.1'
@@ -10,12 +15,6 @@ SCRIPT_DESC = 'Personal customizations'
 
 # Global {{{
 # ----------------------------------------
-
-import weechat
-
-from collections import namedtuple
-import re
-
 
 class Expando(object):
     pass
@@ -86,7 +85,7 @@ def sort_merges():
     for number, buffers in buffers_by_number.iteritems():
         if len(buffers) > 1:
             buffers.sort(key=lambda bi: [bi.short_name, bi.full_name])
-            reduce(merge, buffers)
+            functools.reduce(merge, buffers)
             cmd('/input switch_active_buffer', buffers[-1].buffer)
 
 
@@ -353,7 +352,7 @@ keys = {
     'meta-h': '/tab_prev',
 }
 
-for i in xrange(1, 10):
+for i in range(1, 10):
     keys['meta-%d' % i] = '/tab_go %d' % i
 
 weechat.key_bind('default', keys)

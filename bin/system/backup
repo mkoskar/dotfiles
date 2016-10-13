@@ -43,7 +43,7 @@ fi
 # backup
 
 log_prefix=$$
-log() { printf '%s' "$log_prefix: $*\n"; } >&2
+log() { printf '%s\n' "$log_prefix: $*"; } >&2
 
 cleanup() { log "exiting ($?)"; }
 trap cleanup EXIT
@@ -53,7 +53,7 @@ mkdir -p "$loghome"
 
 exec 8>>"$loghome/backup.log"
 if [[ -t 2 ]]; then
-    exec > >(tee -a /dev/fd/8 >&2) 2>&1
+    exec &> >(tee -a /dev/fd/8 >&2)
 else
     exec >&8 2>&1
 fi

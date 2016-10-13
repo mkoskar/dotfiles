@@ -610,7 +610,7 @@ function! QuitTab(bang) abort
     try
         exec 'tabclose'.a:bang
     catch /:E784:/
-        exec 'qall'.a:bang
+        exec empty(a:bang) ? 'qall' : 'cquit'
     endtry
 endfunction
 

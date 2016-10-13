@@ -53,7 +53,7 @@ dkstop() {
 }
 
 
-# grep / ack / ag / pt
+# grep / ack / ag / pt / rg
 # ----------------------------------------
 
 alias grep='LC_ALL=C grep --color=auto'
@@ -122,6 +122,11 @@ alias man-all-posix='man-all -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
 # pacman
 # ----------------------------------------
 
+alias pac='pacman'
+alias pacs='pacsearch'
+alias paccheck='paccheck --files --file-properties --backup --noextract --noupgrade'
+alias pactree='pactree --color'
+
 # Finds what package provides file or directory
 paco() {
     [ $# -eq 0 ] && return 2
@@ -186,23 +191,29 @@ alias c='calc'
 alias cal='cal -3 -m'
 alias callgrind='valgrind --tool=callgrind'
 alias cower='cower --color=auto'
-alias cp='cp -ai'
+alias cp='cp -ai --reflink=auto'
 alias date0='date -Ins'
 alias dd='dd status=progress'
-alias df='df -h'
+alias df='df -x tmpfs -x devtmpfs'
+alias dff='df -h'
+alias dirs='dirs -v'
 alias dmesg='dmesg -HTx'
 alias dstat='dstat -cglmnpry --tcp'
-alias du='du -sh'
+alias du='du -h'
 alias feh='feh -F'
 alias fortune='fortune -c'
+alias free='free -h'
 alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
+alias h='fc 1 -1'
 alias headcat='head -vn-0'
 alias info='info --vi-keys'
+alias journal-vaccum='journalctl --vacuum-size=100M --vacuum-files=1'
 alias journal='journalctl -o short-precise -r -b'
 alias llib='tree ~/.local/lib'
 alias lsblk='lsblk -o NAME,KNAME,MAJ:MIN,ROTA,RM,RO,TYPE,SIZE,FSTYPE,MOUNTPOINT,MODEL'
 alias lsdiff='lsdiff -s'
 alias ltime='date +%T'
+alias mnt='findmnt'
 alias moon='curl -sL http://wttr.in/moon | head -n-4'
 alias mpv-debug='command mpv --msg-level=all=debug'
 alias mpv-verbose='command mpv --msg-level=all=v'
@@ -213,9 +224,6 @@ alias od='od -Ax -tc -tx1 -v -w16'
 alias odd='od -td1'
 alias odo='od -to1'
 alias odx='/usr/bin/od -Ax -tx2z -v -w16'
-alias pac='pacman'
-alias paccheck='paccheck --files --file-properties --backup --noextract --noupgrade'
-alias pactree='pactree --color'
 alias patch0='patch -Np0'
 alias patch1='patch -Np1'
 alias ping-mtu='ping -M do -s 2000'
@@ -230,10 +238,10 @@ alias ss='ss -napstu'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
 alias sudo-off='sudo -K'
 alias sudo-on='sudo -v'
+alias top='top -d 1'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias watch='watch -n 1 -t -c'
 alias wi='curl -sL http://wttr.in/ | head -n-3'
-alias wtc='curl -sL http://whatthecommit.com/index.txt'
 alias youtube-dl-playlist="youtube-dl --yes-playlist -o '~/download/_youtube-dl/%(playlist)s/[%(playlist_index)s] %(title)s'"
 alias youtube-dl-stdout='youtube-dl -o -'
 
@@ -246,9 +254,12 @@ a() {
     mpv --loop=5 --keep-open=no /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
 }
 
-alias cd='__cd'
-__cd() {
-    [ $# -eq 0 ] && \cd "${BASEDIR:-${SHOME:-$HOME}}" || \cd "$@"
+cd() {
+    if [ $# -eq 0 ]; then
+        builtin cd "${BASEDIR:-${SHOME:-$HOME}}"
+    else
+        builtin cd "$@"
+    fi
 }
 
 base() { export BASEDIR=${1:-$PWD}; }
@@ -268,7 +279,7 @@ debug() {
 
 fn() {
     if [ $# -eq 0 ]; then
-        declare -f | $PAGER
+        pgx declare -f
     else
         declare -f -- "$1" || return 1
         [ "$BASH_VERSION" ] && \
@@ -280,9 +291,9 @@ i() {
     if [ $# -eq 0 ]; then
         shi
     elif [ "$ZSH_VERSION" ]; then
-        type -af "$1"
+        type -af -- "$1"
     else
-        type -a "$1"
+        type -a -- "$1"
     fi
 }
 
@@ -366,7 +377,7 @@ shi() {
 
 source_opt() {
     if [ -e "$1" ]; then
-        . "$1"
+        . -- "$1"
     fi
 }
 
@@ -403,10 +414,14 @@ tree() {
 
 v() {
     if [ $# -eq 0 ]; then
-        declare -p | $PAGER
+        pgx declare -p
     else
         declare -p -- "$1"
     fi
+}
+
+xkbkeymap() {
+    pgx xkbcomp -a "$DISPLAY" -
 }
 
 xrandr() {

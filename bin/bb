@@ -24,7 +24,6 @@ done <<-EOF
     arch-lists          sr google site:lists.archlinux.org {}
     arch-wiki           sr archwiki {}
     arxiv               sr arxiv {}
-    ascii               b https://en.wikipedia.org/wiki/ASCII#ASCII_printable_code_chart
     aur                 sr aur {}
     awg                 b https://en.wikipedia.org/wiki/American_wire_gauge#Tables_of_AWG_wire_sizes
     awk                 b https://www.gnu.org/software/gawk/manual/gawk.html
@@ -65,6 +64,7 @@ done <<-EOF
     flp                 b http://www.feynmanlectures.caltech.edu/
     foldoc              sr foldoc {}
     freedesktop         b http://standards.freedesktop.org/
+    freedesktop-repos   b https://cgit.freedesktop.org/
     freetype            b file:///usr/share/doc/freetype2/documentation.html
     g                   sr google {}
     g-operators         b https://support.google.com/websearch/answer/2466433?hl=en&ref_topic=3081620&vid=1-635793825968278780-302114999
@@ -77,6 +77,7 @@ done <<-EOF
     gmail-nolabel       b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:chats+-in:inbox+-in:sent+-in:draft+-in:trash/n100
     gmail-search        b https://support.google.com/mail/answer/7190
     gnome-api           b https://developer.gnome.org/references
+    gnu-repos           b http://git.savannah.gnu.org/cgit/
     go                  b https://golang.org/ref/spec
     google-devs         b https://developers.google.com/
     google-products     b https://developers.google.com/products/
@@ -131,6 +132,7 @@ done <<-EOF
     linux-docs          b file:///lib/modules/$kernel_release/build/Documentation/00-INDEX
     linux-howtos        b file:///usr/share/linux-howtos/INDEX
     linux-params        b file:///lib/modules/$kernel_release/build/Documentation/kernel-parameters.txt
+    linux-repos         b https://git.kernel.org/cgit/
     linux-specs         b http://refspecs.linuxfoundation.org/
     linux-src           b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/?id=$kernel_version
     lists               b http://gmane.org/find.php
@@ -184,6 +186,7 @@ done <<-EOF
     regexp-pcre         b file:///usr/share/doc/pcre/html/pcresyntax.html
     regexp-posix        b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap09.html
     regexp-python       b file:///usr/share/doc/python/html/library/re.html
+    regexp-python-test  b http://pythex.org/
     rfc                 b https://www.rfc-editor.org/
     rst                 b http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
     rst-demo            b file://$HOME/projects/lab/docutils/showcase/_build/html/index.html
@@ -222,9 +225,9 @@ done <<-EOF
     usb-connectors      b https://en.wikipedia.org/wiki/USB#Host_and_device_interface_receptacles
     util-linux          b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
     w                   sr wikipedia {}
-    weechat             b file:///usr/share/doc/weechat/weechat_user.en.html
-    weechat-api         b file:///usr/share/doc/weechat/weechat_plugin_api.en.html
-    weechat-changes     b https://github.com/weechat/weechat/blob/master/ChangeLog.asciidoc
+    weechat             b https://weechat.org/files/doc/stable/weechat_user.en.html
+    weechat-api         b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
+    weechat-changes     b https://github.com/weechat/weechat/blob/master/ChangeLog.adoc
     yaml                b http://yaml.org/refcard.html
     yt                  sr youtube {}
 

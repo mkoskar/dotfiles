@@ -188,8 +188,8 @@ nnoremap <silent> <Leader>SS :SyntasticCheck<CR>
 nnoremap <silent> <Leader>Si :SyntasticInfo<CR>
 nnoremap <silent> <Leader>Sr :SyntasticReset<CR>
 
-" TODO: shellcheck ignore:
-" * SC1091: Not following
+let g:syntastic_python_flake8_args='--ignore=E501,E128'
+let g:syntastic_sh_shellcheck_args='--exclude=SC1090,SC1091,SC2032,SC2033,SC2088,SC2139,SC2148'
 
 
 " tagbar

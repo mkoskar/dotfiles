@@ -10,8 +10,8 @@
 /proxy add tor socks5 127.0.0.1 9050
 
 /set irc.server_default.capabilities account-notify,away-notify,extended-join,multi-prefix,server-time,userhost-in-names
-/set irc.server_default.default_msg_part ""
-/set irc.server_default.default_msg_quit ""
+/set irc.server_default.msg_part ""
+/set irc.server_default.msg_quit ""
 /set irc.server_default.nicks mkoskar
 /set irc.server_default.proxy default
 /set irc.server_default.realname "Miroslav Koskar <http://mkoskar.com/>"
@@ -81,7 +81,7 @@
 /set irc.ctcp.version ""
 /set irc.look.buffer_switch_autojoin off
 /set irc.look.highlight_server ""
-/set irc.look.pv_buffer merge_all
+/set irc.look.pv_buffer merge_by_server
 /set irc.look.server_buffer independent
 /set irc.msgbuffer.whois current
 /set sec.crypt.passphrase_file ~/.weechat/passphrase

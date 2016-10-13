@@ -16,6 +16,7 @@ else
 fi
 
 CDPATH='.:..:~'
+FCEDIT='fcedit'
 PS4=$'+\n$ti_hi1>$ti_reset [$(date +%T)] $ti_hi3$BASH_SOURCE:$LINENO$ti_reset\n$ti_hi1>$ti_reset $ti_hi0$BASH_COMMAND$ti_reset\n$ti_hi1>$ti_reset '
 unset MAILCHECK
 

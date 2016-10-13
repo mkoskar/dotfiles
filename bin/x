@@ -7,15 +7,17 @@
 #
 # By default:
 #
-# * allocates VT passed in XDG_VTNR (which by default corresponds to active VT)
-# * display number will be the same as VT number
+# * display number will be the same as currently active VT number
 # * continue only if display number is not used already
-# * xinit ~/bin/xsession "$@" -- /usr/bin/X
+# * client: ~/bin/xsession "$@"
+# * server: Xorg
 #
 # If started as 'xx':
 #
 # * display number will be the first free starting with 91
 # * xinit ~/bin/xsession "$@" -- /usr/bin/Xephyr
+# * client: ~/bin/xsession "$@"
+# * server: Xephyr
 
 set -eu
 
@@ -80,7 +82,7 @@ xauthset() {
 unset SESSION_MANAGER
 
 
-# /usr/bin/Xephyr
+# Xephyr
 # ----------------------------------------
 
 if [[ $prgname = 'xx' ]]; then
@@ -93,16 +95,21 @@ if [[ $prgname = 'xx' ]]; then
     unset XSESSION
     xinit ~/bin/xsession "$@" -- \
         /usr/bin/Xephyr ":$dispno" \
-        -nolisten tcp -auth "$xauthf" -dpi 96 -resizeable \
+        -auth "$xauthf" \
+        -dpi 96 \
+        -nolisten tcp \
+        -noreset \
+        -resizeable \
         &>"$datadir/xsession.$dispno.out" &
     exit
 fi
 
 
-# /usr/bin/X
+# Xorg
 # ----------------------------------------
 
-vtno=$XDG_VTNR
+vt=$(</sys/class/tty/tty0/active)
+vtno=${vt##tty}
 dispno=$vtno
 lockfile="/tmp/.X$dispno-lock"
 
@@ -115,7 +122,11 @@ fi
 xauthset "$dispno"
 
 exec xinit ~/bin/xsession "$@" -- \
-    /usr/bin/X ":$dispno" "vt$vtno" \
+    /usr/lib/xorg-server/Xorg ":$dispno" "vt$vtno" \
+    -auth "$xauthf" \
     -config "${XCONFIG:-xorg.conf.$HOSTNAME}" \
-    -keeptty -novtswitch -nolisten tcp -auth "$xauthf" \
-    &>"$datadir/xsession.$dispno.out"
+    -keeptty \
+    -nolisten tcp \
+    -noreset \
+    -novtswitch \
+    </dev/null &>"$datadir/xsession.$dispno.out"

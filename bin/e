@@ -8,8 +8,13 @@ if [[ ! -t 0 ]]; then
     set -- "$@" -
 fi
 
-if [[ $prgname = 'e0' ]]; then
-    set -- -u ~/.vim/vimrc_base "$@"
-fi
+case $prgname in
+    e0)
+        set -- -u ~/.vim/vimrc_base "$@"
+        ;;
+    egpg)
+        set -- -u ~/.vim/vimrc_gpg "$@"
+        ;;
+esac
 
-exec "${VIMBIN:-vim}" -O "$@"
+exec "${VIMBIN:-vim}" -p "$@"

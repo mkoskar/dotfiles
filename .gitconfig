@@ -43,9 +43,7 @@
     cmd = difftool "$LOCAL" "$REMOTE"
 
 [format]
-    ;signaturefile = ~/.gitsignature
     coverletter = auto
-    signature =
     thread = shallow
 
 [http]

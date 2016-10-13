@@ -36,15 +36,21 @@ export TERM
 
 eval "$(TERM=ansi dircolors -b)"
 
+export BROWSER='b'
+export DIFFPROG='difftool'
+export EDITOR='e'
+export MANPAGER='manpg'
+export PAGER='pg'
+export TERMINAL='term'
+
 export JAVA_HOME='/usr/lib/jvm/default-runtime'
 export JDK_HOME='/usr/lib/jvm/default'
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.xrender=true -Dswing.aatext=true'
 
 export ASPROOT="$HOME/.cache/asp"
-export BROWSER='b'
+export CCACHE_PATH='/usr/bin'
 export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
-export EDITOR='e'
 export FZF_DEFAULT_OPTS='--no-mouse --bind=alt-k:page-up,alt-j:page-down'
 export FZF_TMUX=0
 export GRADLE_HOME='/usr/share/java/gradle'
@@ -53,19 +59,19 @@ export GTK_IM_MODULE='xim'
 export LD_LIBRARY_PATH="$HOME/opt/lib"
 export LESS='-MRS#3ci'
 export LESSHISTFILE='-'
-export LESSOPEN='| highlight --quiet -O xterm256 -s bluegreen %s'
-export MANPAGER='manpg'
+export LESSOPEN='|highlight --quiet -O xterm256 -s bluegreen %s'
+export MAKEFLAGS='-j2'
 export NO_AT_BRIDGE=1
 export ORACLE_HOME='/opt/instantclient'
 export PACKER_CACHE_DIR="$HOME/.cache/packer"
-export PAGER='pg'
 export PARINIT='T4 w78 prbgqR B=.,?_A_a Q=_s>|'
 export PYENV_ROOT="$HOME/opt/pyenv"
 export PYTHONSTARTUP="$HOME/.pythonstartup"
 export QT_IM_MODULE='xim'
+export QUOTING_STYLE='literal'
+export RANGER_LOAD_DEFAULT_RC='FALSE'
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent"
 export SYSTEMD_LESS=$LESS
-export TERMINAL='term'
 export TERMINFO_DIRS='/etc/terminfo:/usr/share/terminfo'
 export VDPAU_DRIVER='va_gl'
 export VIMBIN='nvim'

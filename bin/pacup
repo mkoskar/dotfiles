@@ -8,9 +8,8 @@ pacaur -Syu
 echo $'\n--------------------------------------------------'
 echo $'> Cleanup:\n'
 
-if pacman -Qqdt &>/dev/null; then
-    pacman -Qqdt | sudo pacman -Rcsn -
-fi
+pkgs=$(pacman -Qqdt)
+[[ $pkgs ]] && sudo pacman -Rcsn - <<<"$pkgs"
 
 echo
 exit 0

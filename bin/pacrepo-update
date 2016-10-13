@@ -2,21 +2,16 @@
 
 set -eu
 
-name=${1:-custom}
-repo_dir="$HOME/packages/$name"
-repo_db="$name.db"
-repo_dbgz="$name.db.tar.gz"
+path=${1:-"$HOME/packages/custom"}
+path=$(realpath -- "$path")
+name=${path##*/}
+db="$name.db"
+db_gz="$name.db.tar.gz"
 
-mkdir -p "$repo_dir"
-cd "$repo_dir"
+cd "$path"
 
-if type repose &>/dev/null; then
-    repose -fz "$name"
-    exit
+if [[ ! -e $db ]]; then
+    repo-add -q "$db_gz"
 fi
 
-rm -rf "$repo_db"*
-
-for pkg in ./*.pkg.tar.xz; do
-    repo-add -n -q "$repo_dbgz" "$pkg"
-done
+repose -fz "$name"

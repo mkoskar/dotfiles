@@ -4,6 +4,7 @@ set colored-stats on
 set completion-ignore-case on
 set completion-map-case on
 set completion-prefix-display-length 2
+set echo-control-characters off
 set editing-mode vi
 set keyseq-timeout 10
 set mark-symlinked-directories on
@@ -14,6 +15,9 @@ set visible-stats on
 
 set keymap vi-insert
 
+$include ~/.inputrc.esc
+
+"\C-g": abort
 "\C-l": clear-screen
 "\C-p": history-search-backward
 "\C-n": history-search-forward
@@ -21,9 +25,25 @@ set keymap vi-insert
 "\C-k": menu-complete-backward
 "\C-w": backward-kill-word
 
-"\C-x": noop
+"\e0": digit-argument
+"\e1": digit-argument
+"\e2": digit-argument
+"\e3": digit-argument
+"\e4": digit-argument
+"\e5": digit-argument
+"\e6": digit-argument
+"\e7": digit-argument
+"\e8": digit-argument
+"\e9": digit-argument
+"\e-": digit-argument
+
+"\C-x":
 "\C-xp": "\eIpgx \e0"
 "\C-xP": "\eA | pg\eF|h"
+
+"\C-x\C-xf": dump-functions
+"\C-x\C-xv": dump-variables
+"\C-x\C-xm": dump-macros
 
 $if bash
     "\C-xx": "\e0isudo \e0"
@@ -40,11 +60,14 @@ $endif
 
 set keymap vi-command
 
+$include ~/.inputrc.esc
+
+"\C-g": abort
 "\C-p": history-search-backward
 "\C-n": history-search-forward
 "\C-w": backward-kill-word
 
-"\C-x": noop
+"\C-x":
 "\C-xp": "Ipgx \e0"
 "\C-xP": "A | pg\eF|h"
 

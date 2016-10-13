@@ -14,17 +14,17 @@
 import argparse
 import fcntl
 
-VT_LOCKSWITCH = 0x560B
-VT_UNLOCKSWITCH = 0x560C
-
 parser = argparse.ArgumentParser(description='Locks (or unlocks) VT switching.')
 parser.add_argument('-u', '--unlock', action='store_true', help='unlock')
 args = parser.parse_args()
 
 try:
-    console = open('/dev/console', 'w')
-    fcntl.ioctl(console, VT_UNLOCKSWITCH if args.unlock else VT_LOCKSWITCH)
-    console.close()
+    with open('/sys/class/tty/tty0/active', 'r') as f:
+        active_vt = f.read().strip()
+
+    with open('/dev/' + active_vt, 'w') as f:
+        fcntl.ioctl(f, 0x560C if args.unlock else 0x560B)
+
 except Exception as e:
     print(e)
     exit(1)

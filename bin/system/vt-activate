@@ -7,14 +7,12 @@
     Makes VT active (doesn't wait for it unlike 'chvt').
 
     :Compatibility: 2.7 / 3.2
-    :Copyright: (c) 2013 Miroslav Koskar <http://mkoskar.com/>
+    :Copyright: (c) 2016 Miroslav Koskar <http://mkoskar.com/>
     :License: BSD 2-Clause
 """
 
 import argparse
 import fcntl
-
-VT_ACTIVATE = 0x5606
 
 parser = argparse.ArgumentParser(
     description="Makes VT active (doesn't wait for it unlike 'chvt')."
@@ -23,9 +21,12 @@ parser.add_argument('vtno', type=int, help='VT number')
 args = parser.parse_args()
 
 try:
-    console = open('/dev/console', 'w')
-    fcntl.ioctl(console, VT_ACTIVATE, args.vtno)
-    console.close()
+    with open('/sys/class/tty/tty0/active', 'r') as f:
+        active_vt = f.read().strip()
+
+    with open('/dev/' + active_vt, 'w') as f:
+        fcntl.ioctl(f, 0x5606, args.vtno)
+
 except Exception as e:
     print(e)
     exit(1)

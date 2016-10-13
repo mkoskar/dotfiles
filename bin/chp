@@ -11,11 +11,17 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
+bin='chromium'
+bin_name=$bin
 profile=
 
 case $prgname in
-    ch|ch0)
+    ch)
         profile='default'
+        ;;
+    chpg)
+        bin='google-chrome-stable'
+        bin_name='google-chrome'
         ;;
 esac
 
@@ -37,15 +43,18 @@ shift $((OPTIND-1))
 # ----------------------------------------
 
 if [[ ! $profile ]]; then
-    profiles=(
-        devel
-        lab
-        plain
-    )
-    for p in ~/.config/google-chrome.*; do
-        profiles+=("${p#*google-chrome.}")
+    filter='^(?!skel$).*$'
+    if [[ $bin_name = 'chromium' ]]; then
+        profiles=(
+            devel
+            lab
+            plain
+        )
+        filter='^(?!proxy-socks$)(?!proxy-tor$)(?!skel$).*$'
+    fi
+    for p in ~/.config/"$bin_name".*; do
+        profiles+=("${p#*"$bin_name".}")
     done
-    filter='^(?!proxy-socks$)(?!proxy-tor$)(?!skel$).*$'
     profile=$(
         (set +u; IFS=$'\n'; printf '%s' "${profiles[*]}") |
         sort -u | grep -P "$filter" |
@@ -55,7 +64,7 @@ fi
 
 [[ ! $profile ]] && exit 1
 
-path="$HOME/.config/google-chrome"
+path="$HOME/.config/$bin_name"
 path_skel="$path.skel"
 
 [[ $profile = 'default' ]] || path+=".$profile"
@@ -107,10 +116,6 @@ if [[ ! -e $path && $profile != 'skel' ]]; then
     fi
 fi
 
-if [[ $prgname = 'ch' ]]; then
-    set -- --proxy-server='127.0.0.1:8118' "$@"
-fi
-
 if [[ ${CH_DEBUG-} ]]; then
     set -- \
         --debug-plugin-loading \
@@ -120,7 +125,8 @@ if [[ ${CH_DEBUG-} ]]; then
         "$@"
 fi
 
-exec google-chrome-stable \
+exec "$bin" \
+    --disable-reading-from-canvas \
     --enable-devtools-experiments \
     --enable-gpu-rasterization \
     --enable-tab-audio-muting \

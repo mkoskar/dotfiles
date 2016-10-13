@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eu
+
+ifile=$1
+
+tac -- "$ifile" | sed -r 's/^/  /' >"$ifile.tmp"
+mv -- "$ifile.tmp" "$ifile"
+
+cleanup() {
+    sed -ri '/^(\s+|$)/d' "$ifile"
+    [[ -s $ifile ]] || exit 1
+}
+trap cleanup EXIT
+
+"${VIMBIN:-vim}" -u ~/.vim/vimrc_base -- "$ifile"
