@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu
-shopt -s nullglob
+shopt -s extglob nullglob
 
 prgname=${0##*/}
 
@@ -46,7 +46,7 @@ if [[ ! $profile ]]; then
     filter=
     if [[ $bin_name = 'firefox' ]]; then
         profiles=(
-            devel
+            dev
             lab
             plain
         )
@@ -72,7 +72,7 @@ path="$HOME/.config/$bin_name"
 mkdir -p "$path"
 cd "$path"
 
-if [[ ! -e user.js ]]; then
+if [[ ! -e user.js && ! $profile =~ ^plain(-|$) ]]; then
     cat >user.js <<-EOF
 		//user_pref('browser.tabs.remote.force-enable', true);
 		//user_pref('layers.acceleration.force-enabled', true);
@@ -86,16 +86,18 @@ if [[ ! -e user.js ]]; then
 		user_pref('browser.tabs.closeWindowWithLastTab', false);
 		user_pref('browser.tabs.remote.autostart', true);
 		user_pref('datareporting.policy.dataSubmissionEnabled', false);
+		user_pref('security.ssl3.dhe_rsa_aes_128_sha', false);
+		user_pref('security.ssl3.dhe_rsa_aes_256_sha', false);
+	EOF
+
+    [[ ! $profile =~ ^(dev|lab)(-|$) ]] && cat >>user.js <<-EOF
+
 		user_pref('media.peerconnection.enabled', false);
 		user_pref('network.http.pipelining', true);
 		user_pref('network.http.proxy.pipelining', true);
 		user_pref('network.http.referer.XOriginPolicy', 1);
 		user_pref('network.http.referer.spoofSource', true);
-		user_pref('network.http.referer.trimmingPolicy', 2 );
-		user_pref('network.http.sendRefererHeader', 1);
 		user_pref('privacy.donottrackheader.enabled', true);
-		user_pref('security.ssl3.dhe_rsa_aes_128_sha', false);
-		user_pref('security.ssl3.dhe_rsa_aes_256_sha', false);
 	EOF
 
     [[ $profile = 'default' ]] && cat >>user.js <<-EOF
@@ -117,10 +119,10 @@ mkdir -p chrome
 cd chrome
 
 case $profile in
-    devel)  frame_color='#0099FF' ;;
-    lab)    frame_color='#FF2200' ;;
-    plain)  frame_color='#26BF30' ;;
-    *)      frame_color='#FF9900' ;;
+    dev?(-*))   frame_color='#0099FF' ;;
+    lab?(-*))   frame_color='#FF2200' ;;
+    plain?(-*)) frame_color='#26BF30' ;;
+    *)          frame_color='#FF9900' ;;
 esac
 
 if [[ ! -e userChrome.css ]]; then

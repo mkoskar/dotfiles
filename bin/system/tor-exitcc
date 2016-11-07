@@ -10,4 +10,4 @@ set -eu -o pipefail
 
     printf 'SIGNAL NEWNYM\r\n'
     printf 'QUIT\r\n'
-) | socat - TCP:127.0.0.1:9051 >/dev/null
+) | socat - UNIX-CONNECT:/var/run/tor/control.sock >/dev/null

@@ -3,13 +3,15 @@
 set -eu -o pipefail
 
 {
+    ifile=${XCOMPOSEFILE:-~/.XCompose}
     echo '--------------------------------------------------'
-    echo $'> ~/.XCompose:\n'
+    printf '> %s\n\n' "$ifile"
 
-    cat ~/.XCompose
+    cat "$ifile"
 
+    ifile="/usr/share/X11/locale/$LANG/Compose"
     echo $'\n--------------------------------------------------'
-    echo -e "> /usr/share/X11/locale/$LANG/Compose:\n"
+    printf '> %s\n\n' "$ifile"
 
-    grep '^\s*<' "/usr/share/X11/locale/$LANG/Compose" | sort
+    grep '^\s*<' "$ifile" | sort
 } | $PAGER

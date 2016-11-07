@@ -27,12 +27,12 @@ zmodload -F zsh/stat b:zstat
 
 autoload -Uz add-zsh-hook
 autoload -Uz compinit
+autoload -Uz copy-earlier-word
 autoload -Uz edit-command-line
 autoload -Uz run-help
 autoload -Uz url-quote-magic
 autoload -Uz zargs
 autoload -Uz zmv
-autoload -Uz copy-earlier-word
 
 setopt always_to_end
 setopt auto_cd
@@ -76,6 +76,7 @@ unsetopt hup
 # Aliases
 # ----------------------------------------
 
+unalias run-help &>/dev/null
 alias help='run-help'
 
 
@@ -175,9 +176,11 @@ bindkey -M vicmd "$k" end-of-line
 
 unset k
 
+bindkey '.' expand-dot-to-parent-directory-path
 bindkey '^G' send-break
-bindkey '^P' history-substring-search-up
-bindkey '^N' history-substring-search-down
+bindkey '^E' edit-command-line
+bindkey '^P' history-search-backward
+bindkey '^N' history-search-forward
 bindkey '^R' history-incremental-search-backward
 bindkey '^S' history-incremental-search-forward
 bindkey '^O' menu-complete
@@ -185,43 +188,43 @@ bindkey '^K' reverse-menu-complete
 bindkey '^W' backward-kill-word
 bindkey '^H' backward-delete-char
 bindkey '^?' backward-delete-char
-bindkey '^E' expand-word-alias
-bindkey '.' expand-dot-to-parent-directory-path
 bindkey '\e.' insert-last-word
+bindkey '\ee' expand-word-alias
 bindkey '\em' copy-earlier-word
+bindkey '^X^A' vi-cmd-mode
 
-bindkey -M vicmd '^G' send-break
-bindkey -M vicmd '^P' history-substring-search-up
-bindkey -M vicmd '^N' history-substring-search-down
-bindkey -M vicmd '^W' backward-kill-word
-bindkey -M vicmd '^E' expand-word-alias
-bindkey -M vicmd '^R' redo
 bindkey -M vicmd 'k' up-history
 bindkey -M vicmd 'j' down-history
-bindkey -M vicmd 'e' edit-command-line
 bindkey -M vicmd 'u' undo
+bindkey -M vicmd '^G' send-break
+bindkey -M vicmd '^E' edit-command-line
+bindkey -M vicmd '^P' history-search-backward
+bindkey -M vicmd '^N' history-search-forward
+bindkey -M vicmd '^W' backward-kill-word
+bindkey -M vicmd '^R' redo
+bindkey -M vicmd '\ee' expand-word-alias
 
 bindkey -M isearch . self-insert
 
 bindkey -M menuselect '^U' send-break
 
-bindkey -M viins -r '^X'
-bindkey -M viins -s '^Xp' '\eIpgx \e0'
-bindkey -M viins -s '^XP' '\eA | pg\eF|h'
-bindkey -M viins -s '^Xx' '\e0isudo \e0'
-bindkey -M viins -s '^Xh' "\eddihistory 25 | gi ''\ei"
-bindkey -M viins -s '^Xa' '\ea!!:*\e'
-bindkey -M viins -s '^Xl' '\ea!!:$\e'
-bindkey -M viins -s '^Xs' '\ea!!:gs/'
-bindkey -M viins -s '^Xc' '--color=auto '
+bindkey -r '^X'
+bindkey -s '^Xp' '^X^AIpgx '
+bindkey -s '^XP' '^X^AA | pg'
+bindkey -s '^Xx' '^X^A0isudo '
+bindkey -s '^Xh' "^X^Addihistory 25 | gi ''^X^Ai"
+bindkey -s '^Xa' '^X^Aa!!:*'
+bindkey -s '^Xl' '^X^Aa!!:$'
+bindkey -s '^Xs' '^X^Aa!!:gs/'
+bindkey -s '^Xc' '--color=auto '
 
 bindkey -M vicmd -r '^X'
-bindkey -M vicmd -s '^Xp' 'Ipgx \e0'
-bindkey -M vicmd -s '^XP' 'A | pg\eF|h'
-bindkey -M vicmd -s '^Xx' 'Isudo \e0'
-bindkey -M vicmd -s '^Xh' "ddihistory 25 | gi ''\ei"
-bindkey -M vicmd -s '^Xa' 'a!!:*\e'
-bindkey -M vicmd -s '^Xl' 'a!!:$\e'
+bindkey -M vicmd -s '^Xp' 'Ipgx '
+bindkey -M vicmd -s '^XP' 'A | pg'
+bindkey -M vicmd -s '^Xx' 'Isudo '
+bindkey -M vicmd -s '^Xh' "ddihistory 25 | gi ''^X^Ai"
+bindkey -M vicmd -s '^Xa' 'a!!:*'
+bindkey -M vicmd -s '^Xl' 'a!!:$'
 bindkey -M vicmd -s '^Xs' 'a!!:gs/'
 
 
@@ -378,6 +381,11 @@ if [[ -e "$__src" ]]; then
     . "$__src"
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=8,fg=15'
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=red,fg=15'
+
+    bindkey '^P' history-substring-search-up
+    bindkey '^N' history-substring-search-down
+    bindkey -M vicmd '^P' history-substring-search-up
+    bindkey -M vicmd '^N' history-substring-search-down
 fi
 unset __src
 

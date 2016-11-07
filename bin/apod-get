@@ -8,7 +8,7 @@ path="$HOME/.cache/apod/latest"
 
 case $prgname in
     apod-get)
-        curl -sL --create-dirs -o "$path" "$(apod)" || exit 1
+        curl -sSL --create-dirs -o "$path" "$(apod)" || exit 1
         ;;
     apod-bg)
         feh --bg-max --no-fehbg "$path"

@@ -13,7 +13,7 @@ download_rate = 0
 
 # Default dirs
 directory = ~/download/torrents
-session = ~/.rtorrent
+session = ~/.local/share/rtorrent
 
 # Watch dirs
 schedule = watch_directory,5,5,load_start=~/download/*.torrent

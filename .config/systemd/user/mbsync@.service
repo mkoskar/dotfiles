@@ -3,4 +3,4 @@ Description=%N service
 
 [Service]
 SyslogIdentifier=%N
-ExecStart=/bin/bash -c 'mbsync-bin "%i"'
+ExecStart=/usr/bin/bash -c 'mbsync-bin %i'

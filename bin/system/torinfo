@@ -9,10 +9,6 @@ echo $'> Config:\n'
     printf 'AUTHENTICATE\r\n'
     printf 'GETINFO config-text\r\n'
     printf 'QUIT\r\n'
-) | socat - TCP:127.0.0.1:9051
+) | socat - UNIX-CONNECT:/var/run/tor/control.sock
 
-echo $'\n--------------------------------------------------'
-echo $'> Exit:\n'
-
-torify ipinfo
 echo

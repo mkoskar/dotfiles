@@ -3,4 +3,4 @@
 set -eu
 
 src=${1:-$(xclip -o | head -c 255)}
-curl -sL --proxy 'socks5h://127.0.0.1:9050' -w '%{url_effective}\n' -o /dev/null "$src"
+curl -sSL --proxy 'socks5h://127.0.0.1:9050' -w '%{url_effective}\n' -o /dev/null "$src"

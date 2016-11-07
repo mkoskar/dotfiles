@@ -3,4 +3,4 @@
 set -eu -o pipefail
 
 iface=${1:-eth0}
-gpg -d ~/.netap.gpg | sudo create_ap -w 2 wlan0 "$iface"
+gpg -d ~/.secrets/netap.gpg | sudo create_ap -w 2 wlan0 "$iface"

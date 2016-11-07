@@ -10,4 +10,4 @@ cd "$tmpdir"
 
 sudo acpidump -b
 iasl -d ./*.dat &>/dev/null
-head -n-0 ./*.dsl | $PAGER
+head -vn-0 ./*.dsl | $PAGER

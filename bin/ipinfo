@@ -21,7 +21,7 @@ fi
 
 if (( $# )); then
     ip=$(resolve "$1")
-    torify curl -sL "http://ipinfo.io/$ip" | jshon -QC
+    torify curl -sSL "http://ipinfo.io/$ip" | jshon -QC
 else
-    curl -sL 'http://ipinfo.io/' | jshon -QC
+    curl -sSL 'http://ipinfo.io/' | jshon -QC
 fi

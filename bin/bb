@@ -135,7 +135,9 @@ done <<-EOF
     linux-repos         b https://git.kernel.org/cgit/
     linux-specs         b http://refspecs.linuxfoundation.org/
     linux-src           b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/?id=$kernel_version
+    linux-sysctl        b file:///lib/modules/$kernel_release/build/Documentation/sysctl
     lists               b http://gmane.org/find.php
+    lua                 b https://www.lua.org/manual/
     material-design     b https://getmdl.io/
     maven               b http://maven.apache.org/plugins/index.html
     maven-central       b https://search.maven.org/
@@ -145,6 +147,7 @@ done <<-EOF
     mime                b https://www.iana.org/assignments/media-types/media-types.xhtml
     mongodb             b http://docs.mongodb.org/manual/reference/
     morse-nato          b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
+    mozilla-repos       b https://hg.mozilla.org/
     music               sr musicbrainz {}
     mutt                b file:///usr/share/doc/mutt/manual.html
     mutt-patterns       b file:///usr/share/doc/mutt/manual.html#patterns
@@ -159,13 +162,12 @@ done <<-EOF
     ntrs                sr ntrs {}
     oracle-plsql        b https://docs.oracle.com/database/121/LNPLS/toc.htm
     oracle-sql          b https://docs.oracle.com/database/121/SQLRF/toc.htm
+    pango-markup        b https://developer.gnome.org/pango/stable/PangoMarkupFormat.html
     patents             b https://patents.google.com/
     pep                 b https://www.python.org/dev/peps/
     perf                b http://www.brendangregg.com/perf.html
     perl                b http://perldoc.perl.org/
     pkg                 sr archpkg {}
-    playlist            playlist {}
-    playlist-1          playlist 1
     posix               b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/index.html
     posix-defs          b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/contents.html
     posix-env           b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap08.html
@@ -230,6 +232,7 @@ done <<-EOF
     weechat-changes     b https://github.com/weechat/weechat/blob/master/ChangeLog.adoc
     yaml                b http://yaml.org/refcard.html
     yt                  sr youtube {}
+    zsh                 b file:///usr/share/doc/zsh/html/index.html
 
     fahrenheit          sr google {} fahrenheit in celsius
     foot                sr google {} ft in m

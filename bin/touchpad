@@ -6,13 +6,12 @@ prgname=${0##*/}
 
 export LC_ALL=C
 
-name='SynPS/2 Synaptics TouchPad'
+name='pointer:SynPS/2 Synaptics TouchPad'
 prop='Device Enabled'
-id=$(xinput list | grep -F "$name" | xinput-ids | head -n1)
 
 state() {
     declare -i val=0
-    val=$(xinput list-props "$id" | awk -F: "/^\s*$prop \(.*\):/ {print \$2}")
+    val=$(xinput list-props "$name" | awk -F: "/^\s*$prop \(.*\):/ {print \$2}")
     echo $((val > 0))
 }
 
@@ -37,5 +36,5 @@ case ${1-} in
         ;;
 esac
 
-xinput set-prop "$id" "$prop" "$valset"
+xinput set-prop "$name" "$prop" "$valset"
 status-osd touchpad

@@ -16,4 +16,4 @@ case $prgname in
         ;;
 esac
 
-/usr/bin/msmtp "${opts[@]}" "$@"
+/usr/bin/msmtp -C ~/.config/msmtprc "${opts[@]}" "$@"

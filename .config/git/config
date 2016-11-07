@@ -9,9 +9,9 @@
     dfc = diff --cached
     f = fetch --all
     k = !gitk
-    lg = !git lg1
-    lg1 = log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(bold white)— %an%C(reset)%C(bold yellow)%d%C(reset)' --abbrev-commit --date=relative
-    lg2 = log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(bold white)— %an%C(reset)' --abbrev-commit
+    lg = !git lg1 -100
+    lg1 = log --graph --format=lg1
+    lg2 = log --graph --format=lg2
     lga = !git lg --all
     ls = ls-files
     ls-untracked = ls-files --others
@@ -28,12 +28,10 @@
 
 [commit]
     gpgsign = true
-    template = ~/.gitmessage
+    template = ~/.config/git/commit.template
 
 [core]
     ;autocrlf = input
-    attributesfile = ~/.gitattributes
-    excludesfile = ~/.gitexcludes
 
 [credential]
     helper = cache --timeout=3600
@@ -58,6 +56,10 @@
 
 [mergetool "custom"]
     cmd = mergetool "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+
+[pretty]
+    lg1 = format:%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(bold white)— %an%C(reset)%C(bold yellow)%d%C(reset)
+    lg2 = format:%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset) %C(bold white)— %an%C(reset)
 
 [push]
     default = nothing

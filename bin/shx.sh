@@ -194,7 +194,7 @@ alias cower='cower --color=auto'
 alias cp='cp -ai --reflink=auto'
 alias date0='date -Ins'
 alias dd='dd status=progress'
-alias df='df -x tmpfs -x devtmpfs'
+alias df='df -h -x tmpfs -x devtmpfs'
 alias dff='df -h'
 alias dirs='dirs -v'
 alias dmesg='dmesg -HTx'
@@ -204,7 +204,6 @@ alias feh='feh -F'
 alias fortune='fortune -c'
 alias free='free -h'
 alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
-alias h='fc 1 -1'
 alias headcat='head -vn-0'
 alias info='info --vi-keys'
 alias journal-vaccum='journalctl --vacuum-size=100M --vacuum-files=1'
@@ -214,7 +213,7 @@ alias lsblk='lsblk -o NAME,KNAME,MAJ:MIN,ROTA,RM,RO,TYPE,SIZE,FSTYPE,MOUNTPOINT,
 alias lsdiff='lsdiff -s'
 alias ltime='date +%T'
 alias mnt='findmnt'
-alias moon='curl -sL http://wttr.in/moon | head -n-4'
+alias moon='curl -sSL http://wttr.in/moon | head -n-4'
 alias mpv-debug='command mpv --msg-level=all=debug'
 alias mpv-verbose='command mpv --msg-level=all=v'
 alias mutt-debug='mutt -d 2'
@@ -241,7 +240,7 @@ alias sudo-on='sudo -v'
 alias top='top -d 1'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias watch='watch -n 1 -t -c'
-alias wi='curl -sL http://wttr.in/ | head -n-3'
+alias wi='curl -sSL http://wttr.in/ | head -n-3'
 alias youtube-dl-playlist="youtube-dl --yes-playlist -o '~/download/_youtube-dl/%(playlist)s/[%(playlist_index)s] %(title)s'"
 alias youtube-dl-stdout='youtube-dl -o -'
 
@@ -285,6 +284,10 @@ fn() {
         [ "$BASH_VERSION" ] && \
             (shopt -s extdebug; printf '# '; declare -F -- "$1")
     fi
+}
+
+h() {
+    fc -- "${1:-1}" -1
 }
 
 i() {

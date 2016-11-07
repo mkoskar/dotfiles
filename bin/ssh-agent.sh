@@ -2,7 +2,7 @@
 # :Compatibility: POSIX
 
 [ "$SSH_TTY" ] && return
-command -v ssh-agent &>/dev/null || return
+hash ssh-agent &>/dev/null || return
 
 info="$HOME/.ssh/ssh-agent-info"
 

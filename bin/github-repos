@@ -9,4 +9,4 @@ if (( ! $# )); then
     exit 2
 fi
 
-curl -sL "https://api.github.com/users/$1/repos?per_page=500" | jq -r '.[].html_url'
+curl -sSL "https://api.github.com/users/$1/repos?per_page=500" | jq -r '.[].html_url'

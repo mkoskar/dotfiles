@@ -25,7 +25,6 @@ $include ~/.inputrc.esc
 "\C-k": menu-complete-backward
 "\C-w": backward-kill-word
 
-"\e0": digit-argument
 "\e1": digit-argument
 "\e2": digit-argument
 "\e3": digit-argument
@@ -38,24 +37,22 @@ $include ~/.inputrc.esc
 "\e-": digit-argument
 
 "\C-x":
-"\C-xp": "\eIpgx \e0"
-"\C-xP": "\eA | pg\eF|h"
 
-"\C-x\C-xf": dump-functions
+"\C-x\C-a": vi-movement-mode
 "\C-x\C-xv": dump-variables
+"\C-x\C-xf": dump-functions
 "\C-x\C-xm": dump-macros
 
-$if bash
-    "\C-xx": "\e0isudo \e0"
-    "\C-xh": "\eddihistory 25 | gi ''\ei"
-    "\C-xa": "\ea!!:*\e"
-    "\C-xl": "\ea!!:$\e"
-    "\C-xs": "\ea!!:gs/"
-    "\C-xc": "--color=auto "
-$endif
+"\C-xp": "\C-x\C-aIpgx "
+"\C-xP": "\C-x\C-aA | pg"
 
-$if python
-    "\C-xh": "\eddihelp()\ei"
+$if bash
+    "\C-xx": "\C-x\C-a0isudo "
+    "\C-xh": "\C-x\C-addihistory 25 | gi ''\C-x\C-ai"
+    "\C-xa": "\C-x\C-aa!!:*"
+    "\C-xl": "\C-x\C-aa!!:$"
+    "\C-xs": "\C-x\C-aa!!:gs/"
+    "\C-xc": "--color=auto "
 $endif
 
 set keymap vi-command
@@ -68,17 +65,18 @@ $include ~/.inputrc.esc
 "\C-w": backward-kill-word
 
 "\C-x":
-"\C-xp": "Ipgx \e0"
-"\C-xP": "A | pg\eF|h"
+
+"\C-x\C-xv": dump-variables
+"\C-x\C-xf": dump-functions
+"\C-x\C-xm": dump-macros
+
+"\C-xp": "Ipgx "
+"\C-xP": "A | pg"
 
 $if bash
-    "\C-xx": "Isudo \e0"
-    "\C-xh": "ddihistory 25 | gi ''\ei"
-    "\C-xa": "a!!:*\e"
-    "\C-xl": "a!!:$\e"
+    "\C-xx": "Isudo "
+    "\C-xh": "ddihistory 25 | gi ''\C-x\C-ai"
+    "\C-xa": "a!!:*"
+    "\C-xl": "a!!:$"
     "\C-xs": "a!!:gs/"
-$endif
-
-$if python
-    "\C-xh": "ddihelp()\ei"
 $endif

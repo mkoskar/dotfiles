@@ -46,7 +46,7 @@ if [[ ! $profile ]]; then
     filter='^(?!skel$).*$'
     if [[ $bin_name = 'chromium' ]]; then
         profiles=(
-            devel
+            dev
             lab
             plain
         )
@@ -77,7 +77,7 @@ if [[ ! -e $path && $profile != 'skel' ]]; then
         cd "$path/theme"
 
         case $profile in
-            devel)          frame_color='[0, 153, 255]' ;;
+            dev)            frame_color='[0, 153, 255]' ;;
             lab)            frame_color='[255, 34, 0]'  ;;
             plain)          frame_color='[38, 191, 48]' ;;
             proxy-socks)    frame_color='[0, 119, 119]' ;;

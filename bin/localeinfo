@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+{
+    echo
+    locale
+
+    while read -r cat; do
+        echo $'\n--------------------------------------------------'
+        echo -e "> $cat:\n"
+        locale -k "$cat"
+    done <<-EOF
+		LC_ADDRESS
+		LC_COLLATE
+		LC_CTYPE
+		LC_IDENTIFICATION
+		LC_MEASUREMENT
+		LC_MESSAGES
+		LC_MONETARY
+		LC_NAME
+		LC_NUMERIC
+		LC_PAPER
+		LC_TELEPHONE
+		LC_TIME
+	EOF
+
+    echo
+} | $PAGER

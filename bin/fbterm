@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-exec /usr/bin/fbterm env 'TERM=fbterm' "$SHELL" "$@"

@@ -24,12 +24,12 @@ if [[ $(hostname-label) ]]; then
 fi
 
 __prompt_command() {
-    history -a
     local pstatus=("${PIPESTATUS[@]}")
     __statstr=
     if (( ${#pstatus[@]} > 1 )); then
         __statstr=":${pstatus[0]}$(printf '|%d' "${pstatus[@]:1}")"
     fi
+    history -a
 }
 PROMPT_COMMAND='__prompt_command'
 
@@ -39,13 +39,14 @@ shopt -s autocd checkjobs checkwinsize cmdhist dotglob gnu_errfmt histappend \
 # some can't detect editing-mode set in ~/.inputrc early enough (e.g., fzf)
 set -o vi
 
-bind -m vi-insert '"\C-e": shell-expand-line'
+bind -m vi-insert '"\C-e": edit-and-execute-command'
 bind -m vi-insert '"\e\t": dynamic-complete-history'
-bind -m vi-insert '"\ee": history-and-alias-expand-line'
+bind -m vi-insert '"\ee": shell-expand-line'
 bind -m vi-insert '"\ei": complete-filename'
 
-bind -m vi-command '"\C-e": shell-expand-line'
-bind -m vi-command '"\ee": history-and-alias-expand-line'
+bind -m vi-command '"\C-e": edit-and-execute-command'
+bind -m vi-command '"\ee": shell-expand-line'
+bind -m vi-command -r 'v'
 
 complete -o nospace -A function fn
 complete -o nospace -c i

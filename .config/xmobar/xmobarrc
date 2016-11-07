@@ -13,6 +13,26 @@ Config { font = "xft:local_statusbar"
        , borderWidth = 4
        , commands = [ Run UnsafeStdinReader
                     , Run CommandReader "statusbar-mail" "mail"
+                    , Run Cpu
+                        [ "-t", "<total>"
+                        , "-L", "10"
+                        , "-n", "#efefef", "-H", "30"
+                        , "-h", "#ff5555"
+                        , "-m", "2"
+                        , "-c", "0"
+                        ] 30
+                    , Run Memory
+                        [ "-t", "<usedratio>"
+                        , "-L", "10"
+                        , "-n", "#efefef", "-H", "50"
+                        , "-h", "#ff5555"
+                        ] 50
+                    , Run Wireless "wlan0"
+                        [ "-t", "¡<quality>"
+                        , "-l", "#ff5555", "-L", "30"
+                        , "-n", "#feed6a", "-H", "60"
+                        , "-h", "#efefef"
+                        ] 50
                     , Run Kbd
                         [ ("us(cz_sk_de)", "us")
                         , ("sk(qwerty)", "<fc=#feed6a>sk</fc>")
@@ -25,24 +45,6 @@ Config { font = "xft:local_statusbar"
                         , "--"
                         , "-L", "0"
                         , "-m", "#55ff55", "-H", "12"
-                        , "-h", "#ff5555"
-                        ] 50
-                    , Run Wireless "wlan0"
-                        [ "-t", "¡<quality>"
-                        , "-l", "#ff5555", "-L", "30"
-                        , "-n", "#feed6a", "-H", "60"
-                        , "-h", "#efefef"
-                        ] 50
-                    , Run Cpu
-                        [ "-t", "<total>"
-                        , "-L", "10"
-                        , "-n", "#efefef", "-H", "30"
-                        , "-h", "#ff5555"
-                        ] 30
-                    , Run Memory
-                        [ "-t", "<usedratio>"
-                        , "-L", "10"
-                        , "-n", "#efefef", "-H", "50"
                         , "-h", "#ff5555"
                         ] 50
                     , Run Date "%a❘%d.%m❘%H:%M" "date" 600

@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-sed -nr '
-s/^.*[[:blank:]]+id=([[:digit:]]+)[[:blank:]]+.*$/\1/
-t Match
-d
-:Match p
-'

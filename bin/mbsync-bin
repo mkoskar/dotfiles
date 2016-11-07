@@ -18,4 +18,4 @@ cleanup() {
 }
 trap cleanup EXIT
 
-/usr/bin/mbsync -q "$1"
+/usr/bin/mbsync -q -c ~/.config/mbsyncrc "$1"
