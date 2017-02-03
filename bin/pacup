@@ -12,4 +12,3 @@ pkgs=$(pacman -Qqdt)
 [[ $pkgs ]] && sudo pacman -Rcsn - <<<"$pkgs"
 
 echo
-exit 0

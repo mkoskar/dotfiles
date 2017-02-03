@@ -18,11 +18,11 @@ echo "$path"
 
 if manp=$(man -w "$path") && \
     [[ $manp != "$path" ]]; then
-    man "$path" | sed -nr '/^NAME/{n;s/^\s*//p}'
+    man "$path" | sed -nr '/^NAME/{n; s/^\s*//p}'
 else
     if manp=$(man -w "$basename") && \
         [[ $manp != "$basename" ]]; then
-        man "$basename" | sed -nr '/^NAME/{n;s/^\s*//p}'
+        man "$basename" | sed -nr '/^NAME/{n; s/^\s*//p}'
     fi
 fi
 

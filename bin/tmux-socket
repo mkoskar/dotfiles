@@ -2,15 +2,7 @@
 
 set -eu
 
-prgname=${0##*/}
-
 [[ ${TMUX-} ]] || exit 1
 
 IFS=, read -ra var <<<"$TMUX"
-socket=${var[0]##*/}
-
-if [[ $prgname = 'tmux-socket-label' ]]; then
-    [[ $socket = 'default' ]] || printf '%s ' "$socket"
-else
-    printf '%s\n' "$socket"
-fi
+printf '%s\n' "${var[0]##*/}"

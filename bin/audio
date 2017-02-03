@@ -41,7 +41,8 @@ case ${1-} in
 esac
 
 while true; do
-    printf '\e[1G%s\e[0K' "$(status audio)"
+    stat=$(status audio)
+    printf '\e[1G%s\e[0K' "$stat"
 
     read -N1 -rs c
     case $c in

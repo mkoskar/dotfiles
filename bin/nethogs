@@ -5,7 +5,8 @@ shopt -s nullglob
 
 ifaces=()
 for dev in /sys/class/net/*; do
-    [[ $(<"$dev/operstate") = 'up' ]] || continue
+    operstate=$(<"$dev/operstate")
+    [[ $operstate = 'up' ]] || continue
     ifaces+=("${dev##*/}")
 done
 

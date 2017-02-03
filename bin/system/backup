@@ -9,56 +9,64 @@ fi
 
 prgname=${0##*/}
 
-part=$(realpath '/dev/disk/by-uuid/a10fd9bc-f55c-4d83-8bb7-a0345da60247')
-disk=${part%%[0-9]}
+part='/dev/disk/by-uuid/a10fd9bc-f55c-4d83-8bb7-a0345da60247'
 fs='/dev/disk/by-uuid/95908df8-35c5-4f39-a57b-ca0a091b4eda'
 target='/mnt/backups'
 mapper='/dev/mapper/backups'
+
+log_prefix="$prgname $$"
+log() { printf '%s\n' "$log_prefix: $*"; } >&2
 
 # backup-setup
 
 if [[ $prgname = 'backup-setup' ]]; then
     if [[ ! -e $part ]]; then
-        echo 'target partition missing' >&2
+        log 'target partition missing'
         exit 1
     fi
 
     if [[ ! -e $fs ]]; then
-        cryptsetup luksOpen "$part" backups
+        cryptsetup open --type luks "$part" backups
     fi
 
-    if [[ $(realpath -- "$mapper") != "$(realpath -- "$fs")" ]]; then
-        echo "$mapper: mapper misconfigured" >&2
+    fs_rp=$(realpath -- "$fs")
+    mapper_rp=$(realpath -- "$mapper")
+    if [[ $fs_rp != "$mapper_rp" ]]; then
+        log "$mapper: mapper misconfigured"
         exit 1
     fi
 
     mkdir -p "$target"
-
-    if ! mounted "$target" "$mapper" >/dev/null; then
-        mount "$fs" "$target"
+    if ! findmnt -M "$target" -S "$mapper" &>/dev/null; then
+        mount "$mapper" "$target"
     fi
     exit
 fi
 
 # backup
 
-log_prefix=$$
-log() { printf '%s\n' "$log_prefix: $*"; } >&2
-
 cleanup() { log "exiting ($?)"; }
 trap cleanup EXIT
 
-loghome='/var/log/local'
-mkdir -p "$loghome"
+logdir='/var/log/local'
+mkdir -p "$logdir"
 
-exec 8>>"$loghome/backup.log"
+exec 8>>"$logdir/backup.log"
 if [[ -t 2 ]]; then
     exec &> >(tee -a /dev/fd/8 >&2)
 else
     exec >&8 2>&1
 fi
 
-log "-- $(date -R)"
+exec 8>/var/run/backup.lock
+if ! flock -n 8; then
+    log "$target: full-backup in progress"
+    exit 3
+fi
+
+ts_begin=$(date +%s)
+ts_begin_=$(date +%F.%s -d "@$ts_begin")
+log "-- $ts_begin_"
 
 if [[ ! -e $part ]]; then
     log "$target: target partition missing"
@@ -70,28 +78,22 @@ if [[ ! -d $target || ! -w $target ]]; then
     exit 11
 fi
 
-if [[ $(realpath -- "$mapper") != "$(realpath -- "$fs")" ]]; then
+fs_rp=$(realpath -- "$fs")
+mapper_rp=$(realpath -- "$mapper")
+if [[ $fs_rp != "$mapper_rp" ]]; then
     log "$mapper: mapper misconfigured"
     exit 12
 fi
 
-if ! mounted "$target" "$mapper" >/dev/null; then
+if ! findmnt -M "$target" -S "$mapper" &>/dev/null; then
     log "$target: mountpoint misconfigured"
     exit 12
 fi
 
-exec 8>/var/run/backup.lock
-if ! flock -n 8; then
-    log "$target: full-backup in progress"
-    exit 3
-fi
-
-t_begin=$(date +%s)
-
 mkdir -p "$target/full-backup"
 rsync -aAHSX / "$target/full-backup/master" \
       --delete \
-      --backup --backup-dir=../"$(date +%F.%s)" \
+      --backup "--backup-dir=../$ts_begin_" \
       --exclude-from=- <<-EOF
 	*/lost+found
 	/dev/*
@@ -112,8 +114,9 @@ rsync -aAHSX / "$target/full-backup/master" \
 	/var/lib/pacman/sync/*
 EOF
 
-t_end=$(date +%s)
-log "total time: $(((t_end-t_begin)/60)) minutes, $(((t_end-t_begin)%60)) seconds"
+ts_end=$(date +%s)
+log "total time: $(((ts_end-ts_begin)/60)) minutes, $(((ts_end-ts_begin)%60)) seconds"
 
-echo 'setting standby' >&2
-hdparm -S 12 "$disk" &>/dev/null
+log 'setting standby'
+part_rp=$(realpath "$part")
+hdparm -S 12 "${part_rp%%[0-9]}" &>/dev/null

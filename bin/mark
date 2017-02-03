@@ -3,20 +3,20 @@
 set -eu -o pipefail
 shopt -s nullglob
 
+prgname=${0##*/}
+
 input=$*
 (( $# )) || input=$(head -c 255)
 [[ $input ]] || exit 1
 
-prgname=${0##*/}
-subname=${prgname##mark-}
-
 cd ~/projects/notes/src/02-marks
 
+subname=${prgname##mark-}
 outs=(
     "$subname.rst"
     "$subname"-*.rst
 )
-out="${outs[0]}"
+out=${outs[0]}
 
 case $prgname in
     mark-path)

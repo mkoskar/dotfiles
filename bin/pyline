@@ -1,10 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from signal import signal, SIGINT, SIG_DFL
+from sys import stderr
+import os
 import sys
 
-i = 0
-for line in sys.stdin:
-    line = line[:-1]
-    exec(sys.argv[1])
-    i += 1
+try:
+    i = 0
+    for line in sys.stdin:
+        line = line[:-1]
+        exec(sys.argv[1])
+        i += 1
+except Exception as e:
+    print('{}: error: {}'.format('pyline', e), file=stderr)
+    exit(1)
+except KeyboardInterrupt:
+    signal(SIGINT, SIG_DFL)
+    os.kill(os.getpid(), SIGINT)

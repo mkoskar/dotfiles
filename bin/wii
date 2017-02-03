@@ -23,7 +23,7 @@ Sun:                    %s / %S
 get() {
     local opts opts_digest cache
     opts=(-m -l "$1")
-    opts_digest=$(IFS=$'\n'; md5sum <<<"${opts[*]}" | awk '{print $1}')
+    read -ra opts_digest < <(IFS=$'\n'; md5sum <<<"${opts[*]}")
     cache="$HOME/.cache/shaman-${opts_digest: -7}.json"
     [[ -e $cache ]] || touch "$cache"
     shaman "${opts[@]}" -f "$format" -c "$cache"

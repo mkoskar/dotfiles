@@ -37,7 +37,8 @@ case $bin in
         exec "$bin" -n "$name" -e "$@"
         ;;
     termite)
-        exec "$bin" --name "$name" -e "$(shell-escape "$@")"
+        cmd=$(shell-escape "$@")
+        exec "$bin" --name "$name" -e "$cmd"
         ;;
     urxvt | urxvtc)
         exec "$bin" -name "$name" -e "$@"

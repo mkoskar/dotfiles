@@ -4,7 +4,8 @@ set -eu -o pipefail
 
 cd ~/tmp
 
-g="$(slop -n -f '%g\n' --opengl --magnify)"
-maim -g "$g" "screenshot-$(date +%F.%s).png"
+g=$(slop -n -f '%g\n' --opengl --magnify)
+ts=$(date +%F.%s)
+maim -g "$g" "screenshot-$ts.png"
 
-find -maxdepth 1 -type f -name 'screenshot-*' | sort -r | sxiv -io
+find . -maxdepth 1 -type f -name 'screenshot-*' | sort -r | sxiv -io

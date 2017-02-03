@@ -52,9 +52,6 @@ are listed below.
 `grep-nonascii <bin/grep-nonascii>`_
     Filter out lines containing non-ASCII characters.
 
-`mounted <bin/system/mounted>`_
-    Is device mounted on mountpoint of some type with a specific mount option?
-
 `mtp <bin/mtp>`_
     Simple ``jmtpfs`` frontend.
 
@@ -115,12 +112,6 @@ are listed below.
 
 `tfont <bin/tfont>`_
     Set passed font or scroll through predefined list.
-
-`tor-exitcc <bin/tor-exitcc>`_
-    Request Tor exit node by passed country code.
-
-`torinfo <bin/torinfo>`_
-    Print Tor config and current exit node.
 
 `umountall <bin/system/umountall>`_
     Recursively umount and disassemble a device chain.

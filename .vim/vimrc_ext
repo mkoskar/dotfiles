@@ -190,7 +190,7 @@ nnoremap <silent> <Leader>Sr :SyntasticReset<CR>
 
 let g:syntastic_python_flake8_args='--ignore=E501,E128'
 let g:syntastic_sh_checkers = ['shellcheck']
-let g:syntastic_sh_shellcheck_args='--exclude=SC1090,SC1091,SC2032,SC2033,SC2088,SC2139,SC2148'
+let g:syntastic_sh_shellcheck_args='--exclude=SC1007,SC1090,SC1091,SC2015,SC2032,SC2033,SC2088,SC2094,SC2139,SC2148'
 
 
 " tagbar

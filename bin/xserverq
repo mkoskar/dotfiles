@@ -3,6 +3,7 @@
 # Get information about X server (based on DISPLAY environment variable).
 
 set -eu
+shopt -s inherit_errexit
 
 prgname=${0##*/}
 
@@ -37,7 +38,7 @@ shift $((OPTIND-1))
 
 xserver_dispno() {
     xset q &>/dev/null || exit 1
-    [[ "$DISPLAY" =~ ^:([0-9]+)(\.[0-9]+)?$ ]] || exit 1
+    [[ $DISPLAY =~ ^:([0-9]+)(\.[0-9]+)?$ ]] || exit 1
     printf '%d\n' "${BASH_REMATCH[1]}"
 }
 

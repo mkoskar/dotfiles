@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+
+#if git rev-parse -q --verify HEAD &>/dev/null; then
+#    against='HEAD'
+#else
+#    against=$(git hash-object -t tree /dev/null)
+#fi
+#git diff-index --check --cached "$against"
+
+GIT_PAGER= git diff --check --cached

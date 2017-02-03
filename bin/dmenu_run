@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
-set -e -o pipefail
+set -eu -o pipefail
 
-eval exec "$(dmenu_path | dmenu1)"
+cmd=$(dmenu_path | dmenu1)
+eval exec "$cmd"

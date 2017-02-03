@@ -3,6 +3,6 @@
 set -e -o pipefail
 
 prgname=${0##*/}
-subname=${prgname##markx}
 
+subname=${prgname##markx}
 xselmenu "$prgname" | mark"$subname"

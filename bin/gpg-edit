@@ -11,7 +11,7 @@ fi
 
 file=$(realpath -- "$1")
 basename=${file##*/}
-path_hash=$(sha1sum <<<"$file" | awk '{print $1}')
+read -ra path_hash < <(sha1sum <<<"$file")
 
 if [[ ! -f $file ]]; then
     echo 'regular file expected' >&2

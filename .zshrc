@@ -42,7 +42,6 @@ setopt brace_ccl
 setopt cdable_vars
 setopt combining_chars
 setopt complete_in_word
-setopt extended_glob
 setopt extended_history
 setopt hist_expire_dups_first
 setopt hist_find_no_dups
@@ -55,6 +54,7 @@ setopt inc_append_history
 setopt interactive_comments
 setopt long_list_jobs
 setopt multios
+setopt nonomatch
 setopt notify
 setopt path_dirs
 setopt prompt_subst
@@ -99,7 +99,7 @@ WORDCHARS='!#$%&()*-;<>?[]^_{}~'
 ZLE_SPACE_SUFFIX_CHARS='&|'
 
 PROMPT='$__vimode%?$__statstr:${BASEDIR:+(${BASEDIR##*/}):}%1~%(!.#.$) '
-if [[ $(hostname-label) ]]; then
+if [[ $HOST != 'mirci' ]]; then
     PROMPT='$__vimode%?$__statstr:%m:${BASEDIR:+(${BASEDIR##*/}):}%1~%(!.#.$) '
 fi
 
@@ -321,7 +321,7 @@ function _pacl {
     fi
     reply=(${${packages#/var/lib/pacman/local/}%-*-*})
 }
-compctl -K _pacl pacl pacd pacp pacw paci pkgmark
+compctl -K _pacl pacl pacd pacp pacw paci paccheck pkgmark
 
 function _mkvirtualenv-pyenv {
     local -a versions

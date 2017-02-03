@@ -6,31 +6,38 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [-e] [-d|-r]
-
-	Blame by "install size".
+	usage: $prgname [-e] [-d|-r|-s|-t]
 
 	  -e    - restrict to explicitly installed packages
 	  -d    - blame by "depends on"
 	  -r    - blame by "required by"
+	  -s    - blame by "install size" (default)
+	  -t    - blame by "install date"
 	EOF
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
 cmd="expac -H M '%w %m %n'"
+sargs=(-k2,2nr)
 
 declare -i explicit=0
-while getopts 'edrh' opt; do
+while getopts 'edrsth' opt; do
     case $opt in
         e)
             explicit=1
             ;;
         d)
-            cmd="expac -l ' ' '%w %n %E' | awk '{print \$1, NF - 2, \$2}'"
+            cmd="expac '%w %n %E' | awk '{print \$1, NF - 2, \$2}'"
             ;;
         r)
-            cmd="expac -l ' ' '%w %n %N' | awk '{print \$1, NF - 2, \$2}'"
+            cmd="expac '%w %n %N' | awk '{print \$1, NF - 2, \$2}'"
+            ;;
+        s)
+            ;;
+        t)
+            cmd="expac --timefmt='%F %T' '%w %l %n'"
+            sargs=(-k2,3r)
             ;;
         h)
             usage
@@ -49,4 +56,4 @@ eval "$cmd" | awk -v explicit=$explicit '
     $1=substr($1, 1, 1)
     if ($1 == "e" || !explicit) print $0
 }
-' | sort -k2nr
+' | sort -s "${sargs[@]}"

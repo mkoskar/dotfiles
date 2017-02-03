@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s nullglob
 
 prgname=${0##*/}
 
 _usage() {
-    echo "usage: $prgname block-device-name (e.g., sda, dm-0)"
+    echo "usage: $prgname block-device-name (e.g., sda, dm-0) or device itself"
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
@@ -26,68 +27,68 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-# teardown a single device by node name
-#   $1: device node name e.g., md0, dm-2
 stop_device() {
-    local devtype devname
+    local devname=$1 devtype dmname
+    local dev="/dev/$devname"
 
-    # the device must still be active
-    [[ -e $1 ]] || return 1
+    [[ -e $devname ]] || return 1
 
-    # this can sometimes fail on stopped md devices, when the
-    # sysfs node doesn't go away as quickly as i'd like it to.
-    devtype=$(lsblk -drno TYPE "/dev/$1") || return 1
+    devtype=$(lsblk -drno TYPE "$dev" 2>/dev/null) || return 1
     case $devtype in
-        crypt | lvm | dm)
-            read -r devname <"$1/dm/name"
-            dmsetup remove "$devname"
+        crypt)
+            read -r dmname <"$devname/dm/name"
+            cryptsetup remove "$dmname"
+            ;;
+        lvm | dm)
+            read -r dmname <"$devname/dm/name"
+            dmsetup --noudevsync remove "$dmname"
             ;;
         raid*)
-            # wait for arrays with external metadata to be marked as
-            # clean. unfortunately, there isn't a whole lot we can do
-            # if this fails, and the array may need a full rebuild on
-            # the next reboot.
-            IFS=: read -r metadata _ <"$1/md/metadata_version"
+            IFS=: read -r metadata _ <"$devname/md/metadata_version"
             if [[ $metadata = 'external' ]]; then
-                mdadm --wait-clean "/dev/$1"
+                mdadm --wait-clean "$dev"
             fi
-            mdadm --stop "/dev/$1"
+            mdadm --stop "$dev"
             ;;
         dmraid)
-            read -r devname <"$1/dm/name"
-            dmraid -an "$devname"
+            read -r dmname <"$devname/dm/name"
+            dmraid -an "$dmname"
             ;;
-        # silently ignore unstacked devices
+        loop)
+            losetup -d "$devname"
+            ;;
     esac
 }
 
-# recursively umount and disassemble a device chain
-#   $1: device node name e.g., md0, dm-2
 umount_device() {
-    local part holder
-    local dev="/dev/$1" dev_mapper=''
+    local devname=$1 devtype type name holder
+    local dev="/dev/$devname"
 
-    local dm_name_path="$1/dm/name"
-    [[ -e $dm_name_path ]] && dev_mapper="/dev/mapper/$(<"$dm_name_path")"
+    [[ -e $devname ]] || return 1
 
-    [[ -e $1 ]] || return 1
-
-    if [[ $(lsblk -drno TYPE -- "$dev") = 'disk' ]]; then
-        for part in $(lsblk -rno TYPE,NAME -- "$dev" | awk '/^part / {print $2}'); do
-            umount_device "$part"
-        done
+    devtype=$(lsblk -drno TYPE "$dev" 2>/dev/null) || return 1
+    if [[ $devtype = 'disk' ]]; then
+        while read -r type name; do
+            [[ $type = 'part' ]] || continue
+            umount_device "$name"
+        done < <(lsblk -rno TYPE,NAME "$dev")
     fi
 
-    for holder in "$1/holders/"*; do
-        [[ -e $holder ]] && umount_device "${holder##*/}"
+    for holder in "$devname/holders/"*; do
+        umount_device "${holder##*/}"
     done
 
-    if grep -qE "^($dev|$dev_mapper) " /proc/mounts; then
-        umount -A -- "$dev"
+    if findmnt --source "$dev" &>/dev/null; then
+        umount -A --recursive "$dev"
     fi
 
-    stop_device "$1"
+    stop_device "$devname"
 }
 
 cd /sys/class/block
-umount_device "$1"
+
+[[ $1 != /* ]] && dev="/dev/$1" || dev=$1
+dev=$(realpath "$dev")
+devname=${dev##*/}
+
+umount_device "$devname"

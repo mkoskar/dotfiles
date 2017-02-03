@@ -74,3 +74,4 @@ video/webm=mpv.desktop
 application/pdf=evince-previewer.desktop;gimp.desktop;inkscape.desktop
 application/postscript=gimp.desktop;inkscape.desktop
 application/x-eps=inkscape.desktop
+inode/directory=spacefm-find.desktop

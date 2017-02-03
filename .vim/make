@@ -3,6 +3,7 @@
 set -eu -o pipefail
 
 from_git() {
+    set -eu
     local name=$1
     shift
     echo -e "\n> $name"

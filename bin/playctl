@@ -31,8 +31,8 @@ declare -i blue=0
 
 bluectl() {
     if [[ $1 = 'play-pause' ]]; then
-        local status; status=$(bluectl show | awk '/Status:/ {print $2}')
-        case $status in
+        local stat; stat=$(bluectl show | awk '/Status:/ {print $2}')
+        case $stat in
             playing)
                 bluectl pause
                 ;;

@@ -4,7 +4,8 @@ set -u
 
 prgname=${0##*/}
 
-if [[ $(xserverq name) = 'Xorg' ]]; then
+xserver=$(xserverq name)
+if [[ $xserver = 'Xorg' ]]; then
     if [[ $prgname != 'xscreen0' ]]; then
         if [[ $prgname = 'xscreen-mobile' ]]; then
             autorandr -l mobile --force

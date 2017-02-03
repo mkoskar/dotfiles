@@ -16,6 +16,7 @@ find / -mindepth 1 \
         -name lost+found -o \
         -path /dev -o \
         -path /home -o \
+        -path /media -o \
         -path /mnt -o \
         -path /proc -o \
         -path /run -o \

@@ -213,6 +213,12 @@ set guioptions+=c
     \ guioptions-=r
 
 
+" NVIM TUI
+" ----------------------------------------
+
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
+
+
 " Messages and Info
 " ----------------------------------------
 
@@ -414,6 +420,7 @@ nnoremap <silent> <Leader>E :e!<CR>
 " Read / Filter faster
 nnoremap <Leader>% :%!
 nnoremap <Leader>rr :r!
+nnoremap <Leader>R :%d\|0r!
 
 " Unload current buffer and delete if from buffer list
 nnoremap <silent> <C-Q> :bd<CR>

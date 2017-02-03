@@ -19,7 +19,7 @@ HISTSIZE=500
 
 __title='\[\e]2;\u@\h:\w\a\]'
 PS1="$__title\$?\$__statstr:\${BASEDIR:+(\${BASEDIR##*/}):}\W\$ "
-if [[ $(hostname-label) ]]; then
+if [[ $HOSTNAME != 'mirci' ]]; then
     PS1="$__title\$?\$__statstr:\h:\${BASEDIR:+(\${BASEDIR##*/}):}\W\$ "
 fi
 
@@ -59,11 +59,12 @@ complete -o nospace -v v
 _pacl() {
     COMPREPLY=()
     . /usr/share/bash-completion/completions/pacman
+    # shellcheck disable=SC2034
     local cur prev
     _get_comp_words_by_ref cur prev
     _pacman_pkg Qq
 }
-complete -o nospace -F _pacl pacl pacd pacp pacw paci pkgmark
+complete -o nospace -F _pacl pacl pacd pacp pacw paci paccheck pkgmark
 
 # ----------------------------------------
 

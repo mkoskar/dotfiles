@@ -53,7 +53,8 @@ base='/sys/class/rfkill'
 
 if (( id_is_name )); then
     for dev in "$base"/rfkill*; do
-        [[ $(<"$dev/name") = "$id" ]] || continue
+        name=$(<"$dev/name")
+        [[ $name = "$id" ]] || continue
         devs+=("$dev")
     done
 else
@@ -69,7 +70,8 @@ else
             ;;
         bluetooth | fm | gps | nfc | uwb | wimax | wlan | wwan)
             for dev in "$base"/rfkill*; do
-                [[ $(<"$dev/type") = "$id" ]] || continue
+                type=$(<"$dev/type")
+                [[ $type = "$id" ]] || continue
                 devs+=("$dev")
             done
             ;;
@@ -85,7 +87,7 @@ declare -i retstat=0
 
 if [[ $val ]]; then
     for dev in "${devs[@]}"; do
-        if [[ ! -w "$dev/state" ]]; then
+        if [[ ! -w $dev/state ]]; then
             echo "$dev/state is not writable" >&2
             retstat=1
             continue
@@ -99,8 +101,8 @@ else
             retstat=1
             continue
         fi
+        state=$(<"$dev/state")
         if (( aggregate )); then
-            state=$(<"$dev/state")
             state_=${state_:-$state}
             if (( state != state_ )); then
                 state=-1
@@ -109,13 +111,11 @@ else
             continue
         fi
         if (( quiet )); then
-            printf '%s\n' "$(<"$dev/state")"
+            printf '%s\n' "$state"
         else
-            printf '%-30s %-8s %-16s %s\n' \
-                "$dev" \
-                "$(<"$dev/state")" \
-                "$(<"$dev/type")" \
-                "$(<"$dev/name")"
+            type=$(<"$dev/type")
+            name=$(<"$dev/name")
+            printf '%-30s %-8s %-16s %s\n' "$dev" "$state" "$type" "$name"
         fi
     done
 

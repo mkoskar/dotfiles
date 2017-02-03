@@ -7,6 +7,7 @@ cmd=(diff "$@")
 prgname=${0##*/}
 
 main() {
+    (
     case $prgname in
         d0)
             "${cmd[@]}"
@@ -28,7 +29,7 @@ main() {
             return $retstat
             ;;
     esac
+    )
 }
 
-# execute explicitly in subshell to workaround not firing trap
-( main ) | PAGER_TITLE=${cmd[*]} PAGER_EX='set ft=diff' pg0
+main | PAGER_TITLE=${cmd[*]} PAGER_EX='set ft=diff' pg0

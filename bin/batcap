@@ -2,9 +2,15 @@
 
 set -eu
 
-. /sys/class/power_supply/BAT0/uevent
+prgname=${0##*/}
 
-full=${POWER_SUPPLY_CHARGE_FULL:-$POWER_SUPPLY_ENERGY_FULL}
-full_design=${POWER_SUPPLY_CHARGE_FULL_DESIGN:-$POWER_SUPPLY_ENERGY_FULL_DESIGN}
-
-calc -qp -- <<<"round($full / $full_design * 100, 2)"
+for i in /sys/class/power_supply/BAT${1:-*}; do
+    [[ -d $i ]] || {
+        echo "$prgname: cannot access $i"  >&2
+        exit 1
+    }
+    . "$i/uevent"
+    full=${POWER_SUPPLY_CHARGE_FULL:-$POWER_SUPPLY_ENERGY_FULL}
+    full_design=${POWER_SUPPLY_CHARGE_FULL_DESIGN:-$POWER_SUPPLY_ENERGY_FULL_DESIGN}
+    calc -qp -- <<<"round($full / $full_design * 100, 2)"
+done

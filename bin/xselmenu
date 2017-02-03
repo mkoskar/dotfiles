@@ -3,27 +3,27 @@
 set -eu -o pipefail
 
 prgname=${0##*/}
-prompt=${1:-$prgname}
 
 tmpfile_psel=$(mktemp)
 tmpfile_clip=$(mktemp)
 cleanup() { rm -f "$tmpfile_psel" "$tmpfile_clip"; }
 trap cleanup EXIT
 
-sep=$'\x19'
-id_psel="psel$sep"
-id_clip="clip$sep"
-
 out() {
-    local id=$1 tmpfile=$2
-    read -r lines bytes <<<"$(wc -cl <"$tmpfile")"
+    local id=$1 tmpfile=$2 lines bytes body
+    read -r lines bytes < <(wc -cl <"$tmpfile")
     if (( bytes > 0 )); then
-        printf "%s%d:%d$sep%s\n" \
-            "$id" "$lines" "$bytes" "$(head -c 50 <"$tmpfile" | oneline)"
+        body=$(head -c 50 <"$tmpfile" | oneline)
+        printf "%s%d:%d$sep%s\n" "$id" "$lines" "$bytes" "$body"
     fi
 }
 
-sel=$({
+sep='|'
+id_psel="psel$sep"
+id_clip="clip$sep"
+prompt=${1:-$prgname}
+
+read -r sel < <({
     xclip -o >"$tmpfile_psel"
     out "$id_psel" "$tmpfile_psel"
     xclip -o -selection clipboard >"$tmpfile_clip"

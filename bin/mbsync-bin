@@ -5,13 +5,13 @@ set -eu
 (( $# )) || exit 2
 
 name=$1
-t_begin=$(date +%s)
+ts_begin=$(date +%s)
 prgname="mbsync($name)"
 
 cleanup() {
     local retstat=$?
-    local t_end; t_end=$(date +%s)
-    echo "exiting after $(((t_end-t_begin)/60)) minutes, $(((t_end-t_begin)%60)) seconds ($retstat)"
+    local ts_end; ts_end=$(date +%s)
+    echo "exiting after $(((ts_end-ts_begin)/60)) minutes, $(((ts_end-ts_begin)%60)) seconds ($retstat)"
     if (( retstat )); then
         notify "___ $prgname FAIL ___"
     fi

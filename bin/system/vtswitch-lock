@@ -11,6 +11,7 @@
     :License: BSD 2-Clause
 """
 
+from sys import stderr
 import argparse
 import fcntl
 
@@ -26,5 +27,5 @@ try:
         fcntl.ioctl(f, 0x560C if args.unlock else 0x560B)
 
 except Exception as e:
-    print(e)
+    print('{}: error: {}'.format(parser.prog, e), file=stderr)
     exit(1)

@@ -13,7 +13,8 @@ fi
 
 cd ~/tmp
 
-outfile="screencast-$(date +%F.%s).mkv"
+ts=$(date +%F.%s)
+outfile="screencast-$ts.mkv"
 
 (exec 8>"$lockfile"
 if ! flock -n 8; then

@@ -13,7 +13,7 @@ else
 fi
 
 echo
-for socket in "${TMUX_TMPDIR:-${TMPDIR:-/tmp}}/tmux-$UID/"*; do
+for socket in "${TMUX_TMPDIR:-/tmp}/tmux-$UID/"*; do
     echo "> $socket"
     tmux -S "$socket" "$cmd" || true
     echo

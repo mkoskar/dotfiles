@@ -152,7 +152,7 @@
 /set buffers.look.indenting on
 /set buffers.look.name_size_max 11
 /set buffers.look.number_char " "
-/set buffers.look.prefix_for_query "/q "
+/set buffers.look.prefix_for_query +
 /set buffers.look.suffix_bufname " "
 
 /set plugins.var.perl.highmon.alignment channel
@@ -194,7 +194,7 @@
 /bar default nicklist
 /bar set nicklist conditions ${nicklist} && ${nicklist_local}
 
-/bar set buffers size 22
+/bar set buffers size 24
 
 /print # }}}
 

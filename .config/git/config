@@ -27,7 +27,6 @@
     ui = auto
 
 [commit]
-    gpgsign = true
     template = ~/.config/git/commit.template
 
 [core]
@@ -44,8 +43,14 @@
     coverletter = auto
     thread = shallow
 
+[grep]
+    linenumber = true
+
 [http]
     ;sslverify = false
+
+[log]
+    decorate = short
 
 [mailinfo]
     scissors = true

@@ -9,8 +9,5 @@ trap cleanup EXIT
 mkdir "$tmpdir"
 cd "$tmpdir"
 
-pacman -Qkk >out 2>err || true
-cat out err | sed -nr 's/^backup file: //p;s/^warning: //p' | sort
-
-{ paccheck --quiet --files --file-properties \
-           --backup --noextract --noupgrade || true; } | sort >&2
+{ paccheck --quiet --file-properties --sha256sum \
+    --backup --noextract --noupgrade || true; } | sort

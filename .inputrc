@@ -1,16 +1,20 @@
 set bell-style none
 set bind-tty-special-chars off
+set colored-completion-prefix on
 set colored-stats on
 set completion-ignore-case on
 set completion-map-case on
 set completion-prefix-display-length 2
 set echo-control-characters off
 set editing-mode vi
+set enable-bracketed-paste on
 set keyseq-timeout 10
 set mark-symlinked-directories on
 set show-all-if-unmodified on
 set show-mode-in-prompt on
 set skip-completed-text on
+set vi-cmd-mode-string :
+set vi-ins-mode-string +
 set visible-stats on
 
 set keymap vi-insert

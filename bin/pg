@@ -28,7 +28,7 @@ if [[ $prgname = 'pgx' ]]; then
         exit 2
     fi
     if [[ ! -t 1 ]]; then
-        exec bashx -c "$(shell-escape "$@")"
+        exec bashx -c '"$@"' bashx "$@"
     fi
     CMD=$(shell-escape "$@")
     export CMD

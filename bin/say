@@ -6,5 +6,5 @@ set -e -o pipefail
 #spd-say -e -r -30 -p +50 -i -25 -t male1 -P notification
 
 # 2) festival
-exec 8</dev/stdout
+exec 8<&1
 tee /dev/fd/8 | festival --tts

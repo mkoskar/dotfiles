@@ -22,9 +22,11 @@ for f in /etc/X11/xinit/xinitrc.d/* ; do
     [[ -f $f ]] && . "$f"
 done
 
+xserver=$(xserverq name)
+
 xrdb -load ~/.Xresources
 
-if [[ $(xserverq name) = 'Xephyr' ]]; then
+if [[ $xserver = 'Xephyr' ]]; then
     xrdb -merge - <<<'Xft.dpi: 96'
 fi
 
@@ -32,7 +34,7 @@ xscreen
 
 /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
 
-if [[ $(xserverq name) = 'Xorg' ]]; then
+if [[ $xserver = 'Xorg' ]]; then
     compton &
 fi
 

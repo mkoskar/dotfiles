@@ -52,6 +52,7 @@ export JDK_HOME='/usr/lib/jvm/default'
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.xrender=true -Dswing.aatext=true'
 
+export AUR_MAINTAINER='mkoskar'
 export CCACHE_PATH='/usr/bin'
 export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
 export FZF_DEFAULT_OPTS='--no-mouse --bind=alt-k:page-up,alt-j:page-down'
@@ -63,7 +64,6 @@ export LD_LIBRARY_PATH="$HOME/opt/lib"
 export LESS='-MRS#3ci'
 export LESSHISTFILE='-'
 export LESSOPEN='|highlight --quiet -O xterm256 -s bluegreen %s'
-export MAKEFLAGS='-j2'
 export NO_AT_BRIDGE=1
 export ORACLE_HOME='/opt/instantclient'
 export PARINIT='T4 w78 prbgqR B=.,?_A_a Q=_s>|'
@@ -75,6 +75,7 @@ export SAL_USE_VCLPLUGIN='gtk'
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent"
 export SYSTEMD_LESS=$LESS
 export TERMINFO_DIRS='/etc/terminfo:/usr/share/terminfo'
+export TMUX_TMPDIR=$TMPDIR
 export VDPAU_DRIVER='va_gl'
 export VIMBIN='nvim'
 

@@ -3,27 +3,26 @@
 set -eu
 
 tzprint() {
-    local tz
-    for tz in "$@"; do
-        case $tz in
-            -)
-                echo $'\n---------------------------------------------------------'
-                continue
-                ;;
-            +)
-                echo
-                continue
-                ;;
-            local)
-                tz=$(readlink -f /etc/localtime)
-                tz=${tz#/usr/share/zoneinfo/}
-                ;;
-            *)
-                export TZ=$tz
-                ;;
-        esac
-        printf '%-25s %s\n' "$tz" "$(date -R)"
-    done
+    local tz=$1 ts=$2
+    case $tz in
+        -)
+            echo $'\n---------------------------------------------------------'
+            return
+            ;;
+        +)
+            echo
+            return
+            ;;
+        local)
+            tz=$(readlink -f /etc/localtime)
+            tz=${tz#/usr/share/zoneinfo/}
+            ;;
+        *)
+            export TZ=$tz
+            ;;
+    esac
+    ts=$(date -R -d "$ts")
+    printf '%-25s %s\n' "$tz" "$ts"
 }
 
 tzs=(
@@ -65,6 +64,10 @@ tzs=(
     -
     Pacific/Auckland
 )
-tzprint "${tzs[@]}"
+
+ts=$(date -Ins)
+for tz in "${tzs[@]}"; do
+    tzprint "$tz" "$ts"
+done
 
 echo

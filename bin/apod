@@ -11,7 +11,7 @@
     :License: BSD 2-Clause
 """
 
-from sys import exit
+from sys import exit, stderr
 from urllib.parse import urljoin
 from urllib.request import HTTPCookieProcessor
 import argparse
@@ -69,4 +69,5 @@ try:
 
     print(urljoin(url, result))
 except Exception as e:
+    print('{}: error: {}'.format(parser.prog, e), file=stderr)
     exit(1)

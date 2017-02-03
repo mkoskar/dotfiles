@@ -69,7 +69,7 @@ _aux() {
     neww -n chat 'trun weechat' \
         \; setw remain-on-exit on
 
-    neww -n feeds 'trun newsbeuter' \
+    neww -n feeds 'trun newsbeuter -q' \
         \; setw remain-on-exit on
 
     #neww -n music 'trun ncmpcpp' \
@@ -81,7 +81,7 @@ _aux() {
 _mon() {
     cd ~
 
-    new -n top 'trun onsigwinch-exec tmux selectl -- conky -q' \
+    new -n top 'conky -q' \
         \; setw remain-on-exit on \
         \; splitw -h 'trun htop' \
         \; setw main-pane-width 43 \
@@ -153,7 +153,9 @@ fi
 session=${1-}
 
 if [[ ! $session ]]; then
-    session=$(sed -r "s,^$HOME(/|$),~\1," <<<"$PWD")
+    session="$PWD/"
+    session=${session/#"$HOME/"/\~/}
+    session=${session%/}
 fi
 
 (exec 8>"$XDG_RUNTIME_DIR/s.lock"

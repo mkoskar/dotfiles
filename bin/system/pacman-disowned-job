@@ -8,8 +8,9 @@ cd "$loghome"
 
 # ----------------------------------------
 
+ts=$(date +%F.%s)
 logbase='pacman-disowned'
-pacman-disowned >"$logbase.$(date +%F.%s)"
+pacman-disowned >"$logbase.$ts"
 
 # ----------------------------------------
 

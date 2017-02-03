@@ -19,11 +19,16 @@ chain=$2
 
 iptables -t "$table" -F "$chain"
 iptables -t "$table" -S | tac | awk -v chain="$chain" '
-$0 ~ "\\s+" chain "(\\s*|$)" {
-    if ($1 == "-A")
-        printf "-D "
-    else if ($1 == "-N")
-        printf "-X "
+function escape(str) {
+    gsub(/[\\.*?+|^$(){}\[\]]/, "\\\\&", str)
+    return str
+}
+BEGIN {
+    _chain = escape(chain)
+}
+$0 ~ "\\s+" _chain "(\\s*|$)" {
+    if ($1 == "-A") printf "-D "
+    else if ($1 == "-N") printf "-X "
     for (i=2; i<=NF; i++) printf $i " "
     printf "\n"
 }

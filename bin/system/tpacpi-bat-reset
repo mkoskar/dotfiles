@@ -7,11 +7,8 @@ if (( EUID )); then
     exit 1
 fi
 
-prgname=${0##*/}
-
-declare -i val=1
-if [[ $prgname = 'batdis-off' ]]; then
-    val=0
-fi
-
-tpacpi-bat -s FD 1 "$val"
+tpacpi-bat -s ST 0 0
+tpacpi-bat -s SP 0 0
+tpacpi-bat -s IC 0 0
+tpacpi-bat -s FD 1 0
+tpacpi-bat -s FD 2 0

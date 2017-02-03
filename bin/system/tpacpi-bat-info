@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if (( EUID )); then
+    echo 'This script must be run with root privileges.' >&2
+    exit 1
+fi
+
+info() {
+    local bati=$1
+    printf '%-20s' 'start threshold:'
+    tpacpi-bat -g ST "$bati"
+    printf '%-20s' 'stop threshold:'
+    tpacpi-bat -g SP "$bati"
+    printf '%-20s' 'inhibit charge:'
+    tpacpi-bat -g IC "$bati"
+    printf '%-20s' 'force discharge:'
+    tpacpi-bat -g FD "$bati"
+}
+
+echo $'\n--------------------------------------------------'
+echo $'> main:\n'
+
+info 1
+
+echo $'\n--------------------------------------------------'
+echo $'> secondary:\n'
+
+info 2
+
+echo

@@ -11,6 +11,7 @@ trap cleanup EXIT
 cd "$tmpdir"
 
 from_zip() {
+    set -eu
     local furl=$1 fname odir
     fname=$(curl -sLfJO -w '%{filename_effective}' "$furl")
     odir=$(md5sum <<<"$fname" | awk '{print $1}')

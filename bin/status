@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu -o pipefail
-shopt -s nullglob
+shopt -s inherit_errexit nullglob
 
 prgname=${0##*/}
 
@@ -30,11 +30,13 @@ status_audio() {
 }
 
 status_backlight() {
-    printf 'backlight: %s%%\n' "$(backlight)"
+    local val; val=$(backlight)
+    printf 'backlight: %s%%\n' "$val"
 }
 
 status_bluetooth() {
-    printf 'bluetooth: %s\n' "$(status_rfkill bluetooth)"
+    local val; val=$(status_rfkill bluetooth)
+    printf 'bluetooth: %s\n' "$val"
 }
 
 status_dpms() {
@@ -46,7 +48,7 @@ status_dpms() {
 }
 
 status_rfkill() {
-    local val='-'
+    local val='-' state
     state=$(rfkill-state -a "$1")
     case $state in
         -1)
@@ -66,23 +68,26 @@ status_rfkill() {
 }
 
 status_touchpad() {
-    local val='-'
+    local val='-' state
     if (( xcon )); then
-        case $(touchpad) in 1) val='on' ;; 0) val='off' ;; esac
+        state=$(touchpad)
+        case $state in 1) val='on' ;; 0) val='off' ;; esac
     fi
     printf 'touchpad: %s\n' "$val"
 }
 
 status_trackpoint_wheel() {
-    local val='-'
+    local val='-' state
     if (( xcon )); then
-        case $(trackpoint-wheel) in 1) val='on' ;; 0) val='off' ;; esac
+        state=$(trackpoint-wheel)
+        case $state in 1) val='on' ;; 0) val='off' ;; esac
     fi
     printf 'trackpoint wheel: %s\n' "$val"
 }
 
 status_wifi() {
-    printf 'wifi: %s\n' "$(status_rfkill wlan)"
+    local val; val=$(status_rfkill wlan)
+    printf 'wifi: %s\n' "$val"
 }
 
 status_xkb() {

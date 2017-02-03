@@ -28,9 +28,9 @@ if [[ $prgname = 'respawn' ]]; then
     set -- -d0 -t "$@"
 fi
 
-dopt='' Topt='' redir='' output=''
-declare -i term=0 inline=0 cur=0 quiet=0
-while getopts 'd:tT:o:aiIcCqh' opt; do
+dopt= Topt= output='/dev/null'
+term= append= inline= cur= quiet=
+while getopts 'd:tT:o:aiIqh' opt; do
     case $opt in
         d)
             [ "$OPTARG" -eq "$OPTARG" ] 2>/dev/null || {
@@ -50,11 +50,10 @@ while getopts 'd:tT:o:aiIcCqh' opt; do
             Topt=$OPTARG
             ;;
         o)
-            redir='>'
             output=$OPTARG
             ;;
         a)
-            redir='>>'
+            append=1
             ;;
         i)
             inline=1
@@ -82,7 +81,7 @@ shift $((OPTIND-1))
 delay=${dopt:--1}
 term_delta=${Topt:-400}
 
-declare -i notty=0
+notty=
 if [[ ! -t 0 ]]; then
     if (( delay < 0 )); then
         echo "$prgname: stdin not being a tty doesn't go with negative delay" >&2
@@ -108,24 +107,25 @@ if (( ! inline )); then
     trap cleanup EXIT
 fi
 
-declare -i long=0
+long=
 while true; do
+    ts_begin=$(date +%s.%N)
+    ts_begin_=$(date +%T -d "@$ts_begin")
+
     (( ! inline )) && tput rc
-    (( ! quiet )) && printf "> started: %s${ti_el}\n" "$(date +%T)" >&2
+    (( ! quiet )) && printf "> started: %s${ti_el}\n" "$ts_begin_" >&2
     (( ! inline && long )) && tput ed
-    t_begin=$(date +%s.%N)
 
-    if [[ $output ]]; then
-        bashx -c "$(shell-escape "$@")" "$redir" "$output" 2>&1
-    else
-        bashx -c "$(shell-escape "$@")" |& sed -r "s/\$/$ti_el/"
-    fi
+    bashx -c '"$@"' bashx "$@" |& tee ${append:+-a} "$output" | sed -r "s/\$/$ti_el/"
 
-    t_end=$(date +%s.%N)
-    (( $(bc -l <<<"($t_end-$t_begin) > 1") == 1 )) && long=1
+    ts_end=$(date +%s.%N)
+    ts_end_=$(date +%T -d "@$ts_end")
+
+    long=$(bc -l <<<"($ts_end-$ts_begin) > 1")
 
     if (( term )); then
-        (( $(bc -l <<<"($t_end-$t_begin) < $term_delta/1000") == 1 )) && break
+        should_term=$(bc -l <<<"($ts_end-$ts_begin) < $term_delta/1000")
+        (( should_term == 1 )) && break
     fi
 
     if (( notty && delay > 0 )); then
@@ -139,10 +139,10 @@ while true; do
             h=
             (( delay > 0 )) && h="waiting for ${delay}ms, "
             h="${h}press any key to start or q|Q to quit"
-            printf "> finished: %s (%s)${ti_el}\n" "$(date +%T)" "$h" >&2
+            printf "> finished: %s (%s)${ti_el}\n" "$ts_end_" "$h" >&2
             (( ! inline )) && tput ed
         fi
-        read "${read_opts[@]}" c || continue
+        read -r "${read_opts[@]}" c || continue
         case $c in [qQ]) break ;; esac
     fi
 done

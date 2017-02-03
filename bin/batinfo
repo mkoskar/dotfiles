@@ -2,13 +2,18 @@
 
 set -eu
 
-echo $'\n--------------------------------------------------'
-base='/sys/class/power_supply/BAT0/uevent'
-echo -e "> $base:\n"
-cat -- "$base"
+prgname=${0##*/}
 
-echo $'\n--------------------------------------------------'
-echo -e '> batcap [%]:\n'
-batcap
+for i in /sys/class/power_supply/BAT${1:-*}; do
+    [[ -d $i ]] || {
+        echo "$prgname: cannot access $i"  >&2
+        exit 1
+    }
+    echo $'\n--------------------------------------------------'
+    echo -e "> $i:\n"
+    cat -- "$i/uevent"
 
+    batcap=$(batcap "${i##*/BAT}")
+    printf '\nbatcap [%%]: %s\n' "$batcap"
+done
 echo

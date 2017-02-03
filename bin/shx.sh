@@ -124,7 +124,6 @@ alias man-all-posix='man-all -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
 
 alias pac='pacman'
 alias pacs='pacsearch'
-alias paccheck='paccheck --files --file-properties --backup --noextract --noupgrade'
 alias pactree='pactree --color'
 
 # Finds what package provides file or directory
@@ -153,8 +152,11 @@ pacd() {
 
 # Target's 'provides'
 pacp() {
-    [ $# -eq 0 ] && return 2
-    expac -l '\n' %P "$1"
+    if [ $# -eq 0 ]; then
+        expac -l ' ' '%n %P'
+    else
+        expac -l '\n' %P "$1"
+    fi
 }
 
 # Target's 'required by' (what depends on target)
@@ -168,6 +170,11 @@ paci() {
     [ $# -eq 0 ] && return 2
     pacman -Qii -- "$@" || pacman -Sii -- "$@" || cower -i -- "$@"
 } 2>/dev/null
+
+paccheck() {
+    command paccheck --quiet --file-properties --sha256sum \
+        --backup --noextract --noupgrade "$@"
+}
 
 
 # python
@@ -199,7 +206,7 @@ alias dff='df -h'
 alias dirs='dirs -v'
 alias dmesg='dmesg -HTx'
 alias dstat='dstat -cglmnpry --tcp'
-alias du='du -h'
+alias du='du -hx'
 alias feh='feh -F'
 alias fortune='fortune -c'
 alias free='free -h'
@@ -214,6 +221,7 @@ alias lsdiff='lsdiff -s'
 alias ltime='date +%T'
 alias mnt='findmnt'
 alias moon='curl -sSL http://wttr.in/moon | head -n-4'
+alias mount-loop='mount -o loop'
 alias mpv-debug='command mpv --msg-level=all=debug'
 alias mpv-verbose='command mpv --msg-level=all=v'
 alias mutt-debug='mutt -d 2'
@@ -245,12 +253,13 @@ alias youtube-dl-playlist="youtube-dl --yes-playlist -o '~/download/_youtube-dl/
 alias youtube-dl-stdout='youtube-dl -o -'
 
 a() {
-    local d=${1:-5m}
-    printf '%s ... alarm after %s\n' "$(\date -R)" "$d"
+    local d=${1:-5m} ts; ts=$(command date -R)
+    printf '%s ... alarm after %s\n' "$ts" "$d"
     sleep "${1:-5m}"
     echo 'Beep...'
     notify -u critical 'Beep...' "Time's up!"
-    mpv --loop=5 --keep-open=no /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
+    mpv --loop=5 --keep-open=no --load-scripts=no \
+        /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
 }
 
 cd() {
@@ -301,7 +310,7 @@ i() {
 }
 
 ifs() {
-    printf '%s' "$IFS" | \od -An -ta -tx1
+    printf '%s' "$IFS" | command od -An -ta -tx1
 }
 
 ifs0() {
@@ -323,7 +332,7 @@ mpv() {
 
 on() {
     [ $# -eq 0 ] && return 2
-    local p; p=$(pth "$1") || return 1
+    local p; p=$(command -v "$1") || return 1
     shift
     eval "${*:-ls -la}" "$p"
 }
@@ -342,7 +351,9 @@ pstree() {
 }
 
 reexec() {
-    exec $(cmdline)
+    local cmdline; cmdline=$(cmdline)
+    # shellcheck disable=SC2086
+    exec $cmdline
 }
 
 reload() {
@@ -362,6 +373,7 @@ setpid() {
     if [ "$BASH_VERSION" ]; then
         PID=$BASHPID
     elif [ "$ZSH_VERSION" ]; then
+        # shellcheck disable=SC2154
         PID=${sysparams[pid]}
     fi
     [ "$PID" ] || return 1
@@ -458,8 +470,11 @@ unset __bourne_test
 if [ -e /usr/bin/virtualenvwrapper.sh ]; then
     . /usr/bin/virtualenvwrapper_lazy.sh
 
-    alias mkvirtualenv2="mkvirtualenv -p '$(pth python2)'"
-    alias mkvirtualenv3="mkvirtualenv -p '$(pth python3)'"
+    PYTHON2=$(command -v python2)
+    PYTHON3=$(command -v python3)
+    export PYTHON2 PYTHON3
+    [ "$PYTHON2" ] && mkvirtualenv2() { mkvirtualenv -p "$PYTHON2"; }
+    [ "$PYTHON3" ] && mkvirtualenv3() { mkvirtualenv -p "$PYTHON3"; }
     alias wo='workon'
 
     mkvirtualenv-pyenv() {

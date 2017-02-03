@@ -3,6 +3,7 @@
 set -eu
 
 prgname=${0##*/}
+
 dev='/dev/sr0'
 
 case $prgname in
@@ -13,7 +14,8 @@ case $prgname in
         if (( ! $# )); then
             size=$(isosize "$dev")
             blocks=$((size/2048))
-            output="sr0_$(date +%F.%s).iso"
+            ts=$(date +%F.%s)
+            output="sr0_$ts.iso"
             echo "Creating $output of following size: $((blocks/512)) MB"
             dd if="$dev" of="$output" bs=2048 count=$blocks
         else

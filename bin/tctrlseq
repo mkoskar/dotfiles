@@ -3,7 +3,9 @@
 set -eu
 
 if (( ! $# )); then
-    set -- "$(head -c 255)"
+    seq=$(head -c 255)
+    [[ $seq ]] || exit 1
+    set -- "$seq"
 fi
 
 if [[ ${TMUX-} ]]; then

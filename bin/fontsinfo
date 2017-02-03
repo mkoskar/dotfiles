@@ -3,7 +3,9 @@
 set -eu
 
 match() {
-    printf '%-25s %s\n' "$1" "$(fc-match "$1")"
+    local match
+    match=$(fc-match "$1")
+    printf '%-25s %s\n' "$1" "$match"
 }
 export -f match
 

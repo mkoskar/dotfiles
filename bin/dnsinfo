@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
 echo
-printf 'DNS host name (FQDN):   %s\n' "$(hostname -f)"
-printf 'Aliases:                %s\n' "$(hostname -a)"
+
+fqdn=$(hostname -f)
+aliases=$(hostname -a)
+
+printf 'DNS host name (FQDN):   %s\n' "$fqdn"
+printf 'Aliases:                %s\n' "$aliases"
 
 echo $'\n--------------------------------------------------'
 echo $'> resolvconf:\n'

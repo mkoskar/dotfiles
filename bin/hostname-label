@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-if [[ $HOSTNAME != 'mirci' ]]; then
-    printf '%s ' "$HOSTNAME"
-fi

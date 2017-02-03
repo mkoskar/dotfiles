@@ -34,7 +34,8 @@ resolution=${sel[2]}
 
 [[ ! $src || ! $mode || ! $resolution ]] && exit 1
 
-name="$(date +%F.%s)_$mode-${resolution}dpi"
+ts=$(date +%F.%s)
+name="${ts}_$mode-${resolution}dpi"
 
 opts=(
     -d pixma:MX920_pyrite

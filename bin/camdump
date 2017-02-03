@@ -2,7 +2,8 @@
 
 set -eu
 
-if [[ $(find . -maxdepth 0 ! -empty) ]]; then
+empty=$(find . -maxdepth 0 -empty)
+if [[ ! $empty ]]; then
     confirm 'Careful! Working directory is NOT empty. Continue?' n || exit 2
 fi
 

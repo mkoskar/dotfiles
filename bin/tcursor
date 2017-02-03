@@ -55,6 +55,6 @@ for arg in "$@"; do
         reset-style)    style ;;
         reset-color)    color ;;
         reset)          style; color ;;
-        *)              color "$1" ;;
+        *)              color "$arg" ;;
     esac
 done

@@ -36,7 +36,7 @@ if (( ${#devices[@]} > 0 )); then
         device=($(awk -F ', ' '{print $1 " " $2}' <<<"$sel"))
         target="$HOME/tmp/mtp-${device[0]}-${device[1]}"
 
-        if ! mounted "$target" &>/dev/null; then
+        if ! findmnt -M "$target" &>/dev/null; then
             [[ -d $target ]] || mkdir "$target"
             jmtpfs "-device=${device[0]},${device[1]}" "$target" &>/dev/null
         fi

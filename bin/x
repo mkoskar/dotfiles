@@ -15,7 +15,6 @@
 # If started as 'xx':
 #
 # * display number will be the first free starting with 91
-# * xinit ~/bin/xsession "$@" -- /usr/bin/Xephyr
 # * client: ~/bin/xsession "$@"
 # * server: Xephyr
 
