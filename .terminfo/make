@@ -10,9 +10,14 @@ make() {
 
 make linux <<-EOF
 # ----------------------------------------
-    cnorm=\E[34h\E[?8c\E[?25h,
-    rs2=\Ec\E[?1000l\E[?8c\E[?25h,
+    cnorm=\E[?25h\E[?8c,
+    rs2=\E[?1000l\E[?25h\E[?8c,
 EOF
+
+# \E[?25h   - Show cursor (DECTCEM).
+# \E[?8c    - Full block hardware cursor.
+# \E[?1000l - Don't send mouse X & Y on button press and release.
+# (See also: /etc/issue)
 
 # VT color palette escape sequences:
 # (See also: /etc/vconsole.rgb)

@@ -162,6 +162,7 @@ myConfig = defaultConfig
                        , className =? "Tor Browser" -?> doShiftView "3"
                        , className =? "jetbrains-idea" -?> doShiftView "1"
                        , className =? "mpv" -?> doShiftView "9"
+                       , className =? "qutebrowser" -?> doShiftView "3"
                        , title =? "qiv" -?> doShiftView "9"
                        ]
                    <+> composeAll [ isDialog --> doCenterFloat ]

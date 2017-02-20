@@ -90,20 +90,24 @@ if [[ ! -t 0 ]]; then
     notty=1
 fi
 
-read_opts=(-N1 -rs)
+tc=$(stty -g)
+stty -icanon -echo
+
 if (( delay > 0 )); then
     delay_s=$(bc -l <<<"scale=2; $delay/1000")
-    read_opts+=(-t "$delay_s")
+    read_opts=(-t "$delay_s")
 fi
 
+ti_ed=$(tput ed)
 ti_el=$(tput el)
+ti_rc=$(tput rc)
 
 if (( ! inline )); then
-    tput smcup
-    tput clear
-    tput sc
-    (( cur )) || tput civis
-    cleanup() { tput cnorm; tput rmcup; }
+    {
+        echo -e "smcup\nclear\nsc\n"
+        (( cur )) || echo civis
+    } | tput -S
+    cleanup() { tput -S <<<$'cnorm\nrmcup'; stty "$tc"; }
     trap cleanup EXIT
 fi
 
@@ -112,9 +116,9 @@ while true; do
     ts_begin=$(date +%s.%N)
     ts_begin_=$(date +%T -d "@$ts_begin")
 
-    (( ! inline )) && tput rc
+    (( ! inline )) && printf '%s' "$ti_rc"
     (( ! quiet )) && printf "> started: %s${ti_el}\n" "$ts_begin_" >&2
-    (( ! inline && long )) && tput ed
+    (( ! inline && long )) && printf '%s' "$ti_ed"
 
     bashx -c '"$@"' bashx "$@" |& tee ${append:+-a} "$output" | sed -r "s/\$/$ti_el/"
 
@@ -129,7 +133,7 @@ while true; do
     fi
 
     if (( notty && delay > 0 )); then
-        (( ! inline )) && tput ed
+        (( ! inline )) && printf '%s' "$ti_ed"
         sleep "$delay_s"
         continue
     fi
@@ -140,9 +144,9 @@ while true; do
             (( delay > 0 )) && h="waiting for ${delay}ms, "
             h="${h}press any key to start or q|Q to quit"
             printf "> finished: %s (%s)${ti_el}\n" "$ts_end_" "$h" >&2
-            (( ! inline )) && tput ed
+            (( ! inline )) && printf '%s' "$ti_ed"
         fi
-        read -r "${read_opts[@]}" c || continue
+        read -N1 -rs "${read_opts[@]}" c || continue
         case $c in [qQ]) break ;; esac
     fi
 done

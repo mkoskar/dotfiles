@@ -24,6 +24,13 @@ function! utils#BufSpecial() abort
     setl nonu nornu nowrap nolist nobl cc=0 fdc=0
 endfunction
 
+function! utils#CmdlineWDelete() abort
+    let buf = getcmdline()
+    let pos = getcmdpos()
+    let idx = match(buf, '^\@<!\<', pos)
+    return strpart(buf, 0, pos-1).(idx < 0 ? '' : strpart(buf, idx))
+endfunction
+
 function! utils#PluginAdd(name) abort
     let path = a:name
     if match(path, '\v^(/|\~/|\./)') < 0

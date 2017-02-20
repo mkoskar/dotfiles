@@ -141,8 +141,6 @@ nmap <silent> d<BS> d<C-H>
 nnoremap <silent> <C-_> <C-W>_
 nnoremap <silent> g<C-J> <C-W>j<C-W>_
 nnoremap <silent> g<C-K> <C-W>k<C-W>_
-nnoremap <silent> g<C-H> <C-W>h<C-W>_
-nnoremap <silent> g<C-L> <C-W>l<C-W>_
 nmap <silent> g<BS> g<C-H>
 
 nnoremap <silent> _ :resize -5<CR>
@@ -275,18 +273,39 @@ set showmatch
 set textwidth=78
 set tildeop
 
-inoremap <C-U> <C-G>u<C-U>
-inoremap <M-j> <C-G>j
-inoremap <M-k> <C-G>k
+inoremap <C-B> <Home>
+inoremap <M-0> <Home>
+
+inoremap <C-E> <End>
+inoremap <M-e> <End>
+inoremap <M-$> <End>
+
 inoremap <M-h> <Left>
 inoremap <M-l> <Right>
+inoremap <M-b> <S-Left>
 inoremap <M-H> <S-Left>
+inoremap <M-f> <S-Right>
+inoremap <M-w> <S-Right>
 inoremap <M-L> <S-Right>
 
-inoremap <silent> <C-F>f <C-R>=expand('%:t')<CR>
-inoremap <silent> <C-F>n <C-R>=expand('%:t:r')<CR>
-inoremap <silent> <C-F>p <C-R>=expand('%:p')<CR>
-inoremap <silent> <C-F>d <C-R>=expand('%:r')<CR>
+inoremap <C-U> <C-G>u<C-U>
+inoremap <C-K> <C-G>u<C-O>d$
+
+inoremap <C-W> <C-G>u<C-W>
+inoremap <M-d> <C-G>u<C-O>dw
+imap     <M-X> <M-d>
+inoremap <M-x> <Delete>
+
+inoremap <M-j> <C-G>j
+inoremap <M-k> <C-G>k
+
+inoremap <C-F>f <C-R>=expand('%:t')<CR>
+inoremap <C-F>n <C-R>=expand('%:t:r')<CR>
+inoremap <C-F>p <C-R>=expand('%:p')<CR>
+inoremap <C-F>d <C-R>=expand('%:r')<CR>
+
+inoremap ( ()<C-G>U<Left>
+inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ')' ? '<C-G>U<Right>' : ')'
 
 
 " Tabs and Indenting
@@ -347,6 +366,29 @@ set wildmenu
 set wildmode=longest:full,full
 
 let &undodir = $VIMDIR.'/.undo'
+
+"<C-B> <Home>
+cnoremap <M-0> <Home>
+
+"<C-E> <End>
+cnoremap <M-e> <End>
+cnoremap <M-$> <End>
+
+cnoremap <M-h> <Left>
+cnoremap <M-l> <Right>
+cnoremap <M-b> <S-Left>
+cnoremap <M-H> <S-Left>
+cnoremap <M-f> <S-Right>
+cnoremap <M-w> <S-Right>
+cnoremap <M-L> <S-Right>
+
+"<C-U> - backward kill line
+cnoremap <C-K> <C-\>e strpart(getcmdline(), 0, getcmdpos()-1)<CR>
+
+"<C-W> - backward kill word
+cnoremap <M-d> <C-\>e utils#CmdlineWDelete()<CR>
+cmap     <M-X> <M-d>
+cnoremap <M-x> <Delete>
 
 cnoremap %% <C-R>=expand('%:h').'/'<CR>
 

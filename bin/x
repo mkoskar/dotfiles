@@ -27,15 +27,11 @@ if (( EUID == 0 )); then
     exit 1
 fi
 
-ti_reset=$'\e[m'
-ti_hi0=$'\e[1;37m'
-ti_hi1=$'\e[1;32m'
-
 # ----------------------------------------
 
 if (( ! $# )); then
     echo
-    echo "${ti_hi0}m) main ${ti_hi1}[default]${ti_reset}"
+    echo 'm) main (default)'
     echo 'o) openbox'
     echo 'x) xmonad'
 

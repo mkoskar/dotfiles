@@ -63,6 +63,7 @@ done <<-EOF
     emoji                   b https://en.wikipedia.org/wiki/List_of_emoticons
     filenames               b http://www.dwheeler.com/essays/filenames-in-shell.html
     firefox-about:*         b https://developer.mozilla.org/en-US/Firefox/The_about_protocol
+    firefox-about:config    b http://kb.mozillazine.org/Category:Preferences
     firefox-changes         b https://www.mozilla.org/en-US/firefox/releases/
     firefox-changes-dev     b https://developer.mozilla.org/en-US/Firefox/Releases/
     firefox-relnotes-bugs   b https://bugzilla.mozilla.org/buglist.cgi?query_format=advanced\&f1=cf_tracking_firefox_relnote\&o1=isnotempty\&f2=cf_tracking_firefox_relnote\&o2=substring\&v2={}\&limit=200\&order=changeddate\ desc
@@ -83,6 +84,7 @@ done <<-EOF
     gmail-search            b https://support.google.com/mail/answer/7190
     gnome-api               b https://developer.gnome.org/references
     gnu-make                b https://www.gnu.org/software/make/manual/make.html#Quick-Reference
+    gnu-manuals             b https://www.gnu.org/manual/manual.html
     gnu-repos               b http://git.savannah.gnu.org/cgit/
     go                      b https://golang.org/ref/spec
     google-devs             b https://developers.google.com/
@@ -101,7 +103,7 @@ done <<-EOF
     haskell                 b file:///usr/share/doc/ghc/html/libraries/index.html
     hibernate-orm           b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
     hn                      b https://news.ycombinator.com/
-    html                    b https://html.spec.whatwg.org/multipage/
+    html-spec               b https://html.spec.whatwg.org/multipage/
     http                    b http://tools.ietf.org/html/rfc2616
     i                       sr ixquick {}
     ii                      sr ixquick -search=pics {}
@@ -131,10 +133,12 @@ done <<-EOF
     js                      b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
     js-ecma                 b http://www.ecma-international.org/ecma-262/6.0/
     js-ecma-compat          b https://kangax.github.io/compat-table/es6/
+    js-keys                 b https://w3c.github.io/uievents/tools/key-event-viewer.html
     jsr                     b file://$HOME/archive/lib/00-cs/java/08-jsr/
     jsr-all                 b https://jcp.org/en/jsr/all?sortBy=date
     latin-greek             b https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English
     latin-phrases           b https://en.wikipedia.org/wiki/List_of_Latin_phrases
+    limnoria-subst          b https://github.com/ProgVal/Limnoria/blob/master/src/ircutils.py#L797
     linux-docs              b file:///lib/modules/$kernel_release/build/Documentation/00-INDEX
     linux-params            b file:///lib/modules/$kernel_release/build/Documentation/kernel-parameters.txt
     linux-repos             b https://git.kernel.org/cgit/
@@ -142,13 +146,15 @@ done <<-EOF
     linux-src               b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/?id=$kernel_version
     linux-sysctl            b file:///lib/modules/$kernel_release/build/Documentation/sysctl
     lists                   b http://gmane.org/find.php
+    lists1                  b http://markmail.org/
     lua                     b https://www.lua.org/manual/
+    man-pages               b http://man7.org/linux/man-pages/index.html
     material-design         b https://getmdl.io/
     maven                   b http://maven.apache.org/plugins/index.html
     maven-central           b https://search.maven.org/
     maven-jcenter           b https://bintray.com/bintray/jcenter
     maven-popular           b http://mvnrepository.com/popular
-    mdn                     sr mdn {}
+    mdn                     b https://developer.mozilla.org/en-US/search?q={}
     mime                    b https://www.iana.org/assignments/media-types/media-types.xhtml
     mongodb                 b http://docs.mongodb.org/manual/reference/
     morse-nato              b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
@@ -156,10 +162,8 @@ done <<-EOF
     music                   sr musicbrainz {}
     mutt                    b file:///usr/share/doc/mutt/manual.html
     mutt-patterns           b file:///usr/share/doc/mutt/manual.html#patterns
-    mutt-regexp             b file:///usr/share/doc/mutt/manual.html#regexp
-    nasatv                  playx https://www.youtube.com/watch?v=HDh4uK9PvJU
-    nasatv-edu              playx https://www.youtube.com/watch?v=nhORZ6Ep_jE
-    nasatv-media            playx https://www.youtube.com/watch?v=OX9I1KyNa8M
+    mutt-regex              b file:///usr/share/doc/mutt/manual.html#regexp
+    nasatv                  playx http://www.ustream.tv/nasahdtv
     netfilter               b http://www.netfilter.org/documentation/index.html
     netfilter-flow          b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
     nodejs                  b https://nodejs.org/api/
@@ -172,6 +176,7 @@ done <<-EOF
     pep                     b https://www.python.org/dev/peps/
     perf                    b http://www.brendangregg.com/perf.html
     perl                    b http://perldoc.perl.org/
+    phrik                   b https://wiki.archlinux.org/index.php/Phrik
     pkg                     sr archpkg {}
     posix                   b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/index.html
     posix-defs              b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/contents.html
@@ -187,13 +192,14 @@ done <<-EOF
     python2                 b file:///usr/share/doc/python2/html/index.html
     qt                      b http://doc.qt.io/
     qutebrowser             b http://qutebrowser.org/img/cheatsheet-big.png
-    regexp-gnu              b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html
-    regexp-java             b file:///usr/share/doc/java/api/java/util/regex/Pattern.html
-    regexp-js               b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
-    regexp-pcre             b file:///usr/share/doc/pcre/html/pcresyntax.html
-    regexp-posix            b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap09.html
-    regexp-python           b file:///usr/share/doc/python/html/library/re.html
-    regexp-python-test      b http://pythex.org/
+    regex-gnu               b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html
+    regex-java              b file:///usr/share/doc/java/api/java/util/regex/Pattern.html
+    regex-js                b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+    regex-pcre              b file:///usr/share/doc/pcre/html/pcresyntax.html
+    regex-posix             b file://$HOME/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap09.html
+    regex-python            b file:///usr/share/doc/python/html/library/re.html
+    regex-python-test       b http://pythex.org/
+    regex101                b https://regex101.com/
     rfc                     b https://www.rfc-editor.org/
     rst                     b http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
     rst-demo                b file://$HOME/projects/lab/docutils/showcase/_build/html/index.html
@@ -222,7 +228,7 @@ done <<-EOF
     types-ports             b file:///etc/services
     ud                      sr urban {}
     uefi-specs              b http://uefi.org/specifications
-    unicode                 b https://en.wikipedia.org/wiki/Plane_(Unicode)
+    unicode                 b https://en.wikipedia.org/wiki/Plane_\(Unicode\)
     unicode-charts          b http://unicode.org/charts/
     unicode-convert         b https://r12a.github.io/apps/conversion/
     unicode-emoji           b http://www.unicode.org/emoji/charts/full-emoji-list.html

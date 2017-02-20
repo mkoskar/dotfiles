@@ -1,4 +1,4 @@
-# See also: infokey(1)
+#info
 
 l       forward-char
 h       backward-char
@@ -6,20 +6,62 @@ h       backward-char
 $       end-of-line
 w       forward-word
 b       backward-word
-g       beginning-of-node
-G       end-of-node
-^N      next-node
-^P      prev-node
-u       up-node
-t       top-node
-d       dir-node
-^O      history-node
-)       move-to-next-xref
-(       move-to-prev-xref
-^]      select-reference-this-line
+
 \kd     next-line
 \ku     prev-line
 \kr     forward-char
 \kl     backward-char
-\kD     scroll-forward-page-only
-\kU     scroll-backward-page-only
+
+g       beginning-of-node
+G       end-of-node
+u       up-node
+d       dir-node
+^N      next-node
+^P      prev-node
+^O      history-node
+
+^J      select-reference-this-line
+^M      select-reference-this-line
+^]      select-reference-this-line
+)       move-to-next-xref
+(       move-to-prev-xref
+\       clear-search
+
+#echo-area
+
+^B      echo-area-beg-of-line
+#\m0    echo-area-beg-of-line
+
+#^E     echo-area-end-of-line
+\me     echo-area-end-of-line
+#\m$    echo-area-end-of-line
+
+\mh     echo-area-backward
+\ml     echo-area-forward
+#\mb    echo-area-backward-word
+\mH     echo-area-backward-word
+#\mf    echo-area-forward-word
+\mw     echo-area-forward-word
+\mL     echo-area-forward-word
+
+^U      echo-area-backward-kill-line
+#^K     echo-area-kill-line
+
+^W      echo-area-backward-kill-word
+#\md    echo-area-kill-word
+#\mX    echo-area-kill-word
+#\mx    echo-area-delete
+
+#var
+
+active-link-style=yellow,underline,bold
+automatic-footnotes=On
+automatic-tiling=On
+cursor-movement-scrolls=Off
+hide-note-references=On
+highlight-searches=On
+link-style=white,bold
+match-style=bgred,white,bold
+nodeline=print
+scroll-behavior=Page Only
+scroll-step=3

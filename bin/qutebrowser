@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+# See also: https://github.com/qutebrowser/qutebrowser/issues/1098
+
+set -eu
+
+case ${1-} in
+    --) shift ;;
+    -*) exec /usr/bin/qutebrowser "$@" ;;
+esac
+
+read -ra uhash < <(printf '%s' "$USER" | md5sum)
+socket="$XDG_RUNTIME_DIR/qutebrowser/ipc-$uhash"
+
+[[ -S $socket ]] || exec /usr/bin/qutebrowser -- "$@"
+
+(( $# )) || set -- about:blank
+
+printf -v args ',"%s"' "${@/\"/\\\"}"
+printf '{"args":[%s], "target_arg":"auto", "protocol_version":1}\n' \
+    "${args:1}" | socat - UNIX-CONNECT:"$socket"
