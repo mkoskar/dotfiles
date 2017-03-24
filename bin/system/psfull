@@ -5,4 +5,4 @@ set -eu
 # ps -eFly
 # ps -eo s,uid,pid,ppid,c,pri,ni,rss,sz,wchan,psr,stime,tty,time,cmd
 
-ps -N --ppid 2 -o 'lwp,ppid,sess,pgid,user,pri,ni,vsz:7,rss:7,stat,%cpu,%mem,stime,time,tt=TTY,wchan:25,unit:25,comm,cmd' "$@" | $PAGER
+ps -N --ppid 2 -o 'lwp,ppid,sess,pgid,user,pri,ni,vsz:7,rss:7,stat,%cpu,%mem,stime,etime,time,tt=TTY,wchan:25,unit:25,comm,cmd' "$@" | $PAGER

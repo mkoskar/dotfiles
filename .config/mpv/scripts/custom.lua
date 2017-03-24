@@ -67,15 +67,18 @@ mp.add_key_binding('Y', 'yank-title', function () yank_property('media-title') e
 
 mp.set_property(
     'options/osd-msg2',
-    '${osd-sym-cc} ${time-pos:-} / ${time-remaining:-} / ${length:-} (${percent-pos:-}%)\n' ..
-    'FPS: ${fps} / ${display-fps}\n' ..
-    'Cache: ${cache-buffering-state:-}% / ${demuxer-cache-duration:-} s / ${cache-used:-}\n' ..
-    'Cache Size: ${cache-size:-} (${cache:-}%)'
+    '${osd-sym-cc} ${time-pos:-} / ${time-remaining:-} / ${percent-pos:-}${?percent-pos:%}\n' ..
+    'audio: ${audio-codec-name} / ${audio-params/format} / ${audio-params/samplerate}\n' ..
+    'cache-buffering-state [%]: ${cache-buffering-state:-}\n' ..
+    'cache-used: ${cache-used:-}\n' ..
+    'demuxer-cache-duration [s]: ${demuxer-cache-duration:-}\n' ..
+    'display-fps: ${display-fps}\n' ..
+    'video: ${video-format} / ${video-params/pixelformat} / ${video-params/w}x${video-params/h}'
 )
 
 mp.set_property(
     'options/osd-msg3',
-    '${osd-sym-cc} ${time-pos:-} / ${time-remaining:-} / ${length:-} (${percent-pos:-}%)'
+    '${osd-sym-cc} ${time-pos:-} / ${time-remaining:-} / ${percent-pos:-}${?percent-pos:%}'
 )
 
 mp.register_event(

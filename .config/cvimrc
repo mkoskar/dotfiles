@@ -1,0 +1,63 @@
+" vim: ft=vim
+
+let configpath = '/home/miro/.config/cvimrc'
+set localconfig
+
+set autohidecursor
+set cncpcompletion
+set completeonopen
+set nosmoothscroll
+
+let barposition = 'bottom'
+let mapleader = ','
+let scrollstep = 40
+let searchlimit = 50
+
+let completionengines = ['google']
+let searchalias g = 'google'
+
+" ----------------------------------------
+
+unmap E
+
+map J gT
+map K gt
+map <A-h> gT
+map <A-l> gt
+map <A-0> lastTab
+map <A-n> :tabnew<CR>
+map gJ moveTabLeft
+map gK moveTabRight
+map d closeTab
+map u lastClosedTab
+
+map <A-j> 5j
+map <A-k> 5k
+
+map <C-d> scrollPageDown
+map <C-u> scrollPageUp
+
+map R reloadTabUncached
+map gb :buffer<Space>
+map <C-Space> clearSearchHighlight
+
+" ----------------------------------------
+
+iunmapAll
+
+imap <C-b> beginningOfLine
+imap <C-e> endOfLine
+imap <A-h> backwardChar
+imap <A-l> forwardChar
+imap <A-b> backwardWord
+imap <A-f> forwardWord
+imap <A-w> forwardWord
+
+imap <C-u> deleteToBeginning
+imap <C-k> deleteToEnd
+imap <C-w> deleteWord
+imap <A-d> deleteForwardWord
+imap <A-x> deleteForwardChar
+
+imap <A-j> backwardLine
+imap <A-k> forwardLine

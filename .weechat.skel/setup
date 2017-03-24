@@ -71,6 +71,7 @@
 /print # General {{{
 /print # ----------------------------------------
 
+/set irc.color.input_nick white
 /set irc.color.message_join default
 /set irc.color.message_quit default
 /set irc.ctcp.clientinfo ""
@@ -87,9 +88,11 @@
 /set sec.crypt.passphrase_file ~/.weechat/passphrase
 
 /set weechat.color.chat_day_change 245
+/set weechat.color.chat_highlight yellow
 /set weechat.color.chat_highlight_bg black
 /set weechat.color.chat_inactive_buffer 239
-/set weechat.color.chat_nick_colors brown,magenta,cyan,lightgreen,lightblue,lightmagenta,lightcyan,110
+/set weechat.color.chat_nick_colors 10,3,12,111,5,13,6,14
+/set weechat.color.chat_nick_self white
 /set weechat.color.chat_prefix_buffer default
 /set weechat.color.chat_prefix_buffer_inactive_buffer 239
 /set weechat.color.chat_prefix_more white
@@ -155,11 +158,13 @@
 /set buffers.look.prefix_for_query +
 /set buffers.look.suffix_bufname " "
 
+/set colorize_nicks.look.colorize_input on
+
 /set plugins.var.perl.highmon.alignment channel
 /set plugins.var.perl.highmon.short_names on
 /set plugins.var.python.go.color_name default,234
 /set plugins.var.python.go.color_name_highlight *green,234
-/set plugins.var.python.go.color_name_highlight_selected black,white
+/set plugins.var.python.go.color_name_highlight_selected black,15
 /set plugins.var.python.go.color_number *white,default
 /set plugins.var.python.go.color_number_selected *white,red
 /set plugins.var.python.go.sort number,beginning
@@ -180,6 +185,7 @@
 
 /bar add status root bottom 1 0 [time],{tabs},[buffer_count],[buffer_plugin],buffer_number+:+buffer_name+(buffer_modes)+{buffer_nicklist_count}+buffer_zoom+buffer_filter,[lag],completion,scroll,aspell_suggest
 /bar set status color_bg 237
+/bar set status color_fg white
 /bar set status priority 500
 
 /bar add title window,${inactive} top 1 0 >,buffer_name,>,buffer_title

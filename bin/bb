@@ -22,6 +22,7 @@ done <<-EOF
     arch-bugs               b https://bugs.archlinux.org/
     arch-forums             b https://bbs.archlinux.org/search.php?action=show_new
     arch-lists              sr google site:lists.archlinux.org {}
+    arch-repos              b https://git.archlinux.org/
     arch-wiki               sr archwiki {}
     arxiv                   sr arxiv {}
     aur                     sr aur {}
@@ -60,6 +61,7 @@ done <<-EOF
     docker-compose          b https://docs.docker.com/compose/compose-file/
     docker-flow             b https://docs.docker.com/engine/reference/api/images/event_state.png
     dockerfile              b https://docs.docker.com/reference/builder/
+    ecma                    b http://www.ecma-international.org/publications/standards/Standard.htm
     emoji                   b https://en.wikipedia.org/wiki/List_of_emoticons
     filenames               b http://www.dwheeler.com/essays/filenames-in-shell.html
     firefox-about:*         b https://developer.mozilla.org/en-US/Firefox/The_about_protocol
@@ -100,7 +102,9 @@ done <<-EOF
     gtk-running             b https://developer.gnome.org/gtk3/stable/gtk-running.html
     guava                   b http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/index.html
     hangouts                b https://hangouts.google.com/
-    haskell                 b file:///usr/share/doc/ghc/html/libraries/index.html
+    haskell-docs            b https://www.haskell.org/documentation
+    haskell-libs            b file:///usr/share/doc/ghc/html/libraries/index.html
+    haskell-search          b https://www.haskell.org/hoogle/?hoogle={}
     hibernate-orm           b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
     hn                      b https://news.ycombinator.com/
     html-spec               b https://html.spec.whatwg.org/multipage/
@@ -131,15 +135,18 @@ done <<-EOF
     jee7-tutorial           b file://$HOME/opt/java_ee_sdk-7u1/docs/javaee-tutorial/doc/index.html
     jquery                  sr jquery {}
     js                      b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
-    js-ecma                 b http://www.ecma-international.org/ecma-262/6.0/
-    js-ecma-compat          b https://kangax.github.io/compat-table/es6/
+    js-es6                  b http://www.ecma-international.org/ecma-262/6.0/
+    js-es6-compat           b https://kangax.github.io/compat-table/es6/
+    js-es6-overview         b https://github.com/lukehoban/es6features
     js-keys                 b https://w3c.github.io/uievents/tools/key-event-viewer.html
     jsr                     b file://$HOME/archive/lib/00-cs/java/08-jsr/
     jsr-all                 b https://jcp.org/en/jsr/all?sortBy=date
     latin-greek             b https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English
     latin-phrases           b https://en.wikipedia.org/wiki/List_of_Latin_phrases
+    learnyouahaskell        b http://learnyouahaskell.com/chapters
     limnoria-subst          b https://github.com/ProgVal/Limnoria/blob/master/src/ircutils.py#L797
-    linux-docs              b file:///lib/modules/$kernel_release/build/Documentation/00-INDEX
+    linux-docs              b file:///lib/modules/$kernel_release/build/Documentation
+    linux-docs1             b https://www.kernel.org/doc/html/latest/index.html
     linux-params            b file:///lib/modules/$kernel_release/build/Documentation/kernel-parameters.txt
     linux-repos             b https://git.kernel.org/cgit/
     linux-specs             b http://refspecs.linuxfoundation.org/
@@ -163,7 +170,6 @@ done <<-EOF
     mutt                    b file:///usr/share/doc/mutt/manual.html
     mutt-patterns           b file:///usr/share/doc/mutt/manual.html#patterns
     mutt-regex              b file:///usr/share/doc/mutt/manual.html#regexp
-    nasatv                  playx http://www.ustream.tv/nasahdtv
     netfilter               b http://www.netfilter.org/documentation/index.html
     netfilter-flow          b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
     nodejs                  b https://nodejs.org/api/
@@ -192,6 +198,7 @@ done <<-EOF
     python2                 b file:///usr/share/doc/python2/html/index.html
     qt                      b http://doc.qt.io/
     qutebrowser             b http://qutebrowser.org/img/cheatsheet-big.png
+    realworldhaskell        b http://book.realworldhaskell.org/read/
     regex-gnu               b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html
     regex-java              b file:///usr/share/doc/java/api/java/util/regex/Pattern.html
     regex-js                b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
@@ -208,6 +215,7 @@ done <<-EOF
     scala                   b http://www.scala-lang.org/api/current/
     sed                     b https://www.gnu.org/software/sed/manual/sed.html
     shakespeare             b http://shakespeare.mit.edu/
+    shell-startup           b http://blog.flowblok.id.au/static/images/shell-startup-actual.png
     spock                   b http://docs.spockframework.org/
     spring                  b http://docs.spring.io/spring/docs/current/spring-framework-reference/html/
     spring-api              b http://docs.spring.io/spring/docs/current/javadoc-api/overview-summary.html
@@ -242,9 +250,23 @@ done <<-EOF
     weechat                 b https://weechat.org/files/doc/stable/weechat_user.en.html
     weechat-api             b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
     weechat-changes         b https://github.com/weechat/weechat/blob/master/ChangeLog.adoc
+    xmonad                  b file:///usr/share/doc/xmonad/html/index.html
     yaml                    b http://yaml.org/refcard.html
     yt                      sr youtube {}
     zsh                     b file:///usr/share/doc/zsh/html/index.html
+
+    bbc-news                playx http://tvcatchup.com/watch/bbcnews
+    bbc-red                 playx http://tvcatchup.com/watch/bbcredbutton
+    bbc1                    playx http://tvcatchup.com/watch/bbcone
+    bbc2                    playx http://tvcatchup.com/watch/bbctwo
+    bbc4                    playx http://tvcatchup.com/watch/bbcfour
+    channel4                playx http://tvcatchup.com/watch/channel4
+    channel5                playx http://tvcatchup.com/watch/five
+    itv                     playx http://tvcatchup.com/watch/itv
+    nasatv                  playx http://www.ustream.tv/nasahdtv
+    rtvs1                   playx http://www.rtvs.sk/televizia/live-1
+    rtvs2                   playx http://www.rtvs.sk/televizia/live-2
+    viva                    playx http://tvcatchup.com/watch/viva
 
     fahrenheit              sr google {} fahrenheit in celsius
     foot                    sr google {} ft in m

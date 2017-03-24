@@ -81,7 +81,7 @@ _aux() {
 _mon() {
     cd ~
 
-    new -n top 'conky -q' \
+    new -n top 'onsighup-terminate conky -q' \
         \; setw remain-on-exit on \
         \; splitw -h 'trun htop' \
         \; setw main-pane-width 43 \

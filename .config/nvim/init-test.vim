@@ -18,7 +18,7 @@ colorscheme default
 tabnew
 
 function! Test() abort
-    let themes = [ 'default', 'desert', 'blue', 'evening']
+    let themes = ['default', 'desert', 'blue', 'evening']
     let l = len(themes)
     for theme in themes
         exec 'colorscheme '.theme

@@ -198,7 +198,8 @@ cat >userChrome.css <<-EOF
 	}
 
 	#VimFxMarkersContainer .marker {
-	    font-size: 10px !important;
+	    font-size: 1em !important;
+	    font-weight: normal !important;
 	}
 
 	#main-window[vimfx-focus-type="editable"] #urlbar {

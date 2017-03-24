@@ -1,8 +1,9 @@
 " vim: ft=vim fdm=marker
 
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
-let vimdir = has('nvim') ? $HOME.'/.config/nvim' : $HOME.'/.vim'
-let $VIMDIR = get(g:, '$VIMDIR', vimdir)
+let vimdir_conf = has('nvim') ? $HOME.'/.config/nvim' : $HOME.'/.vim'
+let vimdir_data = has('nvim') ? $HOME.'/.local/share/nvim' : $HOME.'/.vim'
+let $VIMDIR = get(g:, '$VIMDIR', vimdir_data)
 
 
 " Important
@@ -11,6 +12,7 @@ let $VIMDIR = get(g:, '$VIMDIR', vimdir)
 set nocompatible
 set pastetoggle=<F6>
 
+let &packpath = join([$VIMDIR, vimdir_conf, $VIMRUNTIME], ',')
 let mapleader = ','
 let maplocalleader = ';'
 
@@ -77,6 +79,7 @@ set colorcolumn=+1,84
 set hlsearch
 set spelllang=en_us
 
+let c_comment_strings = 1
 let load_doxygen_syntax = 1
 let python_highlight_all = 1
 
@@ -107,8 +110,10 @@ endif
 " ----------------------------------------
 
 set laststatus=2
+set noequalalways
 set splitbelow
 set splitright
+set winheight=5
 set statusline=
     \ statusline+=%n
     \ statusline+=\ %<%f
@@ -155,9 +160,8 @@ nnoremap <silent> <Leader>q :close<CR>
 
 set tabpagemax=50
 
-nnoremap <silent> <M-n> :tabnew<CR>
-nnoremap <silent> <M-l> gt
 nnoremap <silent> <M-h> gT
+nnoremap <silent> <M-l> gt
 nnoremap <silent> <M-1> 1gt
 nnoremap <silent> <M-2> 2gt
 nnoremap <silent> <M-3> 3gt
@@ -168,6 +172,9 @@ nnoremap <silent> <M-7> 7gt
 nnoremap <silent> <M-8> 8gt
 nnoremap <silent> <M-9> 9gt
 nnoremap <silent> <M-0> :tablast<CR>
+nnoremap <silent> <M-n> :tabnew<CR>
+nnoremap <silent> <M-H> :tabmove -1<CR>
+nnoremap <silent> <M-L> :tabmove +1<CR>
 
 
 " Terminal
@@ -222,11 +229,14 @@ let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
 
 set ruler
 set shortmess=aoOtTWI
+set showcmd
 set showmode
 
 
 " Selecting Text
 " ----------------------------------------
+
+set clipboard=unnamed
 
 " Yank from cursor to the line end (consistent with D, C)
 nnoremap <silent> Y y$
@@ -268,44 +278,44 @@ set backspace=indent,eol,start
 set complete-=i
 set completeopt=longest,menuone
 set formatoptions=tcroqln21j
+set matchpairs+=<:>
+set nojs
 set nrformats-=octal
 set showmatch
 set textwidth=78
 set tildeop
+set undofile
+
+let &undodir = $VIMDIR.'/.undo'
+call utils#mkdir(&undodir)
 
 inoremap <C-B> <Home>
-inoremap <M-0> <Home>
-
 inoremap <C-E> <End>
-inoremap <M-e> <End>
-inoremap <M-$> <End>
-
 inoremap <M-h> <Left>
 inoremap <M-l> <Right>
-inoremap <M-b> <S-Left>
-inoremap <M-H> <S-Left>
-inoremap <M-f> <S-Right>
-inoremap <M-w> <S-Right>
-inoremap <M-L> <S-Right>
+inoremap <M-b> <C-Left>
+inoremap <M-f> <C-Right>
+inoremap <M-w> <C-Right>
 
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-K> <C-G>u<C-O>d$
-
 inoremap <C-W> <C-G>u<C-W>
 inoremap <M-d> <C-G>u<C-O>dw
-imap     <M-X> <M-d>
 inoremap <M-x> <Delete>
 
 inoremap <M-j> <C-G>j
 inoremap <M-k> <C-G>k
 
+inoremap <C-L> <C-K>
 inoremap <C-F>f <C-R>=expand('%:t')<CR>
 inoremap <C-F>n <C-R>=expand('%:t:r')<CR>
 inoremap <C-F>p <C-R>=expand('%:p')<CR>
 inoremap <C-F>d <C-R>=expand('%:r')<CR>
 
 inoremap ( ()<C-G>U<Left>
-inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ')' ? '<C-G>U<Right>' : ')'
+inoremap [ []<C-G>U<Left>
+inoremap { {}<C-G>U<Left>
+inoremap < <><C-G>U<Left>
 
 
 " Tabs and Indenting
@@ -315,6 +325,7 @@ set autoindent
 set copyindent
 set expandtab
 set preserveindent
+set shiftround
 set shiftwidth=4
 set smartindent
 set smarttab
@@ -323,6 +334,8 @@ set tabstop=4
 
 " Folding
 " ----------------------------------------
+
+set foldopen-=block
 
 nnoremap <Leader>ff :setl fdm=manual \| normal! zM<CR>
 nnoremap <Leader>fi :setl fdm=indent fdn=2 \| normal! zM<CR>
@@ -346,6 +359,7 @@ set fileformats+=mac
 set modeline
 
 let &backupdir = $VIMDIR.'/.backup'
+call utils#mkdir(&backupdir)
 
 
 " The Swap File
@@ -354,42 +368,32 @@ let &backupdir = $VIMDIR.'/.backup'
 set swapfile
 set updatetime=1000 " also used for CursorHold
 
-let &directory = $VIMDIR.'/.swap//,'.$TMPDIR.'//'
+let &directory = $VIMDIR.'/.swap//'
+call utils#mkdir(&directory)
 
 
 " Command Line Editing
 " ----------------------------------------
 
 set history=1000
-set undofile
 set wildmenu
-set wildmode=longest:full,full
-
-let &undodir = $VIMDIR.'/.undo'
+set wildmode=longest,full
 
 "<C-B> <Home>
-cnoremap <M-0> <Home>
-
 "<C-E> <End>
-cnoremap <M-e> <End>
-cnoremap <M-$> <End>
-
 cnoremap <M-h> <Left>
 cnoremap <M-l> <Right>
-cnoremap <M-b> <S-Left>
-cnoremap <M-H> <S-Left>
-cnoremap <M-f> <S-Right>
-cnoremap <M-w> <S-Right>
-cnoremap <M-L> <S-Right>
+cnoremap <M-b> <C-Left>
+cnoremap <M-f> <C-Right>
+cnoremap <M-w> <C-Right>
 
 "<C-U> - backward kill line
 cnoremap <C-K> <C-\>e strpart(getcmdline(), 0, getcmdpos()-1)<CR>
-
 "<C-W> - backward kill word
-cnoremap <M-d> <C-\>e utils#CmdlineWDelete()<CR>
-cmap     <M-X> <M-d>
+cnoremap <M-d> <C-\>e utils#CmdlineEmacsKillWord()<CR>
 cnoremap <M-x> <Delete>
 
+cnoremap <C-L> <C-K>
 cnoremap %% <C-R>=expand('%:h').'/'<CR>
 
 
@@ -397,7 +401,7 @@ cnoremap %% <C-R>=expand('%:h').'/'<CR>
 " ----------------------------------------
 
 set shell=bashx
-set shellredir=>%s\ 2>&1
+set shellredir=&>%s
 
 
 " Running 'make' and Jumping To Errors
@@ -409,7 +413,7 @@ set grepprg=grep\ -nH\ --exclude-dir='.svn'\ --exclude-dir='.git'\ --exclude='*.
 set grepformat=%f:%l:%c:%m
 set grepprg=ag\ --vimgrep\ $*
 
-set shellpipe=2>&1\|\ tee
+set shellpipe=\|&\ tee
 
 nnoremap <F9> :make!<CR>
 
@@ -423,6 +427,15 @@ nnoremap <silent> <Leader>k :try \| echo \| call utils#TryCatch('lNext',
 
 nnoremap <Leader>J :cnext<CR>
 nnoremap <Leader>K :cNext<CR>
+
+
+" Language Specific
+" ----------------------------------------
+
+set keymap=slovak
+
+set iminsert=0
+set imsearch=-1
 
 
 " Multi-byte Characters
@@ -439,7 +452,8 @@ endif
 set sessionoptions-=blank sessionoptions-=options
 set virtualedit=block
 
-let &viminfo = "!,'100,<50,s10,h,n".$VIMDIR."/.viminfo"
+let &viewdir = $VIMDIR.'/.view'
+let &viminfo = "!,'100,<50,s10,h,n".$VIMDIR.'/.viminfo'
 
 " Disable Ex mode
 nnoremap Q <Nop>
@@ -462,7 +476,7 @@ nnoremap <silent> <Leader>E :e!<CR>
 " Read / Filter faster
 nnoremap <Leader>% :%!
 nnoremap <Leader>rr :r!
-nnoremap <Leader>R :%d\|0r!
+nnoremap <Leader>R :%d_ \| 0r!
 
 " Unload current buffer and delete if from buffer list
 nnoremap <silent> <C-Q> :bd<CR>
@@ -553,22 +567,27 @@ nnoremap <silent> <Leader>dd :DiffToggle<CR>
 
 " Starts diff of current buffer with another file {{{
 
-function! s:Diff2(file) abort
-    if !filereadable(a:file)
-        call utils#EchoError('Unable to read '.a:file)
+function! s:DiffTo(file) abort
+    let file = fnamemodify(a:file, ':p')
+    if isdirectory(file)
+        call utils#EchoError(printf('"%s" is a directory', fnamemodify(file, ':h')))
         return
     endif
-    let filetype = &ft
+    if !filereadable(file)
+        call utils#EchoError(printf('"%s" is not readable', file))
+        return
+    endif
+    vnew
+    exec 'read ++edit '.fnameescape(file).' | 0d_'
+    exec 'setl bt=nofile bh=wipe nobl noma noswf ft='.getbufvar('#', '&ft')
+    exec 'silent file DiffTo:\ '.fnameescape(fnamemodify(file, ':~'))
     diffthis
-    exec 'vnew | r '.fnameescape(a:file).' | normal! 1Gdd'
-    diffthis
-    exec 'setl bt=nofile bh=wipe nobl noswf ft='.filetype
-    exec 'silent file Diff2_'.fnameescape(a:file)
     wincmd p
+    diffthis
 endfunction
 
-command! -nargs=1 -complete=file Diff2 call s:Diff2(<f-args>)
-nnoremap <Leader>df :Diff2 <C-R>=expand('%')<CR>
+command! -nargs=1 -complete=file DiffTo call s:DiffTo(<f-args>)
+nnoremap <Leader>df :DiffTo <C-R>=expand('%')<CR>
 
 " }}}
 
@@ -663,7 +682,7 @@ function! QuitTab(bang) abort
     endtry
 endfunction
 
-command! -bar -bang QuitTab call utils#TryCatch('silent call QuitTab(<q-bang>)')
+command! -bar -bang QuitTab call utils#TryCatch('call QuitTab(<q-bang>)')
 nnoremap <silent> QQ :QuitTab<CR>
 nnoremap <silent> QA :QuitTab!<CR>
 
@@ -745,7 +764,7 @@ function! s:MoveToTab(next) abort
         if tab_nr == tabpagenr('$')
             exec a:next ? 'tabnext' : 'tabprev'
         endif
-        vertical topleft split
+        botright vsplit
     else
         close!
         exec a:next ? 'tabnew' : '0tabnew'
@@ -755,8 +774,8 @@ endfunction
 
 command! -bar MoveToNextTab call s:MoveToTab(1)
 command! -bar MoveToPrevTab call s:MoveToTab(0)
-nnoremap <silent> <M-H> :MoveToPrevTab<CR>
-nnoremap <silent> <M-L> :MoveToNextTab<CR>
+nnoremap <silent> <C-W><M-h> :MoveToPrevTab<CR>
+nnoremap <silent> <C-W><M-l> :MoveToNextTab<CR>
 
 " }}}
 
@@ -800,9 +819,9 @@ let loaded_rrhelper = 1
 let loaded_vimball = 1
 let loaded_vimballPlugin = 1
 
-call utils#PluginAdd('ansiesc')
-call utils#PluginAdd('colorschemes')
-call utils#PluginLoad('enhanced-diff') | PatienceDiff
+packadd! ansiesc
+packadd! colorschemes
+packadd enhanced-diff | PatienceDiff
 
 if has('gui_running')
     colorscheme bclear
@@ -814,6 +833,11 @@ augroup vimrc_base
     autocmd BufEnter,BufWinEnter * match none | set titlestring=
     autocmd BufWritePre * let &backupext = substitute(expand('%:p:h'), '/', '%', 'g')
     autocmd CmdwinEnter * call utils#BufSpecial()
+
+    autocmd BufReadPost *
+        \  if line("'\"") >= 1 && line("'\"") <= line('$')
+        \|     exec 'normal! g`"'
+        \| endif
 
     if !has('nvim')
         autocmd TermChanged * silent call s:MetaSetup(meta_enabled)

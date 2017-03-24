@@ -1,0 +1,1347 @@
+# Digraphs as defined by RFC1345 (Character Mnemonics and Character Sets)
+#
+# Source: https://gist.github.com/jashank/9318207
+# See also: Compose(5)
+
+<Multi_key> <S> <P>                   : " " # U0020 : SPACE
+<Multi_key> <N> <b>                   : "#" # U0023 : NUMBER SIGN
+<Multi_key> <D> <O>                   : "$" # U0024 : DOLLAR SIGN
+<Multi_key> <A> <t>                   : "@" # U0040 : COMMERCIAL AT
+<Multi_key> <less> <parenleft>        : "[" # U005b : LEFT SQUARE BRACKET
+<Multi_key> <slash> <slash>           : "\" # U005c : REVERSE SOLIDUS
+<Multi_key> <parenright> <greater>    : "]" # U005d : RIGHT SQUARE BRACKET
+<Multi_key> <quoteright> <greater>    : "^" # U005e : CIRCUMFLEX ACCENT
+<Multi_key> <quoteright> <exclam>     : "`" # U0060 : GRAVE ACCENT
+<Multi_key> <parenleft> <exclam>      : "{" # U007b : LEFT CURLY BRACKET
+<Multi_key> <exclam> <exclam>         : "|" # U007c : VERTICAL LINE
+<Multi_key> <exclam> <parenright>     : "}" # U007d : RIGHT CURLY BRACKET
+<Multi_key> <quoteright> <question>   : "~" # U007e : TILDE
+<Multi_key> <N> <S>                   : " " # U00a0 : NO-BREAK SPACE
+<Multi_key> <exclam> <I>              : "¡" # U00a1 : INVERTED EXCLAMATION MARK
+<Multi_key> <C> <t>                   : "¢" # U00a2 : CENT SIGN
+<Multi_key> <P> <d>                   : "£" # U00a3 : POUND SIGN
+<Multi_key> <C> <u>                   : "¤" # U00a4 : CURRENCY SIGN
+<Multi_key> <Y> <e>                   : "¥" # U00a5 : YEN SIGN
+<Multi_key> <B> <B>                   : "¦" # U00a6 : BROKEN BAR
+<Multi_key> <S> <E>                   : "§" # U00a7 : SECTION SIGN
+<Multi_key> <quoteright> <colon>      : "¨" # U00a8 : DIAERESIS
+<Multi_key> <C> <o>                   : "©" # U00a9 : COPYRIGHT SIGN
+<Multi_key> <minus> <a>               : "ª" # U00aa : FEMININE ORDINAL INDICATOR
+<Multi_key> <less> <less>             : "«" # U00ab : LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
+<Multi_key> <N> <O>                   : "¬" # U00ac : NOT SIGN
+<Multi_key> <minus> <minus>           : "­" # U00ad : SOFT HYPHEN
+<Multi_key> <R> <g>                   : "®" # U00ae : REGISTERED SIGN
+<Multi_key> <quoteright> <m>          : "¯" # U00af : MACRON
+<Multi_key> <D> <G>                   : "°" # U00b0 : DEGREE SIGN
+<Multi_key> <plus> <minus>            : "±" # U00b1 : PLUS-MINUS SIGN
+<Multi_key> <2> <S>                   : "²" # U00b2 : SUPERSCRIPT TWO
+<Multi_key> <3> <S>                   : "³" # U00b3 : SUPERSCRIPT THREE
+<Multi_key> <quoteright> <quoteright> : "´" # U00b4 : ACUTE ACCENT
+<Multi_key> <M> <y>                   : "µ" # U00b5 : MICRO SIGN
+<Multi_key> <P> <I>                   : "¶" # U00b6 : PILCROW SIGN
+<Multi_key> <period> <M>              : "·" # U00b7 : MIDDLE DOT
+<Multi_key> <quoteright> <comma>      : "¸" # U00b8 : CEDILLA
+<Multi_key> <1> <S>                   : "¹" # U00b9 : SUPERSCRIPT ONE
+<Multi_key> <minus> <o>               : "º" # U00ba : MASCULINE ORDINAL INDICATOR
+<Multi_key> <greater> <greater>       : "»" # U00bb : RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK
+<Multi_key> <1> <4>                   : "¼" # U00bc : VULGAR FRACTION ONE QUARTER
+<Multi_key> <1> <2>                   : "½" # U00bd : VULGAR FRACTION ONE HALF
+<Multi_key> <3> <4>                   : "¾" # U00be : VULGAR FRACTION THREE QUARTERS
+<Multi_key> <question> <I>            : "¿" # U00bf : INVERTED QUESTION MARK
+<Multi_key> <A> <exclam>              : "À" # U00c0 : LATIN CAPITAL LETTER A WITH GRAVE
+<Multi_key> <A> <quoteright>          : "Á" # U00c1 : LATIN CAPITAL LETTER A WITH ACUTE
+<Multi_key> <A> <greater>             : "Â" # U00c2 : LATIN CAPITAL LETTER A WITH CIRCUMFLEX
+<Multi_key> <A> <question>            : "Ã" # U00c3 : LATIN CAPITAL LETTER A WITH TILDE
+<Multi_key> <A> <colon>               : "Ä" # U00c4 : LATIN CAPITAL LETTER A WITH DIAERESIS
+<Multi_key> <A> <A>                   : "Å" # U00c5 : LATIN CAPITAL LETTER A WITH RING ABOVE
+<Multi_key> <A> <E>                   : "Æ" # U00c6 : LATIN CAPITAL LETTER AE
+<Multi_key> <C> <comma>               : "Ç" # U00c7 : LATIN CAPITAL LETTER C WITH CEDILLA
+<Multi_key> <E> <exclam>              : "È" # U00c8 : LATIN CAPITAL LETTER E WITH GRAVE
+<Multi_key> <E> <quoteright>          : "É" # U00c9 : LATIN CAPITAL LETTER E WITH ACUTE
+<Multi_key> <E> <greater>             : "Ê" # U00ca : LATIN CAPITAL LETTER E WITH CIRCUMFLEX
+<Multi_key> <E> <colon>               : "Ë" # U00cb : LATIN CAPITAL LETTER E WITH DIAERESIS
+<Multi_key> <I> <exclam>              : "Ì" # U00cc : LATIN CAPITAL LETTER I WITH GRAVE
+<Multi_key> <I> <quoteright>          : "Í" # U00cd : LATIN CAPITAL LETTER I WITH ACUTE
+<Multi_key> <I> <greater>             : "Î" # U00ce : LATIN CAPITAL LETTER I WITH CIRCUMFLEX
+<Multi_key> <I> <colon>               : "Ï" # U00cf : LATIN CAPITAL LETTER I WITH DIAERESIS
+<Multi_key> <D> <minus>               : "Ð" # U00d0 : LATIN CAPITAL LETTER ETH (Icelandic)
+<Multi_key> <N> <question>            : "Ñ" # U00d1 : LATIN CAPITAL LETTER N WITH TILDE
+<Multi_key> <O> <exclam>              : "Ò" # U00d2 : LATIN CAPITAL LETTER O WITH GRAVE
+<Multi_key> <O> <quoteright>          : "Ó" # U00d3 : LATIN CAPITAL LETTER O WITH ACUTE
+<Multi_key> <O> <greater>             : "Ô" # U00d4 : LATIN CAPITAL LETTER O WITH CIRCUMFLEX
+<Multi_key> <O> <question>            : "Õ" # U00d5 : LATIN CAPITAL LETTER O WITH TILDE
+<Multi_key> <O> <colon>               : "Ö" # U00d6 : LATIN CAPITAL LETTER O WITH DIAERESIS
+<Multi_key> <asterisk> <X>            : "×" # U00d7 : MULTIPLICATION SIGN
+<Multi_key> <O> <slash>               : "Ø" # U00d8 : LATIN CAPITAL LETTER O WITH STROKE
+<Multi_key> <U> <exclam>              : "Ù" # U00d9 : LATIN CAPITAL LETTER U WITH GRAVE
+<Multi_key> <U> <quoteright>          : "Ú" # U00da : LATIN CAPITAL LETTER U WITH ACUTE
+<Multi_key> <U> <greater>             : "Û" # U00db : LATIN CAPITAL LETTER U WITH CIRCUMFLEX
+<Multi_key> <U> <colon>               : "Ü" # U00dc : LATIN CAPITAL LETTER U WITH DIAERESIS
+<Multi_key> <Y> <quoteright>          : "Ý" # U00dd : LATIN CAPITAL LETTER Y WITH ACUTE
+<Multi_key> <T> <H>                   : "Þ" # U00de : LATIN CAPITAL LETTER THORN (Icelandic)
+<Multi_key> <s> <s>                   : "ß" # U00df : LATIN SMALL LETTER SHARP S (German)
+<Multi_key> <a> <exclam>              : "à" # U00e0 : LATIN SMALL LETTER A WITH GRAVE
+<Multi_key> <a> <quoteright>          : "á" # U00e1 : LATIN SMALL LETTER A WITH ACUTE
+<Multi_key> <a> <greater>             : "â" # U00e2 : LATIN SMALL LETTER A WITH CIRCUMFLEX
+<Multi_key> <a> <question>            : "ã" # U00e3 : LATIN SMALL LETTER A WITH TILDE
+<Multi_key> <a> <colon>               : "ä" # U00e4 : LATIN SMALL LETTER A WITH DIAERESIS
+<Multi_key> <a> <a>                   : "å" # U00e5 : LATIN SMALL LETTER A WITH RING ABOVE
+<Multi_key> <a> <e>                   : "æ" # U00e6 : LATIN SMALL LETTER AE
+<Multi_key> <c> <comma>               : "ç" # U00e7 : LATIN SMALL LETTER C WITH CEDILLA
+<Multi_key> <e> <exclam>              : "è" # U00e8 : LATIN SMALL LETTER E WITH GRAVE
+<Multi_key> <e> <quoteright>          : "é" # U00e9 : LATIN SMALL LETTER E WITH ACUTE
+<Multi_key> <e> <greater>             : "ê" # U00ea : LATIN SMALL LETTER E WITH CIRCUMFLEX
+<Multi_key> <e> <colon>               : "ë" # U00eb : LATIN SMALL LETTER E WITH DIAERESIS
+<Multi_key> <i> <exclam>              : "ì" # U00ec : LATIN SMALL LETTER I WITH GRAVE
+<Multi_key> <i> <quoteright>          : "í" # U00ed : LATIN SMALL LETTER I WITH ACUTE
+<Multi_key> <i> <greater>             : "î" # U00ee : LATIN SMALL LETTER I WITH CIRCUMFLEX
+<Multi_key> <i> <colon>               : "ï" # U00ef : LATIN SMALL LETTER I WITH DIAERESIS
+<Multi_key> <d> <minus>               : "ð" # U00f0 : LATIN SMALL LETTER ETH (Icelandic)
+<Multi_key> <n> <question>            : "ñ" # U00f1 : LATIN SMALL LETTER N WITH TILDE
+<Multi_key> <o> <exclam>              : "ò" # U00f2 : LATIN SMALL LETTER O WITH GRAVE
+<Multi_key> <o> <quoteright>          : "ó" # U00f3 : LATIN SMALL LETTER O WITH ACUTE
+<Multi_key> <o> <greater>             : "ô" # U00f4 : LATIN SMALL LETTER O WITH CIRCUMFLEX
+<Multi_key> <o> <question>            : "õ" # U00f5 : LATIN SMALL LETTER O WITH TILDE
+<Multi_key> <o> <colon>               : "ö" # U00f6 : LATIN SMALL LETTER O WITH DIAERESIS
+<Multi_key> <minus> <colon>           : "÷" # U00f7 : DIVISION SIGN
+<Multi_key> <o> <slash>               : "ø" # U00f8 : LATIN SMALL LETTER O WITH STROKE
+<Multi_key> <u> <exclam>              : "ù" # U00f9 : LATIN SMALL LETTER U WITH GRAVE
+<Multi_key> <u> <quoteright>          : "ú" # U00fa : LATIN SMALL LETTER U WITH ACUTE
+<Multi_key> <u> <greater>             : "û" # U00fb : LATIN SMALL LETTER U WITH CIRCUMFLEX
+<Multi_key> <u> <colon>               : "ü" # U00fc : LATIN SMALL LETTER U WITH DIAERESIS
+<Multi_key> <y> <quoteright>          : "ý" # U00fd : LATIN SMALL LETTER Y WITH ACUTE
+<Multi_key> <t> <h>                   : "þ" # U00fe : LATIN SMALL LETTER THORN (Icelandic)
+<Multi_key> <y> <colon>               : "ÿ" # U00ff : LATIN SMALL LETTER Y WITH DIAERESIS
+<Multi_key> <A> <minus>               : "Ā" # U0100 : LATIN CAPITAL LETTER A WITH MACRON
+<Multi_key> <a> <minus>               : "ā" # U0101 : LATIN SMALL LETTER A WITH MACRON
+<Multi_key> <A> <parenleft>           : "Ă" # U0102 : LATIN CAPITAL LETTER A WITH BREVE
+<Multi_key> <a> <parenleft>           : "ă" # U0103 : LATIN SMALL LETTER A WITH BREVE
+<Multi_key> <A> <semicolon>           : "Ą" # U0104 : LATIN CAPITAL LETTER A WITH OGONEK
+<Multi_key> <a> <semicolon>           : "ą" # U0105 : LATIN SMALL LETTER A WITH OGONEK
+<Multi_key> <C> <quoteright>          : "Ć" # U0106 : LATIN CAPITAL LETTER C WITH ACUTE
+<Multi_key> <c> <quoteright>          : "ć" # U0107 : LATIN SMALL LETTER C WITH ACUTE
+<Multi_key> <C> <greater>             : "Ĉ" # U0108 : LATIN CAPITAL LETTER C WITH CIRCUMFLEX
+<Multi_key> <c> <greater>             : "ĉ" # U0109 : LATIN SMALL LETTER C WITH CIRCUMFLEX
+<Multi_key> <C> <period>              : "Ċ" # U010a : LATIN CAPITAL LETTER C WITH DOT ABOVE
+<Multi_key> <c> <period>              : "ċ" # U010b : LATIN SMALL LETTER C WITH DOT ABOVE
+<Multi_key> <C> <less>                : "Č" # U010c : LATIN CAPITAL LETTER C WITH CARON
+<Multi_key> <c> <less>                : "č" # U010d : LATIN SMALL LETTER C WITH CARON
+<Multi_key> <D> <less>                : "Ď" # U010e : LATIN CAPITAL LETTER D WITH CARON
+<Multi_key> <d> <less>                : "ď" # U010f : LATIN SMALL LETTER D WITH CARON
+<Multi_key> <D> <slash>               : "Đ" # U0110 : LATIN CAPITAL LETTER D WITH STROKE
+<Multi_key> <d> <slash>               : "đ" # U0111 : LATIN SMALL LETTER D WITH STROKE
+<Multi_key> <E> <minus>               : "Ē" # U0112 : LATIN CAPITAL LETTER E WITH MACRON
+<Multi_key> <e> <minus>               : "ē" # U0113 : LATIN SMALL LETTER E WITH MACRON
+<Multi_key> <E> <parenleft>           : "Ĕ" # U0114 : LATIN CAPITAL LETTER E WITH BREVE
+<Multi_key> <e> <parenleft>           : "ĕ" # U0115 : LATIN SMALL LETTER E WITH BREVE
+<Multi_key> <E> <period>              : "Ė" # U0116 : LATIN CAPITAL LETTER E WITH DOT ABOVE
+<Multi_key> <e> <period>              : "ė" # U0117 : LATIN SMALL LETTER E WITH DOT ABOVE
+<Multi_key> <E> <semicolon>           : "Ę" # U0118 : LATIN CAPITAL LETTER E WITH OGONEK
+<Multi_key> <e> <semicolon>           : "ę" # U0119 : LATIN SMALL LETTER E WITH OGONEK
+<Multi_key> <E> <less>                : "Ě" # U011a : LATIN CAPITAL LETTER E WITH CARON
+<Multi_key> <e> <less>                : "ě" # U011b : LATIN SMALL LETTER E WITH CARON
+<Multi_key> <G> <greater>             : "Ĝ" # U011c : LATIN CAPITAL LETTER G WITH CIRCUMFLEX
+<Multi_key> <g> <greater>             : "ĝ" # U011d : LATIN SMALL LETTER G WITH CIRCUMFLEX
+<Multi_key> <G> <parenleft>           : "Ğ" # U011e : LATIN CAPITAL LETTER G WITH BREVE
+<Multi_key> <g> <parenleft>           : "ğ" # U011f : LATIN SMALL LETTER G WITH BREVE
+<Multi_key> <G> <period>              : "Ġ" # U0120 : LATIN CAPITAL LETTER G WITH DOT ABOVE
+<Multi_key> <g> <period>              : "ġ" # U0121 : LATIN SMALL LETTER G WITH DOT ABOVE
+<Multi_key> <G> <comma>               : "Ģ" # U0122 : LATIN CAPITAL LETTER G WITH CEDILLA
+<Multi_key> <g> <comma>               : "ģ" # U0123 : LATIN SMALL LETTER G WITH CEDILLA
+<Multi_key> <H> <greater>             : "Ĥ" # U0124 : LATIN CAPITAL LETTER H WITH CIRCUMFLEX
+<Multi_key> <h> <greater>             : "ĥ" # U0125 : LATIN SMALL LETTER H WITH CIRCUMFLEX
+<Multi_key> <H> <slash>               : "Ħ" # U0126 : LATIN CAPITAL LETTER H WITH STROKE
+<Multi_key> <h> <slash>               : "ħ" # U0127 : LATIN SMALL LETTER H WITH STROKE
+<Multi_key> <I> <question>            : "Ĩ" # U0128 : LATIN CAPITAL LETTER I WITH TILDE
+<Multi_key> <i> <question>            : "ĩ" # U0129 : LATIN SMALL LETTER I WITH TILDE
+<Multi_key> <I> <minus>               : "Ī" # U012a : LATIN CAPITAL LETTER I WITH MACRON
+<Multi_key> <i> <minus>               : "ī" # U012b : LATIN SMALL LETTER I WITH MACRON
+<Multi_key> <I> <parenleft>           : "Ĭ" # U012c : LATIN CAPITAL LETTER I WITH BREVE
+<Multi_key> <i> <parenleft>           : "ĭ" # U012d : LATIN SMALL LETTER I WITH BREVE
+<Multi_key> <I> <semicolon>           : "Į" # U012e : LATIN CAPITAL LETTER I WITH OGONEK
+<Multi_key> <i> <semicolon>           : "į" # U012f : LATIN SMALL LETTER I WITH OGONEK
+<Multi_key> <I> <period>              : "İ" # U0130 : LATIN CAPITAL LETTER I WITH DOT ABOVE
+<Multi_key> <i> <period>              : "ı" # U0131 : LATIN SMALL LETTER I DOTLESS
+<Multi_key> <I> <J>                   : "Ĳ" # U0132 : LATIN CAPITAL LIGATURE IJ
+<Multi_key> <i> <j>                   : "ĳ" # U0133 : LATIN SMALL LIGATURE IJ
+<Multi_key> <J> <greater>             : "Ĵ" # U0134 : LATIN CAPITAL LETTER J WITH CIRCUMFLEX
+<Multi_key> <j> <greater>             : "ĵ" # U0135 : LATIN SMALL LETTER J WITH CIRCUMFLEX
+<Multi_key> <K> <comma>               : "Ķ" # U0136 : LATIN CAPITAL LETTER K WITH CEDILLA
+<Multi_key> <k> <comma>               : "ķ" # U0137 : LATIN SMALL LETTER K WITH CEDILLA
+<Multi_key> <k> <k>                   : "ĸ" # U0138 : LATIN SMALL LETTER KRA (Greenlandic)
+<Multi_key> <L> <quoteright>          : "Ĺ" # U0139 : LATIN CAPITAL LETTER L WITH ACUTE
+<Multi_key> <l> <quoteright>          : "ĺ" # U013a : LATIN SMALL LETTER L WITH ACUTE
+<Multi_key> <L> <comma>               : "Ļ" # U013b : LATIN CAPITAL LETTER L WITH CEDILLA
+<Multi_key> <l> <comma>               : "ļ" # U013c : LATIN SMALL LETTER L WITH CEDILLA
+<Multi_key> <L> <less>                : "Ľ" # U013d : LATIN CAPITAL LETTER L WITH CARON
+<Multi_key> <l> <less>                : "ľ" # U013e : LATIN SMALL LETTER L WITH CARON
+<Multi_key> <L> <period>              : "Ŀ" # U013f : LATIN CAPITAL LETTER L WITH MIDDLE DOT
+<Multi_key> <l> <period>              : "ŀ" # U0140 : LATIN SMALL LETTER L WITH MIDDLE DOT
+<Multi_key> <L> <slash>               : "Ł" # U0141 : LATIN CAPITAL LETTER L WITH STROKE
+<Multi_key> <l> <slash>               : "ł" # U0142 : LATIN SMALL LETTER L WITH STROKE
+<Multi_key> <N> <quoteright>          : "Ń" # U0143 : LATIN CAPITAL LETTER N WITH ACUTE
+<Multi_key> <n> <quoteright>          : "ń" # U0144 : LATIN SMALL LETTER N WITH ACUTE
+<Multi_key> <N> <comma>               : "Ņ" # U0145 : LATIN CAPITAL LETTER N WITH CEDILLA
+<Multi_key> <n> <comma>               : "ņ" # U0146 : LATIN SMALL LETTER N WITH CEDILLA
+<Multi_key> <N> <less>                : "Ň" # U0147 : LATIN CAPITAL LETTER N WITH CARON
+<Multi_key> <n> <less>                : "ň" # U0148 : LATIN SMALL LETTER N WITH CARON
+<Multi_key> <quoteright> <n>          : "ŉ" # U0149 : LATIN SMALL LETTER N PRECEDED BY APOSTROPHE
+<Multi_key> <N> <G>                   : "Ŋ" # U014a : LATIN CAPITAL LETTER ENG (Lappish)
+<Multi_key> <n> <g>                   : "ŋ" # U014b : LATIN SMALL LETTER ENG (Lappish)
+<Multi_key> <O> <minus>               : "Ō" # U014c : LATIN CAPITAL LETTER O WITH MACRON
+<Multi_key> <o> <minus>               : "ō" # U014d : LATIN SMALL LETTER O WITH MACRON
+<Multi_key> <O> <parenleft>           : "Ŏ" # U014e : LATIN CAPITAL LETTER O WITH BREVE
+<Multi_key> <o> <parenleft>           : "ŏ" # U014f : LATIN SMALL LETTER O WITH BREVE
+<Multi_key> <O> <quotedbl>            : "Ő" # U0150 : LATIN CAPITAL LETTER O WITH DOUBLE ACUTE
+<Multi_key> <o> <quotedbl>            : "ő" # U0151 : LATIN SMALL LETTER O WITH DOUBLE ACUTE
+<Multi_key> <O> <E>                   : "Œ" # U0152 : LATIN CAPITAL LIGATURE OE
+<Multi_key> <o> <e>                   : "œ" # U0153 : LATIN SMALL LIGATURE OE
+<Multi_key> <R> <quoteright>          : "Ŕ" # U0154 : LATIN CAPITAL LETTER R WITH ACUTE
+<Multi_key> <r> <quoteright>          : "ŕ" # U0155 : LATIN SMALL LETTER R WITH ACUTE
+<Multi_key> <R> <comma>               : "Ŗ" # U0156 : LATIN CAPITAL LETTER R WITH CEDILLA
+<Multi_key> <r> <comma>               : "ŗ" # U0157 : LATIN SMALL LETTER R WITH CEDILLA
+<Multi_key> <R> <less>                : "Ř" # U0158 : LATIN CAPITAL LETTER R WITH CARON
+<Multi_key> <r> <less>                : "ř" # U0159 : LATIN SMALL LETTER R WITH CARON
+<Multi_key> <S> <quoteright>          : "Ś" # U015a : LATIN CAPITAL LETTER S WITH ACUTE
+<Multi_key> <s> <quoteright>          : "ś" # U015b : LATIN SMALL LETTER S WITH ACUTE
+<Multi_key> <S> <greater>             : "Ŝ" # U015c : LATIN CAPITAL LETTER S WITH CIRCUMFLEX
+<Multi_key> <s> <greater>             : "ŝ" # U015d : LATIN SMALL LETTER S WITH CIRCUMFLEX
+<Multi_key> <S> <comma>               : "Ş" # U015e : LATIN CAPITAL LETTER S WITH CEDILLA
+<Multi_key> <s> <comma>               : "ş" # U015f : LATIN SMALL LETTER S WITH CEDILLA
+<Multi_key> <S> <less>                : "Š" # U0160 : LATIN CAPITAL LETTER S WITH CARON
+<Multi_key> <s> <less>                : "š" # U0161 : LATIN SMALL LETTER S WITH CARON
+<Multi_key> <T> <comma>               : "Ţ" # U0162 : LATIN CAPITAL LETTER T WITH CEDILLA
+<Multi_key> <t> <comma>               : "ţ" # U0163 : LATIN SMALL LETTER T WITH CEDILLA
+<Multi_key> <T> <less>                : "Ť" # U0164 : LATIN CAPITAL LETTER T WITH CARON
+<Multi_key> <t> <less>                : "ť" # U0165 : LATIN SMALL LETTER T WITH CARON
+<Multi_key> <T> <slash>               : "Ŧ" # U0166 : LATIN CAPITAL LETTER T WITH STROKE
+<Multi_key> <t> <slash>               : "ŧ" # U0167 : LATIN SMALL LETTER T WITH STROKE
+<Multi_key> <U> <question>            : "Ũ" # U0168 : LATIN CAPITAL LETTER U WITH TILDE
+<Multi_key> <u> <question>            : "ũ" # U0169 : LATIN SMALL LETTER U WITH TILDE
+<Multi_key> <U> <minus>               : "Ū" # U016a : LATIN CAPITAL LETTER U WITH MACRON
+<Multi_key> <u> <minus>               : "ū" # U016b : LATIN SMALL LETTER U WITH MACRON
+<Multi_key> <U> <parenleft>           : "Ŭ" # U016c : LATIN CAPITAL LETTER U WITH BREVE
+<Multi_key> <u> <parenleft>           : "ŭ" # U016d : LATIN SMALL LETTER U WITH BREVE
+<Multi_key> <U> <0>                   : "Ů" # U016e : LATIN CAPITAL LETTER U WITH RING ABOVE
+<Multi_key> <u> <0>                   : "ů" # U016f : LATIN SMALL LETTER U WITH RING ABOVE
+<Multi_key> <U> <quotedbl>            : "Ű" # U0170 : LATIN CAPITAL LETTER U WITH DOUBLE ACUTE
+<Multi_key> <u> <quotedbl>            : "ű" # U0171 : LATIN SMALL LETTER U WITH DOUBLE ACUTE
+<Multi_key> <U> <semicolon>           : "Ų" # U0172 : LATIN CAPITAL LETTER U WITH OGONEK
+<Multi_key> <u> <semicolon>           : "ų" # U0173 : LATIN SMALL LETTER U WITH OGONEK
+<Multi_key> <W> <greater>             : "Ŵ" # U0174 : LATIN CAPITAL LETTER W WITH CIRCUMFLEX
+<Multi_key> <w> <greater>             : "ŵ" # U0175 : LATIN SMALL LETTER W WITH CIRCUMFLEX
+<Multi_key> <Y> <greater>             : "Ŷ" # U0176 : LATIN CAPITAL LETTER Y WITH CIRCUMFLEX
+<Multi_key> <y> <greater>             : "ŷ" # U0177 : LATIN SMALL LETTER Y WITH CIRCUMFLEX
+<Multi_key> <Y> <colon>               : "Ÿ" # U0178 : LATIN CAPITAL LETTER Y WITH DIAERESIS
+<Multi_key> <Z> <quoteright>          : "Ź" # U0179 : LATIN CAPITAL LETTER Z WITH ACUTE
+<Multi_key> <z> <quoteright>          : "ź" # U017a : LATIN SMALL LETTER Z WITH ACUTE
+<Multi_key> <Z> <period>              : "Ż" # U017b : LATIN CAPITAL LETTER Z WITH DOT ABOVE
+<Multi_key> <z> <period>              : "ż" # U017c : LATIN SMALL LETTER Z WITH DOT ABOVE
+<Multi_key> <Z> <less>                : "Ž" # U017d : LATIN CAPITAL LETTER Z WITH CARON
+<Multi_key> <z> <less>                : "ž" # U017e : LATIN SMALL LETTER Z WITH CARON
+<Multi_key> <O> <9>                   : "Ơ" # U01a0 : LATIN CAPITAL LETTER O WITH HORN
+<Multi_key> <o> <9>                   : "ơ" # U01a1 : LATIN SMALL LETTER O WITH HORN
+<Multi_key> <O> <I>                   : "Ƣ" # U01a2 : LATIN CAPITAL LETTER OI
+<Multi_key> <o> <i>                   : "ƣ" # U01a3 : LATIN SMALL LETTER OI
+<Multi_key> <y> <r>                   : "Ʀ" # U01a6 : LATIN LETTER YR
+<Multi_key> <U> <9>                   : "Ư" # U01af : LATIN CAPITAL LETTER U WITH HORN
+<Multi_key> <u> <9>                   : "ư" # U01b0 : LATIN SMALL LETTER U WITH HORN
+<Multi_key> <Z> <slash>               : "Ƶ" # U01b5 : LATIN CAPITAL LETTER Z WITH STROKE
+<Multi_key> <z> <slash>               : "ƶ" # U01b6 : LATIN SMALL LETTER Z WITH STROKE
+<Multi_key> <E> <D>                   : "Ʒ" # U01b7 : LATIN CAPITAL LETTER EZH
+<Multi_key> <A> <less>                : "Ǎ" # U01cd : LATIN CAPITAL LETTER A WITH CARON
+<Multi_key> <a> <less>                : "ǎ" # U01ce : LATIN SMALL LETTER A WITH CARON
+<Multi_key> <I> <less>                : "Ǐ" # U01cf : LATIN CAPITAL LETTER I WITH CARON
+<Multi_key> <i> <less>                : "ǐ" # U01d0 : LATIN SMALL LETTER I WITH CARON
+<Multi_key> <O> <less>                : "Ǒ" # U01d1 : LATIN CAPITAL LETTER O WITH CARON
+<Multi_key> <o> <less>                : "ǒ" # U01d2 : LATIN SMALL LETTER O WITH CARON
+<Multi_key> <U> <less>                : "Ǔ" # U01d3 : LATIN CAPITAL LETTER U WITH CARON
+<Multi_key> <u> <less>                : "ǔ" # U01d4 : LATIN SMALL LETTER U WITH CARON
+<Multi_key> <A> <1>                   : "Ǟ" # U01de : LATIN CAPITAL LETTER A WITH DIAERESIS AND MACRON
+<Multi_key> <a> <1>                   : "ǟ" # U01df : LATIN SMALL LETTER A WITH DIAERESIS AND MACRON
+<Multi_key> <A> <7>                   : "Ǡ" # U01e0 : LATIN CAPITAL LETTER A WITH DOT ABOVE AND MACRON
+<Multi_key> <a> <7>                   : "ǡ" # U01e1 : LATIN SMALL LETTER A WITH DOT ABOVE AND MACRON
+<Multi_key> <A> <3>                   : "Ǣ" # U01e2 : LATIN CAPITAL LETTER AE WITH MACRON
+<Multi_key> <a> <3>                   : "ǣ" # U01e3 : LATIN SMALL LETTER AE WITH MACRON
+<Multi_key> <G> <slash>               : "Ǥ" # U01e4 : LATIN CAPITAL LETTER G WITH STROKE
+<Multi_key> <g> <slash>               : "ǥ" # U01e5 : LATIN SMALL LETTER G WITH STROKE
+<Multi_key> <G> <less>                : "Ǧ" # U01e6 : LATIN CAPITAL LETTER G WITH CARON
+<Multi_key> <g> <less>                : "ǧ" # U01e7 : LATIN SMALL LETTER G WITH CARON
+<Multi_key> <K> <less>                : "Ǩ" # U01e8 : LATIN CAPITAL LETTER K WITH CARON
+<Multi_key> <k> <less>                : "ǩ" # U01e9 : LATIN SMALL LETTER K WITH CARON
+<Multi_key> <O> <semicolon>           : "Ǫ" # U01ea : LATIN CAPITAL LETTER O WITH OGONEK
+<Multi_key> <o> <semicolon>           : "ǫ" # U01eb : LATIN SMALL LETTER O WITH OGONEK
+<Multi_key> <O> <1>                   : "Ǭ" # U01ec : LATIN CAPITAL LETTER O WITH OGONEK AND MACRON
+<Multi_key> <o> <1>                   : "ǭ" # U01ed : LATIN SMALL LETTER O WITH OGONEK AND MACRON
+<Multi_key> <E> <Z>                   : "Ǯ" # U01ee : LATIN CAPITAL LETTER EZH WITH CARON
+<Multi_key> <e> <z>                   : "ǯ" # U01ef : LATIN SMALL LETTER EZH WITH CARON
+<Multi_key> <j> <less>                : "ǰ" # U01f0 : LATIN SMALL LETTER J WITH CARON
+<Multi_key> <G> <quoteright>          : "Ǵ" # U01f4 : LATIN CAPITAL LETTER G WITH ACUTE
+<Multi_key> <g> <quoteright>          : "ǵ" # U01f5 : LATIN SMALL LETTER G WITH ACUTE
+<Multi_key> <semicolon> <S>           : "ʿ" # U02bf : MODIFIER LETTER LEFT HALF RING
+<Multi_key> <quoteright> <less>       : "ˇ" # U02c7 : CARON
+<Multi_key> <quoteright> <parenleft>  : "˘" # U02d8 : BREVE
+<Multi_key> <quoteright> <period>     : "˙" # U02d9 : DOT ABOVE
+<Multi_key> <quoteright> <0>          : "˚" # U02da : RING ABOVE
+<Multi_key> <quoteright> <semicolon>  : "˛" # U02db : OGONEK
+<Multi_key> <quoteright> <quotedbl>   : "˝" # U02dd : DOUBLE ACUTE ACCENT
+<Multi_key> <A> <percent>             : "Ά" # U0386 : GREEK CAPITAL LETTER ALPHA WITH ACUTE
+<Multi_key> <E> <percent>             : "Έ" # U0388 : GREEK CAPITAL LETTER EPSILON WITH ACUTE
+<Multi_key> <Y> <percent>             : "Ή" # U0389 : GREEK CAPITAL LETTER ETA WITH ACUTE
+<Multi_key> <I> <percent>             : "Ί" # U038a : GREEK CAPITAL LETTER IOTA WITH ACUTE
+<Multi_key> <O> <percent>             : "Ό" # U038c : GREEK CAPITAL LETTER OMICRON WITH ACUTE
+<Multi_key> <U> <percent>             : "Ύ" # U038e : GREEK CAPITAL LETTER UPSILON WITH ACUTE
+<Multi_key> <W> <percent>             : "Ώ" # U038f : GREEK CAPITAL LETTER OMEGA WITH ACUTE
+<Multi_key> <i> <3>                   : "ΐ" # U0390 : GREEK SMALL LETTER IOTA WITH ACUTE AND DIAERESIS
+<Multi_key> <A> <asterisk>            : "Α" # U0391 : GREEK CAPITAL LETTER ALPHA
+<Multi_key> <B> <asterisk>            : "Β" # U0392 : GREEK CAPITAL LETTER BETA
+<Multi_key> <G> <asterisk>            : "Γ" # U0393 : GREEK CAPITAL LETTER GAMMA
+<Multi_key> <D> <asterisk>            : "Δ" # U0394 : GREEK CAPITAL LETTER DELTA
+<Multi_key> <E> <asterisk>            : "Ε" # U0395 : GREEK CAPITAL LETTER EPSILON
+<Multi_key> <Z> <asterisk>            : "Ζ" # U0396 : GREEK CAPITAL LETTER ZETA
+<Multi_key> <Y> <asterisk>            : "Η" # U0397 : GREEK CAPITAL LETTER ETA
+<Multi_key> <H> <asterisk>            : "Θ" # U0398 : GREEK CAPITAL LETTER THETA
+<Multi_key> <I> <asterisk>            : "Ι" # U0399 : GREEK CAPITAL LETTER IOTA
+<Multi_key> <K> <asterisk>            : "Κ" # U039a : GREEK CAPITAL LETTER KAPPA
+<Multi_key> <L> <asterisk>            : "Λ" # U039b : GREEK CAPITAL LETTER LAMDA
+<Multi_key> <M> <asterisk>            : "Μ" # U039c : GREEK CAPITAL LETTER MU
+<Multi_key> <N> <asterisk>            : "Ν" # U039d : GREEK CAPITAL LETTER NU
+<Multi_key> <C> <asterisk>            : "Ξ" # U039e : GREEK CAPITAL LETTER XI
+<Multi_key> <O> <asterisk>            : "Ο" # U039f : GREEK CAPITAL LETTER OMICRON
+<Multi_key> <P> <asterisk>            : "Π" # U03a0 : GREEK CAPITAL LETTER PI
+<Multi_key> <R> <asterisk>            : "Ρ" # U03a1 : GREEK CAPITAL LETTER RHO
+<Multi_key> <S> <asterisk>            : "Σ" # U03a3 : GREEK CAPITAL LETTER SIGMA
+<Multi_key> <T> <asterisk>            : "Τ" # U03a4 : GREEK CAPITAL LETTER TAU
+<Multi_key> <U> <asterisk>            : "Υ" # U03a5 : GREEK CAPITAL LETTER UPSILON
+<Multi_key> <F> <asterisk>            : "Φ" # U03a6 : GREEK CAPITAL LETTER PHI
+<Multi_key> <X> <asterisk>            : "Χ" # U03a7 : GREEK CAPITAL LETTER CHI
+<Multi_key> <Q> <asterisk>            : "Ψ" # U03a8 : GREEK CAPITAL LETTER PSI
+<Multi_key> <W> <asterisk>            : "Ω" # U03a9 : GREEK CAPITAL LETTER OMEGA
+<Multi_key> <J> <asterisk>            : "Ϊ" # U03aa : GREEK CAPITAL LETTER IOTA WITH DIAERESIS
+<Multi_key> <V> <asterisk>            : "Ϋ" # U03ab : GREEK CAPITAL LETTER UPSILON WITH DIAERESIS
+<Multi_key> <a> <percent>             : "ά" # U03ac : GREEK SMALL LETTER ALPHA WITH ACUTE
+<Multi_key> <e> <percent>             : "έ" # U03ad : GREEK SMALL LETTER EPSILON WITH ACUTE
+<Multi_key> <y> <percent>             : "ή" # U03ae : GREEK SMALL LETTER ETA WITH ACUTE
+<Multi_key> <i> <percent>             : "ί" # U03af : GREEK SMALL LETTER IOTA WITH ACUTE
+<Multi_key> <u> <3>                   : "ΰ" # U03b0 : GREEK SMALL LETTER UPSILON WITH ACUTE AND DIAERESIS
+<Multi_key> <a> <asterisk>            : "α" # U03b1 : GREEK SMALL LETTER ALPHA
+<Multi_key> <b> <asterisk>            : "β" # U03b2 : GREEK SMALL LETTER BETA
+<Multi_key> <g> <asterisk>            : "γ" # U03b3 : GREEK SMALL LETTER GAMMA
+<Multi_key> <d> <asterisk>            : "δ" # U03b4 : GREEK SMALL LETTER DELTA
+<Multi_key> <e> <asterisk>            : "ε" # U03b5 : GREEK SMALL LETTER EPSILON
+<Multi_key> <z> <asterisk>            : "ζ" # U03b6 : GREEK SMALL LETTER ZETA
+<Multi_key> <y> <asterisk>            : "η" # U03b7 : GREEK SMALL LETTER ETA
+<Multi_key> <h> <asterisk>            : "θ" # U03b8 : GREEK SMALL LETTER THETA
+<Multi_key> <i> <asterisk>            : "ι" # U03b9 : GREEK SMALL LETTER IOTA
+<Multi_key> <k> <asterisk>            : "κ" # U03ba : GREEK SMALL LETTER KAPPA
+<Multi_key> <l> <asterisk>            : "λ" # U03bb : GREEK SMALL LETTER LAMDA
+<Multi_key> <m> <asterisk>            : "μ" # U03bc : GREEK SMALL LETTER MU
+<Multi_key> <n> <asterisk>            : "ν" # U03bd : GREEK SMALL LETTER NU
+<Multi_key> <c> <asterisk>            : "ξ" # U03be : GREEK SMALL LETTER XI
+<Multi_key> <o> <asterisk>            : "ο" # U03bf : GREEK SMALL LETTER OMICRON
+<Multi_key> <p> <asterisk>            : "π" # U03c0 : GREEK SMALL LETTER PI
+<Multi_key> <r> <asterisk>            : "ρ" # U03c1 : GREEK SMALL LETTER RHO
+<Multi_key> <asterisk> <s>            : "ς" # U03c2 : GREEK SMALL LETTER FINAL SIGMA
+<Multi_key> <s> <asterisk>            : "σ" # U03c3 : GREEK SMALL LETTER SIGMA
+<Multi_key> <t> <asterisk>            : "τ" # U03c4 : GREEK SMALL LETTER TAU
+<Multi_key> <u> <asterisk>            : "υ" # U03c5 : GREEK SMALL LETTER UPSILON
+<Multi_key> <f> <asterisk>            : "φ" # U03c6 : GREEK SMALL LETTER PHI
+<Multi_key> <x> <asterisk>            : "χ" # U03c7 : GREEK SMALL LETTER CHI
+<Multi_key> <q> <asterisk>            : "ψ" # U03c8 : GREEK SMALL LETTER PSI
+<Multi_key> <w> <asterisk>            : "ω" # U03c9 : GREEK SMALL LETTER OMEGA
+<Multi_key> <j> <asterisk>            : "ϊ" # U03ca : GREEK SMALL LETTER IOTA WITH DIAERESIS
+<Multi_key> <v> <asterisk>            : "ϋ" # U03cb : GREEK SMALL LETTER UPSILON WITH DIAERESIS
+<Multi_key> <o> <percent>             : "ό" # U03cc : GREEK SMALL LETTER OMICRON WITH ACUTE
+<Multi_key> <u> <percent>             : "ύ" # U03cd : GREEK SMALL LETTER UPSILON WITH ACUTE
+<Multi_key> <w> <percent>             : "ώ" # U03ce : GREEK SMALL LETTER OMEGA WITH ACUTE
+<Multi_key> <quoteright> <G>          : "Ϙ" # U03d8 : GREEK NUMERAL SIGN
+<Multi_key> <comma> <G>               : "ϙ" # U03d9 : GREEK LOWER NUMERAL SIGN
+<Multi_key> <T> <3>                   : "Ϛ" # U03da : GREEK CAPITAL LETTER STIGMA
+<Multi_key> <t> <3>                   : "ϛ" # U03db : GREEK SMALL LETTER STIGMA
+<Multi_key> <M> <3>                   : "Ϝ" # U03dc : GREEK CAPITAL LETTER DIGAMMA
+<Multi_key> <m> <3>                   : "ϝ" # U03dd : GREEK SMALL LETTER DIGAMMA
+<Multi_key> <K> <3>                   : "Ϟ" # U03de : GREEK CAPITAL LETTER KOPPA
+<Multi_key> <k> <3>                   : "ϟ" # U03df : GREEK SMALL LETTER KOPPA
+<Multi_key> <P> <3>                   : "Ϡ" # U03e0 : GREEK CAPITAL LETTER SAMPI
+<Multi_key> <p> <3>                   : "ϡ" # U03e1 : GREEK SMALL LETTER SAMPI
+<Multi_key> <quoteright> <percent>    : "ϴ" # U03f4 : ACUTE ACCENT AND DIAERESIS (Tonos and Dialytika)
+<Multi_key> <j> <3>                   : "ϵ" # U03f5 : GREEK IOTA BELOW
+<Multi_key> <I> <O>                   : "Ё" # U0401 : CYRILLIC CAPITAL LETTER IO
+<Multi_key> <D> <percent>             : "Ђ" # U0402 : CYRILLIC CAPITAL LETTER DJE (Serbocroatian)
+<Multi_key> <G> <percent>             : "Ѓ" # U0403 : CYRILLIC CAPITAL LETTER GJE (Macedonian)
+<Multi_key> <I> <E>                   : "Є" # U0404 : CYRILLIC CAPITAL LETTER UKRAINIAN IE
+<Multi_key> <D> <S>                   : "Ѕ" # U0405 : CYRILLIC CAPITAL LETTER DZE (Macedonian)
+<Multi_key> <I> <I>                   : "І" # U0406 : CYRILLIC CAPITAL LETTER BYELORUSSIAN-UKRAINIAN I
+<Multi_key> <Y> <I>                   : "Ї" # U0407 : CYRILLIC CAPITAL LETTER YI (Ukrainian)
+<Multi_key> <J> <percent>             : "Ј" # U0408 : CYRILLIC CAPITAL LETTER JE
+<Multi_key> <L> <J>                   : "Љ" # U0409 : CYRILLIC CAPITAL LETTER LJE
+<Multi_key> <N> <J>                   : "Њ" # U040a : CYRILLIC CAPITAL LETTER NJE
+<Multi_key> <T> <s>                   : "Ћ" # U040b : CYRILLIC CAPITAL LETTER TSHE (Serbocroatian)
+<Multi_key> <K> <J>                   : "Ќ" # U040c : CYRILLIC CAPITAL LETTER KJE (Macedonian)
+<Multi_key> <V> <percent>             : "Ў" # U040e : CYRILLIC CAPITAL LETTER SHORT U (Byelorussian)
+<Multi_key> <D> <Z>                   : "Џ" # U040f : CYRILLIC CAPITAL LETTER DZHE
+<Multi_key> <A> <equal>               : "А" # U0410 : CYRILLIC CAPITAL LETTER A
+<Multi_key> <B> <equal>               : "Б" # U0411 : CYRILLIC CAPITAL LETTER BE
+<Multi_key> <V> <equal>               : "В" # U0412 : CYRILLIC CAPITAL LETTER VE
+<Multi_key> <G> <equal>               : "Г" # U0413 : CYRILLIC CAPITAL LETTER GHE
+<Multi_key> <D> <equal>               : "Д" # U0414 : CYRILLIC CAPITAL LETTER DE
+<Multi_key> <E> <equal>               : "Е" # U0415 : CYRILLIC CAPITAL LETTER IE
+<Multi_key> <Z> <percent>             : "Ж" # U0416 : CYRILLIC CAPITAL LETTER ZHE
+<Multi_key> <Z> <equal>               : "З" # U0417 : CYRILLIC CAPITAL LETTER ZE
+<Multi_key> <I> <equal>               : "И" # U0418 : CYRILLIC CAPITAL LETTER I
+<Multi_key> <J> <equal>               : "Й" # U0419 : CYRILLIC CAPITAL LETTER SHORT I
+<Multi_key> <K> <equal>               : "К" # U041a : CYRILLIC CAPITAL LETTER KA
+<Multi_key> <L> <equal>               : "Л" # U041b : CYRILLIC CAPITAL LETTER EL
+<Multi_key> <M> <equal>               : "М" # U041c : CYRILLIC CAPITAL LETTER EM
+<Multi_key> <N> <equal>               : "Н" # U041d : CYRILLIC CAPITAL LETTER EN
+<Multi_key> <O> <equal>               : "О" # U041e : CYRILLIC CAPITAL LETTER O
+<Multi_key> <P> <equal>               : "П" # U041f : CYRILLIC CAPITAL LETTER PE
+<Multi_key> <R> <equal>               : "Р" # U0420 : CYRILLIC CAPITAL LETTER ER
+<Multi_key> <S> <equal>               : "С" # U0421 : CYRILLIC CAPITAL LETTER ES
+<Multi_key> <T> <equal>               : "Т" # U0422 : CYRILLIC CAPITAL LETTER TE
+<Multi_key> <U> <equal>               : "У" # U0423 : CYRILLIC CAPITAL LETTER U
+<Multi_key> <F> <equal>               : "Ф" # U0424 : CYRILLIC CAPITAL LETTER EF
+<Multi_key> <H> <equal>               : "Х" # U0425 : CYRILLIC CAPITAL LETTER HA
+<Multi_key> <C> <equal>               : "Ц" # U0426 : CYRILLIC CAPITAL LETTER TSE
+<Multi_key> <C> <percent>             : "Ч" # U0427 : CYRILLIC CAPITAL LETTER CHE
+<Multi_key> <S> <percent>             : "Ш" # U0428 : CYRILLIC CAPITAL LETTER SHA
+<Multi_key> <S> <c>                   : "Щ" # U0429 : CYRILLIC CAPITAL LETTER SHCHA
+<Multi_key> <equal> <quotedbl>        : "Ъ" # U042a : CYRILLIC CAPITAL LETTER HARD SIGN
+<Multi_key> <Y> <equal>               : "Ы" # U042b : CYRILLIC CAPITAL LETTER YERU
+<Multi_key> <percent> <quotedbl>      : "Ь" # U042c : CYRILLIC CAPITAL LETTER SOFT SIGN
+<Multi_key> <J> <E>                   : "Э" # U042d : CYRILLIC CAPITAL LETTER E
+<Multi_key> <J> <U>                   : "Ю" # U042e : CYRILLIC CAPITAL LETTER YU
+<Multi_key> <J> <A>                   : "Я" # U042f : CYRILLIC CAPITAL LETTER YA
+<Multi_key> <a> <equal>               : "а" # U0430 : CYRILLIC SMALL LETTER A
+<Multi_key> <b> <equal>               : "б" # U0431 : CYRILLIC SMALL LETTER BE
+<Multi_key> <v> <equal>               : "в" # U0432 : CYRILLIC SMALL LETTER VE
+<Multi_key> <g> <equal>               : "г" # U0433 : CYRILLIC SMALL LETTER GHE
+<Multi_key> <d> <equal>               : "д" # U0434 : CYRILLIC SMALL LETTER DE
+<Multi_key> <e> <equal>               : "е" # U0435 : CYRILLIC SMALL LETTER IE
+<Multi_key> <z> <percent>             : "ж" # U0436 : CYRILLIC SMALL LETTER ZHE
+<Multi_key> <z> <equal>               : "з" # U0437 : CYRILLIC SMALL LETTER ZE
+<Multi_key> <i> <equal>               : "и" # U0438 : CYRILLIC SMALL LETTER I
+<Multi_key> <j> <equal>               : "й" # U0439 : CYRILLIC SMALL LETTER SHORT I
+<Multi_key> <k> <equal>               : "к" # U043a : CYRILLIC SMALL LETTER KA
+<Multi_key> <l> <equal>               : "л" # U043b : CYRILLIC SMALL LETTER EL
+<Multi_key> <m> <equal>               : "м" # U043c : CYRILLIC SMALL LETTER EM
+<Multi_key> <n> <equal>               : "н" # U043d : CYRILLIC SMALL LETTER EN
+<Multi_key> <o> <equal>               : "о" # U043e : CYRILLIC SMALL LETTER O
+<Multi_key> <p> <equal>               : "п" # U043f : CYRILLIC SMALL LETTER PE
+<Multi_key> <r> <equal>               : "р" # U0440 : CYRILLIC SMALL LETTER ER
+<Multi_key> <s> <equal>               : "с" # U0441 : CYRILLIC SMALL LETTER ES
+<Multi_key> <t> <equal>               : "т" # U0442 : CYRILLIC SMALL LETTER TE
+<Multi_key> <u> <equal>               : "у" # U0443 : CYRILLIC SMALL LETTER U
+<Multi_key> <f> <equal>               : "ф" # U0444 : CYRILLIC SMALL LETTER EF
+<Multi_key> <h> <equal>               : "х" # U0445 : CYRILLIC SMALL LETTER HA
+<Multi_key> <c> <equal>               : "ц" # U0446 : CYRILLIC SMALL LETTER TSE
+<Multi_key> <c> <percent>             : "ч" # U0447 : CYRILLIC SMALL LETTER CHE
+<Multi_key> <s> <percent>             : "ш" # U0448 : CYRILLIC SMALL LETTER SHA
+<Multi_key> <s> <c>                   : "щ" # U0449 : CYRILLIC SMALL LETTER SHCHA
+<Multi_key> <equal> <quoteright>      : "ъ" # U044a : CYRILLIC SMALL LETTER HARD SIGN
+<Multi_key> <y> <equal>               : "ы" # U044b : CYRILLIC SMALL LETTER YERU
+<Multi_key> <percent> <quoteright>    : "ь" # U044c : CYRILLIC SMALL LETTER SOFT SIGN
+<Multi_key> <j> <e>                   : "э" # U044d : CYRILLIC SMALL LETTER E
+<Multi_key> <j> <u>                   : "ю" # U044e : CYRILLIC SMALL LETTER YU
+<Multi_key> <j> <a>                   : "я" # U044f : CYRILLIC SMALL LETTER YA
+<Multi_key> <i> <o>                   : "ё" # U0451 : CYRILLIC SMALL LETTER IO
+<Multi_key> <d> <percent>             : "ђ" # U0452 : CYRILLIC SMALL LETTER DJE (Serbocroatian)
+<Multi_key> <g> <percent>             : "ѓ" # U0453 : CYRILLIC SMALL LETTER GJE (Macedonian)
+<Multi_key> <i> <e>                   : "є" # U0454 : CYRILLIC SMALL LETTER UKRAINIAN IE
+<Multi_key> <d> <s>                   : "ѕ" # U0455 : CYRILLIC SMALL LETTER DZE (Macedonian)
+<Multi_key> <i> <i>                   : "і" # U0456 : CYRILLIC SMALL LETTER BYELORUSSIAN-UKRAINIAN I
+<Multi_key> <y> <i>                   : "ї" # U0457 : CYRILLIC SMALL LETTER YI (Ukrainian)
+<Multi_key> <j> <percent>             : "ј" # U0458 : CYRILLIC SMALL LETTER JE
+<Multi_key> <l> <j>                   : "љ" # U0459 : CYRILLIC SMALL LETTER LJE
+<Multi_key> <n> <j>                   : "њ" # U045a : CYRILLIC SMALL LETTER NJE
+<Multi_key> <t> <s>                   : "ћ" # U045b : CYRILLIC SMALL LETTER TSHE (Serbocroatian)
+<Multi_key> <k> <j>                   : "ќ" # U045c : CYRILLIC SMALL LETTER KJE (Macedonian)
+<Multi_key> <v> <percent>             : "ў" # U045e : CYRILLIC SMALL LETTER SHORT U (Byelorussian)
+<Multi_key> <d> <z>                   : "џ" # U045f : CYRILLIC SMALL LETTER DZHE
+<Multi_key> <Y> <3>                   : "Ѣ" # U0462 : CYRILLIC CAPITAL LETTER YAT
+<Multi_key> <y> <3>                   : "ѣ" # U0463 : CYRILLIC SMALL LETTER YAT
+<Multi_key> <O> <3>                   : "Ѫ" # U046a : CYRILLIC CAPITAL LETTER BIG YUS
+<Multi_key> <o> <3>                   : "ѫ" # U046b : CYRILLIC SMALL LETTER BIG YUS
+<Multi_key> <F> <3>                   : "Ѳ" # U0472 : CYRILLIC CAPITAL LETTER FITA
+<Multi_key> <f> <3>                   : "ѳ" # U0473 : CYRILLIC SMALL LETTER FITA
+<Multi_key> <V> <3>                   : "Ѵ" # U0474 : CYRILLIC CAPITAL LETTER IZHITSA
+<Multi_key> <v> <3>                   : "ѵ" # U0475 : CYRILLIC SMALL LETTER IZHITSA
+<Multi_key> <C> <3>                   : "Ҁ" # U0480 : CYRILLIC CAPITAL LETTER KOPPA
+<Multi_key> <c> <3>                   : "ҁ" # U0481 : CYRILLIC SMALL LETTER KOPPA
+<Multi_key> <G> <3>                   : "Ґ" # U0490 : CYRILLIC CAPITAL LETTER GHE WITH UPTURN
+<Multi_key> <g> <3>                   : "ґ" # U0491 : CYRILLIC SMALL LETTER GHE WITH UPTURN
+<Multi_key> <A> <plus>                : "א" # U05d0 : HEBREW LETTER ALEF
+<Multi_key> <B> <plus>                : "ב" # U05d1 : HEBREW LETTER BET
+<Multi_key> <G> <plus>                : "ג" # U05d2 : HEBREW LETTER GIMEL
+<Multi_key> <D> <plus>                : "ד" # U05d3 : HEBREW LETTER DALET
+<Multi_key> <H> <plus>                : "ה" # U05d4 : HEBREW LETTER HE
+<Multi_key> <W> <plus>                : "ו" # U05d5 : HEBREW LETTER VAV
+<Multi_key> <Z> <plus>                : "ז" # U05d6 : HEBREW LETTER ZAYIN
+<Multi_key> <X> <plus>                : "ח" # U05d7 : HEBREW LETTER HET
+<Multi_key> <T> <j>                   : "ט" # U05d8 : HEBREW LETTER TET
+<Multi_key> <J> <plus>                : "י" # U05d9 : HEBREW LETTER YOD
+<Multi_key> <K> <percent>             : "ך" # U05da : HEBREW LETTER FINAL KAF
+<Multi_key> <K> <plus>                : "כ" # U05db : HEBREW LETTER KAF
+<Multi_key> <L> <plus>                : "ל" # U05dc : HEBREW LETTER LAMED
+<Multi_key> <M> <percent>             : "ם" # U05dd : HEBREW LETTER FINAL MEM
+<Multi_key> <M> <plus>                : "מ" # U05de : HEBREW LETTER MEM
+<Multi_key> <N> <percent>             : "ן" # U05df : HEBREW LETTER FINAL NUN
+<Multi_key> <N> <plus>                : "נ" # U05e0 : HEBREW LETTER NUN
+<Multi_key> <S> <plus>                : "ס" # U05e1 : HEBREW LETTER SAMEKH
+<Multi_key> <E> <plus>                : "ע" # U05e2 : HEBREW LETTER AYIN
+<Multi_key> <P> <percent>             : "ף" # U05e3 : HEBREW LETTER FINAL PE
+<Multi_key> <P> <plus>                : "פ" # U05e4 : HEBREW LETTER PE
+<Multi_key> <Z> <j>                   : "ץ" # U05e5 : HEBREW LETTER FINAL TSADI
+<Multi_key> <Z> <J>                   : "צ" # U05e6 : HEBREW LETTER TSADI
+<Multi_key> <Q> <plus>                : "ק" # U05e7 : HEBREW LETTER QOF
+<Multi_key> <R> <plus>                : "ר" # U05e8 : HEBREW LETTER RESH
+<Multi_key> <S> <h>                   : "ש" # U05e9 : HEBREW LETTER SHIN
+<Multi_key> <T> <plus>                : "ת" # U05ea : HEBREW LETTER TAV
+<Multi_key> <comma> <plus>            : "،" # U060c : ARABIC COMMA
+<Multi_key> <semicolon> <plus>        : "؛" # U061b : ARABIC SEMICOLON
+<Multi_key> <question> <plus>         : "؟" # U061f : ARABIC QUESTION MARK
+<Multi_key> <H> <quoteright>          : "ء" # U0621 : ARABIC LETTER HAMZA
+<Multi_key> <a> <M>                   : "آ" # U0622 : ARABIC LETTER ALEF WITH MADDA ABOVE
+<Multi_key> <a> <H>                   : "أ" # U0623 : ARABIC LETTER ALEF WITH HAMZA ABOVE
+<Multi_key> <w> <H>                   : "ؤ" # U0624 : ARABIC LETTER WAW WITH HAMZA ABOVE
+<Multi_key> <a> <h>                   : "إ" # U0625 : ARABIC LETTER ALEF WITH HAMZA BELOW
+<Multi_key> <y> <H>                   : "ئ" # U0626 : ARABIC LETTER YEH WITH HAMZA ABOVE
+<Multi_key> <a> <plus>                : "ا" # U0627 : ARABIC LETTER ALEF
+<Multi_key> <b> <plus>                : "ب" # U0628 : ARABIC LETTER BEH
+<Multi_key> <t> <m>                   : "ة" # U0629 : ARABIC LETTER TEH MARBUTA
+<Multi_key> <t> <plus>                : "ت" # U062a : ARABIC LETTER TEH
+<Multi_key> <t> <k>                   : "ث" # U062b : ARABIC LETTER THEH
+<Multi_key> <g> <plus>                : "ج" # U062c : ARABIC LETTER JEEM
+<Multi_key> <h> <k>                   : "ح" # U062d : ARABIC LETTER HAH
+<Multi_key> <x> <plus>                : "خ" # U062e : ARABIC LETTER KHAH
+<Multi_key> <d> <plus>                : "د" # U062f : ARABIC LETTER DAL
+<Multi_key> <d> <k>                   : "ذ" # U0630 : ARABIC LETTER THAL
+<Multi_key> <r> <plus>                : "ر" # U0631 : ARABIC LETTER REH
+<Multi_key> <z> <plus>                : "ز" # U0632 : ARABIC LETTER ZAIN
+<Multi_key> <s> <plus>                : "س" # U0633 : ARABIC LETTER SEEN
+<Multi_key> <s> <n>                   : "ش" # U0634 : ARABIC LETTER SHEEN
+<Multi_key> <c> <plus>                : "ص" # U0635 : ARABIC LETTER SAD
+<Multi_key> <d> <d>                   : "ض" # U0636 : ARABIC LETTER DAD
+<Multi_key> <t> <j>                   : "ط" # U0637 : ARABIC LETTER TAH
+<Multi_key> <z> <H>                   : "ظ" # U0638 : ARABIC LETTER ZAH
+<Multi_key> <e> <plus>                : "ع" # U0639 : ARABIC LETTER AIN
+<Multi_key> <i> <plus>                : "غ" # U063a : ARABIC LETTER GHAIN
+<Multi_key> <plus> <plus>             : "ـ" # U0640 : ARABIC TATWEEL
+<Multi_key> <f> <plus>                : "ف" # U0641 : ARABIC LETTER FEH
+<Multi_key> <q> <plus>                : "ق" # U0642 : ARABIC LETTER QAF
+<Multi_key> <k> <plus>                : "ك" # U0643 : ARABIC LETTER KAF
+<Multi_key> <l> <plus>                : "ل" # U0644 : ARABIC LETTER LAM
+<Multi_key> <m> <plus>                : "م" # U0645 : ARABIC LETTER MEEM
+<Multi_key> <n> <plus>                : "ن" # U0646 : ARABIC LETTER NOON
+<Multi_key> <h> <plus>                : "ه" # U0647 : ARABIC LETTER HEH
+<Multi_key> <w> <plus>                : "و" # U0648 : ARABIC LETTER WAW
+<Multi_key> <j> <plus>                : "ى" # U0649 : ARABIC LETTER ALEF MAKSURA
+<Multi_key> <y> <plus>                : "ي" # U064a : ARABIC LETTER YEH
+<Multi_key> <colon> <plus>            : "ً" # U064b : ARABIC FATHATAN
+<Multi_key> <quotedbl> <plus>         : "ٌ" # U064c : ARABIC DAMMATAN
+<Multi_key> <equal> <plus>            : "ٍ" # U064d : ARABIC KASRATAN
+<Multi_key> <slash> <plus>            : "َ" # U064e : ARABIC FATHA
+<Multi_key> <quoteright> <plus>       : "ُ" # U064f : ARABIC DAMMA
+<Multi_key> <1> <plus>                : "ِ" # U0650 : ARABIC KASRA
+<Multi_key> <3> <plus>                : "ّ" # U0651 : ARABIC SHADDA
+<Multi_key> <0> <plus>                : "ْ" # U0652 : ARABIC SUKUN
+<Multi_key> <a> <S>                   : "ٰ" # U0670 : SUPERSCRIPT ARABIC LETTER ALEF
+<Multi_key> <p> <plus>                : "پ" # U067e : ARABIC LETTER PEH
+<Multi_key> <v> <plus>                : "ڤ" # U06a4 : ARABIC LETTER VEH
+<Multi_key> <g> <f>                   : "گ" # U06af : ARABIC LETTER GAF
+<Multi_key> <0> <a>                   : "۰" # U06f0 : EASTERN ARABIC-INDIC DIGIT ZERO
+<Multi_key> <1> <a>                   : "۱" # U06f1 : EASTERN ARABIC-INDIC DIGIT ONE
+<Multi_key> <2> <a>                   : "۲" # U06f2 : EASTERN ARABIC-INDIC DIGIT TWO
+<Multi_key> <3> <a>                   : "۳" # U06f3 : EASTERN ARABIC-INDIC DIGIT THREE
+<Multi_key> <4> <a>                   : "۴" # U06f4 : EASTERN ARABIC-INDIC DIGIT FOUR
+<Multi_key> <5> <a>                   : "۵" # U06f5 : EASTERN ARABIC-INDIC DIGIT FIVE
+<Multi_key> <6> <a>                   : "۶" # U06f6 : EASTERN ARABIC-INDIC DIGIT SIX
+<Multi_key> <7> <a>                   : "۷" # U06f7 : EASTERN ARABIC-INDIC DIGIT SEVEN
+<Multi_key> <8> <a>                   : "۸" # U06f8 : EASTERN ARABIC-INDIC DIGIT EIGHT
+<Multi_key> <9> <a>                   : "۹" # U06f9 : EASTERN ARABIC-INDIC DIGIT NINE
+<Multi_key> <B> <period>              : "Ḃ" # U1e02 : LATIN CAPITAL LETTER B WITH DOT ABOVE
+<Multi_key> <b> <period>              : "ḃ" # U1e03 : LATIN SMALL LETTER B WITH DOT ABOVE
+<Multi_key> <B> <underscore>          : "Ḇ" # U1e06 : LATIN CAPITAL LETTER B WITH LINE BELOW
+<Multi_key> <b> <underscore>          : "ḇ" # U1e07 : LATIN SMALL LETTER B WITH LINE BELOW
+<Multi_key> <D> <period>              : "Ḋ" # U1e0a : LATIN CAPITAL LETTER D WITH DOT ABOVE
+<Multi_key> <d> <period>              : "ḋ" # U1e0b : LATIN SMALL LETTER D WITH DOT ABOVE
+<Multi_key> <D> <underscore>          : "Ḏ" # U1e0e : LATIN CAPITAL LETTER D WITH LINE BELOW
+<Multi_key> <d> <underscore>          : "ḏ" # U1e0f : LATIN SMALL LETTER D WITH LINE BELOW
+<Multi_key> <D> <comma>               : "Ḑ" # U1e10 : LATIN CAPITAL LETTER D WITH CEDILLA
+<Multi_key> <d> <comma>               : "ḑ" # U1e11 : LATIN SMALL LETTER D WITH CEDILLA
+<Multi_key> <F> <period>              : "Ḟ" # U1e1e : LATIN CAPITAL LETTER F WITH DOT ABOVE
+<Multi_key> <f> <period>              : "ḟ" # U1e1f : LATIN SMALL LETTER F WITH DOT ABOVE
+<Multi_key> <G> <minus>               : "Ḡ" # U1e20 : LATIN CAPITAL LETTER G WITH MACRON
+<Multi_key> <g> <minus>               : "ḡ" # U1e21 : LATIN SMALL LETTER G WITH MACRON
+<Multi_key> <H> <period>              : "Ḣ" # U1e22 : LATIN CAPITAL LETTER H WITH DOT ABOVE
+<Multi_key> <h> <period>              : "ḣ" # U1e23 : LATIN SMALL LETTER H WITH DOT ABOVE
+<Multi_key> <H> <colon>               : "Ḧ" # U1e26 : LATIN CAPITAL LETTER H WITH DIAERESIS
+<Multi_key> <h> <colon>               : "ḧ" # U1e27 : LATIN SMALL LETTER H WITH DIAERESIS
+<Multi_key> <H> <comma>               : "Ḩ" # U1e28 : LATIN CAPITAL LETTER H WITH CEDILLA
+<Multi_key> <h> <comma>               : "ḩ" # U1e29 : LATIN SMALL LETTER H WITH CEDILLA
+<Multi_key> <K> <quoteright>          : "Ḱ" # U1e30 : LATIN CAPITAL LETTER K WITH ACUTE
+<Multi_key> <k> <quoteright>          : "ḱ" # U1e31 : LATIN SMALL LETTER K WITH ACUTE
+<Multi_key> <K> <underscore>          : "Ḵ" # U1e34 : LATIN CAPITAL LETTER K WITH LINE BELOW
+<Multi_key> <k> <underscore>          : "ḵ" # U1e35 : LATIN SMALL LETTER K WITH LINE BELOW
+<Multi_key> <L> <underscore>          : "Ḻ" # U1e3a : LATIN CAPITAL LETTER L WITH LINE BELOW
+<Multi_key> <l> <underscore>          : "ḻ" # U1e3b : LATIN SMALL LETTER L WITH LINE BELOW
+<Multi_key> <M> <quoteright>          : "Ḿ" # U1e3e : LATIN CAPITAL LETTER M WITH ACUTE
+<Multi_key> <m> <quoteright>          : "ḿ" # U1e3f : LATIN SMALL LETTER M WITH ACUTE
+<Multi_key> <M> <period>              : "Ṁ" # U1e40 : LATIN CAPITAL LETTER M WITH DOT ABOVE
+<Multi_key> <m> <period>              : "ṁ" # U1e41 : LATIN SMALL LETTER M WITH DOT ABOVE
+<Multi_key> <N> <period>              : "Ṅ" # U1e44 : LATIN CAPITAL LETTER N WITH DOT ABOVE
+<Multi_key> <n> <period>              : "ṅ" # U1e45 : LATIN SMALL LETTER N WITH DOT ABOVE
+<Multi_key> <N> <underscore>          : "Ṉ" # U1e48 : LATIN CAPITAL LETTER N WITH LINE BELOW
+<Multi_key> <n> <underscore>          : "ṉ" # U1e49 : LATIN SMALL LETTER N WITH LINE BELOW
+<Multi_key> <P> <quoteright>          : "Ṕ" # U1e54 : LATIN CAPITAL LETTER P WITH ACUTE
+<Multi_key> <p> <quoteright>          : "ṕ" # U1e55 : LATIN SMALL LETTER P WITH ACUTE
+<Multi_key> <P> <period>              : "Ṗ" # U1e56 : LATIN CAPITAL LETTER P WITH DOT ABOVE
+<Multi_key> <p> <period>              : "ṗ" # U1e57 : LATIN SMALL LETTER P WITH DOT ABOVE
+<Multi_key> <R> <period>              : "Ṙ" # U1e58 : LATIN CAPITAL LETTER R WITH DOT ABOVE
+<Multi_key> <r> <period>              : "ṙ" # U1e59 : LATIN SMALL LETTER R WITH DOT ABOVE
+<Multi_key> <R> <underscore>          : "Ṟ" # U1e5e : LATIN CAPITAL LETTER R WITH LINE BELOW
+<Multi_key> <r> <underscore>          : "ṟ" # U1e5f : LATIN SMALL LETTER R WITH LINE BELOW
+<Multi_key> <S> <period>              : "Ṡ" # U1e60 : LATIN CAPITAL LETTER S WITH DOT ABOVE
+<Multi_key> <s> <period>              : "ṡ" # U1e61 : LATIN SMALL LETTER S WITH DOT ABOVE
+<Multi_key> <T> <period>              : "Ṫ" # U1e6a : LATIN CAPITAL LETTER T WITH DOT ABOVE
+<Multi_key> <t> <period>              : "ṫ" # U1e6b : LATIN SMALL LETTER T WITH DOT ABOVE
+<Multi_key> <T> <underscore>          : "Ṯ" # U1e6e : LATIN CAPITAL LETTER T WITH LINE BELOW
+<Multi_key> <t> <underscore>          : "ṯ" # U1e6f : LATIN SMALL LETTER T WITH LINE BELOW
+<Multi_key> <V> <question>            : "Ṽ" # U1e7c : LATIN CAPITAL LETTER V WITH TILDE
+<Multi_key> <v> <question>            : "ṽ" # U1e7d : LATIN SMALL LETTER V WITH TILDE
+<Multi_key> <W> <exclam>              : "Ẁ" # U1e80 : LATIN CAPITAL LETTER W WITH GRAVE
+<Multi_key> <w> <exclam>              : "ẁ" # U1e81 : LATIN SMALL LETTER W WITH GRAVE
+<Multi_key> <W> <quoteright>          : "Ẃ" # U1e82 : LATIN CAPITAL LETTER W WITH ACUTE
+<Multi_key> <w> <quoteright>          : "ẃ" # U1e83 : LATIN SMALL LETTER W WITH ACUTE
+<Multi_key> <W> <colon>               : "Ẅ" # U1e84 : LATIN CAPITAL LETTER W WITH DIAERESIS
+<Multi_key> <w> <colon>               : "ẅ" # U1e85 : LATIN SMALL LETTER W WITH DIAERESIS
+<Multi_key> <W> <period>              : "Ẇ" # U1e86 : LATIN CAPITAL LETTER W WITH DOT ABOVE
+<Multi_key> <w> <period>              : "ẇ" # U1e87 : LATIN SMALL LETTER W WITH DOT ABOVE
+<Multi_key> <X> <period>              : "Ẋ" # U1e8a : LATIN CAPITAL LETTER X WITH DOT ABOVE
+<Multi_key> <x> <period>              : "ẋ" # U1e8b : LATIN SMALL LETTER X WITH DOT ABOVE
+<Multi_key> <X> <colon>               : "Ẍ" # U1e8c : LATIN CAPITAL LETTER X WITH DIAERESIS
+<Multi_key> <x> <colon>               : "ẍ" # U1e8d : LATIN SMALL LETTER X WITH DIAERESIS
+<Multi_key> <Y> <period>              : "Ẏ" # U1e8e : LATIN CAPITAL LETTER Y WITH DOT ABOVE
+<Multi_key> <y> <period>              : "ẏ" # U1e8f : LATIN SMALL LETTER Y WITH DOT ABOVE
+<Multi_key> <Z> <greater>             : "Ẑ" # U1e90 : LATIN CAPITAL LETTER Z WITH CIRCUMFLEX
+<Multi_key> <z> <greater>             : "ẑ" # U1e91 : LATIN SMALL LETTER Z WITH CIRCUMFLEX
+<Multi_key> <Z> <underscore>          : "Ẕ" # U1e94 : LATIN CAPITAL LETTER Z WITH LINE BELOW
+<Multi_key> <z> <underscore>          : "ẕ" # U1e95 : LATIN SMALL LETTER Z WITH LINE BELOW
+<Multi_key> <h> <underscore>          : "ẖ" # U1e96 : LATIN SMALL LETTER H WITH LINE BELOW
+<Multi_key> <t> <colon>               : "ẗ" # U1e97 : LATIN SMALL LETTER T WITH DIAERESIS
+<Multi_key> <w> <0>                   : "ẘ" # U1e98 : LATIN SMALL LETTER W WITH RING ABOVE
+<Multi_key> <y> <0>                   : "ẙ" # U1e99 : LATIN SMALL LETTER Y WITH RING ABOVE
+<Multi_key> <A> <2>                   : "Ả" # U1ea2 : LATIN CAPITAL LETTER A WITH HOOK ABOVE
+<Multi_key> <a> <2>                   : "ả" # U1ea3 : LATIN SMALL LETTER A WITH HOOK ABOVE
+<Multi_key> <E> <2>                   : "Ẻ" # U1eba : LATIN CAPITAL LETTER E WITH HOOK ABOVE
+<Multi_key> <e> <2>                   : "ẻ" # U1ebb : LATIN SMALL LETTER E WITH HOOK ABOVE
+<Multi_key> <E> <question>            : "Ẽ" # U1ebc : LATIN CAPITAL LETTER E WITH TILDE
+<Multi_key> <e> <question>            : "ẽ" # U1ebd : LATIN SMALL LETTER E WITH TILDE
+<Multi_key> <I> <2>                   : "Ỉ" # U1ec8 : LATIN CAPITAL LETTER I WITH HOOK ABOVE
+<Multi_key> <i> <2>                   : "ỉ" # U1ec9 : LATIN SMALL LETTER I WITH HOOK ABOVE
+<Multi_key> <O> <2>                   : "Ỏ" # U1ece : LATIN CAPITAL LETTER O WITH HOOK ABOVE
+<Multi_key> <o> <2>                   : "ỏ" # U1ecf : LATIN SMALL LETTER O WITH HOOK ABOVE
+<Multi_key> <U> <2>                   : "Ủ" # U1ee6 : LATIN CAPITAL LETTER U WITH HOOK ABOVE
+<Multi_key> <u> <2>                   : "ủ" # U1ee7 : LATIN SMALL LETTER U WITH HOOK ABOVE
+<Multi_key> <Y> <exclam>              : "Ỳ" # U1ef2 : LATIN CAPITAL LETTER Y WITH GRAVE
+<Multi_key> <y> <exclam>              : "ỳ" # U1ef3 : LATIN SMALL LETTER Y WITH GRAVE
+<Multi_key> <Y> <2>                   : "Ỷ" # U1ef6 : LATIN CAPITAL LETTER Y WITH HOOK ABOVE
+<Multi_key> <y> <2>                   : "ỷ" # U1ef7 : LATIN SMALL LETTER Y WITH HOOK ABOVE
+<Multi_key> <Y> <question>            : "Ỹ" # U1ef8 : LATIN CAPITAL LETTER Y WITH TILDE
+<Multi_key> <y> <question>            : "ỹ" # U1ef9 : LATIN SMALL LETTER Y WITH TILDE
+<Multi_key> <semicolon> <quoteright>  : "ἀ" # U1f00 : GREEK DASIA AND ACUTE ACCENT
+<Multi_key> <comma> <quoteright>      : "ἁ" # U1f01 : GREEK PSILI AND ACUTE ACCENT
+<Multi_key> <semicolon> <exclam>      : "ἂ" # U1f02 : GREEK DASIA AND VARIA
+<Multi_key> <comma> <exclam>          : "ἃ" # U1f03 : GREEK PSILI AND VARIA
+<Multi_key> <question> <semicolon>    : "ἄ" # U1f04 : GREEK DASIA AND PERISPOMENI
+<Multi_key> <question> <comma>        : "ἅ" # U1f05 : GREEK PSILI AND PERISPOMENI
+<Multi_key> <exclam> <colon>          : "ἆ" # U1f06 : GREEK DIAERESIS AND VARIA
+<Multi_key> <question> <colon>        : "ἇ" # U1f07 : GREEK DIAERESIS AND PERISPOMENI
+<Multi_key> <1> <N>                   : " " # U2002 : EN SPACE
+<Multi_key> <1> <M>                   : " " # U2003 : EM SPACE
+<Multi_key> <3> <M>                   : " " # U2004 : THREE-PER-EM SPACE
+<Multi_key> <4> <M>                   : " " # U2005 : FOUR-PER-EM SPACE
+<Multi_key> <6> <M>                   : " " # U2006 : SIX-PER-EM SPACE
+<Multi_key> <1> <T>                   : " " # U2009 : THIN SPACE
+<Multi_key> <1> <H>                   : " " # U200a : HAIR SPACE
+<Multi_key> <minus> <1>               : "‐" # U2010 : HYPHEN
+<Multi_key> <minus> <N>               : "–" # U2013 : EN DASH
+<Multi_key> <minus> <M>               : "—" # U2014 : EM DASH
+<Multi_key> <minus> <3>               : "―" # U2015 : HORIZONTAL BAR
+<Multi_key> <exclam> <2>              : "‖" # U2016 : DOUBLE VERTICAL LINE
+<Multi_key> <equal> <2>               : "‗" # U2017 : DOUBLE LOW LINE
+<Multi_key> <quoteright> <6>          : "‘" # U2018 : LEFT SINGLE QUOTATION MARK
+<Multi_key> <quoteright> <9>          : "’" # U2019 : RIGHT SINGLE QUOTATION MARK
+<Multi_key> <period> <9>              : "‚" # U201a : SINGLE LOW-9 QUOTATION MARK
+<Multi_key> <9> <quoteright>          : "‛" # U201b : SINGLE HIGH-REVERSED-9 QUOTATION MARK
+<Multi_key> <quotedbl> <6>            : "“" # U201c : LEFT DOUBLE QUOTATION MARK
+<Multi_key> <quotedbl> <9>            : "”" # U201d : RIGHT DOUBLE QUOTATION MARK
+<Multi_key> <colon> <9>               : "„" # U201e : DOUBLE LOW-9 QUOTATION MARK
+<Multi_key> <9> <quotedbl>            : "‟" # U201f : DOUBLE HIGH-REVERSED-9 QUOTATION MARK
+<Multi_key> <slash> <minus>           : "†" # U2020 : DAGGER
+<Multi_key> <slash> <equal>           : "‡" # U2021 : DOUBLE DAGGER
+<Multi_key> <period> <period>         : "‥" # U2025 : TWO DOT LEADER
+<Multi_key> <percent> <0>             : "‰" # U2030 : PER MILLE SIGN
+<Multi_key> <1> <quoteright>          : "′" # U2032 : PRIME
+<Multi_key> <2> <quoteright>          : "″" # U2033 : DOUBLE PRIME
+<Multi_key> <3> <quoteright>          : "‴" # U2034 : TRIPLE PRIME
+<Multi_key> <1> <quotedbl>            : "‵" # U2035 : REVERSED PRIME
+<Multi_key> <2> <quotedbl>            : "‶" # U2036 : REVERSED DOUBLE PRIME
+<Multi_key> <3> <quotedbl>            : "‷" # U2037 : REVERSED TRIPLE PRIME
+<Multi_key> <C> <a>                   : "‸" # U2038 : CARET
+<Multi_key> <less> <1>                : "‹" # U2039 : SINGLE LEFT-POINTING ANGLE QUOTATION MARK
+<Multi_key> <greater> <1>             : "›" # U203a : SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
+<Multi_key> <colon> <X>               : "※" # U203b : REFERENCE MARK
+<Multi_key> <quoteright> <minus>      : "‾" # U203e : OVERLINE
+<Multi_key> <slash> <f>               : "⁄" # U2044 : FRACTION SLASH
+<Multi_key> <0> <S>                   : "⁰" # U2070 : SUPERSCRIPT DIGIT ZERO
+<Multi_key> <4> <S>                   : "⁴" # U2074 : SUPERSCRIPT DIGIT FOUR
+<Multi_key> <5> <S>                   : "⁵" # U2075 : SUPERSCRIPT DIGIT FIVE
+<Multi_key> <6> <S>                   : "⁶" # U2076 : SUPERSCRIPT DIGIT SIX
+<Multi_key> <7> <S>                   : "⁷" # U2077 : SUPERSCRIPT DIGIT SEVEN
+<Multi_key> <8> <S>                   : "⁸" # U2078 : SUPERSCRIPT DIGIT EIGHT
+<Multi_key> <9> <S>                   : "⁹" # U2079 : SUPERSCRIPT DIGIT NINE
+<Multi_key> <plus> <S>                : "⁺" # U207a : SUPERSCRIPT PLUS SIGN
+<Multi_key> <minus> <S>               : "⁻" # U207b : SUPERSCRIPT MINUS
+<Multi_key> <equal> <S>               : "⁼" # U207c : SUPERSCRIPT EQUALS SIGN
+<Multi_key> <parenleft> <S>           : "⁽" # U207d : SUPERSCRIPT LEFT PARENTHESIS
+<Multi_key> <parenright> <S>          : "⁾" # U207e : SUPERSCRIPT RIGHT PARENTHESIS
+<Multi_key> <n> <S>                   : "ⁿ" # U207f : SUPERSCRIPT LATIN SMALL LETTER N
+<Multi_key> <0> <s>                   : "₀" # U2080 : SUBSCRIPT DIGIT ZERO
+<Multi_key> <1> <s>                   : "₁" # U2081 : SUBSCRIPT DIGIT ONE
+<Multi_key> <2> <s>                   : "₂" # U2082 : SUBSCRIPT DIGIT TWO
+<Multi_key> <3> <s>                   : "₃" # U2083 : SUBSCRIPT DIGIT THREE
+<Multi_key> <4> <s>                   : "₄" # U2084 : SUBSCRIPT DIGIT FOUR
+<Multi_key> <5> <s>                   : "₅" # U2085 : SUBSCRIPT DIGIT FIVE
+<Multi_key> <6> <s>                   : "₆" # U2086 : SUBSCRIPT DIGIT SIX
+<Multi_key> <7> <s>                   : "₇" # U2087 : SUBSCRIPT DIGIT SEVEN
+<Multi_key> <8> <s>                   : "₈" # U2088 : SUBSCRIPT DIGIT EIGHT
+<Multi_key> <9> <s>                   : "₉" # U2089 : SUBSCRIPT DIGIT NINE
+<Multi_key> <plus> <s>                : "₊" # U208a : SUBSCRIPT PLUS SIGN
+<Multi_key> <minus> <s>               : "₋" # U208b : SUBSCRIPT MINUS
+<Multi_key> <equal> <s>               : "₌" # U208c : SUBSCRIPT EQUALS SIGN
+<Multi_key> <parenleft> <s>           : "₍" # U208d : SUBSCRIPT LEFT PARENTHESIS
+<Multi_key> <parenright> <s>          : "₎" # U208e : SUBSCRIPT RIGHT PARENTHESIS
+<Multi_key> <L> <i>                   : "₤" # U20a4 : LIRA SIGN
+<Multi_key> <P> <t>                   : "₧" # U20a7 : PESETA SIGN
+<Multi_key> <W> <equal>               : "₩" # U20a9 : WON SIGN
+<Multi_key> <o> <C>                   : "℃" # U2103 : DEGREE CENTIGRADE
+<Multi_key> <c> <o>                   : "℅" # U2105 : CARE OF
+<Multi_key> <o> <F>                   : "℉" # U2109 : DEGREE FAHRENHEIT
+<Multi_key> <N> <0>                   : "№" # U2116 : NUMERO SIGN
+<Multi_key> <P> <O>                   : "℗" # U2117 : SOUND RECORDING COPYRIGHT
+<Multi_key> <R> <x>                   : "℞" # U211e : PRESCRIPTION TAKE
+<Multi_key> <S> <M>                   : "℠" # U2120 : SERVICE MARK
+<Multi_key> <T> <M>                   : "™" # U2122 : TRADE MARK SIGN
+<Multi_key> <O> <m>                   : "Ω" # U2126 : OHM SIGN
+<Multi_key> <A> <O>                   : "Å" # U212b : ANGSTROEM SIGN
+<Multi_key> <1> <3>                   : "⅓" # U2153 : VULGAR FRACTION ONE THIRD
+<Multi_key> <2> <3>                   : "⅔" # U2154 : VULGAR FRACTION TWO THIRDS
+<Multi_key> <1> <5>                   : "⅕" # U2155 : VULGAR FRACTION ONE FIFTH
+<Multi_key> <2> <5>                   : "⅖" # U2156 : VULGAR FRACTION TWO FIFTHS
+<Multi_key> <3> <5>                   : "⅗" # U2157 : VULGAR FRACTION THREE FIFTHS
+<Multi_key> <4> <5>                   : "⅘" # U2158 : VULGAR FRACTION FOUR FIFTHS
+<Multi_key> <1> <6>                   : "⅙" # U2159 : VULGAR FRACTION ONE SIXTH
+<Multi_key> <5> <6>                   : "⅚" # U215a : VULGAR FRACTION FIVE SIXTHS
+<Multi_key> <1> <8>                   : "⅛" # U215b : VULGAR FRACTION ONE EIGHTH
+<Multi_key> <3> <8>                   : "⅜" # U215c : VULGAR FRACTION THREE EIGHTHS
+<Multi_key> <5> <8>                   : "⅝" # U215d : VULGAR FRACTION FIVE EIGHTHS
+<Multi_key> <7> <8>                   : "⅞" # U215e : VULGAR FRACTION SEVEN EIGHTHS
+<Multi_key> <1> <R>                   : "Ⅰ" # U2160 : ROMAN NUMERAL ONE
+<Multi_key> <2> <R>                   : "Ⅱ" # U2161 : ROMAN NUMERAL TWO
+<Multi_key> <3> <R>                   : "Ⅲ" # U2162 : ROMAN NUMERAL THREE
+<Multi_key> <4> <R>                   : "Ⅳ" # U2163 : ROMAN NUMERAL FOUR
+<Multi_key> <5> <R>                   : "Ⅴ" # U2164 : ROMAN NUMERAL FIVE
+<Multi_key> <6> <R>                   : "Ⅵ" # U2165 : ROMAN NUMERAL SIX
+<Multi_key> <7> <R>                   : "Ⅶ" # U2166 : ROMAN NUMERAL SEVEN
+<Multi_key> <8> <R>                   : "Ⅷ" # U2167 : ROMAN NUMERAL EIGHT
+<Multi_key> <9> <R>                   : "Ⅸ" # U2168 : ROMAN NUMERAL NINE
+<Multi_key> <a> <R>                   : "Ⅹ" # U2169 : ROMAN NUMERAL TEN
+<Multi_key> <b> <R>                   : "Ⅺ" # U216a : ROMAN NUMERAL ELEVEN
+<Multi_key> <c> <R>                   : "Ⅻ" # U216b : ROMAN NUMERAL TWELVE
+<Multi_key> <1> <r>                   : "ⅰ" # U2170 : SMALL ROMAN NUMERAL ONE
+<Multi_key> <2> <r>                   : "ⅱ" # U2171 : SMALL ROMAN NUMERAL TWO
+<Multi_key> <3> <r>                   : "ⅲ" # U2172 : SMALL ROMAN NUMERAL THREE
+<Multi_key> <4> <r>                   : "ⅳ" # U2173 : SMALL ROMAN NUMERAL FOUR
+<Multi_key> <5> <r>                   : "ⅴ" # U2174 : SMALL ROMAN NUMERAL FIVE
+<Multi_key> <6> <r>                   : "ⅵ" # U2175 : SMALL ROMAN NUMERAL SIX
+<Multi_key> <7> <r>                   : "ⅶ" # U2176 : SMALL ROMAN NUMERAL SEVEN
+<Multi_key> <8> <r>                   : "ⅷ" # U2177 : SMALL ROMAN NUMERAL EIGHT
+<Multi_key> <9> <r>                   : "ⅸ" # U2178 : SMALL ROMAN NUMERAL NINE
+<Multi_key> <a> <r>                   : "ⅹ" # U2179 : SMALL ROMAN NUMERAL TEN
+<Multi_key> <b> <r>                   : "ⅺ" # U217a : SMALL ROMAN NUMERAL ELEVEN
+<Multi_key> <c> <r>                   : "ⅻ" # U217b : SMALL ROMAN NUMERAL TWELVE
+<Multi_key> <less> <minus>            : "←" # U2190 : LEFTWARDS ARROW
+<Multi_key> <minus> <exclam>          : "↑" # U2191 : UPWARDS ARROW
+<Multi_key> <minus> <greater>         : "→" # U2192 : RIGHTWARDS ARROW
+<Multi_key> <minus> <v>               : "↓" # U2193 : DOWNWARDS ARROW
+<Multi_key> <less> <greater>          : "↔" # U2194 : LEFT RIGHT ARROW
+<Multi_key> <U> <D>                   : "↕" # U2195 : UP DOWN ARROW
+<Multi_key> <less> <equal>            : "⇐" # U21d0 : LEFTWARDS DOUBLE ARROW
+<Multi_key> <equal> <greater>         : "⇒" # U21d2 : RIGHTWARDS DOUBLE ARROW
+<Multi_key> <equal> <equal>           : "⇔" # U21d4 : LEFT RIGHT DOUBLE ARROW
+<Multi_key> <F> <A>                   : "∀" # U2200 : FOR ALL
+<Multi_key> <d> <P>                   : "∂" # U2202 : PARTIAL DIFFERENTIAL
+<Multi_key> <T> <E>                   : "∃" # U2203 : THERE EXISTS
+<Multi_key> <slash> <0>               : "∅" # U2205 : EMPTY SET
+<Multi_key> <D> <E>                   : "∆" # U2206 : INCREMENT
+<Multi_key> <N> <B>                   : "∇" # U2207 : NABLA
+<Multi_key> <parenleft> <minus>       : "∈" # U2208 : ELEMENT OF
+<Multi_key> <minus> <parenright>      : "∋" # U220b : CONTAINS AS MEMBER
+<Multi_key> <asterisk> <P>            : "∏" # U220f : N-ARY PRODUCT
+<Multi_key> <plus> <Z>                : "∑" # U2211 : N-ARY SUMMATION
+<Multi_key> <minus> <2>               : "−" # U2212 : MINUS SIGN
+<Multi_key> <minus> <plus>            : "∓" # U2213 : MINUS-OR-PLUS SIGN
+<Multi_key> <asterisk> <minus>        : "∗" # U2217 : ASTERISK OPERATOR
+<Multi_key> <O> <b>                   : "∘" # U2218 : RING OPERATOR
+<Multi_key> <S> <b>                   : "∙" # U2219 : BULLET OPERATOR
+<Multi_key> <R> <T>                   : "√" # U221a : SQUARE ROOT
+<Multi_key> <0> <parenleft>           : "∝" # U221d : PROPORTIONAL TO
+<Multi_key> <0> <0>                   : "∞" # U221e : INFINITY
+<Multi_key> <minus> <L>               : "∟" # U221f : RIGHT ANGLE
+<Multi_key> <minus> <V>               : "∠" # U2220 : ANGLE
+<Multi_key> <P> <P>                   : "∥" # U2225 : PARALLEL TO
+<Multi_key> <A> <N>                   : "∧" # U2227 : LOGICAL AND
+<Multi_key> <O> <R>                   : "∨" # U2228 : LOGICAL OR
+<Multi_key> <parenleft> <U>           : "∩" # U2229 : INTERSECTION
+<Multi_key> <parenright> <U>          : "∪" # U222a : UNION
+<Multi_key> <I> <n>                   : "∫" # U222b : INTEGRAL
+<Multi_key> <D> <I>                   : "∬" # U222c : DOUBLE INTEGRAL
+<Multi_key> <I> <o>                   : "∮" # U222e : CONTOUR INTEGRAL
+<Multi_key> <period> <colon>          : "∴" # U2234 : THEREFORE
+<Multi_key> <colon> <period>          : "∵" # U2235 : BECAUSE
+<Multi_key> <colon> <R>               : "∶" # U2236 : RATIO
+<Multi_key> <colon> <colon>           : "∷" # U2237 : PROPORTION
+<Multi_key> <question> <1>            : "∼" # U223c : TILDE OPERATOR
+<Multi_key> <C> <G>                   : "∾" # U223e : INVERTED LAZY S
+<Multi_key> <question> <minus>        : "≃" # U2243 : ASYMPTOTICALLY EQUAL TO
+<Multi_key> <question> <equal>        : "≅" # U2245 : APPROXIMATELY EQUAL TO
+<Multi_key> <question> <2>            : "≈" # U2248 : ALMOST EQUAL TO
+<Multi_key> <equal> <question>        : "≌" # U224c : ALL EQUAL TO
+<Multi_key> <H> <I>                   : "≓" # U2253 : IMAGE OF OR APPROXIMATELY EQUAL TO
+<Multi_key> <exclam> <equal>          : "≠" # U2260 : NOT EQUAL TO
+<Multi_key> <equal> <3>               : "≡" # U2261 : IDENTICAL TO
+<Multi_key> <equal> <less>            : "≤" # U2264 : LESS-THAN OR EQUAL TO
+<Multi_key> <greater> <equal>         : "≥" # U2265 : GREATER-THAN OR EQUAL TO
+<Multi_key> <less> <asterisk>         : "≪" # U226a : MUCH LESS-THAN
+<Multi_key> <asterisk> <greater>      : "≫" # U226b : MUCH GREATER-THAN
+<Multi_key> <exclam> <less>           : "≮" # U226e : NOT LESS-THAN
+<Multi_key> <exclam> <greater>        : "≯" # U226f : NOT GREATER-THAN
+<Multi_key> <parenleft> <C>           : "⊂" # U2282 : SUBSET OF
+<Multi_key> <parenright> <C>          : "⊃" # U2283 : SUPERSET OF
+<Multi_key> <parenleft> <underscore>  : "⊆" # U2286 : SUBSET OF OR EQUAL TO
+<Multi_key> <parenright> <underscore> : "⊇" # U2287 : SUPERSET OF OR EQUAL TO
+<Multi_key> <0> <period>              : "⊙" # U2299 : CIRCLED DOT OPERATOR
+<Multi_key> <0> <2>                   : "⊚" # U229a : CIRCLED RING OPERATOR
+<Multi_key> <minus> <T>               : "⊥" # U22a5 : UP TACK
+<Multi_key> <period> <P>              : "⋅" # U22c5 : DOT OPERATOR
+<Multi_key> <colon> <3>               : "⋮" # U22ee : VERTICAL ELLIPSIS
+<Multi_key> <period> <3>              : "⋯" # U22ef : MIDLINE HORIZONTAL ELLIPSIS
+<Multi_key> <E> <h>                   : "⌂" # U2302 : HOUSE
+<Multi_key> <less> <7>                : "⌈" # U2308 : LEFT CEILING
+<Multi_key> <greater> <7>             : "⌉" # U2309 : RIGHT CEILING
+<Multi_key> <7> <less>                : "⌊" # U230a : LEFT FLOOR
+<Multi_key> <7> <greater>             : "⌋" # U230b : RIGHT FLOOR
+<Multi_key> <N> <I>                   : "⌐" # U2310 : REVERSED NOT SIGN
+<Multi_key> <parenleft> <A>           : "⌒" # U2312 : ARC
+<Multi_key> <T> <R>                   : "⌕" # U2315 : TELEPHONE RECORDER
+<Multi_key> <I> <u>                   : "⌠" # U2320 : TOP HALF INTEGRAL
+<Multi_key> <I> <l>                   : "⌡" # U2321 : BOTTOM HALF INTEGRAL
+<Multi_key> <less> <slash>            : "〈" # U2329 : LEFT-POINTING ANGLE BRACKET
+<Multi_key> <slash> <greater>         : "〉" # U232a : RIGHT-POINTING ANGLE BRACKET
+<Multi_key> <V> <s>                   : "␣" # U2423 : OPEN BOX
+<Multi_key> <1> <h>                   : "⑀" # U2440 : OCR HOOK
+<Multi_key> <3> <h>                   : "⑁" # U2441 : OCR CHAIR
+<Multi_key> <2> <h>                   : "⑂" # U2442 : OCR FORK
+<Multi_key> <4> <h>                   : "⑃" # U2443 : OCR INVERTED FORK
+<Multi_key> <1> <j>                   : "⑆" # U2446 : OCR BRANCH BANK IDENTIFICATION
+<Multi_key> <2> <j>                   : "⑇" # U2447 : OCR AMOUNT OF CHECK
+<Multi_key> <3> <j>                   : "⑈" # U2448 : OCR DASH
+<Multi_key> <4> <j>                   : "⑉" # U2449 : OCR CUSTOMER ACCOUNT NUMBER
+<Multi_key> <1> <period>              : "⒈" # U2488 : DIGIT ONE FULL STOP
+<Multi_key> <2> <period>              : "⒉" # U2489 : DIGIT TWO FULL STOP
+<Multi_key> <3> <period>              : "⒊" # U248a : DIGIT THREE FULL STOP
+<Multi_key> <4> <period>              : "⒋" # U248b : DIGIT FOUR FULL STOP
+<Multi_key> <5> <period>              : "⒌" # U248c : DIGIT FIVE FULL STOP
+<Multi_key> <6> <period>              : "⒍" # U248d : DIGIT SIX FULL STOP
+<Multi_key> <7> <period>              : "⒎" # U248e : DIGIT SEVEN FULL STOP
+<Multi_key> <8> <period>              : "⒏" # U248f : DIGIT EIGHT FULL STOP
+<Multi_key> <9> <period>              : "⒐" # U2490 : DIGIT NINE FULL STOP
+<Multi_key> <h> <h>                   : "─" # U2500 : BOX DRAWINGS LIGHT HORIZONTAL
+<Multi_key> <H> <H>                   : "━" # U2501 : BOX DRAWINGS HEAVY HORIZONTAL
+<Multi_key> <v> <v>                   : "│" # U2502 : BOX DRAWINGS LIGHT VERTICAL
+<Multi_key> <V> <V>                   : "┃" # U2503 : BOX DRAWINGS HEAVY VERTICAL
+<Multi_key> <3> <minus>               : "┄" # U2504 : BOX DRAWINGS LIGHT TRIPLE DASH HORIZONTAL
+<Multi_key> <3> <underscore>          : "┅" # U2505 : BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL
+<Multi_key> <3> <exclam>              : "┆" # U2506 : BOX DRAWINGS LIGHT TRIPLE DASH VERTICAL
+<Multi_key> <3> <slash>               : "┇" # U2507 : BOX DRAWINGS HEAVY TRIPLE DASH VERTICAL
+<Multi_key> <4> <minus>               : "┈" # U2508 : BOX DRAWINGS LIGHT QUADRUPLE DASH HORIZONTAL
+<Multi_key> <4> <underscore>          : "┉" # U2509 : BOX DRAWINGS HEAVY QUADRUPLE DASH HORIZONTAL
+<Multi_key> <4> <exclam>              : "┊" # U250a : BOX DRAWINGS LIGHT QUADRUPLE DASH VERTICAL
+<Multi_key> <4> <slash>               : "┋" # U250b : BOX DRAWINGS HEAVY QUADRUPLE DASH VERTICAL
+<Multi_key> <d> <r>                   : "┌" # U250c : BOX DRAWINGS LIGHT DOWN AND RIGHT
+<Multi_key> <d> <R>                   : "┍" # U250d : BOX DRAWINGS DOWN LIGHT AND RIGHT HEAVY
+<Multi_key> <D> <r>                   : "┎" # U250e : BOX DRAWINGS DOWN HEAVY AND RIGHT LIGHT
+<Multi_key> <D> <R>                   : "┏" # U250f : BOX DRAWINGS HEAVY DOWN AND RIGHT
+<Multi_key> <d> <l>                   : "┐" # U2510 : BOX DRAWINGS LIGHT DOWN AND LEFT
+<Multi_key> <d> <L>                   : "┑" # U2511 : BOX DRAWINGS DOWN LIGHT AND LEFT HEAVY
+<Multi_key> <D> <l>                   : "┒" # U2512 : BOX DRAWINGS DOWN HEAVY AND LEFT LIGHT
+<Multi_key> <L> <D>                   : "┓" # U2513 : BOX DRAWINGS HEAVY DOWN AND LEFT
+<Multi_key> <u> <r>                   : "└" # U2514 : BOX DRAWINGS LIGHT UP AND RIGHT
+<Multi_key> <u> <R>                   : "┕" # U2515 : BOX DRAWINGS UP LIGHT AND RIGHT HEAVY
+<Multi_key> <U> <r>                   : "┖" # U2516 : BOX DRAWINGS UP HEAVY AND RIGHT LIGHT
+<Multi_key> <U> <R>                   : "┗" # U2517 : BOX DRAWINGS HEAVY UP AND RIGHT
+<Multi_key> <u> <l>                   : "┘" # U2518 : BOX DRAWINGS LIGHT UP AND LEFT
+<Multi_key> <u> <L>                   : "┙" # U2519 : BOX DRAWINGS UP LIGHT AND LEFT HEAVY
+<Multi_key> <U> <l>                   : "┚" # U251a : BOX DRAWINGS UP HEAVY AND LEFT LIGHT
+<Multi_key> <U> <L>                   : "┛" # U251b : BOX DRAWINGS HEAVY UP AND LEFT
+<Multi_key> <v> <r>                   : "├" # U251c : BOX DRAWINGS LIGHT VERTICAL AND RIGHT
+<Multi_key> <v> <R>                   : "┝" # U251d : BOX DRAWINGS VERTICAL LIGHT AND RIGHT HEAVY
+<Multi_key> <V> <r>                   : "┠" # U2520 : BOX DRAWINGS VERTICAL HEAVY AND RIGHT LIGHT
+<Multi_key> <V> <R>                   : "┣" # U2523 : BOX DRAWINGS HEAVY VERTICAL AND RIGHT
+<Multi_key> <v> <l>                   : "┤" # U2524 : BOX DRAWINGS LIGHT VERTICAL AND LEFT
+<Multi_key> <v> <L>                   : "┥" # U2525 : BOX DRAWINGS VERTICAL LIGHT AND LEFT HEAVY
+<Multi_key> <V> <l>                   : "┨" # U2528 : BOX DRAWINGS VERTICAL HEAVY AND LEFT LIGHT
+<Multi_key> <V> <L>                   : "┫" # U252b : BOX DRAWINGS HEAVY VERTICAL AND LEFT
+<Multi_key> <d> <h>                   : "┬" # U252c : BOX DRAWINGS LIGHT DOWN AND HORIZONTAL
+<Multi_key> <d> <H>                   : "┯" # U252f : BOX DRAWINGS DOWN LIGHT AND HORIZONTAL HEAVY
+<Multi_key> <D> <h>                   : "┰" # U2530 : BOX DRAWINGS DOWN HEAVY AND HORIZONTAL LIGHT
+<Multi_key> <D> <H>                   : "┳" # U2533 : BOX DRAWINGS HEAVY DOWN AND HORIZONTAL
+<Multi_key> <u> <h>                   : "┴" # U2534 : BOX DRAWINGS LIGHT UP AND HORIZONTAL
+<Multi_key> <u> <H>                   : "┷" # U2537 : BOX DRAWINGS UP LIGHT AND HORIZONTAL HEAVY
+<Multi_key> <U> <h>                   : "┸" # U2538 : BOX DRAWINGS UP HEAVY AND HORIZONTAL LIGHT
+<Multi_key> <U> <H>                   : "┻" # U253b : BOX DRAWINGS HEAVY UP AND HORIZONTAL
+<Multi_key> <v> <h>                   : "┼" # U253c : BOX DRAWINGS LIGHT VERTICAL AND HORIZONTAL
+<Multi_key> <v> <H>                   : "┿" # U253f : BOX DRAWINGS VERTICAL LIGHT AND HORIZONTAL HEAVY
+<Multi_key> <V> <h>                   : "╂" # U2542 : BOX DRAWINGS VERTICAL HEAVY AND HORIZONTAL LIGHT
+<Multi_key> <V> <H>                   : "╋" # U254b : BOX DRAWINGS HEAVY VERTICAL AND HORIZONTAL
+<Multi_key> <F> <D>                   : "╱" # U2571 : BOX DRAWINGS LIGHT DIAGONAL UPPER RIGHT TO LOWER LEFT
+<Multi_key> <B> <D>                   : "╲" # U2572 : BOX DRAWINGS LIGHT DIAGONAL UPPER LEFT TO LOWER RIGHT
+<Multi_key> <T> <B>                   : "▀" # U2580 : UPPER HALF BLOCK
+<Multi_key> <L> <B>                   : "▄" # U2584 : LOWER HALF BLOCK
+<Multi_key> <F> <B>                   : "█" # U2588 : FULL BLOCK
+<Multi_key> <l> <B>                   : "▌" # U258c : LEFT HALF BLOCK
+<Multi_key> <R> <B>                   : "▐" # U2590 : RIGHT HALF BLOCK
+<Multi_key> <period> <S>              : "░" # U2591 : LIGHT SHADE
+<Multi_key> <colon> <S>               : "▒" # U2592 : MEDIUM SHADE
+<Multi_key> <question> <S>            : "▓" # U2593 : DARK SHADE
+<Multi_key> <f> <S>                   : "■" # U25a0 : BLACK SQUARE
+<Multi_key> <O> <S>                   : "□" # U25a1 : WHITE SQUARE
+<Multi_key> <R> <O>                   : "▢" # U25a2 : WHITE SQUARE WITH ROUNDED CORNERS
+<Multi_key> <R> <r>                   : "▣" # U25a3 : WHITE SQUARE CONTAINING BLACK SMALL SQUARE
+<Multi_key> <R> <F>                   : "▤" # U25a4 : SQUARE WITH HORIZONTAL FILL
+<Multi_key> <R> <Y>                   : "▥" # U25a5 : SQUARE WITH VERTICAL FILL
+<Multi_key> <R> <H>                   : "▦" # U25a6 : SQUARE WITH ORTHOGONAL CROSSHATCH FILL
+<Multi_key> <R> <Z>                   : "▧" # U25a7 : SQUARE WITH UPPER LEFT TO LOWER RIGHT FILL
+<Multi_key> <R> <K>                   : "▨" # U25a8 : SQUARE WITH UPPER RIGHT TO LOWER LEFT FILL
+<Multi_key> <R> <X>                   : "▩" # U25a9 : SQUARE WITH DIAGONAL CROSSHATCH FILL
+<Multi_key> <s> <B>                   : "▪" # U25aa : BLACK SMALL SQUARE
+<Multi_key> <S> <R>                   : "▬" # U25ac : BLACK RECTANGLE
+<Multi_key> <O> <r>                   : "▭" # U25ad : WHITE RECTANGLE
+<Multi_key> <U> <T>                   : "▲" # U25b2 : BLACK UP-POINTING TRIANGLE
+<Multi_key> <u> <T>                   : "△" # U25b3 : WHITE UP-POINTING TRIANGLE
+<Multi_key> <P> <R>                   : "▶" # U25b6 : BLACK RIGHT-POINTING TRIANGLE
+<Multi_key> <T> <r>                   : "▷" # U25b7 : WHITE RIGHT-POINTING TRIANGLE
+<Multi_key> <D> <t>                   : "▼" # U25bc : BLACK DOWN-POINTING TRIANGLE
+<Multi_key> <d> <T>                   : "▽" # U25bd : WHITE DOWN-POINTING TRIANGLE
+<Multi_key> <P> <L>                   : "◀" # U25c0 : BLACK LEFT-POINTING TRIANGLE
+<Multi_key> <T> <l>                   : "◁" # U25c1 : WHITE LEFT-POINTING TRIANGLE
+<Multi_key> <D> <b>                   : "◆" # U25c6 : BLACK DIAMOND
+<Multi_key> <D> <w>                   : "◇" # U25c7 : WHITE DIAMOND
+<Multi_key> <L> <Z>                   : "◊" # U25ca : LOZENGE
+<Multi_key> <0> <m>                   : "○" # U25cb : WHITE CIRCLE
+<Multi_key> <0> <o>                   : "◎" # U25ce : BULLSEYE
+<Multi_key> <0> <M>                   : "●" # U25cf : BLACK CIRCLE
+<Multi_key> <0> <L>                   : "◐" # U25d0 : CIRCLE WITH LEFT HALF BLACK
+<Multi_key> <0> <R>                   : "◑" # U25d1 : CIRCLE WITH RIGHT HALF BLACK
+<Multi_key> <S> <n>                   : "◘" # U25d8 : INVERSE BULLET
+<Multi_key> <I> <c>                   : "◙" # U25d9 : INVERSE WHITE CIRCLE
+<Multi_key> <F> <d>                   : "◢" # U25e2 : BLACK LOWER RIGHT TRIANGLE
+<Multi_key> <B> <d>                   : "◣" # U25e3 : BLACK LOWER LEFT TRIANGLE
+<Multi_key> <asterisk> <2>            : "★" # U2605 : BLACK STAR
+<Multi_key> <asterisk> <1>            : "☆" # U2606 : WHITE STAR
+<Multi_key> <less> <H>                : "☜" # U261c : WHITE LEFT POINTING INDEX
+<Multi_key> <greater> <H>             : "☞" # U261e : WHITE RIGHT POINTING INDEX
+<Multi_key> <0> <u>                   : "☺" # U263a : WHITE SMILING FACE
+<Multi_key> <0> <U>                   : "☻" # U263b : BLACK SMILING FACE
+<Multi_key> <S> <U>                   : "☼" # U263c : WHITE SUN WITH RAYS
+<Multi_key> <F> <m>                   : "♀" # U2640 : FEMALE SIGN
+<Multi_key> <M> <l>                   : "♂" # U2642 : MALE SIGN
+<Multi_key> <c> <S>                   : "♠" # U2660 : BLACK SPADE SUIT
+<Multi_key> <c> <H>                   : "♡" # U2661 : WHITE HEART SUIT
+<Multi_key> <c> <D>                   : "♢" # U2662 : WHITE DIAMOND SUIT
+<Multi_key> <c> <C>                   : "♣" # U2663 : BLACK CLUB SUIT
+<Multi_key> <M> <d>                   : "♩" # U2669 : QUARTER NOTE
+<Multi_key> <M> <8>                   : "♪" # U266a : EIGHTH NOTE
+<Multi_key> <M> <2>                   : "♫" # U266b : BARRED EIGHTH NOTES
+<Multi_key> <M> <b>                   : "♭" # U266d : MUSIC FLAT SIGN
+<Multi_key> <M> <x>                   : "♮" # U266e : MUSIC NATURAL SIGN
+<Multi_key> <M> <X>                   : "♯" # U266f : MUSIC SHARP SIGN
+<Multi_key> <O> <K>                   : "✓" # U2713 : CHECK MARK
+<Multi_key> <X> <X>                   : "✗" # U2717 : BALLOT X
+<Multi_key> <minus> <X>               : "✠" # U2720 : MALTESE CROSS
+<Multi_key> <I> <S>                   : "　" # U3000 : IDEOGRAPHIC SPACE
+<Multi_key> <comma> <underscore>      : "、" # U3001 : IDEOGRAPHIC COMMA
+<Multi_key> <period> <underscore>     : "。" # U3002 : IDEOGRAPHIC PERIOD
+<Multi_key> <plus> <quotedbl>         : "〃" # U3003 : DITTO MARK
+<Multi_key> <plus> <underscore>       : "〄" # U3004 : IDEOGRAPHIC DITTO MARK
+<Multi_key> <asterisk> <underscore>   : "々" # U3005 : IDEOGRAPHIC ITERATION MARK
+<Multi_key> <semicolon> <underscore>  : "〆" # U3006 : IDEOGRAPHIC CLOSING MARK
+<Multi_key> <0> <underscore>          : "〇" # U3007 : IDEOGRAPHIC NUMBER ZERO
+<Multi_key> <less> <plus>             : "《" # U300a : LEFT DOUBLE ANGLE BRACKET
+<Multi_key> <greater> <plus>          : "》" # U300b : RIGHT DOUBLE ANGLE BRACKET
+<Multi_key> <less> <quoteright>       : "「" # U300c : LEFT CORNER BRACKET
+<Multi_key> <greater> <quoteright>    : "」" # U300d : RIGHT CORNER BRACKET
+<Multi_key> <less> <quotedbl>         : "『" # U300e : LEFT WHITE CORNER BRACKET
+<Multi_key> <greater> <quotedbl>      : "』" # U300f : RIGHT WHITE CORNER BRACKET
+<Multi_key> <parenleft> <quotedbl>    : "【" # U3010 : LEFT BLACK LENTICULAR BRACKET
+<Multi_key> <parenright> <quotedbl>   : "】" # U3011 : RIGHT BLACK LENTICULAR BRACKET
+<Multi_key> <equal> <T>               : "〒" # U3012 : POSTAL MARK
+<Multi_key> <equal> <underscore>      : "〓" # U3013 : GETA MARK
+<Multi_key> <parenleft> <quoteright>  : "〔" # U3014 : LEFT TORTOISE SHELL BRACKET
+<Multi_key> <parenright> <quoteright> : "〕" # U3015 : RIGHT TORTOISE SHELL BRACKET
+<Multi_key> <parenleft> <I>           : "〖" # U3016 : LEFT WHITE LENTICULAR BRACKET
+<Multi_key> <parenright> <I>          : "〗" # U3017 : RIGHT WHITE LENTICULAR BRACKET
+<Multi_key> <minus> <question>        : "〜" # U301c : WAVE DASH
+<Multi_key> <A> <5>                   : "ぁ" # U3041 : HIRAGANA LETTER SMALL A
+<Multi_key> <a> <5>                   : "あ" # U3042 : HIRAGANA LETTER A
+<Multi_key> <I> <5>                   : "ぃ" # U3043 : HIRAGANA LETTER SMALL I
+<Multi_key> <i> <5>                   : "い" # U3044 : HIRAGANA LETTER I
+<Multi_key> <U> <5>                   : "ぅ" # U3045 : HIRAGANA LETTER SMALL U
+<Multi_key> <u> <5>                   : "う" # U3046 : HIRAGANA LETTER U
+<Multi_key> <E> <5>                   : "ぇ" # U3047 : HIRAGANA LETTER SMALL E
+<Multi_key> <e> <5>                   : "え" # U3048 : HIRAGANA LETTER E
+<Multi_key> <O> <5>                   : "ぉ" # U3049 : HIRAGANA LETTER SMALL O
+<Multi_key> <o> <5>                   : "お" # U304a : HIRAGANA LETTER O
+<Multi_key> <k> <a>                   : "か" # U304b : HIRAGANA LETTER KA
+<Multi_key> <g> <a>                   : "が" # U304c : HIRAGANA LETTER GA
+<Multi_key> <k> <i>                   : "き" # U304d : HIRAGANA LETTER KI
+<Multi_key> <g> <i>                   : "ぎ" # U304e : HIRAGANA LETTER GI
+<Multi_key> <k> <u>                   : "く" # U304f : HIRAGANA LETTER KU
+<Multi_key> <g> <u>                   : "ぐ" # U3050 : HIRAGANA LETTER GU
+<Multi_key> <k> <e>                   : "け" # U3051 : HIRAGANA LETTER KE
+<Multi_key> <g> <e>                   : "げ" # U3052 : HIRAGANA LETTER GE
+<Multi_key> <k> <o>                   : "こ" # U3053 : HIRAGANA LETTER KO
+<Multi_key> <g> <o>                   : "ご" # U3054 : HIRAGANA LETTER GO
+<Multi_key> <s> <a>                   : "さ" # U3055 : HIRAGANA LETTER SA
+<Multi_key> <z> <a>                   : "ざ" # U3056 : HIRAGANA LETTER ZA
+<Multi_key> <s> <i>                   : "し" # U3057 : HIRAGANA LETTER SI
+<Multi_key> <z> <i>                   : "じ" # U3058 : HIRAGANA LETTER ZI
+<Multi_key> <s> <u>                   : "す" # U3059 : HIRAGANA LETTER SU
+<Multi_key> <z> <u>                   : "ず" # U305a : HIRAGANA LETTER ZU
+<Multi_key> <s> <e>                   : "せ" # U305b : HIRAGANA LETTER SE
+<Multi_key> <z> <e>                   : "ぜ" # U305c : HIRAGANA LETTER ZE
+<Multi_key> <s> <o>                   : "そ" # U305d : HIRAGANA LETTER SO
+<Multi_key> <z> <o>                   : "ぞ" # U305e : HIRAGANA LETTER ZO
+<Multi_key> <t> <a>                   : "た" # U305f : HIRAGANA LETTER TA
+<Multi_key> <d> <a>                   : "だ" # U3060 : HIRAGANA LETTER DA
+<Multi_key> <t> <i>                   : "ち" # U3061 : HIRAGANA LETTER TI
+<Multi_key> <d> <i>                   : "ぢ" # U3062 : HIRAGANA LETTER DI
+<Multi_key> <t> <U>                   : "っ" # U3063 : HIRAGANA LETTER SMALL TU
+<Multi_key> <t> <u>                   : "つ" # U3064 : HIRAGANA LETTER TU
+<Multi_key> <d> <u>                   : "づ" # U3065 : HIRAGANA LETTER DU
+<Multi_key> <t> <e>                   : "て" # U3066 : HIRAGANA LETTER TE
+<Multi_key> <d> <e>                   : "で" # U3067 : HIRAGANA LETTER DE
+<Multi_key> <t> <o>                   : "と" # U3068 : HIRAGANA LETTER TO
+<Multi_key> <d> <o>                   : "ど" # U3069 : HIRAGANA LETTER DO
+<Multi_key> <n> <a>                   : "な" # U306a : HIRAGANA LETTER NA
+<Multi_key> <n> <i>                   : "に" # U306b : HIRAGANA LETTER NI
+<Multi_key> <n> <u>                   : "ぬ" # U306c : HIRAGANA LETTER NU
+<Multi_key> <n> <e>                   : "ね" # U306d : HIRAGANA LETTER NE
+<Multi_key> <n> <o>                   : "の" # U306e : HIRAGANA LETTER NO
+<Multi_key> <h> <a>                   : "は" # U306f : HIRAGANA LETTER HA
+<Multi_key> <b> <a>                   : "ば" # U3070 : HIRAGANA LETTER BA
+<Multi_key> <p> <a>                   : "ぱ" # U3071 : HIRAGANA LETTER PA
+<Multi_key> <h> <i>                   : "ひ" # U3072 : HIRAGANA LETTER HI
+<Multi_key> <b> <i>                   : "び" # U3073 : HIRAGANA LETTER BI
+<Multi_key> <p> <i>                   : "ぴ" # U3074 : HIRAGANA LETTER PI
+<Multi_key> <h> <u>                   : "ふ" # U3075 : HIRAGANA LETTER HU
+<Multi_key> <b> <u>                   : "ぶ" # U3076 : HIRAGANA LETTER BU
+<Multi_key> <p> <u>                   : "ぷ" # U3077 : HIRAGANA LETTER PU
+<Multi_key> <h> <e>                   : "へ" # U3078 : HIRAGANA LETTER HE
+<Multi_key> <b> <e>                   : "べ" # U3079 : HIRAGANA LETTER BE
+<Multi_key> <p> <e>                   : "ぺ" # U307a : HIRAGANA LETTER PE
+<Multi_key> <h> <o>                   : "ほ" # U307b : HIRAGANA LETTER HO
+<Multi_key> <b> <o>                   : "ぼ" # U307c : HIRAGANA LETTER BO
+<Multi_key> <p> <o>                   : "ぽ" # U307d : HIRAGANA LETTER PO
+<Multi_key> <m> <a>                   : "ま" # U307e : HIRAGANA LETTER MA
+<Multi_key> <m> <i>                   : "み" # U307f : HIRAGANA LETTER MI
+<Multi_key> <m> <u>                   : "む" # U3080 : HIRAGANA LETTER MU
+<Multi_key> <m> <e>                   : "め" # U3081 : HIRAGANA LETTER ME
+<Multi_key> <m> <o>                   : "も" # U3082 : HIRAGANA LETTER MO
+<Multi_key> <y> <A>                   : "ゃ" # U3083 : HIRAGANA LETTER SMALL YA
+<Multi_key> <y> <a>                   : "や" # U3084 : HIRAGANA LETTER YA
+<Multi_key> <y> <U>                   : "ゅ" # U3085 : HIRAGANA LETTER SMALL YU
+<Multi_key> <y> <u>                   : "ゆ" # U3086 : HIRAGANA LETTER YU
+<Multi_key> <y> <O>                   : "ょ" # U3087 : HIRAGANA LETTER SMALL YO
+<Multi_key> <y> <o>                   : "よ" # U3088 : HIRAGANA LETTER YO
+<Multi_key> <r> <a>                   : "ら" # U3089 : HIRAGANA LETTER RA
+<Multi_key> <r> <i>                   : "り" # U308a : HIRAGANA LETTER RI
+<Multi_key> <r> <u>                   : "る" # U308b : HIRAGANA LETTER RU
+<Multi_key> <r> <e>                   : "れ" # U308c : HIRAGANA LETTER RE
+<Multi_key> <r> <o>                   : "ろ" # U308d : HIRAGANA LETTER RO
+<Multi_key> <w> <A>                   : "ゎ" # U308e : HIRAGANA LETTER SMALL WA
+<Multi_key> <w> <a>                   : "わ" # U308f : HIRAGANA LETTER WA
+<Multi_key> <w> <i>                   : "ゐ" # U3090 : HIRAGANA LETTER WI
+<Multi_key> <w> <e>                   : "ゑ" # U3091 : HIRAGANA LETTER WE
+<Multi_key> <w> <o>                   : "を" # U3092 : HIRAGANA LETTER WO
+<Multi_key> <n> <5>                   : "ん" # U3093 : HIRAGANA LETTER N
+<Multi_key> <v> <u>                   : "ゔ" # U3094 : HIRAGANA LETTER VU
+<Multi_key> <quotedbl> <5>            : "゛" # U309b : KATAKANA-HIRAGANA VOICED SOUND MARK
+<Multi_key> <0> <5>                   : "゜" # U309c : KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK
+<Multi_key> <asterisk> <5>            : "ゝ" # U309d : HIRAGANA ITERATION MARK
+<Multi_key> <plus> <5>                : "ゞ" # U309e : HIRAGANA VOICED ITERATION MARK
+<Multi_key> <a> <6>                   : "ァ" # U30a1 : KATAKANA LETTER SMALL A
+<Multi_key> <A> <6>                   : "ア" # U30a2 : KATAKANA LETTER A
+<Multi_key> <i> <6>                   : "ィ" # U30a3 : KATAKANA LETTER SMALL I
+<Multi_key> <I> <6>                   : "イ" # U30a4 : KATAKANA LETTER I
+<Multi_key> <u> <6>                   : "ゥ" # U30a5 : KATAKANA LETTER SMALL U
+<Multi_key> <U> <6>                   : "ウ" # U30a6 : KATAKANA LETTER U
+<Multi_key> <e> <6>                   : "ェ" # U30a7 : KATAKANA LETTER SMALL E
+<Multi_key> <E> <6>                   : "エ" # U30a8 : KATAKANA LETTER E
+<Multi_key> <o> <6>                   : "ォ" # U30a9 : KATAKANA LETTER SMALL O
+<Multi_key> <O> <6>                   : "オ" # U30aa : KATAKANA LETTER O
+<Multi_key> <K> <a>                   : "カ" # U30ab : KATAKANA LETTER KA
+<Multi_key> <G> <a>                   : "ガ" # U30ac : KATAKANA LETTER GA
+<Multi_key> <K> <i>                   : "キ" # U30ad : KATAKANA LETTER KI
+<Multi_key> <G> <i>                   : "ギ" # U30ae : KATAKANA LETTER GI
+<Multi_key> <K> <u>                   : "ク" # U30af : KATAKANA LETTER KU
+<Multi_key> <G> <u>                   : "グ" # U30b0 : KATAKANA LETTER GU
+<Multi_key> <K> <e>                   : "ケ" # U30b1 : KATAKANA LETTER KE
+<Multi_key> <G> <e>                   : "ゲ" # U30b2 : KATAKANA LETTER GE
+<Multi_key> <K> <o>                   : "コ" # U30b3 : KATAKANA LETTER KO
+<Multi_key> <G> <o>                   : "ゴ" # U30b4 : KATAKANA LETTER GO
+<Multi_key> <S> <a>                   : "サ" # U30b5 : KATAKANA LETTER SA
+<Multi_key> <Z> <a>                   : "ザ" # U30b6 : KATAKANA LETTER ZA
+<Multi_key> <S> <i>                   : "シ" # U30b7 : KATAKANA LETTER SI
+<Multi_key> <Z> <i>                   : "ジ" # U30b8 : KATAKANA LETTER ZI
+<Multi_key> <S> <u>                   : "ス" # U30b9 : KATAKANA LETTER SU
+<Multi_key> <Z> <u>                   : "ズ" # U30ba : KATAKANA LETTER ZU
+<Multi_key> <S> <e>                   : "セ" # U30bb : KATAKANA LETTER SE
+<Multi_key> <Z> <e>                   : "ゼ" # U30bc : KATAKANA LETTER ZE
+<Multi_key> <S> <o>                   : "ソ" # U30bd : KATAKANA LETTER SO
+<Multi_key> <Z> <o>                   : "ゾ" # U30be : KATAKANA LETTER ZO
+<Multi_key> <T> <a>                   : "タ" # U30bf : KATAKANA LETTER TA
+<Multi_key> <D> <a>                   : "ダ" # U30c0 : KATAKANA LETTER DA
+<Multi_key> <T> <i>                   : "チ" # U30c1 : KATAKANA LETTER TI
+<Multi_key> <D> <i>                   : "ヂ" # U30c2 : KATAKANA LETTER DI
+<Multi_key> <T> <U>                   : "ッ" # U30c3 : KATAKANA LETTER SMALL TU
+<Multi_key> <T> <u>                   : "ツ" # U30c4 : KATAKANA LETTER TU
+<Multi_key> <D> <u>                   : "ヅ" # U30c5 : KATAKANA LETTER DU
+<Multi_key> <T> <e>                   : "テ" # U30c6 : KATAKANA LETTER TE
+<Multi_key> <D> <e>                   : "デ" # U30c7 : KATAKANA LETTER DE
+<Multi_key> <T> <o>                   : "ト" # U30c8 : KATAKANA LETTER TO
+<Multi_key> <D> <o>                   : "ド" # U30c9 : KATAKANA LETTER DO
+<Multi_key> <N> <a>                   : "ナ" # U30ca : KATAKANA LETTER NA
+<Multi_key> <N> <i>                   : "ニ" # U30cb : KATAKANA LETTER NI
+<Multi_key> <N> <u>                   : "ヌ" # U30cc : KATAKANA LETTER NU
+<Multi_key> <N> <e>                   : "ネ" # U30cd : KATAKANA LETTER NE
+<Multi_key> <N> <o>                   : "ノ" # U30ce : KATAKANA LETTER NO
+<Multi_key> <H> <a>                   : "ハ" # U30cf : KATAKANA LETTER HA
+<Multi_key> <B> <a>                   : "バ" # U30d0 : KATAKANA LETTER BA
+<Multi_key> <P> <a>                   : "パ" # U30d1 : KATAKANA LETTER PA
+<Multi_key> <H> <i>                   : "ヒ" # U30d2 : KATAKANA LETTER HI
+<Multi_key> <B> <i>                   : "ビ" # U30d3 : KATAKANA LETTER BI
+<Multi_key> <P> <i>                   : "ピ" # U30d4 : KATAKANA LETTER PI
+<Multi_key> <H> <u>                   : "フ" # U30d5 : KATAKANA LETTER HU
+<Multi_key> <B> <u>                   : "ブ" # U30d6 : KATAKANA LETTER BU
+<Multi_key> <P> <u>                   : "プ" # U30d7 : KATAKANA LETTER PU
+<Multi_key> <H> <e>                   : "ヘ" # U30d8 : KATAKANA LETTER HE
+<Multi_key> <B> <e>                   : "ベ" # U30d9 : KATAKANA LETTER BE
+<Multi_key> <P> <e>                   : "ペ" # U30da : KATAKANA LETTER PE
+<Multi_key> <H> <o>                   : "ホ" # U30db : KATAKANA LETTER HO
+<Multi_key> <B> <o>                   : "ボ" # U30dc : KATAKANA LETTER BO
+<Multi_key> <P> <o>                   : "ポ" # U30dd : KATAKANA LETTER PO
+<Multi_key> <M> <a>                   : "マ" # U30de : KATAKANA LETTER MA
+<Multi_key> <M> <i>                   : "ミ" # U30df : KATAKANA LETTER MI
+<Multi_key> <M> <u>                   : "ム" # U30e0 : KATAKANA LETTER MU
+<Multi_key> <M> <e>                   : "メ" # U30e1 : KATAKANA LETTER ME
+<Multi_key> <M> <o>                   : "モ" # U30e2 : KATAKANA LETTER MO
+<Multi_key> <Y> <A>                   : "ャ" # U30e3 : KATAKANA LETTER SMALL YA
+<Multi_key> <Y> <a>                   : "ヤ" # U30e4 : KATAKANA LETTER YA
+<Multi_key> <Y> <U>                   : "ュ" # U30e5 : KATAKANA LETTER SMALL YU
+<Multi_key> <Y> <u>                   : "ユ" # U30e6 : KATAKANA LETTER YU
+<Multi_key> <Y> <O>                   : "ョ" # U30e7 : KATAKANA LETTER SMALL YO
+<Multi_key> <Y> <o>                   : "ヨ" # U30e8 : KATAKANA LETTER YO
+<Multi_key> <R> <a>                   : "ラ" # U30e9 : KATAKANA LETTER RA
+<Multi_key> <R> <i>                   : "リ" # U30ea : KATAKANA LETTER RI
+<Multi_key> <R> <u>                   : "ル" # U30eb : KATAKANA LETTER RU
+<Multi_key> <R> <e>                   : "レ" # U30ec : KATAKANA LETTER RE
+<Multi_key> <R> <o>                   : "ロ" # U30ed : KATAKANA LETTER RO
+<Multi_key> <W> <A>                   : "ヮ" # U30ee : KATAKANA LETTER SMALL WA
+<Multi_key> <W> <a>                   : "ワ" # U30ef : KATAKANA LETTER WA
+<Multi_key> <W> <i>                   : "ヰ" # U30f0 : KATAKANA LETTER WI
+<Multi_key> <W> <e>                   : "ヱ" # U30f1 : KATAKANA LETTER WE
+<Multi_key> <W> <o>                   : "ヲ" # U30f2 : KATAKANA LETTER WO
+<Multi_key> <N> <6>                   : "ン" # U30f3 : KATAKANA LETTER N
+<Multi_key> <V> <u>                   : "ヴ" # U30f4 : KATAKANA LETTER VU
+<Multi_key> <K> <A>                   : "ヵ" # U30f5 : KATAKANA LETTER SMALL KA
+<Multi_key> <K> <E>                   : "ヶ" # U30f6 : KATAKANA LETTER SMALL KE
+<Multi_key> <V> <a>                   : "ヷ" # U30f7 : KATAKANA LETTER VA
+<Multi_key> <V> <i>                   : "ヸ" # U30f8 : KATAKANA LETTER VI
+<Multi_key> <V> <e>                   : "ヹ" # U30f9 : KATAKANA LETTER VE
+<Multi_key> <V> <o>                   : "ヺ" # U30fa : KATAKANA LETTER VO
+<Multi_key> <period> <6>              : "・" # U30fb : KATAKANA MIDDLE DOT
+<Multi_key> <minus> <6>               : "ー" # U30fc : KATAKANA-HIRAGANA PROLONGED SOUND MARK
+<Multi_key> <asterisk> <6>            : "ヽ" # U30fd : KATAKANA ITERATION MARK
+<Multi_key> <plus> <6>                : "ヾ" # U30fe : KATAKANA VOICED ITERATION MARK
+<Multi_key> <b> <4>                   : "ㄅ" # U3105 : BOPOMOFO LETTER B
+<Multi_key> <p> <4>                   : "ㄆ" # U3106 : BOPOMOFO LETTER P
+<Multi_key> <m> <4>                   : "ㄇ" # U3107 : BOPOMOFO LETTER M
+<Multi_key> <f> <4>                   : "ㄈ" # U3108 : BOPOMOFO LETTER F
+<Multi_key> <d> <4>                   : "ㄉ" # U3109 : BOPOMOFO LETTER D
+<Multi_key> <t> <4>                   : "ㄊ" # U310a : BOPOMOFO LETTER T
+<Multi_key> <n> <4>                   : "ㄋ" # U310b : BOPOMOFO LETTER N
+<Multi_key> <l> <4>                   : "ㄌ" # U310c : BOPOMOFO LETTER L
+<Multi_key> <g> <4>                   : "ㄍ" # U310d : BOPOMOFO LETTER G
+<Multi_key> <k> <4>                   : "ㄎ" # U310e : BOPOMOFO LETTER K
+<Multi_key> <h> <4>                   : "ㄏ" # U310f : BOPOMOFO LETTER H
+<Multi_key> <j> <4>                   : "ㄐ" # U3110 : BOPOMOFO LETTER J
+<Multi_key> <q> <4>                   : "ㄑ" # U3111 : BOPOMOFO LETTER Q
+<Multi_key> <x> <4>                   : "ㄒ" # U3112 : BOPOMOFO LETTER X
+<Multi_key> <z> <h>                   : "ㄓ" # U3113 : BOPOMOFO LETTER ZH
+<Multi_key> <c> <h>                   : "ㄔ" # U3114 : BOPOMOFO LETTER CH
+<Multi_key> <s> <h>                   : "ㄕ" # U3115 : BOPOMOFO LETTER SH
+<Multi_key> <r> <4>                   : "ㄖ" # U3116 : BOPOMOFO LETTER R
+<Multi_key> <z> <4>                   : "ㄗ" # U3117 : BOPOMOFO LETTER Z
+<Multi_key> <c> <4>                   : "ㄘ" # U3118 : BOPOMOFO LETTER C
+<Multi_key> <s> <4>                   : "ㄙ" # U3119 : BOPOMOFO LETTER S
+<Multi_key> <a> <4>                   : "ㄚ" # U311a : BOPOMOFO LETTER A
+<Multi_key> <o> <4>                   : "ㄛ" # U311b : BOPOMOFO LETTER O
+<Multi_key> <e> <4>                   : "ㄜ" # U311c : BOPOMOFO LETTER E
+<Multi_key> <a> <i>                   : "ㄞ" # U311e : BOPOMOFO LETTER AI
+<Multi_key> <e> <i>                   : "ㄟ" # U311f : BOPOMOFO LETTER EI
+<Multi_key> <a> <u>                   : "ㄠ" # U3120 : BOPOMOFO LETTER AU
+<Multi_key> <o> <u>                   : "ㄡ" # U3121 : BOPOMOFO LETTER OU
+<Multi_key> <a> <n>                   : "ㄢ" # U3122 : BOPOMOFO LETTER AN
+<Multi_key> <e> <n>                   : "ㄣ" # U3123 : BOPOMOFO LETTER EN
+<Multi_key> <a> <N>                   : "ㄤ" # U3124 : BOPOMOFO LETTER ANG
+<Multi_key> <e> <N>                   : "ㄥ" # U3125 : BOPOMOFO LETTER ENG
+<Multi_key> <e> <r>                   : "ㄦ" # U3126 : BOPOMOFO LETTER ER
+<Multi_key> <i> <4>                   : "ㄧ" # U3127 : BOPOMOFO LETTER I
+<Multi_key> <u> <4>                   : "ㄨ" # U3128 : BOPOMOFO LETTER U
+<Multi_key> <i> <u>                   : "ㄩ" # U3129 : BOPOMOFO LETTER IU
+<Multi_key> <v> <4>                   : "ㄪ" # U312a : BOPOMOFO LETTER V
+<Multi_key> <n> <G>                   : "ㄫ" # U312b : BOPOMOFO LETTER NG
+<Multi_key> <g> <n>                   : "ㄬ" # U312c : BOPOMOFO LETTER GN
+<Multi_key> <1> <c>                   : "㈠" # U3220 : PARENTHESIZED IDEOGRAPH ONE
+<Multi_key> <2> <c>                   : "㈡" # U3221 : PARENTHESIZED IDEOGRAPH TWO
+<Multi_key> <3> <c>                   : "㈢" # U3222 : PARENTHESIZED IDEOGRAPH THREE
+<Multi_key> <4> <c>                   : "㈣" # U3223 : PARENTHESIZED IDEOGRAPH FOUR
+<Multi_key> <5> <c>                   : "㈤" # U3224 : PARENTHESIZED IDEOGRAPH FIVE
+<Multi_key> <6> <c>                   : "㈥" # U3225 : PARENTHESIZED IDEOGRAPH SIX
+<Multi_key> <7> <c>                   : "㈦" # U3226 : PARENTHESIZED IDEOGRAPH SEVEN
+<Multi_key> <8> <c>                   : "㈧" # U3227 : PARENTHESIZED IDEOGRAPH EIGHT
+<Multi_key> <9> <c>                   : "㈨" # U3228 : PARENTHESIZED IDEOGRAPH NINE
+<Multi_key> <f> <f>                   : "ﬀ" # Ufb00 : LATIN SMALL LIGATURE FF
+<Multi_key> <f> <i>                   : "ﬁ" # Ufb01 : LATIN SMALL LIGATURE FI
+<Multi_key> <f> <l>                   : "ﬂ" # Ufb02 : LATIN SMALL LIGATURE FL
+<Multi_key> <f> <t>                   : "ﬅ" # Ufb05 : LATIN SMALL LIGATURE FT
+<Multi_key> <s> <t>                   : "ﬆ" # Ufb06 : LATIN SMALL LIGATURE ST
+<Multi_key> <slash> <c>               : "" # Ue001 : JOIN THIS LINE WITH NEXT LINE (Mnemonic)
+<Multi_key> <U> <A>                   : "" # Ue002 : Unit space A (ISO-IR-8-1 064)
+<Multi_key> <U> <B>                   : "" # Ue003 : Unit space B (ISO-IR-8-1 096)
+<Multi_key> <quotedbl> <3>            : "" # Ue004 : NON-SPACING UMLAUT (ISO-IR-38 201) (character part)
+<Multi_key> <quotedbl> <1>            : "" # Ue005 : NON-SPACING DIAERESIS WITH ACCENT (ISO-IR-70 192) (character part)
+<Multi_key> <quotedbl> <exclam>       : "" # Ue006 : NON-SPACING GRAVE ACCENT (ISO-IR-103 193) (character part)
+<Multi_key> <quotedbl> <quoteright>   : "" # Ue007 : NON-SPACING ACUTE ACCENT (ISO-IR-103 194) (character part)
+<Multi_key> <quotedbl> <greater>      : "" # Ue008 : NON-SPACING CIRCUMFLEX ACCENT (ISO-IR-103 195) (character part)
+<Multi_key> <quotedbl> <question>     : "" # Ue009 : NON-SPACING TILDE (ISO-IR-103 196) (character part)
+<Multi_key> <quotedbl> <minus>        : "" # Ue00a : NON-SPACING MACRON (ISO-IR-103 197) (character part)
+<Multi_key> <quotedbl> <parenleft>    : "" # Ue00b : NON-SPACING BREVE (ISO-IR-103 198) (character part)
+<Multi_key> <quotedbl> <period>       : "" # Ue00c : NON-SPACING DOT ABOVE (ISO-IR-103 199) (character part)
+<Multi_key> <quotedbl> <colon>        : "" # Ue00d : NON-SPACING DIAERESIS (ISO-IR-103 200) (character part)
+<Multi_key> <quotedbl> <0>            : "" # Ue00e : NON-SPACING RING ABOVE (ISO-IR-103 202) (character part)
+<Multi_key> <quotedbl> <quotedbl>     : "" # Ue00f : NON-SPACING DOUBLE ACCUTE (ISO-IR-103 204) (character part)
+<Multi_key> <quotedbl> <less>         : "" # Ue010 : NON-SPACING CARON (ISO-IR-103 206) (character part)
+<Multi_key> <quotedbl> <comma>        : "" # Ue011 : NON-SPACING CEDILLA (ISO-IR-103 203) (character part)
+<Multi_key> <quotedbl> <semicolon>    : "" # Ue012 : NON-SPACING OGONEK (ISO-IR-103 206) (character part)
+<Multi_key> <quotedbl> <underscore>   : "" # Ue013 : NON-SPACING LOW LINE (ISO-IR-103 204) (character part)
+<Multi_key> <quotedbl> <equal>        : "" # Ue014 : NON-SPACING DOUBLE LOW LINE (ISO-IR-38 217) (character part)
+<Multi_key> <quotedbl> <slash>        : "" # Ue015 : NON-SPACING LONG SOLIDUS (ISO-IR-128 201) (character part)
+<Multi_key> <quotedbl> <i>            : "" # Ue016 : GREEK NON-SPACING IOTA BELOW (ISO-IR-55 39) (character part)
+<Multi_key> <quotedbl> <d>            : "" # Ue017 : GREEK NON-SPACING DASIA PNEUMATA (ISO-IR-55 38) (character part)
+<Multi_key> <quotedbl> <p>            : "" # Ue018 : GREEK NON-SPACING PSILI PNEUMATA (ISO-IR-55 37) (character part)
+<Multi_key> <semicolon> <semicolon>   : "" # Ue019 : GREEK DASIA PNEUMATA (ISO-IR-18 92)
+<Multi_key> <comma> <comma>           : "" # Ue01a : GREEK PSILI PNEUMATA (ISO-IR-18 124)
+<Multi_key> <b> <3>                   : "" # Ue01b : GREEK SMALL LETTER MIDDLE BETA (ISO-IR-18 99)
+<Multi_key> <C> <i>                   : "" # Ue01c : CIRCLE (ISO-IR-83 0294)
+<Multi_key> <f> <parenleft>           : "" # Ue01d : FUNCTION SIGN (ISO-IR-143 221)
+<Multi_key> <e> <d>                   : "" # Ue01e : LATIN SMALL LETTER EZH (ISO-IR-158 142)
+<Multi_key> <a> <m>                   : "" # Ue01f : ANTE MERIDIAM SIGN (ISO-IR-149 0267)
+<Multi_key> <p> <m>                   : "" # Ue020 : POST MERIDIAM SIGN (ISO-IR-149 0268)
+<Multi_key> <F> <l>                   : "" # Ue023 : DUTCH GUILDER SIGN (IBM437 159)
+<Multi_key> <G> <F>                   : "" # Ue024 : GAMMA FUNCTION SIGN (ISO-10646-1DIS 032/032/037/122)
+<Multi_key> <greater> <V>             : "" # Ue025 : RIGHTWARDS VECTOR ABOVE (ISO-10646-1DIS 032/032/038/046)
+<Multi_key> <exclam> <asterisk>       : "" # Ue026 : GREEK VARIA (ISO-10646-1DIS 032/032/042/164)
+<Multi_key> <question> <asterisk>     : "" # Ue027 : GREEK PERISPOMENI (ISO-10646-1DIS 032/032/042/165)
+<Multi_key> <J> <less>                : "" # Ue028 : LATIN CAPITAL LETTER J WITH CARON (lowercase: 000/000/001/240)
+
+<Multi_key> <N> <U> : "\000" # U0000 : NULL (NUL)
+<Multi_key> <S> <H> : "\001" # U0001 : START OF HEADING (SOH)
+<Multi_key> <S> <X> : "\002" # U0002 : START OF TEXT (STX)
+<Multi_key> <E> <X> : "\003" # U0003 : END OF TEXT (ETX)
+<Multi_key> <E> <T> : "\004" # U0004 : END OF TRANSMISSION (EOT)
+<Multi_key> <E> <Q> : "\005" # U0005 : ENQUIRY (ENQ)
+<Multi_key> <A> <K> : "\006" # U0006 : ACKNOWLEDGE (ACK)
+<Multi_key> <B> <L> : "\007" # U0007 : BELL (BEL)
+<Multi_key> <B> <S> : "\010" # U0008 : BACKSPACE (BS)
+<Multi_key> <H> <T> : "\011" # U0009 : CHARACTER TABULATION (HT)
+<Multi_key> <L> <F> : "\012" # U000a : LINE FEED (LF)
+<Multi_key> <V> <T> : "\013" # U000b : LINE TABULATION (VT)
+<Multi_key> <F> <F> : "\014" # U000c : FORM FEED (FF)
+<Multi_key> <C> <R> : "\015" # U000d : CARRIAGE RETURN (CR)
+<Multi_key> <S> <O> : "\016" # U000e : SHIFT OUT (SO)
+<Multi_key> <S> <I> : "\017" # U000f : SHIFT IN (SI)
+<Multi_key> <D> <L> : "\020" # U0010 : DATALINK ESCAPE (DLE)
+<Multi_key> <D> <1> : "\021" # U0011 : DEVICE CONTROL ONE (DC1)
+<Multi_key> <D> <2> : "\022" # U0012 : DEVICE CONTROL TWO (DC2)
+<Multi_key> <D> <3> : "\023" # U0013 : DEVICE CONTROL THREE (DC3)
+<Multi_key> <D> <4> : "\024" # U0014 : DEVICE CONTROL FOUR (DC4)
+<Multi_key> <N> <K> : "\025" # U0015 : NEGATIVE ACKNOWLEDGE (NAK)
+<Multi_key> <S> <Y> : "\026" # U0016 : SYNCRONOUS IDLE (SYN)
+<Multi_key> <E> <B> : "\027" # U0017 : END OF TRANSMISSION BLOCK (ETB)
+<Multi_key> <C> <N> : "\030" # U0018 : CANCEL (CAN)
+<Multi_key> <E> <M> : "\031" # U0019 : END OF MEDIUM (EM)
+<Multi_key> <S> <B> : "\032" # U001a : SUBSTITUTE (SUB)
+<Multi_key> <E> <C> : "\033" # U001b : ESCAPE (ESC)
+<Multi_key> <F> <S> : "\034" # U001c : FILE SEPARATOR (IS4)
+<Multi_key> <G> <S> : "\035" # U001d : GROUP SEPARATOR (IS3)
+<Multi_key> <R> <S> : "\036" # U001e : RECORD SEPARATOR (IS2)
+<Multi_key> <U> <S> : "\037" # U001f : UNIT SEPARATOR (IS1)
+
+<Multi_key> <D> <T> : "\177" # U007f : DELETE (DEL)
+
+<Multi_key> <P> <A> : "\200" # U0080 : PADDING CHARACTER (PAD)
+<Multi_key> <H> <O> : "\201" # U0081 : HIGH OCTET PRESET (HOP)
+<Multi_key> <B> <H> : "\202" # U0082 : BREAK PERMITTED HERE (BPH)
+<Multi_key> <N> <H> : "\203" # U0083 : NO BREAK HERE (NBH)
+<Multi_key> <I> <N> : "\204" # U0084 : INDEX (IND)
+<Multi_key> <N> <L> : "\205" # U0085 : NEXT LINE (NEL)
+<Multi_key> <S> <A> : "\206" # U0086 : START OF SELECTED AREA (SSA)
+<Multi_key> <E> <S> : "\207" # U0087 : END OF SELECTED AREA (ESA)
+<Multi_key> <H> <S> : "\208" # U0088 : CHARACTER TABULATION SET (HTS)
+<Multi_key> <H> <J> : "\209" # U0089 : CHARACTER TABULATION WITH JUSTIFICATION (HTJ)
+<Multi_key> <V> <S> : "\210" # U008a : LINE TABULATION SET (VTS)
+<Multi_key> <P> <D> : "\211" # U008b : PARTIAL LINE FORWARD (PLD)
+<Multi_key> <P> <U> : "\212" # U008c : PARTIAL LINE BACKWARD (PLU)
+<Multi_key> <R> <I> : "\213" # U008d : REVERSE LINE FEED (RI)
+<Multi_key> <S> <2> : "\214" # U008e : SINGLE-SHIFT TWO (SS2)
+<Multi_key> <S> <3> : "\215" # U008f : SINGLE-SHIFT THREE (SS3)
+
+<Multi_key> <D> <C> : "\220" # U0090 : DEVICE CONTROL STRING (DCS)
+<Multi_key> <P> <1> : "\221" # U0091 : PRIVATE USE ONE (PU1)
+<Multi_key> <P> <2> : "\222" # U0092 : PRIVATE USE TWO (PU2)
+<Multi_key> <T> <S> : "\223" # U0093 : SET TRANSMIT STATE (STS)
+<Multi_key> <C> <C> : "\224" # U0094 : CANCEL CHARACTER (CCH)
+<Multi_key> <M> <W> : "\225" # U0095 : MESSAGE WAITING (MW)
+<Multi_key> <S> <G> : "\226" # U0096 : START OF GUARDED AREA (SPA)
+<Multi_key> <E> <G> : "\227" # U0097 : END OF GUARDED AREA (EPA)
+<Multi_key> <S> <S> : "\228" # U0098 : START OF STRING (SOS)
+<Multi_key> <G> <C> : "\229" # U0099 : SINGLE GRAPHIC CHARACTER INTRODUCER (SGCI)
+<Multi_key> <S> <C> : "\230" # U009a : SINGLE CHARACTER INTRODUCER (SCI)
+<Multi_key> <C> <I> : "\231" # U009b : CONTROL SEQUENCE INTRODUCER (CSI)
+<Multi_key> <S> <T> : "\232" # U009c : STRING TERMINATOR (ST)
+<Multi_key> <O> <C> : "\233" # U009d : OPERATING SYSTEM COMMAND (OSC)
+<Multi_key> <P> <M> : "\234" # U009e : PRIVACY MESSAGE (PM)
+<Multi_key> <A> <C> : "\235" # U009f : APPLICATION PROGRAM COMMAND (APC)

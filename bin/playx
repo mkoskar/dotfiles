@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s extglob
 
 prgname=${0##*/}
 
@@ -17,13 +18,16 @@ trap cleanup EXIT
 
 src=${1:-$(xclip -o | head -c 255)}
 case $src in
-    http://www.ustream.tv/*)
+    http://tvcatchup.com/* | \
+    http://www.rtvs.sk/* | \
+    http://www.ustream.tv/* \
+        )
         printf -v title '%q' "$src"
         streamlink \
             --loglevel=error \
-            --player-args="--force-media-title=$title -- {filename}" \
+            --player-args="--title=$title --force-media-title=$title -- {filename}" \
             -- "$src"
         exit
         ;;
 esac
-mpv --force-window -- "$src"
+mpv --force-window=immediate -- "$src"

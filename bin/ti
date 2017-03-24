@@ -30,6 +30,8 @@ tzs=(
     local
     UTC
     -
+    US/Hawaii
+    US/Alaska
     US/Pacific
     US/Mountain
     US/Central

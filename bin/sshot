@@ -4,7 +4,7 @@ set -eu -o pipefail
 
 cd ~/tmp
 
-g=$(slop -n -f '%g\n' --opengl --magnify)
+g=$(slop)
 ts=$(date +%F.%s)
 maim -g "$g" "screenshot-$ts.png"
 

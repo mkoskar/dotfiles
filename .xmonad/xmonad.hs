@@ -74,7 +74,7 @@ matchAppOrClassName n = (appName =? n) <||> (className =? n)
 myStatusBar conf = statusBar "statusbar" myPP myToggleStrutsKey conf
   where
     color = xmobarColor
-    myPP = defaultPP
+    myPP = def
         { ppCurrent = color "#55ff55" "" . wrap "[" "]"
         , ppVisible = color "#feed6a" "" . wrap "(" ")"
         , ppUrgent = color "#bb4455" "#feef6a" . pad
@@ -85,7 +85,7 @@ myStatusBar conf = statusBar "statusbar" myPP myToggleStrutsKey conf
         }
     myToggleStrutsKey XConfig{modMask = modm} = (modm, xK_b)
 
-myConfig = defaultConfig
+myConfig = def
     { borderWidth = 1
     , normalBorderColor = "#000000"
     , focusedBorderColor = "#ff3333"
@@ -146,6 +146,7 @@ myConfig = defaultConfig
                        , appName =? "clementine" -?> doShiftView "8"
                        , appName =? "gpodder" -?> doShift "8"
                        , appName =? "libreoffice" -?> doShiftView "8"
+                       , appName =? "qjackctl" <&&> title <? "JACK Audio Connection Kit" -?> doFloat
                        , appName =? "s_aux" -?> doShift "2"
                        , appName =? "s_tmp" -?> doShift "2"
                        , appName =? "s_wrk" -?> doShift "1"
@@ -155,6 +156,7 @@ myConfig = defaultConfig
                        , appName =? "spacefm" -?> doShiftView "5"
                        , appName =? "sxiv" -?> doShiftView "9"
                        , appName =? "vlc" -?> doShiftView "9"
+                       , appName =? "vmpk" -?> doFloat
                        , appName =? "zathura" -?> doShiftView "8"
                        , className =? "Firefox (default)" -?> doShiftView "3"
                        , className =? "Gxmessage" -?> doFloat
@@ -184,7 +186,7 @@ myConfig = defaultConfig
                        myTall
                    )
       where
-        myTheme = defaultTheme
+        myTheme = def
             { activeBorderColor = activeColor myTheme
             , inactiveBorderColor = inactiveColor myTheme
             , urgentBorderColor = urgentColor myTheme

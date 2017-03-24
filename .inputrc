@@ -1,15 +1,17 @@
 set bell-style none
 set bind-tty-special-chars off
+set blink-matching-paren on
 set colored-completion-prefix on
 set colored-stats on
 set completion-ignore-case on
 set completion-map-case on
-set completion-prefix-display-length 2
 set echo-control-characters off
 set editing-mode vi
 set enable-bracketed-paste on
 set keyseq-timeout 10
 set mark-symlinked-directories on
+set menu-complete-display-prefix on
+set show-all-if-ambiguous on
 set show-all-if-unmodified on
 set show-mode-in-prompt on
 set skip-completed-text on
@@ -21,14 +23,48 @@ set keymap vi-insert
 
 $include ~/.inputrc.esc
 
-"\C-g": abort
-"\C-l": clear-screen
-"\C-p": history-search-backward
-"\C-n": history-search-forward
-"\C-o": menu-complete
-"\C-k": menu-complete-backward
-"\C-w": backward-kill-word
+# Unbind superfluous self-inserts (See: lib/readline/vi_keymap.c)
+"\C-A":
+"\C-B":
+"\C-C":
+"\C-E":
+"\C-F":
+"\C-G":
+"\C-K":
+"\C-L":
+"\C-O":
+"\C-Q":
+"\C-X":
+"\C-Z":
+"\C-\\":
+"\C-]":
+"\C-^":
 
+"\C-B": beginning-of-line
+"\C-E": end-of-line
+"\eh": backward-char
+"\el": forward-char
+"\eb": backward-word
+"\ef": forward-word
+"\ew": forward-word
+
+"\C-U": backward-kill-line
+"\C-K": kill-line
+"\C-W": backward-kill-word
+"\ed": kill-word
+"\ex": delete-char
+
+"\C-A": insert-completions
+"\C-D": possible-completions
+"\C-O": menu-complete-backward
+"\C-I": menu-complete
+
+"\C-G": abort
+"\C-L": clear-screen
+"\C-P": history-search-backward
+"\C-N": history-search-forward
+
+"\e0": digit-argument
 "\e1": digit-argument
 "\e2": digit-argument
 "\e3": digit-argument
@@ -38,49 +74,62 @@ $include ~/.inputrc.esc
 "\e7": digit-argument
 "\e8": digit-argument
 "\e9": digit-argument
-"\e-": digit-argument
 
-"\C-x":
-
-"\C-x\C-a": vi-movement-mode
-"\C-x\C-xv": dump-variables
-"\C-x\C-xf": dump-functions
-"\C-x\C-xm": dump-macros
-
-"\C-xp": "\C-x\C-aIpgx "
-"\C-xP": "\C-x\C-aA | pg"
+"\C-X\C-A": vi-movement-mode
+"\C-X\C-Xv": dump-variables
+"\C-X\C-Xf": dump-functions
+"\C-X\C-Xm": dump-macros
 
 $if bash
-    "\C-xx": "\C-x\C-a0isudo "
-    "\C-xh": "\C-x\C-addihistory 25 | gi ''\C-x\C-ai"
-    "\C-xa": "\C-x\C-aa!!:*"
-    "\C-xl": "\C-x\C-aa!!:$"
-    "\C-xs": "\C-x\C-aa!!:gs/"
-    "\C-xc": "--color=auto "
+    " ": magic-space
+    "\ee": shell-expand-line
+    "\C-X\C-E": edit-and-execute-command
+
+    "\e\C-I": dabbrev-expand
+    "\C-X\C-I": complete-into-braces
+
+    "\eB": shell-backward-word
+    "\eF": shell-forward-word
+    "\eW": shell-forward-word
+    "\C-X\C-W": shell-backward-kill-word
+    "\eD": shell-kill-word
+
+    "\C-X!": complete-command
+    "\C-X/": complete-filename
+    "\ei": complete-filename
+    "\C-X@": complete-hostname
+    "\C-X~": complete-username
+    "\C-X$": complete-variable
+    "\C-X*": glob-expand-word
+    "\C-Xg": glob-list-expansions
+
+    "\C-Xp": "\C-X\C-AIpgx "
+    "\C-XP": "\C-X\C-AA | pg"
+    "\C-Xx": "\C-X\C-A0isudo "
+    "\C-Xh": "\C-X\C-Addihistory 25 | gi ''\C-X\C-Ai"
+    "\C-Xa": "\C-X\C-Aa!!:*"
+    "\C-Xl": "\C-X\C-Aa!!:$"
+    "\C-Xs": "\C-X\C-Aa!!:gs/"
+    "\C-Xc": "--color=auto "
 $endif
 
 set keymap vi-command
 
 $include ~/.inputrc.esc
 
-"\C-g": abort
-"\C-p": history-search-backward
-"\C-n": history-search-forward
-"\C-w": backward-kill-word
-
-"\C-x":
-
-"\C-x\C-xv": dump-variables
-"\C-x\C-xf": dump-functions
-"\C-x\C-xm": dump-macros
-
-"\C-xp": "Ipgx "
-"\C-xP": "A | pg"
+"\C-X\C-Xv": dump-variables
+"\C-X\C-Xf": dump-functions
+"\C-X\C-Xm": dump-macros
 
 $if bash
-    "\C-xx": "Isudo "
-    "\C-xh": "ddihistory 25 | gi ''\C-x\C-ai"
-    "\C-xa": "a!!:*"
-    "\C-xl": "a!!:$"
-    "\C-xs": "a!!:gs/"
+    "v": ""
+    "\C-X\C-E": edit-and-execute-command
+
+    "\C-Xp": "Ipgx "
+    "\C-XP": "A | pg"
+    "\C-Xx": "Isudo "
+    "\C-Xh": "ddihistory 25 | gi ''\C-X\C-Ai"
+    "\C-Xa": "a!!:*"
+    "\C-Xl": "a!!:$"
+    "\C-Xs": "a!!:gs/"
 $endif

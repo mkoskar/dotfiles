@@ -1,10 +1,9 @@
 !*
 
-/.NERDTreeBookmarks
 /.backup/
-/.netrwhist
 /.swap/
 /.undo/
+/.view/
 /.viminfo*
-/bundle*/
+/pack/
 /tags

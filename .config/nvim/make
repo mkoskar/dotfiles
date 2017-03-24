@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-cd ~/.config/nvim
-
-mkdir -p .backup .swap .undo

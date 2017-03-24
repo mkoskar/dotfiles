@@ -22,10 +22,16 @@ if ! flock -n 8; then
     exit 3
 fi
 
-read -r X Y W H < <(slop -f '%x %y %w %h\n')
+read -r X Y W H < <(slop -f $'%x %y %w %h\n')
+
+# See also:
+#
+# x264 --fullhelp
+# ffmpeg -h encoder=libx264
+
 ffmpeg -loglevel quiet \
-    -f x11grab -s "${W}x${H}" -i "$DISPLAY+$X,$Y" \
-    "$outfile"
-) || true
+    -f x11grab -framerate 30 -show_region 1 -s "${W}x${H}" -i "$DISPLAY+$X,$Y" \
+    -vcodec libx264 -qp 0 -preset ultrafast "$outfile" || true
+)
 
 [[ -e $outfile ]] && mpv --loop=inf "$outfile" 2>/dev/null

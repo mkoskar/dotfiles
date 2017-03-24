@@ -2,50 +2,48 @@
 
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 
-call utils#PluginLoad('unimpaired')
+packadd unimpaired
 
 source ~/.vim/vimrc_base
 
-call utils#PluginAdd('bufexplorer')
-call utils#PluginAdd('ctrlp')
-call utils#PluginAdd('easy-align')
-call utils#PluginAdd('exchange')
-call utils#PluginAdd('filebeagle')
-call utils#PluginAdd('nerdtree')
+packadd! bufexplorer
+packadd! ctrlp
+packadd! easy-align
+packadd! exchange
+packadd! filebeagle
+packadd! nerdtree
 
-call utils#PluginAdd('fugitive')
-call utils#PluginAdd('fzf')
-call utils#PluginAdd('repeat')
-call utils#PluginAdd('simpylfold')
-call utils#PluginAdd('speeddating')
-call utils#PluginAdd('surround')
-call utils#PluginAdd('syntastic')
-call utils#PluginAdd('tagbar')
-call utils#PluginAdd('tcomment')
-call utils#PluginAdd('undotree')
+packadd! fugitive
+packadd! fzf
+packadd! repeat
+packadd! simpylfold
+packadd! speeddating
+packadd! surround
+packadd! syntastic
+packadd! tagbar
+packadd! tcomment
+packadd! undotree
 
-"call utils#PluginAdd('ctrlspace')
-"call utils#PluginAdd('dirvish')
-"call utils#PluginAdd('dispatch')
-"call utils#PluginAdd('easymotion')
-"call utils#PluginAdd('easytags')
-"call utils#PluginAdd('emmet')
-"call utils#PluginAdd('gitgutter')
-"call utils#PluginAdd('gundo')
-"call utils#PluginAdd('minibufexpl')
-"call utils#PluginAdd('misc')
-"call utils#PluginAdd('multiple-cursors')
-"call utils#PluginAdd('neomake')
-"call utils#PluginAdd('ultisnips')
-"call utils#PluginAdd('unite')
-"call utils#PluginAdd('visualrepeat')
-
-call utils#PluginAdd('~/opt/fzf')
+"packadd! ctrlspace
+"packadd! dirvish
+"packadd! dispatch
+"packadd! easymotion
+"packadd! easytags
+"packadd! emmet
+"packadd! gitgutter
+"packadd! gundo
+"packadd! minibufexpl
+"packadd! misc
+"packadd! multiple-cursors
+"packadd! neomake
+"packadd! ultisnips
+"packadd! unite
+"packadd! visualrepeat
 
 augroup vimrc_ext_lazy_plugins
     autocmd!
     "autocmd FileType python
-    "    \ call utils#PluginLoad('ycm') | call youcompleteme#Enable()
+    "    \ call packadd ycm | call youcompleteme#Enable()
 augroup END
 
 
@@ -70,8 +68,8 @@ let ctrlp_working_path_mode = 'rwa'
 
 let ctrlp_prompt_mappings = {
     \ 'PrtCurLeft()': ['<c-h>', '<left>', '<c-^>'],
-    \ 'PrtSelectMove("d")': ['<m-j>', '<PageDown>', '<kPageDown>'],
-    \ 'PrtSelectMove("u")': ['<m-k>', '<PageUp>', '<kPageUp>'],
+    \ 'PrtSelectMove("d")': ['<M-j>', '<PageDown>', '<kPageDown>'],
+    \ 'PrtSelectMove("u")': ['<M-k>', '<PageUp>', '<kPageUp>'],
     \ }
 
 nnoremap <silent> <M-e> :CtrlPMRUFiles<CR>

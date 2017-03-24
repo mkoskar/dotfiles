@@ -39,15 +39,6 @@ shopt -s autocd checkjobs checkwinsize cmdhist dotglob gnu_errfmt histappend \
 # some can't detect editing-mode set in ~/.inputrc early enough (e.g., fzf)
 set -o vi
 
-bind -m vi-insert '"\C-e": edit-and-execute-command'
-bind -m vi-insert '"\e\t": dynamic-complete-history'
-bind -m vi-insert '"\ee": shell-expand-line'
-bind -m vi-insert '"\ei": complete-filename'
-
-bind -m vi-command '"\C-e": edit-and-execute-command'
-bind -m vi-command '"\ee": shell-expand-line'
-bind -m vi-command -r 'v'
-
 complete -o nospace -A function fn
 complete -o nospace -c i
 complete -o nospace -c on

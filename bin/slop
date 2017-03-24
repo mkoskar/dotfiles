@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-exec /usr/bin/slop -b 2 -c 1,0,0 --gracetime=1.5 "$@"
+#exec /usr/bin/slop -t 1 -b 2 -c 1,0,0 "$@"
+exec /usr/bin/slop -l -t 1 -b 0 -c 0.3,0.4,0.6,0.6 "$@"

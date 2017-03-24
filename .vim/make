@@ -17,9 +17,8 @@ export -f from_git
 
 cd ~/.vim
 
-mkdir -p .backup .swap .undo bundle
-
-cd bundle
+mkdir -p pack/custom/opt
+cd pack/custom/opt
 
 parallel --colsep '\t+' from_git <<-EOF
 	ansiesc				https://github.com/jakar/vim-AnsiEsc.git
@@ -36,14 +35,12 @@ parallel --colsep '\t+' from_git <<-EOF
 	exchange			https://github.com/tommcdo/vim-exchange.git
 	filebeagle			https://github.com/jeetsukumaran/vim-filebeagle.git
 	fugitive			https://github.com/tpope/vim-fugitive
-	fzf					https://github.com/junegunn/fzf.vim.git
 	gnupg				https://github.com/jamessan/vim-gnupg.git
 	minibufexpl			https://github.com/vim-scripts/minibufexpl.vim.git
 	misc				https://github.com/xolox/vim-misc.git
 	multiple-cursors	https://github.com/terryma/vim-multiple-cursors.git
 	neomake				https://github.com/benekastah/neomake.git
 	nerdtree			https://github.com/scrooloose/nerdtree.git
-	pathogen			https://github.com/tpope/vim-pathogen.git
 	repeat				https://github.com/tpope/vim-repeat.git
 	simpylfold			https://github.com/tmhedberg/SimpylFold
 	sneak				https://github.com/justinmk/vim-sneak.git
@@ -59,13 +56,13 @@ parallel --colsep '\t+' from_git <<-EOF
 	ycm					https://github.com/Valloric/YouCompleteMe
 EOF
 
-echo
-cd ycm
-
-./install.py \
-    --clang-completer \
-    --gocode-completer \
-    --racer-completer \
-    --tern-completer
+#echo
+#cd ycm
+#
+#./install.py \
+#    --clang-completer \
+#    --gocode-completer \
+#    --racer-completer \
+#    --tern-completer
 
 echo

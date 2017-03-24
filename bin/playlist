@@ -3,4 +3,4 @@
 set -eu
 
 list="$HOME/download/playlists/${1:-0}"
-mpv --loop --playlist="$list" 2>/dev/null
+mpv --loop --no-stop-screensaver --playlist="$list" 2>/dev/null

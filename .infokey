@@ -31,22 +31,16 @@ d       dir-node
 
 ^B      echo-area-beg-of-line
 #\m0    echo-area-beg-of-line
-
 #^E     echo-area-end-of-line
-\me     echo-area-end-of-line
 #\m$    echo-area-end-of-line
-
 \mh     echo-area-backward
 \ml     echo-area-forward
 #\mb    echo-area-backward-word
-\mH     echo-area-backward-word
 #\mf    echo-area-forward-word
 \mw     echo-area-forward-word
-\mL     echo-area-forward-word
 
 ^U      echo-area-backward-kill-line
 #^K     echo-area-kill-line
-
 ^W      echo-area-backward-kill-word
 #\md    echo-area-kill-word
 #\mX    echo-area-kill-word

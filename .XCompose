@@ -1,59 +1,14 @@
 # See also: Compose(5)
 
 include "%L"
+include ".XCompose.rfc1345"
 
-<Multi_key> <8> <8>                     : "∞"   U221e               # 8 8 INFINITY
-<Multi_key> <A> <E>                     : "Æ"   AE                  # LATIN CAPITAL LETTER AE
-<Multi_key> <P> <P>                     : "¶"   paragraph           # PILCROW SIGN
-<Multi_key> <S> <S>                     : "ẞ"   U1e9e               # LATIN CAPITAL LETTER SHARP S
-<Multi_key> <a> <e>                     : "æ"   ae                  # LATIN SMALL LETTER AE
-<Multi_key> <o> <c>                     : "©"   copyright           # COPYRIGHT SIGN
-<Multi_key> <o> <r>                     : "®"   registered          # REGISTERED SIGN
-<Multi_key> <o> <s>                     : "§"   section             # SECTION SIGN
-<Multi_key> <s> <s>                     : "ß"   ssharp              # LATIN SMALL LETTER SHARP S
-<Multi_key> <t> <m>                     : "™"   U2122               # TRADE MARK SIGN
-<Multi_key> <v> <slash>                 : "√"   U221a               # v / SQUARE ROOT
+<Multi_key> <S> <S>              : "ẞ" # U1e9e : LATIN CAPITAL LETTER SHARP S
+<Multi_key> <colon> <parenleft>  : "☹" # U2639 : WHITE FROWNING FACE
+<Multi_key> <colon> <parenright> : "☺" # U263a : WHITE SMILING FACE
+<Multi_key> <less> <3>           : "♥" # U2665 : BLACK HEART SUIT
+<Multi_key> <period> <equal>     : "•" # U2022 : BULLET
+<Multi_key> <space> <period>     : "…" # U2026 : HORIZONTAL ELLIPSIS
 
-<Multi_key> <space> <space>             : " "   nobreakspace        # NO-BREAK SPACE
-<Multi_key> <space> <period>            : " "   U2008               # PUNCTUATION SPACE
-
-<Multi_key> <apostrophe> <less>         : "‘"   U2018               # LEFT SINGLE QUOTATION MARK
-<Multi_key> <apostrophe> <greater>      : "’"   U2019               # RIGHT SINGLE QUOTATION MARK
-<Multi_key> <apostrophe> <comma>        : "‚"   U201a               # SINGLE LOW-9 QUOTATION MARK
-<Multi_key> <apostrophe> <period>       : "‛"   U201b               # SINGLE HIGH-REVERSED-9 QUOTATION MARK
-
-<Multi_key> <quotedbl> <less>           : "“"   U201c               # LEFT DOUBLE QUOTATION MARK
-<Multi_key> <quotedbl> <greater>        : "”"   U201d               # RIGHT DOUBLE QUOTATION MARK
-<Multi_key> <quotedbl> <comma>          : "„"   U201e               # DOUBLE LOW-9 QUOTATION MARK
-<Multi_key> <quotedbl> <period>         : "‟"   U201f               # DOUBLE HIGH-REVERSED-9 QUOTATION MARK
-
-<Multi_key> <less> <less>               : "«"   guillemotleft       # LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
-<Multi_key> <greater> <greater>         : "»"   guillemotright      # RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK
-<Multi_key> <less> <period>             : "‹"   U2039               # SINGLE LEFT-POINTING ANGLE QUOTATION MARK
-<Multi_key> <greater> <period>          : "›"   U203a               # SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
-
-<Multi_key> <minus> <minus> <minus>     : "—"   U2014               # EM DASH
-<Multi_key> <minus> <minus> <period>    : "–"   U2013               # EN DASH
-<Multi_key> <minus> <minus> <space>     : "­"   U00ad               # SOFT HYPHEN
-<Multi_key> <period> <period>           : "…"   ellipsis            # HORIZONTAL ELLIPSIS
-
-<Multi_key> <colon> <parenleft>         : "☹"   U2639               # WHITE FROWNING FACE
-<Multi_key> <colon> <parenright>        : "☺"   U263A               # WHITE SMILING FACE
-<Multi_key> <equal> <slash>             : "≠"   U2260               # NOT EQUAL TO
-<Multi_key> <equal> <underscore>        : "≡"   U2261               # = _ IDENTICAL TO
-<Multi_key> <exclam> <exclam>           : "¡"   exclamdown          # INVERTED EXCLAMATION MARK
-<Multi_key> <greater> <underscore>      : "≥"   U2265               # > _ GREATER-THAN OR EQUAL TO
-<Multi_key> <less> <3>                  : "♥"   U2665               # BLACK HEART SUIT
-<Multi_key> <less> <underscore>         : "≤"   U2264               # < _ LESS-THAN OR EQUAL TO
-<Multi_key> <minus> <colon>             : "÷"   division            # DIVISION SIGN
-<Multi_key> <minus> <comma>             : "¬"   notsign             # NOT SIGN
-<Multi_key> <period> <equal>            : "•"   enfilledcircbullet  # BULLET
-<Multi_key> <period> <equal>            : "•"   enfilledcircbullet  # BULLET
-<Multi_key> <period> <minus>            : "·"   periodcentered      # MIDDLE DOT
-<Multi_key> <plus> <minus>              : "±"   plusminus           # PLUS-MINUS SIGN
-<Multi_key> <question> <question>       : "¿"   questiondown        # INVERTED QUESTION MARK
-
-<Multi_key> <dollar> <E>                : "€"   EuroSign            # EURO SIGN
-<Multi_key> <dollar> <L>                : "£"   sterling            # POUND SIGN
-<Multi_key> <x> <s>                     : "┐(ツ)┌"
-<Multi_key> <x> <z>                     : "(-_-) zzz"
+<Multi_key> <x> <s>              : "┐(ツ)┌"
+<Multi_key> <x> <z>              : "(-_-) zzz"

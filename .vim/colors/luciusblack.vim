@@ -216,8 +216,8 @@ hi LineNr           guifg=#909090       guibg=#121212
 hi LineNr           ctermfg=244         ctermbg=233
 
 " The 'more' prompt when output takes more than one line
-hi MoreMsg          guifg=#00875f                           gui=NONE
-hi MoreMsg          ctermfg=29                              cterm=NONE
+hi MoreMsg          guifg=#ffff87                           gui=NONE
+hi MoreMsg          ctermfg=228                             cterm=NONE
 
 " Text showing what mode you are in
 hi ModeMsg          guifg=#87d7ff       guibg=NONE          gui=NONE

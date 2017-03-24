@@ -7,10 +7,10 @@ set showmode
 set toolbars=none,tabs,navigation
 set wildmode=list:longest,full
 
-noremap <A-j> 5j
-noremap <A-k> 5k
-
-nnoremap <A-0> :tablast<CR>
+nnoremap J gT
+nnoremap K gt
+nnoremap <A-h> gT
+nnoremap <A-l> gt
 nnoremap <A-1> 1gt
 nnoremap <A-2> 2gt
 nnoremap <A-3> 3gt
@@ -20,15 +20,69 @@ nnoremap <A-6> 6gt
 nnoremap <A-7> 7gt
 nnoremap <A-8> 8gt
 nnoremap <A-9> 9gt
-nnoremap <A-h> gT
-nnoremap <A-l> gt
+nnoremap <A-0> :tablast<CR>
+nnoremap <A-n> :tabnew<CR>
+nnoremap gJ :tabmove -1<CR>
+nnoremap gK :tabmove +1<CR>
+nnoremap <A-S-h> :tabmove -1<CR>
+nnoremap <A-S-l> :tabmove +1<CR>
+
+noremap <A-j> 5j
+noremap <A-k> 5k
 
 nnoremap H :back<CR>
 nnoremap L :forward<CR>
-
 nnoremap <C-Space> :nohls<CR>
 
-cnoremap <C-o> <Tab>
-cnoremap <C-k> <S-Tab>
+" ----------------------------------------
+
+inoremap <C-b> <Home>
+inoremap <C-e> <End>
+inoremap <A-h> <Left>
+inoremap <A-l> <Right>
+inoremap <A-b> <C-Left>
+inoremap <A-f> <C-Right>
+inoremap <A-w> <C-Right>
+
+inoremap <C-u> <S-Home><BS>
+inoremap <C-k> <S-End><Del>
+inoremap <C-w> <C-S-Left><BS>
+inoremap <A-d> <C-S-Right><Del>
+inoremap <A-x> <Del>
+
+inoremap <A-(> <S-Home>
+inoremap <A-)> <S-End>
+inoremap <A-S-h> <S-Left>
+inoremap <A-S-l> <S-Right>
+inoremap <A-S-b> <C-S-Left>
+inoremap <A-S-f> <C-S-Right>
+inoremap <A-S-w> <C-S-Right>
+
+" ----------------------------------------
+
+cnoremap <C-b> <Home>
+cnoremap <C-e> <End>
+cnoremap <A-h> <Left>
+cnoremap <A-l> <Right>
+cnoremap <A-b> <C-Left>
+cnoremap <A-f> <C-Right>
+cnoremap <A-w> <C-Right>
+
+cnoremap <C-u> <S-Home><BS>
+cnoremap <C-k> <S-End><Del>
+cnoremap <C-w> <C-S-Left><BS>
+cnoremap <A-d> <C-S-Right><Del>
+cnoremap <A-x> <Del>
+
+cnoremap <A-(> <S-Home>
+cnoremap <A-)> <S-End>
+cnoremap <A-S-h> <S-Left>
+cnoremap <A-S-l> <S-Right>
+cnoremap <A-S-b> <C-S-Left>
+cnoremap <A-S-f> <C-S-Right>
+cnoremap <A-S-w> <C-S-Right>
+
+cnoremap <C-i> <Tab>
+cnoremap <C-o> <S-Tab>
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>

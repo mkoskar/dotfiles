@@ -12,7 +12,7 @@ set viminfo=
 
 " ----------------------------------------
 
-call utils#PluginAdd('gnupg')
+packadd! gnupg
 
 let GPGDefaultRecipients = ['CDC91131']
 let GPGUsePipes = 1

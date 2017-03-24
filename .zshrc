@@ -20,10 +20,8 @@ fpath=(~/.zfunctions $fpath)
 
 typeset -gU path fpath cdpath
 
-zmodload zsh/attr
 zmodload zsh/complist
 zmodload zsh/system
-zmodload -F zsh/stat b:zstat
 
 autoload -Uz add-zsh-hook
 autoload -Uz compinit
@@ -123,7 +121,6 @@ function zle-keymap-select {
 }
 
 function zle-line-init {
-    # use global var since it's not possible to declare and assign local in one step
     __pstatus=("${pipestatus[@]}")
     __statstr=
     if (( ${#__pstatus[@]} > 1 )); then
@@ -132,6 +129,8 @@ function zle-line-init {
     zle zle-keymap-select
 }
 
+zle -C all-matches complete-word _generic
+zle -N complete-help _complete_help
 zle -N copy-earlier-word
 zle -N edit-command-line
 zle -N expand-dot-to-parent-directory-path
@@ -141,21 +140,15 @@ zle -N self-insert url-quote-magic
 zle -N zle-keymap-select
 zle -N zle-line-init
 
-bindkey -v
-bindkey -r '^A' '^B' '^C' '^F' '^Q' '^T' '^X' '^Y' '^Z' '^\' '^]' '^^' '^_'
+bindkey -rR '^A-^_'
+bindkey -rR '\M-^@-\M-^?'
 
-for k in @ {A..Z} [ \\ ] \^ _; do
+for k in {@.._}; do
     bindkey "\e^$k" noop
     bindkey -M vicmd "\e^$k" noop
 done
 
-k=$' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
-for (( i=0; i<${#k}; i++ )); do
-    bindkey "\e${k:$i:1}" noop
-    bindkey -M vicmd "\e${k:$i:1}" noop
-done
-
-for k in {0..9} {A..Z} {a..z}; do
+for k in {\ ..~}; do
     bindkey "\e$k" noop
     bindkey -M vicmd "\e$k" noop
 done
@@ -176,39 +169,74 @@ bindkey -M vicmd "$k" end-of-line
 
 unset k
 
-bindkey '.' expand-dot-to-parent-directory-path
+bindkey '^B' beginning-of-line
+bindkey '^E' end-of-line
+bindkey '\eh' backward-char
+bindkey '\el' forward-char
+bindkey '\eb' backward-word
+bindkey '\ef' emacs-forward-word
+bindkey '\ew' emacs-forward-word
+
+bindkey '^U' backward-kill-line
+bindkey '^K' kill-line
+bindkey '^W' backward-kill-word
+bindkey '\ed' kill-word
+bindkey '\ex' delete-char
+
+bindkey '^A' all-matches
+bindkey '^D' list-choices
+bindkey '^O' reverse-menu-complete
+bindkey '^I' complete-word
+
 bindkey '^G' send-break
-bindkey '^E' edit-command-line
+bindkey '^L' clear-screen
 bindkey '^P' history-search-backward
 bindkey '^N' history-search-forward
+
+bindkey '\e0' digit-argument
+bindkey '\e1' digit-argument
+bindkey '\e2' digit-argument
+bindkey '\e3' digit-argument
+bindkey '\e4' digit-argument
+bindkey '\e5' digit-argument
+bindkey '\e6' digit-argument
+bindkey '\e7' digit-argument
+bindkey '\e8' digit-argument
+bindkey '\e9' digit-argument
+
+bindkey '^H' backward-delete-char
+bindkey '^J' accept-line
+bindkey '^M' accept-line
 bindkey '^R' history-incremental-search-backward
 bindkey '^S' history-incremental-search-forward
-bindkey '^O' menu-complete
-bindkey '^K' reverse-menu-complete
-bindkey '^W' backward-kill-word
-bindkey '^H' backward-delete-char
-bindkey '^?' backward-delete-char
-bindkey '\e.' insert-last-word
-bindkey '\ee' expand-word-alias
-bindkey '\em' copy-earlier-word
+bindkey '^V' quoted-insert
+bindkey '^[' vi-cmd-mode
 bindkey '^X^A' vi-cmd-mode
+
+bindkey ' ' magic-space
+bindkey '\ee' expand-word-alias
+bindkey '^X^E' edit-command-line
+
+bindkey '.' expand-dot-to-parent-directory-path
+bindkey '\e.' insert-last-word
+bindkey '\em' copy-earlier-word
+bindkey '^XH' _complete_help
 
 bindkey -M vicmd 'k' up-history
 bindkey -M vicmd 'j' down-history
 bindkey -M vicmd 'u' undo
 bindkey -M vicmd '^G' send-break
-bindkey -M vicmd '^E' edit-command-line
 bindkey -M vicmd '^P' history-search-backward
 bindkey -M vicmd '^N' history-search-forward
-bindkey -M vicmd '^W' backward-kill-word
 bindkey -M vicmd '^R' redo
+
 bindkey -M vicmd '\ee' expand-word-alias
+bindkey -M vicmd '^X^E' edit-command-line
 
 bindkey -M isearch . self-insert
 
 bindkey -M menuselect '^U' send-break
 
-bindkey -r '^X'
 bindkey -s '^Xp' '^X^AIpgx '
 bindkey -s '^XP' '^X^AA | pg'
 bindkey -s '^Xx' '^X^A0isudo '
@@ -218,7 +246,6 @@ bindkey -s '^Xl' '^X^Aa!!:$'
 bindkey -s '^Xs' '^X^Aa!!:gs/'
 bindkey -s '^Xc' '--color=auto '
 
-bindkey -M vicmd -r '^X'
 bindkey -M vicmd -s '^Xp' 'Ipgx '
 bindkey -M vicmd -s '^XP' 'A | pg'
 bindkey -M vicmd -s '^Xx' 'Isudo '
@@ -239,64 +266,69 @@ compinit -d "$zcompdump"
     fi
 } &!
 
+# zshcompsys(1)
+#
+# > completion:<function>:<completer>:<command>:<argument>:<tag>
+#
+# function:
+#   Function, if completion is called from a named widget rather than
+#   through the normal completion system; blank otherwise.
+#
+# completer:
+#   Completer currently active, the name of the function without the
+#   leading underscore and with other underscores converted to hyphens;
+#   see 'Control Functions'.
+#
+# command:
+#   Command or a special -context-, just as it appears following the
+#   #compdef tag or the compdef function.
+#
+# argument:
+#   This indicates which command line or option argument we are completing.
+#
+# tag:
+#   Used to discriminate between the types of matches a completion
+#   function can generate in a certain context; see 'Standard Tags'.
+
 zstyle ':completion:*' completer _complete _match
-zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' matcher-list 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' insert-unambiguous true
+zstyle ':completion:*' matcher-list 'r:|[.,_-]=* r:|=*'
+zstyle ':completion:*' menu select
 zstyle ':completion:*' squeeze-slashes true
-zstyle ':completion:*:*:*:*:*' menu select
-zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
-zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
-zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
-zstyle ':completion:*:-tilde-:*' group-order named-directories path-directories users expand
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*:default' list-prompt '%S%M matches%s'
-zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
-zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
-zstyle ':completion:*:history-words' list false
-zstyle ':completion:*:history-words' menu yes
-zstyle ':completion:*:history-words' remove-all-dups yes
-zstyle ':completion:*:history-words' stop yes
-zstyle ':completion:*:manuals' separate-sections true
-zstyle ':completion:*:manuals.(^1*)' insert-sections true
-zstyle ':completion:*:match:*' original only
-zstyle ':completion:*:matches' group 'yes'
-zstyle ':completion:*:messages' format ' %F{purple}-- %d --%f'
-zstyle ':completion:*:options' auto-description '%d'
-zstyle ':completion:*:options' description 'yes'
-zstyle ':completion:*:warnings' format ' %F{yellow}-- no matches found --%f'
-zstyle ':completion::complete:*' cache-path "$HOME/.cache/zcompcache"
-zstyle ':completion::complete:*' use-cache on
 
-zstyle ':completion::*:(-command-|export):*' fake-parameters ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}
+zstyle ':completion:*:complete:*:*:*' cache-path ~/.cache/zcompcache
+zstyle ':completion:*:complete:*:*:*' use-cache true
 
-zstyle -e ':completion:*:hosts' hosts 'reply=(
-    ${=${=${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) 2>/dev/null)"}%%[#| ]*}//\]:[0-9]*/ }//,/ }//\[/ }
-    ${=${(f)"$(cat /etc/hosts(|)(N) <<(ypcat hosts 2>/dev/null))"}%%\#*}
+zstyle ':completion:*:*:(rm|kill|diff):*:*' ignore-line other
+zstyle ':completion:*:*:-command-:*:*' group-order reserved-words builtins functions aliases commands
+zstyle ':completion:*:*:cd:*:*' group-order named-directories directory-stack path-directories local-directories
+zstyle ':completion:*:*:kill:*:*' force-list always
+zstyle ':completion:*:*:kill:*:*' insert-ids single
+zstyle ':completion:*:*:kill:*:*' menu true select
+
+zstyle ':completion:*:*:*:*:default' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*:*:*:*:default' list-prompt '%S%m%s'
+zstyle ':completion:*:*:*:*:descriptions' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:*:*:*:hosts' use-ip true
+zstyle ':completion:*:*:*:*:manuals' separate-sections true
+zstyle ':completion:*:*:*:*:manuals.(^1*)' insert-sections true
+zstyle ':completion:*:*:*:*:messages' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm -w'
+zstyle ':completion:*:*:*:*:warnings' format ' %F{yellow}-- no matches found --%f'
+
+zstyle -e ':completion:*:*:*:*:hosts' hosts 'reply=(
+    ${=${(f)"$(cat /etc/hosts(N) <<(ypcat hosts 2>/dev/null))"}%%\#*}
     ${=${${${${(@M)${(f)"$(cat ~/.ssh/config 2>/dev/null)"}:#Host *}#Host }:#*\**}:#*\?*}}
 )'
 
-zstyle ':completion:*:(rm|kill|diff):*' ignore-line other
-zstyle ':completion:*:rm:*' file-patterns '*:all-files'
-
-zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm -w'
-zstyle ':completion:*:*:kill:*' force-list always
-zstyle ':completion:*:*:kill:*' insert-ids single
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;36=0=01'
-
-zstyle ':completion:*:(scp|rsync):*' group-order users files all-files hosts-domain hosts-host hosts-ipaddr
-zstyle ':completion:*:(scp|rsync):*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-domain' ignored-patterns '<->.<->.<->.<->' '^[-[:alnum:]]##(.[-[:alnum:]]##)##' '*@*'
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*(.|:)*' loopback ip6-loopback localhost ip6-localhost broadcasthost
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<->.<->.<->|(|::)([[:xdigit:].]##:(#c,2))##(|%*))' '127.0.0.<->' '255.255.255.255' '::1' 'fe80::*'
-zstyle ':completion:*:ssh:*' group-order users hosts-domain hosts-host hosts-ipaddr
-zstyle ':completion:*:ssh:*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
+zstyle ':completion:all-matches:*' completer _all_matches _complete
+zstyle ':completion:all-matches:*' insert true
 
 compctl -F fn
 compctl -FBmwa i
 compctl -f paco
-compctl -k "(10m 15m 20m 25m 30m)" a
+compctl -k '(10m 15m 20m 25m 30m)' a
 compctl -m on
 compctl -m pacoc
 compctl -m pgx
