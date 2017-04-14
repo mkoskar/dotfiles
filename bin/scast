@@ -26,8 +26,8 @@ read -r X Y W H < <(slop -f $'%x %y %w %h\n')
 
 # See also:
 #
-# x264 --fullhelp
-# ffmpeg -h encoder=libx264
+#   x264 --fullhelp
+#   ffmpeg -h encoder=libx264
 
 ffmpeg -loglevel quiet \
     -f x11grab -framerate 30 -show_region 1 -s "${W}x${H}" -i "$DISPLAY+$X,$Y" \

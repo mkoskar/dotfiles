@@ -47,6 +47,11 @@ status_dpms() {
     printf 'dpms: %s\n' "$val"
 }
 
+status_pa_sink() {
+    local val; val=$(ponymix defaults | sed -nr '/^sink /{n;s/^\s*//;p}')
+    printf 'PA sink: %s\n' "$val"
+}
+
 status_rfkill() {
     local val='-' state
     state=$(rfkill-state -a "$1")
@@ -99,10 +104,12 @@ status_xkb() {
 }
 
 case ${1-} in
-    audio | backlight | bluetooth | dpms | touchpad | trackpoint_wheel | wifi | xkb)
+    audio | backlight | bluetooth | dpms | pa_sink | \
+    touchpad | trackpoint_wheel | wifi | xkb)
         "status_$1"
         ;;
     *)
+        status_pa_sink
         status_audio
         status_backlight
         status_bluetooth

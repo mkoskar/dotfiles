@@ -4,7 +4,13 @@ set -eu -o pipefail
 
 {
     ifile=${XCOMPOSEFILE:-~/.XCompose}
-    echo '--------------------------------------------------'
+    echo $'\n--------------------------------------------------'
+    printf '> %s\n\n' "$ifile"
+
+    cat "$ifile"
+
+    ifile="$HOME/.XCompose.rfc1345"
+    echo $'\n--------------------------------------------------'
     printf '> %s\n\n' "$ifile"
 
     cat "$ifile"

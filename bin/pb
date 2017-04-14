@@ -1,23 +1,60 @@
 #!/usr/bin/env bash
+#
+# See also:
+#
+#   https://paste.xinu.at/
 
 set -eu
 
 prgname=${0##*/}
 
+if [[ $prgname = 'pb' ]]; then
+    exec paste-ptpb "$@"
+fi
+
+tmpdir=$(mktemp -d)
+cleanup() { rm -rf "$tmpdir"; }
+trap cleanup EXIT
+
+(( $# )) || set -- -
+
+infile=$1
+if [[ $infile = '-' ]]; then
+    infile="$tmpdir/in"
+    cat >"$infile"
+fi
+infile=$(realpath -- "$infile")
+outfile="$tmpdir/out"
+
+[[ -s $infile ]] || exit 1
+
 case $prgname in
     paste-ix)
-        echo '# /<id>/<lexer>#n-<line>' >&2
-        exec curl -sSL -F "f:1=@${1:--}" http://ix.io/
+        # /<id>/<lexer>#n-<line>
+        curl -sSL -F "f:1=@$infile" -o "$outfile" http://ix.io/
+        cat "$outfile"
         ;;
     paste-ptpb)
-        echo '# /<id>/<lexer>/<formatter>#L-<line>' >&2
-        exec curl -sS -F "c=@${1:--}" -w '%{redirect_url}\n' -o /dev/null 'https://ptpb.pw/?r=1'
+        # /<id>/<lexer>/<formatter>#L-<line>
+        curl -sS -F "c=@$infile" -w '%{redirect_url}\n' -o "$outfile" \
+            https://ptpb.pw/?r=1
         ;;
     paste-sprunge)
-        echo '# /<id>?<lexer>#n-<line>' >&2
-        exec curl -sSL -F "sprunge=@${1:--}" http://sprunge.us/
+        # /<id>?<lexer>#n-<line>
+        curl -sSL -F "sprunge=@$infile" -o "$outfile" http://sprunge.us/
+        cat "$outfile"
         ;;
     *)
-        paste-ptpb "$@"
+        exit 2
         ;;
 esac
+
+histfile="$HOME/.local/share/pb_history"
+ts=$(date +%F.%s)
+
+cat >>"$histfile" <<-EOF
+
+	$ts $prgname [$*]
+	--------------------------------------------------
+EOF
+cat "$outfile" >>"$histfile"

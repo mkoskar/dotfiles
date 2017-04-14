@@ -7,8 +7,8 @@ set -eu
 
 # Detection:
 #
-# 1) turn of firewall
-# 2) scanimage -L
+#   1) turn of firewall
+#   2) scanimage -L
 #
 # See also: /etc/sane.d/pixma.conf
 

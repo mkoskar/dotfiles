@@ -338,6 +338,7 @@ myConfig = def
         , ("M-S-m", spawn "audio playback_toggle")
         , ("M-S-n", spawn "audio playback_dock_toggle")
         , ("M-S-r", spawn "audio capture_toggle")
+        , ("M-S-s", spawn "audio pa_sink_toggle")
         , ("M-S-p", spawn "playctl play-pause")
         , ("M-C-p", spawn "playctl-bluetooth play-pause")
 

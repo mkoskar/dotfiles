@@ -39,9 +39,16 @@ function! utils#CmdlineKillWord() abort
 endfunction
 
 function! utils#TryCatch(cmd, ...) abort
-    let pattern = get(a:, '1', '.*')
-    exec 'try | exec "'.escape(a:cmd, '"')
-        \ '" | catch /'.pattern.'/ | call utils#EchoException() | endtry'
+    try
+        if exists('a:1')
+            exec printf('try | exec "%s" | catch /%s/ | exec "%s" | endtry',
+                \ escape(a:cmd, '"\'), get(a:, '2', '.*'), escape(a:1, '"\'))
+        else
+            exec a:cmd
+        endif
+    catch /.*/
+        call utils#EchoException()
+    endtry
 endfunction
 
 function! utils#mkdir(path) abort

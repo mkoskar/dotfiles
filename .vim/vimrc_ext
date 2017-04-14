@@ -42,6 +42,7 @@ packadd! undotree
 
 augroup vimrc_ext_lazy_plugins
     autocmd!
+
     "autocmd FileType python
     "    \ call packadd ycm | call youcompleteme#Enable()
 augroup END

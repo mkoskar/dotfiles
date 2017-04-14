@@ -14,9 +14,9 @@ run() {
     if [[ ${PAGER_EX-} ]]; then
         args+=(-c "$PAGER_EX")
     fi
-    if [[ $prgname != 'pgx' && ${PAGER_TITLE-} ]]; then
-        args+=(-c 'call NoFileSetup()')
-    fi
+    #if [[ $prgname != 'pgx' && ${PAGER_TITLE-} ]]; then
+    #    args+=(-c 'call NoFileSetup()')
+    #fi
     args+=(-- "$@")
     export PRGNAME=$prgname
     exec -a "($prgname)" "${VIMBIN:-vim}" -O -u ~/.vim/vimrc_pg "${args[@]}"
@@ -28,12 +28,12 @@ if [[ $prgname = 'pgx' ]]; then
         exit 2
     fi
     if [[ ! -t 1 ]]; then
-        exec bashx -c '"$@"' bashx "$@"
+        exec bashx -c "$1 \"\${@:1}\"" "$@"
     fi
     CMD=$(shell-escape "$@")
     export CMD
     export PAGER_TITLE=${PAGER_TITLE:-"$ $CMD"}
-    args=(-c ReloadX)
+    args=(-c Reload)
     run
     exit
 fi
@@ -56,6 +56,6 @@ fi
 "${filter[@]}" | {
     exec 8<&0 0<&1
     export PAGER_TITLE=${PAGER_TITLE:--stdin-}
-    args=(-c 'silent e /dev/fd/8')
+    args=(-c 'silent e /dev/fd/8 | call NoFileSetup()')
     run
 }

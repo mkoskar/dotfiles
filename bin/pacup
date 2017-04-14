@@ -9,6 +9,7 @@ echo $'\n--------------------------------------------------'
 echo $'> Cleanup:\n'
 
 pkgs=$(pacman -Qqdt)
-[[ $pkgs ]] && sudo pacman -Rcsn - <<<"$pkgs"
-
-echo
+[[ $pkgs ]] && {
+    sudo pacman -Rcsn - <<<"$pkgs"
+    echo
+}

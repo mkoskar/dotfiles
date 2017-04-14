@@ -18,7 +18,6 @@ _usage() {
 	  -i        - inline (don't use alternate screen)
 	  -I        - don't hide cursor
 	  -q        - quiet
-	  -h        - show this help message and exit
 	EOF
 }
 usage() { _usage; exit 0; }
@@ -120,7 +119,7 @@ while true; do
     (( ! quiet )) && printf "> started: %s${ti_el}\n" "$ts_begin_" >&2
     (( ! inline && long )) && printf '%s' "$ti_ed"
 
-    bashx -c '"$@"' bashx "$@" |& tee ${append:+-a} "$output" | sed -r "s/\$/$ti_el/"
+    bashx -c "$1 \"\${@:1}\"" "$@" |& tee ${append:+-a} "$output" | sed -r "s/\$/$ti_el/"
 
     ts_end=$(date +%s.%N)
     ts_end_=$(date +%T -d "@$ts_end")

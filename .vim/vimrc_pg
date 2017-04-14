@@ -5,7 +5,6 @@ let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 source ~/.vim/vimrc_base
 
 set buftype=nowrite
-set nomodifiable
 
 set colorcolumn=0
 set laststatus=1
@@ -15,8 +14,8 @@ set virtualedit=all
 
 set nobackup
 set noswapfile
-set noundofile
-set undolevels=-1
+"set noundofile
+"set undolevels=-1
 
 let &viminfo = "!,'100,<50,s10,h,n".$VIMDIR."/.viminfo_pg"
 
@@ -25,8 +24,6 @@ let &viminfo = "!,'100,<50,s10,h,n".$VIMDIR."/.viminfo_pg"
 filetype indent off
 
 nnoremap <silent> q :QuitTab<CR>
-
-map <silent> r :Preserve edit<CR>
 nnoremap <silent> <C-A> :AnsiEsc<CR>
 
 function! NoFileSetup() abort
@@ -37,66 +34,44 @@ function! NoFileSetup() abort
     file $PAGER_TITLE
 endfunction
 
-" {{{ Reloads buffer after number (defaults to 1) of seconds have passed.
-
-function! Reload(...) abort
-    let d = 1
-    if exists('a:1')
-        let d = a:1
+function! s:Reload() abort
+    if exists('$CMD')
+        setl bt=nofile ma
+        silent Preserve 0put =system($CMD) | +1,$d_
+        setl noma
+        silent file $PAGER_TITLE
+        call utils#EchoWarn(printf('[%s] %s', strftime('%H:%M:%S'), $PAGER_TITLE))
+    else
+        Preserve edit
     endif
+endfunction
+
+command! -bar Reload call s:Reload()
+map <silent> r :Reload<CR>
+
+function! s:ReloadT(...) abort
+    let d = get(a:, '1', 1)
     try
-        call utils#EchoWarn('Reload in '.d.'s (interrupt to abort)')
-        exec 'sleep '.d
-        if exists(':ReloadX')
-            Preserve silent call _ReloadX()
-        else
-            Preserve edit
-        endif
+        call utils#EchoWarn(printf('Reload in %ds (interrupt to abort)', d))
+        exec 'sleep' d
+        Reload
     finally
         redraw
         echo
     endtry
 endfunction
 
-command! -bar -nargs=? Reload call Reload(<f-args>)
-map <silent> F :Reload<CR>GF<CR>
-map <silent> R :Reload<CR>R<CR>
-
-" }}}
-
-if exists('$CMD')
-
-" {{{ Reloads buffer from $CMD.
-
-function! _ReloadX() abort
-    try
-        setl modifiable
-        exec 'silent 0read! '.escape($CMD, '%')
-        silent keepjumps normal! jdG
-        setl noma
-    endtry
-endfunction
-
-function! ReloadX() abort
-    setl buftype=nofile
-    silent file $PAGER_TITLE
-    Preserve silent call _ReloadX()
-    call utils#EchoWarn('['.strftime('%H:%M:%S').'] '.$PAGER_TITLE)
-endfunction
-
-command! -bar ReloadX call ReloadX()
-map <silent> r :ReloadX<CR>
-
-" }}}
-
-endif
+command! -bar -nargs=? ReloadT call s:ReloadT(<f-args>)
+map <silent> F :ReloadT<CR>GF<CR>
+map <silent> R :ReloadT<CR>R<CR>
 
 augroup vimrc_pg
     autocmd!
 
-    if exists('$PRGNAME') && $PRGNAME == 'pg0'
-        autocmd BufRead * setl noml ft=
-    else
-        autocmd BufRead,FilterReadPost * AnsiEsc
-    endif
+    "autocmd BufRead * setl noma
+    "if $PRGNAME == 'pg0'
+    "    autocmd BufRead * setl noml ft=
+    "else
+    "    "autocmd BufRead,FilterReadPost * silent AnsiEsc
+    "endif
 augroup END

@@ -4,7 +4,7 @@ if exists('b:did_ftplugin')
     finish
 endif
 
-let s:hunk_pattern = '@@ -\d\+\(,\d\+\)\? +\d\+\(,\d\+\)\? @@'
+let s:hunk_pattern = '\m@@ -\d\+\(,\d\+\)\? +\d\+\(,\d\+\)\? @@'
 let s:head_pattern = '\m^--- .\+\n+++ .\+\n'.s:hunk_pattern
 
 function! s:DiffOpen() abort
@@ -15,8 +15,8 @@ function! s:DiffOpen() abort
     if lnum > 0
         let p1 = substitute(substitute(getline(lnum), '\v^--- "?(.{-})"?(\t.*)?$', '\=submatch(1)', ''), '\m\\"', '"', 'g')
         let p2 = substitute(substitute(getline(lnum+1), '\v^\+\+\+ "?(.{-})"?(\t.*)?$', '\=submatch(1)', ''), '\m\\"', '"', 'g')
-        exec 'tabnew '.fnameescape(p1)
-        exec 'vertical rightbelow diffsplit '.fnameescape(p2)
+        exec 'tabnew' fnameescape(p1)
+        exec 'vertical rightbelow diffsplit' fnameescape(p2)
         wincmd p
     endif
 endfunction

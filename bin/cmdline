@@ -9,5 +9,5 @@ pid=${1:-$PPID}
     exit 2
 }
 
-ifile="/proc/$pid/cmdline"
-[[ -r $ifile ]] && xargs -0 -x -r -a "$ifile" shell-escape
+infile="/proc/$pid/cmdline"
+[[ -r $infile ]] && xargs -0 -x -r -a "$infile" shell-escape

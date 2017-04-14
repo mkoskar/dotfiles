@@ -2,15 +2,15 @@
 
 set -eu
 
-ifile=$1
+infile=$1
 
-tac -- "$ifile" | sed -r 's/^/  /' >"$ifile.tmp"
-mv -- "$ifile.tmp" "$ifile"
+tac -- "$infile" | sed -r 's/^/  /' >"$infile.tmp"
+mv -- "$infile.tmp" "$infile"
 
 cleanup() {
-    sed -ri '/^(\s+|$)/d' "$ifile"
-    [[ -s $ifile ]] || exit 1
+    sed -ri '/^(\s+|$)/d' "$infile"
+    [[ -s $infile ]] || exit 1
 }
 trap cleanup EXIT
 
-"${VIMBIN:-vim}" -u ~/.vim/vimrc_base -- "$ifile"
+"${VIMBIN:-vim}" -u ~/.vim/vimrc_base -- "$infile"

@@ -96,8 +96,9 @@ _mon() {
     neww -n sstat 'trun pgx sstat' \
         \; setw remain-on-exit on
 
-    neww -n iftop 'trun iftop' \
-        \; setw remain-on-exit on
+    neww -n iftop 'trun iftop -i eth0' \
+        \; setw remain-on-exit on \
+        \; splitw -v 'trun iftop -i wlan0'
 
     neww -n logs -c /var/log
 

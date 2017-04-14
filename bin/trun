@@ -11,9 +11,9 @@ fi
 
 . ~/bin/term.sh
 
-if [[ ${TERMDONE-} && ! $TERM =~ ^(screen|tmux)(-|$) ]]; then
-    # wait a bit for WM geometry to kick-in
-    sleep 0.05
-fi
+#if [[ ${TERMDONE-} && ! $TERM =~ ^(screen|tmux)(-|$) ]]; then
+#    # wait a bit for WM geometry to kick-in
+#    sleep 0.05
+#fi
 
 exec "$@"

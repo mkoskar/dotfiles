@@ -22,7 +22,7 @@
 
 ### Automatically restore the volume of streams and devices
 load-module module-device-restore
-load-module module-stream-restore
+#load-module module-stream-restore
 load-module module-card-restore
 
 ### Automatically augment property information from .desktop files

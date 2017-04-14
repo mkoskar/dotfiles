@@ -34,7 +34,7 @@ set nonumber
 
 set hlsearch
 
-nmap <Space> :nohls<Bar>echo<CR>
+nmap <Space> :nohlsearch \| echo<CR>
 
 
 " Multiple Windows

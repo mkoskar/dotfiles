@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 
 prgname=${0##*/}
 
@@ -24,6 +24,19 @@ capture_toggle() {
     amixer -q set Capture toggle
 }
 
+pa_sink_toggle() {
+    local all current
+    readarray -t all < <(pacmd list-sinks | sed -rn 's/^\tname: <(.*)>$/\1/p')
+    current=$(pacmd dump | sed -rn 's/^set-default-sink (.*)$/\1/p')
+    local i len=${#all[@]}
+    for (( i=0; i<len; i++ )); do
+        [[ ${all[i]} = "$current" ]] && break
+    done
+    i=$((i+1))
+    (( i >= len )) && i=0
+    pacmd set-default-sink "${all[i]}"
+}
+
 case ${1-} in
     playback_up | playback_down | \
     playback_toggle | playback_dock_toggle | \
@@ -32,10 +45,15 @@ case ${1-} in
         status-osd audio
         exit
         ;;
+    pa_sink_toggle)
+        $1
+        status-osd pa_sink
+        exit
+        ;;
     '')
         ;;
     *)
-        echo "usage: $prgname [playback_up | playback_down | playback_toggle | playback_dock_toggle | capture_toggle]" >&2
+        echo "usage: $prgname [playback_up | playback_down | playback_toggle | playback_dock_toggle | capture_toggle | pa_sink_toggle ]" >&2
         exit 2
         ;;
 esac
@@ -60,6 +78,11 @@ while true; do
             ;;
         [rR])
             capture_toggle
+            ;;
+        [oO])
+            pa_sink_toggle
+            echo
+            status pa_sink
             ;;
         *)
             break

@@ -46,9 +46,23 @@ bluectl() {
     (sleep 0.01; echo "$1"; sleep 0.01) | bluetooth-player 2>/dev/null
 }
 
-exec >/dev/null
+_playerctl() {
+    local stat1 stat2
+    if [[ $1 = 'play-pause' ]]; then
+        stat1=$(playerctl status)
+        playerctl "$1"
+        stat2=$(playerctl status)
+        if [[ $stat1 = 'Playing' && $stat2 = 'Playing' ]]; then
+            playerctl stop
+        fi
+        return
+    fi
+    playerctl "$1"
+}
 
-(( blue )) && ctl='bluectl' || ctl='playerctl'
+#exec >/dev/null
+
+(( blue )) && ctl='bluectl' || ctl='_playerctl'
 
 case $1 in
     prev)

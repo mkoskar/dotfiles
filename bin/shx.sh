@@ -213,6 +213,7 @@ alias fortune='fortune -c'
 alias free='free -h'
 alias gconfa='gconftool-2 -R /'
 alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
+alias gsettingsa='gsettings list-recursively'
 alias headcat='head -vn-0'
 alias info='info --vi-keys'
 alias journal-vaccum='journalctl --vacuum-size=100M --vacuum-files=1'
@@ -226,6 +227,7 @@ alias moon='curl -sSL http://wttr.in/moon | head -n-4'
 alias mount-loop='mount -o loop'
 alias mpv-debug='command mpv --msg-level=all=debug'
 alias mpv-verbose='command mpv --msg-level=all=v'
+alias mpv-ytdl-reverse='mpv --ytdl-raw-options=playlist-reverse='
 alias mutt-debug='mutt -d 2'
 alias mv='mv -i'
 alias npmg='npm -g'
@@ -251,8 +253,8 @@ alias top='top -d 1'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias watch='watch -n 1 -t -c'
 alias wi='curl -sSL http://wttr.in/ | head -n-3'
-alias youtube-dl-playlist="youtube-dl --yes-playlist -o '~/download/_youtube-dl/%(playlist)s/[%(playlist_index)s] %(title)s'"
-alias youtube-dl-stdout='youtube-dl -o -'
+alias ytdl-playlist="youtube-dl --yes-playlist -o '~/download/_youtube-dl/%(playlist)s/[%(playlist_index)s] %(title)s'"
+alias ytdl-stdout='youtube-dl -o -'
 
 a() {
     local d=${1:-5m} ts; ts=$(command date -R)

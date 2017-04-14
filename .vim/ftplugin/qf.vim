@@ -39,8 +39,8 @@ noremap <buffer> <Leader>G <Nop>
 
 nmap <buffer> <silent> o <CR>
 nnoremap <buffer> <silent> q :close<CR>
-exec 'nnoremap <buffer> <silent> go :exec "normal \<lt>cr>" \|
-          \ match IncSearch /\k*\%#\k*/ \| wincmd p<CR>'
+nnoremap <buffer> <silent> go :exec "normal \<lt>cr>"
+    \ \| match IncSearch /\k*\%#\k*/ \| wincmd p<CR>
 nnoremap <buffer> <silent> << :call QfOlder(b:prefix)<CR>
 nnoremap <buffer> <silent> >> :call QfNewer(b:prefix)<CR>
 nnoremap <buffer> <silent> <Leader>< :call QfOldest(b:prefix)<CR>
