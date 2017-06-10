@@ -16,13 +16,20 @@
 /set irc.server_default.proxy default
 /set irc.server_default.realname "Miroslav Koskar <http://mkoskar.com/>"
 /set irc.server_default.sasl_fail reconnect
-/set irc.server_default.sasl_key %h/keys/irc_sasl.pem
-/set irc.server_default.sasl_mechanism ecdsa-nist256p-challenge
 /set irc.server_default.sasl_timeout 30
 /set irc.server_default.sasl_username mkoskar
 /set irc.server_default.ssl on
 /set irc.server_default.ssl_cert %h/keys/irc_ssl.pem
+/set irc.server_default.usermode +iwR
 /set irc.server_default.username mkoskar
+
+/print # /set irc.server.ANON.nicks anon
+/print # /set irc.server.ANON.proxy tor
+/print # /set irc.server.ANON.realname ""
+/print # /set irc.server.ANON.sasl_fail continue
+/print # /set irc.server.ANON.sasl_username ""
+/print # /set irc.server.ANON.ssl_cert ""
+/print # /set irc.server.ANON.username ""
 
 /server del bitlbee
 /server add bitlbee localhost
@@ -30,35 +37,30 @@
 /set irc.server.bitlbee.autojoin #twitter_mkoskar
 /set irc.server.bitlbee.nicks miro
 /set irc.server.bitlbee.proxy ""
-/set irc.server.bitlbee.sasl_mechanism plain
 /set irc.server.bitlbee.sasl_password ${sec.data.bitlbee}
 /set irc.server.bitlbee.sasl_username miro
 /set irc.server.bitlbee.ssl off
-/set irc.server.bitlbee.username miro
+/set irc.server.bitlbee.usermode ""
 
 /server del freenode
 /server add freenode chat.freenode.net/6697
-/set irc.server.freenode.autojoin ##linux,##security,#archlinux,#archlinux-offtopic,#bash,#git,#github,#go-nuts,#nginx,#node.js,#pocoo,#python,#scala,#systemd,#tmux,#vim,#vpsfree,#web,#weechat,#zsh
-/set irc.server.freenode.command "/mode mkoskar +iwR"
-/set irc.server.freenode.ssl_dhkey_size 1024
+/set irc.server.freenode.autojoin ##linux,#archlinux,#archlinux-offtopic,#bash,#python,#systemd,#vim,#vpsfree,#weechat
+/set irc.server.freenode.sasl_key %h/keys/irc_sasl.pem
+/set irc.server.freenode.sasl_mechanism ecdsa-nist256p-challenge
 
 /server del gitter
 /server add gitter irc.gitter.im/6697
 /set irc.server.gitter.autojoin #neovim/neovim
 /set irc.server.gitter.password ${sec.data.gitter}
-/set irc.server.gitter.ssl_dhkey_size 1024
 
 /server del mozilla
 /server add mozilla irc.mozilla.org/6697
 /set irc.server.mozilla.autojoin #js,#rust,#webdev
-/set irc.server.mozilla.command "/mode mkoskar +iwR"
-/set irc.server.mozilla.sasl_mechanism plain
 /set irc.server.mozilla.sasl_password ${sec.data.mozilla}
 
 /server del oftc
 /server add oftc irc.oftc.net/6697
-/set irc.server.oftc.autojoin #bitlbee,#debian,#suckless,#tor
-/set irc.server.oftc.command "/mode mkoskar +iswR"
+/set irc.server.oftc.autojoin #bitlbee,#suckless,#tor
 /set irc.server.oftc.sasl_fail continue
 
 /print # /secure passphrase <input-passphrase>
@@ -105,12 +107,21 @@
 /set weechat.color.input_text_not_found lightred
 /set weechat.color.nicklist_away default
 /set weechat.color.separator 237
+/set weechat.color.status_count_highlight lightred
+/set weechat.color.status_count_msg yellow
+/set weechat.color.status_count_private yellow
+/set weechat.color.status_data_highlight lightred
+/set weechat.color.status_data_private lightcyan
 /set weechat.color.status_name yellow
 /set weechat.color.status_name_ssl lightgreen
-/set weechat.look.buffer_notify_default message
-/set weechat.look.buffer_time_format ""
 /set weechat.look.color_inactive_window off
+/set weechat.look.hotlist_add_conditions "1"
+/set weechat.look.hotlist_count_min_msg 1
+/set weechat.look.hotlist_names_count 100
+/set weechat.look.hotlist_names_length 11
+/set weechat.look.hotlist_names_level 15
 /set weechat.look.hotlist_prefix ""
+/set weechat.look.hotlist_remove buffer
 /set weechat.look.key_bind_safe off
 /set weechat.look.prefix_align_max 12
 /set weechat.look.prefix_align_min 8
@@ -129,6 +140,17 @@
 /set aspell.check.real_time on
 /set aspell.check.suggestions 10
 
+/set buflist.format.buffer "${format_number}${indent}${color_hotlist}${if:${type}!=channel?${if:${type}==private?${color:white}+${color:lightcyan}:${color:lightgreen}}:}${cut:11,${color:white}+,${name}}${format_hotlist}"
+/set buflist.format.buffer_current "${color:,237}${format_number}${indent}${color:*white}${cut:11,+,${name}}${format_hotlist}"
+/set buflist.format.hotlist " ${hotlist}"
+/set buflist.format.hotlist_highlight "${color:lightred}"
+/set buflist.format.hotlist_low "${color:default}"
+/set buflist.format.hotlist_message "${color:yellow}"
+/set buflist.format.hotlist_private "${color:yellow}"
+/set buflist.format.indent " "
+/set buflist.format.number "${number} "
+/unset buflist.look.display_conditions
+
 /print # }}}
 
 /print # Scripts {{{
@@ -136,27 +158,12 @@
 
 /script install autosort.py
 /script install beep.pl
-/script install buffers.pl
 /script install colorize_nicks.py
 /script install go.py
 /script install grep.py
 /script install highmon.pl
 
-/set buffers.color.current_bg 237
-/set buffers.color.current_fg *white
-/set buffers.color.hotlist_highlight_fg lightred
-/set buffers.color.hotlist_private_bg red
-/set buffers.color.hotlist_private_fg *white
-/set buffers.color.none_channel_fg lightgreen
-/set buffers.color.number default
-/set buffers.color.number_char white
-/set buffers.color.queries_default_fg lightcyan
-/set buffers.look.hotlist_counter on
-/set buffers.look.indenting on
-/set buffers.look.name_size_max 11
-/set buffers.look.number_char " "
-/set buffers.look.prefix_for_query +
-/set buffers.look.suffix_bufname " "
+/set script.scripts.hold vimode.py
 
 /set colorize_nicks.look.colorize_input on
 
@@ -198,9 +205,9 @@
 /bar set title_active priority 500
 
 /bar default nicklist
-/bar set nicklist conditions ${nicklist} && ${nicklist_local}
+/bar set nicklist conditions ${nicklist}
 
-/bar set buffers size 24
+/bar add buflist root left 24 1 buflist
 
 /print # }}}
 
@@ -212,7 +219,7 @@
 /trigger default -yes
 
 /trigger addreplace url_color modifier weechat_print
-/trigger set url_color regex ;\S+://\S+;${color:yellow}${re:0}${color:reset}
+/trigger set url_color regex ;\S+://\S+;${color:yellow}${re:0}${color:reset};
 
 /trigger addreplace last_nick print irc.*;notify_message
 /trigger set last_nick conditions ${tg_displayed} && ${type} == channel && ${tg_tag_nick} != ${nick}
@@ -253,14 +260,15 @@
 /key bind ctrl-N /input history_next
 /key bind ctrl-O /go
 /key bind ctrl-P /input history_previous
-/key bind ctrl-Sctrl-U /input set_unread_current_buffer ; /window scroll_bottom
+/key bind ctrl-Sctrl-U /input set_unread_current_buffer_here
 /key bind meta-( /window -1
 /key bind meta-) /window +1
 /key bind meta-, /input jump_previously_visited_buffer
 /key bind meta-. /input jump_next_visited_buffer
-/key bind meta-;meta-b /TOGGLE_BUFFERS
-/key bind meta-;meta-n /nicklist_toggle
-/key bind meta-;meta-t /toggle_string weechat.look.buffer_time_format!%H:%M:%S!""
+/key bind meta-;meta-T /eval /mute set weechat.look.buffer_time_format ${if:${weechat.look.buffer_time_format}!=?"":%H:%M:%S}
+/key bind meta-;meta-b /TOGGLE_BUFLIST
+/key bind meta-;meta-n /eval /buffer set nicklist ${if:${buffer.nicklist}==0}
+/key bind meta-;meta-t /eval /buffer set time_for_each_line ${if:${buffer.time_for_each_line}==0}
 /key bind meta-< /window -1
 /key bind meta-> /window +1
 /key bind meta-H /input hotlist_clear ; /CLH
@@ -336,7 +344,7 @@
 /alias add NSERV /msg NickServ
 /alias add S /server jump
 /alias add SP /window splith
-/alias add TOGGLE_BUFFERS /bar toggle buffers
+/alias add TOGGLE_BUFLIST /bar toggle buflist
 /alias add VS /window splitv
 /alias add WO /window merge all
 

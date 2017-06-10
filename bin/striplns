@@ -8,13 +8,13 @@ declare -i squash=0
 [[ $prgname = 'squashlns' ]] && squash=1
 
 awk -v squash=$squash '
-/^\s*$/ {
-    if (txt) sep = (squash ? 1 : sep + 1)
+/\S/ {
+    start = 1
+    printf buf
+    buf = ""
+    print $0
     next
 }
 {
-    txt = 1
-    for (i=0; i<sep; i++) printf "\n"
-    sep = 0
-    print
+    if (start) buf = (squash ? "\n" : buf $0 "\n")
 }'

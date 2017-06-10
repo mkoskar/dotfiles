@@ -17,6 +17,16 @@ mapper='/dev/mapper/backups'
 log_prefix="$prgname $$"
 log() { printf '%s\n' "$log_prefix: $*"; } >&2
 
+cleanup() {
+    log "exiting ($?)"
+    if [[ -e $part ]]; then
+        log 'setting standby'
+        part_rp=$(realpath "$part")
+        hdparm -S 12 "${part_rp%%[0-9]}" &>/dev/null
+    fi
+}
+trap cleanup EXIT
+
 # backup-setup
 
 if [[ $prgname = 'backup-setup' ]]; then
@@ -45,9 +55,6 @@ fi
 
 # backup
 
-cleanup() { log "exiting ($?)"; }
-trap cleanup EXIT
-
 logdir='/var/log/local'
 mkdir -p "$logdir"
 
@@ -63,10 +70,6 @@ if ! flock -n 8; then
     log "$target: full-backup in progress"
     exit 3
 fi
-
-ts_begin=$(date +%s)
-ts_begin_=$(date +%F.%s -d "@$ts_begin")
-log "-- $ts_begin_"
 
 if [[ ! -e $part ]]; then
     log "$target: target partition missing"
@@ -89,6 +92,10 @@ if ! findmnt -M "$target" -S "$mapper" &>/dev/null; then
     log "$target: mountpoint misconfigured"
     exit 12
 fi
+
+ts_begin=$(date +%s)
+ts_begin_=$(date +%F.%s -d "@$ts_begin")
+log "-- $ts_begin_"
 
 mkdir -p "$target/full-backup"
 rsync -aAHSX / "$target/full-backup/master" \
@@ -116,7 +123,3 @@ EOF
 
 ts_end=$(date +%s)
 log "total time: $(((ts_end-ts_begin)/60)) minutes, $(((ts_end-ts_begin)%60)) seconds"
-
-log 'setting standby'
-part_rp=$(realpath "$part")
-hdparm -S 12 "${part_rp%%[0-9]}" &>/dev/null

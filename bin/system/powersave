@@ -43,8 +43,8 @@ case $1 in
         declare -i online=0
         for dev in /sys/class/power_supply/*; do
             type=$(<"$dev/type")
-            online=$(<"$dev/online")
             [[ $type = 'Mains' ]] || continue
+            online=$(<"$dev/online")
             (( online )) || continue
             online=1
             break

@@ -12,6 +12,7 @@ if (( ! $# )); then
            ~/.xcolors/default3
 fi
 
+cd ~/.xcolors
 scroller "$@" | while read -rs line; do
-    tcolors x "$line"
+    cat "$line" resources | tcolors x -
 done

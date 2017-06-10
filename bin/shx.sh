@@ -225,8 +225,8 @@ alias ltime='date +%T'
 alias mnt='findmnt'
 alias moon='curl -sSL http://wttr.in/moon | head -n-4'
 alias mount-loop='mount -o loop'
-alias mpv-debug='command mpv --msg-level=all=debug'
-alias mpv-verbose='command mpv --msg-level=all=v'
+alias mpv-debug='mpv --msg-level=all=debug'
+alias mpv-verbose='mpv --msg-level=all=v'
 alias mpv-ytdl-reverse='mpv --ytdl-raw-options=playlist-reverse='
 alias mutt-debug='mutt -d 2'
 alias mv='mv -i'
@@ -252,6 +252,7 @@ alias sudo-on='sudo -v'
 alias top='top -d 1'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias watch='watch -n 1 -t -c'
+alias weechat-plain='weechat -d $(mktemp -d)'
 alias wi='curl -sSL http://wttr.in/ | head -n-3'
 alias ytdl-playlist="youtube-dl --yes-playlist -o '~/download/_youtube-dl/%(playlist)s/[%(playlist_index)s] %(title)s'"
 alias ytdl-stdout='youtube-dl -o -'
@@ -262,7 +263,7 @@ a() {
     sleep "${1:-5m}"
     echo 'Beep...'
     notify -u critical 'Beep...' "Time's up!"
-    mpv --loop=5 --keep-open=no --load-scripts=no \
+    mpv --load-scripts=no --keep-open=no --loop-file=5 \
         /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
 }
 
@@ -328,10 +329,6 @@ lsmod() {
 lsof-pid() {
     setpid
     command lsof -p "${1:-$PID}"
-}
-
-mpv() {
-    command mpv "$@" 2>/dev/null
 }
 
 on() {

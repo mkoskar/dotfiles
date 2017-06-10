@@ -34,4 +34,4 @@ ffmpeg -loglevel quiet \
     -vcodec libx264 -qp 0 -preset ultrafast "$outfile" || true
 )
 
-[[ -e $outfile ]] && mpv --loop=inf "$outfile" 2>/dev/null
+[[ -e $outfile ]] && mpv --loop-file=inf "$outfile"

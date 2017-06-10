@@ -75,6 +75,7 @@ done <<-EOF
     freetype                b /usr/share/doc/freetype2/documentation.html
     g                       sr google {}
     g-operators             b https://support.google.com/websearch/answer/2466433?hl=en\&ref_topic=3081620\&vid=1-635793825968278780-302114999
+    gcc                     b https://gcc.gnu.org/onlinedocs/
     gg                      sr google -G {}
     gh                      sr github {}
     gh-repos                b https://github.com/mkoskar?tab=repositories
@@ -113,6 +114,7 @@ done <<-EOF
     imperial                b https://en.wikipedia.org/wiki/Imperial_units
     iojs                    b https://iojs.org/api/
     irc-docs                b https://github.com/grawity/irc-docs
+    irc-freenode            b http://irc.netsplit.de/channels/?net=freenode
     irc-specs               b http://ircv3.net/irc/
     java                    b /usr/share/doc/java/technotes/tools/unix/java.html
     java-apis               b http://www.oracle.com/technetwork/java/api-141528.html
@@ -195,6 +197,7 @@ done <<-EOF
     python                  b /usr/share/doc/python/html/index.html
     python2                 b /usr/share/doc/python2/html/index.html
     qt                      b http://doc.qt.io/
+    quotes                  b https://www.cl.cam.ac.uk/~mgk25/ucs/quotes.html
     qutebrowser             b http://qutebrowser.org/img/cheatsheet-big.png
     realworldhaskell        b http://book.realworldhaskell.org/read/
     regex-gnu               b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html

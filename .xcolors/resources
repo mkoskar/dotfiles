@@ -1,0 +1,30 @@
+! vim: ft=xdefaults
+
+#ifndef TPREFIX
+#define TPREFIX *
+#endif
+
+#undef P
+#define P() TPREFIX
+
+P()foreground: TFG
+P()background: TBG
+P()cursorColor: TCUR
+
+P()color0: TCOLOR0
+P()color1: TCOLOR1
+P()color2: TCOLOR2
+P()color3: TCOLOR3
+P()color4: TCOLOR4
+P()color5: TCOLOR5
+P()color6: TCOLOR6
+P()color7: TCOLOR7
+
+P()color8: TCOLOR8
+P()color9: TCOLOR9
+P()color10: TCOLOR10
+P()color11: TCOLOR11
+P()color12: TCOLOR12
+P()color13: TCOLOR13
+P()color14: TCOLOR14
+P()color15: TCOLOR15

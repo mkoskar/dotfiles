@@ -5,17 +5,14 @@ let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 source ~/.vim/vimrc_base
 
 set buftype=nowrite
-
 set colorcolumn=0
 set laststatus=1
+set nobackup
 set nolist
+set noswapfile
+set signcolumn=no
 set tabstop=8
 set virtualedit=all
-
-set nobackup
-set noswapfile
-"set noundofile
-"set undolevels=-1
 
 let &viminfo = "!,'100,<50,s10,h,n".$VIMDIR."/.viminfo_pg"
 
@@ -23,55 +20,41 @@ let &viminfo = "!,'100,<50,s10,h,n".$VIMDIR."/.viminfo_pg"
 
 filetype indent off
 
+noremap <silent> r :Reload<CR>
+noremap <silent> R :ReloadT<CR>
+noremap <silent> F :ReloadT!<CR>
+
 nnoremap <silent> q :QuitTab<CR>
 nnoremap <silent> <C-A> :AnsiEsc<CR>
 
-function! NoFileSetup() abort
-    setl buftype=nofile
-    noremap <buffer> r <Nop>
-    noremap <buffer> R <Nop>
-    noremap <buffer> F <Nop>
-    file $PAGER_TITLE
-endfunction
-
-function! s:Reload() abort
-    if exists('$CMD')
-        setl bt=nofile ma
-        silent Preserve 0put =system($CMD) | +1,$d_
-        setl noma
-        silent file $PAGER_TITLE
-        call utils#EchoWarn(printf('[%s] %s', strftime('%H:%M:%S'), $PAGER_TITLE))
+function! InitStdin() abort
+    silent edit /dev/fd/8
+    setl bt=nofile
+    if !empty($PAGER_TITLE)
+        file $PAGER_TITLE
+    endif
+    if $PRGNAME == 'manpg'
+        setl ma noro
     else
-        Preserve edit
+        AnsiEsc
     endif
 endfunction
 
-command! -bar Reload call s:Reload()
-map <silent> r :Reload<CR>
-
-function! s:ReloadT(...) abort
-    let d = get(a:, '1', 1)
-    try
-        call utils#EchoWarn(printf('Reload in %ds (interrupt to abort)', d))
-        exec 'sleep' d
-        Reload
-    finally
-        redraw
-        echo
-    endtry
+function! InitPgx() abort
+    setl ro noma
+    exec '0System' $CMD
+    if !empty($PAGER_TITLE)
+        file $PAGER_TITLE
+    endif
+    AnsiEsc
 endfunction
-
-command! -bar -nargs=? ReloadT call s:ReloadT(<f-args>)
-map <silent> F :ReloadT<CR>GF<CR>
-map <silent> R :ReloadT<CR>R<CR>
 
 augroup vimrc_pg
     autocmd!
 
-    "autocmd BufRead * setl noma
-    "if $PRGNAME == 'pg0'
-    "    autocmd BufRead * setl noml ft=
-    "else
-    "    "autocmd BufRead,FilterReadPost * silent AnsiEsc
-    "endif
+    autocmd BufRead * setl ro noma
+
+    if $PRGNAME == 'pg0'
+        autocmd BufRead * setl noml ft=
+    endif
 augroup END

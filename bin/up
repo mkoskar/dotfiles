@@ -3,7 +3,6 @@
 echo $'\n--------------------------------------------------'
 echo $'> Setup backup:\n'
 sudo backup-setup
-sudo bay-standby
 
 echo $'\n--------------------------------------------------'
 echo $'> Setup SSH tunnels:\n'

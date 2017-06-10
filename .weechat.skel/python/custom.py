@@ -41,7 +41,6 @@ weechat.register(
 # ----------------------------------------
 
 MERGE_RULES = [
-    r'^irc\.bitlbee\.&',
     r'^irc\.freenode\.#archlinux($|-.*)$',
 ]
 
@@ -53,14 +52,6 @@ def buffers_iter():
     item = weechat.hdata_get_list(hdata, 'gui_buffers')
     while item:
         yield item
-        item = weechat.hdata_pointer(hdata, item, 'next_buffer')
-
-
-def buffers_visited_iter():
-    hdata = weechat.hdata_get('buffer_visited')
-    item = weechat.hdata_get_list(hdata, 'gui_buffers_visited')
-    while item:
-        yield weechat.hdata_pointer(hdata, item, 'buffer')
         item = weechat.hdata_pointer(hdata, item, 'next_buffer')
 
 
@@ -96,6 +87,47 @@ def sort_merges_lazy():
     timer_sort_merges = weechat.hook_timer(1, 0, 1, 'cb_timer_sort_merges', '')
 
 
+def merge(buffer):
+    bname = weechat.buffer_get_string(buffer, 'full_name')
+    for rule in MERGE_RULES:
+        if re.match(rule, bname):
+            for _buffer in buffers_iter():
+                _bname = weechat.buffer_get_string(_buffer, 'full_name')
+                if bname != _bname and re.match(rule, _bname):
+                    weechat.buffer_merge(buffer, _buffer)
+                    break
+            break
+
+
+def buffer_init(buffer):
+    bname = weechat.buffer_get_string(buffer, 'full_name')
+
+    if bname == 'irc.bitlbee.#twitter_mkoskar':
+        weechat.buffer_set(buffer, 'highlight_words', '@mkoskar')
+
+    elif bname == 'irc.freenode.#archlinux':
+        weechat.buffer_set(buffer, 'short_name', '#arch')
+
+    elif bname == 'irc.freenode.#archlinux-offtopic':
+        weechat.buffer_set(buffer, 'short_name', '#arch-ot')
+
+    elif bname == 'irc.gitter.#neovim/neovim':
+        weechat.buffer_set(buffer, 'short_name', '#neovim')
+
+    weechat.buffer_set(buffer, 'nicklist', '0')
+
+    if bname != 'perl.highmon':
+        weechat.buffer_set(buffer, 'time_for_each_line', '0')
+
+    merge(buffer)
+
+
+def channel_init(buffer):
+    bname = weechat.buffer_get_string(buffer, 'full_name')
+    nicklist = int(re.match(r'^irc\.bitlbee\.&', bname) is not None)
+    weechat.buffer_set(buffer, 'nicklist', str(nicklist))
+
+
 def cb_timer_sort_merges(data, remaining_calls):
     global timer_sort_merges
     sort_merges()
@@ -103,47 +135,24 @@ def cb_timer_sort_merges(data, remaining_calls):
     return weechat.WEECHAT_RC_OK
 
 
-def merge(buffer):
-    full_name = weechat.buffer_get_string(buffer, 'full_name')
-    for rule in MERGE_RULES:
-        if re.match(rule, full_name):
-            for _buffer in buffers_iter():
-                _full_name = weechat.buffer_get_string(_buffer, 'full_name')
-                if full_name != _full_name and re.match(rule, _full_name):
-                    weechat.buffer_merge(buffer, _buffer)
-                    break
-            break
-
-
-def cb_signal_buffer_merged(data, signal, buffer):
-    sort_merges_lazy()
-    return weechat.WEECHAT_RC_OK
-
-
 def cb_signal_buffer_opened(data, signal, buffer):
-    full_name = weechat.buffer_get_string(buffer, 'full_name')
-
-    if full_name == 'irc.bitlbee.#twitter_mkoskar':
-        weechat.buffer_set(buffer, 'highlight_words', '@mkoskar')
-
-    elif full_name == 'irc.freenode.#archlinux':
-        weechat.buffer_set(buffer, 'short_name', '#arch')
-
-    elif full_name == 'irc.freenode.#archlinux-offtopic':
-        weechat.buffer_set(buffer, 'short_name', '#arch-ot')
-
-    elif full_name == 'irc.gitter.#neovim/neovim':
-        weechat.buffer_set(buffer, 'short_name', '#neovim')
-
-    nicklist_local = int(re.match(r'^irc\.bitlbee\.&', full_name) is not None)
-    weechat.buffer_set(buffer, 'localvar_set_nicklist_local', str(nicklist_local))
-
-    merge(buffer)
+    buffer_init(buffer)
     return weechat.WEECHAT_RC_OK
 
 
-weechat.hook_signal('buffer_merged', 'cb_signal_buffer_merged', '')
+def cb_signal_irc_channel_opened(data, signal, buffer):
+    channel_init(buffer)
+    return weechat.WEECHAT_RC_OK
+
+
 weechat.hook_signal('buffer_opened', 'cb_signal_buffer_opened', '')
+weechat.hook_signal('irc_channel_opened', 'cb_signal_irc_channel_opened', '')
+
+for buffer in buffers_iter():
+    buffer_init(buffer)
+
+
+weechat.hook_command('dev1', '', '', '', '', 'cb_command_dev1', '')
 
 # }}}
 
@@ -396,42 +405,13 @@ weechat.hook_command('allwin_set_unread', '', '', '', '', 'cb_command_allwin_set
 # ----------------------------------------
 
 def cb_command_grep_nick(data, buffer, args):
-    buf = weechat.buffer_get_string(weechat.current_buffer(), 'full_name')
-    cmd('/filter del grep_%s' % buf)
+    bname = weechat.buffer_get_string(weechat.current_buffer(), 'full_name')
+    cmd('/filter del grep_%s' % bname)
     if args:
-        cmd('/filter add grep_%s %s !nick_%s *' % (buf, buf, args))
-    return weechat.WEECHAT_RC_OK
-
-
-def cb_command_nicklist_toggle(data, buffer, args):
-    nicklist_local = int(weechat.buffer_get_string(buffer, 'localvar_nicklist_local') or 0)
-    weechat.buffer_set(buffer, 'localvar_set_nicklist_local', str(int(not nicklist_local)))
-    cmd('/window refresh')
-    return weechat.WEECHAT_RC_OK
-
-
-def cb_command_toggle_integer(data, buffer, args):
-    option, a, b = args.split('!')
-    a, b = int(a), int(b)
-    cmd('/set %s %d' % (
-        option,
-        a if weechat.config_integer(weechat.config_get(option)) != a else b,
-    ))
-    return weechat.WEECHAT_RC_OK
-
-
-def cb_command_toggle_string(data, buffer, args):
-    option, a, b = args.split('!')
-    cmd('/set %s %s' % (
-        option,
-        a if weechat.config_string(weechat.config_get(option)) != a else b,
-    ))
+        cmd('/filter add grep_%s %s !nick_%s *' % (bname, bname, args))
     return weechat.WEECHAT_RC_OK
 
 
 weechat.hook_command('grep_nick', '', '', '', '', 'cb_command_grep_nick', '')
-weechat.hook_command('nicklist_toggle', '', '', '', '', 'cb_command_nicklist_toggle', '')
-weechat.hook_command('toggle_integer', '', '', '', '', 'cb_command_toggle_integer', '')
-weechat.hook_command('toggle_string', '', '', '', '', 'cb_command_toggle_string', '')
 
 # }}}

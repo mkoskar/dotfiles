@@ -55,7 +55,7 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.xrender=true
 export AUR_MAINTAINER='mkoskar'
 export CCACHE_PATH='/usr/bin'
 export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
-export FZF_DEFAULT_OPTS='--no-mouse --bind=alt-k:page-up,alt-j:page-down'
+export FZF_DEFAULT_OPTS='--no-mouse --tabstop=4 --inline-info --color=hl:3,hl+:214,info:-1,prompt:10,pointer:10,marker:10 --bind=alt-j:half-page-down,alt-k:half-page-up,ctrl-b:beginning-of-line,alt-h:backward-char,alt-l:forward-char,alt-w:forward-word,ctrl-k:kill-line,alt-x:delete-char,ctrl-o:jump,ctrl-j:accept'
 export FZF_TMUX=0
 export GRADLE_HOME='/usr/share/java/gradle'
 export GREP_COLORS='sl=:cx=:mt=41:fn=36:ln=33:bn=33:se=:ne'
@@ -97,5 +97,6 @@ PATH="$HOME/.local/bin:$PATH"
 PATH="$PYENV_ROOT/bin:$PATH"
 PATH="$HOME/opt/bin:$PATH"
 PATH="$HOME/projects/pub/dockerfiles/bin:$PATH"
+PATH="$HOME/projects/pub/tcolors/bin:$PATH"
 PATH="$HOME/bin:$PATH"
 export PATH

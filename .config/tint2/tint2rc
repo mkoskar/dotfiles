@@ -36,11 +36,11 @@ border_color_pressed = #000000 0
 # Background 4: Urgent task
 rounded = 0
 border_width = 0
-background_color = #feef6a 100
+background_color = #f6e972 100
 border_color = #000000 0
-background_color_hover = #feef6a 100
+background_color_hover = #f6e972 100
 border_color_hover = #000000 0
-background_color_pressed = #feef6a 100
+background_color_pressed = #f6e972 100
 border_color_pressed = #000000 0
 
 # Background 5: Tooltip

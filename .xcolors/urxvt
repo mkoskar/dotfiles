@@ -1,0 +1,41 @@
+! vim: ft=xdefaults
+
+#undef TFG
+#undef TBG
+#undef TCUR
+#undef TCOLOR0
+#undef TCOLOR1
+#undef TCOLOR2
+#undef TCOLOR3
+#undef TCOLOR4
+#undef TCOLOR5
+#undef TCOLOR6
+#undef TCOLOR7
+#undef TCOLOR8
+#undef TCOLOR9
+#undef TCOLOR10
+#undef TCOLOR11
+#undef TCOLOR12
+#undef TCOLOR13
+#undef TCOLOR14
+#undef TCOLOR15
+
+#define TFG #000000
+#define TBG #ffffff
+#define TCUR #000000
+#define TCOLOR0 #000000
+#define TCOLOR1 #cd0000
+#define TCOLOR2 #00cd00
+#define TCOLOR3 #cdcd00
+#define TCOLOR4 #0000cd
+#define TCOLOR5 #cd00cd
+#define TCOLOR6 #00cdcd
+#define TCOLOR7 #e5e5e5
+#define TCOLOR8 #4d4d4d
+#define TCOLOR9 #ff0000
+#define TCOLOR10 #00ff00
+#define TCOLOR11 #ffff00
+#define TCOLOR12 #0000ff
+#define TCOLOR13 #ff00ff
+#define TCOLOR14 #00ffff
+#define TCOLOR15 #ffffff

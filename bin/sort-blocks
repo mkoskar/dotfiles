@@ -2,8 +2,13 @@
 
 set -e -o pipefail
 
-squashlns |
-gawk -v RS='(\n{2,}|\n$)' -v ORS='\x0' '{print $0}' |
+declare -i n=${1:-1}
+(( n < 1 )) && n=1
+
+x=$(printf "%${n}.0s" '')
+y=${x// /\\n}
+
+gawk -v RS="\n(\\\\s*\n){$n,}|\n$" -v ORS='\x0' '{print $0}' |
 sort -z |
-gawk -v RS='\x0' -v ORS='\n\n' '{print $0}' |
-head -n -1
+gawk -v RS='\x0' -v ORS="\n$y" '{print $0}' |
+striplns

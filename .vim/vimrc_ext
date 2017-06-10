@@ -2,43 +2,37 @@
 
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 
-packadd unimpaired
-
 source ~/.vim/vimrc_base
 
+"packadd! easymotion
 packadd! bufexplorer
-packadd! ctrlp
+packadd! dirvish
 packadd! easy-align
-packadd! exchange
-packadd! filebeagle
-packadd! nerdtree
-
+packadd! emmet
 packadd! fugitive
 packadd! fzf
+packadd! fzf-ext
+packadd! goyo
+packadd! limelight
+packadd! nerdtree
 packadd! repeat
-packadd! simpylfold
 packadd! speeddating
 packadd! surround
-packadd! syntastic
 packadd! tagbar
 packadd! tcomment
+packadd! ultisnips
 packadd! undotree
+packadd! unimpaired
+packadd! vim-snippets
+packadd! visualrepeat
 
-"packadd! ctrlspace
-"packadd! dirvish
-"packadd! dispatch
-"packadd! easymotion
-"packadd! easytags
-"packadd! emmet
-"packadd! gitgutter
-"packadd! gundo
-"packadd! minibufexpl
-"packadd! misc
-"packadd! multiple-cursors
 "packadd! neomake
-"packadd! ultisnips
-"packadd! unite
-"packadd! visualrepeat
+packadd! ale
+
+"packadd! deoplete
+"packadd! deoplete-ternjs
+"packadd! jspc.vim
+"packadd! tern_for_vim
 
 augroup vimrc_ext_lazy_plugins
     autocmd!
@@ -46,6 +40,24 @@ augroup vimrc_ext_lazy_plugins
     "autocmd FileType python
     "    \ call packadd ycm | call youcompleteme#Enable()
 augroup END
+
+
+" ale
+" ----------------------------------------
+
+set statusline+=%(\ %#ErrorMsg#%(\ %{ale#statusline#Status()}\ %)%*%)
+
+let ale_echo_cursor = 0
+let ale_echo_msg_format = '%severity%: %s [%linter%]'
+let ale_lint_on_enter = 0
+let ale_lint_on_insert_leave = 1
+let ale_lint_on_text_changed = 'normal'
+let ale_sign_error = '>'
+let ale_sign_warning = '>'
+let ale_statusline_format = ['E(%d)', 'W(%d)', '']
+
+nnoremap <silent> <C-Space> :ALEDetail<CR>
+nnoremap <silent> <Leader>aa :ALEToggle<CR>
 
 
 " bufexplorer
@@ -76,38 +88,50 @@ let ctrlp_prompt_mappings = {
 nnoremap <silent> <M-e> :CtrlPMRUFiles<CR>
 
 
+" deoplete
+" ----------------------------------------
+
+let deoplete#enable_at_startup = 1
+let deoplete#enable_smart_case = 1
+
+"inoremap <expr> <C-G> deoplete#undo_completion()
+"inoremap <expr> <C-L> deoplete#refresh()
+"inoremap <expr> <CR> deoplete#close_popup()."\<CR>"
+
+
 " dirvish
 " ----------------------------------------
 
 let dirvish_hijack_netrw = 0
+let dirvish_mode = ':sort | sort r /\m.*\ze[^\/]$/'
 
 
 " easy-align
 " ----------------------------------------
 
-vmap <Enter> <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
+nmap <Leader>ga <Plug>(LiveEasyAlign)
+xmap <Leader>ga <Plug>(LiveEasyAlign)
 
 
 " easymotion
 " ----------------------------------------
 
+let EasyMotion_smartcase = 1
 let EasyMotion_startofline = 0
 let EasyMotion_verbose = 0
 
+map <Leader><Leader>/ <Plug>(easymotion-sn)
 map <Leader><Leader>J <Plug>(easymotion-sol-j)
 map <Leader><Leader>K <Plug>(easymotion-sol-k)
+map <Leader>; <Plug>(easymotion-next)
+map <Leader>\ <Plug>(easymotion-prev)
 
 
-" easytags
+" emmet
 " ----------------------------------------
 
-let easytags_always_enabled = 1
-let easytags_async = 1
-let easytags_dynamic_files = 1
-let easytags_file = '~/.cache/tags'
-let easytags_resolve_links = 1
-let easytags_suppress_report = 1
+let user_emmet_leader_key = '<C-Y>'
+let user_emmet_mode = 'i'
 
 
 " filebeagle
@@ -118,8 +142,8 @@ let filebeagle_show_hidden = 1
 let filebeagle_show_line_numbers = 0
 let filebeagle_suppress_keymaps = 1
 
-nmap <silent> - <Plug>FileBeagleOpenCurrentBufferDir
-nmap <silent> <Leader>gg <Plug>FileBeagleOpenCurrentWorkingDir
+"nmap <silent> - <Plug>FileBeagleOpenCurrentBufferDir
+"nmap <silent> <Leader>gg <Plug>FileBeagleOpenCurrentWorkingDir
 
 
 " fugitive
@@ -128,20 +152,16 @@ nmap <silent> <Leader>gg <Plug>FileBeagleOpenCurrentWorkingDir
 nnoremap <Leader>G :G
 
 
-" gundo
+" fzf
 " ----------------------------------------
 
-nnoremap <silent> <F4> :silent GundoToggle<CR>
+nnoremap <silent> <C-N> :Files<CR>
 
 
-" minibufexpl
+" limelight
 " ----------------------------------------
 
-let miniBufExplModSelTarget = 1
-let miniBufExplUseSingleClick = 1
-let miniBufExplorerMoreThanOne = 1000
-
-noremap <silent> <Leader>B :MiniBufExplorer<CR>
+let limelight_default_coefficient = 0.8
 
 
 " nerdtree
@@ -159,37 +179,36 @@ let NERDTreeShowHidden = 1
 let NERDTreeStatusline = "%{exists('b:NERDTreeRoot')?b:NERDTreeRoot.path._strForUI():''}"
 let NERDTreeWinSize = 36
 
-noremap <silent> <F1> :NERDTreeFind<CR>
-noremap <silent> <F2> :NERDTreeToggle<CR>
-noremap <silent> <Leader>tf :NERDTreeFind<CR>
-noremap <silent> <Leader>tt :NERDTreeToggle<CR>
+nnoremap <silent> <F1> :NERDTreeFind<CR>
+nnoremap <silent> <F2> :NERDTreeToggle<CR>
+nnoremap <silent> <Leader>tf :NERDTreeFind<CR>
+nnoremap <silent> <Leader>tt :NERDTreeToggle<CR>
 
 
 " syntastic
 " ----------------------------------------
 
-set statusline+=%(\ %#ErrorMsg#%{SyntasticStatuslineFlag()}%*%)
+"set statusline+=%(\ %#ErrorMsg#%{SyntasticStatuslineFlag()}%*%)
 
 let syntastic_aggregate_errors = 1
 let syntastic_always_populate_loc_list = 1
 let syntastic_auto_jump = 3
 let syntastic_auto_loc_list = 0
 let syntastic_check_on_open = 0
+let syntastic_error_symbol = '>'
 let syntastic_sort_aggregated_errors = 0
 let syntastic_stl_format = ' %E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w} '
-
-let syntastic_error_symbol = '>'
 let syntastic_style_error_symbol = '>'
 let syntastic_style_warning_symbol = '>'
 let syntastic_warning_symbol = '>'
 
+let syntastic_python_flake8_args = '--ignore=E501,E128'
+let syntastic_sh_checkers = ['shellcheck']
+let syntastic_sh_shellcheck_args = '--exclude=SC1007,SC1090,SC1091,SC2015,SC2032,SC2033,SC2088,SC2094,SC2139,SC2148'
+
 nnoremap <silent> <Leader>SS :SyntasticCheck<CR>
 nnoremap <silent> <Leader>Si :SyntasticInfo<CR>
 nnoremap <silent> <Leader>Sr :SyntasticReset<CR>
-
-let g:syntastic_python_flake8_args='--ignore=E501,E128'
-let g:syntastic_sh_checkers = ['shellcheck']
-let g:syntastic_sh_shellcheck_args='--exclude=SC1007,SC1090,SC1091,SC2015,SC2032,SC2033,SC2088,SC2094,SC2139,SC2148'
 
 
 " tagbar
@@ -202,10 +221,8 @@ let tagbar_map_jump = ['<CR>', 'o']
 let tagbar_map_togglefold = ['O', 'za']
 let tagbar_sort = 0
 
-highlight TagbarHighlight cterm=reverse
-
-noremap <silent> <F8> :Tagbar<CR>
-noremap <silent> <Leader>T :TagbarOpenAutoClose<CR>
+nnoremap <silent> <F8> :Tagbar<CR>
+nnoremap <silent> <Leader>T :TagbarOpenAutoClose<CR>
 
 
 " tcomment
@@ -216,40 +233,66 @@ let tcommentOptions = {'whitespace': 'no'}
 
 nnoremap <silent> <Leader>C :TCommentBlock<CR>
 nnoremap <silent> <Leader>cc :TComment<CR>
-vnoremap <silent> <Leader>C :TCommentBlock<CR>
-vnoremap <silent> <Leader>cc :TComment<CR>
+xnoremap <silent> <Leader>C :TCommentBlock<CR>
+xnoremap <silent> <Leader>cc :TComment<CR>
 
 
-" unite
+" ultisnips
 " ----------------------------------------
 
-nnoremap <silent> <Leader>u :Unite<CR>
+let UltiSnipsEditSplit = 'vertical'
+let UltiSnipsExpandTrigger = '<C-J>'
+let UltiSnipsJumpBackwardTrigger = '<C-Z>'
+let UltiSnipsSnippetsDir = '~/.vim/UltiSnips'
 
 
-" ycm
+" undotree
 " ----------------------------------------
 
-let ycm_autoclose_preview_window_after_completion = 1
+nnoremap <silent> <F4> :silent UndotreeToggle<CR>
 
 
 " ----------------------------------------
+
+function! s:ColorsSet() abort
+
+    hi link bufExplorerActBuf Directory
+    hi link bufExplorerAltBuf Type
+    hi link bufExplorerCurBuf Statement
+    hi link bufExplorerHelp String
+    hi link bufExplorerHidBuf Normal
+    hi link bufExplorerInactBuf Normal
+    hi link bufExplorerMapping Identifier
+    hi link bufExplorerTitle PreProc
+
+    hi TagbarHighlight cterm=reverse
+    hi link TagbarHelp String
+
+    hi EasyMotionTarget ctermfg=3 cterm=bold
+    hi link EasyMotionIncCursor Cursor
+    hi link EasyMotionIncSearch IncSearch
+    hi link EasyMotionMoveHL IncSearch
+    hi link EasyMotionShade Comment
+    hi link EasyMotionTarget2First EasyMotionTarget
+    hi link EasyMotionTarget2Second EasyMotionTarget
+
+endfunction
+
+call s:ColorsSet()
 
 augroup vimrc_ext
     autocmd!
 
-    autocmd BufWinEnter -MiniBufExplorer-
-        \  call utils#BufSpecial()
-        \| nnoremap <silent> <buffer> q :close<CR>
-
-    autocmd BufWinEnter \[BufExplorer\]
-        \  call utils#BufSpecial()
-        \| normal! 4gg
+    autocmd ColorScheme * call <SID>ColorsSet()
 
     autocmd User FileBeagleReadPre
         \  unmap <buffer> <BS>
         \| nmap <buffer> <silent> u <Plug>(FileBeagleBufferFocusOnPrevious)
 
-    autocmd FileType filebeagle call utils#BufSpecial()
-    autocmd FileType nerdtree call utils#BufSpecial()
-    autocmd FileType tagbar call utils#BufSpecial()
+    autocmd FileType bufexplorer call utils#bufSpecial()
+    autocmd FileType dirvish call utils#bufSpecial()
+    autocmd FileType filebeagle call utils#bufSpecial()
+    autocmd FileType nerdtree call utils#bufSpecial()
+    autocmd FileType tagbar call utils#bufSpecial()
+    autocmd FileType undotree call utils#bufSpecial()
 augroup END

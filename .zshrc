@@ -24,6 +24,7 @@ zmodload zsh/complist
 zmodload zsh/system
 
 autoload -Uz add-zsh-hook
+autoload -Uz bracketed-paste-magic
 autoload -Uz compinit
 autoload -Uz copy-earlier-word
 autoload -Uz edit-command-line
@@ -93,10 +94,12 @@ add-zsh-hook precmd set-window-title
 # ----------------------------------------
 
 KEYTIMEOUT=1
-WORDCHARS='!#$%&()*-;<>?[]^_{}~'
+WORDCHARS=''
+#WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
 ZLE_SPACE_SUFFIX_CHARS='&|'
 
 PROMPT='$__vimode%?$__statstr:${BASEDIR:+(${BASEDIR##*/}):}%1~%(!.#.$) '
+PROMPT2='$__vimode> '
 if [[ $HOST != 'mirci' ]]; then
     PROMPT='$__vimode%?$__statstr:%m:${BASEDIR:+(${BASEDIR##*/}):}%1~%(!.#.$) '
 fi
@@ -130,6 +133,7 @@ function zle-line-init {
 }
 
 zle -C all-matches complete-word _generic
+zle -N bracketed-paste bracketed-paste-magic
 zle -N complete-help _complete_help
 zle -N copy-earlier-word
 zle -N edit-command-line
@@ -192,6 +196,8 @@ bindkey '^G' send-break
 bindkey '^L' clear-screen
 bindkey '^P' history-search-backward
 bindkey '^N' history-search-forward
+bindkey '\ek' up-line
+bindkey '\ej' down-line
 
 bindkey '\e0' digit-argument
 bindkey '\e1' digit-argument
@@ -220,6 +226,7 @@ bindkey '^X^E' edit-command-line
 bindkey '.' expand-dot-to-parent-directory-path
 bindkey '\e.' insert-last-word
 bindkey '\em' copy-earlier-word
+bindkey '\e^M' self-insert-unmeta
 bindkey '^XH' _complete_help
 
 bindkey -M vicmd 'k' up-history
@@ -229,6 +236,8 @@ bindkey -M vicmd '^G' send-break
 bindkey -M vicmd '^P' history-search-backward
 bindkey -M vicmd '^N' history-search-forward
 bindkey -M vicmd '^R' redo
+bindkey -M vicmd '\ek' up-line
+bindkey -M vicmd '\ej' down-line
 
 bindkey -M vicmd '\ee' expand-word-alias
 bindkey -M vicmd '^X^E' edit-command-line

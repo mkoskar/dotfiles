@@ -1,6 +1,9 @@
 ! vim: ft=xdefaults
 
-#include "default"
+#include "default0"
 
-*.background: #2D2D30
-*.color0: #323235
+#undef TBG
+#undef TCOLOR0
+
+#define TBG #2d2d30
+#define TCOLOR0 #323235

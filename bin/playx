@@ -30,4 +30,6 @@ case $src in
         exit
         ;;
 esac
+
+[[ -t 1 ]] || exec >/dev/null 2>&1
 mpv --force-window=immediate -- "$src"

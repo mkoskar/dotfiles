@@ -15,8 +15,8 @@ exists () {
 }
 
 new() {
-    cmd new -d -s "$session" true \; setw remain-on-exit on
-    cmd setenv -t "=$session" SHOME "$PWD" \; neww -kt :0 "$@"
+    cmd new -d -s "$session" sleep 1 \; setw remain-on-exit on
+    cmd setenv -t "=$session" SHOME "$PWD" \; neww -k -t "=$session:0" "$@"
 }
 
 neww() {
@@ -25,12 +25,12 @@ neww() {
 
 # ----------------------------------------
 
-_s() {
+s() {
     new
     neww -d
 }
 
-_sp() {
+sp() {
     new 'trun ranger' \
         \; setw remain-on-exit on \
         \; setw main-pane-height 30 \
@@ -45,13 +45,13 @@ _sp() {
 
 # ----------------------------------------
 
-_adm() {
+adm() {
     cd ~
-    _sp
+    sp
     neww -d
 }
 
-_aux() {
+aux() {
     cd ~
 
     local notesdir="$HOME/projects/notes/src"
@@ -60,8 +60,7 @@ _aux() {
         \; splitw -h -c "$notesdir" \
         \; setw main-pane-width 121 \
         \; selectl main-vertical \
-        \; selectp -t :.0
-        #\; resize-pane -Z
+        \; resize-pane -Z -t :.+
 
     neww -n mail 'trun mutt' \
         \; setw remain-on-exit on
@@ -72,13 +71,10 @@ _aux() {
     neww -n feeds 'trun newsbeuter -q' \
         \; setw remain-on-exit on
 
-    #neww -n music 'trun ncmpcpp' \
-    #    \; setw remain-on-exit on
-
-    cmd selectw -t :1
+    cmd selectw -t "=$session:1"
 }
 
-_mon() {
+mon() {
     cd ~
 
     new -n top 'onsighup-terminate conky -q' \
@@ -102,17 +98,17 @@ _mon() {
 
     neww -n logs -c /var/log
 
-    cmd selectw -t :0
+    cmd selectw -t "=$session:0"
 }
 
-_tmp() {
+tmp() {
     cd ~/tmp
-    _s
+    s
 }
 
-_wrk() {
+wrk() {
     cd ~/projects
-    _sp
+    sp
 }
 
 # ----------------------------------------
@@ -152,7 +148,6 @@ if [[ ${TMUX-} ]]; then
 fi
 
 session=${1-}
-
 if [[ ! $session ]]; then
     session="$PWD/"
     session=${session/#"$HOME/"/\~/}
@@ -166,11 +161,11 @@ flock -w 30 8 || exit 3
 if ! exists; then
     case $session in
         adm | aux | mon | tmp | wrk)
-            "_$session"
+            $session
             ;;
         *)
             case $prgname in s | sp) ;; *) exit 2 ;; esac
-            "_$prgname"
+            $prgname
             ;;
     esac
 fi

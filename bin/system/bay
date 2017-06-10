@@ -27,7 +27,7 @@ case $prgname in
 esac
 
 docked=$(<"$dock/docked")
-if (( docked )); then
+if (( ! docked )); then
     echo 'undocked' >&2
 else
     echo 'docked' >&2
@@ -40,6 +40,7 @@ else
         dev="/dev/$devname"
     else
         echo 'no block device' >&2
+        (( undock )) || exit 1
     fi
 
     if (( standby )); then
@@ -54,7 +55,7 @@ else
     fi
 
     if (( undock )); then
-        if [[ -r $dev ]]; then
+        if [[ -r ${dev-} ]]; then
             echo "sync..." >&2
             sync
 

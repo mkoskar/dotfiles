@@ -6,24 +6,23 @@ let b:locl = 1
 try | lopen | catch /:E776:/ | let b:locl = 0 | endtry
 let b:prefix = b:locl ? 'l' : 'c'
 
-function! QfOldest(prefix) abort
+function! s:QfOldest(prefix) abort
     try | exec a:prefix.'older 999' | catch | endtry
 endfunction
 
-function! QfNewest(prefix) abort
+function! s:QfNewest(prefix) abort
     try | exec a:prefix.'newer 999' | catch | endtry
 endfunction
 
-function! QfOlder(prefix) abort
+function! s:QfOlder(prefix) abort
     try | exec a:prefix.'older' | catch | endtry
 endfunction
 
-function! QfNewer(prefix) abort
+function! s:QfNewer(prefix) abort
     try | exec a:prefix.'newer' | catch | endtry
 endfunction
 
-call utils#BufSpecial()
-setl nu nobl
+call utils#bufSpecial()
 wincmd J
 
 noremap <buffer> - <Nop>
@@ -41,7 +40,7 @@ nmap <buffer> <silent> o <CR>
 nnoremap <buffer> <silent> q :close<CR>
 nnoremap <buffer> <silent> go :exec "normal \<lt>cr>"
     \ \| match IncSearch /\k*\%#\k*/ \| wincmd p<CR>
-nnoremap <buffer> <silent> << :call QfOlder(b:prefix)<CR>
-nnoremap <buffer> <silent> >> :call QfNewer(b:prefix)<CR>
-nnoremap <buffer> <silent> <Leader>< :call QfOldest(b:prefix)<CR>
-nnoremap <buffer> <silent> <Leader>> :call QfNewest(b:prefix)<CR>
+nnoremap <buffer> <silent> << :call <SID>QfOlder(b:prefix)<CR>
+nnoremap <buffer> <silent> >> :call <SID>QfNewer(b:prefix)<CR>
+nnoremap <buffer> <silent> <Leader>< :call <SID>QfOldest(b:prefix)<CR>
+nnoremap <buffer> <silent> <Leader>> :call <SID>QfNewest(b:prefix)<CR>

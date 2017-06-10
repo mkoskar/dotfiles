@@ -9,28 +9,32 @@
 XTerm.termName:                 xterm-256color
 XTerm.ptyInitialErase:          false
 
-!XTerm*vt100.boldColors:         false
-XTerm*vt100.colorBD:            #dddddd
-XTerm*vt100.colorBDMode:        true
-XTerm*vt100.dynamicColors:      true
-XTerm*vt100.veryBoldColors:     4
+!XTerm*VT100.boldColors:         false
+XTerm*VT100.colorBD:            #dddddd
+XTerm*VT100.colorBDMode:        true
+XTerm*VT100.dynamicColors:      true
+XTerm*VT100.veryBoldColors:     4
 
 ! Since xterm does not support font fallback (only single font)
 ! it is reasonable to choose a font with a large set of glyphs.
-XTerm*vt100.faceName:           xft:DejaVu Sans Mono:size=10
+XTerm*VT100.faceName:           xft:DejaVu Sans Mono:size=10
 
-XTerm*vt100.bellIsUrgent:       true
-XTerm*vt100.bellOnReset:        false
-XTerm*vt100.metaSendsEscape:    true
-XTerm*vt100.printAttributes:    0
-XTerm*vt100.printerCommand:     cat > $(mktemp -p ~/tmp xterm.XXXXXX)
-XTerm*vt100.saveLines:          8192
-XTerm*vt100.utf8:               2
+XTerm*VT100.bellIsUrgent:       true
+XTerm*VT100.bellOnReset:        false
+XTerm*VT100.metaSendsEscape:    true
+XTerm*VT100.printAttributes:    0
+XTerm*VT100.printerCommand:     cat > $(mktemp -p ~/tmp xterm.XXXXXX)
+XTerm*VT100.saveLines:          8192
+XTerm*VT100.utf8:               2
 
-XTerm*vt100.translations:       #override \n \
+XTerm*VT100.translations:       #override \n \
                                 Ctrl ~Alt Shift <Key>H: string(\177) \n \
                                 ~Shift <Key>Print: print() \n \
                                 Shift <Key>Print: print-everything()
+
+#undef TPREFIX
+#define TPREFIX *VT100.
+#include ".xcolors/resources"
 
 
 ! URxvt
@@ -51,8 +55,8 @@ URxvt.font:             xft:local_terminal_sized, \
                         xft:Symbola, \
                         xft:Symbola:pixelsize=8
 
-URxvt.cutchars:         '"()*,<>[]{}|\''
 !URxvt.depth:            32
+URxvt.cutchars:         '"()*,<>[]{}|\''
 URxvt.iso14755:         true
 URxvt.iso14755_52:      false
 URxvt.pointerBlank:     true
@@ -88,16 +92,21 @@ URxvt.keysym.M-C-slash:         perl:keyboard-select:search
 URxvt.keysym.M-C-u:             perl:url-select:select_next
 URxvt.keysym.M-C-o:             perl:url-picker
 
+#undef TPREFIX
+#define TPREFIX URxvt.
+#include ".xcolors/resources"
+
 
 ! Xcursor
 ! ----------------------------------------
 
-Xcursor.theme:          Grounation
 Xcursor.size:           22
+Xcursor.theme:          Grounation
 
 
 ! Xft
 ! ----------------------------------------
+
 Xft.antialias:          1
 Xft.autohint:           0
 Xft.hinting:            1

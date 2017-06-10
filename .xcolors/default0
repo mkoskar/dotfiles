@@ -1,58 +1,41 @@
 ! vim: ft=xdefaults
 
-! 174 174 174
-*.foreground: #aeaeae
+#undef TFG
+#undef TBG
+#undef TCUR
+#undef TCOLOR0
+#undef TCOLOR1
+#undef TCOLOR2
+#undef TCOLOR3
+#undef TCOLOR4
+#undef TCOLOR5
+#undef TCOLOR6
+#undef TCOLOR7
+#undef TCOLOR8
+#undef TCOLOR9
+#undef TCOLOR10
+#undef TCOLOR11
+#undef TCOLOR12
+#undef TCOLOR13
+#undef TCOLOR14
+#undef TCOLOR15
 
-! 0 0 0
-*.background: #000000
-
-! 221 221 221
-*.cursorColor: #dddddd
-
-! 5 5 5
-*.color0: #050505
-
-! 157 45 45
-*.color1: #9d2d2d
-
-! 69 163 69
-*.color2: #45a345
-
-! 219 156 46
-*.color3: #db9c2e
-
-! 56 69 128
-*.color4: #384580
-
-! 164 63 164
-*.color5: #a43fa4
-
-! 34 159 159
-*.color6: #229f9f
-
-! 174 174 174
-*.color7: #aeaeae
-
-! 77 77 77
-*.color8: #4d4d4d
-
-! 192 79 79
-*.color9: #c04f4f
-
-! 112 192 102
-*.color10: #70c066
-
-! 212 198 104
-*.color11: #d4c668
-
-! 96 108 181
-*.color12: #606cb5
-
-! 190 99 190
-*.color13: #be63be
-
-! 104 187 187
-*.color14: #68bbbb
-
-! 221 221 221
-*.color15: #dddddd
+#define TFG #aeaeae
+#define TBG #000000
+#define TCUR #dddddd
+#define TCOLOR0 #050505
+#define TCOLOR1 #9d2d2d
+#define TCOLOR2 #45a345
+#define TCOLOR3 #db9c2e
+#define TCOLOR4 #384580
+#define TCOLOR5 #a43fa4
+#define TCOLOR6 #229f9f
+#define TCOLOR7 #aeaeae
+#define TCOLOR8 #4d4d4d
+#define TCOLOR9 #c04f4f
+#define TCOLOR10 #70c066
+#define TCOLOR11 #d4c668
+#define TCOLOR12 #606cb5
+#define TCOLOR13 #be63be
+#define TCOLOR14 #68bbbb
+#define TCOLOR15 #dddddd
