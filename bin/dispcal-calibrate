@@ -4,13 +4,13 @@ set -eu -o pipefail
 
 prgname=${0##*/}
 
-mkdir -p ~/.local/share/icc
-cd ~/.local/share/icc
-
 echo $'\n--------------------------------------------------'
-echo '> Select display / monitor to continue:'
+echo $'> Select display to continue:\n'
 
-readarray -t dall < <(dispcal -h |& LC_ALL=C grep -F Output | sed -r 's/^\s*//')
+readarray -t dall < <(
+    dispwin -h |& sed -nr "s/^\s*([0-9]+ = 'Screen [0-9]+, Output .*)/\1/p"
+)
+(( ${#dall[@]} )) || exit 1
 printf '%s\n' "${dall[@]}"
 echo
 
@@ -20,22 +20,38 @@ echo
 if [[ ! $dsel =~ ^[1-9]$ ]] || (( dsel > ${#dall[@]} )); then
     echo "$prgname: error: invalid choice" && exit 2
 fi
-printf '%s\n' "${dall[$((dsel-1))]}"
+
+ts=$(date +%F.%s)
+odir="$HOME/.local/share/icc/d$dsel.$ts"
+
+mkdir -p "$odir"
+cd "$odir"
+
+printf '%s\n' "${dall[$((dsel-1))]}" | tee display
+
+# ----------------------------------------
+
+# Brightness:
+#
+#   80-120 cd/m2 - increasing with the brightness of the working environment
+#
+# White Point:
+#
+#   5000K/5500K - commonly used in CMYK reproduction
+#   6500K - commonly used for general purpose and images on the web
+
+# ArgyllCMS doesn't handle SIGINT properly
+trap 'trap - INT; kill -INT -$$' INT
 
 echo $'\n--------------------------------------------------'
-echo $'> dispcal:'
-gopts=(-v2 -d$dsel -ye -P '0.5,0.5,2.0')
-dispcal "${gopts[@]}" -m -q m -t 6500 -g 2.2 out
+echo $'> Calibrating & Profiling:\n'
 
-echo $'\n--------------------------------------------------'
-echo '> targen:'
-targen -d 3 -G -e 4 -s 5 -g 17 -f 64 out
+gopts=(-v -d$dsel -ye -P '0.5,0.5,2.0')
 
-echo $'\n--------------------------------------------------'
-echo '> dispread:'
-dispread "${gopts[@]}" -N -k out.cal out
+dispcal "${gopts[@]}" -qm -t6500 -g2.2 -k0 out
+[[ -e out.cal ]] || exit 1
 
-echo $'\n--------------------------------------------------'
-echo '> colprof:'
-colprof -v2 -D 'model' -C 'copyright' -q u -a G -Z p -n c out
+cp /usr/share/DisplayCAL/ti1/d3-e4-s5-g49-m5-b0-f0.ti1 out.ti1
+dispread "${gopts[@]}" -Yp -N -k out.cal out
+colprof -v -Zp out
 echo

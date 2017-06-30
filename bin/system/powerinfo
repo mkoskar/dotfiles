@@ -89,9 +89,7 @@ get "$base" min_perf_pct
 get "$base" max_perf_pct
 get "$base" no_turbo
 
-printf '%-25s %-25s %-25s\n' \
+printf '%-25s %-25s %-25s\n\n' \
     "min_perf_pct: $_min_perf_pct" \
     "max_perf_pct: $_max_perf_pct" \
     "no_turbo: $_no_turbo"
-
-echo

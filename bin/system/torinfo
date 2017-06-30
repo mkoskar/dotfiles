@@ -10,5 +10,4 @@ echo $'> Config:\n'
     printf 'GETINFO config-text\r\n'
     printf 'QUIT\r\n'
 ) | socat - UNIX-CONNECT:/var/run/tor/control.sock
-
 echo

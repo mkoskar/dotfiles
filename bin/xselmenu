@@ -23,12 +23,13 @@ id_psel="psel$sep"
 id_clip="clip$sep"
 prompt=${1:-$prgname}
 
-read -r sel < <({
+tmp=$({
     xclip -o >"$tmpfile_psel"
     out "$id_psel" "$tmpfile_psel"
     xclip -o -selection clipboard >"$tmpfile_clip"
     out "$id_clip" "$tmpfile_clip"
-} | dmenu1 "$prompt")
+} | dmenu1 -p "$prompt")
+read -r sel <<<"$tmp"
 
 case $sel in
     "$id_psel"*)

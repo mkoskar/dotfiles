@@ -1,8 +1,8 @@
 ! vim: ft=xdefaults
 
-#undef TFG
-#undef TBG
-#undef TCUR
+#undef TCOLOR_FG
+#undef TCOLOR_BG
+#undef TCOLOR_CUR
 #undef TCOLOR0
 #undef TCOLOR1
 #undef TCOLOR2
@@ -20,9 +20,9 @@
 #undef TCOLOR14
 #undef TCOLOR15
 
-#define TFG #aeaeae
-#define TBG #000000
-#define TCUR #dddddd
+#define TCOLOR_FG #aeaeae
+#define TCOLOR_BG #000000
+#define TCOLOR_CUR #dddddd
 #define TCOLOR0 #050505
 #define TCOLOR1 #9d2d2d
 #define TCOLOR2 #45a345

@@ -177,7 +177,7 @@ let NERDTreeMapHelp = '<F1>'
 let NERDTreeShowBookmarks = 1
 let NERDTreeShowHidden = 1
 let NERDTreeStatusline = "%{exists('b:NERDTreeRoot')?b:NERDTreeRoot.path._strForUI():''}"
-let NERDTreeWinSize = 36
+let NERDTreeWinSize = 31
 
 nnoremap <silent> <F1> :NERDTreeFind<CR>
 nnoremap <silent> <F2> :NERDTreeToggle<CR>
@@ -220,6 +220,7 @@ let tagbar_map_help = ['<F1>']
 let tagbar_map_jump = ['<CR>', 'o']
 let tagbar_map_togglefold = ['O', 'za']
 let tagbar_sort = 0
+let tagbar_width = 31
 
 nnoremap <silent> <F8> :Tagbar<CR>
 nnoremap <silent> <Leader>T :TagbarOpenAutoClose<CR>
@@ -248,6 +249,8 @@ let UltiSnipsSnippetsDir = '~/.vim/UltiSnips'
 
 " undotree
 " ----------------------------------------
+
+let undotree_SplitWidth = 31
 
 nnoremap <silent> <F4> :silent UndotreeToggle<CR>
 

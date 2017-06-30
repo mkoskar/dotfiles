@@ -6,9 +6,9 @@ audio/*;                    mutt-bgrun mpv %s
 image/*;                    mutt-bgrun sxiv %s
 video/*;                    mutt-bgrun mpv %s
 
-application/msword;             mutt-bgrun libreoffice %s
-application/vnd.ms-excel;       mutt-bgrun libreoffice %s
-application/vnd.ms-powerpoint;  mutt-bgrun libreoffice %s
+application/msword;                                                         mutt-bgrun libreoffice %s
+application/vnd.ms-excel;                                                   mutt-bgrun libreoffice %s
+application/vnd.ms-powerpoint;                                              mutt-bgrun libreoffice %s
 application/vnd.openxmlformats-officedocument.presentationml.presentation;  mutt-bgrun libreoffice %s
 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;          mutt-bgrun libreoffice %s
 application/vnd.openxmlformats-officedocument.wordprocessingml.document;    mutt-bgrun libreoffice %s

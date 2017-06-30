@@ -1,8 +1,31 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 
-list="$HOME/download/playlists/${1:-0}"
+prgname=${0##*/}
+
+playlists=("$@")
+
+cd ~/download/playlists
+
+if (( ! ${#playlists[@]} )); then
+    # shellcheck disable=SC2035
+    tmp=$(printf '%s\n' * | dmenu -p "$prgname" | uniq)
+    [[ $tmp ]] && readarray -t playlists <<<"$tmp"
+fi
+
+(( ${#playlists[@]} )) || exit 1
+
+args=()
+for i in "${playlists[@]}"; do
+    args+=("--playlist=./$i")
+done
+
+tmpfile=$(mktemp)
+cleanup() { rm -f "$tmpfile"; }
+trap cleanup EXIT
+
+cat -- "${playlists[@]}" | yt2m3u >"$tmpfile"
 
 [[ -t 1 ]] || exec >/dev/null 2>&1
-mpv --no-stop-screensaver --loop-playlist --playlist="$list"
+mpv --no-stop-screensaver --force-window=immediate --loop-playlist "$tmpfile"

@@ -35,7 +35,7 @@ function! InitStdin() abort
     endif
     if $PRGNAME == 'manpg'
         setl ma noro
-    else
+    elseif $PRGNAME != 'pg0'
         AnsiEsc
     endif
 endfunction

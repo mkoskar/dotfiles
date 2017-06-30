@@ -92,7 +92,7 @@ if [[ $val ]]; then
             retstat=1
             continue
         fi
-        echo "$val" >"$dev/state"
+        printf '%d\n' "$val" >"$dev/state"
     done
 else
     for dev in "${devs[@]}"; do

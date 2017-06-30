@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
+set -eu
 
-readarray -t dall < <(dispwin -h |& LC_ALL=C grep -F Output | sed -r 's/^\s*//')
+readarray -t dall < <(
+    dispwin -h |& sed -nr "s/^\s*([0-9]+ = 'Screen [0-9]+, Output .*)/\1/p"
+)
+(( ${#dall[@]} )) || exit 1
 for (( i=0; i<${#dall[@]}; i++ )); do
     (( i > 0 )) && atom=_ICC_PROFILE_$i || atom=_ICC_PROFILE
+    printf '%s\n' "${dall[$i]}"
     xprop -root -remove "$atom"
     dispwin -d$((i+1)) -c
 done

@@ -474,8 +474,8 @@ if [ -e /usr/bin/virtualenvwrapper.sh ]; then
     PYTHON2=$(command -v python2)
     PYTHON3=$(command -v python3)
     export PYTHON2 PYTHON3
-    [ "$PYTHON2" ] && mkvirtualenv2() { mkvirtualenv -p "$PYTHON2"; }
-    [ "$PYTHON3" ] && mkvirtualenv3() { mkvirtualenv -p "$PYTHON3"; }
+    [ "$PYTHON2" ] && mkvirtualenv2() { mkvirtualenv -p "$PYTHON2" "$@"; }
+    [ "$PYTHON3" ] && mkvirtualenv3() { mkvirtualenv -p "$PYTHON3" "$@"; }
     alias wo='workon'
 
     mkvirtualenv-pyenv() {

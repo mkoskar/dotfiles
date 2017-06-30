@@ -12,7 +12,7 @@ export -f match
 echo $'\n--------------------------------------------------'
 echo $'> Generic:\n'
 
-parallel match <<-EOF
+parallel -k match <<-EOF
 	cursive
 	fantasy
 	monospace
@@ -23,7 +23,7 @@ EOF
 echo $'\n--------------------------------------------------'
 echo $'> Other:\n'
 
-parallel match <<-EOF
+parallel -k match <<-EOF
 	Andale Mono
 	Arial
 	Arial Black
@@ -63,5 +63,4 @@ parallel match <<-EOF
 	Wingdings
 	Zapf Dingbats
 EOF
-
 echo

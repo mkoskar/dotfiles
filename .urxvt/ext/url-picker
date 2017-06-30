@@ -6,9 +6,9 @@ my $url =
    qr{
       (?:https?://|ftp://|news://|mailto:|file://|\bwww\.)
       [a-zA-Z0-9\-\@;\/?:&=%\$_.+!*\x27,~#]*
-      (
+      ( 
          # Allow a pair of matched parentheses
-         \([a-zA-Z0-9\-\@;\/?:&=%\$_.+!*\x27,~#]*\)|
+         \([a-zA-Z0-9\-\@;\/?:&=%\$_.+!*\x27,~#]*\)|  
          # exclude some trailing characters (heuristic)
          [a-zA-Z0-9\-\@;\/?:&=%\$_+*~]
       )+
@@ -17,7 +17,7 @@ my $url =
 sub on_user_command {
   my ($self, $cmd) = @_;
   if ($cmd =~ s/^url-picker\b//) {
-    my $labels = {};
+    my $labels = {}; 
     my $hrefs = {};
     my $rowmap = {};
     my $num = 0;

@@ -2,8 +2,8 @@
 
 [options]
 cursor_blink = off
-font = local_terminal_sized
-mouse_autohide = false
+font = local_terminal 16px
+mouse_autohide = true
 scrollback_lines = 8192
 
 [colors]
@@ -31,9 +31,10 @@ color14 = #68bbbb
 color15 = #dddddd
 
 [hints]
-background = #4d4d4d
-border_width = 0
+background = #ffd76e
+border = #998142
+border_width = 1
 font = monospace bold 8
-foreground = #dddddd
+foreground = #000000
 padding = 2
-roundness = 4
+roundness = 0

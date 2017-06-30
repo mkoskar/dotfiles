@@ -36,7 +36,7 @@ esac
 [[ $buf ]] || exit 1
 
 if (( ${#outs[@]} > 1 )); then
-    out=$(IFS=$'\n'; echo "${outs[*]}" | dmenu1 "$prgname")
+    out=$(printf '%s\n' "${outs[@]}" | dmenu1 -p "$prgname")
 fi
 
 [[ $out ]] || exit 1

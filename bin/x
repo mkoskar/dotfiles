@@ -51,7 +51,7 @@ if (( ! $# )); then
             exit 1
             ;;
     esac
-    echo -e "$sel\n"
+    printf '%s\n' "$sel"
 fi
 
 # ----------------------------------------

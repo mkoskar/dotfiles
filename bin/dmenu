@@ -12,4 +12,4 @@ fi
 exec /usr/bin/dmenu -nb '#3a3a3a' -sb '#000000' \
                     -nf '#e4e4e4' -sf '#87cefa' \
                     -fn 'local_terminal_sized' \
-                    -i -p "${1:->}"
+                    -i -p '>' "$@"

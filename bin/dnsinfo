@@ -14,5 +14,6 @@ echo $'> resolvconf:\n'
 resolvconf -l
 
 echo $'--------------------------------------------------\n'
+
 tail -n +1 /etc/{resolvconf.conf,resolv.conf}
 echo

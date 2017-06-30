@@ -1,0 +1,138 @@
+% vim: ft=slrnrc
+
+set abort_unmodified_edits 1
+set art_help_line ""
+set art_status_line "[%p] %n : %s -- %L (%P)"
+set display_cursor_bar 1
+set force_authentication 1
+set group_help_line ""
+set group_status_line "[%D] %s -- %L (%P)"
+set header_help_line ""
+set header_status_line "[%p] [%u/%t unread] %n -- %L (%P)"
+set hostname mkoskar.com
+set new_subject_breaks_threads 2
+set organization mkoskar.com
+set overview_date_format "%b %d %I:%M"
+set postpone_directory .local/share/news/postponed
+set query_read_group_cutoff -250
+set realname "Miroslav Koskar"
+set save_directory .local/share/news/saved
+set save_posts .local/share/news/posts
+set save_replies .local/share/news/replies
+set scorefile .local/share/slrn/score
+set signature .signature
+set sorting_method 8
+set top_status_line "%s / %n"
+set uncollapse_threads 0
+set use_localtime 3
+set username usenet
+
+posting_host mkoskar.com
+visible_headers Date:,Followup-To:,From:,Newsgroups:,Reply-To:,Subject:
+
+%nnrpaccess snews://news.eternal-september.org username password
+server snews://news.eternal-september.org .local/share/slrn/newsrc
+
+group_display_format 0 " %F %-5u  %40n  %d"
+group_display_format 1 " %F %-5u [%-5u]  %40n  %d"
+group_display_format 2 ""
+
+header_display_format 0 "%F%B%-5S  %D  %t%s"
+header_display_format 1 "%F%B%-5S  %D  %25r  %t%s"
+header_display_format 2 "%F%B%-5S  %D  %40f  %t%s"
+header_display_format 3 ""
+header_display_format 4 ""
+
+color article           default         default
+color author            default         default
+color boldtext          white           default
+color box               default         default
+color cursor            default         default     reverse
+color date              default         default
+color description       white           default
+color error             yellow          default
+color frame             white           color237
+color from_myself       brightred       default
+color group             white           default
+color grouplens_display default         default
+color header_name       white           default
+color header_number     default         default
+color headers           color156        default
+color high_score        brightred       default
+color italicstext       brightmagenta   default
+color menu              white           color237
+color menu_press        black           yellow
+color message           default         default
+color neg_score         brightgreen     default
+color normal            default         default
+color pgpsignature      color245        default
+color pos_score         brightblue      default
+color quotes            color228        default
+color quotes1           color216        default
+color quotes2           color204        default
+color response_char     default         default
+color selection         yellow          default
+color signature         color245        default
+color status            white           color237
+color subject           default         default
+color thread_number     white           default     bold
+color tilde             color243        default
+color tree              color231        default
+color underlinetext     color228        default
+color unread_subject    white           default
+color url               yellow          default
+color verbatim          white           default
+
+setkey group bob                        g
+setkey group eob                        G
+setkey group line_down                  j
+setkey group line_up                    k
+setkey group refresh_groups             R
+setkey group select_group               ^J
+setkey group select_group               o
+setkey group toggle_group_formats       `
+
+setkey article article_bob              <Esc>g
+setkey article article_eob              <Esc>G
+setkey article article_left             <Esc>h
+setkey article article_left             zh
+setkey article article_line_down        <Esc>j
+setkey article article_line_down        ^E
+setkey article article_line_down        zj
+setkey article article_line_up          <Esc>k
+setkey article article_line_up          ^Y
+setkey article article_line_up          zk
+setkey article article_page_down        <Esc>J
+setkey article article_page_up          <Esc>K
+setkey article article_right            <Esc>l
+setkey article article_right            zl
+setkey article enlarge_article_window   +
+setkey article exchange_mark            "'"
+setkey article get_parent_header        p
+setkey article header_bob               g
+setkey article header_eob               G
+setkey article header_line_down         )
+setkey article header_line_down         j
+setkey article header_line_up           (
+setkey article header_line_up           k
+setkey article hide_article             o
+setkey article next                     ,
+setkey article next                     J
+setkey article previous                 K
+setkey article save                     O
+setkey article shrink_article_window    _
+setkey article skip_to_next_group       >
+setkey article skip_to_previous_group   <
+setkey article toggle_collapse_threads  zo
+setkey article toggle_header_formats    `
+setkey article toggle_header_tag        t
+setkey article toggle_headers           h
+setkey article zoom_article_window      <Esc>z
+unsetkey article N
+unsetkey article n
+
+setkey readline bol                     ^B
+setkey readline left                    <Esc>h
+setkey readline right                   <Esc>l
+
+include .slrnrc.local

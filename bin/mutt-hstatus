@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-hstatus "$1" >/dev/tty
-printf '%s\n' "$2"

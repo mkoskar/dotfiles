@@ -74,6 +74,7 @@ nnoremap <Leader>lt :ltag /
 " ----------------------------------------
 
 set display=lastline
+set fillchars=
 set list
 set listchars=eol:¬,tab:>-,trail:-,extends:>,precedes:<,nbsp:+
 set nowrap

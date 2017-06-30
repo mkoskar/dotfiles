@@ -27,12 +27,12 @@ set ssl_force_tls
 set ssl_starttls
 set time_inc = 500
 set timeout = 5
+set ts_enabled
 set use_envelope_from
 set wrap = -1
 unset beep
 unset collapse_unread
 unset confirmappend
-unset header_cache_compress
 unset help
 unset mail_check_recent
 unset mark_old
@@ -43,12 +43,12 @@ unset wait_key
 
 # Formats
 set alias_format = ' %2n %t %-40.40r    %a'
-set compose_format = "mutt-hstatus '%v' '-- Mutt: Compose [Approx. msg size: %l   Atts: %a]'|"
+set compose_format = '-- Mutt: Compose [Approx. msg size: %l   Atts: %a]'
 set date_format = '!%b %d %I:%M'
 set folder_format = ' %2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f'
 set pager_format = '[%Z] (%C/%m) %n: %s%*  -- (%P)'
 set query_format = ' %2c %t %-40.40a    %n %?e?(%e)?'
-set status_format = "mutt-hstatus '%v' '[%r] %f (%n/%m)%?d? deleted:%d?%?t? tagged:%t?%?F? flagged:%F?%?p? postponed:%p? %l %?V?-- limit (%M): %V? %> %s/%S (%P)'|"
+set status_format = '[%r] %f (%n/%m)%?d? deleted:%d?%?t? tagged:%t?%?F? flagged:%F?%?p? postponed:%p? %l %?V?-- limit (%M): %V? %> %s/%S (%P)'
 source ~/.mutt/index_format1
 
 # Index
@@ -80,7 +80,7 @@ set mime_forward = ask-no
 set realname = 'Miroslav Koskar' # overriden by name in $from, if any
 set reply_to
 set reverse_name
-set signature = ~/.mutt/signature
+set signature = ~/.signature
 
 # Headers
 hdr_order from: to: cc: list-id: list-archive: date: subject:
@@ -103,7 +103,7 @@ bind generic        \cU         half-up
 bind generic        \cP         previous-entry
 bind generic        \cN         next-entry
 bind generic        \e?         help
-bind generic        gg          first-entry
+bind generic        g           first-entry
 bind generic        G           last-entry
 bind generic        z           noop
 bind generic        zb          current-bottom
@@ -115,7 +115,7 @@ bind generic,pager  )           next-entry
 bind index          x           noop
 bind index          P           noop
 bind index          L           bottom-page         # generic
-bind index          gg          first-entry         # generic
+bind index          g           first-entry         # generic
 bind index          G           last-entry          # generic
 bind index          zm          collapse-all
 bind index          zr          collapse-all
@@ -148,7 +148,7 @@ bind pager          P           print-message
 
 bind pager          Q           noop
 bind pager          \e?         help
-bind pager          gg          top
+bind pager          g           top
 bind pager          G           bottom
 bind pager          <down>      next-line
 bind pager          <up>        previous-line
@@ -166,7 +166,7 @@ bind attach         \cF         next-page           # generic
 bind attach         \cB         previous-page       # generic
 bind attach         L           bottom-page         # generic
 bind attach         G           last-entry          # generic
-bind attach         gg          first-entry         # generic
+bind attach         g           first-entry         # generic
 
 bind browser        o           noop
 bind browser        O           noop
@@ -200,10 +200,10 @@ macro index,pager W <tag-prefix><clear-flag> 'clear a status flag on all tagged 
 macro index,pager - <tag-prefix><clear-flag>N 'mark all tagged messages as read'
 macro index,pager \ea '<change-folder>!!<enter>' 'go to previous mailbox'
 macro index,pager y <change-folder>?<toggle-mailboxes> 'show mailboxes list'
-macro index,pager,attach O <pipe-message>w3m<enter> 'view in w3m'
-macro index,pager,attach \cO '<pipe-message>stdiner -T b0<enter>' 'view in browser'
+macro index,pager,attach O '<pipe-entry>e0 -c "set bt=nofile"<enter>' 'view in $PAGER'
 macro pager j >>>>>
 macro pager k <<<<<
+macro attach \cO '<pipe-entry>stdiner -T b0<enter>' 'view in browser'
 macro browser \ea <exit>\ea 'go to previous mailbox'
 macro browser u /^\\.\\.$<enter><enter> 'go up a dir'
 macro compose Y pfy 'send the message without PGP'
@@ -215,11 +215,12 @@ macro pager o q
 macro index \c_ <tag-prefix><save-message> 'save messages'
 macro pager \c_ <save-message> 'save message'
 
-# Sidebar patch
-set sidebar_delim = ' '
-set sidebar_folderindent
-set sidebar_format = '%B%?F? [%F]?%* %?N?%N?%C'
-set sidebar_shortpath
+# NeoMutt: Sidebar
+set sidebar_divider_char = ' '
+set sidebar_folder_indent
+set sidebar_format = ' %B%?F? [%F]?%* %?N?%N?%C '
+set sidebar_indent_string = ' '
+set sidebar_short_path
 set sidebar_visible
 set sidebar_width = 25
 bind index <space> sidebar-open
@@ -228,6 +229,16 @@ macro index,pager \eP <sidebar-prev> 'sidebar-prev'
 macro index,pager \en <sidebar-next><sidebar-open> 'sidebar-next & sidebar-open'
 macro index,pager \ep <sidebar-prev><sidebar-open> 'sidebar-prev & sidebar-open'
 macro index,pager ~ '<enter-command>toggle sidebar_visible<enter>' 'toggle sidebar'
+
+# NeoMutt: NNTP
+set news_cache_dir = ~/.mutt/cache/news
+set newsrc = ~/.mutt/newsrc
+bind index,pager i change-newsgroup
+
+# NeoMutt: Other
+set sort_browser = alpha
+bind index \eL limit-current-thread
+bind index,pager @ compose-to-sender
 
 # Global includes
 source $alias_file

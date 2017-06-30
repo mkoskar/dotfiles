@@ -25,8 +25,9 @@ capture_toggle() {
 }
 
 pa_sink_toggle() {
-    local all current
-    readarray -t all < <(pacmd list-sinks | sed -rn 's/^\tname: <(.*)>$/\1/p')
+    local all current tmp
+    tmp=$(pacmd list-sinks | sed -rn 's/^\tname: <(.*)>$/\1/p')
+    [[ $tmp ]] && readarray -t all <<<"$tmp"
     current=$(pacmd dump | sed -rn 's/^set-default-sink (.*)$/\1/p')
     local i len=${#all[@]}
     for (( i=0; i<len; i++ )); do

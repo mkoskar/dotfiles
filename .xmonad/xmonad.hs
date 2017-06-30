@@ -236,12 +236,12 @@ myConfig = def
         , ("M-s", moveTo Prev HiddenNonEmptyWS)
         , ("M-d", moveTo Next HiddenNonEmptyWS)
 
-        , ("M-u", viewScreen 0)
-        , ("M-i", viewScreen 1)
-        , ("M-o", viewScreen 2)
-        , ("M-S-u", sendToScreen 0)
-        , ("M-S-i", sendToScreen 1)
-        , ("M-S-o", sendToScreen 2)
+        --, ("M-u", viewScreen 0)
+        , ("M-i", viewScreen 0)
+        , ("M-o", viewScreen 1)
+        --, ("M-S-u", sendToScreen 0)
+        , ("M-S-i", sendToScreen 0)
+        , ("M-S-o", sendToScreen 1)
 
         , ("M-a", toggleWS' ["NSP"])
 
@@ -371,6 +371,7 @@ myConfig = def
         , ("M-; M-m", spawn "markx-url")
         , ("M-; M-S-m", spawn "markx")
         , ("M-; M-p", spawn "playx")
+        , ("M-; M-S-p", spawn "playlist")
         , ("M-; M-s", spawn "selfie")
         , ("M-; M-u", spawn "notify -u low \"$(url-resolve)\"")
         , ("M-S-<Home>", spawn "term trun wow")

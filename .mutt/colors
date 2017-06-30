@@ -1,52 +1,40 @@
 # vim: ft=muttrc
 
-color attachment    color174        default
-#color bold
-color error         color255        red
-#color hdrdefault
-#color indicator
-#color markers
-#color message
-#color normal
-color quoted        color228        default
-color quoted1       color216        default
-color quoted2       color204        default
-color search        black           color214
-color signature     color245        default
-color status        color255        color237
-color tilde         color243        default
-color tree          color255        default
-#color underline
+color attachment        color174        default
+color error             color255        red
+color quoted            color228        default
+color quoted1           color216        default
+color quoted2           color204        default
+color search            black           color214
+color signature         color245        default
+color status            color255        color237
+color tilde             color243        default
+color tree              color255        default
 
-color header        color156        default       'From:'
-color header        color156        default       'Subject:'
+color header            color156        default     'From:'
+color header            color156        default     'Subject:'
 
-color body          color255        default       '^-.*'
-color body          color110        default       '^--- .*'
-color body          color110        default       '^\+\+\+ .*'
-color body          color228        default       '^@@ .* @@$'
-color body          color174        default       '^gpg: .*'
-color body          color167        default       '^gpg: Good signature .*'
-color body          color255        red           '^gpg: BAD signature .*'
-color body          color167        default       "^gpg: Can't check signature: .*"
-color body          color174        default       '^Primary key fingerprint: .*'
-color body          color174        default       '^     Subkey fingerprint: .*'
+color body              color255        default     '^-.*'
+color body              color110        default     '^--- .*'
+color body              color110        default     '^\+\+\+ .*'
+color body              color228        default     '^@@ .* @@$'
+color body              color174        default     '^gpg: .*'
+color body              color167        default     '^gpg: Good signature .*'
+color body              color255        red         '^gpg: BAD signature .*'
+color body              color167        default     "^gpg: Can't check signature: .*"
+color body              color174        default     '^Primary key fingerprint: .*'
+color body              color174        default     '^     Subkey fingerprint: .*'
 
-color body          brightwhite     default       '\*+[^*]+\*+'
-color body          color167        default       '\++[^\+]+\++'
-color body          color228        default       '_+[^_]+_+'
-color body          color156        default       '`+[^`]+`+'
-color body          color174        default       '"+[^"]+"+'
+color body              brightwhite     default     '\*+[^*]+\*+'
+color body              color167        default     '\++[^\+]+\++'
+color body              color228        default     '_+[^_]+_+'
+color body              color156        default     '`+[^`]+`+'
+color body              color174        default     '"+[^"]+"+'
 
-color index         brightwhite     default       ~N
-color index         color167        default       ~F
-color index         color243        default       ~D
-color index         brightyellow    default       ~T
+color index             brightwhite     default     ~N
+color index             color167        default     ~F
+color index             color243        default     ~D
+color index             brightyellow    default     ~T
 
-# Colorindex patch
-#color index_author  color255        default       '~d <1d'
-#color index_author  color156        default       '~d >1d ~d <2d'
-#color index_author  color180        default       '~d >2d ~d <3d'
-
-# Sidebar patch
-color sidebar_new   brightwhite     default
+color sidebar_divider   default         color237
+color sidebar_new       brightwhite     default

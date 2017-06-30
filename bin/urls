@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+if [[ $prgname == 'urls-open' ]]; then
+    filter=(cat)
+    case ${1-} in -r)
+        filter=(tac)
+        ;;
+    esac
+
+    tmpfile=$(mktemp)
+    cleanup() { rm -f "$tmpfile"; }
+    trap cleanup EXIT
+
+    uniq | "${filter[@]}" >"$tmpfile"
+    [[ -s $tmpfile ]] || exit 1
+    dmenu -l 5 -p "$prgname" <"$tmpfile" | xargs -r -n1 b
+    exit
+fi
+
+grep -E -o 'https?://\S+'

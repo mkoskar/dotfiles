@@ -1,33 +1,17 @@
 # vim: ft=muttrc
 
-unhook save-hook
-save-hook . $my_base/%O
-
 # The $spoolfile and $record mailboxes can be referenced by ! and < shortcuts
 # respectively, nevertheless corresponding macros are left (and redefined)
 # here for consistency.
 
 macro index,pager \e1 "<change-folder>$spoolfile<enter>" 'go to spoolfile mailbox'
-macro browser \e1 <exit>\e1 'go to spoolfile mailbox'
-
 macro index,pager \e2 "<change-folder>$record<enter>" 'go to record mailbox'
-macro browser \e2 <exit>\e2 'go to record mailbox'
-
 macro index,pager \e3 "<change-folder>$postponed<enter>" 'go to postponed mailbox'
-macro browser \e3 <exit>\e3 'go to postponed mailbox'
-
 macro index,pager \e4 "<change-folder>$my_mbarchived<enter>" 'go to archived mailbox'
-macro browser \e4 <exit>\e4 'go to archived mailbox'
-
-macro index,pager \e0 "<change-folder>$my_mbtrashed<enter>" 'go to trashed mailbox'
-macro browser \e0 <exit>\e0 'go to trashed mailbox'
+macro index,pager \e0 "<change-folder>$my_mbtrash<enter>" 'go to trash mailbox'
 
 macro index \& "<tag-prefix><save-message>$my_mbarchived<enter><previous-entry><sync-mailbox>" 'archive messages'
 macro pager \& "<save-message>$my_mbarchived<enter><previous-entry><sync-mailbox>" 'archive message'
 
-macro index \# "<tag-prefix><save-message>$my_mbtrashed<enter><previous-entry><sync-mailbox>" 'trash messages'
-macro pager \# "<save-message>$my_mbtrashed<enter><previous-entry><sync-mailbox>" 'trash message'
-
-#push "<change-folder>?<change-dir>^U$my_base<enter><exit>"
 macro index,pager <tab> "<change-folder>?<change-dir>^U$my_base<enter>/<enter>" 'browse account local folder'
 macro index,pager,browser \eI "<change-folder>?<change-dir>^U$my_imap<enter>" 'browse account IMAP folder'

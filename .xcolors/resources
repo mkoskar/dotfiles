@@ -1,15 +1,15 @@
 ! vim: ft=xdefaults
 
-#ifndef TPREFIX
-#define TPREFIX *
+#ifndef TCOLOR_PREFIX
+#define TCOLOR_PREFIX *
 #endif
 
 #undef P
-#define P() TPREFIX
+#define P() TCOLOR_PREFIX
 
-P()foreground: TFG
-P()background: TBG
-P()cursorColor: TCUR
+P()foreground: TCOLOR_FG
+P()background: TCOLOR_BG
+P()cursorColor: TCOLOR_CUR
 
 P()color0: TCOLOR0
 P()color1: TCOLOR1

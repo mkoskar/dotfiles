@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+_usage() {
+    cat <<-EOF
+	usage: $prgname resX resY diagonal_inch
+	       $prgname resX resY width_mm height_mm
+	EOF
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+while getopts 'h' opt; do
+    case $opt in
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+(( $# < 3 )) && usage_err
+
+# ----------------------------------------
+
+if (( $# > 3 )); then
+    calc -qp -- <<<"round(sqrt($1**2 + $2**2) / (sqrt($3**2 + $4**2) / 25.4), 2)"
+else
+    calc -qp -- <<<"round(sqrt($1**2 + $2**2) / $3, 2)"
+fi

@@ -25,11 +25,10 @@ expac -l '\n' %D | sort -u | pacman -T
 echo $'\n--------------------------------------------------'
 echo $'> Modified "Backup Files":\n'
 
-LC_ALL=C pacman -Qii | grep -E -e '^MODIFIED\s' -e '^UNREADABLE\s'
+pacman -Qii | grep -E -e '^MODIFIED\s' -e '^UNREADABLE\s'
 
 echo $'\n--------------------------------------------------'
 echo $'> Missing files:\n'
 
 pacman -Qqk
-
 echo

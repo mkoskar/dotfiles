@@ -56,9 +56,9 @@ if [[ ! $profile ]]; then
         profiles+=("${p#*"$bin_name".}")
     done
     profile=$(
-        (set +u; IFS=$'\n'; printf '%s' "${profiles[*]}") |
+        printf '%s\n' "${profiles[@]}" |
         sort -u | grep -P "$filter" |
-        dmenu1 "$prgname"
+        dmenu1 -p "$prgname"
     )
 fi
 

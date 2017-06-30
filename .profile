@@ -64,6 +64,7 @@ export LD_LIBRARY_PATH="$HOME/opt/lib"
 export LESS='-MRS#3ci'
 export LESSHISTFILE='-'
 export LESSOPEN='|highlight --quiet -O xterm256 -s bluegreen %s'
+export NNTPSERVER='snews://news.eternal-september.org'
 export NO_AT_BRIDGE=1
 export ORACLE_HOME='/opt/instantclient'
 export PARINIT='T4 w78 prbgqR B=.,?_A_a Q=_s>|'

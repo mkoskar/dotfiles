@@ -22,6 +22,9 @@ fi
 
 # ----------------------------------------
 
+vt=$(</sys/class/tty/tty0/active)
+vtno=${vt##tty}
+
 sysrq_path='/proc/sys/kernel/sysrq'
 sysrq_old=$(<"$sysrq_path")
 echo 0 >"$sysrq_path"
@@ -33,9 +36,6 @@ cleanup() {
 trap cleanup EXIT
 
 vtswitch-lock
-
-vt=$(</sys/class/tty/tty0/active)
-vtno=${vt##tty}
 
 su - "$user" -c "export DISPLAY=':$vtno'
                  export XAUTHORITY=~/.local/share/xorg/Xauthority

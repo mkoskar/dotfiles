@@ -1,12 +1,14 @@
 # vim: ft=muttrc fdm=marker
 
 set my_mail = ~/mail
+set folder = $my_mail
+
+unhook account-hook
+unhook folder-hook
+unmailboxes *
 
 account-hook . 'unset imap_pass'
 folder-hook . 'source ~/.mutt/accountsrc_pre_hook'
-unmailboxes *
-
-source ~/.mutt/notmuch
 
 
 # Account: local
@@ -14,7 +16,6 @@ source ~/.mutt/notmuch
 
 source ~/.mutt/accounts/local
 macro index,pager \e<F1> "<change-folder>$my_local/INBOX<enter>" 'switch to local account'
-macro browser \e<F1> <exit>\e<F1> 'switch to local account'
 
 
 # Account: main
@@ -22,13 +23,11 @@ macro browser \e<F1> <exit>\e<F1> 'switch to local account'
 
 source ~/.mutt/accounts/main
 macro index,pager \e<F2> "<change-folder>$my_main/INBOX<enter>" 'switch to main account'
-macro browser \e<F2> <exit>\e<F2> 'switch to main account'
+
+
+# ----------------------------------------
 
 folder-hook . 'source ~/.mutt/accountsrc_post_hook'
 
-
-# Defaults
-# ----------------------------------------
-
-set folder = $my_mail
+# Default INBOX
 set spoolfile = $my_main/INBOX

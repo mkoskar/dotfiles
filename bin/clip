@@ -20,7 +20,7 @@ case $prgname in
     clipa)
         # Read arguments to PRIMARY and CLIPBOARD.
         (( ! $# )) && exit 2
-        IFS=$'\n'; printf '%s' "$*" | clipi
+        printf '%s\n' "$@" | clipi
         ;;
     *)
         tmpfile=$(mktemp)

@@ -9,7 +9,7 @@ if [[ $xserver = 'Xorg' ]]; then
     if [[ $prgname != 'xscreen0' ]]; then
         if [[ $prgname = 'xscreen-mobile' ]]; then
             autorandr -l mobile --force
-        elif xrandr | grep -qE '^LVDS1 connected'; then
+        elif xrandr | grep -q '^LVDS1 connected'; then
             autorandr -c -d mobile --force
         else
             autorandr -c --force

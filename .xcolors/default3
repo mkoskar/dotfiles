@@ -2,8 +2,8 @@
 
 #include "default0"
 
-#undef TBG
+#undef TCOLOR_BG
 #undef TCOLOR0
 
-#define TBG #2d2d30
+#define TCOLOR_BG #2d2d30
 #define TCOLOR0 #323235

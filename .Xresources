@@ -25,47 +25,70 @@ XTerm*VT100.metaSendsEscape:    true
 XTerm*VT100.printAttributes:    0
 XTerm*VT100.printerCommand:     cat > $(mktemp -p ~/tmp xterm.XXXXXX)
 XTerm*VT100.saveLines:          8192
+XTerm*VT100.scrollKey:          true
+XTerm*VT100.scrollTtyOutput:    false
 XTerm*VT100.utf8:               2
 
-XTerm*VT100.translations:       #override \n \
-                                Ctrl ~Alt Shift <Key>H: string(\177) \n \
-                                ~Shift <Key>Print: print() \n \
-                                Shift <Key>Print: print-everything()
+XTerm*VT100.translations:       #override \n\
+                                :Ctrl ~Alt <Key>H: string(\177) \n\
+                                :Ctrl <Key>plus: larger-vt-font() \n\
+                                :Ctrl <Key>minus: smaller-vt-font() \n\
+                                :Ctrl <Key>equal: set-vt-font(d) \n\
+                                :~Shift <Key>Print: print() \n\
+                                :Shift <Key>Print: print-everything() \n\
+                                :Shift <Key>Up: scroll-back(1, line) \n\
+                                :Shift <Key>Down: scroll-forw(1, line) \n\
+                                :Shift <Key>Home: scroll-back(9999, line) \n\
+                                :Shift <Key>End: scroll-forw(9999, line) \n\
+                                :Shift <Key>Return: scroll-forw(9999, line)
 
-#undef TPREFIX
-#define TPREFIX *VT100.
+#undef TCOLOR_PREFIX
+#define TCOLOR_PREFIX *VT100.
 #include ".xcolors/resources"
 
 
 ! URxvt
 ! ----------------------------------------
 
-URxvt.termName:         rxvt-unicode-256color
+URxvt.termName:                 rxvt-unicode-256color
 
-!URxvt.intensityStyles:  false
-!URxvt.underlineColor:   #fdb436
-URxvt.colorBD:          15
-URxvt.colorIT:          #d4c668
-URxvt.cursorColor2:     1
-URxvt.scrollColor:      gray20
+!URxvt.intensityStyles:          false
+!URxvt.underlineColor:           #fdb436
+URxvt.colorBD:                  15
+URxvt.colorIT:                  #d4c668
+URxvt.cursorColor2:             1
+URxvt.scrollColor:              gray20
 
-! Since urxvt supports font fallback (for missing glyphs)
-! every font resource can in fact contain font list.
-URxvt.font:             xft:local_terminal_sized, \
-                        xft:Symbola, \
-                        xft:Symbola:pixelsize=8
+URxvt.font:                     xft:local_terminal_sized, \
+                                xft:Symbola, \
+                                xft:Symbola:pixelsize=15, \
+                                xft:Symbola:pixelsize=14, \
+                                xft:Symbola:pixelsize=13, \
+                                xft:Symbola:pixelsize=12, \
+                                xft:Symbola:pixelsize=11, \
+                                xft:Symbola:pixelsize=10, \
+                                xft:Symbola:pixelsize=9, \
+                                xft:Symbola:pixelsize=8, \
+                                xft:Symbola:pixelsize=7, \
+                                xft:Symbola:pixelsize=6, \
+                                xft:Symbola:pixelsize=5, \
+                                xft:Symbola:pixelsize=4
 
-!URxvt.depth:            32
-URxvt.cutchars:         '"()*,<>[]{}|\''
-URxvt.iso14755:         true
-URxvt.iso14755_52:      false
-URxvt.pointerBlank:     true
-URxvt.print-pipe:       cat > $(mktemp -p ~/tmp urxvt.XXXXXX)
-URxvt.saveLines:        8192
-URxvt.scrollBar:        false
-URxvt.scrollstyle:      plain
-URxvt.thickness:        5
-URxvt.urgentOnBell:     true
+!URxvt.depth:                    32
+URxvt.cutchars:                 '"()*,<>[]{}|\''
+URxvt.iso14755:                 true
+URxvt.iso14755_52:              false
+URxvt.jumpScroll:               true
+URxvt.pointerBlank:             true
+URxvt.print-pipe:               cat > $(mktemp -p ~/tmp urxvt.XXXXXX)
+URxvt.saveLines:                8192
+URxvt.scrollBar:                false
+URxvt.scrollTtyKeypress:        true
+URxvt.scrollTtyOutput:          false
+URxvt.scrollWithBuffer:         true
+URxvt.scrollstyle:              plain
+URxvt.thickness:                5
+URxvt.urgentOnBell:             true
 
 ! ASCII BS  == 8   == \010 == ^H
 ! ASCII DEL == 127 == \177 == ^?
@@ -73,15 +96,21 @@ URxvt.urgentOnBell:     true
 ! BackSpace = BS
 ! C-BackSpace = DEL
 ! C-h = BS
-!URxvt.backspacekey:         \010
-!URxvt.keysym.C-BackSpace:   \177
+!URxvt.backspacekey:             \010
+!URxvt.keysym.C-BackSpace:       \177
 
 ! BackSpace = DEL
 ! C-BackSpace = BS
 ! C-h = DEL
-URxvt.keysym.C-h:       \177
-URxvt.keysym.M-C-h:     builtin:
-URxvt.keysym.S-C-h:     builtin:
+URxvt.keysym.C-h:               \177
+URxvt.keysym.M-C-h:             builtin:
+URxvt.keysym.S-C-h:             builtin:
+
+URxvt.keysym.Shift-Up:          command:\033]720;1\007
+URxvt.keysym.Shift-Down:        command:\033]721;1\007
+URxvt.keysym.Shift-Home:        command:\033]720;9999\007
+URxvt.keysym.Shift-End:         command:\033]721;9999\007
+URxvt.keysym.Shift-Return:      command:\033]721;9999\007
 
 URxvt.perl-ext-common:          default,-option-popup,-readline,-searchable-scrollback,confirm-paste,keyboard-select,url-select,url-picker
 URxvt.url-picker.launcher:      b
@@ -92,24 +121,24 @@ URxvt.keysym.M-C-slash:         perl:keyboard-select:search
 URxvt.keysym.M-C-u:             perl:url-select:select_next
 URxvt.keysym.M-C-o:             perl:url-picker
 
-#undef TPREFIX
-#define TPREFIX URxvt.
+#undef TCOLOR_PREFIX
+#define TCOLOR_PREFIX URxvt.
 #include ".xcolors/resources"
 
 
 ! Xcursor
 ! ----------------------------------------
 
-Xcursor.size:           22
-Xcursor.theme:          Grounation
+Xcursor.size:       22
+Xcursor.theme:      Grounation
 
 
 ! Xft
 ! ----------------------------------------
 
-Xft.antialias:          1
-Xft.autohint:           0
-Xft.hinting:            1
-Xft.hintstyle:          hintslight
-Xft.lcdfilter:          lcddefault
-Xft.rgba:               rgb
+Xft.antialias:      1
+Xft.autohint:       0
+Xft.hinting:        1
+Xft.hintstyle:      hintslight
+Xft.lcdfilter:      lcddefault
+Xft.rgba:           rgb

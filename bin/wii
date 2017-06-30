@@ -23,15 +23,18 @@ Sun:                    %s / %S
 get() {
     local opts opts_digest cache
     opts=(-m -l "$1")
-    read -ra opts_digest < <(IFS=$'\n'; md5sum <<<"${opts[*]}")
+    read -ra opts_digest < <(printf '%s\n' "${opts[@]}" | md5sum)
     cache="$HOME/.cache/shaman-${opts_digest: -7}.json"
     [[ -e $cache ]] || touch "$cache"
     shaman "${opts[@]}" -f "$format" -c "$cache"
 }
 
 echo
-get 'Prague,CZ'
+
 get 'Bratislava,SK'
+get 'Poprad,SK'
+get 'Zilina,SK'
+
 get 'Berlin,DE'
 get 'London,GB'
-get 'Sydney,AU'
+get 'Prague,CZ'

@@ -8,7 +8,6 @@ set postpone = ask-yes
 unset from
 unset mbox
 unset move
-unset read_only
 
 # IMAP
 set my_imap = _imap_
@@ -17,14 +16,19 @@ set my_imap = _imap_
 set spoolfile = _spoolfile_
 set record = _record_
 set postponed = _postponed_
+unset trash
 set my_mbarchived = _archived_
-set my_mbtrashed = _trashed_
+set my_mbtrash = _trash_
 
 # Other
 unset hostname
 unset pgp_sign_as # this will use GPG's default-key
 unset query_command
 unset sendmail
+
+# Hooks
+unhook save-hook
+save-hook . $my_base/%O
 
 # Headers
 my_hdr OpenPGP: url=https://keybase.io/mkoskar/key.asc

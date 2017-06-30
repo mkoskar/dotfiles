@@ -36,7 +36,7 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-IFS=':' read -ra from <<<"$1"
+IFS=: read -ra from <<<"$1"
 declare -i from_len=${#from[@]}
 
 if (( from_len == 1 )); then

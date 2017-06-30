@@ -141,7 +141,7 @@
 /set aspell.check.suggestions 10
 
 /set buflist.format.buffer "${format_number}${indent}${color_hotlist}${if:${type}!=channel?${if:${type}==private?${color:white}+${color:lightcyan}:${color:lightgreen}}:}${cut:11,${color:white}+,${name}}${format_hotlist}"
-/set buflist.format.buffer_current "${color:,237}${format_number}${indent}${color:*white}${cut:11,+,${name}}${format_hotlist}"
+/set buflist.format.buffer_current "${color:,237}${format_number}${indent}${color:white}${if:${type}==private?+:}${color:*white}${cut:11,${color:white}+,${name}}${format_hotlist}"
 /set buflist.format.hotlist " ${hotlist}"
 /set buflist.format.hotlist_highlight "${color:lightred}"
 /set buflist.format.hotlist_low "${color:default}"

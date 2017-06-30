@@ -2,10 +2,9 @@
 
 set -e
 
+echo
 gphoto2 --quiet --auto-detect
 echo
-
-gphoto2 --quiet --summary &>/dev/null || true
-gphoto2 --quiet --summary
-
 gphoto2 --quiet --abilities
+echo
+gphoto2 --quiet --summary

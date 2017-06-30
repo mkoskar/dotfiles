@@ -25,6 +25,7 @@ done <<-EOF
     arch-lists              sr google site:lists.archlinux.org {}
     arch-repos              b https://git.archlinux.org/
     arch-wiki               sr archwiki {}
+    argyllcms               b /usr/share/argyllcms/doc/ArgyllDoc.html
     arxiv                   sr arxiv {}
     aur                     sr aur {}
     awg                     b https://en.wikipedia.org/wiki/American_wire_gauge#Tables_of_AWG_wire_sizes
@@ -40,6 +41,7 @@ done <<-EOF
     bash-pitfalls           b http://mywiki.wooledge.org/BashPitfalls
     bash-sheet              b http://mywiki.wooledge.org/BashSheet
     browserbench            b http://browserbench.org/
+    c-faq                   b http://c-faq.com/
     calib                   b http://www.xrite.com/online-color-test-challenge
     calib1                  b http://www.lagom.nl/lcd-test/gamma_calibration.php
     charref                 b http://dev.w3.org/html5/html-author/charref
@@ -58,6 +60,8 @@ done <<-EOF
     dd-bang                 b https://duckduckgo.com/bang_lite.html
     dd-syntax               b https://duck.co/help/results/syntax
     deb                     sr debpackages {}
+    dkim                    b http://dkimcore.org/tools/
+    dns-reserved            b https://www.rfc-editor.org/rfc/rfc2606.txt
     docker                  b https://github.com/wsargent/docker-cheat-sheet
     docker-compose          b https://docs.docker.com/compose/compose-file/
     dockerfile              b https://docs.docker.com/engine/reference/builder/
@@ -70,6 +74,7 @@ done <<-EOF
     firefox-changes-dev     b https://developer.mozilla.org/en-US/Firefox/Releases/
     firefox-relnotes-bugs   b https://bugzilla.mozilla.org/buglist.cgi?query_format=advanced\&f1=cf_tracking_firefox_relnote\&o1=isnotempty\&f2=cf_tracking_firefox_relnote\&o2=substring\&v2={}\&limit=200\&order=changeddate\ desc
     flp                     b http://www.feynmanlectures.caltech.edu/
+    freebsd                 b https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/
     freedesktop             b http://standards.freedesktop.org/
     freedesktop-repos       b https://cgit.freedesktop.org/
     freetype                b /usr/share/doc/freetype2/documentation.html
@@ -90,6 +95,7 @@ done <<-EOF
     go                      b https://golang.org/ref/spec
     google-devs             b https://developers.google.com/
     google-products         b https://developers.google.com/products/
+    google-search           b https://www.google.com/advanced_search
     gpg-search              b https://sks-keyservers.net/i/#extract
     gradle                  b /usr/share/java/gradle/docs/userguide/userguide.html
     gradle-dsl              b /usr/share/java/gradle/docs/dsl/index.html
@@ -107,7 +113,7 @@ done <<-EOF
     hibernate-orm           b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
     hn                      b https://news.ycombinator.com/
     html-spec               b https://html.spec.whatwg.org/multipage/
-    http                    b http://tools.ietf.org/html/rfc2616
+    http                    b https://tools.ietf.org/html/rfc2616
     i                       sr ixquick {}
     ii                      sr ixquick -search=pics {}
     imdb                    sr imdb {}
@@ -116,6 +122,7 @@ done <<-EOF
     irc-docs                b https://github.com/grawity/irc-docs
     irc-freenode            b http://irc.netsplit.de/channels/?net=freenode
     irc-specs               b http://ircv3.net/irc/
+    iss-tracker             b http://wsn.spaceflight.esa.int/iss/
     java                    b /usr/share/doc/java/technotes/tools/unix/java.html
     java-apis               b http://www.oracle.com/technetwork/java/api-141528.html
     java-changes            b /usr/share/doc/java/technotes/guides/language/enhancements.html
@@ -155,6 +162,8 @@ done <<-EOF
     lists                   b http://gmane.org/find.php
     lists1                  b http://markmail.org/
     lua                     b https://www.lua.org/manual/
+    m4-macros               b https://www.gnu.org/software/m4/manual/m4.html#Macro-index
+    mailcap                 b https://tools.ietf.org/html/rfc1524.html
     man-pages               b http://man7.org/linux/man-pages/index.html
     material-design         b https://getmdl.io/
     maven                   b http://maven.apache.org/plugins/index.html
@@ -168,8 +177,8 @@ done <<-EOF
     mozilla-repos           b https://hg.mozilla.org/
     music                   sr musicbrainz {}
     mutt                    b /usr/share/doc/mutt/manual.html
-    mutt-patterns           b /usr/share/doc/mutt/manual.html#patterns
-    mutt-regex              b /usr/share/doc/mutt/manual.html#regexp
+    mutt-patterns           b file:///usr/share/doc/mutt/manual.html#patterns
+    mutt-regex              b file:///usr/share/doc/mutt/manual.html#regexp
     netfilter               b http://www.netfilter.org/documentation/index.html
     netfilter-flow          b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
     nodejs                  b https://nodejs.org/api/
@@ -208,9 +217,12 @@ done <<-EOF
     regex-python            b /usr/share/doc/python/html/library/re.html
     regex-python-test       b http://pythex.org/
     regex101                b https://regex101.com/
+    resolutions             b https://en.wikipedia.org/wiki/List_of_common_resolutions
     rfc                     b https://www.rfc-editor.org/
     rst                     b http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
     rst-demo                b ~/projects/lab/docutils/showcase/_build/html/index.html
+    rtfm-faqs               b ftp://rtfm.mit.edu/pub/faqs/
+    rtfm-usenet             b ftp://rtfm.mit.edu/pub/usenet/
     rust                    b http://doc.rust-lang.org/reference.html
     rust-api                b http://doc.rust-lang.org/std/
     scala                   b http://www.scala-lang.org/api/current/
@@ -227,7 +239,8 @@ done <<-EOF
     sysrq                   b /lib/modules/$kernel_release/build/Documentation/sysrq.txt
     systemd-changes         b https://github.com/systemd/systemd/blob/master/NEWS
     tex                     b https://ctan.org/
-    tlds                    b https://data.iana.org/TLD/tlds-alpha-by-domain.txt
+    tlds                    b https://www.iana.org/domains/root/db
+    tmux-changes            b https://github.com/tmux/tmux/blob/master/CHANGES
     tor-specs               b https://gitweb.torproject.org/torspec.git/tree/
     tr                      sr translate -from=en -to=sk {}
     tr-de                   sr translate -from=de -to=sk {}
@@ -245,13 +258,15 @@ done <<-EOF
     unicode-fonts1          b http://www.wazu.jp/
     unicode-gallery         b http://xahlee.info/comp/unicode_index.html
     unicode-table           b http://unicode-table.com/
-    unix-history            b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
+    unix-history            b https://upload.wikimedia.org/wikipedia/commons/c/cd/Unix_timeline.en.svg
+    unix-history1           b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
     usb-connectors          b https://en.wikipedia.org/wiki/USB#Host_and_device_interface_receptacles
     util-linux              b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
     w                       sr wikipedia {}
     weechat                 b https://weechat.org/files/doc/stable/weechat_user.en.html
     weechat-api             b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
     weechat-changes         b https://github.com/weechat/weechat/blob/master/ChangeLog.adoc
+    xlib-translations       b http://menehune.opt.wfu.edu/Kokua/Irix_6.5.21_doc_cd/usr/share/Insight/library/SGI_bookshelves/SGI_Developer/books/XLib_WinSys/sgi_html/ch08.html
     xmonad                  b /usr/share/doc/xmonad/html/index.html
     yaml                    b http://yaml.org/refcard.html
     yt                      sr youtube {}
@@ -264,6 +279,7 @@ done <<-EOF
     bbc4                    playx http://tvcatchup.com/watch/bbcfour
     channel4                playx http://tvcatchup.com/watch/channel4
     channel5                playx http://tvcatchup.com/watch/five
+    iss-hd                  playx http://www.ustream.tv/channel/iss-hdev-payload
     itv                     playx http://tvcatchup.com/watch/itv
     nasatv                  playx http://www.ustream.tv/nasahdtv
     rtvs1                   playx http://www.rtvs.sk/televizia/live-1
@@ -297,10 +313,11 @@ EOF
 
 k=${1-}
 if [[ ! $k ]]; then
-    read -r k q < <(IFS=$'\n'; echo "${!map[*]}" | sort | dmenu1 "$prgname")
+    tmp=$(printf '%s\n' "${!map[@]}" | sort | dmenu1 -p "$prgname")
+    read -r k q <<<"$tmp"
     [[ $k ]] || exit 1
 else
-    q=$(dmenu1 "$prgname $k" </dev/null)
+    q=$(dmenu1 -p "$prgname $k" </dev/null)
 fi
 export SURFRAW_quote_ifs='no'
 eval exec "${map[$k]/\{\}/\'$q\'}"

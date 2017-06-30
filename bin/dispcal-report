@@ -1,20 +1,23 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
+set -eu
 
 prgname=${0##*/}
 
 echo $'\n--------------------------------------------------'
-echo $'> _ICC_PROFILE atoms:'
+echo $'> _ICC_PROFILE atoms:\n'
 
-readarray -t dall < <(dispcal -h |& LC_ALL=C grep -F Output | sed -r 's/^\s*//')
+readarray -t dall < <(
+    dispwin -h |& sed -nr "s/^\s*([0-9]+ = 'Screen [0-9]+, Output .*)/\1/p"
+)
+(( ${#dall[@]} )) || exit 1
 for (( i=0; i<${#dall[@]}; i++ )); do
     (( i > 0 )) && atom=_ICC_PROFILE_$i || atom=_ICC_PROFILE
     xprop -root -len 8 "$atom"
 done
 
 echo $'\n--------------------------------------------------'
-echo '> Select display / monitor to continue:'
+echo $'> Select display to continue:\n'
 
 printf '%s\n' "${dall[@]}"
 echo
@@ -27,12 +30,20 @@ if [[ ! $dsel =~ ^[1-9]$ ]] || (( dsel > ${#dall[@]} )); then
 fi
 printf '%s\n' "${dall[$((dsel-1))]}"
 
-echo $'\n--------------------------------------------------'
-echo '> Uncalibrated display:'
-gopts=(-v2 -d$dsel -ye -P '0.5,0.5,2.0' -Yp)
-dispcal "${gopts[@]}" -R
+# ----------------------------------------
+
+# ArgyllCMS doesn't handle SIGINT properly
+trap 'trap - INT; kill -INT -$$' INT
+
+gopts=(-v -d$dsel -ye -Yp -P '0.5,0.5,2.0')
 
 echo $'\n--------------------------------------------------'
-echo '> Calibrated display:'
+echo $'> Calibrated display:\n'
+
 dispcal "${gopts[@]}" -r
+
+echo $'\n--------------------------------------------------'
+echo $'> Uncalibrated display:\n'
+
+dispcal "${gopts[@]}" -R
 echo

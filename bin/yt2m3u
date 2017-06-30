@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+
+yt_video() {
+    curl -sSL -G \
+        -d "id=$1" \
+        -d "key=$key" \
+        -d 'part=id,snippet' \
+        -o res \
+        https://www.googleapis.com/youtube/v3/videos
+    jq -r '.items[] | "#EXTINF:0," + .snippet.title + "\nytdl://" + .id' <res
+}
+
+yt_playlist() {
+    local np
+    curl -sSL -G \
+        -d "key=$key" \
+        -d "pageToken=${2-}" \
+        -d "playlistId=$1" \
+        -d 'maxResults=50' \
+        -d 'part=id,snippet' \
+        -o tmp \
+        https://www.googleapis.com/youtube/v3/playlistItems
+    cat tmp >>res
+    if np=$(jq -re '.nextPageToken' <tmp); then
+        yt_playlist "$1" "$np"
+        return
+    fi
+    jq -r '.items[].snippet | "#EXTINF:0," + .title + "\nytdl://" + .resourceId.videoId' <res
+}
+
+yt_channel() {
+    local np
+    curl -sSL -G \
+        -d "channelId=$1" \
+        -d "key=$key" \
+        -d "pageToken=${2-}" \
+        -d 'maxResults=50' \
+        -d 'order=date' \
+        -d 'part=id,snippet' \
+        -d 'type=video' \
+        -o tmp \
+        https://www.googleapis.com/youtube/v3/search
+    cat tmp >>res
+    if np=$(jq -re '.nextPageToken' <tmp); then
+        yt_channel "$1" "$np"
+        return
+    fi
+    jq -r '.items[] | "#EXTINF:0," + .snippet.title + "\nytdl://" + .id.videoId' <res
+}
+
+yt_user() {
+    local id
+    curl -sSL -G \
+        -d "forUsername=$1" \
+        -d "key=$key" \
+        -d 'part=id' \
+        -o tmp \
+        https://www.googleapis.com/youtube/v3/channels
+    if id=$(jq -re '.items[].id' <tmp); then
+        yt_channel "$id"
+    fi
+}
+
+handle() {
+    set -eu
+
+    key=$(<~/.yt)
+    tmpdir=$(mktemp -d)
+    cleanup() { rm -rf "$tmpdir"; }
+    trap cleanup EXIT
+
+    cd "$tmpdir"
+
+    if [[ $1 =~ ^https?://www\.youtube\.com/watch\?v=(.*) ]]; then
+        yt_video "${BASH_REMATCH[1]}"
+    elif [[ $1 =~ ^https?://www\.youtube\.com/playlist\?list=(.*) ]]; then
+        yt_playlist "${BASH_REMATCH[1]}"
+    elif [[ $1 =~ ^https?://www\.youtube\.com/channel/(.*)/videos$ ]]; then
+        yt_channel "${BASH_REMATCH[1]}"
+    elif [[ $1 =~ ^https?://www\.youtube\.com/user/(.*)/videos$ ]]; then
+        yt_user "${BASH_REMATCH[1]}"
+    else
+        printf '%s\n' "$1"
+    fi
+}
+
+handle1() {
+    [[ $1 =~ ^https?://www\.youtube\.com/ ]] || {
+        printf '%s\n' "$1"
+        return
+    }
+    youtube-dl --no-warnings --no-playlist -J -- "$1" | jq -r '
+        if ._type == "playlist" then
+            .entries[] | "#EXTINF:0," + .title + "\nytdl://" + .id
+        else
+            "#EXTINF:0," + .title + "\nytdl://" + .id
+        end
+    '
+}
+
+export -f yt_video yt_playlist yt_channel yt_user handle handle1
+parallel -j10 -k handle {}

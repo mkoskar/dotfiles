@@ -11,9 +11,8 @@ printf '%s: %s\n' "$prgname" "$*" >&2
 
 cleanup() {
     local retstat=$?
-    local pids; pids=($(jobs -p))
-    (( ${#pids[@]} )) && kill "${pids[@]}"
     printf '%s: exit %s\n' "$prgname" "$retstat" >&2
+    kill 0
 }
 trap cleanup EXIT
 
