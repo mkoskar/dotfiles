@@ -1,16 +1,56 @@
-keymap 0 LINE_BEGIN
+# See also:
+#
+#   /usr/share/doc/w3m/README.func
+#   /usr/share/doc/w3m/keymap.default
 
-keymap C-D NEXT_PAGE
-keymap C-U PREV_PAGE
+keymap + NULL
+keymap - NULL
+keymap B NULL
+keymap C-A NULL
+keymap C-U NULL
+keymap C-V NULL
+keymap U NULL
+keymap W NULL
+keymap a NULL
+keymap r NULL
+keymap { NULL
+keymap } NULL
+
+keymap C-F NEXT_PAGE
+keymap C-B PREV_PAGE
+keymap C-D NEXT_HALF_PAGE
+keymap C-U PREV_HALF_PAGE
+
+keymap C-O UNDO
+keymap M-[Z UNDO
+keymap M-TAB UNDO
+keymap C-I REDO
+
+keymap M-f NEXT_WORD
+keymap b PREV_WORD
 
 keymap C-N NEXT_LINK
 keymap M-j NEXT_LINK
 keymap J NEXT_LINK
-
 keymap C-P PREV_LINK
 keymap M-k PREV_LINK
 keymap K PREV_LINK
 
+keymap M-l NEXT_TAB
+keymap M-h PREV_TAB
+keymap M-L TAB_RIGHT
+keymap M-H TAB_LEFT
+
+keymap O GOTO
 keymap o GOTO_LINK
-keymap O EXTERN_LINK
-keymap C-O OPTIONS
+keymap SPC GOTO_LINK
+keymap T TAB_GOTO
+keymap t TAB_LINK
+
+keymap M-n NEW_TAB
+keymap d CLOSE_TAB
+
+keymap "M-;" LIST_MENU
+keymap 0 LINE_BEGIN
+keymap ? HELP
+keymap H BACK

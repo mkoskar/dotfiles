@@ -18,7 +18,7 @@ outfile="screencast-$ts.mkv"
 
 (exec 8>"$lockfile"
 if ! flock -n 8; then
-    notify "___ $prgname ON ___"
+    notify -u critical "$prgname: IN PROGRESS"
     exit 3
 fi
 

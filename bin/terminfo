@@ -27,12 +27,12 @@ echo
 infocmp -D
 
 echo
-echo "> infocmp -A /usr/share/terminfo $TERM $TERM"
+echo "> infocmp -a -A /usr/share/terminfo $TERM $TERM"
 echo
-infocmp -A /usr/share/terminfo "$TERM" "$TERM" || true
+infocmp -a -A /usr/share/terminfo "$TERM" "$TERM" || true
 
 echo $'\n--------------------------------------------------'
-infocmp -1 | sed -nr '1,2p; /\b(bce|kbs|kdch1|smso|sitm)=/p'
+infocmp -a -1 | sed -nr '1,2p; /\b(bce|kbs|kdch1|smso|sitm)=/p'
 
 echo $'\n--------------------------------------------------'
 stty -a | perl -n -e '/\b(erase = .*?);/ && print "stty $1\n"'

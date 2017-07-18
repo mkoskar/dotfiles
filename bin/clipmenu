@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+prgname=${0##*/}
+
+out() {
+    local id=$1 tmpfile=$2 tmp lines bytes
+    tmp=$(wc -cl <"$tmpfile")
+    read -r lines bytes <<<"$tmp"
+    if (( bytes > 0 )); then
+        tmp=$(head -c 50 <"$tmpfile" | squash | asciionly)
+        printf "%s%d:%d$sep%s\n" "$id" "$lines" "$bytes" "$tmp"
+    fi
+}
+
+tmpdir=$(mktemp -d)
+cleanup() { rm -rf "$tmpdir"; }
+trap cleanup EXIT
+
+cd "$tmpdir"
+
+sep='|'
+id_psel="psel$sep"
+id_clip="clip$sep"
+prompt=${1:-$prgname}
+
+tmp=$({
+    xclip -o >psel
+    out "$id_psel" psel
+    xclip -o -selection clipboard >clip
+    out "$id_clip" clip
+} | dmenu1 -p "$prompt")
+read -r sel <<<"$tmp"
+
+case $sel in
+    "$id_psel"*)
+        cat psel
+        ;;
+    "$id_clip"*)
+        cat clip
+        ;;
+    *)
+        printf '%s' "$sel"
+        ;;
+esac

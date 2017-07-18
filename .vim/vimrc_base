@@ -232,8 +232,14 @@ set title
 set mouse=
 
 
-" GUI
+" TUI/GUI
 " ----------------------------------------
+
+if !has('nvim')
+    let &t_EI = "\e[2 q"
+    let &t_SR = "\e[4 q"
+    let &t_SI = "\e[6 q"
+endif
 
 set guicursor+=a:blinkon0
 set guifont=Monaco\ 12
@@ -435,14 +441,6 @@ set iminsert=0
 set imsearch=-1
 
 
-" Multi-byte Characters
-" ----------------------------------------
-
-if has('vim_starting')
-    set encoding=utf-8
-endif
-
-
 " Various
 " ----------------------------------------
 
@@ -528,6 +526,13 @@ xnoremap <silent> <Leader>ps :!striplns<CR>
 nnoremap <silent> <Leader>ps :%!striplns<CR>
 xnoremap <silent> <Leader>pS :!squashlns<CR>
 nnoremap <silent> <Leader>pS :%!squashlns<CR>
+
+" Open URLs
+xnoremap <silent> <Leader>xu :SystemRange! urls-open<CR>
+nnoremap <silent> <Leader>xu :exec line('w0').','.line('w$').'SystemRange! urls-open'<CR>
+
+" GIT
+nnoremap <Leader>gg :vert System git show HEAD:./
 
 " ----------------------------------------
 

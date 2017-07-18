@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -eu
+
+ifile=${1-}
+
+if [[ ! $ifile ]]; then
+    tmpfile=$(mktemp)
+    cleanup() { rm -f "$tmpfile"; }
+    trap cleanup EXIT
+    cat >"$tmpfile"
+    ifile=$tmpfile
+fi
+
+tmp=$(wc "$ifile")
+read -r lines words bytes _ <<<"$tmp"
+printf '\n%d bytes, %d words, %d lines\n' "$bytes" "$words" "$lines"
+echo
+
+file -b --mime "$ifile"
+file -b "$ifile"
+echo
+
+declare -i n=128
+echo "(Canonical hexdump limited to first $n bytes)"
+hexdump -C -n "$n" "$ifile"
+echo

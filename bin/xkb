@@ -13,16 +13,24 @@ if [[ $prgname = 'xkb-reset' ]]; then
     # shift:both_capslock_cancel    Both Shift keys together activate Caps Lock, one Shift key deactivates.
     # terminate:ctrl_alt_bksp       Key sequence to kill the X server.
 
-    setxkbmap -model pc105 \
-              -layout us,sk,cz \
-              -variant cz_sk_de,qwerty,qwerty \
-              -option \
-              -option caps:ctrl_modifier \
-              -option keypad:pointerkeys \
-              -option lv3:ralt_switch_multikey \
-              -option nbsp:level3 \
-              -option shift:both_capslock_cancel \
-              -option terminate:ctrl_alt_bksp
+    # shellcheck disable=SC2054
+    opts=(
+        -model pc105
+        -layout us,sk,cz
+        -variant cz_sk_de,qwerty,qwerty
+        -option
+        -option caps:ctrl_modifier
+        -option keypad:pointerkeys
+        -option lv3:ralt_switch_multikey
+        -option nbsp:level3
+        -option shift:both_capslock_cancel
+        -option terminate:ctrl_alt_bksp
+    )
+
+    setxkbmap "${opts[@]}"
+
+    xtest=$(xinput list --id-only 'keyboard:Virtual core XTEST keyboard')
+    [[ $xtest ]] && setxkbmap "${opts[@]}" -device "$xtest"
 
     set -- 0
 fi

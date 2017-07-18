@@ -72,86 +72,88 @@ path="$HOME/.config/$bin_name"
 mkdir -p "$path"
 cd "$path"
 
-if [[ ! $profile =~ ^plain(-|$) ]]; then
-    cat >user.js <<-EOF
-		//user_pref('browser.tabs.remote.force-enable', true);
-		//user_pref('browser.urlbar.formatting.enabled', false);
-		//user_pref('layers.acceleration.force-enabled', true);
+if [[ ! -f user.js ]]; then
+    if [[ ! $profile =~ ^plain(-|$) ]]; then
+        cat >user.js <<-EOF
+			//user_pref('browser.tabs.remote.force-enable', true);
+			//user_pref('browser.urlbar.formatting.enabled', false);
+			//user_pref('layers.acceleration.force-enabled', true);
 
-		user_pref('accessibility.blockautorefresh', true);
-		user_pref('browser.ctrlTab.previews', true);
-		user_pref('browser.fixup.alternate.enabled', false);
-		user_pref('browser.newtabpage.directory.ping', '');
-		user_pref('browser.newtabpage.directory.source', '');
-		user_pref('browser.newtabpage.enabled', false);
-		user_pref('browser.newtabpage.enhanced', false);
-		user_pref('browser.search.geoSpecificDefaults', false);
-		user_pref('browser.shell.checkDefaultBrowser', false);
-		user_pref('browser.startup.homepage', 'about:blank');
-		user_pref('browser.startup.homepage_override.mstone', 'ignore');
-		user_pref('browser.startup.page', 3);
-		user_pref('browser.tabs.animate', false);
-		user_pref('browser.tabs.closeWindowWithLastTab', false);
-		user_pref('browser.tabs.warnOnClose', false);
-		user_pref('browser.tabs.warnOnCloseOtherTabs', false);
-		user_pref('browser.tabs.warnOnOpen', false);
-		user_pref('browser.urlbar.suggest.searches', true);
-		user_pref('datareporting.policy.dataSubmissionEnabled', false);
-		user_pref('devtools.chrome.enabled', true);
-		user_pref('devtools.command-button-measure.enabled', true);
-		user_pref('devtools.command-button-paintflashing.enabled', true);
-		user_pref('devtools.command-button-rulers.enabled', true);
-		user_pref('devtools.debugger.remote-enabled', true);
-		user_pref('devtools.dom.enabled', true);
-		user_pref('devtools.editor.keymap', 'vim');
-		user_pref('devtools.editor.tabsize', 4);
-		user_pref('devtools.inspector.showUserAgentStyles', true);
-		user_pref('devtools.scratchpad.enabled', true);
-		user_pref('devtools.webconsole.persistlog', true);
-		user_pref('devtools.webconsole.timestampMessages', true);
-		user_pref('plugin.defaultXpi.state', 1);
-		user_pref('plugin.state.flash', 1);
-		user_pref('plugin.state.java', 1);
-		user_pref('privacy.cpd.offlineApps', true);
-		user_pref('privacy.cpd.openWindows', true);
-		user_pref('privacy.cpd.siteSettings', true);
-		user_pref('reader.parse-on-load.enabled', false);
-		user_pref('security.ssl.require_safe_negotiation', true);
-		user_pref('security.ssl3.dhe_rsa_aes_128_sha', false);
-		user_pref('security.ssl3.dhe_rsa_aes_256_sha', false);
-		user_pref('toolkit.telemetry.archive.enabled', false);
-		user_pref('toolkit.telemetry.enabled', false);
-		user_pref('toolkit.telemetry.unified', false);
-	EOF
+			user_pref('accessibility.blockautorefresh', true);
+			user_pref('browser.ctrlTab.previews', true);
+			user_pref('browser.fixup.alternate.enabled', false);
+			user_pref('browser.newtabpage.directory.ping', '');
+			user_pref('browser.newtabpage.directory.source', '');
+			user_pref('browser.newtabpage.enabled', false);
+			user_pref('browser.newtabpage.enhanced', false);
+			user_pref('browser.search.geoSpecificDefaults', false);
+			user_pref('browser.shell.checkDefaultBrowser', false);
+			user_pref('browser.startup.homepage', 'about:blank');
+			user_pref('browser.startup.homepage_override.mstone', 'ignore');
+			user_pref('browser.startup.page', 3);
+			user_pref('browser.tabs.animate', false);
+			user_pref('browser.tabs.closeWindowWithLastTab', false);
+			user_pref('browser.tabs.warnOnClose', false);
+			user_pref('browser.tabs.warnOnCloseOtherTabs', false);
+			user_pref('browser.tabs.warnOnOpen', false);
+			user_pref('browser.urlbar.suggest.searches', true);
+			user_pref('datareporting.policy.dataSubmissionEnabled', false);
+			user_pref('devtools.chrome.enabled', true);
+			user_pref('devtools.command-button-measure.enabled', true);
+			user_pref('devtools.command-button-paintflashing.enabled', true);
+			user_pref('devtools.command-button-rulers.enabled', true);
+			user_pref('devtools.debugger.remote-enabled', true);
+			user_pref('devtools.dom.enabled', true);
+			user_pref('devtools.editor.keymap', 'vim');
+			user_pref('devtools.editor.tabsize', 4);
+			user_pref('devtools.inspector.showUserAgentStyles', true);
+			user_pref('devtools.scratchpad.enabled', true);
+			user_pref('devtools.webconsole.persistlog', true);
+			user_pref('devtools.webconsole.timestampMessages', true);
+			user_pref('plugin.defaultXpi.state', 1);
+			user_pref('plugin.state.flash', 1);
+			user_pref('plugin.state.java', 1);
+			user_pref('privacy.cpd.offlineApps', true);
+			user_pref('privacy.cpd.openWindows', true);
+			user_pref('privacy.cpd.siteSettings', true);
+			user_pref('reader.parse-on-load.enabled', false);
+			user_pref('security.ssl.require_safe_negotiation', true);
+			user_pref('security.ssl3.dhe_rsa_aes_128_sha', false);
+			user_pref('security.ssl3.dhe_rsa_aes_256_sha', false);
+			user_pref('toolkit.telemetry.archive.enabled', false);
+			user_pref('toolkit.telemetry.enabled', false);
+			user_pref('toolkit.telemetry.unified', false);
+		EOF
 
-    [[ ! $profile =~ ^(dev|lab)(-|$) ]] && cat >>user.js <<-EOF
+        [[ ! $profile =~ ^(dev|lab)(-|$) ]] && cat >>user.js <<-EOF
 
-		user_pref('media.peerconnection.enabled', false);
-		user_pref('media.peerconnection.ice.default_address_only', true);
-		user_pref('network.http.pipelining', true);
-		user_pref('network.http.proxy.pipelining', true);
-		user_pref('network.http.referer.XOriginPolicy', 1);
-		user_pref('network.http.referer.spoofSource', true);
-		user_pref('privacy.donottrackheader.enabled', true);
-		user_pref('privacy.trackingprotection.enabled', true);
-	EOF
+			user_pref('media.peerconnection.enabled', false);
+			user_pref('media.peerconnection.ice.default_address_only', true);
+			user_pref('network.http.pipelining', true);
+			user_pref('network.http.proxy.pipelining', true);
+			user_pref('network.http.referer.XOriginPolicy', 1);
+			user_pref('network.http.referer.spoofSource', true);
+			user_pref('privacy.donottrackheader.enabled', true);
+			user_pref('privacy.trackingprotection.enabled', true);
+		EOF
 
-    [[ $profile = 'default' ]] && cat >>user.js <<-EOF
+        [[ $profile = 'default' ]] && cat >>user.js <<-EOF
 
-		//user_pref('signon. rememberSignons', false);
+			//user_pref('signon. rememberSignons', false);
 
-		user_pref('beacon.enabled', false);
-		user_pref('browser.safebrowsing.enabled', false);
-		user_pref('browser.safebrowsing.malware.enabled', false);
-		user_pref('dom.battery.enabled', false);
-		user_pref('dom.event.clipboardevents.enabled', false);
-		user_pref('geo.enabled', false);
-		user_pref('network.cookie.cookieBehavior', 1);
-		user_pref('network.cookie.lifetimePolicy', 2);
-		user_pref('webgl.disabled', true);
+			user_pref('beacon.enabled', false);
+			user_pref('browser.safebrowsing.enabled', false);
+			user_pref('browser.safebrowsing.malware.enabled', false);
+			user_pref('dom.battery.enabled', false);
+			user_pref('dom.event.clipboardevents.enabled', false);
+			user_pref('geo.enabled', false);
+			user_pref('network.cookie.cookieBehavior', 1);
+			user_pref('network.cookie.lifetimePolicy', 2);
+			user_pref('webgl.disabled', true);
 
-		user_pref('extensions.VimFx.config_file_directory', '~/.config/vimfx');
-	EOF
+			user_pref('extensions.VimFx.config_file_directory', '~/.config/vimfx');
+		EOF
+    fi
 fi
 
 mkdir -p chrome
@@ -164,65 +166,65 @@ case $profile in
     *)          frame_color='#FF9900' ;;
 esac
 
-cat >userChrome.css <<-EOF
-	#urlbar {
-	    -moz-box-direction: reverse;
-	}
+if [[ ! -f userChrome.css ]]; then
+    cat >userChrome.css <<-EOF
+		#urlbar {
+		    -moz-box-direction: reverse;
+		}
 
-	.urlbar-textbox-container {
-	    padding-right: 3px !important;
-	}
+		.urlbar-textbox-container {
+		    padding-right: 3px !important;
+		}
 
-	#identity-box {
-	    padding-inline-start: 5px !important;
-	}
+		#identity-box {
+		    padding-inline-start: 5px !important;
+		}
 
-	#notification-popup-box:not([hidden]) + #identity-box {
-	    padding-inline-start: 12px !important;
-	}
+		#notification-popup-box:not([hidden]) + #identity-box {
+		    padding-inline-start: 12px !important;
+		}
 
-	#notification-popup-box {
-	    padding-left: 3px !important;
-	}
+		#notification-popup-box {
+		    padding-left: 3px !important;
+		}
 
-	#urlbar > .chromeclass-toolbar-additional {
-	    border-inline-end: 1px solid var(--urlbar-separator-color) !important;
-	    border-inline-start: none !important;
-	    margin: 0 !important;
-	    padding: 0 4px 1px 5px !important;
-	}
+		#urlbar > .chromeclass-toolbar-additional {
+		    border-inline-end: 1px solid var(--urlbar-separator-color) !important;
+		    border-inline-start: none !important;
+		    margin: 0 !important;
+		    padding: 0 4px 1px 5px !important;
+		}
 
-	#urlbar-wrapper > #forward-button[disabled] + #urlbar > .chromeclass-toolbar-additional {
-	    padding-inline-start: calc(var(--backbutton-urlbar-overlap) + 5px) !important;
-	}
+		#urlbar-wrapper > #forward-button[disabled] + #urlbar > .chromeclass-toolbar-additional {
+		    padding-inline-start: calc(var(--backbutton-urlbar-overlap) + 5px) !important;
+		}
 
-	#VimFxMarkersContainer .marker {
-	    font-size: 1em !important;
-	    font-weight: normal !important;
-	}
+		#VimFxMarkersContainer .marker {
+		    font-size: 1em !important;
+		    font-weight: normal !important;
+		}
 
-	#main-window[vimfx-focus-type="editable"] #urlbar {
-	    background: #DFF2E0 !important;
-	}
+		#main-window[vimfx-focus-type="editable"] #urlbar {
+		    background: #DFF2E0 !important;
+		}
 
-	#main-window[vimfx-mode="ignore"] #urlbar {
-	    background: #FFE8E4 !important;
-	}
-EOF
+		#main-window[vimfx-mode="ignore"] #urlbar {
+		    background: #FFE8E4 !important;
+		}
+	EOF
 
-[[ $profile != 'default' ]] && cat >>userChrome.css <<-EOF
+    [[ $profile != 'default' ]] && cat >>userChrome.css <<-EOF
 
-	#TabsToolbar::before {
-	    content: "$profile";
-	    background: $frame_color;
-	    color: white;
-	    display: -moz-box;
-	    font-family: monospace;
-	    font-weight: bold;
-	    padding: 7px 5px 0;
-	}
-EOF
-
-touch userContent.css
+		#TabsToolbar::before {
+		    content: "$profile";
+		    background: $frame_color;
+		    color: white;
+		    display: -moz-box;
+		    font-family: monospace;
+		    font-weight: bold;
+		    padding: 7px 5px 0;
+		}
+	EOF
+fi
 
 exec "$bin" --class "Firefox ($profile)" --profile "$path" "$@"

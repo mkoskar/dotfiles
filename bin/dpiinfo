@@ -22,5 +22,5 @@ xdpyinfo | grep -PA2 '^screen #\d'
 echo $'\n--------------------------------------------------'
 echo $'> Xft:\n'
 
-xrdb -q | grep -P '^Xft.dpi:'
+xrdb -q | grep '^Xft\.dpi:'
 echo

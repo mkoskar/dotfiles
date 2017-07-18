@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 shopt -s extglob
 
 prgname=${0##*/}
@@ -9,9 +9,12 @@ prgname=${0##*/}
 exec 2>/dev/null
 
 cleanup() {
-    local retstat=$?
+    local retstat=$? tmp tmp_
     if (( retstat )); then
-        notify "___ $prgname FAIL ___"
+        tmp=$(squash <<<"$src" | asciionly)
+        tmp_=${tmp:0:40}
+        (( ${#tmp} > ${#tmp_} )) && tmp_+='…'
+        notify -u critical "$prgname $tmp_"
     fi
 }
 trap cleanup EXIT
@@ -30,7 +33,12 @@ case $src in
             -- "$src"
         exit
         ;;
+    http?(s)://* \
+        )
+        [[ -t 1 ]] || exec >/dev/null 2>&1
+        mpv --force-window=immediate --force-media-title="${2-}" -- "$src"
+        ;;
+    *)
+        exit 3
+        ;;
 esac
-
-[[ -t 1 ]] || exec >/dev/null 2>&1
-mpv --force-window=immediate -- "$src"

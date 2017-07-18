@@ -4,7 +4,7 @@
 
 set -euf
 
-readarray -t mounts < <(grep -P '^jmtpfs ' /proc/mounts | sort -u)
+readarray -t mounts < <(grep '^jmtpfs ' /proc/mounts | sort -u)
 if (( ${#mounts[@]} > 0 )); then
     echo -e "\nMounts:\n${mounts[*]}"
     echo

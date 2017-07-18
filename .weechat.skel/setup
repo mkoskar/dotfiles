@@ -48,6 +48,12 @@
 /set irc.server.freenode.sasl_key %h/keys/irc_sasl.pem
 /set irc.server.freenode.sasl_mechanism ecdsa-nist256p-challenge
 
+/server del freenode-tor
+/server copy freenode freenode-tor
+/set irc.server.freenode-tor.addresses freenodeok2gncmy.onion
+/set irc.server.freenode-tor.proxy tor
+/set irc.server.freenode-tor.ssl off
+
 /server del gitter
 /server add gitter irc.gitter.im/6697
 /set irc.server.gitter.autojoin #neovim/neovim
@@ -280,6 +286,7 @@
 /key bind meta-jmeta-b /window bare
 /key bind meta-jmeta-j /cursor go chat
 /key bind meta-jmeta-n /cursor go nicklist
+/key bind meta-jmeta-u /urls_open
 /key bind meta-s /server jump
 /key bind meta-wmeta-h /window left
 /key bind meta-wmeta-j /window down

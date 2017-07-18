@@ -65,6 +65,7 @@ done <<-EOF
     docker                  b https://github.com/wsargent/docker-cheat-sheet
     docker-compose          b https://docs.docker.com/compose/compose-file/
     dockerfile              b https://docs.docker.com/engine/reference/builder/
+    dom-spec                b https://dom.spec.whatwg.org/
     ecma                    b http://www.ecma-international.org/publications/standards/Standard.htm
     emoji                   b https://en.wikipedia.org/wiki/List_of_emoticons
     filenames               b http://www.dwheeler.com/essays/filenames-in-shell.html
@@ -113,6 +114,7 @@ done <<-EOF
     hibernate-orm           b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
     hn                      b https://news.ycombinator.com/
     html-spec               b https://html.spec.whatwg.org/multipage/
+    html-spec-webdev        b https://html.spec.whatwg.org/dev/
     http                    b https://tools.ietf.org/html/rfc2616
     i                       sr ixquick {}
     ii                      sr ixquick -search=pics {}
@@ -209,7 +211,7 @@ done <<-EOF
     quotes                  b https://www.cl.cam.ac.uk/~mgk25/ucs/quotes.html
     qutebrowser             b http://qutebrowser.org/img/cheatsheet-big.png
     realworldhaskell        b http://book.realworldhaskell.org/read/
-    regex-gnu               b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html
+    regex-gnulib            b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html
     regex-java              b /usr/share/doc/java/api/java/util/regex/Pattern.html
     regex-js                b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
     regex-pcre              b /usr/share/doc/pcre/html/pcresyntax.html
@@ -223,8 +225,9 @@ done <<-EOF
     rst-demo                b ~/projects/lab/docutils/showcase/_build/html/index.html
     rtfm-faqs               b ftp://rtfm.mit.edu/pub/faqs/
     rtfm-usenet             b ftp://rtfm.mit.edu/pub/usenet/
-    rust                    b http://doc.rust-lang.org/reference.html
-    rust-api                b http://doc.rust-lang.org/std/
+    rust                    b https://doc.rust-lang.org/reference/
+    rust-api                b https://doc.rust-lang.org/std/
+    rust-book               b https://doc.rust-lang.org/book/
     scala                   b http://www.scala-lang.org/api/current/
     sed                     b https://www.gnu.org/software/sed/manual/sed.html
     shakespeare             b http://shakespeare.mit.edu/
@@ -254,12 +257,12 @@ done <<-EOF
     unicode-charts          b http://unicode.org/charts/
     unicode-convert         b https://r12a.github.io/apps/conversion/
     unicode-emoji           b http://www.unicode.org/emoji/charts/full-emoji-list.html
-    unicode-fonts           b http://www.unicode.org/resources/fonts.html
-    unicode-fonts1          b http://www.wazu.jp/
     unicode-gallery         b http://xahlee.info/comp/unicode_index.html
+    unicode-math            b http://www.unicode.org/Public/math/revision-15/MathClassEx-15.html
     unicode-table           b http://unicode-table.com/
     unix-history            b https://upload.wikimedia.org/wikipedia/commons/c/cd/Unix_timeline.en.svg
     unix-history1           b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
+    url                     b https://url.spec.whatwg.org/
     usb-connectors          b https://en.wikipedia.org/wiki/USB#Host_and_device_interface_receptacles
     util-linux              b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
     w                       sr wikipedia {}
@@ -272,6 +275,11 @@ done <<-EOF
     yt                      sr youtube {}
     zsh                     b /usr/share/doc/zsh/html/index.html
 
+    iss-hd                  playx http://www.ustream.tv/channel/iss-hdev-payload
+    nasatv                  playx http://www.ustream.tv/nasahdtv
+    rtvs1                   playx http://www.rtvs.sk/televizia/live-1
+    rtvs2                   playx http://www.rtvs.sk/televizia/live-2
+
     bbc-news                playx http://tvcatchup.com/watch/bbcnews
     bbc-red                 playx http://tvcatchup.com/watch/bbcredbutton
     bbc1                    playx http://tvcatchup.com/watch/bbcone
@@ -279,11 +287,14 @@ done <<-EOF
     bbc4                    playx http://tvcatchup.com/watch/bbcfour
     channel4                playx http://tvcatchup.com/watch/channel4
     channel5                playx http://tvcatchup.com/watch/five
-    iss-hd                  playx http://www.ustream.tv/channel/iss-hdev-payload
     itv                     playx http://tvcatchup.com/watch/itv
-    nasatv                  playx http://www.ustream.tv/nasahdtv
-    rtvs1                   playx http://www.rtvs.sk/televizia/live-1
-    rtvs2                   playx http://www.rtvs.sk/televizia/live-2
+    skys-f1                 playx http://185.142.239.164:3135/F1/Sports/index.m3u8 'Sky Sports F1'
+    skys-news               playx http://185.142.239.164:3135/News.Sports/index.m3u8 'Sky Sports News'
+    skys1                   playx http://185.142.239.164:3135/1/Sports/index.m3u8 'Sky Sports 1'
+    skys2                   playx http://185.142.239.164:3135/2/Sports/index.m3u8 'Sky Sports 2'
+    skys3                   playx http://185.142.239.164:3135/3/Sports/index.m3u8 'Sky Sports 3'
+    skys4                   playx http://185.142.239.164:3135/4/Sports/index.m3u8 'Sky Sports 4'
+    skys5                   playx http://185.142.239.164:3135/5/Sports/index.m3u8 'Sky Sports 5'
     viva                    playx http://tvcatchup.com/watch/viva
 
     fahrenheit              sr google {} fahrenheit in celsius

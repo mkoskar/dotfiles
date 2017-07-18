@@ -27,7 +27,7 @@ case $prgname in
         cleanup() { rm -f "$tmpfile"; }
         trap cleanup EXIT
 
-        xselmenu "$prgname" >"$tmpfile"
+        clipmenu "$prgname" >"$tmpfile"
         clipi <"$tmpfile"
         ;;
 esac

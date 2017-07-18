@@ -33,6 +33,9 @@ bin=${TERMBIN:-urxvtc}
 name=${name:-term}
 
 case $bin in
+    mlterm)
+        exec "$bin" -N "$name" -e "$@"
+        ;;
     st)
         exec "$bin" -n "$name" -e "$@"
         ;;

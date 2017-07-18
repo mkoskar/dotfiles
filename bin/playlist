@@ -6,6 +6,7 @@ prgname=${0##*/}
 
 playlists=("$@")
 
+# TODO: move somewhere else
 cd ~/download/playlists
 
 if (( ! ${#playlists[@]} )); then
@@ -28,4 +29,4 @@ trap cleanup EXIT
 cat -- "${playlists[@]}" | yt2m3u >"$tmpfile"
 
 [[ -t 1 ]] || exec >/dev/null 2>&1
-mpv --no-stop-screensaver --force-window=immediate --loop-playlist "$tmpfile"
+mpv --force-window=immediate "$tmpfile"

@@ -121,11 +121,11 @@ bind index          zm          collapse-all
 bind index          zr          collapse-all
 bind index          zc          collapse-thread
 bind index          zo          collapse-thread
+bind index          ,           next-unread-mailbox
 bind index,pager    &           noop
 bind index,pager    \#          noop
 bind index,pager    o           noop
 bind index,pager    O           noop
-bind index          ,           next-unread-mailbox
 bind index,pager    I           imap-fetch-mail
 bind index,pager    J           next-unread
 bind index,pager    K           previous-unread
@@ -144,7 +144,7 @@ bind index,pager    ]           next-subthread
 bind index,pager    {           previous-thread
 bind index,pager    }           next-thread
 bind index,pager    p           parent-message
-bind pager          P           print-message
+bind index,pager    p           parent-message
 
 bind pager          Q           noop
 bind pager          \e?         help
@@ -157,6 +157,12 @@ bind pager          <           previous-line
 bind pager          <return>    exit
 bind pager          ,           next-unread
 bind pager          .           previous-unread
+bind pager          P           print-message
+bind pager          \ek         previous-entry
+bind pager          \;          previous-entry
+bind pager          \ej         next-entry
+bind pager          \'          next-entry
+bind pager          <space>     skip-quoted
 
 bind alias          <tab>       exit
 
@@ -236,6 +242,7 @@ set newsrc = ~/.mutt/newsrc
 bind index,pager i change-newsgroup
 
 # NeoMutt: Other
+set skip_quoted_offset = 10
 set sort_browser = alpha
 bind index \eL limit-current-thread
 bind index,pager @ compose-to-sender

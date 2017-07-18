@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: fdm=marker
 
+from subprocess import Popen, PIPE
 import functools
 import re
 
-import weechat
+import weechat as w
 
 SCRIPT_NAME = 'custom'
 SCRIPT_AUTHOR = 'Miroslav Koskar <http://mkoskar.com/>'
@@ -21,10 +22,10 @@ class Expando(object):
 
 
 def cmd(command, buffer='', mute=True):
-    weechat.command(buffer, ('/mute ' if mute else '') + command)
+    w.command(buffer, ('/mute ' if mute else '') + command)
 
 
-weechat.register(
+w.register(
     SCRIPT_NAME,
     SCRIPT_AUTHOR,
     SCRIPT_VERSION,
@@ -33,6 +34,14 @@ weechat.register(
     '',
     '',
 )
+
+hd_buf = w.hdata_get('buffer')
+hd_ldata = w.hdata_get('line_data')
+hd_line = w.hdata_get('line')
+hd_lines = w.hdata_get('lines')
+hd_scroll = w.hdata_get('window_scroll')
+hd_win = w.hdata_get('window')
+hd_layout = w.hdata_get('layout')
 
 # }}}
 
@@ -48,11 +57,10 @@ timer_sort_merges = None
 
 
 def buffers_iter():
-    hdata = weechat.hdata_get('buffer')
-    item = weechat.hdata_get_list(hdata, 'gui_buffers')
+    item = w.hdata_get_list(hd_buf, 'gui_buffers')
     while item:
         yield item
-        item = weechat.hdata_pointer(hdata, item, 'next_buffer')
+        item = w.hdata_pointer(hd_buf, item, 'next_buffer')
 
 
 def sort_merges():
@@ -61,16 +69,16 @@ def sort_merges():
     for buffer in buffers_iter():
         bi = Expando()
         bi.buffer = buffer
-        bi.number = weechat.buffer_get_integer(buffer, 'number')
-        bi.full_name = weechat.buffer_get_string(buffer, 'full_name')
-        bi.short_name = weechat.buffer_get_string(buffer, 'short_name')
+        bi.number = w.buffer_get_integer(buffer, 'number')
+        bi.full_name = w.buffer_get_string(buffer, 'full_name')
+        bi.short_name = w.buffer_get_string(buffer, 'short_name')
         buffers = buffers_by_number.get(bi.number, [])
         buffers.append(bi)
         buffers_by_number[bi.number] = buffers
 
     def merge(a, b):
-        weechat.buffer_unmerge(b.buffer, 0)
-        weechat.buffer_merge(b.buffer, a.buffer)
+        w.buffer_unmerge(b.buffer, 0)
+        w.buffer_merge(b.buffer, a.buffer)
         return b
 
     for number, buffers in buffers_by_number.iteritems():
@@ -84,75 +92,75 @@ def sort_merges_lazy():
     global timer_sort_merges
     if timer_sort_merges:
         return
-    timer_sort_merges = weechat.hook_timer(1, 0, 1, 'cb_timer_sort_merges', '')
+    timer_sort_merges = w.hook_timer(1, 0, 1, 'cb_timer_sort_merges', '')
 
 
 def merge(buffer):
-    bname = weechat.buffer_get_string(buffer, 'full_name')
+    bname = w.buffer_get_string(buffer, 'full_name')
     for rule in MERGE_RULES:
         if re.match(rule, bname):
             for _buffer in buffers_iter():
-                _bname = weechat.buffer_get_string(_buffer, 'full_name')
+                _bname = w.buffer_get_string(_buffer, 'full_name')
                 if bname != _bname and re.match(rule, _bname):
-                    weechat.buffer_merge(buffer, _buffer)
+                    w.buffer_merge(buffer, _buffer)
                     break
             break
 
 
 def buffer_init(buffer):
-    bname = weechat.buffer_get_string(buffer, 'full_name')
+    bname = w.buffer_get_string(buffer, 'full_name')
 
     if bname == 'irc.bitlbee.#twitter_mkoskar':
-        weechat.buffer_set(buffer, 'highlight_words', '@mkoskar')
+        w.buffer_set(buffer, 'highlight_words', '@mkoskar')
 
     elif bname == 'irc.freenode.#archlinux':
-        weechat.buffer_set(buffer, 'short_name', '#arch')
+        w.buffer_set(buffer, 'short_name', '#arch')
 
     elif bname == 'irc.freenode.#archlinux-offtopic':
-        weechat.buffer_set(buffer, 'short_name', '#arch-ot')
+        w.buffer_set(buffer, 'short_name', '#arch-ot')
 
     elif bname == 'irc.gitter.#neovim/neovim':
-        weechat.buffer_set(buffer, 'short_name', '#neovim')
+        w.buffer_set(buffer, 'short_name', '#neovim')
 
-    weechat.buffer_set(buffer, 'nicklist', '0')
+    w.buffer_set(buffer, 'nicklist', '0')
 
     if bname != 'perl.highmon':
-        weechat.buffer_set(buffer, 'time_for_each_line', '0')
+        w.buffer_set(buffer, 'time_for_each_line', '0')
 
     merge(buffer)
 
 
 def channel_init(buffer):
-    bname = weechat.buffer_get_string(buffer, 'full_name')
+    bname = w.buffer_get_string(buffer, 'full_name')
     nicklist = int(re.match(r'^irc\.bitlbee\.&', bname) is not None)
-    weechat.buffer_set(buffer, 'nicklist', str(nicklist))
+    w.buffer_set(buffer, 'nicklist', str(nicklist))
 
 
 def cb_timer_sort_merges(data, remaining_calls):
     global timer_sort_merges
     sort_merges()
     timer_sort_merges = None
-    return weechat.WEECHAT_RC_OK
+    return w.WEECHAT_RC_OK
 
 
 def cb_signal_buffer_opened(data, signal, buffer):
     buffer_init(buffer)
-    return weechat.WEECHAT_RC_OK
+    return w.WEECHAT_RC_OK
 
 
 def cb_signal_irc_channel_opened(data, signal, buffer):
     channel_init(buffer)
-    return weechat.WEECHAT_RC_OK
+    return w.WEECHAT_RC_OK
 
 
-weechat.hook_signal('buffer_opened', 'cb_signal_buffer_opened', '')
-weechat.hook_signal('irc_channel_opened', 'cb_signal_irc_channel_opened', '')
+w.hook_signal('buffer_opened', 'cb_signal_buffer_opened', '')
+w.hook_signal('irc_channel_opened', 'cb_signal_irc_channel_opened', '')
 
 for buffer in buffers_iter():
     buffer_init(buffer)
 
 
-weechat.hook_command('dev1', '', '', '', '', 'cb_command_dev1', '')
+w.hook_command('dev1', '', '', '', '', 'cb_command_dev1', '')
 
 # }}}
 
@@ -162,17 +170,15 @@ weechat.hook_command('dev1', '', '', '', '', 'cb_command_dev1', '')
 
 
 def layouts_iter():
-    hdata = weechat.hdata_get('layout')
-    item = weechat.hdata_get_list(hdata, 'gui_layouts')
+    item = w.hdata_get_list(hd_layout, 'gui_layouts')
     while item:
         yield item
-        item = weechat.hdata_pointer(hdata, item, 'next_layout')
+        item = w.hdata_pointer(hd_layout, item, 'next_layout')
 
 
 def layouts_name_iter():
-    hdata = weechat.hdata_get('layout')
     for layout in layouts_iter():
-        yield weechat.hdata_string(hdata, layout, 'name')
+        yield w.hdata_string(hd_layout, layout, 'name')
 
 
 def layout_find(name):
@@ -180,22 +186,20 @@ def layout_find(name):
 
 
 def layout_current():
-    hdata = weechat.hdata_get('layout')
-    return weechat.hdata_get_list(hdata, 'gui_layout_current')
+    return w.hdata_get_list(hd_layout, 'gui_layout_current')
 
 
 def layout_current_name():
-    hdata = weechat.hdata_get('layout')
     layout_cur = layout_current()
     if layout_cur:
-        return weechat.hdata_string(hdata, layout_cur, 'name')
+        return w.hdata_string(hd_layout, layout_cur, 'name')
     return None
 
 
 def cb_command_layout_reset(data, buffer, args):
     if not args:
         cmd('/layout apply windows')
-        return weechat.WEECHAT_RC_OK
+        return w.WEECHAT_RC_OK
 
     if args == 'base':
         cmd('/window merge all')
@@ -232,10 +236,10 @@ def cb_command_layout_reset(data, buffer, args):
         cmd('/window down')
         cmd('/buffer bitlbee.&bitlbee')
 
-    return weechat.WEECHAT_RC_OK
+    return w.WEECHAT_RC_OK
 
 
-weechat.hook_command('layout_reset', '', '', '', '', 'cb_command_layout_reset', '')
+w.hook_command('layout_reset', '', '', '', '', 'cb_command_layout_reset', '')
 
 keys = {
     'meta- ': '/layout_reset',
@@ -246,7 +250,7 @@ keys = {
     'meta-;meta-5': '/layout_reset vert',
 }
 
-weechat.key_bind('default', keys)
+w.key_bind('default', keys)
 
 # }}}
 
@@ -281,7 +285,7 @@ def cb_command_tab_go(data, buffer, args):
     global tab_cur
     tab_dst = maybe_tab(args)
     if tab_dst is None:
-        return weechat.WEECHAT_RC_ERROR
+        return w.WEECHAT_RC_ERROR
     cmd('/layout apply _zoom windows')
     cmd('/layout del _zoom')
     if tab_cur is not None and layout_find(str(tab_cur)):
@@ -291,8 +295,8 @@ def cb_command_tab_go(data, buffer, args):
     else:
         cmd('/layout store %s windows' % tab_dst)
     tab_cur = tab_dst
-    weechat.bar_item_update('tabs')
-    return weechat.WEECHAT_RC_OK
+    w.bar_item_update('tabs')
+    return w.WEECHAT_RC_OK
 
 
 def cb_command_tab_next(data, buffer, args):
@@ -301,15 +305,15 @@ def cb_command_tab_next(data, buffer, args):
     tabs = tabs_all()
     if not len(tabs):
         tab_cur = None
-        weechat.bar_item_update('tabs')
-        return weechat.WEECHAT_RC_OK
+        w.bar_item_update('tabs')
+        return w.WEECHAT_RC_OK
     if tab_cur is None or len(tabs) == 1:
         tab_dst = tabs[0]
     else:
         tab_dst = next((tab for tab in tabs if tab > tab_cur),
-            tabs[-1 if norewind else 0])
+                       tabs[-1 if norewind else 0])
     cmd('/tab_go %s' % tab_dst)
-    return weechat.WEECHAT_RC_OK
+    return w.WEECHAT_RC_OK
 
 
 def cb_command_tab_prev(data, buffer, args):
@@ -318,15 +322,15 @@ def cb_command_tab_prev(data, buffer, args):
     tabs = tabs_all()
     if not len(tabs):
         tab_cur = None
-        weechat.bar_item_update('tabs')
-        return weechat.WEECHAT_RC_OK
+        w.bar_item_update('tabs')
+        return w.WEECHAT_RC_OK
     if tab_cur is None or len(tabs) == 1:
         tab_dst = tabs[0]
     else:
         tab_dst = next((tab for tab in reversed(tabs) if tab < tab_cur),
-            tabs[0 if norewind else -1])
+                       tabs[0 if norewind else -1])
     cmd('/tab_go %s' % tab_dst)
-    return weechat.WEECHAT_RC_OK
+    return w.WEECHAT_RC_OK
 
 
 def cb_command_tab_del(data, buffer, args):
@@ -336,10 +340,10 @@ def cb_command_tab_del(data, buffer, args):
     else:
         target = tab_cur
     if target is None:
-        return weechat.WEECHAT_RC_ERROR
+        return w.WEECHAT_RC_ERROR
     cmd('/layout del %s' % target)
     cmd('/tab_prev -norewind')
-    return weechat.WEECHAT_RC_OK
+    return w.WEECHAT_RC_OK
 
 
 def cb_bar_item_tabs(data, item, window):
@@ -349,11 +353,11 @@ def cb_bar_item_tabs(data, item, window):
     )
 
 
-weechat.hook_command('tab_go', '', '', '', '', 'cb_command_tab_go', '')
-weechat.hook_command('tab_next', '', '', '', '', 'cb_command_tab_next', '')
-weechat.hook_command('tab_prev', '', '', '', '', 'cb_command_tab_prev', '')
-weechat.hook_command('tab_del', '', '', '', '', 'cb_command_tab_del', '')
-weechat.bar_item_new('tabs', 'cb_bar_item_tabs', '')
+w.hook_command('tab_go', '', '', '', '', 'cb_command_tab_go', '')
+w.hook_command('tab_next', '', '', '', '', 'cb_command_tab_next', '')
+w.hook_command('tab_prev', '', '', '', '', 'cb_command_tab_prev', '')
+w.hook_command('tab_del', '', '', '', '', 'cb_command_tab_del', '')
+w.bar_item_new('tabs', 'cb_bar_item_tabs', '')
 
 keys = {
     'meta-0': '/tab_del',
@@ -364,7 +368,7 @@ keys = {
 for i in range(1, 10):
     keys['meta-%d' % i] = '/tab_go %d' % i
 
-weechat.key_bind('default', keys)
+w.key_bind('default', keys)
 
 # }}}
 
@@ -374,29 +378,26 @@ weechat.key_bind('default', keys)
 
 
 def windows_iter():
-    hdata = weechat.hdata_get('window')
-    item = weechat.hdata_get_list(hdata, 'gui_windows')
+    item = w.hdata_get_list(hd_win, 'gui_windows')
     while item:
         yield item
-        item = weechat.hdata_pointer(hdata, item, 'next_window')
+        item = w.hdata_pointer(hd_win, item, 'next_window')
 
 
 def windows_buffer_iter():
-    hdata = weechat.hdata_get('window')
     for window in windows_iter():
-        yield window, weechat.hdata_pointer(hdata, window, 'buffer')
+        yield window, w.hdata_pointer(hd_win, window, 'buffer')
 
 
 def cb_command_allwin_set_unread(data, buffer, args):
-    hdata = weechat.hdata_get('window')
     for window, buffer in windows_buffer_iter():
-        window_number = weechat.hdata_integer(hdata, window, 'number')
+        window_number = w.hdata_integer(hd_win, window, 'number')
         cmd('/input set_unread_current_buffer', buffer)
         cmd('/window scroll_bottom -window %s' % window_number)
-    return weechat.WEECHAT_RC_OK
+    return w.WEECHAT_RC_OK
 
 
-weechat.hook_command('allwin_set_unread', '', '', '', '', 'cb_command_allwin_set_unread', '')
+w.hook_command('allwin_set_unread', '', '', '', '', 'cb_command_allwin_set_unread', '')
 
 # }}}
 
@@ -405,13 +406,45 @@ weechat.hook_command('allwin_set_unread', '', '', '', '', 'cb_command_allwin_set
 # ----------------------------------------
 
 def cb_command_grep_nick(data, buffer, args):
-    bname = weechat.buffer_get_string(weechat.current_buffer(), 'full_name')
+    bname = w.buffer_get_string(w.current_buffer(), 'full_name')
     cmd('/filter del grep_%s' % bname)
     if args:
         cmd('/filter add grep_%s %s !nick_%s *' % (bname, bname, args))
-    return weechat.WEECHAT_RC_OK
+    return w.WEECHAT_RC_OK
 
 
-weechat.hook_command('grep_nick', '', '', '', '', 'cb_command_grep_nick', '')
+def cb_command_urls_open(data, buffer, args):
+    win = w.hdata_get_list(hd_win, 'gui_current_window')
+    scroll = w.hdata_pointer(hd_win, win, 'scroll')
+    lines = w.hdata_pointer(hd_buf, buffer, 'lines')
+    line = w.hdata_pointer(hd_lines, lines, 'last_line')
+    if scroll:
+        after = w.hdata_integer(hd_scroll, scroll, 'lines_after')
+        while after > 0 and line:
+            ldata = w.hdata_pointer(hd_line, line, 'data')
+            line = w.hdata_pointer(hd_line, line, 'prev_line')
+            if w.hdata_char(hd_ldata, ldata, 'displayed'):
+                after -= 1
+    try:
+        p = Popen('urls-open', stdin=PIPE)
+        count = 100
+        while count > 0 and line:
+            ldata = w.hdata_pointer(hd_line, line, 'data')
+            if not w.hdata_char(hd_ldata, ldata, 'displayed'):
+                line = w.hdata_pointer(hd_line, line, 'prev_line')
+                continue
+            lmsg = w.hdata_string(hd_ldata, ldata, 'message')
+            p.stdin.write('%s\n' % w.string_remove_color(lmsg, ''))
+            line = w.hdata_pointer(hd_line, line, 'prev_line')
+            count -= 1
+        p.stdin.close()
+        p.wait()
+    except Exception as e:
+        return w.WEECHAT_RC_ERROR
+    return w.WEECHAT_RC_OK
+
+
+w.hook_command('grep_nick', '', '', '', '', 'cb_command_grep_nick', '')
+w.hook_command('urls_open', '', '', '', '', 'cb_command_urls_open', '')
 
 # }}}

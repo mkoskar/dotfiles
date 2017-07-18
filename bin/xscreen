@@ -20,6 +20,8 @@ if [[ $xserver = 'Xorg' ]]; then
     NOOSD=1 trackpoint-wheel on
 fi
 
+NOOSD=1 xkb-reset
+
 xset b off s off dpms 0 0 300 r rate 500 35
 
 numlockx on

@@ -9,6 +9,7 @@
 !/.local/
 !/.local/share/
 !/.local/share/dbus-1/
+!/.local/share/unicode/
 !/.mutt/
 !/.terminfo/
 !/.urxvt/

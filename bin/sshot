@@ -6,6 +6,6 @@ cd ~/tmp
 
 g=$(slop)
 ts=$(date +%F.%s)
-maim -g "$g" "screenshot-$ts.png"
+maim -u -g "$g" "screenshot-$ts.png"
 
 find . -maxdepth 1 -type f -name 'screenshot-*' | sort -r | sxiv -io

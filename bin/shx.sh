@@ -43,6 +43,7 @@ dkip() {
     docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$target"
 }
 
+# shellcheck disable=SC2033
 dkrm() {
     confirm 'Remove ALL containers (with volumes). Continue?' n || return 0
     docker ps -aq | xargs -r docker rm -v -f
@@ -216,6 +217,7 @@ alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
 alias gsettingsa='gsettings list-recursively'
 alias headcat='head -vn-0'
 alias info='info --vi-keys'
+alias infocmp='infocmp -a -1'
 alias journal-vaccum='journalctl --vacuum-size=100M --vacuum-files=1'
 alias journal='journalctl -o short-precise -r -b'
 alias llib='tree ~/.local/lib'
@@ -251,6 +253,7 @@ alias sudo-off='sudo -K'
 alias sudo-on='sudo -v'
 alias top='top -d 1'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
+alias w3m='w3m -v'
 alias watch='watch -n 1 -t -c'
 alias weechat-plain='weechat -d $(mktemp -d)'
 alias wi='curl -sSL http://wttr.in/ | head -n-3'

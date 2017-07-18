@@ -7,14 +7,14 @@ prgname=${0##*/}
 cleanup() {
     local retstat=$?
     if (( ! retstat )); then
-        notify "___ $prgname ___"
+        notify "$prgname"
     else
-        notify "___ $prgname FAIL ___"
+        notify -u critical "$prgname"
     fi
 }
 trap cleanup EXIT
 
-input=$(grep -P '^From:')
+input=$(grep '^From:')
 {
     goobook add <<<"$input"
     goobook reload

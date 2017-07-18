@@ -1,0 +1,34 @@
+rofi.bw:                        0
+rofi.font:                      local_terminal 16px
+rofi.line-margin:               0
+rofi.line-padding:              2
+rofi.matching:                  fuzzy
+rofi.modi:                      window,run,ssh
+rofi.scroll-method:             0
+rofi.separator-style:           none
+rofi.terminal:                  term
+
+rofi.color-window:              #3a3a3a,#3a3a3a,#000000
+rofi.color-normal:              #3a3a3a,#e4e4e4,#3a3a3a,#000000,#87cefa
+rofi.color-urgent:              #3a3a3a,#e4e4e4,#3a3a3a,#000000,#87cefa
+rofi.color-active:              #3a3a3a,#e4e4e4,#3a3a3a,#000000,#87cefa
+
+rofi.kb-accept-alt:             Control+Return
+rofi.kb-accept-custom:          Shift+Return
+rofi.kb-clear-line:             Control+c
+rofi.kb-move-char-back:         Left,Alt+h
+rofi.kb-move-char-forward:      Right,Control+f,Alt+l
+rofi.kb-move-front:             Control+a,Control+b
+rofi.kb-move-word-forward:      Alt+f,Alt+w
+rofi.kb-page-next:              Page_Down,Alt+n,Alt+period
+rofi.kb-page-prev:              Page_Up,Alt+p,Alt+comma
+rofi.kb-primary-paste:          Control+V,Shift+Insert,Control+y
+rofi.kb-remove-word-back:       Control+w
+rofi.kb-remove-word-forward:    Alt+d
+rofi.kb-row-down:               Down,Control+n,Alt+j
+rofi.kb-row-first:              Home,KP_Home,Alt+g
+rofi.kb-row-last:               End,KP_End,Alt+G
+rofi.kb-row-left:               Control+Page_Up,Alt+less
+rofi.kb-row-right:              Control+Page_Down,Alt+greater
+rofi.kb-row-up:                 Up,Control+p,Shift+Tab,ISO_Left_Tab,Alt+k
+rofi.kb-secondary-paste:        Control+v,Insert,Control+Y

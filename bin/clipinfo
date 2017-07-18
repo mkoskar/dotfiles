@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+echo $'\n--------- Primary --------------------------------'
+xclip -o | finfo
+
+echo '--------- Clipboard ------------------------------'
+xclip -o -selection clipboard | finfo

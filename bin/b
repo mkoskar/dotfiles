@@ -5,9 +5,18 @@ set -eu
 prgname=${0##*/}
 
 if [[ $prgname = 'b0' ]]; then
-    args=(ffp -p quarantine -- --private-window)
+    BBIN=ffp
+    args=(-p quarantine -- --private-window)
 else
-    args=("${BBIN:-ff}" --)
+    BBIN=${BBIN:-ff}
+    args=(--)
 fi
 
-exec "${args[@]}" "$@" &>/dev/null &
+case $BBIN in
+    w3m)
+        exec "$BBIN" "$@"
+        ;;
+    *)
+        exec "$BBIN" "${args[@]}" "$@" &>/dev/null &
+        ;;
+esac

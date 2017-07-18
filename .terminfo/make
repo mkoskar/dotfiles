@@ -5,7 +5,7 @@ set -eu
 cd ~/.terminfo
 
 make() {
-    { infocmp -1 -A /usr/share/terminfo "$1"; cat; } >"$1"
+    { infocmp -a -1 -A /usr/share/terminfo "$1"; cat; } >"$1"
 }
 
 make linux <<-EOF

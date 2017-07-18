@@ -57,6 +57,7 @@ $include ~/.inputrc.esc
 "\C-A": insert-completions
 "\C-D": possible-completions
 "\C-O": menu-complete-backward
+"\e[Z": menu-complete-backward
 "\C-I": menu-complete
 
 "\C-G": abort

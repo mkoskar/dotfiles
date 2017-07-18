@@ -15,10 +15,15 @@ if [[ $prgname == 'urls-open' ]]; then
     cleanup() { rm -f "$tmpfile"; }
     trap cleanup EXIT
 
-    uniq | "${filter[@]}" >"$tmpfile"
+    urls | uniq | "${filter[@]}" >"$tmpfile"
     [[ -s $tmpfile ]] || exit 1
-    dmenu -l 5 -p "$prgname" <"$tmpfile" | xargs -r -n1 b
+    if hash rofi &>/dev/null; then
+        rofi -dmenu -i -sync -multi-select -no-custom \
+            -p "$prgname:" <"$tmpfile" | xargs -r -n1 b
+    else
+        dmenu -l 5 -p "$prgname" <"$tmpfile" | xargs -r -n1 b
+    fi
     exit
 fi
 
-grep -E -o 'https?://\S+'
+xurls -r

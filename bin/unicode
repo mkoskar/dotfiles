@@ -1,0 +1,207 @@
+#!/usr/bin/env bash
+
+set -eu
+shopt -s extglob inherit_errexit
+
+prgname=${0##*/}
+
+cachedir=~/.cache/unicode
+sharedir=~/.local/share/unicode
+
+_usage() {
+    cat <<-EOF
+	usage: $prgname [-v version] [-x] [-d] [ blocks | scripts | ... ]
+
+	Display Unicode names list.
+
+	  -v version    - specific Unicode version (default: latest)
+	  -x            - insert selection with "xdotool key"
+	  -d            - display what would go for selection instead
+	  blocks        - display block ranges
+	  scripts       - display script ranges
+	  data          - display raw data
+	  emoji-data    - emoji data
+	  emoji-test    - emoji keyboard/display test data
+	  select        - creates a menu of characters to choose from
+	EOF
+    echo -e "\n  ${sharedir/#$HOME/\~}:\n"
+    for i in "$sharedir"/select/*; do
+        [[ -f $i ]] || continue
+        echo "    select ${i##*/}"
+    done
+    for i in "$sharedir"/*; do
+        [[ -f $i ]] || continue
+        echo "    ${i##*/}"
+    done
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+ver=latest
+declare -i force_display=0 xdo=0
+while getopts 'v:xdh' opt; do
+    case $opt in
+        v)
+            ver=$OPTARG
+            ;;
+        x)
+            xdo=1
+            ;;
+        d)
+            force_display=1
+            ;;
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# ----------------------------------------
+
+ver() {
+    local ver=${1:-latest}
+    case $ver in
+        latest)
+            local now mtime
+            local tmpfile=$tmpdir/latest
+            declare -i check=1
+            if [[ -f latest ]]; then
+                now=$(date +%s)
+                mtime=$(stat -c %Y latest)
+                (( mtime + 60*60*24*7 < now )) && check=1 || check=0
+            fi
+            if (( check )); then
+                curl -sSL -o "$tmpfile" \
+                    http://www.unicode.org/Public/zipped/latest/ReadMe.txt
+                sed -nr 's/for Version ([0-9]+\.[0-9]+\.[0-9]+) of the Unicode Standard./\1/p' \
+                    <"$tmpfile" >latest
+            fi
+            ver=$(<latest)
+            ;;
+        +([0-9]))
+            ver=$ver.0.0
+            ;;
+        +([0-9]).+([0-9]))
+            ver=$ver.0
+            ;;
+    esac
+    printf '%s\n' "$ver"
+}
+
+ucd_file() {
+    local ver=$1 ofile=$2
+    [[ -f $ver/$ofile ]] && return
+    local zfile=UCD-$ver.zip
+    if [[ ! -f $zfile ]]; then
+        local stat tmpfile=$tmpdir/$zfile
+        local url="http://www.unicode.org/Public/zipped/$ver/UCD.zip"
+        stat=$(curl -SL -w '%{http_code}' -o "$tmpfile" "$url")
+        case $stat in
+            200)
+                mv "$tmpfile" "$zfile"
+                ;;
+            *)
+                echo "HTTP $stat : $url" >&2
+                exit 1
+                ;;
+        esac
+    fi
+    unzip -q -d "$ver" "$zfile" "$ofile"
+}
+
+mkdir -p "$cachedir"
+cd "$cachedir"
+
+tmpdir=$(mktemp -d)
+cleanup() { rm -rf "$tmpdir"; }
+trap cleanup EXIT
+
+mode=${1-}
+case $mode in
+    '')
+        ifile=NamesList.txt
+        ;;
+    blocks)
+        ifile=Blocks.txt
+        ;;
+    scripts)
+        ifile=Scripts.txt
+        ;;
+    data | select)
+        ifile=UnicodeData.txt
+        ;;
+    emoji-data | emoji-test)
+        ifile=$mode.txt
+        if [[ ! -f $ifile ]]; then
+            tmpfile=$tmpdir/$ifile
+            url="http://www.unicode.org/Public/emoji/5.0/$ifile"
+            stat=$(curl -SL -w '%{http_code}' -o "$tmpfile" "$url")
+            case $stat in
+                200)
+                    mv "$tmpfile" "$ifile"
+                    ;;
+                *)
+                    echo "HTTP $stat : $url" >&2
+                    exit 1
+                    ;;
+            esac
+        fi
+        $PAGER "$cachedir/$ifile"
+        exit
+        ;;
+    *)
+        $PAGER "$sharedir/$mode"
+        exit
+        ;;
+esac
+
+ver=$(ver "$ver")
+
+if [[ $mode = 'select' ]]; then
+    sub=${2-}
+    if [[ ! $sub ]]; then
+        ucd_file "$ver" "$ifile"
+        cd "$ver"
+        ofile=select
+        if [[ ! -f $ofile || $ifile -nt $ofile ]]; then
+            awk -F ';' '
+            {
+                cp = strtonum("0x" $1)
+                if (cp >= 0xd800 && cp <= 0xf8ff)
+                    next
+                if (cp <= 0x1f || cp >= 0x7f && cp <= 0x9f)
+                    printf "%05X : %-80s\n", cp, $11
+                else if (cp < 0x20000)
+                    printf "%05X : %-80s %c\n", cp, $2, cp
+            }
+            ' <"$ifile" >"$ofile"
+        fi
+        ifile=$cachedir/$ver/$ofile
+    else
+        ifile=$sharedir/select/$sub
+    fi
+    if (( force_display )); then
+        $PAGER "$ifile"
+        exit
+    fi
+    if hash rofi &>/dev/null; then
+        v=$(rofi -dmenu -i -sync -matching normal -no-custom \
+            -font 'monospace 12' -l 10 -width -95 -p "unicode $mode:" <"$ifile")
+    else
+        v=$(dmenu -l 15 -p "unicode $mode" <"$ifile")
+    fi
+    read -r v _ <<<"$v"
+    [[ $v ]] || exit 1
+    if (( xdo )); then
+        xdotool key "U$v"
+    else
+        printf '%b' "\U$v"
+    fi
+else
+    ucd_file "$ver" "$ifile"
+    $PAGER "$cachedir/$ver/$ifile"
+fi

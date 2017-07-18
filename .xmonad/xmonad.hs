@@ -373,7 +373,9 @@ myConfig = def
         , ("M-; M-p", spawn "playx")
         , ("M-; M-S-p", spawn "playlist")
         , ("M-; M-s", spawn "selfie")
-        , ("M-; M-u", spawn "notify -u low \"$(url-resolve)\"")
+        , ("M-; M-r", spawn "notify -u low \"$(url-resolve)\"")
+        , ("M-; M-u", spawn "unicode -x select fav")
+        , ("M-; M-S-u", spawn "unicode -x select")
         , ("M-S-<Home>", spawn "term trun wow")
 
         , ("<XF86AudioNext>", spawn "playctl next")

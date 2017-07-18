@@ -6,14 +6,13 @@ set -eu
 
 name=$1
 ts_begin=$(date +%s)
-prgname="mbsync($name)"
 
 cleanup() {
     local retstat=$?
     local ts_end; ts_end=$(date +%s)
     echo "exiting after $(((ts_end-ts_begin)/60)) minutes, $(((ts_end-ts_begin)%60)) seconds ($retstat)"
     if (( retstat )); then
-        notify "___ $prgname FAIL ___"
+        notify -u critical "mbsync $name"
     fi
 }
 trap cleanup EXIT

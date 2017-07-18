@@ -21,7 +21,9 @@ XTerm*VT100.faceName:           xft:DejaVu Sans Mono:size=10
 
 XTerm*VT100.bellIsUrgent:       true
 XTerm*VT100.bellOnReset:        false
+XTerm*VT100.decTerminalID:      340
 XTerm*VT100.metaSendsEscape:    true
+XTerm*VT100.numColorRegisters:  1024
 XTerm*VT100.printAttributes:    0
 XTerm*VT100.printerCommand:     cat > $(mktemp -p ~/tmp xterm.XXXXXX)
 XTerm*VT100.saveLines:          8192

@@ -23,13 +23,13 @@ typeset -gU path fpath cdpath
 zmodload zsh/complist
 zmodload zsh/system
 
+#autoload -Uz url-quote-magic
 autoload -Uz add-zsh-hook
 autoload -Uz bracketed-paste-magic
 autoload -Uz compinit
 autoload -Uz copy-earlier-word
 autoload -Uz edit-command-line
 autoload -Uz run-help
-autoload -Uz url-quote-magic
 autoload -Uz zargs
 autoload -Uz zmv
 
@@ -132,6 +132,7 @@ function zle-line-init {
     zle zle-keymap-select
 }
 
+#zle -N self-insert url-quote-magic
 zle -C all-matches complete-word _generic
 zle -N bracketed-paste bracketed-paste-magic
 zle -N complete-help _complete_help
@@ -140,12 +141,10 @@ zle -N edit-command-line
 zle -N expand-dot-to-parent-directory-path
 zle -N expand-word-alias
 zle -N noop
-zle -N self-insert url-quote-magic
 zle -N zle-keymap-select
 zle -N zle-line-init
 
 bindkey -rR '^A-^_'
-bindkey -rR '\M-^@-\M-^?'
 
 for k in {@.._}; do
     bindkey "\e^$k" noop
@@ -157,7 +156,7 @@ for k in {\ ..~}; do
     bindkey -M vicmd "\e$k" noop
 done
 
-for k in kich1 kdch1 kpp knp kf{1..12}; do
+for k in kich1 kpp knp kf{1..12}; do
     k=${terminfo[$k]}
     bindkey "$k" noop
     bindkey -M vicmd "$k" noop
@@ -186,10 +185,12 @@ bindkey '^K' kill-line
 bindkey '^W' backward-kill-word
 bindkey '\ed' kill-word
 bindkey '\ex' delete-char
+bindkey "${terminfo[kdch1]}" delete-char
 
 bindkey '^A' all-matches
 bindkey '^D' list-choices
 bindkey '^O' reverse-menu-complete
+bindkey "${terminfo[kcbt]}" reverse-menu-complete
 bindkey '^I' complete-word
 
 bindkey '^G' send-break

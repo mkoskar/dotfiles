@@ -1,18 +1,25 @@
-text/html;                  w3m -I %{charset} -T text/html
+text/html;                  stdiner -T b0
 text/html;                  w3m -I %{charset} -T text/html; copiousoutput
-text/*;                     e %s
+text/*;                     e0 %s
 
 audio/*;                    mutt-bgrun mpv %s
 image/*;                    mutt-bgrun sxiv %s
 video/*;                    mutt-bgrun mpv %s
 
-application/msword;                                                         mutt-bgrun libreoffice %s
+application/rtf;                                                            mutt-bgrun libreoffice %s
+
+application/msexcel;                                                        mutt-bgrun libreoffice %s
 application/vnd.ms-excel;                                                   mutt-bgrun libreoffice %s
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;          mutt-bgrun libreoffice %s
+
+application/msword;                                                         mutt-bgrun libreoffice %s
+application/vnd.ms-word;                                                    mutt-bgrun libreoffice %s
+application/vnd.openxmlformats-officedocument.wordprocessingml.document;    mutt-bgrun libreoffice %s
+
+application/ppt;                                                            mutt-bgrun libreoffice %s
 application/vnd.ms-powerpoint;                                              mutt-bgrun libreoffice %s
 application/vnd.openxmlformats-officedocument.presentationml.presentation;  mutt-bgrun libreoffice %s
-application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;          mutt-bgrun libreoffice %s
-application/vnd.openxmlformats-officedocument.wordprocessingml.document;    mutt-bgrun libreoffice %s
 
 application/ogg;            mutt-bgrun mpv %s
 application/pdf;            mutt-bgrun zathura %s
-application/*;              e %s
+application/*;              e0 %s
