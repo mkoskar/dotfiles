@@ -12,7 +12,7 @@ usage_err() { _usage; exit 2; } >&2
 
 profile=
 declare -i port=1080
-while getopts 'p:P:h' opt; do
+while getopts p:P:h opt; do
     case $opt in
         p)
             profile=$OPTARG
@@ -29,6 +29,8 @@ while getopts 'p:P:h' opt; do
     esac
 done
 shift $((OPTIND-1))
+
+# ----------------------------------------
 
 exec chp -p "${profile:-proxy-socks}" -- \
     --proxy-server="socks://127.0.0.1:$port" \

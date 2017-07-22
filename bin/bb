@@ -4,13 +4,12 @@ set -eu -o pipefail
 
 prgname=${0##*/}
 
+exec &>>~/.local/share/"$prgname".out
+
 kernel_release=$(uname -r)
 kernel_version="v${kernel_release%%-*}"
 
-declare -A map
-while read -r k v; do
-    [[ $k ]] && map[$k]=$v
-done <<-EOF
+MENUER=$prgname menuer "$@" <<-EOF |
 
     !                       b https://mkoskar.com/
 
@@ -124,6 +123,7 @@ done <<-EOF
     irc-docs                b https://github.com/grawity/irc-docs
     irc-freenode            b http://irc.netsplit.de/channels/?net=freenode
     irc-specs               b http://ircv3.net/irc/
+    iss-sightings           b https://spotthestation.nasa.gov/sightings/view.cfm?country=Slovakia\&region=None\&city=Partizanske
     iss-tracker             b http://wsn.spaceflight.esa.int/iss/
     java                    b /usr/share/doc/java/technotes/tools/unix/java.html
     java-apis               b http://www.oracle.com/technetwork/java/api-141528.html
@@ -277,25 +277,6 @@ done <<-EOF
 
     iss-hd                  playx http://www.ustream.tv/channel/iss-hdev-payload
     nasatv                  playx http://www.ustream.tv/nasahdtv
-    rtvs1                   playx http://www.rtvs.sk/televizia/live-1
-    rtvs2                   playx http://www.rtvs.sk/televizia/live-2
-
-    bbc-news                playx http://tvcatchup.com/watch/bbcnews
-    bbc-red                 playx http://tvcatchup.com/watch/bbcredbutton
-    bbc1                    playx http://tvcatchup.com/watch/bbcone
-    bbc2                    playx http://tvcatchup.com/watch/bbctwo
-    bbc4                    playx http://tvcatchup.com/watch/bbcfour
-    channel4                playx http://tvcatchup.com/watch/channel4
-    channel5                playx http://tvcatchup.com/watch/five
-    itv                     playx http://tvcatchup.com/watch/itv
-    skys-f1                 playx http://185.142.239.164:3135/F1/Sports/index.m3u8 'Sky Sports F1'
-    skys-news               playx http://185.142.239.164:3135/News.Sports/index.m3u8 'Sky Sports News'
-    skys1                   playx http://185.142.239.164:3135/1/Sports/index.m3u8 'Sky Sports 1'
-    skys2                   playx http://185.142.239.164:3135/2/Sports/index.m3u8 'Sky Sports 2'
-    skys3                   playx http://185.142.239.164:3135/3/Sports/index.m3u8 'Sky Sports 3'
-    skys4                   playx http://185.142.239.164:3135/4/Sports/index.m3u8 'Sky Sports 4'
-    skys5                   playx http://185.142.239.164:3135/5/Sports/index.m3u8 'Sky Sports 5'
-    viva                    playx http://tvcatchup.com/watch/viva
 
     fahrenheit              sr google {} fahrenheit in celsius
     foot                    sr google {} ft in m
@@ -321,14 +302,6 @@ done <<-EOF
     usd-gbp                 sr google {} usd in gbp
 
 EOF
-
-k=${1-}
-if [[ ! $k ]]; then
-    tmp=$(printf '%s\n' "${!map[@]}" | sort | dmenu1 -p "$prgname")
-    read -r k q <<<"$tmp"
-    [[ $k ]] || exit 1
-else
-    q=$(dmenu1 -p "$prgname $k" </dev/null)
-fi
-export SURFRAW_quote_ifs='no'
-eval exec "${map[$k]/\{\}/\'$q\'}"
+    while read -r args; do
+        eval "$args" &
+    done

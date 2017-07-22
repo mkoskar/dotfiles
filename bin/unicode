@@ -5,8 +5,8 @@ shopt -s extglob inherit_errexit
 
 prgname=${0##*/}
 
-cachedir=~/.cache/unicode
-sharedir=~/.local/share/unicode
+cachedir="$HOME/.cache/unicode"
+sharedir="$HOME/.local/share/unicode"
 
 _usage() {
     cat <<-EOF
@@ -37,9 +37,9 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-ver=latest
+ver='latest'
 declare -i force_display=0 xdo=0
-while getopts 'v:xdh' opt; do
+while getopts v:xdh opt; do
     case $opt in
         v)
             ver=$OPTARG
@@ -67,7 +67,7 @@ ver() {
     case $ver in
         latest)
             local now mtime
-            local tmpfile=$tmpdir/latest
+            local tmpfile="$tmpdir/latest"
             declare -i check=1
             if [[ -f latest ]]; then
                 now=$(date +%s)
@@ -83,10 +83,10 @@ ver() {
             ver=$(<latest)
             ;;
         +([0-9]))
-            ver=$ver.0.0
+            ver="$ver.0.0"
             ;;
         +([0-9]).+([0-9]))
-            ver=$ver.0
+            ver="$ver.0"
             ;;
     esac
     printf '%s\n' "$ver"
@@ -95,9 +95,9 @@ ver() {
 ucd_file() {
     local ver=$1 ofile=$2
     [[ -f $ver/$ofile ]] && return
-    local zfile=UCD-$ver.zip
+    local zfile="UCD-$ver.zip"
     if [[ ! -f $zfile ]]; then
-        local stat tmpfile=$tmpdir/$zfile
+        local stat tmpfile="$tmpdir/$zfile"
         local url="http://www.unicode.org/Public/zipped/$ver/UCD.zip"
         stat=$(curl -SL -w '%{http_code}' -o "$tmpfile" "$url")
         case $stat in
@@ -123,21 +123,21 @@ trap cleanup EXIT
 mode=${1-}
 case $mode in
     '')
-        ifile=NamesList.txt
+        ifile='NamesList.txt'
         ;;
     blocks)
-        ifile=Blocks.txt
+        ifile='Blocks.txt'
         ;;
     scripts)
-        ifile=Scripts.txt
+        ifile='Scripts.txt'
         ;;
     data | select)
-        ifile=UnicodeData.txt
+        ifile='UnicodeData.txt'
         ;;
     emoji-data | emoji-test)
-        ifile=$mode.txt
+        ifile="$mode.txt"
         if [[ ! -f $ifile ]]; then
-            tmpfile=$tmpdir/$ifile
+            tmpfile="$tmpdir/$ifile"
             url="http://www.unicode.org/Public/emoji/5.0/$ifile"
             stat=$(curl -SL -w '%{http_code}' -o "$tmpfile" "$url")
             case $stat in
@@ -166,7 +166,7 @@ if [[ $mode = 'select' ]]; then
     if [[ ! $sub ]]; then
         ucd_file "$ver" "$ifile"
         cd "$ver"
-        ofile=select
+        ofile='select'
         if [[ ! -f $ofile || $ifile -nt $ofile ]]; then
             awk -F ';' '
             {
@@ -180,9 +180,9 @@ if [[ $mode = 'select' ]]; then
             }
             ' <"$ifile" >"$ofile"
         fi
-        ifile=$cachedir/$ver/$ofile
+        ifile="$cachedir/$ver/$ofile"
     else
-        ifile=$sharedir/select/$sub
+        ifile="$sharedir/select/$sub"
     fi
     if (( force_display )); then
         $PAGER "$ifile"

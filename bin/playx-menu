@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+prgname=${0##*/}
+
+exec &>>~/.local/share/"$prgname".out
+
+cd ~/.local/share/playx
+
+src=${1-}
+shift || true
+
+# shellcheck disable=SC2035
+[[ $src ]] || src=$(printf '%s\n' * | dmenu1 -p "$prgname")
+
+MENUER="$prgname $src" menuer "$@" <"$src" |
+    while read -r args; do
+        eval playx "$args" &
+    done

@@ -25,7 +25,7 @@ case $prgname in
         ;;
 esac
 
-while getopts 'p:h' opt; do
+while getopts p:h opt; do
     case $opt in
         p)
             profile=$OPTARG
@@ -57,8 +57,8 @@ if [[ ! $profile ]]; then
     done
     profile=$(
         printf '%s\n' "${profiles[@]}" |
-        sort -u | grep -P "$filter" |
-        dmenu1 -p "$prgname"
+            sort -u | grep -P "$filter" |
+            dmenu1 -p "$prgname"
     )
 fi
 

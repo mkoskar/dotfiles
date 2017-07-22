@@ -28,8 +28,8 @@ if [[ $prgname = 'respawn' ]]; then
 fi
 
 dopt= Topt= output='/dev/null'
-term= append= inline= cur= quiet=
-while getopts 'd:tT:o:aiIqh' opt; do
+term= inline= cur= quiet=
+while getopts d:tT:o:aiIqh opt; do
     case $opt in
         d)
             [ "$OPTARG" -eq "$OPTARG" ] 2>/dev/null || {
@@ -119,7 +119,7 @@ while true; do
     (( ! quiet )) && printf "> started: %s${ti_el}\n" "$ts_begin_" >&2
     (( ! inline && long )) && printf '%s' "$ti_ed"
 
-    bashx -c "$1 \"\${@:1}\"" "$@" |& tee ${append:+-a} "$output" | sed -r "s/\$/$ti_el/"
+    bashx -c "$1 \"\${@:1}\"" "$@" |& tee ${append+-a} "$output" | sed -r "s/\$/$ti_el/"
 
     ts_end=$(date +%s.%N)
     ts_end_=$(date +%T -d "@$ts_end")

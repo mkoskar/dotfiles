@@ -21,6 +21,7 @@ case ${VIMBIN:-vim} in
                 --remote-tab "$@" \
                 -c 'doau BufEnter' &>/dev/null && exit
         fi
+        # shellcheck disable=SC2016
         exec nvim --cmd 'call serverstart($VIMSERVER)' "$@"
         ;;
     *)

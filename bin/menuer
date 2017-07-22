@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+prgname=${0##*/}
+
+process() {
+    local k=$1
+    [[ ${2+set} ]] && local q=$2
+    [[ $k ]] || return 0
+    [[ ${map[$k]+set} ]] || return 0
+    local args=${map[$k]}
+    if [[ $args =~ \{\} ]]; then
+        [[ ${q+set} ]] || q=$(dmenu1 -p "$prompt $k" </dev/null)
+        printf -v tmp '%q' "$q"
+        args=${args/\{\}/$tmp}
+    fi
+    printf '%s\n' "$args"
+}
+
+prompt=${MENUER:-$prgname}
+
+declare -A map
+while read -r k v; do
+    [[ $k ]] || continue
+    [[ $v ]] || {
+        echo "$prgname: '$k' skipped because of missing value" >&2
+        continue
+    }
+    map[$k]=$v
+done
+
+if [[ ${1+set} ]]; then
+    process "$@"
+else
+    while read -r k q; do
+        process "$k" "$q"
+    done < <(printf '%s\n' "${!map[@]}" | sort | dmenu -p "$prompt")
+fi

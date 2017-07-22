@@ -5,11 +5,15 @@ set -eu -o pipefail
 prgname=${0##*/}
 
 if [[ $prgname = 'dmenu1' ]]; then
-    dmenu "$@" | head -n1
+    if ! dmenu "$@" | head -n1; then
+        pstatus=("${PIPESTATUS[@]}")
+        case ${pstatus[0]} in 0 | 141) exit "${pstatus[1]}" ;; esac
+        exit "${pstatus[0]}"
+    fi
     exit
 fi
 
-exec /usr/bin/dmenu -nb '#3a3a3a' -sb '#000000' \
-                    -nf '#e4e4e4' -sf '#87cefa' \
-                    -fn 'local_terminal_sized' \
-                    -i -p '>' "$@"
+exec stdbuf -oL -- \
+    /usr/bin/dmenu -nb '#3a3a3a' -sb '#000000' \
+    -nf '#e4e4e4' -sf '#87cefa' \
+    -fn local_dmenu -i -p '>' "$@"

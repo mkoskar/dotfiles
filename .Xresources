@@ -61,7 +61,7 @@ URxvt.colorIT:                  #d4c668
 URxvt.cursorColor2:             1
 URxvt.scrollColor:              gray20
 
-URxvt.font:                     xft:local_terminal_sized, \
+URxvt.font:                     xft:Terminus:pixelsize=16, \
                                 xft:Symbola, \
                                 xft:Symbola:pixelsize=15, \
                                 xft:Symbola:pixelsize=14, \

@@ -19,7 +19,7 @@ usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
 declare -i topt=0 Topt=0
-while getopts 'tTh' opt; do
+while getopts tTh opt; do
     case $opt in
         t)
             topt=1

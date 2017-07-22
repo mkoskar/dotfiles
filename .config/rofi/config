@@ -1,5 +1,5 @@
 rofi.bw:                        0
-rofi.font:                      local_terminal 16px
+rofi.font:                      local_dmenu 16px
 rofi.line-margin:               0
 rofi.line-padding:              2
 rofi.matching:                  fuzzy

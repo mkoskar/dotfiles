@@ -5,8 +5,8 @@ set -eu
 attach() {
     local sname=$1
     local wname="s_$sname"
-    xdotool search --classname "$wname" >/dev/null \
-        || { term -n "$wname" trun s "$sname" & }
+    xdotool search --classname "$wname" >/dev/null ||
+        { term -n "$wname" trun s "$sname" & }
 }
 
 s -d aux

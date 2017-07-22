@@ -121,7 +121,7 @@ usage_err() { _usage; exit 2; } >&2
 
 socket='default'
 declare -i attach=1
-while getopts 'ds:h' opt; do
+while getopts ds:h opt; do
     case $opt in
         d)
             attach=0
@@ -138,6 +138,8 @@ while getopts 'ds:h' opt; do
     esac
 done
 shift $((OPTIND-1))
+
+# ----------------------------------------
 
 if [[ ${TMUX-} ]]; then
     IFS=, read -ra var <<<"$TMUX"

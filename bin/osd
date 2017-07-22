@@ -10,6 +10,7 @@ fifo="$XDG_RUNTIME_DIR/osdd/$name$DISPLAY"
 if [[ $prgname = 'osdd' ]]; then
     [[ -e $fifo ]] && exit 3
 
+    # shellcheck disable=SC2174
     mkdir -p -m 700 "${fifo%/*}"
     mkfifo -m 600 "$fifo"
 

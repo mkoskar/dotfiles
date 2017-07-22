@@ -2,7 +2,7 @@
 
 [options]
 cursor_blink = off
-font = local_terminal 16px
+font = Terminus Awesome 16px
 mouse_autohide = true
 scrollback_lines = 8192
 

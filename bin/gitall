@@ -2,6 +2,7 @@
 
 set -eu -o pipefail
 
+# shellcheck disable=SC2015
 (( $# )) && set -- git "$@" || set -- :
 
 handle() {

@@ -10,7 +10,7 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-while getopts 'h' opt; do
+while getopts h opt; do
     case $opt in
         h)
             usage
@@ -23,6 +23,8 @@ done
 shift $((OPTIND-1))
 
 (( $# != 2 )) && usage_err
+
+# ----------------------------------------
 
 case $1 in dsa | ec | rsa | x509 | req) ;; *) usage_err ;; esac
 

@@ -19,13 +19,17 @@ xset q &>/dev/null && xcon=1
 
 status_audio() {
     local pval rval
-    pval=$(unset DISPLAY; amixer get Master \
-        | gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {print a[2] " " a[1]}' \
-        | head -n1)
+    pval=$(
+        unset DISPLAY; amixer get Master |
+            gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {print a[2] " " a[1]}' |
+            head -n1
+    )
     amixer -c 0 get Headphone,1 | grep -Fq 'Playback [on]' && pval="$pval +dock"
-    rval=$(unset DISPLAY; amixer get Capture \
-        | gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {print a[2] " " a[1]}' \
-        | head -n1)
+    rval=$(
+        unset DISPLAY; amixer get Capture |
+            gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {print a[2] " " a[1]}' |
+            head -n1
+    )
     printf 'audio: %s / %s\n' "$pval" "$rval"
 }
 

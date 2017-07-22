@@ -196,7 +196,7 @@ myConfig = def
             , activeColor = "#000000"
             , inactiveColor = "#3a3a3a"
             , urgentColor = "#f6e972"
-            , fontName = "xft:local_xmonad"
+            , fontName = "xft:local_statusbar"
             , decoWidth = 500
             , decoHeight = 15
             }
@@ -371,7 +371,7 @@ myConfig = def
         , ("M-; M-m", spawn "markx-url")
         , ("M-; M-S-m", spawn "markx")
         , ("M-; M-p", spawn "playx")
-        , ("M-; M-S-p", spawn "playlist")
+        , ("M-; M-S-p", spawn "playx-menu")
         , ("M-; M-s", spawn "selfie")
         , ("M-; M-r", spawn "notify -u low \"$(url-resolve)\"")
         , ("M-; M-u", spawn "unicode -x select fav")

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
+set -eu
 
 prgname=${0##*/}
 
@@ -19,9 +19,25 @@ if [[ $prgname = 'ipinfo-tor' ]]; then
     resolve() { tor-resolve "$@" 2>/dev/null; }
 fi
 
+tmpfile=$(mktemp)
+cleanup() { rm -f "$tmpfile"; }
+trap cleanup EXIT
+
 if (( $# )); then
     ip=$(resolve "$1")
-    torify curl -sSL "http://ipinfo.io/$ip" | jshon -QC
+    url="http://ipinfo.io/$ip"
 else
-    curl -sSL 'http://ipinfo.io/' | jshon -QC
+    url='http://ipinfo.io/'
 fi
+
+stat=$(curl -sSL -w '%{http_code}' -o "$tmpfile" "$url")
+case $stat in
+    200)
+        jq <"$tmpfile"
+        ;;
+    *)
+        echo "HTTP $stat : $url" >&2
+        cat "$tmpfile" >&2
+        exit 1
+        ;;
+esac

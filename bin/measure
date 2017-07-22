@@ -2,6 +2,6 @@
 
 set -e
 
-[[ -t 1 ]] || exec 2>/dev/null
+[[ -t 2 ]] || exec 2>/dev/null
 
 slop

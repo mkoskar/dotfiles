@@ -15,7 +15,7 @@ usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
 declare -i shiftwidth=4 textwidth=78
-while getopts 's:t:h' opt; do
+while getopts s:t:h opt; do
     case $opt in
         s)
             shiftwidth=$OPTARG

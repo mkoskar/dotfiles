@@ -5,7 +5,8 @@ set -eu
 cd ~/.terminfo
 
 make() {
-    { infocmp -a -1 -A /usr/share/terminfo "$1"; cat; } >"$1"
+    # shellcheck disable=SC2094
+    { infocmp -a1 -A /usr/share/terminfo "$1"; cat; } >"$1"
 }
 
 make linux <<-EOF

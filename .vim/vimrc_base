@@ -372,6 +372,7 @@ call utils#mkdir(&directory)
 " ----------------------------------------
 
 set history=1000
+set wildcharm=<S-Tab>
 set wildmenu
 set wildmode=longest,full
 
@@ -390,6 +391,7 @@ cnoremap <M-d> <C-\>e utils#cmdlineKillWord(1)<CR>
 cnoremap <M-x> <Delete>
 
 cnoremap <C-L> <C-K>
+cnoremap <C-O> <S-Tab>
 cnoremap %% <C-R>=expand('%:h').'/'<CR>
 
 

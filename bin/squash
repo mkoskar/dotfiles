@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-set -e -o pipefail
+set -o pipefail
 
 tr -s '\n' ' ' | sed -r 's/^\s*//; s/\s+/ /g; s/\s*$/\n/g'

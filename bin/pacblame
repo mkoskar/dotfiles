@@ -22,7 +22,7 @@ cmd="expac -H M '%w %m %n'"
 sargs=(-k2,2nr)
 
 declare -i explicit=0
-while getopts 'edrsth' opt; do
+while getopts edrsth opt; do
     case $opt in
         e)
             explicit=1

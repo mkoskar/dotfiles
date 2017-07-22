@@ -10,7 +10,7 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-while getopts 'h' opt; do
+while getopts h opt; do
     case $opt in
         h)
             usage
@@ -59,8 +59,6 @@ _playerctl() {
     fi
     playerctl "$1"
 }
-
-#exec >/dev/null
 
 (( blue )) && ctl='bluectl' || ctl='_playerctl'
 

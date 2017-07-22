@@ -4,30 +4,12 @@ set -eu -o pipefail
 
 prgname=${0##*/}
 
-if (( $# )); then
-    target=$(realpath -- "$1")
-    if [[ ! -d $target ]]; then
-        echo "$target is not a directory" >&2
-        exit 2
-    fi
-    cd "$target"
-    shift
-fi
+(( $# )) && cd -- "$1"
 
-tmpfile_meta=$(mktemp)
-tmpfile_files=$(mktemp)
-cleanup() { rm -f "$tmpfile_meta" "$tmpfile_files"; }
-trap cleanup EXIT
-
-meta_format='%y %u %g %m %p %l\0'
+filter=(sed -r 's/ time=\S+//')
 if [[ $prgname = 'dirsum0' ]]; then
-    meta_format='%y %u %g %m %T@ %p %l\0'
+    filter=(cat)
 fi
 
-find . "$@" \
-    \( -fprintf "$tmpfile_meta" "$meta_format" \) \
-    \( -type f -fprintf "$tmpfile_files" '%p\0' \)
-(
-    sort -z "$tmpfile_meta"
-    sort -z "$tmpfile_files" | xargs -0 -r md5sum
-) | md5sum | awk '{print $1}'
+bsdtar -c -f - --format mtree --options mtree:md5 . |
+    "${filter[@]}" | md5sum | awk '{print $1}'
