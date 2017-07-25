@@ -15,18 +15,23 @@ MENUER=$prgname menuer "$@" <<-EOF |
 
     ImageMagick             b /usr/share/doc/ImageMagick-6/www/command-line-tools.html
     ImageMagick-scripts     b http://www.fmwconcepts.com/imagemagick/
+    amazon                  b https://www.amazon.com/s/field-keywords={u}
+    amazon-de               b https://www.amazon.de/s/field-keywords={u}
+    amazon-uk               b https://www.amazon.co.uk/s/field-keywords={u}
     angularjs               b https://docs.angularjs.org/api
     ant                     b /usr/share/doc/apache-ant/index.html
     apache                  b http://httpd.apache.org/docs/
     arch                    b https://www.archlinux.org/
-    arch-bugs               b https://bugs.archlinux.org/
+    arch-bugs               b https://bugs.archlinux.org/index.php?string={u}
     arch-forums             b https://bbs.archlinux.org/search.php?action=show_new
-    arch-lists              sr google site:lists.archlinux.org {}
+    arch-lists              b https://www.google.com/search?q=site:lists.archlinux.org\ {u}
     arch-repos              b https://git.archlinux.org/
-    arch-wiki               sr archwiki {}
+    arch-wiki               b https://wiki.archlinux.org/index.php?search={u}
     argyllcms               b /usr/share/argyllcms/doc/ArgyllDoc.html
-    arxiv                   sr arxiv {}
-    aur                     sr aur {}
+    arxiv                   b https://arxiv.org/find
+    aur                     b https://aur.archlinux.org/packages.php?SeB=nd\&K={u}
+    aur-maintainer          b https://aur.archlinux.org/packages.php?SeB=m\&K=$AUR_MAINTAINER
+    aur-name-only           b https://aur.archlinux.org/packages.php?SeB=n\&K={u}
     awg                     b https://en.wikipedia.org/wiki/American_wire_gauge#Tables_of_AWG_wire_sizes
     awk                     b https://www.gnu.org/software/gawk/manual/gawk.html
     awk1                    b http://awk.freeshell.org/
@@ -50,41 +55,45 @@ MENUER=$prgname menuer "$@" <<-EOF |
     chrome-manifest-ext     b https://developer.chrome.com/extensions/manifest
     chrome-searchcode       b https://cs.chromium.org/
     chrome-theming          b https://cs.chromium.org/chromium/src/chrome/browser/themes/browser_theme_pack.cc
-    cite                    sr cite {}
-    ctrlseqs                b http://invisible-island.net/xterm/ctlseqs/ctlseqs.html
-    ctrlseqs1               b http://rtfm.etla.org/xterm/ctlseq.html
-    d                       sr webster {}
+    cite                    b http://citeseerx.ist.psu.edu/search?q={u}
+    ctlseqs                 b http://invisible-island.net/xterm/ctlseqs/ctlseqs.html
+    ctlseqs1                b http://bjh21.me.uk/all-escapes/all-escapes.txt
+    d                       b https://www.merriam-webster.com/dictionary/{u}
     dbus                    b http://dbus.freedesktop.org/doc/dbus-specification.html
-    dd                      sr duckduckgo {}
+    dd                      b https://duckduckgo.com/lite/?q={u}
     dd-bang                 b https://duckduckgo.com/bang_lite.html
     dd-syntax               b https://duck.co/help/results/syntax
-    deb                     sr debpackages {}
+    deb                     b https://packages.debian.org/search?keywords={u}
     dkim                    b http://dkimcore.org/tools/
+    dm                      b http://www.dailymotion.com/en/relevance/search/{u}
     dns-reserved            b https://www.rfc-editor.org/rfc/rfc2606.txt
     docker                  b https://github.com/wsargent/docker-cheat-sheet
     docker-compose          b https://docs.docker.com/compose/compose-file/
     dockerfile              b https://docs.docker.com/engine/reference/builder/
     dom-spec                b https://dom.spec.whatwg.org/
+    ebay                    b https://www.ebay.com/sch/i.html?_nkw={u}
     ecma                    b http://www.ecma-international.org/publications/standards/Standard.htm
     emoji                   b https://en.wikipedia.org/wiki/List_of_emoticons
+    etsi                    b http://www.etsi.org/standards-search#\&sort=3
     filenames               b http://www.dwheeler.com/essays/filenames-in-shell.html
     firefox-about:*         b https://developer.mozilla.org/en-US/Firefox/The_about_protocol
     firefox-about:config    b http://kb.mozillazine.org/Category:Preferences
     firefox-changes         b https://www.mozilla.org/en-US/firefox/releases/
     firefox-changes-dev     b https://developer.mozilla.org/en-US/Firefox/Releases/
-    firefox-relnotes-bugs   b https://bugzilla.mozilla.org/buglist.cgi?query_format=advanced\&f1=cf_tracking_firefox_relnote\&o1=isnotempty\&f2=cf_tracking_firefox_relnote\&o2=substring\&v2={}\&limit=200\&order=changeddate\ desc
+    firefox-relnotes-bugs   b https://bugzilla.mozilla.org/buglist.cgi?query_format=advanced\&f1=cf_tracking_firefox_relnote\&o1=isnotempty\&f2=cf_tracking_firefox_relnote\&o2=substring\&v2={u}\&limit=200\&order=changeddate\ desc
     flp                     b http://www.feynmanlectures.caltech.edu/
     freebsd                 b https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/
     freedesktop             b http://standards.freedesktop.org/
     freedesktop-repos       b https://cgit.freedesktop.org/
     freetype                b /usr/share/doc/freetype2/documentation.html
-    g                       sr google {}
+    g                       b https://www.google.com/search?q={u}
     g-operators             b https://support.google.com/websearch/answer/2466433?hl=en\&ref_topic=3081620\&vid=1-635793825968278780-302114999
     gcc                     b https://gcc.gnu.org/onlinedocs/
-    gg                      sr google -G {}
-    gh                      sr github {}
+    gg                      b https://groups.google.com/forum/#!search/{u}
+    gh                      b https://github.com/
     gh-repos                b https://github.com/mkoskar?tab=repositories
-    gi                      sr google -i {}
+    gh-search               b https://github.com/search?q={u}
+    gi                      b https://www.google.com/search?q={u}\&tbm=ischsr
     gimp                    b /usr/share/gimp/2.0/help/en/index.html
     gmail-nolabel           b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:chats+-in:inbox+-in:sent+-in:draft+-in:trash/n100
     gmail-search            b https://support.google.com/mail/answer/7190
@@ -94,6 +103,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gnu-repos               b http://git.savannah.gnu.org/cgit/
     go                      b https://golang.org/ref/spec
     google-devs             b https://developers.google.com/
+    google-play             b https://play.google.com/store/search?q={u}
     google-products         b https://developers.google.com/products/
     google-search           b https://www.google.com/advanced_search
     gpg-search              b https://sks-keyservers.net/i/#extract
@@ -109,20 +119,21 @@ MENUER=$prgname menuer "$@" <<-EOF |
     hangouts                b https://hangouts.google.com/
     haskell-docs            b https://www.haskell.org/documentation
     haskell-libs            b /usr/share/doc/ghc/html/libraries/index.html
-    haskell-search          b https://www.haskell.org/hoogle/?hoogle={}
+    haskell-search          b https://www.haskell.org/hoogle/?hoogle={u}
     hibernate-orm           b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
     hn                      b https://news.ycombinator.com/
     html-spec               b https://html.spec.whatwg.org/multipage/
     html-spec-webdev        b https://html.spec.whatwg.org/dev/
     http                    b https://tools.ietf.org/html/rfc2616
-    i                       sr ixquick {}
-    ii                      sr ixquick -search=pics {}
-    imdb                    sr imdb {}
+    i                       b https://www.ixquick.com/do/metasearch.pl?query={u}
+    ii                      b https://www.ixquick.com/do/metasearch.pl?cat=pics\&query={u}
+    imdb                    b http://www.imdb.com/find?q={u}
     imperial                b https://en.wikipedia.org/wiki/Imperial_units
     iojs                    b https://iojs.org/api/
     irc-docs                b https://github.com/grawity/irc-docs
     irc-freenode            b http://irc.netsplit.de/channels/?net=freenode
     irc-specs               b http://ircv3.net/irc/
+    iso                     b http://standards.iso.org/ittf/PubliclyAvailableStandards/index.html
     iss-sightings           b https://spotthestation.nasa.gov/sightings/view.cfm?country=Slovakia\&region=None\&city=Partizanske
     iss-tracker             b http://wsn.spaceflight.esa.int/iss/
     java                    b /usr/share/doc/java/technotes/tools/unix/java.html
@@ -142,7 +153,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     jee7-api                b ~/opt/java_ee_sdk-7u1/docs/api/overview-summary.html
     jee7-samples            b ~/opt/java_ee_sdk-7u1/samples/docs/list.html
     jee7-tutorial           b ~/opt/java_ee_sdk-7u1/docs/javaee-tutorial/doc/index.html
-    jquery                  sr jquery {}
+    jquery                  b https://api.jquery.com/
     js                      b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
     js-es6                  b http://www.ecma-international.org/ecma-262/6.0/
     js-es6-compat           b https://kangax.github.io/compat-table/es6/
@@ -172,12 +183,12 @@ MENUER=$prgname menuer "$@" <<-EOF |
     maven-central           b https://search.maven.org/
     maven-jcenter           b https://bintray.com/bintray/jcenter
     maven-popular           b http://mvnrepository.com/popular
-    mdn                     b https://developer.mozilla.org/en-US/search?q={}
+    mdn                     b https://developer.mozilla.org/en-US/search?q={u}
     mime                    b https://www.iana.org/assignments/media-types/media-types.xhtml
     mongodb                 b http://docs.mongodb.org/manual/reference/
     morse-nato              b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
     mozilla-repos           b https://hg.mozilla.org/
-    music                   sr musicbrainz {}
+    music                   b https://musicbrainz.org/search?query={u}
     mutt                    b /usr/share/doc/mutt/manual.html
     mutt-patterns           b file:///usr/share/doc/mutt/manual.html#patterns
     mutt-regex              b file:///usr/share/doc/mutt/manual.html#regexp
@@ -185,7 +196,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     netfilter-flow          b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
     nodejs                  b https://nodejs.org/api/
     notes                   b ~/projects/notes/_build/html/index.html
-    ntrs                    sr ntrs {}
+    ntrs                    b https://ntrs.nasa.gov/search.jsp?Ntk=All\&Ntt={u}
     oracle-plsql            b https://docs.oracle.com/database/121/LNPLS/toc.htm
     oracle-sql              b https://docs.oracle.com/database/121/SQLRF/toc.htm
     pango-markup            b https://developer.gnome.org/pango/stable/PangoMarkupFormat.html
@@ -194,7 +205,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     perf                    b http://www.brendangregg.com/perf.html
     perl                    b http://perldoc.perl.org/
     phrik                   b https://wiki.archlinux.org/index.php/Phrik
-    pkg                     sr archpkg {}
+    pkg                     b https://www.archlinux.org/packages/?q={u}
+    pleer                   b http://pleer.net/search?q={u}
     posix                   b ~/archive/lib/00-cs/unix/base-specifications-7-2013/index.html
     posix-defs              b ~/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/contents.html
     posix-env               b ~/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap08.html
@@ -229,9 +241,13 @@ MENUER=$prgname menuer "$@" <<-EOF |
     rust-api                b https://doc.rust-lang.org/std/
     rust-book               b https://doc.rust-lang.org/book/
     scala                   b http://www.scala-lang.org/api/current/
+    se                      b https://stackexchange.com/search?q={u}
+    se-unix                 b https://unix.stackexchange.com/search?q={u}
     sed                     b https://www.gnu.org/software/sed/manual/sed.html
     shakespeare             b http://shakespeare.mit.edu/
     shell-startup           b http://blog.flowblok.id.au/static/images/shell-startup-actual.png
+    so                      b https://stackoverflow.com/search?q={u}
+    soundcloud              b https://soundcloud.com/search?q={u}
     spock                   b http://docs.spockframework.org/
     spring                  b http://docs.spring.io/spring/docs/current/spring-framework-reference/html/
     spring-api              b http://docs.spring.io/spring/docs/current/javadoc-api/overview-summary.html
@@ -245,13 +261,13 @@ MENUER=$prgname menuer "$@" <<-EOF |
     tlds                    b https://www.iana.org/domains/root/db
     tmux-changes            b https://github.com/tmux/tmux/blob/master/CHANGES
     tor-specs               b https://gitweb.torproject.org/torspec.git/tree/
-    tr                      sr translate -from=en -to=sk {}
-    tr-de                   sr translate -from=de -to=sk {}
+    tr                      b https://translate.google.com/?sl=en\&tl=sk\&q={u}
+    tr-de                   b https://translate.google.com/?sl=de\&tl=sk\&q={u}
     tweets                  b https://tweetdeck.twitter.com/
     types-eth               b /etc/ethertypes
     types-ip                b /etc/protocols
     types-ports             b /etc/services
-    ud                      sr urban {}
+    ud                      b https://www.urbandictionary.com/define.php?term={u}
     uefi-specs              b http://uefi.org/specifications
     unicode                 b https://en.wikipedia.org/wiki/Plane_\(Unicode\)
     unicode-charts          b http://unicode.org/charts/
@@ -265,41 +281,45 @@ MENUER=$prgname menuer "$@" <<-EOF |
     url                     b https://url.spec.whatwg.org/
     usb-connectors          b https://en.wikipedia.org/wiki/USB#Host_and_device_interface_receptacles
     util-linux              b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
-    w                       sr wikipedia {}
+    w                       b https://en.wikipedia.org/w/index.php?search={u}
+    w-cz                    b https://cz.wikipedia.org/w/index.php?search={u}
+    w-sk                    b https://sk.wikipedia.org/w/index.php?search={u}
     weechat                 b https://weechat.org/files/doc/stable/weechat_user.en.html
     weechat-api             b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
     weechat-changes         b https://github.com/weechat/weechat/blob/master/ChangeLog.adoc
     xlib-translations       b http://menehune.opt.wfu.edu/Kokua/Irix_6.5.21_doc_cd/usr/share/Insight/library/SGI_bookshelves/SGI_Developer/books/XLib_WinSys/sgi_html/ch08.html
     xmonad                  b /usr/share/doc/xmonad/html/index.html
     yaml                    b http://yaml.org/refcard.html
-    yt                      sr youtube {}
+    yt                      b https://www.youtube.com/results?q={u}
+    yt-channel              b https://www.youtube.com/results?sp=EgIQAlAU\&q={u}
+    yt-playlist             b https://www.youtube.com/results?sp=EgIQA1AU\&q={u}
     zsh                     b /usr/share/doc/zsh/html/index.html
 
     iss-hd                  playx http://www.ustream.tv/channel/iss-hdev-payload
     nasatv                  playx http://www.ustream.tv/nasahdtv
 
-    fahrenheit              sr google {} fahrenheit in celsius
-    foot                    sr google {} ft in m
-    gallon                  sr google {} gal in l
-    inch                    sr google {} in in cm
-    mile                    sr google {} mi in km
-    ounce                   sr google {} oz in g
-    pint                    sr google {} pint in l
-    pound                   sr google {} lb in kg
-    yard                    sr google {} yd in m
+    fahrenheit              b 'https://www.google.com/search?q={u} fahrenheit in celsius'
+    foot                    b 'https://www.google.com/search?q={u} ft in m'
+    gallon                  b 'https://www.google.com/search?q={u} gal in l'
+    inch                    b 'https://www.google.com/search?q={u} in in cm'
+    mile                    b 'https://www.google.com/search?q={u} mi in km'
+    ounce                   b 'https://www.google.com/search?q={u} oz in g'
+    pint                    b 'https://www.google.com/search?q={u} pint in l'
+    pound                   b 'https://www.google.com/search?q={u} lb in kg'
+    yard                    b 'https://www.google.com/search?q={u} yd in m'
 
-    czk-eur                 sr google {} czk in eur
-    czk-gbp                 sr google {} czk in gbp
-    czk-usd                 sr google {} czk in usd
-    eur-czk                 sr google {} eur in czk
-    eur-gbp                 sr google {} eur in gbp
-    eur-usd                 sr google {} eur in usd
-    gbp-czk                 sr google {} gbp in czk
-    gbp-eur                 sr google {} gbp in eur
-    gbp-usd                 sr google {} gbp in usd
-    usd-czk                 sr google {} usd in czk
-    usd-eur                 sr google {} usd in eur
-    usd-gbp                 sr google {} usd in gbp
+    czk-eur                 b 'https://www.google.com/search?q={u} czk in eur'
+    czk-gbp                 b 'https://www.google.com/search?q={u} czk in gbp'
+    czk-usd                 b 'https://www.google.com/search?q={u} czk in usd'
+    eur-czk                 b 'https://www.google.com/search?q={u} eur in czk'
+    eur-gbp                 b 'https://www.google.com/search?q={u} eur in gbp'
+    eur-usd                 b 'https://www.google.com/search?q={u} eur in usd'
+    gbp-czk                 b 'https://www.google.com/search?q={u} gbp in czk'
+    gbp-eur                 b 'https://www.google.com/search?q={u} gbp in eur'
+    gbp-usd                 b 'https://www.google.com/search?q={u} gbp in usd'
+    usd-czk                 b 'https://www.google.com/search?q={u} usd in czk'
+    usd-eur                 b 'https://www.google.com/search?q={u} usd in eur'
+    usd-gbp                 b 'https://www.google.com/search?q={u} usd in gbp'
 
 EOF
     while read -r args; do

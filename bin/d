@@ -32,4 +32,4 @@ main() {
     )
 }
 
-main | PAGER_TITLE=${cmd[*]} PAGER_EX='set ft=diff' pg0
+main | PAGER_TITLE=${cmd[*]} PAGER_EX='setf diff' pg0

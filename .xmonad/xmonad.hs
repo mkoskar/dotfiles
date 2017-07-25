@@ -349,14 +349,14 @@ myConfig = def
 
           -- Selections
         , ("M-<Insert>", spawn "clip")
-        , ("M-S-<Insert>", spawn "clipp && notify 'PRIMARY -> CLIPBOARD'")
+        , ("M-S-<Insert>", spawn "clip -p && notify 'PRIMARY -> CLIPBOARD'")
 
           -- Other
         , ("M-<F9>", spawn "xscreen0 && xmonad --restart")
         , ("M-<F10>", spawn "xscreen && xmonad --restart")
         , ("M-S-<F10>", spawn "xscreen-mobile && xmonad --restart")
 
-        , ("M-<F12>", spawn "measure | clipi")
+        , ("M-<F12>", spawn "measure | clip -i")
 
         , ("M-; M-b", spawn "bluetooth-toggle")
         , ("M-; M-d", spawn "dpms-toggle")

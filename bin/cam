@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+_usage() {
+    echo "usage: $prgname {dump | info | shoot | watch}" >&2
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+while getopts h opt; do
+    case $opt in
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# ----------------------------------------
+
+case ${1-} in
+    dump)
+        empty=$(find . -maxdepth 0 -empty)
+        if [[ ! $empty ]]; then
+            confirm 'Careful! Working directory is NOT empty. Continue?' n || exit 2
+        fi
+        gphoto2 --get-all-files --force-overwrite
+        ;;
+    info)
+        echo
+        gphoto2 --quiet --auto-detect
+        echo
+        gphoto2 --quiet --abilities
+        echo
+        gphoto2 --quiet --summary
+        ;;
+    shoot)
+        gphoto2 --quiet --capture-image-and-download \
+                --hook-script ~/bin/camhook \
+                --interval "${2:-0}"
+        ;;
+    watch)
+        gphoto2 --quiet --capture-tethered --hook-script ~/bin/camhook
+        ;;
+    *)
+        usage_err
+esac

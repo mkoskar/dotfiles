@@ -9,12 +9,13 @@ declare -i squash=0
 
 awk -v squash=$squash '
 /\S/ {
-    start = 1
+    seen_text = 1
     printf buf
     buf = ""
     print $0
     next
 }
 {
-    if (start) buf = (squash ? "\n" : buf $0 "\n")
+    if (!seen_text) next
+    buf = (squash ? "\n" : buf $0 "\n")
 }'

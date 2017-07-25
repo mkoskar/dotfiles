@@ -5,7 +5,7 @@
 set -eu -o pipefail
 
 process() {
-    printf '\e]50;%s' "$1" | tctrlseq
+    printf '\e]50;%s' "$1" | tctlseq
 }
 
 if (( ! $# )); then

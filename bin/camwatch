@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-gphoto2 --quiet --capture-tethered --hook-script ~/bin/camhook

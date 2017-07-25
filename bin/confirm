@@ -46,7 +46,7 @@ case $default in
 esac
 
 while read -N1 -rsp "$prompt" sel; do
-    sel=${sel:-$default}
+    [[ $sel != $'\n' ]] || sel=$default
     case $sel in
         [yY])
             echo y

@@ -6,7 +6,7 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [-d delay] [-t] [-T delta] [-o output] [-a] [-i] [-I] [-q] cmd [arg]...
+	usage: $prgname [options] cmd [arg]...
 
 	Execute 'cmd [arg]...' repeatedly.
 
@@ -27,8 +27,9 @@ if [[ $prgname = 'respawn' ]]; then
     set -- -d0 -t "$@"
 fi
 
+# shellcheck disable=SC1007
 dopt= Topt= output='/dev/null'
-term= inline= cur= quiet=
+declare -i term=0 inline=0 cur=0 quiet=0
 while getopts d:tT:o:aiIqh opt; do
     case $opt in
         d)
@@ -80,7 +81,7 @@ shift $((OPTIND-1))
 delay=${dopt:--1}
 term_delta=${Topt:-400}
 
-notty=
+declare -i notty=0
 if [[ ! -t 0 ]]; then
     if (( delay < 0 )); then
         echo "$prgname: stdin not being a tty doesn't go with negative delay" >&2
@@ -110,7 +111,7 @@ if (( ! inline )); then
     trap cleanup EXIT
 fi
 
-long=
+declare -i long=0
 while true; do
     ts_begin=$(date +%s.%N)
     ts_begin_=$(date +%T -d "@$ts_begin")

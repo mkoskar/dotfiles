@@ -247,6 +247,7 @@ alias rm='rm -I --one-file-system'
 alias sd='systemctl'
 alias sdu='systemctl --user'
 alias se='sudoedit'
+alias sed-all="sed -r -e 'H;1h;\$!d;x'"
 alias ss='ss -napstu'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
 alias sudo-off='sudo -K'
@@ -266,9 +267,12 @@ a() {
     sleep "${1:-5m}"
     echo 'Beep...'
     notify -u critical 'Beep...' "Time's up!"
-    mpv --load-scripts=no --keep-open=no --loop-file=5 \
+    mpv --load-scripts=no --keep-open=no --loop-playlist=no --loop-file=5 \
         /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
 }
+
+base() { export BASEDIR=${1:-$PWD}; }
+unbase() { unset BASEDIR; }
 
 cd() {
     if [ $# -eq 0 ]; then
@@ -277,9 +281,6 @@ cd() {
         builtin cd "$@"
     fi
 }
-
-base() { export BASEDIR=${1:-$PWD}; }
-unbase() { unset BASEDIR; }
 
 date() {
     [ $# -eq 0 ] && set -- -R
@@ -291,6 +292,29 @@ debug() {
     set -o errtrace
     set -o functrace
     trap stacktrace ERR
+}
+
+dict() {
+    [ $# -eq 0 ] && return 2
+    curl -s "dict://dict.org/define * \"${*//[\"\\]/ }\"" |
+        dos2unix |
+        awk '
+        /^\s*$/ { squashing = 1; next }
+        /^\.$/  { squashing = 0; print $0; printf "\n"; next }
+        { if (squashing) printf "\n"; squashing = 0; print $0 }
+        /^150 [0-9]+ definitions retrieved/ { printf "\n" }
+        /^151 "/ { printf "\n" }
+        ' |
+        PAGER_EX='setf dict' $PAGER
+}
+
+dict-match() {
+    [ $# -eq 0 ] && return 2
+    curl -s "dict://dict.org/match * . \"${*//[\"\\]/ }\"" | PAGER_EX='setf dict' $PAGER
+}
+
+dict-telnet() {
+    telnet dict.org 2628
 }
 
 fn() {

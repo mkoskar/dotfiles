@@ -3,14 +3,21 @@
 
 from signal import signal, SIGINT, SIG_DFL
 from sys import stderr
+import argparse
 import os
 import sys
+
+parser = argparse.ArgumentParser(
+    description='For each input line execute python statements.'
+)
+parser.add_argument('statements')
+args = parser.parse_args()
 
 try:
     i = 0
     for line in sys.stdin:
         line = line[:-1]
-        exec(sys.argv[1])
+        exec(args.statements)
         i += 1
 except Exception as e:
     print('{}: error: {}'.format('pyline', e), file=stderr)

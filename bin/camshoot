@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-interval=${1:-0}
-gphoto2 --quiet --capture-image-and-download \
-        --hook-script ~/bin/camhook \
-        --interval "$interval"

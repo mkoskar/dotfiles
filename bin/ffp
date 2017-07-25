@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 shopt -s extglob nullglob
 
 prgname=${0##*/}
@@ -160,10 +160,10 @@ mkdir -p chrome
 cd chrome
 
 case $profile in
-    dev?(-*))   frame_color='#0099FF' ;;
-    lab?(-*))   frame_color='#FF2200' ;;
-    plain?(-*)) frame_color='#26BF30' ;;
-    *)          frame_color='#FF9900' ;;
+    dev?(-*))   frame_color='#0099ff' ;;
+    lab?(-*))   frame_color='#ff2200' ;;
+    plain?(-*)) frame_color='#26bf30' ;;
+    *)          frame_color='#ff9900' ;;
 esac
 
 if [[ ! -f userChrome.css ]]; then
@@ -205,11 +205,11 @@ if [[ ! -f userChrome.css ]]; then
 		}
 
 		#main-window[vimfx-focus-type="editable"] #urlbar {
-		    background: #DFF2E0 !important;
+		    background: #dff2e0 !important;
 		}
 
 		#main-window[vimfx-mode="ignore"] #urlbar {
-		    background: #FFE8E4 !important;
+		    background: #ffe8e4 !important;
 		}
 	EOF
 

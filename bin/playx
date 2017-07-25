@@ -21,10 +21,13 @@ trap cleanup EXIT
 
 src=${1:-$(xclip -o | head -c 255)}
 case $src in
-    http?(s)://tvcatchup.com/* | \
     http?(s)://www.arconaitv.me/* | \
+    http?(s)://www.euronews.com/* | \
+    http?(s)://www.filmon.com/* | \
     http?(s)://www.rtvs.sk/* | \
-    http?(s)://www.ustream.tv/* \
+    http?(s)://www.tvcatchup.com/* | \
+    http?(s)://www.ustream.tv/* | \
+    http?(s)://www.vaughnlive.tv/* \
         )
         printf -v title '%q' "$src"
         streamlink \

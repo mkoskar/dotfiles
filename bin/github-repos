@@ -1,12 +1,132 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 
 prgname=${0##*/}
 
-if (( ! $# )); then
-    echo "usage: $prgname user" >&2
-    exit 2
-fi
+_usage() {
+    cat <<-EOF
+	usage: $prgname [options] username [key]...
 
-curl -sSL "https://api.github.com/users/$1/repos?per_page=500" | jq -r '.[].html_url'
+	List public repositories for the specified user. Each 'key' corresponds to
+	the column in tab-separated output with 'html_url' being default.
+
+	Example usage:
+
+	  $ github-repos -m chromium clone_url description
+
+	Options:
+
+	  -t type   - all, owner, member (default: owner)
+	  -s sort   - created, updated, pushed, full_name (default: full_name)
+	  -r        - reverse sort order
+	  -f        - exclude forks
+	  -F        - only forks
+	  -m        - exclude mirrors
+	  -M        - only mirrors
+	  -R        - raw json output
+	EOF
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+type='owner' sort='full_name'
+declare -i reverse=0 forks=1 mirrors=1 raw=0
+while getopts t:s:rfFmMRh opt; do
+    case $opt in
+        t)
+            type=$OPTARG
+            ;;
+        s)
+            sort=$OPTARG
+            ;;
+        r)
+            reverse=1
+            ;;
+        f)
+            forks=0
+            ;;
+        F)
+            forks=2
+            ;;
+        m)
+            mirrors=0
+            ;;
+        M)
+            mirrors=2
+            ;;
+        R)
+            raw=1
+            ;;
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+(( $# )) || usage_err
+
+# ----------------------------------------
+
+username=$1
+shift
+
+case $type in all | owner | member) ;; *)
+    usage_err
+    ;;
+esac
+
+case $sort in created | updated | pushed | full_name) ;; *)
+    usage_err
+    ;;
+esac
+
+declare -i asc=1
+[[ $sort = 'full_name' ]] || asc=0
+asc=$((asc^reverse))
+(( asc )) && dir='asc' || dir='desc'
+
+tmpfile=$(mktemp)
+cleanup() { rm -f "$tmpfile"; }
+trap cleanup EXIT
+
+stat=$(
+    curl -sSLG "https://api.github.com/users/$username/repos" \
+        -d "type=$type" -d "sort=$sort" -d "direction=$dir" -d 'per_page=500' \
+        -w '%{http_code}' -o "$tmpfile"
+)
+case $stat in
+    200)
+        if (( raw )); then
+            cat "$tmpfile"
+        else
+            args=()
+            filter='.[]|.'
+            case $forks in
+                0) filter+='|select(.fork|not)' ;;
+                2) filter+='+select(.fork)' ;;
+            esac
+            case $mirrors in
+                0) filter+='|select(.mirror_url == null)' ;;
+                2) filter+='+select(.mirror_url != null)' ;;
+            esac
+            filter+='|[]'
+            (( $# )) || set -- html_url
+            for (( i=1; i<=$#; i++ )); do
+                args+=(--arg "arg$i" "${!i}")
+                filter+="+[.[\$arg$i]]"
+            done
+            filter+='|@tsv'
+            jq -r "${args[@]}" "$filter" <"$tmpfile"
+        fi
+        ;;
+    *)
+        echo "HTTP $stat" >&2
+        cat "$tmpfile" >&2
+        exit 1
+        ;;
+esac

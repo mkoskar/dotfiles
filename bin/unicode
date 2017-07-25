@@ -10,12 +10,12 @@ sharedir="$HOME/.local/share/unicode"
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [-v version] [-x] [-d] [ blocks | scripts | ... ]
+	usage: $prgname [-v version] [-x] [-d] [blocks | scripts | ...]
 
 	Display Unicode names list.
 
 	  -v version    - specific Unicode version (default: latest)
-	  -x            - insert selection with "xdotool key"
+	  -x            - insert selection with 'xdotool key'
 	  -d            - display what would go for selection instead
 	  blocks        - display block ranges
 	  scripts       - display script ranges

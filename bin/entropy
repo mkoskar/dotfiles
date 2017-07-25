@@ -1,13 +1,3 @@
 #!/usr/bin/env bash
 
-set -eu
-
-prgname=${0##*/}
-
-src='/proc/sys/kernel/random/entropy_avail'
-
-if [[ $prgname = 'entropy-watch' ]]; then
-    watch -n1 -t cat "$src"
-else
-    cat "$src"
-fi
+watch -n1 -t cat /proc/sys/kernel/random/entropy_avail

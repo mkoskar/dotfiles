@@ -130,7 +130,7 @@ function yank_property(name)
     if name == 'path' then
         val = val:gsub('^ytdl://', 'https://www.youtube.com/watch?v=')
     end
-    local proc = io.popen('clipi', 'w')
+    local proc = io.popen('clip -i', 'w')
     pcall(proc:write(val))
     proc:close()
     mp.osd_message(val)

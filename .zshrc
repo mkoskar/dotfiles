@@ -380,6 +380,14 @@ function _systemd-dot {
 }
 compctl -K _systemd-dot systemd-dot
 
+# TODO:
+#
+# audio
+# cam
+# cmdline
+# clip
+# environ
+
 
 # Plugin: zsh-syntax-highlighting
 # ----------------------------------------

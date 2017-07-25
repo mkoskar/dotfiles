@@ -74,7 +74,6 @@ export QUOTING_STYLE='literal'
 export RANGER_LOAD_DEFAULT_RC='FALSE'
 export SAL_USE_VCLPLUGIN='gtk'
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent"
-export SURFRAW_quote_ifs='no'
 export SYSTEMD_LESS=$LESS
 export TERMINFO_DIRS='/etc/terminfo:/usr/share/terminfo'
 export TMUX_TMPDIR=$TMPDIR

@@ -54,7 +54,7 @@ case ${1-} in
     '')
         ;;
     *)
-        echo "usage: $prgname [playback_up | playback_down | playback_toggle | playback_dock_toggle | capture_toggle | pa_sink_toggle ]" >&2
+        echo "usage: $prgname [playback_up | playback_down | playback_toggle | playback_dock_toggle | capture_toggle | pa_sink_toggle]" >&2
         exit 2
         ;;
 esac

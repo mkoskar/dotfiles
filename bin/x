@@ -36,7 +36,8 @@ if (( ! $# )); then
     echo 'x) xmonad'
 
     read -N1 -rsp ': ' sel
-    case ${sel:=m} in
+    [[ $sel != $'\n' ]] || sel='m'
+    case $sel in
         [mM])
             set -- main
             ;;

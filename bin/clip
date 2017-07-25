@@ -4,23 +4,56 @@ set -eu -o pipefail
 
 prgname=${0##*/}
 
-case $prgname in
-    clipp)
+_usage() {
+    cat <<-EOF
+	usage: $prgname [-p | -i | -f | -a]
+
+	Select from a menu (to PRIMARY and CLIPBOARD) or:
+
+	  -p    - read from PRIMARY to CLIPBOARD
+	  -i    - read from stdin to PRIMARY and CLIPBOARD
+	  -f    - read from stdin to PRIMARY and CLIPBOARD (stdin -> stdout)
+	  -a    - read arguments to PRIMARY and CLIPBOARD
+	EOF
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+mode=
+while getopts pifah opt; do
+    case $opt in
+        p | i | f | a)
+            mode=$opt
+            ;;
+        h)
+            usage
+            ;;
+        *)
+            usage_err
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# ----------------------------------------
+
+case $mode in
+    p)
         # Read from PRIMARY to CLIPBOARD.
         xclip -o | xclip -i -selection clipboard
         ;;
-    clipi)
+    i)
         # Read from stdin to PRIMARY and CLIPBOARD.
         xclip -i -f | xclip -i -selection clipboard
         ;;
-    clipif)
+    f)
         # Read from stdin to PRIMARY and CLIPBOARD (stdin -> stdout).
         xclip -i -f | xclip -i -f -selection clipboard
         ;;
-    clipa)
+    a)
         # Read arguments to PRIMARY and CLIPBOARD.
         (( ! $# )) && exit 2
-        printf '%s\n' "$@" | clipi
+        printf '%s\n' "$@" | clip -i
         ;;
     *)
         tmpfile=$(mktemp)
@@ -28,6 +61,6 @@ case $prgname in
         trap cleanup EXIT
 
         clipmenu "$prgname" >"$tmpfile"
-        clipi <"$tmpfile"
+        clip -i <"$tmpfile"
         ;;
 esac

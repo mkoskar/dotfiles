@@ -9,7 +9,7 @@ prgname=${0##*/}
 run() {
     if [[ $prgname = 'manpg' ]]; then
         export PAGER_TITLE=${MAN_PN-}
-        args+=(-c 'setl ft=man')
+        args+=(-c 'setf man')
     fi
     if [[ ${PAGER_EX-} ]]; then
         args+=(-c "$PAGER_EX")
@@ -46,7 +46,7 @@ fi
 
 filter=(cat)
 if [[ $prgname = 'manpg' ]]; then
-    filter=(col -b)
+    filter=(col -bx)
 fi
 
 "${filter[@]}" | {
