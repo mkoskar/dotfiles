@@ -9,10 +9,4 @@ if (( ! $# )); then
     exit 2
 fi
 
-trap 'exit 1' ERR
-
-if [[ $prgname != 'resolve-all' ]]; then
-    exec > >(head -n1)
-fi
-
-getent ahosts "$1" | awk '{print $1}' | uniq
+getent ahosts "$1" | awk '{print $1; exit}'

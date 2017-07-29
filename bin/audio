@@ -38,56 +38,54 @@ pa_sink_toggle() {
     pacmd set-default-sink "${all[i]}"
 }
 
-case ${1-} in
+if (( ! $# )); then
+    while true; do
+        stat=$(status audio)
+        printf '\e[1G%s\e[0K' "$stat"
+        read -N1 -rs c
+        case $c in
+            [kK])
+                playback_up
+                ;;
+            [jJ])
+                playback_down
+                ;;
+            [mM])
+                playback_toggle
+                ;;
+            [nN])
+                playback_dock_toggle
+                ;;
+            [rR])
+                capture_toggle
+                ;;
+            [oO])
+                pa_sink_toggle
+                echo
+                status pa_sink
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+    echo
+    exit
+fi
+
+case $1 in
     playback_up | playback_down | \
     playback_toggle | playback_dock_toggle | \
     capture_toggle)
         $1
         status-osd audio
-        exit
         ;;
     pa_sink_toggle)
         $1
         status-osd pa_sink
-        exit
-        ;;
-    '')
         ;;
     *)
         echo "usage: $prgname [playback_up | playback_down | playback_toggle | playback_dock_toggle | capture_toggle | pa_sink_toggle]" >&2
         exit 2
         ;;
 esac
-
-while true; do
-    stat=$(status audio)
-    printf '\e[1G%s\e[0K' "$stat"
-
-    read -N1 -rs c
-    case $c in
-        [kK])
-            playback_up
-            ;;
-        [jJ])
-            playback_down
-            ;;
-        [mM])
-            playback_toggle
-            ;;
-        [nN])
-            playback_dock_toggle
-            ;;
-        [rR])
-            capture_toggle
-            ;;
-        [oO])
-            pa_sink_toggle
-            echo
-            status pa_sink
-            ;;
-        *)
-            break
-            ;;
-    esac
-done
-echo

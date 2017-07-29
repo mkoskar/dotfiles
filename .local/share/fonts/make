@@ -14,13 +14,13 @@ from_zip() {
     set -eu
     local furl=$1 fname odir
     fname=$(curl -sLfJO -w '%{filename_effective}' "$furl")
-    odir=$(md5sum <<<"$fname" | awk '{print $1}')
+    odir=$(base64 <<<"$fname" | awk '{print $1}')
     unzip -qq "$fname" -d "$odir"
     find "$odir" -iregex '.*\.\(ttf\|otf\)' -exec mv {} "$fdir" \;
 }
 export -f from_zip
 
-parallel from_zip <<-EOF
+parallel --bar from_zip <<-EOF
 	http://www.fontsquirrel.com/fonts/download/Anonymous
 	http://www.fontsquirrel.com/fonts/download/BPmono
 	http://www.fontsquirrel.com/fonts/download/MonospaceTypewriter

@@ -8,6 +8,6 @@ if [[ $prgname == 'mutt-ro' ]]; then
     set -- -e 'set read_only' "$@"
 fi
 
-mbsync-on
+mbsync on
 
 exec /usr/bin/mutt "$@"

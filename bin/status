@@ -21,14 +21,12 @@ status_audio() {
     local pval rval
     pval=$(
         unset DISPLAY; amixer get Master |
-            gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {print a[2] " " a[1]}' |
-            head -n1
+            gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {print a[2] " " a[1]; exit}'
     )
     amixer -c 0 get Headphone,1 | grep -Fq 'Playback [on]' && pval="$pval +dock"
     rval=$(
         unset DISPLAY; amixer get Capture |
-            gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {print a[2] " " a[1]}' |
-            head -n1
+            gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {print a[2] " " a[1]; exit}'
     )
     printf 'audio: %s / %s\n' "$pval" "$rval"
 }
@@ -107,20 +105,24 @@ status_xkb() {
     printf 'xkb: %s\n' "$val"
 }
 
+(( $# )) || {
+    status_pa_sink
+    status_audio
+    status_backlight
+    status_bluetooth
+    status_dpms
+    status_touchpad
+    status_trackpoint_wheel
+    status_wifi
+    status_xkb
+}
+
 case ${1-} in
     audio | backlight | bluetooth | dpms | pa_sink | \
     touchpad | trackpoint_wheel | wifi | xkb)
         "status_$1"
         ;;
     *)
-        status_pa_sink
-        status_audio
-        status_backlight
-        status_bluetooth
-        status_dpms
-        status_touchpad
-        status_trackpoint_wheel
-        status_wifi
-        status_xkb
+        exit 2
         ;;
 esac

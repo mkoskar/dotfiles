@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 
 if (( EUID )); then
     echo 'This script must be run with root privileges.' >&2

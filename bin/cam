@@ -50,4 +50,5 @@ case ${1-} in
         ;;
     *)
         usage_err
+        ;;
 esac

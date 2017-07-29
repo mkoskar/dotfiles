@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu -o pipefail
+shopt -s inherit_errexit
 
 prgname=${0##*/}
 
@@ -16,7 +17,12 @@ state() {
     echo $((val > 0))
 }
 
-if [[ $prgname = 'touchpad-toggle' ]]; then
+(( $# )) || {
+    state
+    exit
+}
+
+if [[ $1 = 'toggle' ]]; then
     state=$(state)
     case $state in 1) set -- 0 ;; *) set -- 1 ;; esac
 fi
@@ -28,12 +34,8 @@ case ${1-} in
     0 | off | false)
         valset=0
         ;;
-    '')
-        state
-        exit
-        ;;
     *)
-        echo "usage: $prgname [1 | on | true | 0 | off | false]" >&2
+        echo "usage: $prgname [1 | on | true | 0 | off | false | toggle]" >&2
         exit 2
         ;;
 esac

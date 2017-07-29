@@ -3,33 +3,37 @@
 set -eu
 
 if (( EUID )); then
-    sudo hostsblock "${0##*/}"
+    sudo hostsblock "$@"
     exit
 fi
 
-prgname=$1
-
 cd /etc/hosts.d
 
-{
-case $prgname in
-    hostsblock-reload)
+prgname=${0##*/}
+
+mute() { "$@" &>/dev/null || true; }
+cleanup() { systemctl reload dnsmasq; }
+trap cleanup EXIT
+
+if (( ! $# )); then
+    mute mv off/10-* .
+    exit
+fi
+case $1 in
+    antiad)
+        mute mv 10-* off
+        mute mv off/10-hostsblock .
+        ;;
+    off)
+        mute mv 10-* off
+        ;;
+    reload)
         rm -f /etc/hostsblock/hosts{,.old.gz}
         rm -rf /var/cache/hostsblock
         /usr/bin/hostsblock
-        exit
-        ;;
-    hostsblock-off)
-        mv 10-* off
-        ;;
-    hostsblock-antiad)
-        mv 10-* off
-        mv off/10-hostsblock .
         ;;
     *)
-        mv off/10-* .
+        echo "usage: $prgname [antiad | off | reload]" >&2
+        exit 2
         ;;
 esac
-} 2>/dev/null || true
-
-systemctl reload dnsmasq

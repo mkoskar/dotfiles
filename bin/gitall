@@ -15,8 +15,24 @@ handle() {
 }
 export -f handle
 
+pargs=()
+case ${2-} in
+    clone | \
+    f | \
+    fetch | \
+    pull | \
+    push | \
+    up | \
+    update \
+    )
+        pargs+=(--bar)
+        ;;
+    *)
+        pargs+=(-k)
+        ;;
+esac
+
 find . -mindepth 2 -maxdepth 2 -type d -name '.git' -printf '%h\0' |
     sort -z |
-    parallel -0 handle {} "$@"
-
+    parallel -0 "${pargs[@]}" handle {} "$@"
 echo

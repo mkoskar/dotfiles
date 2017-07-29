@@ -104,9 +104,9 @@ myConfig = def
     myTerminal = "term"
     myWorkspaces = map show [0..9]
     myScratchpads =
-        [ NS "sp0" ("term -n '[sp0]' trun s adm") (appName =? "[sp0]")
+        [ NS "sp0" ("term -n '[sp0]' trun mux adm") (appName =? "[sp0]")
           (customFloating $ W.RationalRect 0.03 0.03 0.94 0.94)
-        , NS "sp1" ("term -n '[sp1]' trun s mon") (appName =? "[sp1]")
+        , NS "sp1" ("term -n '[sp1]' trun mux mon") (appName =? "[sp1]")
           (customFloating $ W.RationalRect 0.03 0.03 0.94 0.94)
         ]
 
@@ -340,7 +340,7 @@ myConfig = def
         , ("M-S-r", spawn "audio capture_toggle")
         , ("M-S-s", spawn "audio pa_sink_toggle")
         , ("M-S-p", spawn "playctl play-pause")
-        , ("M-C-p", spawn "playctl-bluetooth play-pause")
+        , ("M-C-p", spawn "playctl -b play-pause")
 
           -- XKB
         , ("M-<F1>", spawn "xkb 0")
@@ -352,17 +352,17 @@ myConfig = def
         , ("M-S-<Insert>", spawn "clip -p && notify 'PRIMARY -> CLIPBOARD'")
 
           -- Other
-        , ("M-<F9>", spawn "xscreen0 && xmonad --restart")
+        , ("M-<F9>", spawn "xscreen - && xmonad --restart")
         , ("M-<F10>", spawn "xscreen && xmonad --restart")
-        , ("M-S-<F10>", spawn "xscreen-mobile && xmonad --restart")
+        , ("M-S-<F10>", spawn "xscreen mobile && xmonad --restart")
 
         , ("M-<F12>", spawn "measure | clip -i")
 
         , ("M-; M-b", spawn "bluetooth-toggle")
         , ("M-; M-d", spawn "dpms-toggle")
         , ("M-; M-l", spawn "sudo lock")
-        , ("M-; M-t", spawn "trackpoint-wheel-toggle")
-        , ("M-; M-S-t", spawn "touchpad-toggle")
+        , ("M-; M-t", spawn "trackpoint-wheel toggle")
+        , ("M-; M-S-t", spawn "touchpad toggle")
         , ("M-; M-w", spawn "wifi-toggle")
         , ("M-S-b", spawn "backlight-toggle")
 
@@ -373,7 +373,7 @@ myConfig = def
         , ("M-; M-p", spawn "playx")
         , ("M-; M-S-p", spawn "playx-menu")
         , ("M-; M-s", spawn "selfie")
-        , ("M-; M-r", spawn "notify -u low \"$(url-resolve)\"")
+        , ("M-; M-r", spawn "notify -u low \"$(urlres)\"")
         , ("M-; M-u", spawn "unicode -x select fav")
         , ("M-; M-S-u", spawn "unicode -x select")
         , ("M-S-<Home>", spawn "term trun wow")

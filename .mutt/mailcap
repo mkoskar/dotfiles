@@ -1,25 +1,25 @@
-text/html;                  stdiner -T b0
+text/html;                  stdiner -bt b0
 text/html;                  w3m -I %{charset} -T text/html; copiousoutput
 text/*;                     e0 %s
 
-audio/*;                    mutt-bgrun mpv %s
-image/*;                    mutt-bgrun sxiv %s
-video/*;                    mutt-bgrun mpv %s
+audio/*;                    stdiner -b mpv %s
+image/*;                    stdiner -b sxiv %s
+video/*;                    stdiner -b mpv %s
 
-application/rtf;                                                            mutt-bgrun libreoffice %s
+application/rtf;                                                            stdiner -b libreoffice %s
 
-application/msexcel;                                                        mutt-bgrun libreoffice %s
-application/vnd.ms-excel;                                                   mutt-bgrun libreoffice %s
-application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;          mutt-bgrun libreoffice %s
+application/msexcel;                                                        stdiner -b libreoffice %s
+application/vnd.ms-excel;                                                   stdiner -b libreoffice %s
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;          stdiner -b libreoffice %s
 
-application/msword;                                                         mutt-bgrun libreoffice %s
-application/vnd.ms-word;                                                    mutt-bgrun libreoffice %s
-application/vnd.openxmlformats-officedocument.wordprocessingml.document;    mutt-bgrun libreoffice %s
+application/msword;                                                         stdiner -b libreoffice %s
+application/vnd.ms-word;                                                    stdiner -b libreoffice %s
+application/vnd.openxmlformats-officedocument.wordprocessingml.document;    stdiner -b libreoffice %s
 
-application/ppt;                                                            mutt-bgrun libreoffice %s
-application/vnd.ms-powerpoint;                                              mutt-bgrun libreoffice %s
-application/vnd.openxmlformats-officedocument.presentationml.presentation;  mutt-bgrun libreoffice %s
+application/ppt;                                                            stdiner -b libreoffice %s
+application/vnd.ms-powerpoint;                                              stdiner -b libreoffice %s
+application/vnd.openxmlformats-officedocument.presentationml.presentation;  stdiner -b libreoffice %s
 
-application/ogg;            mutt-bgrun mpv %s
-application/pdf;            mutt-bgrun zathura %s
+application/ogg;            stdiner -b mpv %s
+application/pdf;            stdiner -b zathura %s
 application/*;              e0 %s

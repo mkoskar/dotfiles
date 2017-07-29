@@ -190,7 +190,7 @@ if [[ $mode = 'select' ]]; then
     fi
     if hash rofi &>/dev/null; then
         v=$(rofi -dmenu -i -sync -matching normal -no-custom \
-            -font 'monospace 12' -l 10 -width -95 -p "unicode $mode:" <"$ifile")
+            -font 'monospace 12' -l 10 -width -95 -p "unicode $mode: " <"$ifile")
     else
         v=$(dmenu -l 15 -p "unicode $mode" <"$ifile")
     fi

@@ -2,14 +2,14 @@
 #
 # See also: https://github.com/qutebrowser/qutebrowser/issues/1098
 
-set -eu
+set -eu -o pipefail
 
 case ${1-} in
     --) shift ;;
     -*) exec /usr/bin/qutebrowser "$@" ;;
 esac
 
-read -ra uhash < <(printf '%s' "$USER" | md5sum)
+read -ra uhash < <(printf '%s' "$USER" | sha1sum)
 socket="$XDG_RUNTIME_DIR/qutebrowser/ipc-$uhash"
 
 [[ -S $socket ]] || exec /usr/bin/qutebrowser -- "$@"

@@ -5,19 +5,17 @@ set -eu -o pipefail
 prgname=${0##*/}
 
 _usage() {
-    echo "usage: $prgname [play | pause | play-pause | stop | next | prev]"
+    echo "usage: $prgname [-b] [play | pause | play-pause | stop | next | prev]"
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-while getopts h opt; do
+declare -i blue=0
+while getopts bh opt; do
     case $opt in
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        b) blue=1 ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))
@@ -25,9 +23,6 @@ shift $((OPTIND-1))
 (( $# )) || usage_err
 
 # ----------------------------------------
-
-declare -i blue=0
-[[ $prgname = 'playctl-bluetooth' ]] && blue=1
 
 bluectl() {
     if [[ $1 = 'play-pause' ]]; then

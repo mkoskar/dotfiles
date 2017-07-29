@@ -12,7 +12,7 @@ SyncState *
 IMAPAccount example
 Host <host>
 User <user>
-PassCmd "authinfo <machine> <login>"
+PassCmd "authinfo.py <machine> <login>"
 SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 

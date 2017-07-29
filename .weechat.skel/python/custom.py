@@ -426,7 +426,7 @@ def cb_command_urls_open(data, buffer, args):
             if w.hdata_char(hd_ldata, ldata, 'displayed'):
                 after -= 1
     try:
-        p = Popen('urls-open', stdin=PIPE)
+        p = Popen('urls -o', stdin=PIPE)
         count = 100
         while count > 0 and line:
             ldata = w.hdata_pointer(hd_line, line, 'data')

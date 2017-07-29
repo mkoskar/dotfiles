@@ -2,9 +2,7 @@
 
 set -eu
 
-prgname=${0##*/}
-
-if [[ $prgname = 'xkb-reset' ]]; then
+if [[ ${1-} = '-' ]]; then
 
     # caps:ctrl_modifier            Make Caps Lock an additional Ctrl.
     # keypad:pointerkeys            Shift+NumLock toggles PointerKeys.

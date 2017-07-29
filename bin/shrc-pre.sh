@@ -7,6 +7,7 @@ case $- in *i*) ;; *) return ;; esac
 
 # ----------------------------------------
 
+# shellcheck disable=SC2034
 if [ "$BASH_VERSION" ]; then
     SHELL_NAME='bash'
 elif [ "$ZSH_VERSION" ]; then

@@ -2,25 +2,19 @@
 
 set -u
 
-prgname=${0##*/}
-
 xserver=$(xserverq name)
 if [[ $xserver = 'Xorg' ]]; then
-    if [[ $prgname != 'xscreen0' ]]; then
-        if [[ $prgname = 'xscreen-mobile' ]]; then
-            autorandr -l mobile --force
-        elif xrandr | grep -q '^LVDS1 connected'; then
-            autorandr -c -d mobile --force
-        else
-            autorandr -c --force
-        fi
+    if (( ! $# )); then
+        autorandr -c -d mobile --force
+    elif [[ $1 != '-' ]]; then
+        autorandr -l "$1" --force
     fi
     xrandr --dpi 96
     NOOSD=1 touchpad off
     NOOSD=1 trackpoint-wheel on
 fi
 
-NOOSD=1 xkb-reset
+NOOSD=1 xkb -
 
 xset b off s off dpms 0 0 300 r rate 500 35
 
@@ -30,6 +24,6 @@ xsetroot -cursor_name left_ptr
 
 hsetroot || xsetroot -solid black
 
-apod-bg &
+apod set &
 
 true

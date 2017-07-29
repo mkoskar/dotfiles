@@ -46,20 +46,21 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-id=${1-}
-val=${2-}
 devs=()
 base='/sys/class/rfkill'
 
 if (( id_is_name )); then
+    id=${1-}
     for dev in "$base"/rfkill*; do
         name=$(<"$dev/name")
         [[ $name = "$id" ]] || continue
         devs+=("$dev")
     done
 else
+    (( $# )) || set -- all
+    id=$1
     case $id in
-        all | '')
+        all)
             devs+=("$base"/rfkill*)
             ;;
         +([0-9]))
@@ -85,14 +86,14 @@ fi
 
 declare -i retstat=0
 
-if [[ $val ]]; then
+if [[ ${2+set} ]]; then
     for dev in "${devs[@]}"; do
         if [[ ! -w $dev/state ]]; then
             echo "$dev/state is not writable" >&2
             retstat=1
             continue
         fi
-        printf '%d\n' "$val" >"$dev/state"
+        printf '%d\n' "$2" >"$dev/state"
     done
 else
     for dev in "${devs[@]}"; do
@@ -118,7 +119,6 @@ else
             printf '%-30s %-8s %-16s %s\n' "$dev" "$state" "$type" "$name"
         fi
     done
-
     if (( aggregate )); then
         printf '%s\n' "$state"
     fi

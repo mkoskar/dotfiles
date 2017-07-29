@@ -1,38 +1,30 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
+set -eu
 
 prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [-t | -T] cmd [arg]..."
+	usage: $prgname [-b] [-t] cmd [arg]..."
 
 	Execute 'cmd [arg]...' with stdin reference replacing '{}' placehoder/s
-	or as last dynamic argument if no '{}' placeholder was used.
+	or as last dynamic argument if no '{}' placeholder was specified.
 
-	  -t    - read stdin to temporary file first which will be removed on EXIT
-	  -T    - same as 't' but temporary file is removed with some timeout
+	  -b    - execute in background
+	  -t    - temporary file is removed with some timeout
 	EOF
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-declare -i topt=0 Topt=0
-while getopts tTh opt; do
+declare -i inbg=0 timeout=0
+while getopts bth opt; do
     case $opt in
-        t)
-            topt=1
-            ;;
-        T)
-            Topt=1
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        b) inbg=1 ;;
+        t) timeout=1 ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))
@@ -46,35 +38,34 @@ if [[ -t 0 ]]; then
     exit 1
 fi
 
-if (( topt || Topt )); then
-    file=$(mktemp -t 'stdiner.XXXXXXXXXX')
-    cleanup() { rm -f "$file"; }
+tmpfile=$(mktemp)
+cleanup() { rm -f "$tmpfile"; }
+trap cleanup EXIT
+
+cat >"$tmpfile"
+exec </dev/null
+
+main() {
     trap cleanup EXIT
-    cat >"$file"
-else
-    exec 8<&0
-    file='/dev/fd/8'
-fi
-
-exec </dev/tty
-
-args=("$@")
-declare -i farg=0
-for i in "${!args[@]}"; do
-    if [[ ${args[$i]} = '{}' ]]; then
-        args[$i]=$file
-        farg=1
+    # shellcheck disable=SC2048
+    [[ $* =~ \{\} ]] && replace_str=
+    xargs -r -n1 ${replace_str+-I\{\}} "$@" <<<"$tmpfile"
+    if (( timeout )); then
+        (
+            trap cleanup EXIT
+            sleep 1m
+            while fuser "$tmpfile"; do sleep 5; done
+        ) &
+        trap - EXIT
     fi
-done
-(( farg )) || args+=("$file")
+}
 
-(exec "${args[@]}")
-
-if (( Topt )); then
-    {
-        trap cleanup EXIT
-        sleep 30
-        while fuser "$file"; do sleep 1; done
-    } &
+if (( inbg )); then
+    (
+        exec &>>~/.local/share/"$prgname".out
+        main "$@"
+    ) &
     trap - EXIT
+else
+    main "$@"
 fi

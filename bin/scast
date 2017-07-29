@@ -2,14 +2,7 @@
 
 set -eu -o pipefail
 
-prgname=${0##*/}
-
 lockfile="$XDG_RUNTIME_DIR/scast$DISPLAY.lock"
-
-if [[ $prgname = 'scast-off' ]]; then
-    lsof -t -a -c ffmpeg "$lockfile" | xargs -r kill
-    exit
-fi
 
 cd ~/tmp
 
@@ -18,8 +11,8 @@ outfile="screencast-$ts.mkv"
 
 (exec 8>"$lockfile"
 if ! flock -n 8; then
-    notify -u critical "$prgname: IN PROGRESS"
-    exit 3
+    lsof -t -a -c ffmpeg "$lockfile" | xargs -r kill
+    exit
 fi
 
 read -r X Y W H < <(slop -f $'%x %y %w %h\n')

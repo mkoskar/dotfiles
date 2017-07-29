@@ -2,4 +2,11 @@
 
 set -eu
 
+prgname=${0##*/}
+
+if (( ! $# )); then
+    echo "usage: $prgname key-cert.pub" >&2
+    exit 2
+fi
+
 ssh-keygen -L -f "$1"

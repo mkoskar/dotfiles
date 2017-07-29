@@ -3,4 +3,4 @@
 set -e
 
 ssh-agent-preset
-ssh-tunnel baobab
+systemctl --user reload-or-restart ssh-tunnel@baobab

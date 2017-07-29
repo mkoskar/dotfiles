@@ -9,4 +9,5 @@ set -eu
 #fi
 #git diff-index --check --cached "$against"
 
+# shellcheck disable=SC1007
 GIT_PAGER= git diff --check --cached

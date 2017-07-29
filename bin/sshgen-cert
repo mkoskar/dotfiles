@@ -5,13 +5,28 @@ set -eu
 prgname=${0##*/}
 
 _usage() {
-    echo "usage: $prgname ca_key pub_key identity principals [ssh-keygen opts]"
+    cat <<-EOF
+	usage: $prgname [-H] [-P] ca_key pub_key identity principals [ssh-keygen opts]
+
+	Generate SSH client/host certificate.
+	Note: Multiple principals may be specified separated by commas.
+
+	  -H    - generate host certificate
+	  -P    - generate port-forwarding only certificate
+	EOF
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-while getopts h opt; do
+declare -i host=0 portfwd=0
+while getopts HPh opt; do
     case $opt in
+        H)
+            host=1
+            ;;
+        P)
+            portfwd=1
+            ;;
         h)
             usage
             ;;
@@ -29,32 +44,29 @@ shift $((OPTIND-1))
 ca_key=$1
 pub_key=$2
 identity=$3
-principals=$4   # Multiple principals may be specified, separated by commas.
+principals=$4
+shift 4
 
-opts=()
-if [[ $prgname = 'sshgen-hostcert' ]]; then
-    identity="host_$identity"
-    opts+=(-h)
-else
-    identity="user_$identity"
-fi
-
-opts+=(
+opts=(
     -s "$ca_key"
     -I "$identity"
     -n "$principals"
     -V +52w
 )
 
-if [[ $prgname = 'sshgen-cert-port-forwarding-only' ]]; then
-    opts+=(
-        -O no-agent-forwarding
-        -O no-pty
-        -O no-user-rc
-        -O no-x11-forwarding
-    )
+if (( host )); then
+    identity="host_$identity"
+    opts+=(-h)
+else
+    identity="user_$identity"
+    if (( portfwd )); then
+        opts+=(
+            -O no-agent-forwarding
+            -O no-pty
+            -O no-user-rc
+            -O no-x11-forwarding
+        )
+    fi
 fi
-
-shift 4
 
 ssh-keygen "${opts[@]}" "$@" "$pub_key"

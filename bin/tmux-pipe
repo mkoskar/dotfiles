@@ -2,17 +2,15 @@
 #
 # Example usage (in ~/.tmux.conf):
 #
-#   bind u run -b 'tmux-pipe #{pane_height} #{scroll_position} | urls-open'
-#   bind U run -b 'tmux-pipeall | urls-open'
+#   bind u run -b 'tmux-pipe #{pane_height} #{scroll_position} | urls -o'
+#   bind U run -b 'tmux-pipe | urls -o'
 
 set -eu
-
-prgname=${0##*/}
 
 unset s e
 declare -i s e h p
 
-if [[ $prgname != 'tmux-pipeall' ]]; then
+if (( $# )); then
     h=$1
     p=${2:-0}
     s=$((-p))

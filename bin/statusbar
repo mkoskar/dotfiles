@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -e
 
 cleanup() { kill 0; }
 trap cleanup EXIT

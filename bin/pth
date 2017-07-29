@@ -4,12 +4,27 @@ set -eu
 
 prgname=${0##*/}
 
-if (( ! $# )); then
-    echo "usage: $prgname cmd" >&2
-    exit 2
-fi
+_usage() {
+    echo "usage: $prgname [-a] cmd"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
 
-if [[ $prgname = 'ptha' ]]; then
+declare -i all=0
+while getopts ah opt; do
+    case $opt in
+        a) all=1 ;;
+        h) usage ;;
+        *) usage_err ;;
+    esac
+done
+shift $((OPTIND-1))
+
+(( $# )) || usage_err
+
+# ----------------------------------------
+
+if (( all )); then
     type -Pa -- "$1"
 else
     type -P -- "$1"

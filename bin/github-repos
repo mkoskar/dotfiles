@@ -14,6 +14,7 @@ _usage() {
 	Example usage:
 
 	  $ github-repos -m chromium clone_url description
+	  $ github-repos -f mkoskar clone_url | parallel --bar git clone
 
 	Options:
 
@@ -34,36 +35,16 @@ type='owner' sort='full_name'
 declare -i reverse=0 forks=1 mirrors=1 raw=0
 while getopts t:s:rfFmMRh opt; do
     case $opt in
-        t)
-            type=$OPTARG
-            ;;
-        s)
-            sort=$OPTARG
-            ;;
-        r)
-            reverse=1
-            ;;
-        f)
-            forks=0
-            ;;
-        F)
-            forks=2
-            ;;
-        m)
-            mirrors=0
-            ;;
-        M)
-            mirrors=2
-            ;;
-        R)
-            raw=1
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        t) type=$OPTARG ;;
+        s) sort=$OPTARG ;;
+        r) reverse=1 ;;
+        f) forks=0 ;;
+        F) forks=2 ;;
+        m) mirrors=0 ;;
+        M) mirrors=2 ;;
+        R) raw=1 ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))

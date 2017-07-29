@@ -1,76 +1,78 @@
 #!/usr/bin/env bash
 
+_curl() {
+    local stat scode surl
+    stat=$(curl -sSLG -w '%{http_code}\t%{url_effective}' -o _curl "$@")
+    read -r scode surl <<<"$stat"
+    if (( scode != 200 )); then
+        echo "HTTP $scode : $surl" >&2
+        cat _curl >&2
+        exit 1
+    fi
+}
+
 yt_video() {
-    curl -sSL -G \
+    _curl https://www.googleapis.com/youtube/v3/videos \
         -d "id=$1" \
         -d "key=$key" \
-        -d 'part=id,snippet' \
-        -o res \
-        https://www.googleapis.com/youtube/v3/videos
-    jq -r '.items[] | "#EXTINF:0," + .snippet.title + "\nytdl://" + .id' <res
+        -d 'part=id,snippet'
+    jq -r '.items[] | "#EXTINF:0," + .snippet.title + "\nytdl://" + .id' <_curl
 }
 
 yt_playlist() {
-    local np
-    curl -sSL -G \
+    _curl https://www.googleapis.com/youtube/v3/playlistItems \
         -d "key=$key" \
         -d "pageToken=${2-}" \
         -d "playlistId=$1" \
         -d 'maxResults=50' \
-        -d 'part=id,snippet' \
-        -o tmp \
-        https://www.googleapis.com/youtube/v3/playlistItems
-    cat tmp >>res
-    if np=$(jq -re '.nextPageToken' <tmp); then
+        -d 'part=id,snippet'
+    cat _curl >>tmp
+    local np
+    if np=$(jq -re '.nextPageToken' <_curl); then
         yt_playlist "$1" "$np"
         return
     fi
-    jq -r '.items[].snippet | "#EXTINF:0," + .title + "\nytdl://" + .resourceId.videoId' <res
+    jq -r '.items[].snippet | "#EXTINF:0," + .title + "\nytdl://" + .resourceId.videoId' <tmp
 }
 
 yt_channel() {
-    local np
-    curl -sSL -G \
+    _curl https://www.googleapis.com/youtube/v3/search \
         -d "channelId=$1" \
         -d "key=$key" \
         -d "pageToken=${2-}" \
         -d 'maxResults=50' \
         -d 'order=date' \
         -d 'part=id,snippet' \
-        -d 'type=video' \
-        -o tmp \
-        https://www.googleapis.com/youtube/v3/search
-    cat tmp >>res
-    if np=$(jq -re '.nextPageToken' <tmp); then
+        -d 'type=video'
+    cat _curl >>tmp
+    local np
+    if np=$(jq -re '.nextPageToken' <_curl); then
         yt_channel "$1" "$np"
         return
     fi
-    jq -r '.items[] | "#EXTINF:0," + .snippet.title + "\nytdl://" + .id.videoId' <res
+    jq -r '.items[] | "#EXTINF:0," + .snippet.title + "\nytdl://" + .id.videoId' <tmp
 }
 
 yt_user() {
-    local id
-    curl -sSL -G \
+    _curl https://www.googleapis.com/youtube/v3/channels \
         -d "forUsername=$1" \
         -d "key=$key" \
-        -d 'part=id' \
-        -o tmp \
-        https://www.googleapis.com/youtube/v3/channels
-    if id=$(jq -re '.items[].id' <tmp); then
+        -d 'part=id'
+    local id
+    if id=$(jq -re '.items[].id' <_curl); then
         yt_channel "$id"
     fi
 }
 
 handle() {
     set -eu
-
     key=$(<~/.yt)
+
     tmpdir=$(mktemp -d)
     cleanup() { rm -rf "$tmpdir"; }
     trap cleanup EXIT
 
     cd "$tmpdir"
-
     if [[ $1 =~ ^https?://www\.youtube\.com/watch\?v=(.*) ]]; then
         yt_video "${BASH_REMATCH[1]}"
     elif [[ $1 =~ ^https?://www\.youtube\.com/playlist\?list=(.*) ]]; then
@@ -85,6 +87,7 @@ handle() {
 }
 
 handle1() {
+    set -eu -o pipefail
     [[ $1 =~ ^https?://www\.youtube\.com/ ]] || {
         printf '%s\n' "$1"
         return
@@ -98,5 +101,5 @@ handle1() {
     '
 }
 
-export -f yt_video yt_playlist yt_channel yt_user handle handle1
+export -f _curl yt_video yt_playlist yt_channel yt_user handle handle1
 parallel -j10 -k handle {}

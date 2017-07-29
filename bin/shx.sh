@@ -136,7 +136,7 @@ paco() {
 # Finds what package provides command
 pacoc() {
     [ $# -eq 0 ] && return 2
-    ptha "$1" | xargs -d '\n' -r pacman -Qo
+    pth -a "$1" | xargs -d '\n' -r pacman -Qo
 }
 
 # Files provided by package
@@ -225,7 +225,7 @@ alias lsblk='lsblk -o NAME,KNAME,MAJ:MIN,ROTA,RM,RO,TYPE,SIZE,FSTYPE,MOUNTPOINT,
 alias lsdiff='lsdiff -s'
 alias ltime='date +%T'
 alias mnt='findmnt'
-alias moon='curl -sSL http://wttr.in/moon | head -n-4'
+alias moon='curl -sSLf http://wttr.in/moon | head -n-4'
 alias mount-loop='mount -o loop'
 alias mpv-debug='mpv --msg-level=all=debug'
 alias mpv-verbose='mpv --msg-level=all=v'
@@ -252,12 +252,12 @@ alias ss='ss -napstu'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
 alias sudo-off='sudo -K'
 alias sudo-on='sudo -v'
+alias tmux-killall='tmux-all kill-server'
 alias top='top -d 1'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias w3m='w3m -v'
-alias watch='watch -n 1 -t -c'
 alias weechat-plain='weechat -d $(mktemp -d)'
-alias wi='curl -sSL http://wttr.in/ | head -n-3'
+alias wi='curl -sSLf http://wttr.in/ | head -n-3'
 alias ytdl-playlist="youtube-dl --yes-playlist -o '~/download/_youtube-dl/%(playlist)s/[%(playlist_index)s] %(title)s'"
 alias ytdl-stdout='youtube-dl -o -'
 
@@ -443,7 +443,7 @@ stacktrace() {
 }
 
 systemd-dot() {
-    systemd-analyze dot "$@" | dot -Tsvg | stdiner -T b
+    systemd-analyze dot "$@" | dot -Tsvg | stdiner -bt b
 }
 
 tree() {
@@ -461,6 +461,12 @@ v() {
     else
         declare -p -- "$1"
     fi
+}
+
+watchx() {
+    [ $# -gt 0 ] || set -- la
+    printf -v cmd '%q "$@"' "$1"
+    watch -xc -n1 bashx -c "$cmd" "$@"
 }
 
 xkbkeymap() {

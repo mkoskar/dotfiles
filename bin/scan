@@ -37,6 +37,7 @@ resolution=${sel[2]}
 ts=$(date +%F.%s)
 name="${ts}_$mode-${resolution}dpi"
 
+# shellcheck disable=SC2191
 opts=(
     -d pixma:MX920_pyrite
     --source "$src"

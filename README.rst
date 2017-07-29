@@ -16,15 +16,15 @@ Some of them are specific to my work-flow, but some rather generic enough
 are listed below.
 
 `apod <bin/apod>`_
-    Prints APOD (Astronomy Picture of the Day) image URL.
-
-`apod-get <bin/apod-get>`_, `apod-bg <bin/apod-bg>`_
     Example of how to download and set APOD as your desktop background.
+
+`apodurl <bin/apodurl>`_
+    Prints APOD (Astronomy Picture of the Day) image URL.
 
 `audio <bin/audio>`_
     Simple command-line interface for basic audio controls.
 
-`authinfo <bin/authinfo>`_, `authinfo.py <bin/authinfo.py>`_
+`authinfo.py <bin/authinfo.py>`_
     Reads ``~/.authinfo.gpg`` to provide login credentials.
 
 `backlight <bin/system/backlight>`_
@@ -73,7 +73,7 @@ are listed below.
 `powersave <bin/system/powersave>`_
     Simple way to switch power saving on or off.
 
-`rep <bin/rep>`_, `respawn <bin/respawn>`_
+`rep <bin/rep>`_
     Execute ``cmd [arg]...`` repeatedly.
 
 `reqd <bin/reqd>`_
@@ -92,7 +92,7 @@ are listed below.
     Pretty print socket info (from ``ss`` and ``netstat``).
 
 `status <bin/status>`_
-    Print status of: audio, backlight, bluetooth, dpms, wifi, and xkb.
+    Print status of: audio, backlight, bluetooth, dpms, wifi, etc.
 
 `stdiner <bin/stdiner>`_
     Convert STDIN to positional command argument.

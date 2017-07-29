@@ -2,7 +2,7 @@
 #
 # Wrapper script to use Vim as a pager.
 
-set -eu
+set -eu -o pipefail
 
 prgname=${0##*/}
 
@@ -25,7 +25,8 @@ if [[ $prgname = 'pgx' ]]; then
         exit 2
     fi
     if [[ ! -t 1 ]]; then
-        exec bashx -c "$1 \"\${@:1}\"" "$@"
+        printf -v cmd '%q "$@"' "$1"
+        exec bashx -c "$cmd" "$@"
     fi
     CMD=$(shell-escape "$@")
     export CMD

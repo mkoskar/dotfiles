@@ -25,12 +25,12 @@ neww() {
 
 # ----------------------------------------
 
-s() {
+base() {
     new
     neww -d
 }
 
-sp() {
+ext() {
     new 'trun ranger' \
         \; setw remain-on-exit on \
         \; setw main-pane-height 30 \
@@ -47,7 +47,7 @@ sp() {
 
 adm() {
     cd ~
-    sp
+    ext
     neww -d
 }
 
@@ -103,12 +103,12 @@ mon() {
 
 tmp() {
     cd ~/tmp
-    s
+    base
 }
 
 wrk() {
     cd ~/projects
-    sp
+    ext
 }
 
 # ----------------------------------------
@@ -123,18 +123,10 @@ socket='default'
 declare -i attach=1
 while getopts ds:h opt; do
     case $opt in
-        d)
-            attach=0
-            ;;
-        s)
-            socket=$OPTARG
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        d) attach=0 ;;
+        s) socket=$OPTARG ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))
@@ -149,14 +141,15 @@ if [[ ${TMUX-} ]]; then
     fi
 fi
 
-session=${1-}
-if [[ ! $session ]]; then
+if (( $# )); then
+    session=$1
+else
     session="$PWD/"
     session=${session/#"$HOME/"/\~/}
     session=${session%/}
 fi
 
-(exec 8>"$XDG_RUNTIME_DIR/s.lock"
+(exec 8>"$XDG_RUNTIME_DIR/mux.lock"
 flock -w 30 8 || exit 3
 (exec 8<&-
 
@@ -166,8 +159,11 @@ if ! exists; then
             $session
             ;;
         *)
-            case $prgname in s | sp) ;; *) exit 2 ;; esac
-            $prgname
+            case $prgname in
+                mux) base ;;
+                muxx) ext ;;
+                *) exit 2 ;;
+            esac
             ;;
     esac
 fi

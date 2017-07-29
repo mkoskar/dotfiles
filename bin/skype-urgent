@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-ids=($(xdotool search --class 'skype'))
-for id in "${ids[@]}"; do
-    seturgent "$id"
-done

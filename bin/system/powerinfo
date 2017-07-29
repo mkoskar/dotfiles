@@ -10,10 +10,6 @@ get() {
     [[ ! -e $in ]] || typeset -g "$out=$(<"$in")"
 }
 
-get_() {
-    get "$1" "$2" _
-}
-
 uconv() {
     typeset -g "$2="
     [[ ! $1 ]] || typeset -g "$2=$(($1/(1000*1000)))"
@@ -31,6 +27,7 @@ echo $'\n--------------------------------------------------'
 base='/sys/class/powercap'
 echo -e "> $base:\n"
 
+# shellcheck disable=SC2154
 for rapl in "$base/"*; do
     [[ -e $rapl/name ]] || continue
     _rapl=${rapl##*/}
@@ -61,17 +58,17 @@ for rapl in "$base/"*; do
     for (( i=0; i<10; i++ )); do
         _base="$rapl/constraint_$i"
 
-        get_ "$_base" name
+        get "$_base" name _
 
         [[ $_name ]] || break
 
-        get_ "$_base" time_window_us
+        get "$_base" time_window_us _
         uconv "$_time_window_us" _time_window
 
-        get_ "$_base" power_limit_uw
+        get "$_base" power_limit_uw _
         uconv "$_power_limit_uw" _power_limit
 
-        get_ "$_base" max_power_uw
+        get "$_base" max_power_uw _
         uconv "$_max_power_uw" _max_power
 
         printf '    %-16s : %-15s %19sus : %8sW / %8sW\n' \
@@ -89,6 +86,7 @@ get "$base" min_perf_pct
 get "$base" max_perf_pct
 get "$base" no_turbo
 
+# shellcheck disable=SC2154
 printf '%-25s %-25s %-25s\n\n' \
     "min_perf_pct: $_min_perf_pct" \
     "max_perf_pct: $_max_perf_pct" \

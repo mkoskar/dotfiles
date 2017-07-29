@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-prgname=${0##*/}
-
-exec &>>~/.local/share/"$prgname".out
-exec /usr/bin/mutt_bgrun "$@"

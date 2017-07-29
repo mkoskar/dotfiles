@@ -209,7 +209,7 @@ macro index,pager y <change-folder>?<toggle-mailboxes> 'show mailboxes list'
 macro index,pager,attach O '<pipe-entry>e0 -c "set bt=nofile"<enter>' 'view in $PAGER'
 macro pager j >>>>>
 macro pager k <<<<<
-macro attach \cO '<pipe-entry>stdiner -T b0<enter>' 'view in browser'
+macro attach \cO '<pipe-entry>stdiner -bt b0<enter>' 'view in browser'
 macro browser \ea <exit>\ea 'go to previous mailbox'
 macro browser u /^\\.\\.$<enter><enter> 'go up a dir'
 macro compose Y pfy 'send the message without PGP'

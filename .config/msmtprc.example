@@ -1,9 +1,11 @@
 defaults
 auth on
+logfile ~/.local/msmtp.log
+proxy-host 127.0.0.1
+proxy-port 1080
 tls on
 tls_starttls on
 tls_trust_file /etc/ssl/certs/ca-certificates.crt
-logfile ~/.local/msmtp.log
 
 account <account>
 from <from>

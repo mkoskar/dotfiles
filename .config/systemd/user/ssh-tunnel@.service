@@ -4,4 +4,5 @@ Description=%N service
 [Service]
 SyslogIdentifier=%N
 ExecStart=/usr/bin/autossh -M 0 -F %h/.ssh/config.tunnels -N %i
+ExecReload=/usr/bin/kill -HUP $MAINPID
 Restart=on-failure

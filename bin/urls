@@ -1,29 +1,70 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 
 prgname=${0##*/}
 
-if [[ $prgname == 'urls-open' ]]; then
-    filter=(cat)
-    case ${1-} in -r)
-        filter=(tac)
-        ;;
+_usage() {
+    cat <<-EOF
+	usage: $prgname [options]
+
+	  -o        - open
+	  -y        - yank
+	  -s        - select
+	  -p prompt - selection dialog prompt
+	  -r        - reverse order
+	EOF
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+mode=
+prompt='url select'
+declare -i reverse=0
+while getopts soyp:rh opt; do
+    case $opt in
+        o) mode=$opt ;;
+        y) mode=$opt ;;
+        s) mode=$opt ;;
+        p) prompt=$OPTARG ;;
+        r) reverse=1 ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
+done
+shift $((OPTIND-1))
 
-    tmpfile=$(mktemp)
-    cleanup() { rm -f "$tmpfile"; }
-    trap cleanup EXIT
+# ----------------------------------------
 
-    urls | uniq | "${filter[@]}" >"$tmpfile"
-    [[ -s $tmpfile ]] || exit 1
-    if hash rofi &>/dev/null; then
-        rofi -dmenu -i -sync -multi-select -no-custom \
-            -p "$prgname:" <"$tmpfile" | xargs -r -n1 b
-    else
-        dmenu -l 5 -p "$prgname" <"$tmpfile" | xargs -r -n1 b
-    fi
-    exit
+tmpfile=$(mktemp)
+cleanup() { rm -f "$tmpfile"; }
+trap cleanup EXIT
+
+(( reverse )) && filter=(tac) || filter=(cat)
+xurls | "${filter[@]}" >"$tmpfile"
+[[ -s $tmpfile ]] || exit 1
+
+case $mode in
+    o)
+        consumer=(xargs -r -n1 b)
+        prompt='url open'
+        ;;
+    y)
+        consumer=(xargs -r -n1 clip -a)
+        prompt='url yank'
+        ;;
+    s)
+        consumer=(cat)
+        ;;
+    *)
+        cat "$tmpfile"
+        exit
+        ;;
+esac
+
+if hash rofi &>/dev/null; then
+    rofi -dmenu -i -sync -multi-select -no-custom \
+        -p "$prompt: " <"$tmpfile" | "${consumer[@]}"
+else
+    dmenu -l 5 -p "$prompt" <"$tmpfile" | "${consumer[@]}"
 fi
-
-xurls -r

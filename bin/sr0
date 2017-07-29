@@ -6,23 +6,28 @@ prgname=${0##*/}
 
 dev='/dev/sr0'
 
-case $prgname in
-    sr0-blank)
-        wodim dev="$dev" blank=all
+if (( ! $# )); then
+    cdrecord dev="$dev" -checkdrive
+    exit
+fi
+
+case $1 in
+    blank)
+        cdrecord dev="$dev" blank=all
         ;;
-    sr0-iso)
-        if (( ! $# )); then
-            size=$(isosize "$dev")
-            blocks=$((size/2048))
-            ts=$(date +%F.%s)
-            output="sr0_$ts.iso"
-            echo "Creating $output of following size: $((blocks/512)) MB"
-            dd if="$dev" of="$output" bs=2048 count=$blocks
-        else
-            wodim -v -multi dev="$dev" "$1"
-        fi
+    iso)
+        size=$(isosize "$dev")
+        blocks=$((size/2048))
+        ts=$(date +%F.%s)
+        output="sr0_$ts.iso"
+        echo "Creating $output of following size: $((blocks/512)) MB"
+        dd if="$dev" of="$output" bs=2048 count=$blocks
+        ;;
+    multi)
+        cdrecord -v -multi dev="$dev" "$@"
         ;;
     *)
-        wodim dev="$dev" -checkdrive
+        echo "usage: $prgname [blank | iso | multi]" >&2
+        exit 2
         ;;
 esac

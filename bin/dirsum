@@ -11,5 +11,5 @@ if [[ $prgname = 'dirsum0' ]]; then
     filter=(cat)
 fi
 
-bsdtar -c -f - --format mtree --options mtree:md5 . |
-    "${filter[@]}" | md5sum | awk '{print $1}'
+bsdtar -c -f - --format mtree --options mtree:sha1 . |
+    "${filter[@]}" | sha1sum | awk '{print $1}'

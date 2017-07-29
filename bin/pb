@@ -9,10 +9,6 @@ set -eu
 
 prgname=${0##*/}
 
-if [[ $prgname = 'pb' ]]; then
-    exec paste-ptpb "$@"
-fi
-
 tmpdir=$(mktemp -d)
 cleanup() { rm -rf "$tmpdir"; }
 trap cleanup EXIT
@@ -29,18 +25,18 @@ outfile="$tmpdir/out"
 
 [[ -s $infile ]] || exit 1
 
-case $prgname in
-    paste-ix)
+case ${PB:-ptpb} in
+    ix)
         # /<id>/<lexer>#n-<line>
         curl -sSL -F "f:1=@$infile" -o "$outfile" http://ix.io/
         cat "$outfile"
         ;;
-    paste-ptpb)
+    ptpb)
         # /<id>/<lexer>/<formatter>#L-<line>
         curl -sS -F "c=@$infile" -w '%{redirect_url}\n' -o "$outfile" \
             https://ptpb.pw/?r=1
         ;;
-    paste-sprunge)
+    sprunge)
         # /<id>?<lexer>#n-<line>
         curl -sSL -F "sprunge=@$infile" -o "$outfile" http://sprunge.us/
         cat "$outfile"

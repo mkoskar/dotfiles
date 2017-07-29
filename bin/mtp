@@ -2,7 +2,7 @@
 #
 # Simple 'jmtpfs' frontend.
 
-set -euf
+set -euf -o pipefail
 
 readarray -t mounts < <(grep '^jmtpfs ' /proc/mounts | sort -u)
 if (( ${#mounts[@]} > 0 )); then

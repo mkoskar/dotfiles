@@ -44,6 +44,7 @@ shift $((OPTIND-1))
 # Style can be restored by e.g., CSI save/restore and color can
 # be reset by Xterm OSC '\e]112;\e\\' (not supported by urxvt).
 
+# shellcheck disable=SC1003
 color() { printf '\e]12;%s\e\\' "${1:-#dddddd}"; }
 style() { printf '\e[%d q' "${1:-2}"; }
 

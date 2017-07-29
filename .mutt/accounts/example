@@ -14,7 +14,7 @@ mailboxes $my_example/INBOX
 
 # IMAP
 set my_example_imap = imaps://<user>@<host>:993
-set my_example_imap_pass = "`authinfo <machine> <login>`"
+set my_example_imap_pass = "`authinfo.py <machine> <login>`"
 
 account-hook $my_example_imap 'set imap_pass = $my_example_imap_pass'
 

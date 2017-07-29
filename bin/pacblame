@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 
 prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [-e] [-d|-r|-s|-t]
+	usage: $prgname [-e] [-d | -r | -s | -t]
 
 	  -e    - restrict to explicitly installed packages
 	  -d    - blame by "depends on"

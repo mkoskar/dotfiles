@@ -30,13 +30,14 @@ else
     url='http://ipinfo.io/'
 fi
 
-stat=$(curl -sSL -w '%{http_code}' -o "$tmpfile" "$url")
-case $stat in
+stat=$(curl -sSL -w '%{http_code}\t%{url_effective}' -o "$tmpfile" "$url")
+read -r scode surl <<<"$stat"
+case $scode in
     200)
         jq <"$tmpfile"
         ;;
     *)
-        echo "HTTP $stat : $url" >&2
+        echo "HTTP $scode : $surl" >&2
         cat "$tmpfile" >&2
         exit 1
         ;;

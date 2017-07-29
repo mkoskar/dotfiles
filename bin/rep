@@ -10,7 +10,7 @@ _usage() {
 
 	Execute 'cmd [arg]...' repeatedly.
 
-	  -d delay  - wait for 'delay' milliseconds; <0 = wait forever, 0 = don't wait at all (default: -1)
+	  -d delay  - wait for 'delay' milliseconds; <0 = wait forever, 0 = don't wait at all (default: 1000)
 	  -t        - terminate if 'cmd' finished in less than 'delta' milliseconds
 	  -T delta  - (default: 400)
 	  -o output - redirect stdout and sterr to 'output'
@@ -22,10 +22,6 @@ _usage() {
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
-
-if [[ $prgname = 'respawn' ]]; then
-    set -- -d0 -t "$@"
-fi
 
 # shellcheck disable=SC1007
 dopt= Topt= output='/dev/null'
@@ -78,7 +74,7 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-delay=${dopt:--1}
+delay=${dopt:-1000}
 term_delta=${Topt:-400}
 
 declare -i notty=0
@@ -120,7 +116,8 @@ while true; do
     (( ! quiet )) && printf "> started: %s${ti_el}\n" "$ts_begin_" >&2
     (( ! inline && long )) && printf '%s' "$ti_ed"
 
-    bashx -c "$1 \"\${@:1}\"" "$@" |& tee ${append+-a} "$output" | sed -r "s/\$/$ti_el/"
+    printf -v cmd '%q "$@"' "$1"
+    bashx -c "$cmd" "$@" |& tee ${append+-a} "$output" | sed -r "s/\$/$ti_el/"
 
     ts_end=$(date +%s.%N)
     ts_end_=$(date +%T -d "@$ts_end")

@@ -21,7 +21,7 @@ cd ~/.vim
 mkdir -p pack/custom/opt
 cd pack/custom/opt
 
-parallel --colsep '\t+' from_git <<-EOF
+parallel --bar --colsep '\t+' from_git <<-EOF
 
 	ansiesc				https://github.com/jakar/vim-AnsiEsc
 	colorschemes		https://github.com/flazz/vim-colorschemes
@@ -54,14 +54,4 @@ parallel --colsep '\t+' from_git <<-EOF
 	neomake				https://github.com/neomake/neomake
 
 EOF
-
-#echo
-#cd ycm
-#
-#./install.py \
-#    --clang-completer \
-#    --gocode-completer \
-#    --racer-completer \
-#    --tern-completer
-
 echo

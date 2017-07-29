@@ -17,14 +17,16 @@ if [[ ! -d $dock || ! -r $dock/docked ]]; then
 fi
 
 declare -i undock=0 standby=0
-case $prgname in
-    bay-undock)
-        undock=1
-        ;;
-    bay-standby)
-        standby=1
-        ;;
-esac
+if (( $# )); then
+    case $1 in
+        undock) undock=1 ;;
+        standby) standby=1 ;;
+        *)
+            echo "usage: $prgname [standby | undock]" >&2
+            exit 2
+            ;;
+    esac
+fi
 
 docked=$(<"$dock/docked")
 if (( ! docked )); then

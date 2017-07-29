@@ -9,7 +9,7 @@ process() {
 }
 
 if (( ! $# )); then
-    while read -rs line; do
+    while read -r line; do
         process "$line"
     done < <(
     scroller <<-EOF
@@ -17,12 +17,16 @@ if (( ! $# )); then
 		xft:Terminus:pixelsize=20
 		xft:Terminus:pixelsize=28
 		xft:Terminus:pixelsize=32
+		xft:MonteCarlo:pixelsize=11
 		xft:Tamsyn:pixelsize=12
 		xft:Tamsyn:pixelsize=14
+		xft:Tamsyn:pixelsize=16
 		xft:Monaco:size=10
 		xft:Monaco:size=11
+		xft:Iosevka:size=11
+		xft:Iosevka:size=12
 		xft:Envy Code R:size=11
-		xft:MonteCarlo:pixelsize=10
+		xft:Envy Code R:size=12
 		xft:Source Code Pro:size=10
 		xft:DejaVu Sans Mono:size=8
 		xft:DejaVu Sans Mono:size=10

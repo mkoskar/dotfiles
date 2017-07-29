@@ -3,6 +3,6 @@ Description=%N service
 
 [Service]
 SyslogIdentifier=%N
-ExecStart=/usr/bin/bash -c 'apod-get && { apod-bg || true; }'
+ExecStart=/usr/bin/bash -c 'apod get && { apod set || true; }'
 Restart=on-failure
 RestartSec=1800
