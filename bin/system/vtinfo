@@ -4,7 +4,7 @@
     vtinfo
     ~~~~~~
 
-    Returns some information about the active VT.
+    Get some information about the active VT.
 
     :Compatibility: 2.7 / 3.2
     :Copyright: (c) 2016 Miroslav Koskar <http://mkoskar.com/>
@@ -25,7 +25,7 @@ def ioctl(fd, req, fmt):
 
 
 parser = argparse.ArgumentParser(
-    description="Returns some information about the active VT."
+    description="Get some information about the active VT."
 )
 args = parser.parse_args()
 

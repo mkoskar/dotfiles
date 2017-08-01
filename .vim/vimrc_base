@@ -491,7 +491,7 @@ nnoremap <silent> <Leader>ft :<C-R>=!empty(&ft) ? 'setf '.&ft : 'filetype detect
 " Sorting
 xnoremap <silent> <Leader>ss :sort<CR>
 xnoremap <silent> <Leader>su :sort u<CR>
-xnoremap <silent> <Leader>sd :sort!<CR>
+xnoremap <silent> <Leader>sr :sort!<CR>
 xnoremap <silent> <Leader>sb :!sort-blocks<CR>
 
 " Working with diffs

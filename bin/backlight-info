@@ -3,7 +3,7 @@
 set -eu
 
 for dev in /sys/class/backlight/*; do
-    [[ -d $dev ]] || continue
+    [[ -e $dev ]] || continue
 
     brightness=$(<"$dev/brightness")
     actual_brightness=$(<"$dev/actual_brightness")

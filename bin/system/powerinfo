@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
 
 set -eu
-shopt -s nullglob
 
 get() {
     local sep=${3:-/}
     local in="$1$sep$2" out="_$2"
-    typeset -g "$out="
-    [[ ! -e $in ]] || typeset -g "$out=$(<"$in")"
+    typeset -g "$out=$(<"$in")"
 }
 
 uconv() {
-    typeset -g "$2="
-    [[ ! $1 ]] || typeset -g "$2=$(($1/(1000*1000)))"
+    typeset -g "$2=$(($1/(1000*1000)))"
 }
 
 echo $'\n--------------------------------------------------'

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 set -eu
-shopt -s nullglob
 
 ifaces=()
 for dev in /sys/class/net/*; do
+    [[ -e $dev ]] || continue
     operstate=$(<"$dev/operstate")
     [[ $operstate = 'up' ]] || continue
     ifaces+=("${dev##*/}")

@@ -5,10 +5,7 @@ set -eu
 prgname=${0##*/}
 
 for i in /sys/class/power_supply/BAT${1:-*}; do
-    [[ -d $i ]] || {
-        echo "$prgname: cannot access $i"  >&2
-        exit 1
-    }
+    [[ -e $i ]] || continue
     echo $'\n--------------------------------------------------'
     echo -e "> $i:\n"
     cat -- "$i/uevent"

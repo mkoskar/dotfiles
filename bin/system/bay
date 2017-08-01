@@ -12,7 +12,7 @@ prgname=${0##*/}
 dock=$(grep -l ata_bay /sys/devices/platform/dock.?/type)
 dock=${dock%%/type}
 
-if [[ ! -d $dock || ! -r $dock/docked ]]; then
+if [[ ! -e $dock || ! -e $dock/docked ]]; then
     exit 1
 fi
 
@@ -37,7 +37,7 @@ else
     devnames=("$sysdev/block/"*)
     devname=${devnames[0]}
 
-    if [[ -d $devname ]]; then
+    if [[ -e $devname ]]; then
         devname=${devname##*/}
         dev="/dev/$devname"
     else
@@ -47,8 +47,6 @@ else
 
     if (( standby )); then
         echo 'standby...' >&2
-        [[ ! -r $dev ]] && exit 1
-
         if ! smartctl -i -n standby -- "$dev" &>/dev/null; then
             echo 'already in standby' >&2
         else
@@ -57,18 +55,16 @@ else
     fi
 
     if (( undock )); then
-        if [[ -r ${dev-} ]]; then
-            echo "sync..." >&2
-            sync
+        echo "sync..." >&2
+        sync
 
-            echo "umountall $devname..." >&2
-            umountall "$devname"
+        echo "umountall $devname..." >&2
+        umountall "$devname"
 
-            echo 'standby...' >&2
-            hdparm -y -- "$dev" &>/dev/null
-        fi
+        echo 'standby...' >&2
+        hdparm -y -- "$dev" &>/dev/null
 
-        if [[ -d $sysdev ]]; then
+        if [[ -e $sysdev ]]; then
             echo 'detach...' >&2
             echo 1 >>"$sysdev/delete"
         fi

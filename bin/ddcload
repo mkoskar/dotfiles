@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+if (( ! $# )); then
+    echo "usage: $prgname profile" >&2
+    exit 2
+fi
+
+cd "$HOME/.local/share/$prgname/$1"
+find . -mindepth 1 -maxdepth 1 -type f | xargs -r -n1 -P0 ddcutil loadvcp

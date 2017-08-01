@@ -352,8 +352,8 @@ myConfig = def
         , ("M-S-<Insert>", spawn "clip -p && notify 'PRIMARY -> CLIPBOARD'")
 
           -- Other
-        , ("M-<F9>", spawn "xscreen - && xmonad --restart")
-        , ("M-<F10>", spawn "xscreen && xmonad --restart")
+        , ("M-<F9>", spawn "xscreen && xmonad --restart")
+        , ("M-<F10>", spawn "xscreen - && xmonad --restart")
         , ("M-S-<F10>", spawn "xscreen mobile && xmonad --restart")
 
         , ("M-<F12>", spawn "measure | clip -i")

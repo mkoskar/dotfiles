@@ -15,7 +15,7 @@ HISTCONTROL='ignorespace:erasedups'
 HISTFILE="$HOME/.local/share/bash_history"
 HISTFILESIZE=5000
 HISTIGNORE='exit'
-HISTSIZE=500
+HISTSIZE=1000
 
 __title='\[\e]2;\u@\h:\w\a\]'
 PS1="$__title\$?\$__statstr:\${BASEDIR:+(\${BASEDIR##*/}):}\W\$ "

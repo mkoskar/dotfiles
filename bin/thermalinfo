@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -eu
-shopt -s nullglob
 
 get() {
     local sep=${3:-/}
@@ -20,6 +19,8 @@ base='/sys/class/thermal'
 echo -e "> $base:\n"
 
 for cdev in "$base/"cooling_device*; do
+    [[ -e $cdev ]] || continue
+
     _cdev=${cdev##*/}
 
     get "$cdev" type
@@ -32,6 +33,8 @@ done
 echo
 
 for tzone in "$base/"thermal_zone*; do
+    [[ -e $tzone ]] || continue
+
     _tzone=${tzone##*/}
 
     get "$tzone" type
@@ -49,6 +52,8 @@ for tzone in "$base/"thermal_zone*; do
     }
 
     for tpoint in "$tzone/"trip_point_*_type; do
+        [[ -e $tpoint ]] || continue
+
         _base=${tpoint%%_type}
         _tpoint=${_base##*/}
 

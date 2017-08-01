@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 set -eu
-shopt -s nullglob
 
 (( $# )) || set -- ls
 
 echo
 for socket in "${TMUX_TMPDIR:-/tmp}/tmux-$UID/"*; do
+    [[ -S $socket ]] || continue
     echo "> $socket"
     tmux -S "$socket" -- "$@" || true
     echo

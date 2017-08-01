@@ -11,7 +11,7 @@ fi
 
 file=$(realpath -- "$1")
 basename=${file##*/}
-read -ra path_hash < <(sha1sum <<<"$file")
+read -ra path_hash < <(printf '%s' "$file" | sha1sum)
 
 if [[ ! -f $file ]]; then
     echo 'regular file expected' >&2

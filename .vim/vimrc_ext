@@ -104,7 +104,7 @@ let deoplete#enable_smart_case = 1
 " ----------------------------------------
 
 let dirvish_hijack_netrw = 0
-let dirvish_mode = ':sort | sort r /\m.*\ze[^\/]$/'
+let dirvish_mode = ':sort | sort ,^.*/,'
 
 
 " easy-align

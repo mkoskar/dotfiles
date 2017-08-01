@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+shopt -s nullglob
+
+prgname=${0##*/}
+
+_usage() {
+    cat <<-EOF
+	usage: $prgname [-o] [-r] [-v]
+
+	Compute SHA1 digest of EDIDs of all connected monitors.
+
+	  -o    - exclude turned off monitors
+	  -r    - output raw data instead
+	  -v    - verbose output
+	EOF
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+declare -i exoff=0 raw=0 verbose=0
+while getopts orvh opt; do
+    case $opt in
+        o) exoff=1 ;;
+        r) raw=1 ;;
+        v) verbose=1 ;;
+        h) usage ;;
+        *) usage_err ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# ----------------------------------------
+
+drm='/sys/class/drm'
+
+if (( exoff )); then
+    declare -A bus2out bus_map
+
+    bus2out['i915 gmbus dpb']='HDMI-A-1'
+    bus2out['i915 gmbus dpc']='HDMI-A-2'
+    bus2out['i915 gmbus dpd']='HDMI-A-3'
+    bus2out['i915 gmbus panel']='LVDS-1'
+    bus2out['i915 gmbus vga']='VGA-1'
+
+    cd "$drm"
+    for card in card[0-9]; do
+        cd "$drm/$card"
+        for bus in device/i2c-*; do
+            bus_num=${bus##*-}
+            bus_name=$(<"$bus/name")
+            out_name=${bus2out[$bus_name]-}
+            [[ $out_name ]] && bus_map[$card-$out_name]=$bus_num
+        done
+        for out in "$card"-*; do
+            for bus in i2c-*; do
+                bus_num=${bus##*-}
+                bus_name=$(<"$bus/name")
+                bus_map[$out]=$bus_num
+                break
+            done
+        done
+    done
+fi
+
+main() {
+    local status edid bus_num ddcargs power
+    cd "$drm"
+    for card in card[0-9]; do
+        cd "$drm/$card"
+        for out in "$card"-*; do
+            status=$(<"$out/status")
+            [[ $status = 'connected' ]] || continue
+            edid=$(hexdump -e '16/1 "%02x"' <"$out/edid")
+            if (( exoff )); then
+                bus_num=${bus_map[$out]-}
+                if [[ $bus_num ]]; then
+                    ddcargs=(--nodetect -b "$bus_num")
+                else
+                    ddcargs=(-e "$edid")
+                fi
+                if power=$(ddcutil -t "${ddcargs[@]}" getvcp d6); then
+                    read -r _ _ _ power <<<"$power"
+                    [[ $power = 'x05' ]] && continue
+                fi
+            fi
+            if (( verbose )); then
+                echo $'\n--------------------------------------------------'
+                echo -e "> $out:\n"
+                edid-decode "$out/edid" || true
+                echo
+            fi
+            printf '%s %s\n' "$out" "$edid"
+        done
+    done
+    (( ! verbose )) || echo
+}
+
+if (( raw || verbose )); then
+    main
+else
+    main | sha1sum | awk '{print $1}'
+fi

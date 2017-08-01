@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu -o pipefail
-shopt -s extglob nullglob
+shopt -s extglob
 
 prgname=${0##*/}
 
@@ -52,6 +52,7 @@ if [[ ! $profile ]]; then
         )
     fi
     for p in ~/.config/"$bin_name".*; do
+        [[ -d $p ]] || continue
         profiles+=("${p#*"$bin_name".}")
     done
     profile=$(

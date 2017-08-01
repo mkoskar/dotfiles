@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 set -eu
-shopt -s nullglob
 
 for f in ./*.mp3; do
+    [[ -f $f ]] || continue
     base=${f##*/}
     lame --decode "$f" "${base%\.mp3}.wav"
 done

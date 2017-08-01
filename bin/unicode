@@ -5,8 +5,8 @@ shopt -s extglob inherit_errexit
 
 prgname=${0##*/}
 
-cachedir="$HOME/.cache/unicode"
-sharedir="$HOME/.local/share/unicode"
+cachedir="$HOME/.cache/$prgname"
+sharedir="$HOME/.local/share/$prgname"
 
 _usage() {
     cat <<-EOF
@@ -26,11 +26,11 @@ _usage() {
 	EOF
     echo -e "\n  ${sharedir/#$HOME/\~}:\n"
     for i in "$sharedir"/select/*; do
-        [[ -f $i ]] || continue
+        [[ -e $i ]] || continue
         echo "    select ${i##*/}"
     done
     for i in "$sharedir"/*; do
-        [[ -f $i ]] || continue
+        [[ -e $i ]] || continue
         echo "    ${i##*/}"
     done
 }
@@ -69,7 +69,7 @@ ver() {
             local now mtime
             local tmpfile="$tmpdir/latest"
             declare -i check=1
-            if [[ -f latest ]]; then
+            if [[ -e latest ]]; then
                 now=$(date +%s)
                 mtime=$(stat -c %Y latest)
                 (( mtime + 60*60*24*7 < now )) && check=1 || check=0
@@ -94,9 +94,9 @@ ver() {
 
 ucd_file() {
     local ver=$1 ofile=$2
-    [[ -f $ver/$ofile ]] && return
+    [[ -e $ver/$ofile ]] && return
     local zfile="UCD-$ver.zip"
-    if [[ ! -f $zfile ]]; then
+    if [[ ! -e $zfile ]]; then
         local stat tmpfile="$tmpdir/$zfile"
         local url="http://www.unicode.org/Public/zipped/$ver/UCD.zip"
         stat=$(curl -SL -w '%{http_code}' -o "$tmpfile" "$url")
@@ -136,7 +136,7 @@ case $mode in
         ;;
     emoji-data | emoji-test)
         ifile="$mode.txt"
-        if [[ ! -f $ifile ]]; then
+        if [[ ! -e $ifile ]]; then
             tmpfile="$tmpdir/$ifile"
             url="http://www.unicode.org/Public/emoji/5.0/$ifile"
             stat=$(curl -SL -w '%{http_code}' -o "$tmpfile" "$url")
@@ -167,7 +167,7 @@ if [[ $mode = 'select' ]]; then
         ucd_file "$ver" "$ifile"
         cd "$ver"
         ofile='select'
-        if [[ ! -f $ofile || $ifile -nt $ofile ]]; then
+        if [[ ! -e $ofile || $ifile -nt $ofile ]]; then
             awk -F ';' '
             {
                 cp = strtonum("0x" $1)

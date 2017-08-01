@@ -5,10 +5,7 @@ set -eu
 prgname=${0##*/}
 
 for i in /sys/class/power_supply/BAT${1:-*}; do
-    [[ -d $i ]] || {
-        echo "$prgname: cannot access $i" >&2
-        exit 1
-    }
+    [[ -e $i ]] || continue
     . "$i/uevent"
     full=${POWER_SUPPLY_CHARGE_FULL:-$POWER_SUPPLY_ENERGY_FULL}
     full_design=${POWER_SUPPLY_CHARGE_FULL_DESIGN:-$POWER_SUPPLY_ENERGY_FULL_DESIGN}

@@ -2,28 +2,34 @@
 
 set -u
 
+export NOOSD=1
+
+# shellcheck disable=SC2034
+args=("$@")
+
 xserver=$(xserverq name)
-if [[ $xserver = 'Xorg' ]]; then
-    if (( ! $# )); then
-        autorandr -c -d mobile --force
-    elif [[ $1 != '-' ]]; then
-        autorandr -l "$1" --force
-    fi
+declare -i xorg=0
+[[ $xserver = 'Xorg' ]] && xorg=1
+
+pre-hook() { :; }
+post-hook() { apod set & }
+
+src="$HOME/bin/xscreen.$HOSTNAME"
+[[ -e $src ]] && . "$src"
+
+pre-hook
+
+if (( xorg )); then
     xrandr --dpi 96
-    NOOSD=1 touchpad off
-    NOOSD=1 trackpoint-wheel on
+    touchpad off
+    trackpoint-wheel on
 fi
 
-NOOSD=1 xkb -
-
 xset b off s off dpms 0 0 300 r rate 500 35
-
-numlockx on
-
 xsetroot -cursor_name left_ptr
-
 hsetroot || xsetroot -solid black
+numlockx on
+xkb -
 
-apod set &
-
+post-hook
 true

@@ -12,7 +12,7 @@ case $- in *i*) ;; *) return ;; esac
 . ~/bin/shrc-pre.sh
 
 HISTFILE="$HOME/.local/share/zhistory"
-HISTSIZE=500
+HISTSIZE=1000
 SAVEHIST=5000
 TMPPREFIX="${TMPDIR:-/tmp}/zsh"
 

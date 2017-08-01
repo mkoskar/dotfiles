@@ -11,7 +11,7 @@ pid=${1:-$PPID}
 
 main() {
     ifile="/proc/$pid/environ"
-    [[ -r $ifile ]] && xargs -0 -n1 -x -r -a "$ifile" shell-escape
+    [[ -e $ifile ]] && xargs -0 -n1 -x -r -a "$ifile" shell-escape
 }
 
 if [[ -t 1 ]]; then

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -eu -o pipefail
-shopt -s nullglob
 
 prgname=${0##*/}
 
@@ -53,6 +52,7 @@ if [[ ! $profile ]]; then
         filter='^(?!proxy-socks$)(?!proxy-tor$)(?!skel$).*$'
     fi
     for p in ~/.config/"$bin_name".*; do
+        [[ -d $p ]] || continue
         profiles+=("${p#*"$bin_name".}")
     done
     profile=$(
@@ -70,7 +70,7 @@ path_skel="$path.skel"
 [[ $profile = 'default' ]] || path+=".$profile"
 
 if [[ ! -e $path && $profile != 'skel' ]]; then
-    [[ -d $path_skel ]] && cp -a "$path_skel" "$path"
+    [[ -e $path_skel ]] && cp -a "$path_skel" "$path"
 
     if [[ $profile != 'default' ]]; then
         mkdir -p "$path/theme"
