@@ -5,7 +5,7 @@ set -eu
 prgname=${0##*/}
 
 if [[ $prgname = 'b0' ]]; then
-    BBIN=ffp
+    BBIN='ffp'
     args=(-p quarantine -- --private-window)
 else
     BBIN=${BBIN:-ff}
@@ -17,6 +17,7 @@ case $BBIN in
         exec "$BBIN" "$@"
         ;;
     *)
-        exec "$BBIN" "${args[@]}" "$@" &>/dev/null &
+        exec &>>~/.local/share/"$prgname".out
+        exec "$BBIN" "${args[@]}" "$@" &
         ;;
 esac

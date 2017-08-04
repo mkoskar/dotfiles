@@ -153,21 +153,20 @@ fi
 flock -w 30 8 || exit 3
 (exec 8<&-
 
-if ! exists; then
-    case $session in
-        adm | aux | mon | tmp | wrk)
-            $session
-            ;;
-        *)
-            case $prgname in
-                mux) base ;;
-                muxx) ext ;;
-                *) exit 2 ;;
-            esac
-            ;;
-    esac
-fi
-
+    if ! exists; then
+        case $session in
+            adm | aux | mon | tmp | wrk)
+                $session
+                ;;
+            *)
+                case $prgname in
+                    mux) base ;;
+                    muxx) ext ;;
+                    *) exit 2 ;;
+                esac
+                ;;
+        esac
+    fi
 ))
 
 if (( attach )); then

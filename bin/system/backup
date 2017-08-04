@@ -102,22 +102,23 @@ rsync -aAHSX / "$target/full-backup/master" \
       --delete \
       --backup "--backup-dir=../$ts_begin_" \
       --exclude-from=- <<-EOF
-	*/lost+found
+	/boot/lost+found
 	/dev/*
 	/home/*/.cache/*
-	/home/*/.thumbnails/*
+	/home/*/tmp/*
+	/home/cache/*
 	/home/docker.img
-	/home/docker/*
+	/home/lost+found
+	/home/machines.img
 	/media/*
 	/mnt/*
 	/proc/*
 	/run/*
 	/sys/*
 	/tmp/*
-	/var/abs/*
 	/var/cache/pacman/*
-	/var/cache/pkgfile/*
 	/var/lib/docker/*
+	/var/lib/machines/*
 	/var/lib/pacman/sync/*
 EOF
 

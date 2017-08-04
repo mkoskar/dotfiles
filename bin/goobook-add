@@ -16,6 +16,7 @@ trap cleanup EXIT
 
 input=$(grep '^From:')
 {
+    exec &>>~/.local/share/"$prgname".out
     goobook add <<<"$input"
     goobook reload
 } &

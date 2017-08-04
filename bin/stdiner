@@ -46,7 +46,6 @@ cat >"$tmpfile"
 exec </dev/null
 
 main() {
-    trap cleanup EXIT
     # shellcheck disable=SC2048
     [[ $* =~ \{\} ]] && replace_str=
     xargs -r -n1 ${replace_str+-I\{\}} "$@" <<<"$tmpfile"
@@ -62,6 +61,7 @@ main() {
 
 if (( inbg )); then
     (
+        trap cleanup EXIT
         exec &>>~/.local/share/"$prgname".out
         main "$@"
     ) &

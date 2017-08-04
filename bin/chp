@@ -128,7 +128,6 @@ fi
 exec "$bin" \
     --disable-reading-from-canvas \
     --enable-devtools-experiments \
-    --enable-gpu-rasterization \
     --enable-tab-audio-muting \
     --force-device-scale-factor=1 \
     --ignore-gpu-blacklist \

@@ -255,7 +255,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     sql-bnf                 b ~/archive/lib/00-cs/dbms/sql-bnf/index.html
     sqlite                  b /usr/share/doc/sqlite/docs.html
     sqlite-lang             b /usr/share/doc/sqlite/lang.html
-    sysrq                   b /lib/modules/$kernel_release/build/Documentation/sysrq.txt
+    sysrq                   b /lib/modules/$kernel_release/build/Documentation/admin-guide/sysrq.rst
     systemd-changes         b https://github.com/systemd/systemd/blob/master/NEWS
     tex                     b https://ctan.org/
     tlds                    b https://www.iana.org/domains/root/db

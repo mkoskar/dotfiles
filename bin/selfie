@@ -2,17 +2,14 @@
 
 set -eu
 
-target="$HOME/tmp/selfie.jpg"
+prgname=${0##*/}
 
-preview_pidfile="$XDG_RUNTIME_DIR/selfie_preview.pid"
-preview_cleanup() { rm -rf "$preview_pidfile"; }
+outfile="$HOME/tmp/$prgname.jpg"
+fswebcam -q -r 5000x5000 "$outfile"
 
-preview() {
-    echo $$ >"$preview_pidfile"
-    trap preview_cleanup RETURN
-    qiv -tiGfl --vikeys -T "$target"
-}
-
-fswebcam -q -r 5000x5000 "$target"
-
-[[ -e $preview_pidfile ]] || { preview & }
+(
+    exec 8>"$XDG_RUNTIME_DIR/$prgname.lock"
+    flock -n 8 || exit 0
+    exec &>>~/.local/share/"$prgname".out
+    qiv -tiGfl --vikeys -T "$outfile" &
+)

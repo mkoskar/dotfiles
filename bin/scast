@@ -2,29 +2,38 @@
 
 set -eu -o pipefail
 
-lockfile="$XDG_RUNTIME_DIR/scast$DISPLAY.lock"
+prgname=${0##*/}
 
 cd ~/tmp
 
 ts=$(date +%F.%s)
 outfile="screencast-$ts.mkv"
 
-(exec 8>"$lockfile"
-if ! flock -n 8; then
-    lsof -t -a -c ffmpeg "$lockfile" | xargs -r kill
+lockfile="$XDG_RUNTIME_DIR/$prgname$DISPLAY.lock"
+exec 8>"$lockfile"
+flock -n 8 || {
+    exec 8<&-
+    lsof -t "$lockfile" | xargs -r kill
     exit
-fi
+}
 
-read -r X Y W H < <(slop -f $'%x %y %w %h\n')
+tmp=$(slop -f '%x %y %w %h')
+read -r X Y W H <<<"$tmp"
 
-# See also:
-#
-#   x264 --fullhelp
-#   ffmpeg -h encoder=libx264
+(
+    exec &>>~/.local/share/"$prgname".out
 
-ffmpeg -loglevel quiet \
-    -f x11grab -framerate 30 -show_region 1 -s "${W}x${H}" -i "$DISPLAY+$X,$Y" \
-    -vcodec libx264 -qp 0 -preset ultrafast "$outfile" || true
-)
+    # See also:
+    #
+    #   x264 --fullhelp
+    #   ffmpeg -h encoder=libx264
 
-[[ -e $outfile ]] && mpv --loop-file=inf "$outfile"
+    ffmpeg -loglevel quiet \
+        -f x11grab -framerate 30 -show_region 1 -s "${W}x${H}" -i "$DISPLAY+$X,$Y" \
+        -vcodec libx264 -qp 0 -preset ultrafast "$outfile" &
+
+    exec 8<&-
+    wait
+
+    mpv --loop-file=inf "$outfile"
+) &

@@ -27,13 +27,11 @@ case $1 in
     off)
         mute mv 10-* off
         ;;
-    reload)
-        rm -f /etc/hostsblock/hosts{,.old.gz}
-        rm -rf /var/cache/hostsblock
-        /usr/bin/hostsblock
+    fetch)
+        hostsblock-fetch
         ;;
     *)
-        echo "usage: $prgname [antiad | off | reload]" >&2
+        echo "usage: $prgname [antiad | off | fetch]" >&2
         exit 2
         ;;
 esac

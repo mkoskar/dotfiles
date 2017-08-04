@@ -1,0 +1,132 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+if (( EUID < 1000 )); then
+    export CACHEDIR='/var/cache/hostsblock'
+else
+    export CACHEDIR="$HOME/.cache/hostsblock"
+fi
+mkdir -p "$CACHEDIR"
+
+pargs=()
+[[ -t 1 ]] && pargs+=(--bar) || pargs+=(--silent)
+
+tmpdir=$(mktemp -d)
+cleanup() { rm -rf "$tmpdir"; }
+trap cleanup EXIT
+
+cd "$tmpdir"
+
+fetch() {
+    set -eu -o pipefail
+    local url=$1 oname stat
+    [[ $url ]] || return
+    oname=$(printf '%s' "$url" | sha1sum)
+    read -ra oname <<<"$oname"
+    stat=$(
+        curl -sSL -C - -z "$CACHEDIR/$oname" -w '%{http_code}' \
+            -A 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36' \
+            -o "$oname" "$url"
+    )
+    case $stat in
+        200)
+            mv "$oname" "$CACHEDIR/$oname"
+            ;;
+        304)
+            ;;
+        *)
+            exec >&2
+            echo "HTTP $stat : $url"
+            cat "$oname"
+            echo
+            exit 1
+            ;;
+    esac
+    echo "$CACHEDIR/$oname"
+}
+export -f fetch
+
+parallel "${pargs[@]}" -r -j10 fetch >queue <<-'EOF'
+
+	http://hosts-file.net/ad_servers.txt
+	http://hosts-file.net/download/hosts.zip
+	http://pgl.yoyo.org/as/serverlist.php?hostformat=hosts&mimetype=plaintext
+	http://winhelp2002.mvps.org/hosts.zip
+	http://www.malwaredomainlist.com/hostslist/hosts.txt
+
+	http://hosts-file.net/hphosts-partial.asp
+	http://hostsfile.mine.nu/Hosts.zip
+	http://hostsfile.org/Downloads/BadHosts.unx.zip
+	http://someonewhocares.org/hosts/hosts
+	http://sysctl.org/cameleon/hosts
+
+	http://abp.mozilla-hispano.org/nauscopio/hosts.zip
+	http://adblock.mahakala.is/hosts
+	http://hosts-file.net/download/yahoo_servers.zip
+	http://rlwpx.free.fr/WPFF/hblc.7z
+	http://rlwpx.free.fr/WPFF/hmis.7z
+	http://rlwpx.free.fr/WPFF/hpub.7z
+	http://rlwpx.free.fr/WPFF/hrsk.7z
+	http://rlwpx.free.fr/WPFF/hsex.7z
+	http://rlwpx.free.fr/WPFF/htrc.7z
+
+EOF
+
+sort queue | xargs -r sha1sum >queue.sum
+if cmp -s queue.sum "$CACHEDIR/sum"; then
+    exit
+fi
+
+process() {
+    set -eu
+    local src=$1
+    local oname=${src##*/} mime target
+    mime=$(file -b --mime-type -- "$src")
+    case $mime in
+        text/plain)
+            target=$1
+            ;;
+        application/x-7z-compressed)
+            target="$oname.extracted"
+            7z x -o"$target" -- "$src" >/dev/null
+            ;;
+        application/zip)
+            target="$oname.extracted"
+            unzip -qq -d "$target" -- "$src"
+            ;;
+    esac
+    if [[ -d $target ]]; then
+        find "$target" \
+            \( \
+                -iname hosts -o \
+                -iregex '.*/add\.[^./]*' -o \
+                -iregex '.*/hosts\.[^./]*' -o \
+                -name 'Yahoo_*' -o \
+                -name main \
+            \) -exec cat {} +
+    else
+        cat "$target"
+    fi
+}
+export -f process
+
+parallel "${pargs[@]}" process <queue | dos2unix | split -d -a3 -b1M - chunk
+
+post-process() {
+    set -eu -o pipefail
+    awk '
+    /^#/ { next }
+    /^\s*$/ { next }
+    {
+        if (NF > 1) printf "0.0.0.0 " $2
+        else print "0.0.0.0 " $1
+    }' <"$1" | sort -u >"$1.done"
+}
+export -f post-process
+
+find . -name 'chunk*' -printf '%P\n' >chunks
+parallel "${pargs[@]}" post-process <chunks
+
+xargs -ri cat '{}.done' <chunks | sort -u >"$CACHEDIR/hosts"
+mv queue.sum "$CACHEDIR/sum"

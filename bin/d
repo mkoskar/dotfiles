@@ -7,7 +7,6 @@ cmd=(diff "$@")
 prgname=${0##*/}
 
 main() {
-    (
     case $prgname in
         d0)
             "${cmd[@]}"
@@ -15,7 +14,7 @@ main() {
         *)
             tmpfile=$(mktemp)
             cleanup() { rm -f "$tmpfile"; }
-            trap cleanup EXIT
+            trap cleanup RETURN
 
             declare -i retstat=0
             "${cmd[@]}" >"$tmpfile" || retstat=$?
@@ -29,7 +28,6 @@ main() {
             return $retstat
             ;;
     esac
-    )
 }
 
 main | PAGER_TITLE=${cmd[*]} PAGER_EX='setf diff' pg0
