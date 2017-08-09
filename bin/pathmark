@@ -26,6 +26,7 @@ else
     fi
 fi
 
-while read -r pkg; do
-    pkgmark "$pkg" | sed -nr '1s/^/pkg: /p'
-done < <(pacman -Qoq "$path")
+pacman -Qoq "$path" |
+    while read -r pkg; do
+        pkgmark "$pkg" | sed -nr '1s/^/pkg: /p'
+    done

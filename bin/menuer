@@ -39,7 +39,8 @@ done
 if [[ ${1+set} ]]; then
     process "$@"
 else
-    while read -r k q; do
-        process "$k" "$q"
-    done < <(printf '%s\n' "${!map[@]}" | sort | dmenu -p "$prompt")
+    printf '%s\n' "${!map[@]}" | sort | dmenu -p "$prompt" |
+        while read -r k q; do
+            process "$k" "$q"
+        done
 fi

@@ -41,21 +41,11 @@ ver='latest'
 declare -i force_display=0 xdo=0
 while getopts v:xdh opt; do
     case $opt in
-        v)
-            ver=$OPTARG
-            ;;
-        x)
-            xdo=1
-            ;;
-        d)
-            force_display=1
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        v) ver=$OPTARG ;;
+        x) xdo=1 ;;
+        d) force_display=1 ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))

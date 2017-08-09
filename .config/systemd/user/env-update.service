@@ -1,10 +1,11 @@
 [Unit]
-Description=Update environment
+Description=%N service
 DefaultDependencies=no
 Before=sockets.target timers.target paths.target basic.target
 
 [Service]
 Type=oneshot
+SyslogIdentifier=%N
 RemainAfterExit=yes
 Environment=DISPLAY=:1
 ExecStart=/usr/bin/bash -lc 'unset SHLVL; systemctl --user import-environment'

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 
 prgname=${0##*/}
 
@@ -12,12 +12,8 @@ usage_err() { _usage; exit 2; } >&2
 
 while getopts h opt; do
     case $opt in
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))
@@ -67,10 +63,11 @@ umount_device() {
 
     devtype=$(lsblk -drno TYPE "$dev" 2>/dev/null) || return 1
     if [[ $devtype = 'disk' ]]; then
-        while read -r type name; do
-            [[ $type = 'part' ]] || continue
-            umount_device "$name"
-        done < <(lsblk -rno TYPE,NAME "$dev")
+        lsblk -rno TYPE,NAME "$dev" |
+            while read -r type name; do
+                [[ $type = 'part' ]] || continue
+                umount_device "$name"
+            done
     fi
 
     for holder in "$devname/holders/"*; do

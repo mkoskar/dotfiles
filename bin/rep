@@ -35,9 +35,7 @@ while getopts d:tT:o:aiIqh opt; do
             }
             dopt=$OPTARG
             ;;
-        t)
-            term=1
-            ;;
+        t) term=1 ;;
         T)
             [ "$OPTARG" -gt 0 ] 2>/dev/null || {
                 echo "$prgname: option requires a positive integer argument -- $opt" >&2
@@ -45,27 +43,13 @@ while getopts d:tT:o:aiIqh opt; do
             }
             Topt=$OPTARG
             ;;
-        o)
-            output=$OPTARG
-            ;;
-        a)
-            append=1
-            ;;
-        i)
-            inline=1
-            ;;
-        I)
-            cur=1
-            ;;
-        q)
-            quiet=1
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        o) output=$OPTARG ;;
+        a) append=1 ;;
+        i) inline=1 ;;
+        I) cur=1 ;;
+        q) quiet=1 ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))
@@ -100,7 +84,7 @@ ti_rc=$(tput rc)
 
 if (( ! inline )); then
     {
-        echo -e "smcup\nclear\nsc\n"
+        echo $'smcup\nclear\nsc\n'
         (( cur )) || echo civis
     } | tput -S
     cleanup() { tput -S <<<$'cnorm\nrmcup'; stty "$tc"; }

@@ -1,6 +1,6 @@
 # vim: ft=sh
 
-pre-hook() {
+pre_hook() {
     local edidsum
     declare -g args xorg
 

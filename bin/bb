@@ -13,13 +13,13 @@ MENUER=$prgname menuer "$@" <<-EOF |
 
     !                       b https://mkoskar.com/
 
-    ImageMagick             b /usr/share/doc/ImageMagick-6/www/command-line-tools.html
+    ImageMagick!            b /usr/share/doc/ImageMagick-6/www/command-line-tools.html
     ImageMagick-scripts     b http://www.fmwconcepts.com/imagemagick/
     amazon                  b https://www.amazon.com/s/field-keywords={u}
     amazon-de               b https://www.amazon.de/s/field-keywords={u}
     amazon-uk               b https://www.amazon.co.uk/s/field-keywords={u}
     angularjs               b https://docs.angularjs.org/api
-    ant                     b /usr/share/doc/apache-ant/index.html
+    ant!                    b /usr/share/doc/apache-ant/index.html
     apache                  b http://httpd.apache.org/docs/
     arch                    b https://www.archlinux.org/
     arch-bugs               b https://bugs.archlinux.org/index.php?string={u}
@@ -27,7 +27,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     arch-lists              b https://www.google.com/search?q=site:lists.archlinux.org\ {u}
     arch-repos              b https://git.archlinux.org/
     arch-wiki               b https://wiki.archlinux.org/index.php?search={u}
-    argyllcms               b /usr/share/argyllcms/doc/ArgyllDoc.html
+    argyllcms!              b /usr/share/argyllcms/doc/ArgyllDoc.html
     arxiv                   b https://arxiv.org/find
     aur                     b https://aur.archlinux.org/packages.php?SeB=nd\&K={u}
     aur-maintainer          b https://aur.archlinux.org/packages.php?SeB=m\&K=$AUR_MAINTAINER
@@ -36,7 +36,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     awk                     b https://www.gnu.org/software/gawk/manual/gawk.html
     awk1                    b http://awk.freeshell.org/
     basedir                 b http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
-    bash-abs                b /usr/share/doc/bash/index.html
+    bash-abs!               b /usr/share/doc/bash/index.html
     bash-changes            b http://mywiki.wooledge.org/BashFAQ/061
     bash-faq                b http://mywiki.wooledge.org/BashFAQ
     bash-guide              b http://mywiki.wooledge.org/FullBashGuide
@@ -85,7 +85,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     freebsd                 b https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/
     freedesktop             b http://standards.freedesktop.org/
     freedesktop-repos       b https://cgit.freedesktop.org/
-    freetype                b /usr/share/doc/freetype2/documentation.html
+    freetype!               b /usr/share/doc/freetype2/documentation.html
     g                       b https://www.google.com/search?q={u}
     g-operators             b https://support.google.com/websearch/answer/2466433?hl=en\&ref_topic=3081620\&vid=1-635793825968278780-302114999
     gcc                     b https://gcc.gnu.org/onlinedocs/
@@ -94,7 +94,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gh-repos                b https://github.com/mkoskar?tab=repositories
     gh-search               b https://github.com/search?q={u}
     gi                      b https://www.google.com/search?q={u}\&tbm=ischsr
-    gimp                    b /usr/share/gimp/2.0/help/en/index.html
+    gimp!                   b /usr/share/gimp/2.0/help/en/index.html
     gmail-nolabel           b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:chats+-in:inbox+-in:sent+-in:draft+-in:trash/n100
     gmail-search            b https://support.google.com/mail/answer/7190
     gnome-api               b https://developer.gnome.org/references
@@ -107,18 +107,18 @@ MENUER=$prgname menuer "$@" <<-EOF |
     google-products         b https://developers.google.com/products/
     google-search           b https://www.google.com/advanced_search
     gpg-search              b https://sks-keyservers.net/i/#extract
-    gradle                  b /usr/share/java/gradle/docs/userguide/userguide.html
-    gradle-dsl              b /usr/share/java/gradle/docs/dsl/index.html
-    graphviz                b /usr/share/graphviz/doc
-    groovy                  b /usr/share/doc/groovy-*/html/documentation/index.html
-    groovy-api              b /usr/share/doc/groovy-*/html/api/overview-summary.html
-    groovy-gapi             b /usr/share/doc/groovy-*/html/gapi/overview-summary.html
+    gradle!                 b /usr/share/java/gradle/docs/userguide/userguide.html
+    gradle-dsl!             b /usr/share/java/gradle/docs/dsl/index.html
+    graphviz!               b /usr/share/graphviz/doc
+    groovy!                 b /usr/share/doc/groovy-*/html/documentation/index.html
+    groovy-api!             b /usr/share/doc/groovy-*/html/api/overview-summary.html
+    groovy-gapi!            b /usr/share/doc/groovy-*/html/gapi/overview-summary.html
     grub                    b https://www.gnu.org/software/grub/manual/grub.html
     gtk-running             b https://developer.gnome.org/gtk3/stable/gtk-running.html
     guava                   b http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/index.html
     hangouts                b https://hangouts.google.com/
     haskell-docs            b https://www.haskell.org/documentation
-    haskell-libs            b /usr/share/doc/ghc/html/libraries/index.html
+    haskell-libs!           b /usr/share/doc/ghc/html/libraries/index.html
     haskell-search          b https://www.haskell.org/hoogle/?hoogle={u}
     hibernate-orm           b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
     hn                      b https://news.ycombinator.com/
@@ -136,16 +136,16 @@ MENUER=$prgname menuer "$@" <<-EOF |
     iso                     b http://standards.iso.org/ittf/PubliclyAvailableStandards/index.html
     iss-sightings           b https://spotthestation.nasa.gov/sightings/view.cfm?country=Slovakia\&region=None\&city=Partizanske
     iss-tracker             b http://wsn.spaceflight.esa.int/iss/
-    java                    b /usr/share/doc/java/technotes/tools/unix/java.html
+    java!                   b /usr/share/doc/java/technotes/tools/unix/java.html
     java-apis               b http://www.oracle.com/technetwork/java/api-141528.html
-    java-changes            b /usr/share/doc/java/technotes/guides/language/enhancements.html
+    java-changes!           b /usr/share/doc/java/technotes/guides/language/enhancements.html
     java-specs              b https://docs.oracle.com/javase/specs/index.html
     java-tutorials          b https://docs.oracle.com/javase/tutorial/reallybigindex.html
     javase                  b http://www.oracle.com/technetwork/java/javase/overview/index.html
-    jdk                     b /usr/share/doc/java/index.html
-    jdk-api                 b /usr/share/doc/java/api/overview-summary.html
+    jdk!                    b /usr/share/doc/java/index.html
+    jdk-api!                b /usr/share/doc/java/api/overview-summary.html
     jdk-changes             b http://www.oracle.com/technetwork/java/javase/jdk-relnotes-index-2162236.html
-    jdk-tools               b /usr/share/doc/java/technotes/tools/index.html
+    jdk-tools!              b /usr/share/doc/java/technotes/tools/index.html
     jdk7                    b http://docs.oracle.com/javase/7/docs/index.html
     jdk7-api                b http://docs.oracle.com/javase/7/docs/api/overview-summary.html
     jee                     b http://www.oracle.com/technetwork/java/javaee/overview/index.html
@@ -165,13 +165,13 @@ MENUER=$prgname menuer "$@" <<-EOF |
     latin-phrases           b https://en.wikipedia.org/wiki/List_of_Latin_phrases
     learnyouahaskell        b http://learnyouahaskell.com/chapters
     limnoria-subst          b https://github.com/ProgVal/Limnoria/blob/master/src/ircutils.py#L797
-    linux-docs              b /lib/modules/$kernel_release/build/Documentation
-    linux-docs1             b https://www.kernel.org/doc/html/latest/index.html
-    linux-params            b /lib/modules/$kernel_release/build/Documentation/kernel-parameters.txt
+    linux-docs              b https://www.kernel.org/doc/html/latest/index.html
+    linux-docs!             b /lib/modules/$kernel_release/build/Documentation
+    linux-params!           b /lib/modules/$kernel_release/build/Documentation/admin-guide/kernel-parameters.txt
     linux-repos             b https://git.kernel.org/cgit/
     linux-specs             b http://refspecs.linuxfoundation.org/
     linux-src               b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/?id=$kernel_version
-    linux-sysctl            b /lib/modules/$kernel_release/build/Documentation/sysctl
+    linux-sysctl!           b /lib/modules/$kernel_release/build/Documentation/sysctl
     lists                   b http://gmane.org/find.php
     lists1                  b http://markmail.org/
     lua                     b https://www.lua.org/manual/
@@ -189,9 +189,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     morse-nato              b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
     mozilla-repos           b https://hg.mozilla.org/
     music                   b https://musicbrainz.org/search?query={u}
-    mutt                    b /usr/share/doc/mutt/manual.html
-    mutt-patterns           b file:///usr/share/doc/mutt/manual.html#patterns
-    mutt-regex              b file:///usr/share/doc/mutt/manual.html#regexp
+    mutt!                   b /usr/share/doc/mutt/manual.html
+    mutt-patterns!          b /usr/share/doc/mutt/manual.html#patterns
+    mutt-regex!             b /usr/share/doc/mutt/manual.html#regexp
     netfilter               b http://www.netfilter.org/documentation/index.html
     netfilter-flow          b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
     nodejs                  b https://nodejs.org/api/
@@ -212,23 +212,23 @@ MENUER=$prgname menuer "$@" <<-EOF |
     posix-env               b ~/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap08.html
     posix-ifaces            b ~/archive/lib/00-cs/unix/base-specifications-7-2013/functions/contents.html
     posix-utils             b ~/archive/lib/00-cs/unix/base-specifications-7-2013/utilities/contents.html
-    postgresql              b /usr/share/doc/postgresql/html/index.html
-    privoxy                 b /usr/share/doc/privoxy/user-manual/index.html
+    postgresql!             b /usr/share/doc/postgresql/html/index.html
+    privoxy!                b /usr/share/doc/privoxy/user-manual/index.html
     pygments                b http://pygments.org/docs/lexers/
     pypa                    b https://www.pypa.io/
     pypi                    b https://pypi.python.org/pypi
-    python                  b /usr/share/doc/python/html/index.html
-    python2                 b /usr/share/doc/python2/html/index.html
+    python!                 b /usr/share/doc/python/html/index.html
+    python2!                b /usr/share/doc/python2/html/index.html
     qt                      b http://doc.qt.io/
     quotes                  b https://www.cl.cam.ac.uk/~mgk25/ucs/quotes.html
     qutebrowser             b http://qutebrowser.org/img/cheatsheet-big.png
     realworldhaskell        b http://book.realworldhaskell.org/read/
     regex-gnulib            b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html
-    regex-java              b /usr/share/doc/java/api/java/util/regex/Pattern.html
+    regex-java!             b /usr/share/doc/java/api/java/util/regex/Pattern.html
     regex-js                b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
-    regex-pcre              b /usr/share/doc/pcre/html/pcresyntax.html
+    regex-pcre!             b /usr/share/doc/pcre/html/pcresyntax.html
     regex-posix             b ~/archive/lib/00-cs/unix/base-specifications-7-2013/basedefs/V1_chap09.html
-    regex-python            b /usr/share/doc/python/html/library/re.html
+    regex-python!           b /usr/share/doc/python/html/library/re.html
     regex-python-test       b http://pythex.org/
     regex101                b https://regex101.com/
     resolutions             b https://en.wikipedia.org/wiki/List_of_common_resolutions
@@ -253,9 +253,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     spring-api              b http://docs.spring.io/spring/docs/current/javadoc-api/overview-summary.html
     spring-platform         b http://docs.spring.io/platform/docs/current/reference/htmlsingle/#appendix
     sql-bnf                 b ~/archive/lib/00-cs/dbms/sql-bnf/index.html
-    sqlite                  b /usr/share/doc/sqlite/docs.html
-    sqlite-lang             b /usr/share/doc/sqlite/lang.html
-    sysrq                   b /lib/modules/$kernel_release/build/Documentation/admin-guide/sysrq.rst
+    sqlite!                 b /usr/share/doc/sqlite/docs.html
+    sqlite-lang!            b /usr/share/doc/sqlite/lang.html
+    sysrq!                  b /lib/modules/$kernel_release/build/Documentation/admin-guide/sysrq.rst
     systemd-changes         b https://github.com/systemd/systemd/blob/master/NEWS
     tex                     b https://ctan.org/
     tlds                    b https://www.iana.org/domains/root/db
@@ -264,9 +264,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     tr                      b https://translate.google.com/?sl=en\&tl=sk\&q={u}
     tr-de                   b https://translate.google.com/?sl=de\&tl=sk\&q={u}
     tweets                  b https://tweetdeck.twitter.com/
-    types-eth               b /etc/ethertypes
-    types-ip                b /etc/protocols
-    types-ports             b /etc/services
+    types-eth!              b /etc/ethertypes
+    types-ip!               b /etc/protocols
+    types-ports!            b /etc/services
     ud                      b https://www.urbandictionary.com/define.php?term={u}
     uefi-specs              b http://uefi.org/specifications
     unicode                 b https://en.wikipedia.org/wiki/Plane_\(Unicode\)
@@ -284,17 +284,18 @@ MENUER=$prgname menuer "$@" <<-EOF |
     w                       b https://en.wikipedia.org/w/index.php?search={u}
     w-cz                    b https://cz.wikipedia.org/w/index.php?search={u}
     w-sk                    b https://sk.wikipedia.org/w/index.php?search={u}
+    webdev-tools            b https://www.browserling.com/tools
     weechat                 b https://weechat.org/files/doc/stable/weechat_user.en.html
     weechat-api             b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
     weechat-changes         b https://github.com/weechat/weechat/blob/master/ChangeLog.adoc
     xlib-translations       b http://menehune.opt.wfu.edu/Kokua/Irix_6.5.21_doc_cd/usr/share/Insight/library/SGI_bookshelves/SGI_Developer/books/XLib_WinSys/sgi_html/ch08.html
-    xmonad                  b /usr/share/doc/xmonad/html/index.html
+    xmonad!                 b /usr/share/doc/xmonad/html/index.html
     xorg                    b https://www.x.org/wiki/Documentation/
     yaml                    b http://yaml.org/refcard.html
     yt                      b https://www.youtube.com/results?q={u}
     yt-channel              b https://www.youtube.com/results?sp=EgIQAlAU\&q={u}
     yt-playlist             b https://www.youtube.com/results?sp=EgIQA1AU\&q={u}
-    zsh                     b /usr/share/doc/zsh/html/index.html
+    zsh!                    b /usr/share/doc/zsh/html/index.html
 
     iss-hd                  playx http://www.ustream.tv/channel/iss-hdev-payload
     nasatv                  playx http://www.ustream.tv/nasahdtv

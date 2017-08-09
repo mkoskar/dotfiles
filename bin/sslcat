@@ -12,12 +12,8 @@ usage_err() { _usage; exit 2; } >&2
 
 while getopts h opt; do
     case $opt in
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))

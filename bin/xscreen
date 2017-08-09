@@ -11,13 +11,13 @@ xserver=$(xserverq name)
 declare -i xorg=0
 [[ $xserver = 'Xorg' ]] && xorg=1
 
-pre-hook() { :; }
-post-hook() { apod set & }
+pre_hook() { :; }
+post_hook() { apod set & }
 
 src="$HOME/bin/xscreen.$HOSTNAME"
 [[ -e $src ]] && . "$src"
 
-pre-hook
+pre_hook
 
 if (( xorg )); then
     xrandr --dpi 96
@@ -31,5 +31,5 @@ hsetroot || xsetroot -solid black
 numlockx on
 xkb -
 
-post-hook
+post_hook
 true

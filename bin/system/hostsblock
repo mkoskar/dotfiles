@@ -12,26 +12,26 @@ cd /etc/hosts.d
 prgname=${0##*/}
 
 mute() { "$@" &>/dev/null || true; }
-cleanup() { systemctl reload dnsmasq; }
-trap cleanup EXIT
 
 if (( ! $# )); then
     mute mv off/10-* .
-    exit
+else
+    case $1 in
+        antiad)
+            mute mv 10-* off
+            mute mv off/10-hostsblock .
+            ;;
+        off)
+            mute mv 10-* off
+            ;;
+        fetch)
+            systemctl start local-hostsblock-fetch.service
+            exit
+            ;;
+        *)
+            echo "usage: $prgname [antiad | off | fetch]" >&2
+            exit 2
+            ;;
+    esac
 fi
-case $1 in
-    antiad)
-        mute mv 10-* off
-        mute mv off/10-hostsblock .
-        ;;
-    off)
-        mute mv 10-* off
-        ;;
-    fetch)
-        hostsblock-fetch
-        ;;
-    *)
-        echo "usage: $prgname [antiad | off | fetch]" >&2
-        exit 2
-        ;;
-esac
+systemctl try-reload-or-restart dnsmasq

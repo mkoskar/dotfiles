@@ -21,21 +21,11 @@ usage_err() { _usage; exit 2; } >&2
 declare -i ropt=0 xopt=0
 while getopts n:rxh opt; do
     case $opt in
-        n)
-            name=$OPTARG
-            ;;
-        r)
-            ropt=1
-            ;;
-        x)
-            xopt=1
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        n) name=$OPTARG ;;
+        r) ropt=1 ;;
+        x) xopt=1 ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))

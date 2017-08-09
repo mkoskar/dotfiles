@@ -7,9 +7,7 @@ set -eu
 prgname=${0##*/}
 
 _usage() {
-    cat <<-EOF
-	usage: $prgname TODO
-	EOF
+    echo "usage: $prgname TODO"
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
@@ -17,18 +15,10 @@ usage_err() { _usage; exit 2; } >&2
 declare -i shiftwidth=4 textwidth=78
 while getopts s:t:h opt; do
     case $opt in
-        s)
-            shiftwidth=$OPTARG
-            ;;
-        t)
-            textwidth=$OPTARG
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        s) shiftwidth=$OPTARG ;;
+        t) textwidth=$OPTARG ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))

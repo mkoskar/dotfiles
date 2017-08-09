@@ -2,9 +2,10 @@
 #
 # Simple 'jmtpfs' frontend.
 
-set -euf -o pipefail
+set -eu -o pipefail
 
-readarray -t mounts < <(grep '^jmtpfs ' /proc/mounts | sort -u)
+mounts=$(grep '^jmtpfs ' /proc/mounts | sort -u)
+readarray -t mounts <<<"$mounts"
 if (( ${#mounts[@]} > 0 )); then
     echo -e "\nMounts:\n${mounts[*]}"
     echo
@@ -23,7 +24,8 @@ if (( ${#mounts[@]} > 0 )); then
     fi
 fi
 
-readarray -t devices < <(jmtpfs -l 2>/dev/null | grep -P '^\d, .*' | sort -u)
+devices=$(jmtpfs -l 2>/dev/null | grep -P '^\d, .*' | sort -u)
+readarray -t devices <<<"$devices"
 if (( ${#devices[@]} > 0 )); then
     echo
     if confirm 'Mount?' y; then

@@ -12,7 +12,7 @@ case ${1-} in
         curl -sSL --create-dirs -o "$path" --url "$url" || exit 1
         ;;
     set)
-        feh --bg-max --no-fehbg "$path"
+        [[ -e $path ]] && feh --bg-max --no-fehbg "$path"
         ;;
     *)
         echo "usage: $prgname {get | set}" >&2

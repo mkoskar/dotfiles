@@ -60,8 +60,22 @@ EOF
 make tmux-256color <<-EOF
 # ----------------------------------------
     dsl=\E]2;\007,
+    sgr=\E[0%?%p6%t;1%;%?%p1%t;7%;%?%p2%t;4%;%?%p3%t;7%;%?%p4%t;5%;%?%p5%t;2%;m%?%p9%t\016%e\017%;,
     tsl=\E]2;,
 EOF
+
+# SGR:
+#
+#   mode                tmux-256color   xterm-256color
+#                                           rxvt-unicode-256color
+#   =================== =============== =========================
+#   p1 (standout)       3               7   7
+#   p2 (underline)      4               4   4
+#   p3 (reverse)        7               7   7
+#   p4 (blink)          5               5   5
+#   p5 (dim)            2               2
+#   p6 (bold)           1               1   1
+#   p7 (invis)                          8   8
 
 make xterm-256color <<-EOF
 # ----------------------------------------

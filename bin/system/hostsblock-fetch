@@ -2,21 +2,26 @@
 
 set -eu -o pipefail
 
-if (( EUID < 1000 )); then
-    export CACHEDIR='/var/cache/hostsblock'
-else
+tmpdir=$(mktemp -d)
+cleanup() { rm -rf "$tmpdir"; }
+trap cleanup EXIT
+
+export TMPDIR=$tmpdir
+cd "$tmpdir"
+
+export SHELL=$BASH
+if (( EUID )); then
+    export CONFDIR="$HOME/.config/hostsblock"
     export CACHEDIR="$HOME/.cache/hostsblock"
+else
+    export CONFDIR='/etc/hostsblock'
+    export CACHEDIR='/var/cache/hostsblock'
+    export HOME=$TMPDIR
 fi
 mkdir -p "$CACHEDIR"
 
 pargs=()
 [[ -t 1 ]] && pargs+=(--bar) || pargs+=(--silent)
-
-tmpdir=$(mktemp -d)
-cleanup() { rm -rf "$tmpdir"; }
-trap cleanup EXIT
-
-cd "$tmpdir"
 
 fetch() {
     set -eu -o pipefail
@@ -47,34 +52,14 @@ fetch() {
 }
 export -f fetch
 
-parallel "${pargs[@]}" -r -j10 fetch >queue <<-'EOF'
+#parallel "${pargs[@]}" -r -j10 fetch <"$CONFDIR/sources" >queue
+find "$CACHEDIR" -type f ! -iname hosts ! -iname sum >queue
 
-	http://hosts-file.net/ad_servers.txt
-	http://hosts-file.net/download/hosts.zip
-	http://pgl.yoyo.org/as/serverlist.php?hostformat=hosts&mimetype=plaintext
-	http://winhelp2002.mvps.org/hosts.zip
-	http://www.malwaredomainlist.com/hostslist/hosts.txt
-
-	http://hosts-file.net/hphosts-partial.asp
-	http://hostsfile.mine.nu/Hosts.zip
-	http://hostsfile.org/Downloads/BadHosts.unx.zip
-	http://someonewhocares.org/hosts/hosts
-	http://sysctl.org/cameleon/hosts
-
-	http://abp.mozilla-hispano.org/nauscopio/hosts.zip
-	http://adblock.mahakala.is/hosts
-	http://hosts-file.net/download/yahoo_servers.zip
-	http://rlwpx.free.fr/WPFF/hblc.7z
-	http://rlwpx.free.fr/WPFF/hmis.7z
-	http://rlwpx.free.fr/WPFF/hpub.7z
-	http://rlwpx.free.fr/WPFF/hrsk.7z
-	http://rlwpx.free.fr/WPFF/hsex.7z
-	http://rlwpx.free.fr/WPFF/htrc.7z
-
-EOF
-
-sort queue | xargs -r sha1sum >queue.sum
-if cmp -s queue.sum "$CACHEDIR/sum"; then
+{
+    sort queue
+    printf '%s\n' "$CONFDIR/whitelist"
+} | xargs -r sha1sum >sum
+if cmp -s sum "$CACHEDIR/sum"; then
     exit
 fi
 
@@ -111,22 +96,31 @@ process() {
 }
 export -f process
 
-parallel "${pargs[@]}" process <queue | dos2unix | split -d -a3 -b1M - chunk
+nproc=$(nproc)
+parallel "${pargs[@]}" process <queue | dos2unix | split -d -n "r/$nproc" - chunk
+find . -name 'chunk*' -printf '%P\n' >chunks
 
-post-process() {
+post_process() {
     set -eu -o pipefail
     awk '
-    /^#/ { next }
-    /^\s*$/ { next }
+    /^#/ || /^\s*$/ { next }
     {
-        if (NF > 1) printf "0.0.0.0 " $2
-        else print "0.0.0.0 " $1
-    }' <"$1" | sort -u >"$1.done"
+        if (NF > 1) target = $2
+        else target = $1
+        print target
+    }' <"$1" |
+    (
+        declare -i retstat=0
+        grep -E -v \
+            -e '[^[:alnum:]._-]' \
+            -e '^[^[:alnum:]]' -e '[^[:alnum:]]$' \
+            -f "$CONFDIR/whitelist" || retstat=$?
+        (( retstat < 2 )) || exit 2
+    ) | awk '{ print "0.0.0.0 " $0 }' >"$1.done"
 }
-export -f post-process
+export -f post_process
 
-find . -name 'chunk*' -printf '%P\n' >chunks
-parallel "${pargs[@]}" post-process <chunks
+nice parallel "${pargs[@]}" post_process <chunks
 
 xargs -ri cat '{}.done' <chunks | sort -u >"$CACHEDIR/hosts"
-mv queue.sum "$CACHEDIR/sum"
+mv sum "$CACHEDIR/sum"

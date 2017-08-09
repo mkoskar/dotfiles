@@ -12,7 +12,7 @@ set -eu
 #
 # See also: /etc/sane.d/pixma.conf
 
-readarray -t sel < <(
+sel=$(
     dialog --keep-tite --separate-widget $'\n' --backtitle 'scan' \
     --no-items --nocancel --default-item 'Flatbed' --menu 'Source:' 12 35 12 \
         'Flatbed' \
@@ -27,6 +27,7 @@ readarray -t sel < <(
         75 150 300 600 \
     2>&1 >/dev/tty
 )
+readarray -t sel <<<"$sel"
 
 src=${sel[0]}
 mode=${sel[1]}

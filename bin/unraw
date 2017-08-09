@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -eu
+
+(( $# )) || set -- /dev/stdin
+unterm -c 1000 -l 2 -- "$1" | sed '$d'

@@ -4,7 +4,7 @@ set -eu
 
 prgname=${0##*/}
 
-sdu() { systemctl --user "$@"; }
+sdu() { systemctl --user --no-block "$@"; }
 
 if (( ! $# )); then
     sdu start mbsync@head.service

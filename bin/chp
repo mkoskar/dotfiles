@@ -26,15 +26,9 @@ esac
 
 while getopts p:h opt; do
     case $opt in
-        p)
-            profile=$OPTARG
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        p) profile=$OPTARG ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))

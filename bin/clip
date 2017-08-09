@@ -22,15 +22,9 @@ usage_err() { _usage; exit 2; } >&2
 mode=
 while getopts pifah opt; do
     case $opt in
-        p | i | f | a)
-            mode=$opt
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        p | i | f | a) mode=$opt ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))

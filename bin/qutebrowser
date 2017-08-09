@@ -9,7 +9,8 @@ case ${1-} in
     -*) exec /usr/bin/qutebrowser "$@" ;;
 esac
 
-read -ra uhash < <(printf '%s' "$USER" | sha1sum)
+uhash=$(printf '%s' "$USER" | sha1sum)
+read -ra uhash <<<"$uhash"
 socket="$XDG_RUNTIME_DIR/qutebrowser/ipc-$uhash"
 
 [[ -S $socket ]] || exec /usr/bin/qutebrowser -- "$@"

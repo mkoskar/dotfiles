@@ -24,27 +24,16 @@ sargs=(-k2,2nr)
 declare -i explicit=0
 while getopts edrsth opt; do
     case $opt in
-        e)
-            explicit=1
-            ;;
-        d)
-            cmd="expac '%w %n %E' | awk '{print \$1, NF - 2, \$2}'"
-            ;;
-        r)
-            cmd="expac '%w %n %N' | awk '{print \$1, NF - 2, \$2}'"
-            ;;
-        s)
-            ;;
+        e) explicit=1 ;;
+        d) cmd="expac '%w %n %E' | awk '{print \$1, NF - 2, \$2}'" ;;
+        r) cmd="expac '%w %n %N' | awk '{print \$1, NF - 2, \$2}'" ;;
+        s) ;;
         t)
             cmd="expac --timefmt='%F %T' '%w %l %n'"
             sargs=(-k2,3r)
             ;;
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))

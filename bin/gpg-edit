@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 
 prgname=${0##*/}
 
@@ -11,7 +11,8 @@ fi
 
 file=$(realpath -- "$1")
 basename=${file##*/}
-read -ra path_hash < <(printf '%s' "$file" | sha1sum)
+phash=$(printf '%s' "$file" | sha1sum)
+read -ra phash <<<"$phash"
 
 if [[ ! -f $file ]]; then
     echo 'regular file expected' >&2
@@ -38,6 +39,6 @@ if [[ $mtime1 = "$mtime2" ]]; then
     echo 'not touched' >&2
     rm "$file.bak"
 else
-    cp -af "$file.bak" ~/archive/gpg-edit/"${path_hash: -8}__$basename.$mtime1"
+    cp -af "$file.bak" ~/archive/gpg-edit/"${phash: -8}__$basename.$mtime1"
     mv "$file.bak" "$file.old"
 fi

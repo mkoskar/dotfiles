@@ -48,7 +48,7 @@ if (( ! $# )); then
             set -- xmonad
             ;;
         *)
-            echo -e '---\n'
+            echo $'---\n'
             exit 1
             ;;
     esac

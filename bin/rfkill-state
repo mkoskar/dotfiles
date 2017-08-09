@@ -25,21 +25,11 @@ usage_err() { _usage; exit 2; } >&2
 declare -i aggregate=0 id_is_name=0 quiet=0
 while getopts anqh opt; do
     case $opt in
-        a)
-            aggregate=1
-            ;;
-        n)
-            id_is_name=1
-            ;;
-        q)
-            quiet=1
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        a) aggregate=1 ;;
+        n) id_is_name=1 ;;
+        q) quiet=1 ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))

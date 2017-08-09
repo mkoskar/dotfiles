@@ -37,16 +37,16 @@ alias dkr='docker run -P'
 alias dkrd='docker run -d -P'
 alias dkri='docker run -i -t -P'
 
-dkip() {
-    local target; target=${1:-$(docker ps -lq)}
-    [ ! "$target" ] && return 2
-    docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$target"
-}
-
 # shellcheck disable=SC2033
 dkrm() {
     confirm 'Remove ALL containers (with volumes). Continue?' n || return 0
     docker ps -aq | xargs -r docker rm -v -f
+}
+
+dkip() {
+    local target; target=${1:-$(docker ps -lq)}
+    [ ! "$target" ] && return 2
+    docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$target"
 }
 
 dkstop() {
@@ -127,10 +127,10 @@ alias pac='pacman'
 alias pacs='pacsearch'
 alias pactree='pactree --color'
 
-# Finds what package provides file or directory
-paco() {
+# Files provided by package
+pacl() {
     [ $# -eq 0 ] && return 2
-    pacman -Qo -- "$@"
+    pacman -Qql -- "$1"
 }
 
 # Finds what package provides command
@@ -139,10 +139,10 @@ pacoc() {
     pth -a "$1" | xargs -d '\n' -r pacman -Qo
 }
 
-# Files provided by package
-pacl() {
+# Finds what package provides file or directory
+paco() {
     [ $# -eq 0 ] && return 2
-    pacman -Qql -- "$1"
+    pacman -Qo -- "$@"
 }
 
 # Target's 'depends on'
@@ -194,17 +194,18 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 
 alias acpi='acpi -V'
+alias an='asciinema'
 alias aunpack='aunpack -q'
 alias c='calc'
-alias cal='cal -3 -m'
+alias cal='cal -m -w -3'
 alias callgrind='valgrind --tool=callgrind'
 alias cower='cower --color=auto'
 alias cp='cp -ai --reflink=auto'
 alias date0='date -Ins'
 alias dconfa='dconf dump /'
 alias dd='dd status=progress'
+alias df0='\df -h'
 alias df='df -h -x tmpfs -x devtmpfs'
-alias dff='df -h'
 alias dirs='dirs -v'
 alias dmesg='dmesg -HTx'
 alias dstat='dstat -cglmnpry --tcp'
@@ -233,10 +234,10 @@ alias mpv-ytdl-reverse='mpv --ytdl-raw-options=playlist-reverse='
 alias mutt-debug='mutt -d 2'
 alias mv='mv -i'
 alias npmg='npm -g'
-alias od='od -Ax -tc -tx1 -v -w16'
+alias od='od -Ax -tc'
 alias odd='od -td1'
 alias odo='od -to1'
-alias odx='/usr/bin/od -Ax -tx2z -v -w16'
+alias odx='od -tx1'
 alias patch0='patch -Np0'
 alias patch1='patch -Np1'
 alias ping-mtu='ping -M do -s 2000'
@@ -271,6 +272,19 @@ a() {
         /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
 }
 
+anplay() {
+    local outfile
+    outfile=$(find ~/tmp -name 'asciinema-*' -print0 | sort -z | tail -zn1)
+    [ -e "$outfile" ] && asciinema play "$outfile"
+}
+
+anrec() {
+    local ts outfile
+    ts=$(date +%F.%s)
+    outfile="$HOME/tmp/asciinema-$ts.json"
+    asciinema rec -w 2 "$outfile"
+}
+
 base() { export BASEDIR=${1:-$PWD}; }
 unbase() { unset BASEDIR; }
 
@@ -282,6 +296,11 @@ cd() {
     fi
 }
 
+ctlseqs() {
+    set -- ~/src/xterm-*
+    [ -d "$1" ] && squashlns <"$1/ctlseqs.txt" | $PAGER
+}
+
 date() {
     [ $# -eq 0 ] && set -- -R
     command date "$@"
@@ -291,7 +310,7 @@ debug() {
     shopt -s extdebug
     set -o errtrace
     set -o functrace
-    trap stacktrace ERR
+    #trap stacktrace ERR
 }
 
 dict() {
@@ -369,7 +388,7 @@ optset() {
     if [ $# -eq 0 ]; then
         set +o
     else
-        [ "${#1}" -gt 1 ] && return 2
+        [ ${#1} -gt 1 ] && return 2
         case $- in *$1*) ;; *) return 1 ;; esac
     fi
 }
@@ -424,24 +443,6 @@ source_opt() {
     fi
 }
 
-stacktrace() {
-    local retstat=$? ti_header=$ti_hi1
-    [ "$retstat" -gt 0 ] && ti_header=$ti_hi2
-    echo "$ti_header> Traceback ($retstat):$ti_reset"
-    shopt -q extdebug || echo '> WARN: extdebug not set!'
-    for (( i=1, argvo=0; i<${#FUNCNAME[@]}; i++, argvo+=argc )); do
-        argc=${BASH_ARGC[$i]}
-        printf "$ti_hi3%s:%d$ti_reset $ti_hi0%s$ti_reset" \
-            "${BASH_SOURCE[$((i+1))]}" \
-            "${BASH_LINENO[$i]}" \
-            "${FUNCNAME[$i]}"
-        for (( j=argc-1; j>=0; j-- )); do
-            printf ' %q' "${BASH_ARGV[$((argvo+j))]}"
-        done
-        echo
-    done
-}
-
 systemd-dot() {
     systemd-analyze dot "$@" | dot -Tsvg | stdiner -bt b
 }
@@ -453,6 +454,13 @@ tree() {
     else
         command tree "$@"
     fi
+}
+
+tsrec() {
+    local ts outfile
+    ts=$(date +%F.%s)
+    outfile="$HOME/tmp/typescript-$ts"
+    script -- "$outfile"
 }
 
 v() {

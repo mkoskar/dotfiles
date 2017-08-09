@@ -9,6 +9,7 @@
     dfc = diff --cached
     f = fetch --all
     k = !gitk
+    last = log -p -n1
     lg = !git lg1 -100
     lg1 = log --graph --format=lg1
     lg2 = log --graph --format=lg2

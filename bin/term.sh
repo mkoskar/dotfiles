@@ -17,7 +17,7 @@ if [ "${TERM%%-*}" = 'screen' ]; then
     export TERM='screen-256color'
 fi
 
-tput reset
+#tput reset
 stty -ixon -ixoff
 
 export TERMDONE=1

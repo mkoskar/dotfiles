@@ -85,13 +85,14 @@ XDG_CONFIG_HOME="$HOME/.config"
 XDG_DATA_HOME="$HOME/.local/share"
 
 export ASPROOT="$HOME/.asp"
+export BZR_LOG="$XDG_DATA_HOME/bzr.log"
 export CCACHE_DIR="$XDG_CACHE_HOME/ccache"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
 export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"
 
-[ "$_PATH" ] || export _PATH="$PATH"
-PATH="$_PATH"
+[ "$_PATH" ] || export _PATH=$PATH
+PATH=$_PATH
 PATH="$HOME/.cargo/bin:$PATH"
 PATH="$HOME/.gem/ruby/2.3.0/bin:$PATH"
 PATH="$HOME/.local/bin:$PATH"

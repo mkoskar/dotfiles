@@ -2,7 +2,7 @@
 Description=%N service
 
 [Service]
+Type=oneshot
 SyslogIdentifier=%N
-ExecStart=/usr/bin/bash -c 'apod get && { apod set || true; }'
-Restart=on-failure
-RestartSec=1800
+ExecStart=/usr/bin/bash -c 'apod get'
+ExecStart=-/usr/bin/bash -c 'apod set'

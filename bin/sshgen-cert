@@ -21,18 +21,10 @@ usage_err() { _usage; exit 2; } >&2
 declare -i host=0 portfwd=0
 while getopts HPh opt; do
     case $opt in
-        H)
-            host=1
-            ;;
-        P)
-            portfwd=1
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage_err
-            ;;
+        H) host=1 ;;
+        P) portfwd=1 ;;
+        h) usage ;;
+        *) usage_err ;;
     esac
 done
 shift $((OPTIND-1))
