@@ -2,4 +2,4 @@
 
 [[ $SHRC_DEBUG ]] && echo '~/.zprofile' >&2
 
-emulate sh -c 'source ~/.profile'
+. ~/.profile

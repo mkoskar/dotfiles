@@ -26,7 +26,7 @@ shift $((OPTIND-1))
 
 bluectl() {
     if [[ $1 = 'play-pause' ]]; then
-        local stat; stat=$(bluectl show | awk '/Status:/ {print $2}')
+        local stat; stat=$(bluectl show | awk '/Status:/ { print $2 }')
         case $stat in
             playing)
                 bluectl pause

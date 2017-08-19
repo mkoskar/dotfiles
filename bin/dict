@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+prgname=${0##*/}
+
+_usage() {
+    echo "usage: $prgname [-m] [word]"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+declare -i match=0
+while getopts mh opt; do
+    case $opt in
+        m) match=1 ;;
+        h) usage ;;
+        *) usage_err ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# ----------------------------------------
+
+(( $# )) || {
+    telnet dict.org 2628
+    exit
+}
+
+if (( match )); then
+    curl -s "dict://dict.org/match * . \"${*//[\"\\]/ }\"" |
+        PAGER_EX='setf dict' $PAGER
+else
+    curl -s "dict://dict.org/define * \"${*//[\"\\]/ }\"" |
+        dos2unix |
+        awk '
+        /^\s*$/ { squashing = 1; next }
+        /^\.$/  { squashing = 0; print $0; printf "\n"; next }
+        { if (squashing) printf "\n"; squashing = 0; print $0 }
+        /^150 [0-9]+ definitions retrieved/ { printf "\n" }
+        /^151 "/ { printf "\n" }
+        ' |
+        PAGER_EX='setf dict' $PAGER
+fi

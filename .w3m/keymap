@@ -13,6 +13,8 @@ keymap U NULL
 keymap W NULL
 keymap a NULL
 keymap r NULL
+keymap ( NULL
+keymap ) NULL
 keymap { NULL
 keymap } NULL
 

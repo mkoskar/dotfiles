@@ -142,10 +142,10 @@ myConfig = def
                         {-<+> hintsEventHook-}
 
     myManageHook = composeOne
-                       [ appName =? "workrave" <&&> title =? "Workrave" -?> doHideIgnore
-                       , appName =? "clementine" -?> doShiftView "8"
+                       [ appName =? "clementine" -?> doShiftView "8"
                        , appName =? "gpodder" -?> doShift "8"
                        , appName =? "libreoffice" -?> doShiftView "8"
+                       , appName =? "pinentry-gtk-2" -?> doFloat
                        , appName =? "qjackctl" <&&> title <? "JACK Audio Connection Kit" -?> doFloat
                        , appName =? "s_aux" -?> doShift "2"
                        , appName =? "s_tmp" -?> doShift "2"
@@ -157,6 +157,7 @@ myConfig = def
                        , appName =? "sxiv" -?> doShiftView "9"
                        , appName =? "vlc" -?> doShiftView "9"
                        , appName =? "vmpk" -?> doFloat
+                       , appName =? "workrave" <&&> title =? "Workrave" -?> doHideIgnore
                        , appName =? "zathura" -?> doShiftView "8"
                        , className =? "Firefox (default)" -?> doShiftView "3"
                        , className =? "Gxmessage" -?> doFloat

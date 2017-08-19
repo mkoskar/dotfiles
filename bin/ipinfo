@@ -34,7 +34,7 @@ stat=$(curl -sSL -w '%{http_code}\t%{url_effective}' -o "$tmpfile" "$url")
 read -r scode surl <<<"$stat"
 case $scode in
     200)
-        jq <"$tmpfile"
+        jq . <"$tmpfile"
         ;;
     *)
         echo "HTTP $scode : $surl" >&2

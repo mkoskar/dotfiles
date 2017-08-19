@@ -529,9 +529,14 @@ nnoremap <silent> <Leader>ps :%!striplns<CR>
 xnoremap <silent> <Leader>pS :!squashlns<CR>
 nnoremap <silent> <Leader>pS :%!squashlns<CR>
 
-" Open URLs
-xnoremap <silent> <Leader>xu :SystemRange! urls -o<CR>
-nnoremap <silent> <Leader>xu :exec line('w0').','.line('w$').'SystemRange! urls -o'<CR>
+" URLs
+xnoremap <silent> <Leader>uo :SystemRange! urls -o<CR>
+nnoremap <silent> <Leader>uo :.SystemRange! urls -o<CR>
+nnoremap <silent> <Leader>uO :exec line('w0').','.line('w$').'SystemRange! urls -o'<CR>
+
+xnoremap <silent> <Leader>uy :SystemRange! urls -y<CR>
+nnoremap <silent> <Leader>uy :.SystemRange! urls -y<CR>
+nnoremap <silent> <Leader>uY :exec line('w0').','.line('w$').'SystemRange! urls -y'<CR>
 
 " GIT
 nnoremap <Leader>gg :vert System git show HEAD:./

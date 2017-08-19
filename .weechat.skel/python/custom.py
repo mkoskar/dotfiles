@@ -413,7 +413,7 @@ def cb_command_grep_nick(data, buffer, args):
     return w.WEECHAT_RC_OK
 
 
-def cb_command_urls_open(data, buffer, args):
+def cb_command_urls(data, buffer, args):
     win = w.hdata_get_list(hd_win, 'gui_current_window')
     scroll = w.hdata_pointer(hd_win, win, 'scroll')
     lines = w.hdata_pointer(hd_buf, buffer, 'lines')
@@ -426,7 +426,12 @@ def cb_command_urls_open(data, buffer, args):
             if w.hdata_char(hd_ldata, ldata, 'displayed'):
                 after -= 1
     try:
-        p = Popen('urls -o', stdin=PIPE)
+        if data == 'open':
+            p = Popen('tac | urls -o -r', shell=True, stdin=PIPE)
+        elif data == 'yank':
+            p = Popen('tac | urls -y -r', shell=True, stdin=PIPE)
+        else:
+            return w.WEECHAT_RC_ERROR
         count = 100
         while count > 0 and line:
             ldata = w.hdata_pointer(hd_line, line, 'data')
@@ -445,6 +450,7 @@ def cb_command_urls_open(data, buffer, args):
 
 
 w.hook_command('grep_nick', '', '', '', '', 'cb_command_grep_nick', '')
-w.hook_command('urls_open', '', '', '', '', 'cb_command_urls_open', '')
+w.hook_command('urls_open', '', '', '', '', 'cb_command_urls', 'open')
+w.hook_command('urls_yank', '', '', '', '', 'cb_command_urls', 'yank')
 
 # }}}

@@ -30,7 +30,7 @@ while getopts d:tT:o:aiIqh opt; do
     case $opt in
         d)
             [ "$OPTARG" -eq "$OPTARG" ] 2>/dev/null || {
-                echo "$prgname: option requires an integer argument -- $opt" >&2
+                echo "$prgname: option requires integer argument -- $opt" >&2
                 usage_err
             }
             dopt=$OPTARG
@@ -38,7 +38,7 @@ while getopts d:tT:o:aiIqh opt; do
         t) term=1 ;;
         T)
             [ "$OPTARG" -gt 0 ] 2>/dev/null || {
-                echo "$prgname: option requires a positive integer argument -- $opt" >&2
+                echo "$prgname: option requires >0 integer argument -- $opt" >&2
                 usage_err
             }
             Topt=$OPTARG
@@ -81,6 +81,8 @@ fi
 ti_ed=$(tput ed)
 ti_el=$(tput el)
 ti_rc=$(tput rc)
+cols=$(tput cols)
+lines=$(tput lines)
 
 if (( ! inline )); then
     {
@@ -91,22 +93,20 @@ if (( ! inline )); then
     trap cleanup EXIT
 fi
 
-declare -i long=0
 while true; do
     ts_begin=$(date +%s.%N)
     ts_begin_=$(date +%T -d "@$ts_begin")
 
-    (( ! inline )) && printf '%s' "$ti_rc"
-    (( ! quiet )) && printf "> started: %s${ti_el}\n" "$ts_begin_" >&2
-    (( ! inline && long )) && printf '%s' "$ti_ed"
+    (( inline )) || printf '%s' "$ti_rc"
+    (( quiet )) || printf "> started: %s${ti_el}\n" "$ts_begin_" >&2
 
     printf -v cmd '%q "$@"' "$1"
-    bashx -c "$cmd" "$@" |& tee ${append+-a} "$output" | sed -r "s/\$/$ti_el/"
+    bashx -c "$cmd" "$@" |& tee ${append+-a} "$output" |
+        sed -r "s/\$/$ti_el/" |
+        pr -T -W "$cols" -l $((lines-2)) +1:1
 
     ts_end=$(date +%s.%N)
     ts_end_=$(date +%T -d "@$ts_end")
-
-    long=$(bc -l <<<"($ts_end-$ts_begin) > 1")
 
     if (( term )); then
         should_term=$(bc -l <<<"($ts_end-$ts_begin) < $term_delta/1000")
@@ -114,7 +114,7 @@ while true; do
     fi
 
     if (( notty && delay > 0 )); then
-        (( ! inline )) && printf '%s' "$ti_ed"
+        (( inline )) || printf '%s' "$ti_ed"
         sleep "$delay_s"
         continue
     fi
@@ -122,10 +122,10 @@ while true; do
     if (( delay != 0 )); then
         if (( ! quiet )); then
             h=
-            (( delay > 0 )) && h="waiting for ${delay}ms, "
+            (( delay > 0 )) && h="waiting for ${delay}ms, " || h=
             h="${h}press any key to start or q|Q to quit"
-            printf "> finished: %s (%s)${ti_el}\n" "$ts_end_" "$h" >&2
-            (( ! inline )) && printf '%s' "$ti_ed"
+            printf "> finished: %s (%s)$ti_el" "$ts_end_" "$h" >&2
+            (( inline )) && echo || printf '%s' "$ti_ed"
         fi
         read -N1 -rs "${read_opts[@]}" c || continue
         case $c in [qQ]) break ;; esac

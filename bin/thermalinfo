@@ -5,8 +5,8 @@ set -eu
 get() {
     local sep=${3:-/}
     local in="$1$sep$2" out="_$2"
-    typeset -g "$out="
-    [[ ! -e $in ]] || typeset -g "$out=$(<"$in")"
+    declare -g "$out="
+    [[ ! -e $in ]] || declare -g "$out=$(<"$in")"
 }
 
 echo $'\n--------------------------------------------------'

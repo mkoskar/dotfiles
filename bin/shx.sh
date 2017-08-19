@@ -1,25 +1,27 @@
 # Source this file to get common aliases and functions.
-# :Compatibility: POSIX / Bourne
-#
-# TODO: cleanup bashisms
+# :Compatibility: POSIX
 
 [ "$SHRC_DEBUG" ] && echo '~/bin/shx.sh' >&2
-
-set -o noclobber
-
-# non-POSIX but supported by bash(1) and zsh(1) at least
-set -o pipefail
-
-ti_hi0=$'\e[1;37m'
-ti_hi1=$'\e[1;32m'
-ti_hi2=$'\e[1;31m'
-ti_hi3=$'\e[1;33m'
-ti_reset=$'\e[m'
 
 if [ "$BASH_VERSION" ]; then
     shopt -s expand_aliases
     unset BASH_ENV
 fi
+
+SHNAME=$(cmdline -a0 $$)
+SHNAME=${SHNAME##*/}
+SHNAME=${SHNAME#-}
+SHNAME=${SHNAME#r}
+
+case $SHNAME in
+    bash) shopt -qo posix && SHNAME='sh' ;;
+esac
+
+set -o noclobber
+
+case $SHNAME in bash | zsh | mksh)
+    set -o pipefail
+esac
 
 
 # docker
@@ -37,16 +39,16 @@ alias dkr='docker run -P'
 alias dkrd='docker run -d -P'
 alias dkri='docker run -i -t -P'
 
-# shellcheck disable=SC2033
-dkrm() {
-    confirm 'Remove ALL containers (with volumes). Continue?' n || return 0
-    docker ps -aq | xargs -r docker rm -v -f
-}
-
 dkip() {
     local target; target=${1:-$(docker ps -lq)}
     [ ! "$target" ] && return 2
     docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$target"
+}
+
+dkrm() {
+    confirm 'Remove ALL containers (with volumes). Continue?' n || return 0
+    # shellcheck disable=SC2033
+    docker ps -aq | xargs -r docker rm -v -f
 }
 
 dkstop() {
@@ -77,14 +79,16 @@ alias mvn-dependency-tree='mvn dependency:tree'
 alias mvn-effective-pom='mvn help:effective-pom'
 alias mvn-effective-settings='mvn help:effective-settings'
 
-mvn-describe-plugin() {
+mvn_archetype_generate() {
+    mvn archetype:generate -Dfilter="$1"
+}
+alias mvn-archetype-generate='mvn_archetype_generate'
+
+mvn_describe_plugin() {
     [ $# -eq 0 ] && return 2
     mvn help:describe -Dplugin="$1"
 }
-
-mvn-archetype-generate() {
-    mvn archetype:generate -Dfilter="$1"
-}
+alias mvn-describe-plugin='mvn_describe_plugin'
 
 
 # ls
@@ -111,9 +115,10 @@ alias man-1p='man -s 1p'
 alias man-3p='man -s 3p'
 alias man-posix='man -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
 
-man-all() {
+man_all() {
     pgx man -k . "$@"
 }
+alias man-all='man_all'
 
 alias man-all-1p='man-all -s 1p'
 alias man-all-3p='man-all -s 3p'
@@ -127,10 +132,16 @@ alias pac='pacman'
 alias pacs='pacsearch'
 alias pactree='pactree --color'
 
-# Files provided by package
-pacl() {
+# Target's detailed info
+paci() {
     [ $# -eq 0 ] && return 2
-    pacman -Qql -- "$1"
+    pacman -Qii -- "$@" || pacman -Sii -- "$@" || cower -i -- "$@"
+} 2>/dev/null
+
+# Finds what package provides file or directory
+paco() {
+    [ $# -eq 0 ] && return 2
+    pacman -Qo -- "$@"
 }
 
 # Finds what package provides command
@@ -139,10 +150,10 @@ pacoc() {
     pth -a "$1" | xargs -d '\n' -r pacman -Qo
 }
 
-# Finds what package provides file or directory
-paco() {
+# Files provided by package
+pacl() {
     [ $# -eq 0 ] && return 2
-    pacman -Qo -- "$@"
+    pacman -Qql -- "$1"
 }
 
 # Target's 'depends on'
@@ -166,12 +177,6 @@ pacw() {
     expac -l '\n' %N "$1"
 }
 
-# Target's detailed info
-paci() {
-    [ $# -eq 0 ] && return 2
-    pacman -Qii -- "$@" || pacman -Sii -- "$@" || cower -i -- "$@"
-} 2>/dev/null
-
 paccheck() {
     command paccheck --quiet --file-properties --sha256sum \
         --backup --noextract --noupgrade "$@"
@@ -189,9 +194,11 @@ alias q='deactivate'
 # Other
 # ----------------------------------------
 
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
+case $SHNAME in mksh) ;; *)
+    alias ..='cd ..'
+    alias ...='cd ../..'
+    alias ....='cd ../../..'
+esac
 
 alias acpi='acpi -V'
 alias an='asciinema'
@@ -215,6 +222,7 @@ alias fortune='fortune -c'
 alias free='free -h'
 alias gconfa='gconftool-2 -R /'
 alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
+alias grepcat='grep --exclude-dir=\* .'
 alias gsettingsa='gsettings list-recursively'
 alias headcat='head -vn-0'
 alias info='info --vi-keys'
@@ -290,9 +298,9 @@ unbase() { unset BASEDIR; }
 
 cd() {
     if [ $# -eq 0 ]; then
-        builtin cd "${BASEDIR:-${SHOME:-$HOME}}"
+        command cd "${BASEDIR:-${SHOME:-$HOME}}"
     else
-        builtin cd "$@"
+        command cd "$@"
     fi
 }
 
@@ -306,43 +314,14 @@ date() {
     command date "$@"
 }
 
-debug() {
-    shopt -s extdebug
-    set -o errtrace
-    set -o functrace
-    #trap stacktrace ERR
-}
-
-dict() {
-    [ $# -eq 0 ] && return 2
-    curl -s "dict://dict.org/define * \"${*//[\"\\]/ }\"" |
-        dos2unix |
-        awk '
-        /^\s*$/ { squashing = 1; next }
-        /^\.$/  { squashing = 0; print $0; printf "\n"; next }
-        { if (squashing) printf "\n"; squashing = 0; print $0 }
-        /^150 [0-9]+ definitions retrieved/ { printf "\n" }
-        /^151 "/ { printf "\n" }
-        ' |
-        PAGER_EX='setf dict' $PAGER
-}
-
-dict-match() {
-    [ $# -eq 0 ] && return 2
-    curl -s "dict://dict.org/match * . \"${*//[\"\\]/ }\"" | PAGER_EX='setf dict' $PAGER
-}
-
-dict-telnet() {
-    telnet dict.org 2628
-}
-
 fn() {
     if [ $# -eq 0 ]; then
-        pgx declare -f
+        declare -f | $PAGER
     else
         declare -f -- "$1" || return 1
-        [ "$BASH_VERSION" ] && \
+        case $SHNAME in bash)
             (shopt -s extdebug; printf '# '; declare -F -- "$1")
+        esac
     fi
 }
 
@@ -353,11 +332,13 @@ h() {
 i() {
     if [ $# -eq 0 ]; then
         shi
-    elif [ "$ZSH_VERSION" ]; then
-        type -af -- "$1"
-    else
-        type -a -- "$1"
+        return
     fi
+    case $SHNAME in
+        bash) type -a -- "$1" ;;
+        zsh) type -af -- "$1" ;;
+        *) type "$1" ;;
+    esac
 }
 
 ifs() {
@@ -365,17 +346,18 @@ ifs() {
 }
 
 ifs0() {
-    IFS=$' \t\n'
+    IFS=' 	''
+'
 }
 
 lsmod() {
     pgx command lsmod "$@"
 }
 
-lsof-pid() {
-    setpid
-    command lsof -p "${1:-$PID}"
+lsof_pid() {
+    lsof -p "${1:-$$}"
 }
+alias lsof-pid='lsof_pid'
 
 on() {
     [ $# -eq 0 ] && return 2
@@ -399,42 +381,38 @@ pstree() {
 
 reexec() {
     local cmdline; cmdline=$(cmdline)
-    # shellcheck disable=SC2086
-    exec $cmdline
+    eval exec "$cmdline"
 }
 
 reload() {
     . /etc/profile
     . ~/.profile
-    if [ "$BASH_VERSION" ]; then
-        . ~/.bashrc
-    elif [ "$ZSH_VERSION" ]; then
-        . ~/.zshrc
-    else
-        . ~/bin/shx.sh
-    fi
-}
-
-setpid() {
-    PID=
-    if [ "$BASH_VERSION" ]; then
-        PID=$BASHPID
-    elif [ "$ZSH_VERSION" ]; then
-        # shellcheck disable=SC2154
-        PID=${sysparams[pid]}
-    fi
-    [ "$PID" ] || return 1
+    case $SHNAME in
+        bash) . ~/.bashrc ;;
+        zsh) . ~/.zshrc ;;
+        *) . ~/.shrc ;;
+    esac
 }
 
 shi() {
-    setpid
     cmdline
     printf '$$: %s\n' "$$"
-    printf 'PID: %s\n' "$PID"
     printf 'PPID: %s\n' "$PPID"
-    printf 'SHLVL: %s\n' "$SHLVL"
-    printf 'SUBSHELL: %s\n' "${BASH_SUBSHELL:-$ZSH_SUBSHELL}"
-    printf 'VERSION: %s\n' "${BASH_VERSION:-$ZSH_VERSION}"
+    case $SHNAME in
+        bash)
+            printf 'PID: %s\n' "$BASHPID"
+            printf 'SHLVL: %s\n' "$SHLVL"
+            printf 'SUBSHELL: %s\n' "$BASH_SUBSHELL"
+            printf 'VERSION: %s\n' "$BASH_VERSION"
+            ;;
+        zsh)
+            # shellcheck disable=SC2154
+            printf 'PID: %s\n' "${sysparams[pid]}"
+            printf 'SHLVL: %s\n' "$SHLVL"
+            printf 'SUBSHELL: %s\n' "$ZSH_SUBSHELL"
+            printf 'VERSION: %s\n' "$ZSH_VERSION"
+            ;;
+    esac
 }
 
 source_opt() {
@@ -443,9 +421,10 @@ source_opt() {
     fi
 }
 
-systemd-dot() {
+systemd_dot() {
     systemd-analyze dot "$@" | dot -Tsvg | stdiner -bt b
 }
+alias systemd-dot='systemd_dot'
 
 tree() {
     set -- --dirsfirst -a -I '.git|.svn' --noreport -x "$@"
@@ -465,16 +444,10 @@ tsrec() {
 
 v() {
     if [ $# -eq 0 ]; then
-        pgx declare -p
+        declare -p | $PAGER
     else
         declare -p -- "$1"
     fi
-}
-
-watchx() {
-    [ $# -gt 0 ] || set -- la
-    printf -v cmd '%q "$@"' "$1"
-    watch -xc -n1 bashx -c "$cmd" "$@"
 }
 
 xkbkeymap() {
@@ -489,24 +462,23 @@ xrandr() {
     fi
 }
 
-xserver-log() {
+xserver_log() {
     local dispno; dispno=${1:-$(xserverq dispno)}
     [ "$dispno" ] || return 1
     $PAGER ~/.local/share/xorg/Xorg."$dispno".log
 }
+alias xserver-log='xserver_log'
 
-xsession-out() {
+xsession_out() {
     local dispno; dispno=${1:-$(xserverq dispno)}
     [ "$dispno" ] || return 1
     $PAGER ~/.local/share/xorg/xsession."$dispno".out
 }
+alias xsession-out='xsession_out'
 
-
-# Bourne-like shell only
 # ----------------------------------------
 
-eval 'function __bourne_test { true; }' 2>/dev/null || return
-unset __bourne_test
+case $SHNAME in bash | zsh | *ksh) ;; *) return ;; esac
 
 # virtualenvwrapper
 if [ -e /usr/bin/virtualenvwrapper.sh ]; then
@@ -519,10 +491,11 @@ if [ -e /usr/bin/virtualenvwrapper.sh ]; then
     [ "$PYTHON3" ] && mkvirtualenv3() { mkvirtualenv -p "$PYTHON3" "$@"; }
     alias wo='workon'
 
-    mkvirtualenv-pyenv() {
+    mkvirtualenv_pyenv() {
         [ $# -eq 0 ] && return 2
         local ver=$1
         shift
         mkvirtualenv -p "$PYENV_ROOT/versions/$ver/bin/python" "$@"
     }
+    alias mkvirtualenv-pyenv='mkvirtualenv_pyenv'
 fi

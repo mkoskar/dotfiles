@@ -73,6 +73,7 @@ if [[ ! -f user.js ]]; then
 			//user_pref('browser.tabs.remote.force-enable', true);
 			//user_pref('browser.urlbar.formatting.enabled', false);
 			//user_pref('layers.acceleration.force-enabled', true);
+			//user_pref('security.ssl.require_safe_negotiation', true);
 
 			user_pref('accessibility.blockautorefresh', true);
 			user_pref('browser.ctrlTab.previews', true);
@@ -112,7 +113,6 @@ if [[ ! -f user.js ]]; then
 			user_pref('privacy.cpd.openWindows', true);
 			user_pref('privacy.cpd.siteSettings', true);
 			user_pref('reader.parse-on-load.enabled', false);
-			user_pref('security.ssl.require_safe_negotiation', true);
 			user_pref('security.ssl3.dhe_rsa_aes_128_sha', false);
 			user_pref('security.ssl3.dhe_rsa_aes_256_sha', false);
 			user_pref('toolkit.telemetry.archive.enabled', false);

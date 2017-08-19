@@ -11,7 +11,7 @@ case $- in *i*) ;; *) return ;; esac
 . ~/bin/shx.sh
 . ~/bin/shrc-pre.sh
 
-HISTFILE="$HOME/.local/share/zhistory"
+HISTFILE="$HOME/.local/share/zsh_history"
 HISTSIZE=1000
 SAVEHIST=5000
 TMPPREFIX="${TMPDIR:-/tmp}/zsh"
@@ -23,7 +23,6 @@ typeset -gU path fpath cdpath
 zmodload zsh/complist
 zmodload zsh/system
 
-#autoload -Uz url-quote-magic
 autoload -Uz add-zsh-hook
 autoload -Uz bracketed-paste-magic
 autoload -Uz compinit
@@ -56,6 +55,7 @@ setopt multios
 setopt nonomatch
 setopt notify
 setopt path_dirs
+setopt posix_builtins
 setopt prompt_subst
 setopt pushd_ignore_dups
 setopt pushd_silent
@@ -132,7 +132,6 @@ function zle-line-init {
     zle zle-keymap-select
 }
 
-#zle -N self-insert url-quote-magic
 zle -C all-matches complete-word _generic
 zle -N bracketed-paste bracketed-paste-magic
 zle -N complete-help _complete_help

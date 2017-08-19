@@ -6,28 +6,30 @@ set -- -udprN "$@"
 cmd=(diff "$@")
 prgname=${0##*/}
 
-main() {
-    case $prgname in
-        d0)
-            "${cmd[@]}"
-            ;;
-        *)
-            tmpfile=$(mktemp)
-            cleanup() { rm -f "$tmpfile"; }
-            trap cleanup RETURN
+main() (
+        case $prgname in
+            d0)
+                "${cmd[@]}"
+                ;;
+            *)
+                tmpfile=$(mktemp)
+                cleanup() { rm -f "$tmpfile"; }
+                trap cleanup EXIT
 
-            declare -i retstat=0
-            "${cmd[@]}" >"$tmpfile" || retstat=$?
+                false
 
-            echo '---'
-            diffstat -p1 <"$tmpfile"
+                declare -i retstat=0
+                "${cmd[@]}" >"$tmpfile" || retstat=$?
 
-            echo
-            filterdiff -v --remove-timestamps --annotate <"$tmpfile"
+                echo '---'
+                diffstat -p1 <"$tmpfile"
 
-            return $retstat
-            ;;
-    esac
-}
+                echo
+                filterdiff -v --remove-timestamps --annotate <"$tmpfile"
+
+                return $retstat
+                ;;
+        esac
+)
 
 main | PAGER_TITLE=${cmd[*]} PAGER_EX='setf diff' pg0

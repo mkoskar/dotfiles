@@ -287,6 +287,7 @@
 /key bind meta-jmeta-j /cursor go chat
 /key bind meta-jmeta-n /cursor go nicklist
 /key bind meta-jmeta-u /urls_open
+/key bind meta-jmeta-y /urls_yank
 /key bind meta-s /server jump
 /key bind meta-wmeta-h /window left
 /key bind meta-wmeta-j /window down

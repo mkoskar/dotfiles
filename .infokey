@@ -1,5 +1,8 @@
 #info
 
+p       invalid
+^I      invalid
+
 l       forward-char
 h       backward-char
 0       beginning-of-line
@@ -23,8 +26,10 @@ d       dir-node
 ^J      select-reference-this-line
 ^M      select-reference-this-line
 ^]      select-reference-this-line
-)       move-to-next-xref
-(       move-to-prev-xref
+\mj     move-to-next-xref
+\mk     move-to-prev-xref
+J       move-to-next-xref
+K       move-to-prev-xref
 \       clear-search
 
 #echo-area

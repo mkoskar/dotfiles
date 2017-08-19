@@ -2,7 +2,11 @@
 
 set -eu
 
-(( $# )) || exit 0
+(( $# )) || exit 2
 
-printf -v out "${IFS:0:1}%q" "$@"
-printf '%s\n' "${out:1}"
+# bash < 4.4
+#printf -v out "${IFS:0:1}%q" "$@"
+#printf '%s\n' "${out:1}"
+
+# bash >= 4.4
+printf '%s\n' "${*@Q}"

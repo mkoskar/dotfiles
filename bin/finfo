@@ -2,9 +2,11 @@
 
 set -eu
 
-ifile=${1-}
-
-if [[ ! $ifile ]]; then
+if (( $# )); then
+    ifile=$1
+    echo
+    stat -- "$ifile"
+else
     tmpfile=$(mktemp)
     cleanup() { rm -f "$tmpfile"; }
     trap cleanup EXIT
@@ -12,13 +14,16 @@ if [[ ! $ifile ]]; then
     ifile=$tmpfile
 fi
 
-tmp=$(wc "$ifile")
-read -r lines words bytes _ <<<"$tmp"
-printf '\n%d bytes, %d words, %d lines\n' "$bytes" "$words" "$lines"
+echo
+file -b --mime -- "$ifile"
+file -b -- "$ifile"
 echo
 
-file -b --mime "$ifile"
-file -b "$ifile"
+[[ -f $ifile ]] || exit 0
+
+tmp=$(wc "$ifile")
+read -r lines words bytes _ <<<"$tmp"
+printf '%d bytes, %d words, %d lines\n' "$bytes" "$words" "$lines"
 echo
 
 declare -i n=128

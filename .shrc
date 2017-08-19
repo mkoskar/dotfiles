@@ -1,0 +1,25 @@
+# Executed by POSIX sh(1p) and mksh(1) for interactive shells based on ENV
+# environment variable reference.
+
+[ "$SHRC_DEBUG" ] && echo '~/.shrc' >&2
+
+. ~/bin/term.sh
+
+# ----------------------------------------
+
+case $- in *i*) ;; *) return ;; esac
+
+. ~/bin/shx.sh
+. ~/bin/shrc-pre.sh
+
+HISTFILE="$HOME/.local/share/${SHNAME}_history"
+HISTSIZE=1000
+
+HOSTNAME=$(uname -n)
+PS1='$USER@$HOSTNAME:${PWD##*/}$ '
+
+# ----------------------------------------
+
+. ~/bin/shrc-post.sh
+
+# vim: ft=sh

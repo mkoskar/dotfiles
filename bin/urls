@@ -8,6 +8,8 @@ _usage() {
     cat <<-EOF
 	usage: $prgname [options]
 
+	Open / Yank / Select an URL.
+
 	  -o        - open
 	  -y        - yank
 	  -s        - select

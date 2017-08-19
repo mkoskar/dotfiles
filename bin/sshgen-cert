@@ -8,7 +8,7 @@ _usage() {
     cat <<-EOF
 	usage: $prgname [-H] [-P] ca_key pub_key identity principals [ssh-keygen opts]
 
-	Generate SSH client/host certificate.
+	Generate SSH client or host certificate.
 	Note: Multiple principals may be specified separated by commas.
 
 	  -H    - generate host certificate

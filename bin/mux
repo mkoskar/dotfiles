@@ -32,15 +32,13 @@ base() {
 
 ext() {
     new 'trun ranger' \
-        \; setw remain-on-exit on \
-        \; setw main-pane-height 30 \
-        \; selectl main-horizontal
+        \; setw remain-on-exit on
 
     neww 'trun ee' \
         \; setw remain-on-exit on \
-        \; splitw -h \
         \; setw main-pane-width 84 \
-        \; selectl main-vertical
+        \; selectl main-vertical \
+        \; splitw -h
 }
 
 # ----------------------------------------
@@ -57,9 +55,9 @@ aux() {
     local notesdir="$HOME/projects/notes/src"
     new -n notes -c "$notesdir" 'trun e' \
         \; setw remain-on-exit on \
-        \; splitw -h -c "$notesdir" \
         \; setw main-pane-width 121 \
         \; selectl main-vertical \
+        \; splitw -h -c "$notesdir" \
         \; resize-pane -Z -t :.+
 
     neww -n mail 'trun mutt' \
@@ -77,16 +75,16 @@ aux() {
 mon() {
     cd ~
 
-    new -n top 'onsighup-terminate conky -q' \
+    new -n top 'trun onsighup-terminate conky -q' \
         \; setw remain-on-exit on \
-        \; splitw -h 'trun htop' \
         \; setw main-pane-width 43 \
-        \; selectl main-vertical
+        \; selectl main-vertical \
+        \; splitw -h 'trun htop'
 
     neww -n journal 'trun journalctl --system -f' \
         \; setw remain-on-exit on \
-        \; splitw -v 'trun journalctl --user -f' \
         \; selectl even-vertical \
+        \; splitw -v 'trun journalctl --user -f' \
         \; selectp -t :.0
 
     neww -n sstat 'trun pgx sstat' \

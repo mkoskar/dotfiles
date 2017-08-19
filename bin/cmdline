@@ -2,12 +2,43 @@
 
 set -eu
 
-pid=${1:-$PPID}
+prgname=${0##*/}
 
-[ "$pid" -gt 0 ] 2>/dev/null || {
-    echo "usage: ${0##*/} pid" >&2
-    exit 2
+_usage() {
+    echo "usage: $prgname [-a N] [pid]"
 }
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+declare -i argi=-1
+while getopts a:h opt; do
+    case $opt in
+        a)
+            [ "$OPTARG" -ge 0 ] 2>/dev/null || {
+                echo "$prgname: option requires >=0 integer argument -- $opt" >&2
+                usage_err
+            }
+            argi=$OPTARG
+            ;;
+        h) usage ;;
+        *) usage_err ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# ----------------------------------------
+
+pid=${1:-$PPID}
+[ "$pid" -gt 0 ] 2>/dev/null || usage_err
 
 infile="/proc/$pid/cmdline"
-[[ -e $infile ]] && xargs -0 -x -r -a "$infile" shell-escape
+[[ -e $infile ]] || exit 1
+
+readarray -t -d '' args <"$infile"
+
+if (( argi < 0 )); then
+    shell-escape "${args[@]}"
+else
+    (( argi < ${#args[@]} )) || exit 1
+    printf '%s' "${args[$argi]}"
+fi

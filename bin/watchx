@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -eu
+
+(( $# )) || set -- la
+
+printf -v cmd '%q "$@"' "$1"
+watch -xc -n1 bashx -c "$cmd" "$@"

@@ -37,4 +37,6 @@ color index             color243        default     ~D
 color index             brightyellow    default     ~T
 
 color sidebar_divider   default         color237
+color sidebar_flagged   brightred       default
+color sidebar_highlight black           color245
 color sidebar_new       brightwhite     default

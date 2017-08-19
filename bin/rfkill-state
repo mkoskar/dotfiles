@@ -9,14 +9,14 @@ _usage() {
     cat <<-EOF
 	usage: $prgname [-a] [-n] [-q] [id] [value]
 
-	Report or set rfkill state/s.
+	Report or set rfkill states.
 
 	id      - all | [0-9] | rfkill[0-9] | bluetooth | fm | gps | nfc | uwb | wimax | wlan | wwan
 	value   - 0 to block and 1 to unblock
 
 	-a      - aggregate all selected states to one or -1 if it's not possible
 	-n      - interpret 'id' as name strictly
-	-q      - output only state/s
+	-q      - output only states
 	EOF
 }
 usage() { _usage; exit 0; }

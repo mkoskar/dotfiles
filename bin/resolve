@@ -9,4 +9,4 @@ if (( ! $# )); then
     exit 2
 fi
 
-getent ahosts "$1" | awk '{print $1; exit}'
+getent ahosts "$1" | awk '{ print $1; exit }'

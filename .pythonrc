@@ -1,0 +1,29 @@
+# vim: ft=python
+
+import datetime
+import functools
+import itertools
+import os
+import sys
+import time
+
+
+def register_readline():
+    import atexit
+    try:
+        import readline
+    except ImportError:
+        return
+    try:
+        readline.read_init_file()
+    except OSError:
+        pass
+    histfile = os.path.expanduser('~/.local/share/python_history')
+    try:
+        readline.read_history_file(histfile)
+    except IOError:
+        pass
+    atexit.register(readline.write_history_file, histfile)
+
+
+sys.__interactivehook__ = register_readline

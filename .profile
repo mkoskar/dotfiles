@@ -15,10 +15,15 @@ require() {
 
 require HOME "$HOME"
 require USER "$USER"
+require PATH "$PATH"
 require LOGNAME "$LOGNAME"
-require UID "$UID"
 
 unset -f require
+
+if [ ! "$UID" ]; then
+    UID=$(id -u)
+    export UID
+fi
 
 export LANG='en_US.UTF-8'
 export LC_COLLATE='C'
@@ -55,6 +60,7 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.xrender=true
 export AUR_MAINTAINER='mkoskar'
 export CCACHE_PATH='/usr/bin'
 export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+export ENV="$HOME/.shrc"
 export FZF_DEFAULT_OPTS='--no-mouse --tabstop=4 --inline-info --color=hl:3,hl+:214,info:-1,prompt:10,pointer:10,marker:10 --bind=alt-j:half-page-down,alt-k:half-page-up,ctrl-b:beginning-of-line,alt-h:backward-char,alt-l:forward-char,alt-w:forward-word,ctrl-k:kill-line,alt-x:delete-char,ctrl-o:jump,ctrl-j:accept'
 export FZF_TMUX=0
 export GRADLE_HOME='/usr/share/java/gradle'
@@ -69,6 +75,7 @@ export NO_AT_BRIDGE=1
 export ORACLE_HOME='/opt/instantclient'
 export PARINIT='T4 w78 prbgqR B=.,?_A_a Q=_s>|'
 export PYENV_ROOT="$HOME/opt/pyenv"
+export PYTHONSTARTUP="$HOME/.pythonrc"
 export QT_IM_MODULE='xim'
 export QUOTING_STYLE='literal'
 export RANGER_LOAD_DEFAULT_RC='FALSE'

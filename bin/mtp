@@ -35,7 +35,7 @@ if (( ${#devices[@]} > 0 )); then
         done
         [[ $sel ]] || exit 2
 
-        device=($(awk -F ', ' '{print $1 " " $2}' <<<"$sel"))
+        device=($(awk -F ', ' '{ print $1 " " $2 }' <<<"$sel"))
         target="$HOME/tmp/mtp-${device[0]}-${device[1]}"
 
         if ! findmnt -M "$target" &>/dev/null; then

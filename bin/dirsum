@@ -12,4 +12,4 @@ if [[ $prgname = 'dirsum0' ]]; then
 fi
 
 bsdtar -c -f - --format mtree --options mtree:sha1 . |
-    "${filter[@]}" | sha1sum | awk '{print $1}'
+    "${filter[@]}" | sha1sum | awk '{ print $1 }'

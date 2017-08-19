@@ -29,26 +29,26 @@ if [[ $xserver = 'Xephyr' ]]; then
     xrdb -merge - <<<'Xft.dpi: 96'
 fi
 
-xscreen
+xscreen -
 
-/usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
+srun -xr /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
 
 if [[ $xserver = 'Xorg' ]]; then
-    compton &
+    srun -xr compton
 fi
 
 _main() {
-    osdd &
+    srun -xr osdd
     _xmonad
 }
 
 _openbox() {
-    tint2 &
+    srun -xr tint2
     openbox
 }
 
 _xmonad() {
-    tray &
+    srun -xr tray
     xmonad
 }
 

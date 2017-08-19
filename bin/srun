@@ -34,7 +34,7 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-name=${name:-$1}
+name=${name:-${1##*/}}
 if (( xopt )); then
     name="$name$DISPLAY"
 fi

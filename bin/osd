@@ -14,10 +14,7 @@ if [[ $prgname = 'osdd' ]]; then
     mkdir -p -m 700 "${fifo%/*}"
     mkfifo -m 600 "$fifo"
 
-    cleanup() {
-        rm -f "$fifo"
-        kill 0
-    }
+    cleanup() { rm -f "$fifo"; }
     trap cleanup EXIT
 
     aosd_cat -O 0 -p 2 -x -10 -y 25 -e 0 -d 5 \
