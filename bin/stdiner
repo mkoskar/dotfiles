@@ -46,7 +46,7 @@ cat >"$tmpfile"
 exec </dev/null
 
 main() {
-    # shellcheck disable=SC2048
+    unset replace_str
     [[ $* =~ \{\} ]] && replace_str=
     xargs -r -n1 ${replace_str+-I\{\}} "$@" <<<"$tmpfile"
     if (( timeout )); then

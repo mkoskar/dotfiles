@@ -52,8 +52,7 @@ fetch() {
 }
 export -f fetch
 
-#parallel "${pargs[@]}" -r -j10 fetch <"$CONFDIR/sources" >queue
-find "$CACHEDIR" -type f ! -iname hosts ! -iname sum >queue
+parallel "${pargs[@]}" -r -j10 fetch <"$CONFDIR/sources" >queue
 
 {
     sort queue

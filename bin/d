@@ -16,8 +16,6 @@ main() (
                 cleanup() { rm -f "$tmpfile"; }
                 trap cleanup EXIT
 
-                false
-
                 declare -i retstat=0
                 "${cmd[@]}" >"$tmpfile" || retstat=$?
 

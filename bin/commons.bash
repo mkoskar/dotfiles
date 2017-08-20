@@ -18,11 +18,7 @@ initx() {
     set -Eu -o pipefail
     shopt -s extdebug extglob
 
-    ti_3=
-    ti_15=
-    ti_error=
-    ti_reset=
-
+    ti_3= ti_15= ti_error= ti_reset=
     if [[ -t 2 ]]; then
         ti_3=$(tput setaf 3)
         ti_15=$(tput setaf 15)

@@ -120,7 +120,6 @@ if [[ ${CH_DEBUG-} ]]; then
 fi
 
 exec "$bin" \
-    --disable-reading-from-canvas \
     --enable-devtools-experiments \
     --enable-tab-audio-muting \
     --force-device-scale-factor=1 \

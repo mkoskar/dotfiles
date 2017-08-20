@@ -23,7 +23,7 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-# shellcheck disable=SC1007
+unset append
 dopt= Topt= output='/dev/null'
 declare -i term=0 inline=0 cur=0 quiet=0
 while getopts d:tT:o:aiIqh opt; do
