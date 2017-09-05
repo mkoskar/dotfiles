@@ -71,4 +71,5 @@
     default = nothing
 
 [user]
-    name = Miroslav Koskar
+    name = Miroslav Koškár
+    signingkey = CDC91131

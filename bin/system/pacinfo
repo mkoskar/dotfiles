@@ -3,6 +3,33 @@
 # See also: http://wiki.archlinux.org/index.php/Pacman_tips
 
 echo $'\n--------------------------------------------------'
+echo $'> Unofficial:\n'
+
+tmpfile=$(mktemp)
+cleanup() { rm -f "$tmpfile"; }
+trap cleanup EXIT
+
+{
+    cat <<-EOF
+		[options]
+		Architecture = auto
+		Color
+		TotalDownload
+		CheckSpace
+		VerbosePkgLists
+		SigLevel = Required DatabaseOptional
+		LocalFileSigLevel = Optional
+		HoldPkg = pacman glibc
+		CacheDir = /var/cache/pacman/pkg/
+	EOF
+    for repo in core extra community multilib; do
+        printf '[%s]\n' "$repo"
+        echo 'Include = /etc/pacman.d/mirrorlist'
+    done
+} >"$tmpfile"
+pacman --config "$tmpfile" -Qm
+
+echo $'\n--------------------------------------------------'
 echo $'> Foreign & Explicit:\n'
 
 pacman -Qem

@@ -55,7 +55,7 @@ aux() {
     local notesdir="$HOME/projects/notes/src"
     new -n notes -c "$notesdir" 'trun e' \
         \; setw remain-on-exit on \
-        \; setw main-pane-width 121 \
+        \; setw main-pane-width 116 \
         \; selectl main-vertical \
         \; splitw -h -c "$notesdir" \
         \; resize-pane -Z -t :.+

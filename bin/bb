@@ -164,6 +164,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     latin-greek             b https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English
     latin-phrases           b https://en.wikipedia.org/wiki/List_of_Latin_phrases
     learnyouahaskell        b http://learnyouahaskell.com/chapters
+    license                 b https://choosealicense.com/licenses/
     limnoria-subst          b https://github.com/ProgVal/Limnoria/blob/master/src/ircutils.py#L797
     linux-docs              b https://www.kernel.org/doc/html/latest/index.html
     linux-docs!             b /lib/modules/$kernel_release/build/Documentation

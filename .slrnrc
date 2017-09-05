@@ -15,7 +15,7 @@ set organization mkoskar.com
 set overview_date_format "%b %d %I:%M"
 set postpone_directory .local/share/news/postponed
 set query_read_group_cutoff -250
-set realname "Miroslav Koskar"
+set realname "Miroslav Koškár"
 set save_directory .local/share/news/saved
 set save_posts .local/share/news/posts
 set save_replies .local/share/news/replies

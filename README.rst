@@ -2,7 +2,7 @@ Homefiles
 =========
 
 :Description: My home files
-:License: BSD 2-Clause, if not stated otherwise
+:License: Apache 2.0, if not stated otherwise
 
 This repository contains files I typically checkout into my ``$HOME`` directory.
 It contains configuration files of my favorite programs and various utilities.

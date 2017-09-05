@@ -8,9 +8,9 @@ import re
 import weechat as w
 
 SCRIPT_NAME = 'custom'
-SCRIPT_AUTHOR = 'Miroslav Koskar <http://mkoskar.com/>'
+SCRIPT_AUTHOR = 'Miroslav Koškár <http://mkoskar.com/>'
 SCRIPT_VERSION = '0.1'
-SCRIPT_LICENSE = 'BSD 2-Clause'
+SCRIPT_LICENSE = 'Apache 2.0'
 SCRIPT_DESC = 'Personal customizations'
 
 

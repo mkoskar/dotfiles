@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 echo $'\n--------------------------------------------------'
-echo $'> Update (official & aur):\n'
+echo $'> Update:\n'
 
-pacaur -Syu
+sudo pacman -Syu
 
 echo $'\n--------------------------------------------------'
 echo $'> Cleanup:\n'

@@ -51,7 +51,7 @@ setopt hist_verify
 setopt inc_append_history
 setopt interactive_comments
 setopt long_list_jobs
-setopt multios
+setopt nomultios
 setopt nonomatch
 setopt notify
 setopt path_dirs
@@ -327,7 +327,7 @@ zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm -w'
 zstyle ':completion:*:*:*:*:warnings' format ' %F{yellow}-- no matches found --%f'
 
 zstyle -e ':completion:*:*:*:*:hosts' hosts 'reply=(
-    ${=${(f)"$(cat /etc/hosts(N) <<(ypcat hosts 2>/dev/null))"}%%\#*}
+    ${=${(f)"$(cat /etc/hosts(N))"}%%\#*}
     ${=${${${${(@M)${(f)"$(cat ~/.ssh/config 2>/dev/null)"}:#Host *}#Host }:#*\**}:#*\?*}}
 )'
 

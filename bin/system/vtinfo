@@ -7,8 +7,8 @@
     Get some information about the active VT.
 
     :Compatibility: 2.7 / 3.2
-    :Copyright: (c) 2016 Miroslav Koskar <http://mkoskar.com/>
-    :License: BSD 2-Clause
+    :Copyright: (c) 2016 Miroslav Koškár <http://mkoskar.com/>
+    :License: Apache 2.0
 """
 
 from sys import stderr

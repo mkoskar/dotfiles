@@ -3,6 +3,7 @@
 set -eu -o pipefail
 shopt -s inherit_errexit
 
+export LC_ALL=C
 prgname=${0##*/}
 
 if [[ $prgname = 'status-osd' ]]; then
@@ -11,8 +12,6 @@ if [[ $prgname = 'status-osd' ]]; then
     osd "$out" || true
     exit
 fi
-
-export LC_ALL=C
 
 declare -i xcon=0
 xset q &>/dev/null && xcon=1

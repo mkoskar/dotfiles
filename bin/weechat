@@ -2,7 +2,7 @@
 
 set -eu
 
-#exec /usr/bin/weechat "$@"
+exec /usr/bin/weechat "$@"
 
 cd ~/projects/pub/weechat/build/install
 export LD_LIBRARY_PATH='lib'

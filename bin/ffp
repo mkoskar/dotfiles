@@ -70,10 +70,12 @@ cd "$path"
 if [[ ! -f user.js ]]; then
     if [[ ! $profile =~ ^plain(-|$) ]]; then
         cat >user.js <<-EOF
-			//user_pref('browser.tabs.remote.force-enable', true);
 			//user_pref('browser.urlbar.formatting.enabled', false);
-			//user_pref('layers.acceleration.force-enabled', true);
 			//user_pref('security.ssl.require_safe_negotiation', true);
+
+			//user_pref('browser.tabs.remote.force-enable', true);
+			//user_pref('layers.acceleration.force-enabled', true);
+			//user_pref('layout.css.servo.enabled', true)
 
 			user_pref('accessibility.blockautorefresh', true);
 			user_pref('browser.ctrlTab.previews', true);

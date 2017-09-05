@@ -3,9 +3,8 @@
 set -eu -o pipefail
 shopt -s inherit_errexit
 
-prgname=${0##*/}
-
 export LC_ALL=C
+prgname=${0##*/}
 
 name='pointer:SynPS/2 Synaptics TouchPad'
 prop='Device Enabled'

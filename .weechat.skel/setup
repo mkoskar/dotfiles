@@ -14,7 +14,7 @@
 /set irc.server_default.msg_quit ""
 /set irc.server_default.nicks mkoskar
 /set irc.server_default.proxy default
-/set irc.server_default.realname "Miroslav Koskar <http://mkoskar.com/>"
+/set irc.server_default.realname "Miroslav Koškár <http://mkoskar.com/>"
 /set irc.server_default.sasl_fail reconnect
 /set irc.server_default.sasl_timeout 30
 /set irc.server_default.sasl_username mkoskar

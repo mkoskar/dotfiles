@@ -77,7 +77,7 @@ set forward_format = 'Fwd: %s'
 set forward_quote
 set include
 set mime_forward = ask-no
-set realname = 'Miroslav Koskar' # overriden by name in $from, if any
+set realname = 'Miroslav Koškár' # overriden by name in $from, if any
 set reply_to
 set reverse_name
 set signature = ~/.signature
