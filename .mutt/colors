@@ -11,10 +11,9 @@ color status            color255        color237
 color tilde             color243        default
 color tree              color255        default
 
-color header            color156        default     'From:'
-color header            color156        default     'Subject:'
+color header            color156        default     '^From:'
+color header            color156        default     '^Subject:'
 
-color body              color255        default     '^-.*'
 color body              color110        default     '^--- .*'
 color body              color110        default     '^\+\+\+ .*'
 color body              color228        default     '^@@ .* @@$'
@@ -25,18 +24,18 @@ color body              color167        default     "^gpg: Can't check signature
 color body              color174        default     '^Primary key fingerprint: .*'
 color body              color174        default     '^     Subkey fingerprint: .*'
 
-color body              brightwhite     default     '\*+[^*]+\*+'
-color body              color167        default     '\++[^\+]+\++'
-color body              color228        default     '_+[^_]+_+'
-color body              color156        default     '`+[^`]+`+'
-color body              color174        default     '"+[^"]+"+'
+color body              brightwhite     default     '(^|[[:space:]])\*+[^*]+\*+(^|[[:space:]])'
+color body              color167        default     '(^|[[:space:]])\++[^\+]+\++(^|[[:space:]])'
+color body              color228        default     '(^|[[:space:]])_+[^_]+_+(^|[[:space:]])'
+color body              color156        default     '(^|[[:space:]])`+[^`]+`+(^|[[:space:]])'
+color body              color174        default     '(^|[[:space:]])"+[^"]+"+(^|[[:space:]])'
 
 color index             brightwhite     default     ~N
 color index             color167        default     ~F
 color index             color243        default     ~D
 color index             brightyellow    default     ~T
 
-color sidebar_divider   default         color237
+color sidebar_divider   color233        default
 color sidebar_flagged   brightred       default
 color sidebar_highlight black           color245
 color sidebar_new       brightwhite     default

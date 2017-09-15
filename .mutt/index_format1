@@ -1,4 +1,4 @@
 # vim: ft=muttrc
 
-set index_format = '%?M?+& ?[%Z]  %D  %?y?%-25.25Y&%-25.25L?  %s'
+set index_format = '[%?M?+& ?%Z]  %D  %?y?%-25.25Y&%-25.25L?  %s'
 macro index,pager \e\140 '<enter-command>source ~/.mutt/index_format2<enter>'

@@ -144,7 +144,7 @@ if [[ ! -f user.js ]]; then
 			user_pref('dom.battery.enabled', false);
 			user_pref('dom.event.clipboardevents.enabled', false);
 			user_pref('geo.enabled', false);
-			user_pref('network.cookie.cookieBehavior', 1);
+			user_pref('network.cookie.cookieBehavior', 3);
 			user_pref('network.cookie.lifetimePolicy', 2);
 			user_pref('webgl.disabled', true);
 

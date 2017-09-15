@@ -42,13 +42,14 @@ unset user_agent
 unset wait_key
 
 # Formats
-set alias_format = ' %2n %t %-40.40r    %a'
+set alias_format = '%2n %t %-40.40r    %a'
 set compose_format = '-- Mutt: Compose [Approx. msg size: %l   Atts: %a]'
 set date_format = '!%b %d %I:%M'
-set folder_format = ' %2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f'
+set folder_format = '%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f'
 set pager_format = '[%Z] (%C/%m) %n: %s%*  -- (%P)'
-set query_format = ' %2c %t %-40.40a    %n %?e?(%e)?'
+set query_format = '%2c %t %-40.40a    %n %?e?(%e)?'
 set status_format = '[%r] %f (%n/%m)%?d? deleted:%d?%?t? tagged:%t?%?F? flagged:%F?%?p? postponed:%p? %l %?V?-- limit (%M): %V? %> %s/%S (%P)'
+set attach_format = '[%u%D%I] %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s]'
 source ~/.mutt/index_format1
 
 # Index
@@ -63,7 +64,7 @@ set menu_scroll
 set pager_context = 5
 set pager_index_lines = 11
 set pager_stop
-set quote_regexp = '^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+'
+set quote_regexp = '^([ \t]*>)+'
 set tilde
 unset markers
 
@@ -222,7 +223,7 @@ macro index \c_ <tag-prefix><save-message> 'save messages'
 macro pager \c_ <save-message> 'save message'
 
 # NeoMutt: Sidebar
-set sidebar_divider_char = ' '
+set sidebar_divider_char = '|'
 set sidebar_folder_indent
 set sidebar_format = ' %B%?F? [%F]?%* %?N?%N?%C '
 set sidebar_indent_string = ' '
@@ -242,7 +243,7 @@ set newsrc = ~/.mutt/newsrc
 bind index,pager i change-newsgroup
 
 # NeoMutt: Other
-set skip_quoted_offset = 10
+set skip_quoted_offset = 5
 set sort_browser = alpha
 bind index \eL limit-current-thread
 bind index,pager @ compose-to-sender

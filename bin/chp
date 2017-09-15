@@ -121,7 +121,10 @@ fi
 
 exec "$bin" \
     --enable-devtools-experiments \
+    --enable-gpu-rasterization \
+    --enable-native-gpu-memory-buffers \
     --enable-tab-audio-muting \
+    --enable-zero-copy \
     --force-device-scale-factor=1 \
     --ignore-gpu-blacklist \
     --show-component-extension-options \

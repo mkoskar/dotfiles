@@ -106,6 +106,7 @@ PATH="$HOME/.local/bin:$PATH"
 PATH="$PYENV_ROOT/bin:$PATH"
 PATH="$HOME/opt/bin:$PATH"
 PATH="$HOME/projects/pub/dockerfiles/bin:$PATH"
+PATH="$HOME/projects/pub/pkgbuilds:$PATH"
 PATH="$HOME/projects/pub/tcolors/bin:$PATH"
 PATH="$HOME/bin:$PATH"
 export PATH
