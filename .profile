@@ -55,7 +55,7 @@ export TERMINAL='term'
 export JAVA_HOME='/usr/lib/jvm/default-runtime'
 export JDK_HOME='/usr/lib/jvm/default'
 export _JAVA_AWT_WM_NONREPARENTING=1
-export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.xrender=true -Dswing.aatext=true'
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.opengl=true -Dsun.java2d.xrender=true -Dswing.aatext=true'
 
 export AUR_MAINTAINER='mkoskar'
 export CCACHE_PATH='/usr/bin'

@@ -310,7 +310,7 @@ zstyle ':completion:*:complete:*:*:*' cache-path ~/.cache/zcompcache
 zstyle ':completion:*:complete:*:*:*' use-cache true
 
 zstyle ':completion:*:*:(rm|kill|diff):*:*' ignore-line other
-zstyle ':completion:*:*:-command-:*:*' group-order reserved-words builtins functions aliases commands
+zstyle ':completion:*:*:-command-:*:*' group-order aliases reserved-words builtins functions commands
 zstyle ':completion:*:*:cd:*:*' group-order named-directories directory-stack path-directories local-directories
 zstyle ':completion:*:*:kill:*:*' force-list always
 zstyle ':completion:*:*:kill:*:*' insert-ids single

@@ -12,7 +12,7 @@ readarray -t dall <<<"$dall"
 (( ${#dall[@]} )) || exit 1
 
 for (( i=0; i<${#dall[@]}; i++ )); do
-    (( i > 0 )) && atom=_ICC_PROFILE_$i || atom=_ICC_PROFILE
+    (( i > 0 )) && atom="_ICC_PROFILE_$i" || atom='_ICC_PROFILE'
     xprop -root -len 8 "$atom"
 done
 

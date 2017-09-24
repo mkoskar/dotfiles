@@ -1,7 +1,7 @@
-Homefiles
-=========
+dotfiles
+========
 
-:Description: My home files
+:Description: My $HOME files
 :License: Apache 2.0, if not stated otherwise
 
 This repository contains files I typically checkout into my ``$HOME`` directory.
