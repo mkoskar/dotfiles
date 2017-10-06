@@ -50,7 +50,8 @@ hd_layout = w.hdata_get('layout')
 # ----------------------------------------
 
 MERGE_RULES = [
-    r'^irc\.freenode\.#archlinux($|-.*)$',
+    r'^irc\.freenode\.#(bash|zsh)$',
+    r'^irc\.freenode\.#archlinux(-offtopic)?$',
 ]
 
 timer_sort_merges = None
@@ -96,25 +97,35 @@ def sort_merges_lazy():
 
 
 def merge(buffer):
+    merge_group = None
     bname = w.buffer_get_string(buffer, 'full_name')
-    for rule in MERGE_RULES:
+    for idx, rule in enumerate(MERGE_RULES):
         if re.match(rule, bname):
-            for _buffer in buffers_iter():
-                _bname = w.buffer_get_string(_buffer, 'full_name')
-                if bname != _bname and re.match(rule, _bname):
-                    w.buffer_merge(buffer, _buffer)
-                    break
+            w.buffer_set(buffer, 'localvar_set_merge_group', str(idx))
+            merge_group = str(idx)
+            break
+    if not merge_group:
+        w.buffer_set(buffer, 'localvar_del_merge_group', '')
+        return
+    for _buffer in buffers_iter():
+        _bname = w.buffer_get_string(_buffer, 'full_name')
+        _merge_group = w.buffer_get_string(_buffer, 'localvar_merge_group')
+        if bname == _bname:
+            continue
+        if merge_group == _merge_group:
+            w.buffer_merge(buffer, _buffer)
             break
 
 
 def buffer_init(buffer):
     bname = w.buffer_get_string(buffer, 'full_name')
 
+    match = re.match(r'^irc\.freenode\.#archlinux($|-.*)$', bname)
+    if match:
+        w.buffer_set(buffer, 'short_name', '#arch' + match.group(1))
+
     if bname == 'irc.bitlbee.#twitter_mkoskar':
         w.buffer_set(buffer, 'highlight_words', '@mkoskar')
-
-    elif bname == 'irc.freenode.#archlinux':
-        w.buffer_set(buffer, 'short_name', '#arch')
 
     elif bname == 'irc.freenode.#archlinux-offtopic':
         w.buffer_set(buffer, 'short_name', '#arch-ot')
@@ -128,6 +139,7 @@ def buffer_init(buffer):
         w.buffer_set(buffer, 'time_for_each_line', '0')
 
     merge(buffer)
+    sort_merges_lazy()
 
 
 def channel_init(buffer):
@@ -156,11 +168,16 @@ def cb_signal_irc_channel_opened(data, signal, buffer):
 w.hook_signal('buffer_opened', 'cb_signal_buffer_opened', '')
 w.hook_signal('irc_channel_opened', 'cb_signal_irc_channel_opened', '')
 
+
+bnames = []
 for buffer in buffers_iter():
-    buffer_init(buffer)
+    bname = w.buffer_get_string(buffer, 'full_name')
+    bnames.append(bname)
 
-
-w.hook_command('dev1', '', '', '', '', 'cb_command_dev1', '')
+for bname in bnames:
+    buffer = w.buffer_search('==', bname)
+    if buffer:
+        buffer_init(buffer)
 
 # }}}
 

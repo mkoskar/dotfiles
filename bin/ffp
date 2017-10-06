@@ -38,13 +38,12 @@ shift $((OPTIND-1))
 
 if [[ ! $profile ]]; then
     filter=
-    if [[ $bin_name = 'firefox' ]]; then
-        profiles=(
-            dev
-            lab
-            plain
-        )
-    fi
+    profiles=(
+        default
+        dev
+        lab
+        plain
+    )
     for p in ~/.config/"$bin_name".*; do
         [[ -d $p ]] || continue
         profiles+=("${p#*"$bin_name".}")
@@ -62,7 +61,7 @@ fi
 export LOGNAME="$USER.$bin_name.$profile"
 
 path="$HOME/.config/$bin_name"
-[[ $bin_name = 'firefox' && $profile = 'default' ]] || path+=".$profile"
+[[ $profile = 'default' ]] || path+=".$profile"
 
 mkdir -p "$path"
 cd "$path"

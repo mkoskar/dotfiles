@@ -9,7 +9,7 @@ path="$HOME/.cache/apod/latest"
 case ${1-} in
     get)
         url=$(apodurl)
-        curl -sSL --create-dirs -o "$path" --url "$url" || exit 1
+        curl -sSLf --create-dirs -o "$path" --url "$url"
         ;;
     set)
         [[ -e $path ]] && feh --bg-max --no-fehbg "$path"

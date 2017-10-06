@@ -11,7 +11,10 @@ pid=${1:-$PPID}
 
 main() {
     ifile="/proc/$pid/environ"
-    [[ -e $ifile ]] && xargs -0 -n1 -x -r -a "$ifile" shell-escape
+    [[ -e $ifile ]] || exit 1
+    while read -r -d '' line; do
+        printf '%s\n' "${line@Q}"
+    done <"$ifile"
 }
 
 if [[ -t 1 ]]; then

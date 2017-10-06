@@ -49,7 +49,10 @@ status_dpms() {
 }
 
 status_pa_sink() {
-    local val; val=$(ponymix defaults | sed -nr '/^sink /{n;s/^\s*//;p}')
+    local val='-'
+    if pacmd stat &>/dev/null; then
+        val=$(ponymix defaults | sed -nr '/^sink /{n;s/^\s*//;p}')
+    fi
     printf 'PA sink: %s\n' "$val"
 }
 
@@ -114,6 +117,7 @@ status_xkb() {
     status_trackpoint_wheel
     status_wifi
     status_xkb
+    exit
 }
 
 case ${1-} in

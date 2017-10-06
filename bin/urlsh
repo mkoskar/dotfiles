@@ -12,7 +12,7 @@ trap cleanup EXIT
 src=${1:-$(xclip -o | head -c 255)}
 case $src in
     http?(s)://*)
-        curl -sS -F c=@- -w '%{redirect_url}\n' -o "$tmpfile" \
+        curl -sSf -F c=@- -w '%{redirect_url}\n' -o "$tmpfile" \
             https://ptpb.pw/u?r=1 <<<"$src"
         ;;
     *)

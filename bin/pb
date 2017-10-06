@@ -28,17 +28,17 @@ outfile="$tmpdir/out"
 case ${PB:-ptpb} in
     ix)
         # /<id>/<lexer>#n-<line>
-        curl -sSL -F "f:1=@$infile" -o "$outfile" http://ix.io/
+        curl -sSLf -F "f:1=@$infile" -o "$outfile" http://ix.io/
         cat "$outfile"
         ;;
     ptpb)
         # /<id>/<lexer>/<formatter>#L-<line>
-        curl -sS -F "c=@$infile" -w '%{redirect_url}\n' -o "$outfile" \
+        curl -sSf -F "c=@$infile" -w '%{redirect_url}\n' -o "$outfile" \
             https://ptpb.pw/?r=1
         ;;
     sprunge)
         # /<id>?<lexer>#n-<line>
-        curl -sSL -F "sprunge=@$infile" -o "$outfile" http://sprunge.us/
+        curl -sSLf -F "sprunge=@$infile" -o "$outfile" http://sprunge.us/
         cat "$outfile"
         ;;
     *)
