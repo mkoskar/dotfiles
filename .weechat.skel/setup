@@ -44,7 +44,7 @@
 
 /server del freenode
 /server add freenode chat.freenode.net/6697
-/set irc.server.freenode.autojoin ##linux,#archlinux,#archlinux-arm,#archlinux-aur,#archlinux-bugs,#archlinux-classroom,#archlinux-newbie,#archlinux-offtopic,#archlinux-projects,#archlinux-security,#archlinux-wiki,#bash,#python,#systemd,#vim,#vpsfree,#weechat,#zsh
+/set irc.server.freenode.autojoin ##electronics,##linux,#archlinux,#archlinux-arm,#archlinux-aur,#archlinux-bugs,#archlinux-classroom,#archlinux-newbie,#archlinux-offtopic,#archlinux-projects,#archlinux-security,#archlinux-wiki,#bash,#python,#systemd,#tmux,#vim,#vpsfree,#weechat,#zsh
 /set irc.server.freenode.sasl_key %h/keys/irc_sasl.pem
 /set irc.server.freenode.sasl_mechanism ecdsa-nist256p-challenge
 

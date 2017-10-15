@@ -227,6 +227,9 @@ are listed below.
 `urlsh <bin/urlsh>`_
     URL shortener.
 
+`vtinfo <bin/system/vtinfo>`_
+    Get some information about the active VT.
+
 `vtswitch-lock <bin/system/vtswitch-lock>`_
     Locks (or unlocks) VT switching.
 

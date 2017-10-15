@@ -7,7 +7,6 @@ prgname=${0##*/}
 cd ~/tmp
 
 ts=$(date +%F.%s)
-outfile="screencast-$ts.mkv"
 
 lockfile="$XDG_RUNTIME_DIR/$prgname$DISPLAY.lock"
 exec 8>"$lockfile"
@@ -21,16 +20,42 @@ tmp=$(slop -f '%x %y %w %h')
 read -r X Y W H <<<"$tmp"
 
 (
-    exec &>>~/.local/share/"$prgname".out
+    exec &>>~/.local/share/"$prgname.out"
 
     # See also:
     #
-    #   x264 --fullhelp
-    #   ffmpeg -h encoder=libx264
+    #   ffmpeg -h demuxer=x11grab
+    #
+    #   ffmpeg -h encoder=h264
+    #   https://trac.ffmpeg.org/wiki/Encode/H.264
+    #
+    #   ffmpeg -h encoder=vp9
+    #   https://trac.ffmpeg.org/wiki/Encode/VP9
 
-    ffmpeg -loglevel quiet \
-        -f x11grab -framerate 30 -show_region 1 -s "${W}x${H}" -i "$DISPLAY+$X,$Y" \
-        -vcodec libx264 -qp 0 -preset ultrafast "$outfile" &
+    outfile="screencast-$ts.webm"
+    args=(
+        -pix_fmt yuv444p
+        -codec:v vp9 -crf 30 -b:v 0 -deadline realtime -cpu-used 8
+        "$outfile"
+    )
+
+    outfile="screencast-$ts.webm"
+    args=(
+        -pix_fmt yuv444p
+        -codec:v vp9 -lossless 1 -deadline realtime -cpu-used 8
+        "$outfile"
+    )
+
+    #outfile="screencast-$ts.mkv"
+    #args=(
+    #    -codec:v h264 -preset ultrafast -qp 0
+    #    "$outfile"
+    #)
+
+    ffmpeg -loglevel error \
+        -f x11grab -framerate 30 -show_region 1 \
+        -s "${W}x${H}" -i "$DISPLAY+$X,$Y" \
+        "${args[@]}" &
 
     exec 8<&-
     wait

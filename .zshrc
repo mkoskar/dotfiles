@@ -41,6 +41,7 @@ setopt cdable_vars
 setopt combining_chars
 setopt complete_in_word
 setopt extended_history
+setopt glob_dots
 setopt hist_expire_dups_first
 setopt hist_find_no_dups
 setopt hist_ignore_all_dups
@@ -61,6 +62,7 @@ setopt pushd_ignore_dups
 setopt pushd_silent
 setopt pushd_to_home
 setopt rc_quotes
+setopt rm_star_silent
 setopt share_history
 setopt vi
 

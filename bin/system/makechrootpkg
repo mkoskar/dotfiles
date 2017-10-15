@@ -355,7 +355,7 @@ shopt -s nullglob
 init_variables() {
 	default_makepkg_args=(--syncdeps --noconfirm --log --holdver --skipinteg)
 	makepkg_args=("${default_makepkg_args[@]}")
-	repack=false
+	keepbuilddir=false
 	update_first=false
 	clean_first=false
 	run_namcap=false
@@ -515,17 +515,17 @@ install_packages() {
 	return $ret
 }
 
-# Usage: prepare_chroot $copydir $HOME $repack $run_namcap
+# Usage: prepare_chroot $copydir $HOME $keepbuilddir $run_namcap
 # Globals:
 #  - MAKEFLAGS
 #  - PACKAGER
 prepare_chroot() {
 	local copydir=$1
 	local USER_HOME=$2
-	local repack=$3
+	local keepbuilddir=$3
 	local run_namcap=$4
 
-	$repack || rm -rf "$copydir/build"
+	$keepbuilddir || rm -rf "$copydir/build"
 
 	local builduser_uid builduser_gid
 	builduser_uid="${SUDO_UID:-$UID}"
@@ -693,13 +693,13 @@ main() {
 	# Pass all arguments after -- right to makepkg
 	makepkg_args+=("${@:$OPTIND}")
 
-	# See if -R was passed to makepkg
-	for arg in "${@:OPTIND}"; do
+	# See if -R or -e was passed to makepkg
+	for arg in "${makepkg_args[@]}"; do
 		case ${arg%%=*} in
-			-*R*|--repackage)
-				repack=true
-				break 2
-				;;
+			--repackage|--noextract) keepbuilddir=true; break ;;
+			--repackage|--noextract) keepbuilddir=true; break ;;
+			--*) ;;
+			-*R*|-*e*) keepbuilddir=true; break ;;
 		esac
 	done
 
@@ -745,7 +745,7 @@ main() {
 
 	download_sources "$copydir" "$makepkg_user"
 
-	prepare_chroot "$copydir" "$USER_HOME" "$repack" "$run_namcap"
+	prepare_chroot "$copydir" "$USER_HOME" "$keepbuilddir" "$run_namcap"
 
 	arch-nspawn "$copydir" \
 		--bind="$PWD:/startdir" \

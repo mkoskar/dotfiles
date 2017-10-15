@@ -76,6 +76,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ecma                    b http://www.ecma-international.org/publications/standards/Standard.htm
     emoji                   b https://en.wikipedia.org/wiki/List_of_emoticons
     etsi                    b http://www.etsi.org/standards-search#\&sort=3
+    etymology               b http://www.etymonline.com/word/{u}
     filenames               b http://www.dwheeler.com/essays/filenames-in-shell.html
     firefox-about:*         b https://developer.mozilla.org/en-US/Firefox/The_about_protocol
     firefox-about:config    b http://kb.mozillazine.org/Category:Preferences
@@ -171,8 +172,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-specs             b http://refspecs.linuxfoundation.org/
     linux-src               b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/?id=$kernel_version
     linux-sysctl            b https://www.kernel.org/doc/Documentation/sysctl
-    lists                   b http://gmane.org/find.php
+    lists                   b https://marc.info/
     lists1                  b http://markmail.org/
+    lists2                  b http://gmane.org/find.php
     lua                     b https://www.lua.org/manual/
     m4-macros               b https://www.gnu.org/software/m4/manual/m4.html#Macro-index
     mailcap                 b https://tools.ietf.org/html/rfc1524.html
@@ -298,6 +300,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     yt-channel              b https://www.youtube.com/results?sp=EgIQAlAU\&q={u}
     yt-playlist             b https://www.youtube.com/results?sp=EgIQA1AU\&q={u}
     zsh                     b http://zsh.sourceforge.net/Doc/Release/index.html
+    zsh-changes             b https://github.com/zsh-users/zsh/blob/master/NEWS
 
     iss-hd                  playx http://www.ustream.tv/channel/iss-hdev-payload
     nasatv                  playx http://www.ustream.tv/nasahdtv

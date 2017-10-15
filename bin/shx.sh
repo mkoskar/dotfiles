@@ -129,7 +129,6 @@ alias man-all-posix='man-all -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
 # ----------------------------------------
 
 alias pac='pacman'
-alias pacs='pacsearch'
 alias pactree='pactree --color'
 
 # Target's detailed info
@@ -169,6 +168,12 @@ pacp() {
     else
         expac -l '\n' %P "$1"
     fi
+}
+
+pacs() {
+    [ $# -eq 0 ] && return 2
+    pacsearch "$1"
+    cower --color=auto -s "$1"
 }
 
 # Target's 'required by' (what depends on target)

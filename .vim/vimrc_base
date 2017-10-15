@@ -376,15 +376,15 @@ set wildcharm=<S-Tab>
 set wildmenu
 set wildmode=longest,full
 
-"<C-B> <Home>
-"<C-E> <End>
+" <C-B> <Home>
+" <C-E> <End>
 cnoremap <M-h> <Left>
 cnoremap <M-l> <Right>
 cnoremap <M-b> <C-\>e utils#cmdlineMoveWord(0)<CR>
 cnoremap <M-f> <C-\>e utils#cmdlineMoveWord(1)<CR>
 cnoremap <M-w> <C-\>e utils#cmdlineMoveWord(1)<CR>
 
-"<C-U> - backward kill line
+" <C-U> - backward kill line
 cnoremap <C-K> <C-\>e strpart(getcmdline(), 0, getcmdpos()-1)<CR>
 cnoremap <C-W> <C-\>e utils#cmdlineKillWord(0)<CR>
 cnoremap <M-d> <C-\>e utils#cmdlineKillWord(1)<CR>

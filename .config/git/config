@@ -15,7 +15,7 @@
     lg2 = log --graph --format=lg2 --color
     lga = !git lg --all
     ls = ls-files
-    ls-untracked = ls-files --others
+    ls-untracked = ls-files --others --directory
     set-email = !git-set-email
     set-upstream = remote add upstream
     st = status -s

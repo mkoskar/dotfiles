@@ -235,7 +235,7 @@ macro index,pager \eN <sidebar-next> 'sidebar-next'
 macro index,pager \eP <sidebar-prev> 'sidebar-prev'
 macro index,pager \en <sidebar-next><sidebar-open> 'sidebar-next & sidebar-open'
 macro index,pager \ep <sidebar-prev><sidebar-open> 'sidebar-prev & sidebar-open'
-macro index,pager ~ '<enter-command>toggle sidebar_visible<enter>' 'toggle sidebar'
+macro index,pager,compose ~ '<enter-command>toggle sidebar_visible<enter>' 'toggle sidebar'
 
 # NeoMutt: NNTP
 set news_cache_dir = ~/.mutt/cache/news
