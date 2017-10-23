@@ -2,42 +2,26 @@
 
 # HTML, XHTML, XML
 anchor-as-name: no
-doctype: omit
-drop-empty-paras: no
-fix-backslash: no
-fix-bad-comments: no
-fix-uri:no
 join-styles: no
-literal-attributes: yes
-lower-literals: no
-merge-divs: no
-merge-spans: no
-output-html: yes
 preserve-entities: yes
-quote-ampersand: no
-quote-nbsp: no
 show-body-only: auto
 
 # Diagnostics
-show-errors: 0
-show-warnings: 0
+#show-errors: 0
+#show-info: no
+#show-warnings: no
 
-# Format
-break-before-br: yes
+# Pretty Print
 indent-spaces: 4
 indent: auto
+sort-attributes: alpha
 tab-size: 4
-vertical-space: yes
 wrap-asp: no
 wrap-jste: no
 wrap-php: no
 wrap-sections: no
-wrap: 78
-
-# Character encoding
-char-encoding: utf8
+wrap: 0
 
 # Miscellaneous
-force-output: yes
 quiet: yes
 tidy-mark: no

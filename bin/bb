@@ -258,6 +258,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     sql-bnf!                b ~/archive/lib/00-cs/dbms/sql-bnf/index.html
     sqlite                  b https://sqlite.org/docs.html
     sqlite-lang             b https://sqlite.org/lang.html
+    suckless-repos          b https://git.suckless.org/
     sysrq                   b https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
     systemd-changes         b https://github.com/systemd/systemd/blob/master/NEWS
     tex                     b https://ctan.org/

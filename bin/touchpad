@@ -16,10 +16,10 @@ state() {
     echo $((val > 0))
 }
 
-(( $# )) || {
+if (( ! $# )); then
     state
     exit
-}
+fi
 
 if [[ $1 = 'toggle' ]]; then
     state=$(state)

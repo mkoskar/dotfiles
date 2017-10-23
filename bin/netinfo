@@ -1,31 +1,33 @@
 #!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
-echo $'\n--------------------------------------------------'
-echo $'> ARP/NDISC cache:\n'
+{
+    echo $'\n--------------------------------------------------'
+    echo $'> ARP/NDISC cache:\n'
 
-ip neigh
+    ip neigh
 
-echo $'\n--------------------------------------------------'
-echo $'> Addressing:\n'
+    echo $'\n--------------------------------------------------'
+    echo $'> Addressing:\n'
 
-ip addr
-echo
+    ip addr
+    echo
 
-ip maddr
-echo
+    ip maddr
+    echo
 
-brctl show
+    brctl show
 
-echo $'\n--------------------------------------------------'
-echo $'> Routing:\n'
+    echo $'\n--------------------------------------------------'
+    echo $'> Routing:\n'
 
-ip rule
-echo
+    ip rule
+    echo
 
-routel local
-echo
+    routel local
+    echo
 
-routel main
-echo
+    routel main
+    echo
+} | $PAGER

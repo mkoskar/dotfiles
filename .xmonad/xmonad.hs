@@ -281,19 +281,9 @@ myConfig = def
         , ("M-,", sendMessage $ IncMasterN 1)
         , ("M-.", sendMessage $ IncMasterN (-1))
 
-          -- Floating layer
+          -- Layout
         , ("M-t", withFocused $ windows . W.sink)
-        , ("M-; M-f", toggleHookNext "doFloat")
-        , ("M-M1-k", withFocused $ keysMoveWindow (0, -50))
-        , ("M-M1-j", withFocused $ keysMoveWindow (0, 50))
-        , ("M-M1-h", withFocused $ keysMoveWindow (-50, 0))
-        , ("M-M1-l", withFocused $ keysMoveWindow (50, 0))
-        , ("M-M1-S-k", withFocused $ keysResizeWindow (0, -50) (0, 0))
-        , ("M-M1-S-j", withFocused $ keysResizeWindow (0, 50) (0, 0))
-        , ("M-M1-S-h", withFocused $ keysResizeWindow (-50, 0) (0, 0))
-        , ("M-M1-S-l", withFocused $ keysResizeWindow (50, 0) (0, 0))
-
-          -- Layout modifiers
+        , ("M-f M-S-f", toggleHookNext "doFloat")
         , ("M-f M-b", sendMessage $ Toggle NOBORDERS)
         , ("M-f M-f", sendMessage $ Toggle FULL)
         , ("M-f M-r", sendMessage $ Toggle MIRROR)
@@ -303,88 +293,12 @@ myConfig = def
         , ("M-f M-=", sendMessage RestoreNextMinimizedWin)
         , ("M-[", withFocused (sendMessage . maximizeRestore))
 
-          -- Other
-        , ("M-y", spawn "xdotool mousedown --clearmodifiers 1 mouseup --clearmodifiers 1")
-        , ("M-C-y", spawn "xdotool mousedown --clearmodifiers 2 mouseup --clearmodifiers 2")
-        , ("M-S-y", spawn "xdotool mousedown --clearmodifiers 3 mouseup --clearmodifiers 3")
-        , ("M-C-M1-y", warpToWindow 0.500 0.500)
-        , ("M-C-M1-u", warpToWindow 0.005 0.005)
-        , ("M-C-M1-i", warpToWindow 0.500 0.005)
-        , ("M-C-M1-o", warpToWindow 0.995 0.005)
-        , ("M-C-M1-j", warpToWindow 0.005 0.500)
-        , ("M-C-M1-k", warpToWindow 0.500 0.500)
-        , ("M-C-M1-l", warpToWindow 0.995 0.500)
-        , ("M-C-M1-m", warpToWindow 0.005 0.995)
-        , ("M-C-M1-,", warpToWindow 0.500 0.995)
-        , ("M-C-M1-.", warpToWindow 0.995 0.995)
-
           -- Launchers
           -- ----------------------------------------
 
-        , ("M-p", spawn "dmenu_run")
-        , ("M-'", spawn "bb")
-        , ("M-S-'", spawn "bb dd")
-        , ("M-S-<Return>", spawn myTerminal)
-
           -- Scratchpads
         , ("M-S-;", namedScratchpadAction myScratchpads "sp0")
-        , ("M-; M-;", namedScratchpadAction myScratchpads "sp1")
-
-          -- Screenshots
-        , ("M-<Print>", spawn "sshot")
-
-          -- Audio
-        , ("M-S-]", spawn "audio playback_up")
-        , ("M-S-[", spawn "audio playback_down")
-        , ("M-S-m", spawn "audio playback_toggle")
-        , ("M-S-n", spawn "audio playback_dock_toggle")
-        , ("M-S-r", spawn "audio capture_toggle")
-        , ("M-S-s", spawn "audio pa_sink_toggle")
-        , ("M-S-p", spawn "playctl play-pause")
-        , ("M-C-p", spawn "playctl -b play-pause")
-
-          -- XKB
-        , ("M-<F1>", spawn "xkb 0")
-        , ("M-<F2>", spawn "xkb 1")
-        , ("M-<F3>", spawn "xkb 2")
-
-          -- Selections
-        , ("M-<Insert>", spawn "clip")
-        , ("M-S-<Insert>", spawn "clip -p && notify 'PRIMARY -> CLIPBOARD'")
-
-          -- Other
-        , ("M-<F9>", spawn "xscreen && xmonad --restart")
-        , ("M-<F10>", spawn "xscreen - && xmonad --restart")
-        , ("M-S-<F10>", spawn "xscreen mobile && xmonad --restart")
-
-        , ("M-<F12>", spawn "measure | clip -i")
-
-        , ("M-; M-b", spawn "bluetooth-toggle")
-        , ("M-; M-d", spawn "dpms-toggle")
-        , ("M-; M-l", spawn "sudo lock")
-        , ("M-; M-t", spawn "trackpoint-wheel toggle")
-        , ("M-; M-S-t", spawn "touchpad toggle")
-        , ("M-; M-w", spawn "wifi-toggle")
-        , ("M-S-b", spawn "backlight-toggle")
-
-        , ("M-; M-a", spawn "b http://apod.nasa.gov/")
-        , ("M-; M-i", spawn "notify -u low \"$(status)\"")
-        , ("M-; M-m", spawn "markx-url")
-        , ("M-; M-S-m", spawn "markx")
-        , ("M-; M-p", spawn "playx")
-        , ("M-; M-S-p", spawn "playx-menu")
-        , ("M-; M-s", spawn "selfie")
-        , ("M-; M-r", spawn "notify -u low \"$(urlres)\"")
-        , ("M-; M-u", spawn "unicode -x select fav")
-        , ("M-; M-S-u", spawn "unicode -x select")
-        , ("M-S-<Home>", spawn "term trun wow")
-
-        , ("<XF86AudioNext>", spawn "playctl next")
-        , ("<XF86AudioPlay>", spawn "playctl play-pause")
-        , ("<XF86AudioPrev>", spawn "playctl prev")
-        , ("<XF86AudioStop>", spawn "playctl stop")
-        , ("<XF86Display>", spawn "xscreen && xmonad --restart")
-        , ("<XF86WebCam>", spawn "selfie")
+        --, ("M-; M-;", namedScratchpadAction myScratchpads "sp1")
         ]
 
     -- }}}

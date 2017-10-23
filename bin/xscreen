@@ -20,6 +20,7 @@ src="$HOME/bin/xscreen.$HOSTNAME"
 pre_hook
 
 if (( xorg )); then
+    backlight-auto &
     xrandr --dpi 96
     touchpad off
     trackpoint-wheel on

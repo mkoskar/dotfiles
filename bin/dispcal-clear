@@ -2,7 +2,7 @@
 
 set -eu -o pipefail
 
-dall=$(dispwin -h |& sed -nr "s/^\s*([0-9]+ = 'Screen [0-9]+, Output .*)/\1/p")
+dall=$({ dispwin -? || true; } |& sed -nr "s/^\s*([0-9]+ = 'Screen [0-9]+, Output .*)/\1/p")
 readarray -t dall <<<"$dall"
 (( ${#dall[@]} )) || exit 1
 

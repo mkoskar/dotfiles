@@ -2,11 +2,6 @@
 #
 # X session startup script.
 #
-# If no arguments are passed, simple menu of predefined X sessions
-# is presented to choose from. Otherwise arguments define what to do.
-#
-# By default:
-#
 # * display number will be the same as currently active VT number
 # * continue only if display number is not used already
 # * client: ~/bin/xsession "$@"
@@ -25,34 +20,6 @@ prgname=${0##*/}
 if (( EUID == 0 )); then
     echo 'This script must NOT be run as root.' >&2
     exit 1
-fi
-
-# ----------------------------------------
-
-if (( ! $# )); then
-    echo
-    echo 'm) main (default)'
-    echo 'o) openbox'
-    echo 'x) xmonad'
-
-    read -N1 -rsp ': ' sel
-    [[ $sel != $'\n' ]] || sel='m'
-    case $sel in
-        [mM])
-            set -- main
-            ;;
-        [oO])
-            set -- openbox
-            ;;
-        [xX])
-            set -- xmonad
-            ;;
-        *)
-            echo $'---\n'
-            exit 1
-            ;;
-    esac
-    printf '%s\n' "$sel"
 fi
 
 # ----------------------------------------
@@ -111,8 +78,14 @@ lockfile="/tmp/.X$dispno-lock"
 
 if [[ -e $lockfile ]]; then
     read -ra pid <"$lockfile"
-    echo -e "Display $dispno is currently in use (pid=$pid).\n"
-    exit 1
+    echo -e "\nDisplay $dispno is currently in use (pid=$pid).\n"
+    if ps -"$pid"; then
+        echo
+        exit 1
+    else
+        echo
+        rm -f "$lockfile"
+    fi
 fi
 
 xauthset "$dispno"

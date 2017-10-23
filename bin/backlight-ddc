@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -u
+
+ddcutil setvcp 10 "$1" &>/dev/null

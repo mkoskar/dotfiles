@@ -5,12 +5,12 @@
 
 set -eu -o pipefail
 
-(( $# )) || {
+if (( ! $# )); then
     set -- ~/.xcolors/default \
            ~/.xcolors/default1 \
            ~/.xcolors/default2 \
            ~/.xcolors/default3
-}
+fi
 
 cd ~/.xcolors
 scroller "$@" | while read -rs line; do

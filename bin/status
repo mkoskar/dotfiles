@@ -107,7 +107,7 @@ status_xkb() {
     printf 'xkb: %s\n' "$val"
 }
 
-(( $# )) || {
+if (( ! $# )); then
     status_pa_sink
     status_audio
     status_backlight
@@ -118,7 +118,7 @@ status_xkb() {
     status_wifi
     status_xkb
     exit
-}
+fi
 
 case ${1-} in
     audio | backlight | bluetooth | dpms | pa_sink | \

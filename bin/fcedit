@@ -13,4 +13,4 @@ cleanup() {
 }
 trap cleanup EXIT
 
-"${VIMBIN:-vim}" -u ~/.vim/vimrc_base -- "$infile"
+e0 -- "$infile"

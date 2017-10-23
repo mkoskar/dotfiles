@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -o pipefail
+set -u -o pipefail
 
 # ps -eFly
 # ps -eo s,uid,pid,ppid,c,pri,ni,rss,sz,wchan,psr,stime,tty,time,cmd

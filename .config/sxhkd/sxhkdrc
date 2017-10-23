@@ -1,0 +1,118 @@
+super + alt + {H,K,L,J}
+    xdo resize {-w ,-h }{-,+}50
+
+super + alt + {h,k,l,j}
+    xdo move {-x ,-y }{-,+}50
+
+super + {_,ctrl + ,shift + }y
+    xdotool click --clearmodifiers {1,2,3}
+
+#, ("M-C-M1-y", warpToWindow 0.500 0.500)
+#, ("M-C-M1-u", warpToWindow 0.005 0.005)
+#, ("M-C-M1-i", warpToWindow 0.500 0.005)
+#, ("M-C-M1-o", warpToWindow 0.995 0.005)
+#, ("M-C-M1-j", warpToWindow 0.005 0.500)
+#, ("M-C-M1-k", warpToWindow 0.500 0.500)
+#, ("M-C-M1-l", warpToWindow 0.995 0.500)
+#, ("M-C-M1-m", warpToWindow 0.005 0.995)
+#, ("M-C-M1-,", warpToWindow 0.500 0.995)
+#, ("M-C-M1-.", warpToWindow 0.995 0.995)
+
+# ----------------------------------------
+
+super + R
+    audio capture_toggle
+
+super + S
+    audio pa_sink_toggle
+
+super + shift + {bracketleft,bracketright}
+    audio playback_{down,up}
+
+super + {M,N}
+    audio playback_{_,dock_}toggle
+
+super + {P,control + p}
+    playctl {_,-b }play-pause
+
+# ----------------------------------------
+
+super + B
+    backlight-toggle
+
+super + F12
+    measure | clip -i
+
+super + Print
+    sshot
+
+super + p
+    dmenu_run
+
+super + semicolon ; T
+    touchpad toggle
+
+super + semicolon ; a
+    b http://apod.nasa.gov/
+
+super + semicolon ; b
+    bluetooth-toggle
+
+super + semicolon ; d
+    dpms-toggle
+
+super + semicolon ; i
+    notify -u low "$(status)"
+
+super + semicolon ; l
+    sudo lock
+
+super + semicolon ; r
+    notify -u low "$(urlres)"
+
+super + semicolon ; s
+    selfie
+
+super + semicolon ; t
+    trackpoint-wheel toggle
+
+super + semicolon ; w
+    wifi-toggle
+
+super + semicolon ; {m,M}
+    {markx-url,markx}
+
+super + semicolon ; {p,P}
+    playx{_,-menu}
+
+super + semicolon ; {u,U}
+    unicode -x select{ fav,_}
+
+super + shift + Home
+    term trun wow
+
+super + shift + Return
+    term
+
+super + {F1,F2,F3}
+    xkb {0,1,2}
+
+super + {F9,F10,shift + F10}
+    xscreen{_, -, mobile}
+
+super + {_,shift + }Insert
+    clip{_, -p && notify 'PRIMARY -> CLIPBOARD'}
+
+super + {_,shift + }apostrophe
+    bb{_, dd}
+
+# ----------------------------------------
+
+XF86Display
+    xscreen
+
+XF86WebCam
+    selfie
+
+{XF86AudioNext,XF86AudioPrev,XF86AudioPlay,XF86AudioStop}
+    playctl {next,prev,play-pause,stop}

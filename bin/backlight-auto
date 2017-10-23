@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+prgname=${0##*/}
+
+exec &>>~/.local/share/"$prgname".out
+
+if r=$(colorhug-cmd take-readings | sed -nr 2p) &&
+    [[ $r =~ ^R:([0-9]+\.[0-9]+)\ G:([0-9]+\.[0-9]+)\ B:([0-9]+\.[0-9]+)$ ]]; then
+    d=$(calc -qp -- <<<"round(sqrt(${BASH_REMATCH[1]}^2 + ${BASH_REMATCH[2]}^2 + ${BASH_REMATCH[3]}^2), 0)")
+    printf 'distance: %s\n' "$d" >&2
+
+    if ((d < 6)); then
+        backlight 40
+        backlight-ddc 10
+    elif ((d < 15)); then
+        backlight 70
+        backlight-ddc 20
+    elif ((d < 20)); then
+        backlight 70
+        backlight-ddc 50
+    else
+        backlight 100
+        backlight-ddc 75
+    fi
+else
+    exit 1
+fi

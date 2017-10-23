@@ -39,21 +39,21 @@ read -r X Y W H <<<"$tmp"
         "$outfile"
     )
 
-    outfile="screencast-$ts.webm"
-    args=(
-        -pix_fmt yuv444p
-        -codec:v vp9 -lossless 1 -deadline realtime -cpu-used 8
-        "$outfile"
-    )
+    #outfile="screencast-$ts.webm"
+    #args=(
+    #    -pix_fmt yuv444p
+    #    -codec:v vp9 -lossless 1 -deadline realtime -cpu-used 8
+    #    "$outfile"
+    #)
 
-    #outfile="screencast-$ts.mkv"
+    #outfile="screencast-$ts.mp4"
     #args=(
     #    -codec:v h264 -preset ultrafast -qp 0
     #    "$outfile"
     #)
 
     ffmpeg -loglevel error \
-        -f x11grab -framerate 30 -show_region 1 \
+        -f x11grab -framerate 25 -show_region 1 \
         -s "${W}x${H}" -i "$DISPLAY+$X,$Y" \
         "${args[@]}" &
 

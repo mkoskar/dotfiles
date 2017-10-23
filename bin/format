@@ -33,7 +33,7 @@ try() {
 
 case $ft in
     cs)
-        # try uncrustify
+        #try uncrustify
         try astyle --mode=cs --style=break --indent-namespaces -pcH -s"$shiftwidth"
         ;;
     css)
@@ -41,8 +41,8 @@ case $ft in
         try sass-convert --from css --to css --indent "$shiftwidth"
         ;;
     c | cpp | objc)
-        # try clang-format
-        # try uncrustify
+        #try clang-format
+        #try uncrustify
         try astyle --mode=c --style=break -pcH -s"$shiftwidth"
         ;;
     dart)
@@ -59,8 +59,8 @@ case $ft in
         try tidy -config ~/.tidyrc --indent-spaces "$shiftwidth" -wrap "$textwidth"
         ;;
     java)
-        # try clang-format
-        # try uncrustify
+        #try clang-format
+        #try uncrustify
         try astyle --mode=java --style=attach -pcH -s"$shiftwidth"
         ;;
     javascript)
@@ -93,11 +93,13 @@ case $ft in
         try sass-convert --from scss --to scss --indent "$shiftwidth"
         ;;
     xhtml)
-        try tidy -config ~/.tidyrc --indent-spaces "$shiftwidth" -wrap "$textwidth"
+        try tidy -config ~/.tidyrc --output-xhtml yes --indent-spaces "$shiftwidth" -wrap "$textwidth"
         ;;
     xml)
-        # try xmllint
-        try tidy -config ~/.tidyrc -xml --indent-spaces "$shiftwidth" -wrap "$textwidth"
+        #try tidy -config ~/.tidyrc -xml --output-xml yes --indent-spaces "$shiftwidth" -wrap "$textwidth"
+        try tidy -config ~/.tidyrc -xml --output-xml yes --indent-spaces "$shiftwidth"
+        try xmllint --format -
+        try xmlstarlet format --indent-tab
         ;;
     *)
         try par -T"$shiftwidth" -w"$textwidth"

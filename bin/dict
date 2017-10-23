@@ -22,10 +22,10 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-(( $# )) || {
+if (( ! $# )); then
     telnet dict.org 2628
     exit
-}
+fi
 
 if (( match )); then
     curl -s "dict://dict.org/match * . \"${*//[\"\\]/ }\"" |

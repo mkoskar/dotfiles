@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-set -o pipefail
+set -u -o pipefail
 
 zcat /proc/config.gz | $PAGER

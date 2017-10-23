@@ -1,6 +1,8 @@
 # vim: ft=conf
 
+use_colors = ON
 use_shadow = OFF
+
 screen_color = (CYAN, BLACK, ON)
 
 bindkey checklist \j ITEM_NEXT

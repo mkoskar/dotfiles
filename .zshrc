@@ -304,7 +304,6 @@ compinit -d "$zcompdump"
 zstyle ':completion:*' completer _complete _match
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' insert-unambiguous true
-zstyle ':completion:*' matcher-list 'r:|[.,_-]=* r:|=*'
 zstyle ':completion:*' menu select
 zstyle ':completion:*' squeeze-slashes true
 
@@ -344,14 +343,11 @@ compctl -m on
 compctl -m pacoc
 compctl -m pgx
 compctl -m pth
-compctl -m ptha
 compctl -m rep
 compctl -m socksify
 compctl -m torify
 compctl -m torsocks
 compctl -m watch
-compctl -m x
-compctl -m xx
 compctl -v v
 
 compdef gitall=git
@@ -366,7 +362,7 @@ function _pacl {
 }
 compctl -K _pacl pacl pacd pacp pacw paci paccheck pkgmark
 
-function _mkvirtualenv-pyenv {
+function _mkvirtualenv_pyenv {
     local -a versions
     read -cA words
     if [ "${#words}" -eq 2 ]; then
@@ -374,12 +370,17 @@ function _mkvirtualenv-pyenv {
     fi
     reply=(${${versions#$PYENV_ROOT/versions/}%-*-*})
 }
-compctl -K _mkvirtualenv-pyenv mkvirtualenv-pyenv
+compctl -K _mkvirtualenv_pyenv mkvirtualenv_pyenv
 
-function _systemd-dot {
+function _systemd_dot {
     reply=(${${(f)"$(systemctl --full --no-legend --no-pager list-units --all)"}%% *})
 }
-compctl -K _systemd-dot systemd-dot
+compctl -K _systemd_dot systemd_dot
+
+function _xsession {
+    reply=(${(f)"$(xsession '-?')"})
+}
+compctl -K _xsession x xx
 
 
 # Plugin: zsh-syntax-highlighting

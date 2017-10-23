@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+{
+    echo $'\n--------------------------------------------------'
+    echo $'> pactl info:\n'
+
+    pactl info
+
+    echo $'\n--------------------------------------------------'
+    echo $'> pactl list:\n'
+
+    pactl list
+    echo
+} | $PAGER
