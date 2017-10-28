@@ -3,4 +3,4 @@
 set -eu
 
 hstatus "${0##*/}"
-exec /usr/bin/newsbeuter -q
+exec /usr/bin/newsboat -q

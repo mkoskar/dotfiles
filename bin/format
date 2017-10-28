@@ -97,9 +97,10 @@ case $ft in
         ;;
     xml)
         #try tidy -config ~/.tidyrc -xml --output-xml yes --indent-spaces "$shiftwidth" -wrap "$textwidth"
-        try tidy -config ~/.tidyrc -xml --output-xml yes --indent-spaces "$shiftwidth"
-        try xmllint --format -
-        try xmlstarlet format --indent-tab
+        #try xmlstarlet format --indent-tab
+        export XMLLINT_INDENT='    '
+        tidy -config ~/.tidyrc -xml --output-xml yes --indent-spaces "$shiftwidth" | xmllint --format -
+        exit 0
         ;;
     *)
         try par -T"$shiftwidth" -w"$textwidth"

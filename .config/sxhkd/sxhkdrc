@@ -1,3 +1,9 @@
+super + colon
+    wmutil spawn sp:adm term -n \{\} trun mux adm
+
+super + semicolon ; super + semicolon
+    wmutil spawn sp:mon term -n \{\} trun mux mon
+
 super + alt + {H,K,L,J}
     xdo resize {-w ,-h }{-,+}50
 

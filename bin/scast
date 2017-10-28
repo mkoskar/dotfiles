@@ -12,7 +12,7 @@ lockfile="$XDG_RUNTIME_DIR/$prgname$DISPLAY.lock"
 exec 8>"$lockfile"
 flock -n 8 || {
     exec 8<&-
-    lsof -t "$lockfile" | xargs -r kill
+    lsof -t "$lockfile" | xargs -rx kill
     exit
 }
 

@@ -4,7 +4,7 @@ auto-reload yes
 bookmark-autopilot yes
 bookmark-cmd "mark-url"
 browser b %u
-error-log "~/.newsbeuter/error.log"
+error-log "~/.newsboat/error.log"
 goto-next-feed no
 max-items 500
 podcast-auto-enqueue no
@@ -15,19 +15,18 @@ search-highlight-colors black yellow
 suppress-first-reload yes
 text-width 79
 
-feedlist-format " %n %11u %t"
 articlelist-format " [%f]  %D %6L %?T?;%-17T; ?%t"
-
-feedlist-title-format "Feedlist (%u unread, %t total)%?T? - tag ‘%T’&?"
 articlelist-title-format "Feed (%u/%t) %T | %U"
-searchresult-title-format "Search Result (%u/%t)"
+dialogs-title-format "Dialogs"
+feedlist-format " %n %11u %t"
+feedlist-title-format "Feedlist (%u unread, %t total)%?T? - tag ‘%T’&?"
 filebrowser-title-format "%?O?Open File&Save File? - %f"
 help-title-format "Help (%N %V)"
-selecttag-title-format "Select Tag"
-selectfilter-title-format "Select Filter"
 itemview-title-format "Article (%u/%t) %T"
+searchresult-title-format "Search Result (%u/%t)"
+selectfilter-title-format "Select Filter"
+selecttag-title-format "Select Tag"
 urlview-title-format "URLs"
-dialogs-title-format "Dialogs"
 
 unbind-key  A
 unbind-key  C
@@ -78,10 +77,10 @@ color   listfocus_unread    white       default     reverse
 color   info                color255    color237
 color   article             default     default
 
-highlight article "^Title:.*$" color156 default
 highlight article "^(Feed|Author|Link|Date):" color156 default
+highlight article "^Title:.*$" color156 default
 
-# podbeuter
+# podboat
 download-path "~/download/podcasts/%h/%n"
 max-downloads 3
 player "mpv"

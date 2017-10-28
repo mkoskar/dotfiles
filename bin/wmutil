@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+spawn() {
+    local wname=$1 wid cdno
+    shift
+    # shellcheck disable=SC2128
+    if wid=($(xdo id -n "$wname")); then
+        if [[ $(xdo id) = "$wid" ]]; then
+            xdo hide "$wid"
+        else
+            if cdno=$(xdotool get_desktop); then
+                xdotool set_desktop_for_window "$wid" "$cdno"
+            fi
+            xdo show "$wid"
+            xdo activate "$wid"
+        fi
+    else
+        exec "${@//\{\}/$wname}"
+    fi
+}
+
+case $1 in
+    spawn)
+        "$@"
+        ;;
+    *)
+        exit 1
+        ;;
+esac

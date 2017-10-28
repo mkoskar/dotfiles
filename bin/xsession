@@ -71,12 +71,13 @@ fi
 
 xscreen -
 
-srun -xr /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
 srun -xr compton
 srun -xr osdd
-srun -xr sxhkd
 
-if [[ $XSESSION ]]; then
+/usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
+sxhkd &
+
+if [[ ${XSESSION-} ]]; then
     "$@"
 else
     export XSESSION='unknown'

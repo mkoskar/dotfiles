@@ -103,12 +103,6 @@ myConfig = def
     myModMask = mod4Mask
     myTerminal = "term"
     myWorkspaces = map show [0..9]
-    myScratchpads =
-        [ NS "sp0" ("term -n '[sp0]' trun mux adm") (appName =? "[sp0]")
-          (customFloating $ W.RationalRect 0.03 0.03 0.94 0.94)
-        , NS "sp1" ("term -n '[sp1]' trun mux mon") (appName =? "[sp1]")
-          (customFloating $ W.RationalRect 0.03 0.03 0.94 0.94)
-        ]
 
     -- {{{ Hooks
 
@@ -142,7 +136,8 @@ myConfig = def
                         {-<+> hintsEventHook-}
 
     myManageHook = composeOne
-                       [ appName =? "clementine" -?> doShiftView "8"
+                       [ appName <? "sp:" -?> customFloating $ W.RationalRect 0.03 0.03 0.94 0.94
+                       , appName =? "clementine" -?> doShiftView "8"
                        , appName =? "gpodder" -?> doShift "8"
                        , appName =? "libreoffice" -?> doShiftView "8"
                        , appName =? "pinentry-gtk-2" -?> doFloat
@@ -170,7 +165,6 @@ myConfig = def
                        ]
                    <+> composeAll [ isDialog --> doCenterFloat ]
                    <+> toggleHook "doFloat" doFloat
-                   <+> namedScratchpadManageHook myScratchpads
                    <+> positionStoreManageHook Nothing
 
     myLayoutHook = avoidStruts
@@ -231,20 +225,17 @@ myConfig = def
         , ("M-e", onNextNeighbour W.view)
         , ("M-S-w", onPrevNeighbour W.shift)
         , ("M-S-e", onNextNeighbour W.shift)
-
         , ("M-z", onPrevNeighbour W.greedyView)
         , ("M-x", onNextNeighbour W.greedyView)
         , ("M-s", moveTo Prev HiddenNonEmptyWS)
         , ("M-d", moveTo Next HiddenNonEmptyWS)
-
         --, ("M-u", viewScreen 0)
         , ("M-i", viewScreen 0)
         , ("M-o", viewScreen 1)
         --, ("M-S-u", sendToScreen 0)
         , ("M-S-i", sendToScreen 0)
         , ("M-S-o", sendToScreen 1)
-
-        , ("M-a", toggleWS' ["NSP"])
+        , ("M-a", toggleWS)
 
           -- Stack navigation
         , ("M-j", focusDown)
@@ -252,7 +243,6 @@ myConfig = def
         , ("M-<Tab>", focusDown)
         , ("M-S-<Tab>", focusUp)
         , ("M-m", focusMaster)
-
         , ("M-S-j", windows W.swapDown) -- ! breaks BoringWindows
         , ("M-S-k", windows W.swapUp)   -- ! breaks BoringWindows
         , ("M-<Return>", windows W.swapMaster)
@@ -262,7 +252,6 @@ myConfig = def
         , ("M-C-h", sendMessage $ Go L)
         , ("M-C-k", sendMessage $ Go U)
         , ("M-C-j", sendMessage $ Go D)
-
         , ("M-C-S-l", sendMessage $ Swap R)
         , ("M-C-S-h", sendMessage $ Swap L)
         , ("M-C-S-k", sendMessage $ Swap U)
@@ -280,25 +269,14 @@ myConfig = def
         , ("M-S-l", sendMessage MirrorExpand)
         , ("M-,", sendMessage $ IncMasterN 1)
         , ("M-.", sendMessage $ IncMasterN (-1))
-
-          -- Layout
         , ("M-t", withFocused $ windows . W.sink)
-        , ("M-f M-S-f", toggleHookNext "doFloat")
+        , ("M-f M-S-f", withFocused $ float)
         , ("M-f M-b", sendMessage $ Toggle NOBORDERS)
         , ("M-f M-f", sendMessage $ Toggle FULL)
         , ("M-f M-r", sendMessage $ Toggle MIRROR)
-
-          -- Minimize / Maximize
         , ("M-f M--", withFocused minimizeWindow)
         , ("M-f M-=", sendMessage RestoreNextMinimizedWin)
         , ("M-[", withFocused (sendMessage . maximizeRestore))
-
-          -- Launchers
-          -- ----------------------------------------
-
-          -- Scratchpads
-        , ("M-S-;", namedScratchpadAction myScratchpads "sp0")
-        --, ("M-; M-;", namedScratchpadAction myScratchpads "sp1")
         ]
 
     -- }}}

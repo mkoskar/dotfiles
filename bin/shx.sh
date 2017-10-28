@@ -48,11 +48,11 @@ dkip() {
 dkrm() {
     confirm 'Remove ALL containers (with volumes). Continue?' n || return 0
     # shellcheck disable=SC2033
-    docker ps -aq | xargs -r docker rm -v -f
+    docker ps -aq | xargs -rx docker rm -v -f
 }
 
 dkstop() {
-    docker ps -aq | xargs -r docker stop
+    docker ps -aq | xargs -rx docker stop
 }
 
 
@@ -146,7 +146,7 @@ paco() {
 # Finds what package provides command
 pacoc() {
     [ $# -eq 0 ] && return 2
-    pth -a "$1" | xargs -d '\n' -r pacman -Qo
+    pth -a "$1" | xargs -r -L1 pacman -Qo
 }
 
 # Files provided by package

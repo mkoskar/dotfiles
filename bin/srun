@@ -52,4 +52,4 @@ fi
 
 systemd-run --user --no-ask-password \
             --setenv=DISPLAY="${DISPLAY-}" \
-            --unit="$name" -- "$@"
+            --unit="$name" "$@"

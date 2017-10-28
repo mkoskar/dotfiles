@@ -57,7 +57,7 @@ parallel "${pargs[@]}" -r -j10 fetch <"$CONFDIR/sources" >queue
 {
     sort queue
     printf '%s\n' "$CONFDIR/whitelist"
-} | xargs -r sha1sum >sum
+} | xargs -rx sha1sum >sum
 if cmp -s sum "$CACHEDIR/sum"; then
     exit
 fi
@@ -121,5 +121,5 @@ export -f post_process
 
 nice parallel "${pargs[@]}" post_process <chunks
 
-xargs -ri cat '{}.done' <chunks | sort -u >"$CACHEDIR/hosts"
+xargs -r -I{} cat {}.done <chunks | sort -u >"$CACHEDIR/hosts"
 mv sum "$CACHEDIR/sum"
