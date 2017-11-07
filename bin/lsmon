@@ -1,0 +1,291 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+    lsmon
+    ~~~~~
+
+    Traverses and prints out information about active monitors.
+
+    :Compatibility: 3.2
+    :Copyright: (c) 2017 Miroslav Koškár <http://mkoskar.com/>
+    :License: Apache 2.0
+"""
+
+from enum import Enum
+from itertools import islice
+from sys import exit, stderr
+import argparse
+import re
+import textwrap
+
+import xcffib
+import xcffib.randr
+import xcffib.xproto
+
+parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description=textwrap.dedent(
+        """
+        Traverses and prints out information about active monitors.
+
+        Order:
+
+            * xy - left to right and top to bottom
+            * yx - top to bottom and left to right
+            * keep - native ordering
+
+        Output format:
+
+            * order index
+            * native order index
+            * 0/1 - primary
+            * 0/1 - currently focused
+            * x
+            * y
+            * width
+            * height
+            * width in millimeters
+            * height in millimeters
+
+        Examples:
+
+            # All monitors ordered from left to right and top to bottom
+            $ lsmon
+
+            # 3rd / primary / currently focused monitor
+            $ lsmon --index 2 / --primary / --focused
+
+            # Monitor on the right and below from currently focused one
+            $ lsmon 1r 1d
+        """
+    )
+)
+parser.add_argument(
+    '--pointer',
+    action='store_true',
+    help='focus is determined by pointer location'
+)
+parser.add_argument(
+    '--nowrap', action='store_false', dest='wrap', help="don't wrap moves"
+)
+parser.add_argument(
+    '--order',
+    choices=['xy', 'yx', 'keep'],
+    default='xy',
+    help='order to be used for --index and next/previous moves (default: xy)'
+)
+group = parser.add_mutually_exclusive_group()
+group.add_argument('--index', type=int, help='select by index')
+group.add_argument('--primary', action='store_true', help='select primary')
+group.add_argument('--focused', action='store_true', help='select focused')
+parser.add_argument(
+    'move',
+    nargs='*',
+    help='"{amount}{direction}" is move in direction relative to selected '
+    'monitor (focused by default) by specified amount of steps; '
+    'n/N - next, p/P - previous, r/R - right, l/L - left, d/D - down, u/U - up'
+)
+args = parser.parse_args()
+
+
+class Direction(Enum):
+    RIGHT = 1
+    LEFT = 2
+    DOWN = 3
+    UP = 4
+
+    def lname(self):
+        return self.name.lower()
+
+    def flip(self):
+        if self is Direction.RIGHT:
+            return Direction.LEFT
+        if self is Direction.LEFT:
+            return Direction.RIGHT
+        if self is Direction.DOWN:
+            return Direction.UP
+        if self is Direction.UP:
+            return Direction.DOWN
+
+
+class Monitor:
+
+    def __init__(self, idx, randr_monitor):
+        self._randr_monitor = randr_monitor
+        self._wraps = {}
+        self.idx = None
+        self.idx_orig = idx
+        self.right = self.left = self.down = self.up = None
+
+    def __getattr__(self, name):
+        return getattr(self._randr_monitor, name)
+
+    def overlap(self, x, y, width, height):
+        return max(0, min(self.x + self.width, x + width) - max(self.x, x)) * \
+            max(0, min(self.y + self.height, y + height) - max(self.y, y))
+
+    def overlap_x(self, mon):
+        return self.overlap(mon.x, self.y, mon.width, 1)
+
+    def overlap_y(self, mon):
+        return self.overlap(self.x, mon.y, 1, mon.height)
+
+    def move(self, dir, wrap=True):
+        mon = getattr(self, dir.lname())
+        if mon:
+            return mon
+        elif not wrap:
+            return self
+        else:
+            mon = self._wraps.get(dir)
+            if mon:
+                return mon
+            else:
+                mon = self
+                odir = dir.flip()
+                while True:
+                    tmp = getattr(mon, odir.lname())
+                    if not tmp:
+                        break
+                    mon = tmp
+                self._wraps[dir] = mon
+                return mon
+
+    def moven(self, dir, amount, wrap=True):
+        if amount < 0:
+            dir = dir.flip()
+        mon = self
+        for i in range(abs(amount)):
+            mon = mon.move(dir, wrap=wrap)
+        return mon
+
+
+def format(monitors):
+    for mon in monitors:
+        print(
+            '{} {} {} {} {} {} {} {} {} {}'.format(
+                mon.idx,
+                mon.idx_orig,
+                mon.primary,
+                1 if mon is focused else 0,
+                mon.x,
+                mon.y,
+                mon.width,
+                mon.height,
+                mon.width_in_millimeters,
+                mon.height_in_millimeters,
+            )
+        )
+
+
+conn = xcffib.connect()
+randr = conn(xcffib.randr.key)
+setup = conn.get_setup()
+screen = setup.roots[conn.pref_screen]
+randr_monitors = randr.GetMonitors(screen.root, True).reply().monitors
+
+monitors = [
+    Monitor(idx, randr_monitor)
+    for idx, randr_monitor in enumerate(randr_monitors)
+]
+if not monitors:
+    print('{}: error: no monitors'.format(parser.prog), file=stderr)
+    exit(1)
+
+monitors_xy = list(monitors)
+monitors_xy.sort(key=lambda mon: (mon.x, mon.y))
+monitors_yx = list(monitors)
+monitors_yx.sort(key=lambda mon: (mon.y, mon.x))
+
+if args.order == 'xy':
+    monitors = monitors_xy
+elif args.order == 'yx':
+    monitors = monitors_yx
+
+for i, imon in enumerate(monitors):
+    imon.idx = i
+
+focused = None
+FOCUS_NONE = xcffib.NONE
+FOCUS_PTRROOT = xcffib.xproto.InputFocus.PointerRoot
+window = conn.core.GetInputFocus().reply().focus
+if args.pointer or window in (FOCUS_NONE, FOCUS_PTRROOT, screen.root):
+    pointer = conn.core.QueryPointer(screen.root).reply()
+    for i, imon in enumerate(monitors):
+        if imon.overlap(pointer.root_x, pointer.root_y, 1, 1):
+            focused = imon
+            break
+else:
+    max_area = 0
+    geom = conn.core.GetGeometry(window).reply()
+    for i, imon in enumerate(monitors):
+        area = imon.overlap(geom.x, geom.y, geom.width, geom.height)
+        if area > max_area:
+            max_area = area
+            focused = imon
+
+sel = None
+if args.index is not None:
+    sel = monitors[args.index % len(monitors)]
+elif args.primary:
+    for i, imon in enumerate(monitors):
+        if imon.primary:
+            sel = imon
+            break
+    if not sel:
+        sel = monitors[0]
+elif args.focused or args.move:
+    if not focused:
+        print('{}: error: no focused monitor'.format(parser.prog), file=stderr)
+        exit(1)
+    sel = focused
+
+if args.move:
+    for i, imon in enumerate(monitors_xy):
+        for mon in islice(monitors_xy, i + 1, None):
+            if imon.x < mon.x and imon.overlap_y(mon) > 0:
+                imon.right = mon
+                if not mon.left:
+                    mon.left = imon
+                break
+    for i, imon in enumerate(monitors_yx):
+        for mon in islice(monitors_yx, i + 1, None):
+            if imon.y < mon.y and imon.overlap_x(mon) > 0:
+                imon.down = mon
+                if not mon.up:
+                    mon.up = imon
+                break
+    move_pattern = re.compile(r'([+-]?\d+)([nNpPrRlLdDuU])')
+    for move in args.move:
+        match = move_pattern.match(move)
+        if not match:
+            print('{}: error: invalid move'.format(parser.prog), file=stderr)
+            exit(1)
+        amount = int(match.group(1))
+        dir = match.group(2)
+        if dir.lower() == 'n':
+            if args.wrap:
+                seli = (sel.idx + amount) % len(monitors)
+            else:
+                seli = min(sel.idx + amount, len(monitors) - 1)
+            sel = monitors[seli]
+        elif dir.lower() == 'p':
+            if args.wrap:
+                seli = (sel.idx - amount) % len(monitors)
+            else:
+                seli = max(0, sel.idx - amount)
+            sel = monitors[seli]
+        elif dir.lower() == 'r':
+            sel = sel.moven(Direction.RIGHT, amount, args.wrap)
+        elif dir.lower() == 'l':
+            sel = sel.moven(Direction.LEFT, amount, args.wrap)
+        elif dir.lower() == 'd':
+            sel = sel.moven(Direction.DOWN, amount, args.wrap)
+        elif dir.lower() == 'u':
+            sel = sel.moven(Direction.UP, amount, args.wrap)
+    format([sel])
+else:
+    if sel:
+        format([sel])
+    else:
+        format(monitors)

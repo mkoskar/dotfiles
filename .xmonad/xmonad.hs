@@ -229,9 +229,11 @@ myConfig = def
         , ("M-x", onNextNeighbour W.greedyView)
         , ("M-s", moveTo Prev HiddenNonEmptyWS)
         , ("M-d", moveTo Next HiddenNonEmptyWS)
+
         --, ("M-u", viewScreen 0)
         , ("M-i", viewScreen 0)
         , ("M-o", viewScreen 1)
+
         --, ("M-S-u", sendToScreen 0)
         , ("M-S-i", sendToScreen 0)
         , ("M-S-o", sendToScreen 1)
@@ -259,6 +261,7 @@ myConfig = def
 
           -- Windows & Layouts
         , ("M-n", refresh)
+        , ("M-c", withFocused $ killWindow)
         , ("M-S-c", kill)
         , ("M-<Backspace>", focusUrgent)
         , ("M-<Space>", sendMessage NextLayout)

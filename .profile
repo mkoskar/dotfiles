@@ -77,6 +77,7 @@ export PARINIT='T4 w78 prbgqR B=.,?_A_a Q=_s>|'
 export PYENV_ROOT="$HOME/opt/pyenv"
 export PYTHONSTARTUP="$HOME/.pythonrc"
 export QT_IM_MODULE='xim'
+export QT_QPA_PLATFORMTHEME='gtk2'
 export QUOTING_STYLE='literal'
 export RANGER_LOAD_DEFAULT_RC='FALSE'
 export SAL_USE_VCLPLUGIN='gtk'

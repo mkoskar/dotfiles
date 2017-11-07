@@ -77,8 +77,9 @@ case $ft in
         try perltidy --perl-best-practices --format-skipping -q
         ;;
     python)
+        #try yapf "--style={based_on_style:pep8, indent_width:$shiftwidth, column_limit=$textwidth, blank_line_before_nested_class_or_def:true, dedent_closing_brackets:true}"
         try autopep8 --indent-size="$shiftwidth" --max-line-length="$textwidth" -
-        try yapf "--style={based_on_style:pep8, indent_width:$shiftwidth, column_limit=$textwidth}"
+        try yapf "--style={based_on_style:pep8, indent_width:$shiftwidth, blank_line_before_nested_class_or_def:true, dedent_closing_brackets:true}"
         ;;
     ruby)
         try rbeautify -s -c "$shiftwidth"

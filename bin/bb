@@ -8,7 +8,7 @@ exec &>>~/.local/share/"$prgname".out
 
 kernel_release=$(uname -r)
 kernel_version="v${kernel_release%%-*}"
-posix_base='http://pubs.opengroup.org/onlinepubs/9699919799'
+posix1_base='http://pubs.opengroup.org/onlinepubs/9699919799'
 
 MENUER=$prgname menuer "$@" <<-EOF |
 
@@ -33,6 +33,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     aur                     b https://aur.archlinux.org/packages.php?SeB=nd\&K={u}
     aur-maintainer          b https://aur.archlinux.org/packages.php?SeB=m\&K=$AUR_MAINTAINER
     aur-name-only           b https://aur.archlinux.org/packages.php?SeB=n\&K={u}
+    austin-csrg             b https://www.opengroup.org/austin/docreg.html
     awg                     b https://en.wikipedia.org/wiki/American_wire_gauge#Tables_of_AWG_wire_sizes
     awk                     b https://www.gnu.org/software/gawk/manual/gawk.html
     awk1                    b http://awk.freeshell.org/
@@ -129,6 +130,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ii                      b https://www.ixquick.com/do/metasearch.pl?cat=pics\&query={u}
     imdb                    b http://www.imdb.com/find?q={u}
     imperial                b https://en.wikipedia.org/wiki/Imperial_units
+    intel-core-datasheets   b https://www-ssl.intel.com/content/www/us/en/processors/core/core-technical-resources.html
     iojs                    b https://iojs.org/api/
     irc-docs                b https://github.com/grawity/irc-docs
     irc-freenode            b http://irc.netsplit.de/channels/?net=freenode
@@ -208,11 +210,11 @@ MENUER=$prgname menuer "$@" <<-EOF |
     phrik                   b https://wiki.archlinux.org/index.php/Phrik
     pkg                     b https://www.archlinux.org/packages/?q={u}
     pleer                   b http://pleer.net/search?q={u}
-    posix                   b $posix_base/index.html
-    posix-defs              b $posix_base/basedefs/contents.html
-    posix-env               b $posix_base/basedefs/V1_chap08.html
-    posix-ifaces            b $posix_base/functions/contents.html
-    posix-utils             b $posix_base/utilities/contents.html
+    posix1                  b $posix1_base/index.html
+    posix1-defs             b $posix1_base/basedefs/contents.html
+    posix1-env              b $posix1_base/basedefs/V1_chap08.html
+    posix1-ifaces           b $posix1_base/functions/contents.html
+    posix1-utils            b $posix1_base/utilities/contents.html
     postgresql              b https://www.postgresql.org/docs/current/static/index.html
     pygments                b http://pygments.org/docs/lexers/
     pypa                    b https://www.pypa.io/
@@ -227,7 +229,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     regex-java              b https://docs.oracle.com/javase/9/docs/api/java/util/regex/Pattern.html
     regex-js                b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
     regex-pcre              b http://www.pcre.org/original/doc/html/pcresyntax.html
-    regex-posix             b $posix_base/basedefs/V1_chap09.html
+    regex-posix1            b $posix1_base/basedefs/V1_chap09.html
     regex-python            b https://docs.python.org/3/library/re.html
     regex-python-test       b http://pythex.org/
     regex101                b https://regex101.com/
@@ -280,6 +282,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     unicode-gallery         b http://xahlee.info/comp/unicode_index.html
     unicode-math            b http://www.unicode.org/Public/math/revision-15/MathClassEx-15.html
     unicode-table           b http://unicode-table.com/
+    unix                    b http://opengroup.org/standards/unix
     unix-history            b https://upload.wikimedia.org/wikipedia/commons/c/cd/Unix_timeline.en.svg
     unix-history1           b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
     url                     b https://url.spec.whatwg.org/
@@ -292,10 +295,10 @@ MENUER=$prgname menuer "$@" <<-EOF |
     weechat                 b https://weechat.org/files/doc/stable/weechat_user.en.html
     weechat-api             b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
     weechat-changes         b https://github.com/weechat/weechat/blob/master/ChangeLog.adoc
-    xlib-translations       b http://menehune.opt.wfu.edu/Kokua/Irix_6.5.21_doc_cd/usr/share/Insight/library/SGI_bookshelves/SGI_Developer/books/XLib_WinSys/sgi_html/ch08.html
+    xcb-modules             b https://xcb.freedesktop.org/manual/modules.html
     xmonad                  b https://hackage.haskell.org/package/xmonad
     xmonad-contrib          b https://hackage.haskell.org/package/xmonad-contrib
-    xorg                    b https://www.x.org/wiki/Documentation/
+    xorg                    b https://www.x.org/releases/current/doc/
     yaml                    b http://yaml.org/refcard.html
     yt                      b https://www.youtube.com/results?q={u}
     yt-channel              b https://www.youtube.com/results?sp=EgIQAlAU\&q={u}

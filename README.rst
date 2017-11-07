@@ -236,9 +236,8 @@ are listed below.
 `x <bin/x>`_, `xx <bin/xx>`_
     X session startup script (for X and Xephyr respectively).
 
-`xfocusinfo <bin/xfocusinfo>`_
-    Determines and prints out (in shell eval format) focused X screen,
-    Xinerama head, root window id, and target window id.
+`lsmon <bin/lsmon>`_
+    Traverses and prints out information about active monitors.
 
 `xserverq <bin/xserverq>`_
     Get information about X server (based on DISPLAY environment variable).

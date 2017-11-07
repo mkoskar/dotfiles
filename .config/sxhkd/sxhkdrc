@@ -13,6 +13,9 @@ super + alt + {h,k,l,j}
 super + {_,ctrl + ,shift + }y
     xdotool click --clearmodifiers {1,2,3}
 
+super + {i,o,u}
+    wmutil warp_to_primary{_, 1r, 1l}
+
 #, ("M-C-M1-y", warpToWindow 0.500 0.500)
 #, ("M-C-M1-u", warpToWindow 0.005 0.005)
 #, ("M-C-M1-i", warpToWindow 0.500 0.005)
@@ -23,6 +26,9 @@ super + {_,ctrl + ,shift + }y
 #, ("M-C-M1-m", warpToWindow 0.005 0.995)
 #, ("M-C-M1-,", warpToWindow 0.500 0.995)
 #, ("M-C-M1-.", warpToWindow 0.995 0.995)
+
+super + {c,C}
+    xdo {close,kill}
 
 # ----------------------------------------
 

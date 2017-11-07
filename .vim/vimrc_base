@@ -283,7 +283,7 @@ set matchpairs+=<:>
 set nojs
 set nrformats-=octal
 set showmatch
-set textwidth=78
+set textwidth=80
 set tildeop
 set undofile
 

@@ -21,8 +21,15 @@ spawn() {
     fi
 }
 
+warp_to_primary() {
+    local mon x y w h
+    mon=$(lsmon --nowrap --primary "$@")
+    read -r _ _ _ _ x y w h _ _<<<"$mon"
+    wmp -a "$((x+w/2))" "$((y+h/2))"
+}
+
 case $1 in
-    spawn)
+    spawn | warp_to_primary)
         "$@"
         ;;
     *)

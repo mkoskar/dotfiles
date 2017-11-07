@@ -1,6 +1,7 @@
 [alias]
     b = branch --all -vv
     ci = commit
+    clone-shallow = clone --depth 100
     co = checkout
     conf = config --local --list
     d = difftool
