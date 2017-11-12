@@ -206,6 +206,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     patents                 b https://patents.google.com/
     pep                     b https://www.python.org/dev/peps/
     perf                    b http://www.brendangregg.com/perf.html
+    perf-full               b http://www.brendangregg.com/Perf/linux_perf_tools_full.png
     perl                    b http://perldoc.perl.org/
     phrik                   b https://wiki.archlinux.org/index.php/Phrik
     pkg                     b https://www.archlinux.org/packages/?q={u}

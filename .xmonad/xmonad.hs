@@ -219,6 +219,7 @@ myConfig = def
         ++
         [ ("M-q", spawn "xmonad --recompile && xmonad --restart")
         , ("M-S-q", io (exitWith ExitSuccess))
+        , ("M-S-<Return>", spawn myTerminal)
 
           -- Screens & Workspaces
         , ("M-w", onPrevNeighbour W.view)

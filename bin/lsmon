@@ -71,8 +71,8 @@ parser.add_argument(
 parser.add_argument(
     '--order',
     choices=['xy', 'yx', 'keep'],
-    default='xy',
-    help='order to be used for --index and next/previous moves (default: xy)'
+    default='yx',
+    help='order to be used for --index and next/previous moves (default: yx)'
 )
 group = parser.add_mutually_exclusive_group()
 group.add_argument('--index', type=int, help='select by index')

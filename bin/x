@@ -24,25 +24,14 @@ fi
 
 # ----------------------------------------
 
-rundir="$XDG_RUNTIME_DIR/xorg"
-mkdir -p "$rundir"
-
 datadir="$HOME/.local/share/xorg"
 mkdir -p "$datadir"
 
 xauthset() {
     local dispno=$1
     local cookie; cookie=$(mcookie)
-
-    # server's X authority file (global)
-    xauthf="$rundir/X$dispno-Xauthority"
-    xauth -q -f "$xauthf" add ":$dispno" . "$cookie" &>/dev/null
-
-    # user's X authority file
     xauth -q add ":$dispno" . "$cookie" &>/dev/null
 }
-
-unset SESSION_MANAGER
 
 
 # Xephyr
@@ -58,10 +47,7 @@ if [[ $prgname = 'xx' ]]; then
     unset XSESSION
     xinit ~/bin/xsession "$@" -- \
         /usr/bin/Xephyr ":$dispno" \
-        -auth "$xauthf" \
         -dpi 96 \
-        -nolisten tcp \
-        -noreset \
         -resizeable \
         &>"$datadir/xsession.$dispno.out" &
     exit
@@ -90,12 +76,41 @@ fi
 
 xauthset "$dispno"
 
-exec xinit ~/bin/xsession "$@" -- \
-    /usr/lib/xorg-server/Xorg ":$dispno" "vt$vtno" \
-    -auth "$xauthf" \
-    -config "${XCONFIG:-xorg.conf.$HOSTNAME}" \
-    -keeptty \
-    -nolisten tcp \
-    -noreset \
-    -novtswitch \
-    </dev/null &>"$datadir/xsession.$dispno.out"
+#exec xinit ~/bin/xsession "$@" -- \
+#    /usr/lib/xorg-server/Xorg ":$dispno" "vt$vtno" \
+#    -config "${XCONFIG:-xorg.conf.$HOSTNAME}" \
+#    -keeptty \
+#    -novtswitch \
+#    </dev/null &>"$datadir/xsession.$dispno.out"
+
+exec &>"$datadir/xsession.$dispno.out"
+stty=$(stty -g)
+
+cleanup() {
+    set +e
+    kill "$pid"
+    trap : SIGHUP
+    ( sleep 15; kill -s HUP $$ ) &
+    wait "$pid"
+    kill -s KILL "$pid" &>/dev/null
+    stty "$stty" || stty sane
+    kill 0
+}
+trap cleanup EXIT
+
+trap ready=1 SIGUSR1
+sleep 15 &
+(
+    trap '' SIGUSR1
+    exec /usr/lib/xorg-server/Xorg ":$dispno" "vt$vtno" \
+        -config "${XCONFIG:-xorg.conf.$HOSTNAME}" \
+        -keeptty \
+        -noreset \
+        -novtswitch
+) &
+pid=$!
+
+wait -n || true
+[[ ${ready-} ]] || exit 1
+export DISPLAY=":$dispno"
+setsid xsession "$@" </dev/null

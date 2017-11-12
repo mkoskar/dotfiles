@@ -21,15 +21,36 @@ spawn() {
     fi
 }
 
+warp_in_window() {
+    local wid attrs x y w h
+    wid=$(xdo id)
+    attrs=$(wattr xywh "$wid")
+    read -r x y w h <<<"$attrs"
+    case $1 in
+        c) x=$((x+w/2)); y=$((y+h/2)) ;;
+        e) y=$((y+h/2)) ;;
+        n) x=$((x+w/2)) ;;
+        ne) ;;
+        nw) x=$((x+w)) ;;
+        s) x=$((x+w/2)); y=$((y+h)) ;;
+        se) y=$((y+h)) ;;
+        sw) x=$((x+w)); y=$((y+h)) ;;
+        w) x=$((x+w)); y=$((y+h/2)) ;;
+    esac
+    wmp -a "$x" "$y"
+}
+
 warp_to_primary() {
     local mon x y w h
     mon=$(lsmon --nowrap --primary "$@")
     read -r _ _ _ _ x y w h _ _<<<"$mon"
-    wmp -a "$((x+w/2))" "$((y+h/2))"
+    wmp -a $((x+w/2)) $((y+h/2))
 }
 
 case $1 in
-    spawn | warp_to_primary)
+    spawn | \
+    warp_in_window | \
+    warp_to_primary)
         "$@"
         ;;
     *)

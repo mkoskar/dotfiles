@@ -19,6 +19,7 @@ if [[ $1 = '-?' ]]; then
 fi
 
 [[ ${XSESSION-} ]] && exit 1
+unset SESSION_MANAGER
 
 for i in "${sessions[@]}"; do
     if [[ $1 = "$i" ]]; then
@@ -74,8 +75,8 @@ xscreen -
 srun -xr compton
 srun -xr osdd
 
+(sleep 0.5; exec sxhkd) &
 /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
-sxhkd &
 
 if [[ ${XSESSION-} ]]; then
     "$@"
