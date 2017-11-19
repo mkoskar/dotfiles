@@ -30,8 +30,7 @@ if not child_args:
     usage_err()
 
 child = subprocess.Popen(
-    child_args,
-    preexec_fn=partial(signals, SIGHUP_INT_TERM, SIG_DFL)
+    child_args, preexec_fn=partial(signals, SIGHUP_INT_TERM, SIG_DFL)
 )
 
 signals((SIGHUP, SIGTERM), partial(sigterm, child))

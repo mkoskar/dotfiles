@@ -49,7 +49,7 @@ parser = argparse.ArgumentParser(
 
         Examples:
 
-            # All monitors ordered from left to right and top to bottom
+            # All monitors ordered from top to bottom and left to right
             $ lsmon
 
             # 3rd / primary / currently focused monitor

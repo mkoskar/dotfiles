@@ -13,9 +13,9 @@ SCRIPT_VERSION = '0.1'
 SCRIPT_LICENSE = 'Apache 2.0'
 SCRIPT_DESC = 'Personal customizations'
 
-
 # Global {{{
 # ----------------------------------------
+
 
 class Expando(object):
     pass
@@ -45,16 +45,15 @@ hd_layout = w.hdata_get('layout')
 
 # }}}
 
-
 # Buffers {{{
 # ----------------------------------------
 
 MERGE_RULES = [
-    r'^irc\.freenode\.#(bash|zsh)$',
-    r'^irc\.freenode\.#archlinux(-offtopic)?$',
+    r'^irc\.freenode([^.]*)\.#(bash|zsh)$',
+    r'^irc\.freenode([^.]*)\.#archlinux(-offtopic)?$',
 ]
 
-timer_sort_merges = None
+timer_sort = None
 
 
 def buffers_iter():
@@ -64,7 +63,7 @@ def buffers_iter():
         item = w.hdata_pointer(hd_buf, item, 'next_buffer')
 
 
-def sort_merges():
+def sort():
     buffers_by_number = {}
 
     for buffer in buffers_iter():
@@ -88,12 +87,20 @@ def sort_merges():
             functools.reduce(merge, buffers)
             cmd('/input switch_active_buffer', buffers[-1].buffer)
 
+    #def sort_key(bi):
+    #    return [bi.short_name, bi.full_name]
+    #
+    #buffers = [buffers[0] for buffers in buffers_by_number.values()]
+    #buffers.sort(key=sort_key)
+    #for i, bi in enumerate(buffers):
+    #    w.buffer_set(bi.buffer, 'number', str(i+1))
 
-def sort_merges_lazy():
-    global timer_sort_merges
-    if timer_sort_merges:
+
+def sort_lazy():
+    global timer_sort
+    if timer_sort:
         return
-    timer_sort_merges = w.hook_timer(1, 0, 1, 'cb_timer_sort_merges', '')
+    timer_sort = w.hook_timer(1, 0, 1, 'cb_timer_sort', '')
 
 
 def merge(buffer):
@@ -120,15 +127,15 @@ def merge(buffer):
 def buffer_init(buffer):
     bname = w.buffer_get_string(buffer, 'full_name')
 
-    match = re.match(r'^irc\.freenode\.#archlinux($|-.*)$', bname)
+    match = re.match(r'^irc\.freenode([^.]*)\.#archlinux($|-.*)$', bname)
     if match:
-        w.buffer_set(buffer, 'short_name', '#arch' + match.group(1))
+        sname = '#arch' + match.group(2)
+        if sname == '#arch-offtopic':
+            sname = '#arch-ot'
+        w.buffer_set(buffer, 'short_name', sname)
 
     if bname == 'irc.bitlbee.#twitter_mkoskar':
         w.buffer_set(buffer, 'highlight_words', '@mkoskar')
-
-    elif bname == 'irc.freenode.#archlinux-offtopic':
-        w.buffer_set(buffer, 'short_name', '#arch-ot')
 
     elif bname == 'irc.gitter.#neovim/neovim':
         w.buffer_set(buffer, 'short_name', '#neovim')
@@ -139,7 +146,7 @@ def buffer_init(buffer):
         w.buffer_set(buffer, 'time_for_each_line', '0')
 
     merge(buffer)
-    sort_merges_lazy()
+    sort_lazy()
 
 
 def channel_init(buffer):
@@ -148,10 +155,10 @@ def channel_init(buffer):
     w.buffer_set(buffer, 'nicklist', str(nicklist))
 
 
-def cb_timer_sort_merges(data, remaining_calls):
-    global timer_sort_merges
-    sort_merges()
-    timer_sort_merges = None
+def cb_timer_sort(data, remaining_calls):
+    global timer_sort
+    sort()
+    timer_sort = None
     return w.WEECHAT_RC_OK
 
 
@@ -168,19 +175,11 @@ def cb_signal_irc_channel_opened(data, signal, buffer):
 w.hook_signal('buffer_opened', 'cb_signal_buffer_opened', '')
 w.hook_signal('irc_channel_opened', 'cb_signal_irc_channel_opened', '')
 
-
-bnames = []
-for buffer in buffers_iter():
-    bname = w.buffer_get_string(buffer, 'full_name')
-    bnames.append(bname)
-
-for bname in bnames:
-    buffer = w.buffer_search('==', bname)
-    if buffer:
-        buffer_init(buffer)
+buffers = list(buffers_iter())
+for buffer in buffers:
+    buffer_init(buffer)
 
 # }}}
-
 
 # Layouts {{{
 # ----------------------------------------
@@ -199,7 +198,7 @@ def layouts_name_iter():
 
 
 def layout_find(name):
-    return next((_name for _name in layouts_name_iter() if _name == name), None)
+    return next((n for n in layouts_name_iter() if n == name), None)
 
 
 def layout_current():
@@ -271,7 +270,6 @@ w.key_bind('default', keys)
 
 # }}}
 
-
 # Tabs {{{
 # ----------------------------------------
 
@@ -327,8 +325,9 @@ def cb_command_tab_next(data, buffer, args):
     if tab_cur is None or len(tabs) == 1:
         tab_dst = tabs[0]
     else:
-        tab_dst = next((tab for tab in tabs if tab > tab_cur),
-                       tabs[-1 if norewind else 0])
+        tab_dst = next(
+            (tab for tab in tabs if tab > tab_cur), tabs[-1 if norewind else 0]
+        )
     cmd('/tab_go %s' % tab_dst)
     return w.WEECHAT_RC_OK
 
@@ -344,8 +343,10 @@ def cb_command_tab_prev(data, buffer, args):
     if tab_cur is None or len(tabs) == 1:
         tab_dst = tabs[0]
     else:
-        tab_dst = next((tab for tab in reversed(tabs) if tab < tab_cur),
-                       tabs[0 if norewind else -1])
+        tab_dst = next(
+            (tab for tab in reversed(tabs)
+             if tab < tab_cur), tabs[0 if norewind else -1]
+        )
     cmd('/tab_go %s' % tab_dst)
     return w.WEECHAT_RC_OK
 
@@ -389,7 +390,6 @@ w.key_bind('default', keys)
 
 # }}}
 
-
 # Windows {{{
 # ----------------------------------------
 
@@ -414,13 +414,15 @@ def cb_command_allwin_set_unread(data, buffer, args):
     return w.WEECHAT_RC_OK
 
 
-w.hook_command('allwin_set_unread', '', '', '', '', 'cb_command_allwin_set_unread', '')
+w.hook_command(
+    'allwin_set_unread', '', '', '', '', 'cb_command_allwin_set_unread', ''
+)
 
 # }}}
 
-
 # Other {{{
 # ----------------------------------------
+
 
 def cb_command_grep_nick(data, buffer, args):
     bname = w.buffer_get_string(w.current_buffer(), 'full_name')

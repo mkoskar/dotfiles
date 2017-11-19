@@ -1,4 +1,14 @@
+set notification-error-bg "#9d2d2d"
+set scroll-page-aware true
 set scroll-step 150
+set statusbar-home-tilde true
+set window-title-home-tilde true
+set window-title-page true
 
 map <A-j> scroll down
 map <A-k> scroll up
+map A adjust_window width
+map i toggle_index
+
+map [index] i toggle_index
+map [index] q toggle_index

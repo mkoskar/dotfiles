@@ -68,7 +68,7 @@ cd "$path"
 
 if [[ ! -f user.js ]]; then
     if [[ ! $profile =~ ^plain(-|$) ]]; then
-        cat >user.js <<-EOF
+        cat >>user.js <<-EOF
 			//user_pref('browser.urlbar.formatting.enabled', false);
 			//user_pref('security.ssl.require_safe_negotiation', true);
 
@@ -163,52 +163,6 @@ case $profile in
 esac
 
 if [[ ! -f userChrome.css ]]; then
-    cat >userChrome.css <<-EOF
-		#urlbar {
-		    -moz-box-direction: reverse;
-		}
-
-		.urlbar-textbox-container {
-		    padding-right: 3px !important;
-		}
-
-		#identity-box {
-		    padding-inline-start: 5px !important;
-		}
-
-		#notification-popup-box:not([hidden]) + #identity-box {
-		    padding-inline-start: 12px !important;
-		}
-
-		#notification-popup-box {
-		    padding-left: 3px !important;
-		}
-
-		#urlbar > .chromeclass-toolbar-additional {
-		    border-inline-end: 1px solid var(--urlbar-separator-color) !important;
-		    border-inline-start: none !important;
-		    margin: 0 !important;
-		    padding: 0 4px 1px 5px !important;
-		}
-
-		#urlbar-wrapper > #forward-button[disabled] + #urlbar > .chromeclass-toolbar-additional {
-		    padding-inline-start: calc(var(--backbutton-urlbar-overlap) + 5px) !important;
-		}
-
-		#VimFxMarkersContainer .marker {
-		    font-size: 1em !important;
-		    font-weight: normal !important;
-		}
-
-		#main-window[vimfx-focus-type="editable"] #urlbar {
-		    background: #dff2e0 !important;
-		}
-
-		#main-window[vimfx-mode="ignore"] #urlbar {
-		    background: #ffe8e4 !important;
-		}
-	EOF
-
     [[ $profile != 'default' ]] && cat >>userChrome.css <<-EOF
 
 		#TabsToolbar::before {

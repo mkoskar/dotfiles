@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
 
-watch -n1 -t cat /proc/sys/kernel/random/entropy_avail
+set -eu
+
+cmd=(cat /proc/sys/kernel/random/entropy_avail)
+
+[[ -t 1 ]] || exec "${cmd[@]}"
+watch -x -n1 "${cmd[@]}"

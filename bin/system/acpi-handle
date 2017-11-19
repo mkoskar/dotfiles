@@ -6,6 +6,9 @@ set -eu
 
 # ----------------------------------------
 
+vt=$(</sys/class/tty/tty0/active)
+export DISPLAY=":${vt##tty}"
+
 if (( EUID )); then
     case $1 in
         button/micmute | button/f20)
@@ -22,6 +25,11 @@ if (( EUID )); then
             ;;
         button/volumeup)
             audio playback_up
+            ;;
+        ibm/hotkey)
+            if [[ $2 = 'LEN0068:00' ]]; then
+                xscreen -
+            fi
             ;;
     esac
 else

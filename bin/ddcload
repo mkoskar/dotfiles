@@ -4,5 +4,5 @@ set -eu -o pipefail
 
 prgname=${0##*/}
 
-cd "$HOME/.local/share/$prgname/${1:-default}"
+cd ~/.local/share/"$prgname/${1:-default}"
 find . -mindepth 1 -maxdepth 1 -type f | xargs -r -L1 -P0 ddcutil loadvcp

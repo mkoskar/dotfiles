@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu -o pipefail
+shopt -s extglob
 
 prgname=${0##*/}
 
@@ -38,12 +39,13 @@ shift $((OPTIND-1))
 if [[ ! $profile ]]; then
     filter='^(?!skel$).*$'
     if [[ $bin_name = 'chromium' ]]; then
+        filter='^(?!proxy-socks$)(?!proxy-tor$)(?!skel$).*$'
         profiles=(
+            default
             dev
             lab
             plain
         )
-        filter='^(?!proxy-socks$)(?!proxy-tor$)(?!skel$).*$'
     fi
     for p in ~/.config/"$bin_name".*; do
         [[ -d $p ]] || continue

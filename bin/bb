@@ -103,6 +103,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gmail-nolabel           b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:chats+-in:inbox+-in:sent+-in:draft+-in:trash/n100
     gmail-search            b https://support.google.com/mail/answer/7190
     gnome-api               b https://developer.gnome.org/references
+    gnu-coding              b https://www.gnu.org/prep/standards/standards.html
     gnu-make                b https://www.gnu.org/software/make/manual/make.html#Quick-Reference
     gnu-manuals             b https://www.gnu.org/manual/manual.html
     gnu-repos               b http://git.savannah.gnu.org/cgit/
@@ -131,6 +132,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     imdb                    b http://www.imdb.com/find?q={u}
     imperial                b https://en.wikipedia.org/wiki/Imperial_units
     intel-core-datasheets   b https://www-ssl.intel.com/content/www/us/en/processors/core/core-technical-resources.html
+    intel-sdm               b https://software.intel.com/en-us/articles/intel-sdm
     iojs                    b https://iojs.org/api/
     irc-docs                b https://github.com/grawity/irc-docs
     irc-freenode            b http://irc.netsplit.de/channels/?net=freenode
@@ -169,6 +171,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-docs              b https://www.kernel.org/doc/Documentation
     linux-docs!             b /lib/modules/$kernel_release/build/Documentation
     linux-docs-html         b https://www.kernel.org/doc/html/latest/index.html
+    linux-lkddb             b https://cateee.net/lkddb/web-lkddb/
     linux-params            b https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html
     linux-repos             b https://git.kernel.org/cgit/
     linux-specs             b http://refspecs.linuxfoundation.org/
