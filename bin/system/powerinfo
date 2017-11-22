@@ -9,7 +9,11 @@ get() {
 }
 
 uconv() {
-    declare -g "$2=$(($1/(1000*1000)))"
+    if [[ $1 ]]; then
+        declare -g "$2=$(($1/(1000*1000)))"
+    else
+        declare -g "$2="
+    fi
 }
 
 echo $'\n--------------------------------------------------'
@@ -37,27 +41,19 @@ for rapl in "$base/"*; do
     get "$rapl" max_energy_range_uj
     uconv "$_max_energy_range_uj" _max_energy_range
 
-    get "$rapl" power_uw
-    uconv "$_power_uw" _power
-
-    get "$rapl" max_power_range_uw
-    uconv "$_max_power_range_uw" _max_power_range
-
     get "$rapl" enabled
 
     (( _enabled )) && _enabled='*' || _enabled=' '
 
-    printf '(%s) %-16s : %-15s %8sJ / %8sJ : %8sW / %8sW\n' \
+    printf '(%s) %-16s : %-15s %8sJ / %8sJ\n' \
         "$_enabled" "$_rapl" "$_name" \
-        "$_energy" "$_max_energy_range" \
-        "$_power" "$_max_power_range"
+        "$_energy" "$_max_energy_range"
 
     for (( i=0; i<10; i++ )); do
         _base="$rapl/constraint_$i"
+        [[ -e ${_base}_name ]] || break
 
         get "$_base" name _
-
-        [[ $_name ]] || break
 
         get "$_base" time_window_us _
         uconv "$_time_window_us" _time_window
@@ -88,3 +84,9 @@ printf '%-25s %-25s %-25s\n\n' \
     "min_perf_pct: $_min_perf_pct" \
     "max_perf_pct: $_max_perf_pct" \
     "no_turbo: $_no_turbo"
+
+echo '--------------------------------------------------'
+echo -e "> acpi:\n"
+
+acpi -V
+echo

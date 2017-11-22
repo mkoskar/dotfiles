@@ -14,7 +14,11 @@ set signcolumn=no
 set tabstop=8
 set virtualedit=all
 
-let &viminfo = "!,'100,<50,s10,h,n".$VIMDIR."/.viminfo_pg"
+let &viminfo = "!,'100,<50,s10,h,n".$VIMDIR.'/.viminfo_pg'
+
+" FIXME: disable temporarily to get rid of:
+"   E575: Error while reading ShaDa file: mark entry at position XY has invalid line number
+let &viminfo = ''
 
 " ----------------------------------------
 

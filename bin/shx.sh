@@ -140,8 +140,8 @@ paci() {
 # Finds what package provides file or directory
 paco() {
     [ $# -eq 0 ] && return 2
-    pacman -Qo -- "$@"
-}
+    pacman -Qo -- "$@" || pacman -Fo -- "$@"
+} 2>/dev/null
 
 # Finds what package provides command
 pacoc() {
@@ -152,8 +152,8 @@ pacoc() {
 # Files provided by package
 pacl() {
     [ $# -eq 0 ] && return 2
-    pacman -Qql -- "$1"
-}
+    pacman -Qql -- "$1" || pacman -Fql -- "$1"
+} 2>/dev/null
 
 # Target's 'depends on'
 pacd() {
