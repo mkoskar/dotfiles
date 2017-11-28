@@ -8,5 +8,8 @@ cd ~/tmp
 
 config="$HOME/.config/nvim/init-test.vim"
 
-vim -u "$config"; nvim -u "$config"
-tmux -L "$prgname" new "vim -u '$config'; nvim -u '$config'"
+vim -u "$config"
+tmux -L "$prgname" new vim -u "$config"
+
+nvim -u "$config"
+tmux -L "$prgname" new nvim -u "$config"

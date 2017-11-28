@@ -6,12 +6,15 @@ set noloadplugins
 let mapleader = ','
 
 set laststatus=2
+set noruler
+set noshowcmd
 set shortmess+=I
+set signcolumn=yes
 set viminfo=
 
-if !has('nvim')
-    set t_ut=
-endif
+"if !has('nvim')
+"    set t_ut=
+"endif
 
 colorscheme default
 
@@ -24,8 +27,9 @@ function! Test() abort
         exec 'colorscheme '.theme
         let c = 0
         while c < 30
-            redraw!
-            sleep 100 m
+            tabnext
+            redraw
+            sleep 200 m
             let c += 1
         endwhile
     endfor
@@ -33,6 +37,7 @@ function! Test() abort
 endfunction
 
 nnoremap <silent> <Leader>tt :call Test()<CR>
+nnoremap <silent> <C-L> :redraw<CR>
 nnoremap <silent> Q :qa!<CR>
 
 autocmd! VimEnter * call Test()

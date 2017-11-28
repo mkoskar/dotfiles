@@ -453,6 +453,8 @@ set virtualedit=block
 let &viewdir = $VIMDIR.'/.view'
 let &viminfo = "!,'100,<50,s10,h,n".$VIMDIR.'/.viminfo'
 
+nnoremap <silent> <Leader>re :redraw!<CR>
+
 " Disable Ex mode
 nnoremap Q <Nop>
 
@@ -538,7 +540,7 @@ xnoremap <silent> <Leader>uy :SystemRange! urls -y<CR>
 nnoremap <silent> <Leader>uy :.SystemRange! urls -y<CR>
 nnoremap <silent> <Leader>uY :exec line('w0').','.line('w$').'SystemRange! urls -y'<CR>
 
-" GIT
+" Git
 nnoremap <Leader>gg :vert System git show HEAD:./
 
 " ----------------------------------------
