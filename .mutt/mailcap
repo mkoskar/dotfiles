@@ -1,25 +1,11 @@
-text/html;                  stdiner -bt b0
-text/html;                  w3m -I %{charset} -T text/html; copiousoutput
-text/*;                     e0 %s
+text/html;      stdiner -bt b0
+text/html;      w3m -I %{charset} -T text/html; copiousoutput
+text/*;         e0 %s
 
-audio/*;                    stdiner -b mpv %s
-image/*;                    stdiner -b sxiv %s
-video/*;                    stdiner -b mpv %s
-
-application/rtf;                                                            stdiner -b libreoffice %s
-
-application/msexcel;                                                        stdiner -b libreoffice %s
-application/vnd.ms-excel;                                                   stdiner -b libreoffice %s
-application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;          stdiner -b libreoffice %s
-
-application/msword;                                                         stdiner -b libreoffice %s
-application/vnd.ms-word;                                                    stdiner -b libreoffice %s
-application/vnd.openxmlformats-officedocument.wordprocessingml.document;    stdiner -b libreoffice %s
-
-application/ppt;                                                            stdiner -b libreoffice %s
-application/vnd.ms-powerpoint;                                              stdiner -b libreoffice %s
-application/vnd.openxmlformats-officedocument.presentationml.presentation;  stdiner -b libreoffice %s
-
-application/ogg;            stdiner -b mpv %s
-application/pdf;            stdiner -b zathura %s
-application/*;              e0 %s
+application/*;  stdiner -b xdg-open
+audio/*;        stdiner -b xdg-open
+font/*;         stdiner -b xdg-open
+image/*;        stdiner -b xdg-open
+message/*;      stdiner -b xdg-open
+model/*;        stdiner -b xdg-open
+video/*;        stdiner -b xdg-open

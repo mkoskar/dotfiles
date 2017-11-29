@@ -3,4 +3,4 @@ Name=Browser
 Type=Application
 Exec=b %u
 Terminal=false
-MimeType=text/html;text/xml;application/xhtml+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
+MimeType=application/x-extension-html;application/xhtml+xml;text/html;text/xml;x-scheme-handler/http;x-scheme-handler/https;
