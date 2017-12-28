@@ -129,6 +129,7 @@ alias man-all-posix='man-all -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
 # ----------------------------------------
 
 alias pac='pacman'
+alias paccheck='paccheck --quiet --file-properties --sha256sum --backup --noextract --noupgrade'
 alias pactree='pactree --color'
 
 # Target's detailed info
@@ -140,8 +141,8 @@ paci() {
 # Finds what package provides file or directory
 paco() {
     [ $# -eq 0 ] && return 2
-    pacman -Qo -- "$@" || pacman -Fo -- "$@"
-} 2>/dev/null
+    pacman -Qo -- "$@"
+}
 
 # Finds what package provides command
 pacoc() {
@@ -155,13 +156,13 @@ pacl() {
     pacman -Qql -- "$1" || pacman -Fql -- "$1"
 } 2>/dev/null
 
-# Target's 'depends on'
+# Target's "depends on"
 pacd() {
     [ $# -eq 0 ] && return 2
     expac -l '\n' %D "$1"
 }
 
-# Target's 'provides'
+# Target's "provides"
 pacp() {
     if [ $# -eq 0 ]; then
         expac -l ' ' '%n %P'
@@ -176,15 +177,10 @@ pacs() {
     cower --color=auto -s "$1"
 }
 
-# Target's 'required by' (what depends on target)
+# Target's "required by" (what depends on target)
 pacw() {
     [ $# -eq 0 ] && return 2
     expac -l '\n' %N "$1"
-}
-
-paccheck() {
-    command paccheck --quiet --file-properties --sha256sum \
-        --backup --noextract --noupgrade "$@"
 }
 
 
@@ -268,6 +264,7 @@ alias sudo-off='sudo -K'
 alias sudo-on='sudo -v'
 alias tmux-killall='tmux-all kill-server'
 alias top='top -d 1'
+alias topdf='lowriter --convert-to pdf'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias w3m='w3m -v'
 alias weechat-plain='weechat -d $(mktemp -d)'

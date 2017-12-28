@@ -80,6 +80,7 @@ xauthset "$dispno"
 #    /usr/lib/xorg-server/Xorg ":$dispno" "vt$vtno" \
 #    -config "${XCONFIG:-xorg.conf.$HOSTNAME}" \
 #    -keeptty \
+#    -noreset \
 #    -novtswitch \
 #    </dev/null &>"$datadir/xsession.$dispno.out"
 
@@ -89,8 +90,8 @@ stty=$(stty -g)
 cleanup() {
     set +e
     kill "$pid"
-    trap : SIGHUP
-    ( sleep 15; kill -s HUP $$ ) &
+    trap : HUP
+    (sleep 15; kill -s HUP $$) &
     wait "$pid"
     kill -s KILL "$pid" &>/dev/null
     stty "$stty" || stty sane
@@ -98,10 +99,9 @@ cleanup() {
 }
 trap cleanup EXIT
 
-trap ready=1 SIGUSR1
-sleep 15 &
+trap 'DISPLAY=":$dispno" setsid xsession "$@" </dev/null' USR1
 (
-    trap '' SIGUSR1
+    trap '' USR1
     exec /usr/lib/xorg-server/Xorg ":$dispno" "vt$vtno" \
         -config "${XCONFIG:-xorg.conf.$HOSTNAME}" \
         -keeptty \
@@ -109,8 +109,6 @@ sleep 15 &
         -novtswitch
 ) &
 pid=$!
-
-wait -n || true
-[[ ${ready-} ]] || exit 1
-export DISPLAY=":$dispno"
-setsid xsession "$@" </dev/null
+trap : HUP
+(sleep 15; kill -s HUP $$) &
+wait "$pid"

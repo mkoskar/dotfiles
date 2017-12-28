@@ -22,6 +22,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ansible                 b https://docs.ansible.com/
     ant                     b https://ant.apache.org/manual/
     apache                  b http://httpd.apache.org/docs/
+    apk                     b https://pkgs.alpinelinux.org/packages?name={u}
     arch                    b https://www.archlinux.org/
     arch-bugs               b https://bugs.archlinux.org/index.php?string={u}
     arch-forums             b https://bbs.archlinux.org/search.php?action=show_new
@@ -47,6 +48,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     bash-pitfalls           b http://mywiki.wooledge.org/BashPitfalls
     bash-sheet              b http://mywiki.wooledge.org/BashSheet
     browserbench            b http://browserbench.org/
+    busybox                 b https://busybox.net/downloads/BusyBox.html
     c-faq                   b http://c-faq.com/
     calib                   b http://www.xrite.com/online-color-test-challenge
     calib1                  b http://www.lagom.nl/lcd-test/gamma_calibration.php
@@ -58,6 +60,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     chrome-searchcode       b https://cs.chromium.org/
     chrome-theming          b https://cs.chromium.org/chromium/src/chrome/browser/themes/browser_theme_pack.cc
     cite                    b http://citeseerx.ist.psu.edu/search?q={u}
+    cryptocurr              b https://coinmarketcap.com/
     ctlseqs                 b http://invisible-island.net/xterm/ctlseqs/ctlseqs.html
     ctlseqs1                b http://bjh21.me.uk/all-escapes/all-escapes.txt
     d                       b https://www.merriam-webster.com/dictionary/{u}
@@ -174,6 +177,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-lkddb             b https://cateee.net/lkddb/web-lkddb/
     linux-params            b https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html
     linux-repos             b https://git.kernel.org/cgit/
+    linux-routing           b http://lartc.org/lartc.html
     linux-specs             b http://refspecs.linuxfoundation.org/
     linux-src               b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/?id=$kernel_version
     linux-sysctl            b https://www.kernel.org/doc/Documentation/sysctl
@@ -189,6 +193,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     maven-central           b https://search.maven.org/
     maven-jcenter           b https://bintray.com/bintray/jcenter
     maven-popular           b http://mvnrepository.com/popular
+    mdev                    b https://git.busybox.net/busybox/plain/docs/mdev.txt
     mdn                     b https://developer.mozilla.org/en-US/search?q={u}
     mime                    b https://www.iana.org/assignments/media-types/media-types.xhtml
     mongodb                 b http://docs.mongodb.org/manual/reference/

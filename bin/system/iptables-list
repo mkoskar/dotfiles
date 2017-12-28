@@ -7,19 +7,28 @@ if (( EUID )); then
     exit 1
 fi
 
-list() {
-    family=$1
-    src="/proc/net/${family}_tables_names"
+prgname=${0##*/}
 
-    [[ -e $src ]] || return 0
-    while read -r table; do
-        echo $'\n--------------------------------------------------'
-        echo -e "> $family table $table:\n"
-        "${family}tables" -t "$table" -nvL
-    done <"$src"
-}
+# ----------------------------------------
 
-list ip
-list ip6
+case $prgname in
+    ip6*) prefix='ip6' ;;
+    *) prefix='ip' ;;
+esac
+
+tables=("$@")
+if (( ! ${#tables[@]} )); then
+    src="/proc/net/${prefix}_tables_names"
+    [[ -e $src ]] || exit 0
+    readarray -t tables <"$src"
+fi
+
+for table in "${tables[@]}"; do
+    echo $'\n--------------------------------------------------'
+    printf '> %s table %s:\n\n' "$prefix" "$table"
+    "${prefix}tables" -t "$table" -nvL
+    echo
+    "${prefix}tables" -t "$table" -S
+done
 
 echo

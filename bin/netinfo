@@ -9,15 +9,17 @@ set -eu -o pipefail
     ip neigh
 
     echo $'\n--------------------------------------------------'
+    echo $'> Bridges:\n'
+
+    brctl show
+
+    echo $'\n--------------------------------------------------'
     echo $'> Addressing:\n'
 
     ip addr
     echo
 
     ip maddr
-    echo
-
-    brctl show
 
     echo $'\n--------------------------------------------------'
     echo $'> Routing:\n'

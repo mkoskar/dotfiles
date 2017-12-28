@@ -24,7 +24,6 @@ import XMonad.Actions.Warp
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
-import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.Minimize
@@ -136,8 +135,7 @@ myConfig = def
                         <+> positionStoreEventHook
                         {-<+> hintsEventHook-}
 
-    myManageHook = insertPosition Master Newer
-                   <+> composeOne
+    myManageHook = composeOne
                        [ appName <? "sp:" -?> customFloating $ W.RationalRect 0.03 0.03 0.94 0.94
                        , appName =? "clementine" -?> doShiftView "8"
                        , appName =? "gpodder" -?> doShift "8"

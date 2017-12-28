@@ -14,11 +14,18 @@ if (( $# < 2 )); then
     exit 2
 fi
 
+# ----------------------------------------
+
+case $prgname in
+    ip6*) prefix='ip6' ;;
+    *) prefix='ip' ;;
+esac
+
 table=$1
 chain=$2
 
-iptables -t "$table" -F "$chain"
-iptables -t "$table" -S | tac | awk -v chain="$chain" '
+"${prefix}tables" -t "$table" -F "$chain"
+"${prefix}tables" -t "$table" -S | tac | awk -v chain="$chain" '
 function escape(str) {
     gsub(/[\\.*?+|^$(){}\[\]]/, "\\\\&", str)
     return str
@@ -33,5 +40,5 @@ $0 ~ "\\s+" _chain "(\\s*|$)" {
     printf "\n"
 }
 ' | while read -ra args; do
-    iptables -t "$table" "${args[@]}"
+    "${prefix}tables" -t "$table" "${args[@]}"
 done

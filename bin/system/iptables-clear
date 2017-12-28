@@ -1,28 +1,76 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 
 if (( EUID )); then
     echo 'This script must be run with root privileges.' >&2
     exit 1
 fi
 
-#iptables -P INPUT ACCEPT
-#iptables -P FORWARD ACCEPT
-#iptables -P OUTPUT ACCEPT
+prgname=${0##*/}
 
-#iptables -t filter -F -X
-#iptables -t mangle -F -X
-#iptables -t nat -F -X
-#iptables -t raw -F -X
-#iptables -t security -F -X
+# ----------------------------------------
 
-{
-    [[ -e /proc/net/ip_tables_names ]] &&
-        /usr/lib/systemd/scripts/iptables-flush
+case $prgname in
+    ip6*) prefix='ip6' ;;
+    *) prefix='ip' ;;
+esac
 
-    [[ -e /proc/net/ip6_tables_names ]] &&
-        /usr/lib/systemd/scripts/iptables-flush 6
-} >/dev/null
+tables=("$@")
+if (( ! ${#tables[@]} )); then
+    src="/proc/net/${prefix}_tables_names"
+    [[ -e $src ]] || exit 0
+    readarray -t tables <"$src"
+fi
 
-exit 0
+for table in "${tables[@]}"; do
+    case $table in
+        filter)
+            cat <<-EOF
+			*filter
+			:INPUT ACCEPT [0:0]
+			:FORWARD ACCEPT [0:0]
+			:OUTPUT ACCEPT [0:0]
+			COMMIT
+			EOF
+        ;;
+        mangle)
+            cat <<-EOF
+			*mangle
+			:PREROUTING ACCEPT [0:0]
+			:INPUT ACCEPT [0:0]
+			:FORWARD ACCEPT [0:0]
+			:OUTPUT ACCEPT [0:0]
+			:POSTROUTING ACCEPT [0:0]
+			COMMIT
+			EOF
+        ;;
+        nat)
+            cat <<-EOF
+			*nat
+			:PREROUTING ACCEPT [0:0]
+			:INPUT ACCEPT [0:0]
+			:OUTPUT ACCEPT [0:0]
+			:POSTROUTING ACCEPT [0:0]
+			COMMIT
+			EOF
+        ;;
+        raw)
+            cat <<-EOF
+			*raw
+			:PREROUTING ACCEPT [0:0]
+			:OUTPUT ACCEPT [0:0]
+			COMMIT
+			EOF
+        ;;
+        security)
+            cat <<-EOF
+			*security
+			:INPUT ACCEPT [0:0]
+			:FORWARD ACCEPT [0:0]
+			:OUTPUT ACCEPT [0:0]
+			COMMIT
+			EOF
+        ;;
+    esac
+done | "${prefix}tables-restore"

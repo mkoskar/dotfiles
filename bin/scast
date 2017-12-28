@@ -35,7 +35,7 @@ read -r X Y W H <<<"$tmp"
     outfile="screencast-$ts.webm"
     args=(
         -pix_fmt yuv444p
-        -codec:v vp9 -crf 30 -b:v 0 -deadline realtime -cpu-used 8
+        -codec:v vp9 -crf 15 -b:v 0 -deadline realtime -cpu-used 8
         "$outfile"
     )
 
