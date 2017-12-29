@@ -71,7 +71,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     deb                     b https://packages.debian.org/search?keywords={u}
     dkim                    b http://dkimcore.org/tools/
     dm                      b http://www.dailymotion.com/en/relevance/search/{u}
-    dns-reserved            b https://www.rfc-editor.org/rfc/rfc2606.txt
+    dns-reserved            b https://tools.ietf.org/html/rfc2606
     docker                  b https://github.com/wsargent/docker-cheat-sheet
     docker-compose          b https://docs.docker.com/compose/compose-file/
     dockerfile              b https://docs.docker.com/engine/reference/builder/
@@ -186,7 +186,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     lists2                  b http://gmane.org/find.php
     lua                     b https://www.lua.org/manual/
     m4-macros               b https://www.gnu.org/software/m4/manual/m4.html#Macro-index
-    mailcap                 b https://tools.ietf.org/html/rfc1524.html
+    mailcap                 b https://tools.ietf.org/html/rfc1524
     man-pages               b http://man7.org/linux/man-pages/index.html
     material-design         b https://getmdl.io/
     maven                   b http://maven.apache.org/plugins/index.html
@@ -243,7 +243,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     regex-python-test       b http://pythex.org/
     regex101                b https://regex101.com/
     resolutions             b https://en.wikipedia.org/wiki/List_of_common_resolutions
-    rfc                     b https://www.rfc-editor.org/
+    rfc                     b https://tools.ietf.org/rfc/index
     rst                     b http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
     rst-demo!               b ~/projects/lab/docutils/showcase/_build/html/index.html
     rtfm-faqs               b ftp://rtfm.mit.edu/pub/faqs/

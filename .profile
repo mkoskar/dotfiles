@@ -43,7 +43,9 @@ fi
 [ "$TERM" ] || TERM=dumb
 export TERM
 
-eval "$(TERM=ansi dircolors -b)"
+if hash dircolors 2>/dev/null; then
+    eval "$(TERM=ansi dircolors -b)"
+fi
 
 export BROWSER='b'
 export DIFFPROG='difftool'
@@ -81,16 +83,21 @@ export QT_QPA_PLATFORMTHEME='gtk2'
 export QUOTING_STYLE='literal'
 export RANGER_LOAD_DEFAULT_RC='FALSE'
 export SAL_USE_VCLPLUGIN='gtk'
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent"
+export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent}
 export SYSTEMD_LESS=$LESS
 export TERMINFO_DIRS='/etc/terminfo:/usr/share/terminfo'
 export TMUX_TMPDIR=$TMPDIR
 export VDPAU_DRIVER='va_gl'
-export VIMBIN='nvim'
+
+if hash nvim 2>/dev/null; then
+    export VIMBIN='nvim'
+fi
 
 XDG_CACHE_HOME="$HOME/.cache"
 XDG_CONFIG_HOME="$HOME/.config"
 XDG_DATA_HOME="$HOME/.local/share"
+
+mkdir -p "$XDG_CACHE_HOME" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME"
 
 export ASPROOT="$HOME/.asp"
 export BZR_LOG="$XDG_DATA_HOME/bzr.log"

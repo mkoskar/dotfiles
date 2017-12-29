@@ -47,10 +47,8 @@ opts=(
 )
 
 if (( host )); then
-    identity="host_$identity"
     opts+=(-h)
 else
-    identity="user_$identity"
     if (( portfwd )); then
         opts+=(
             -O no-agent-forwarding
