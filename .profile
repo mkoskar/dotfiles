@@ -10,7 +10,7 @@ require() {
     [ "$2" ] && return
     printf '%s is not set or null\n' "$1" >&2
     case $- in *i*) ;; *) exit 1 ;; esac
-    exec /usr/bin/bash --noprofile --norc -l -i
+    exec /bin/bash --noprofile --norc -l -i
 }
 
 require HOME "$HOME"
@@ -30,7 +30,7 @@ export LC_COLLATE='C'
 export LC_MEASUREMENT='C'
 export LC_PAPER='C'
 
-export SHELL=${SHELL:-/usr/bin/bash}
+export SHELL=${SHELL:-/bin/bash}
 export XDG_RUNTIME_DIR="/run/user/$UID"
 
 export TMPDIR="/tmp/$USER"
@@ -75,6 +75,7 @@ export LESSOPEN='|highlight --quiet -O xterm256 -s bluegreen %s'
 export NNTPSERVER='snews://news.eternal-september.org'
 export NO_AT_BRIDGE=1
 export ORACLE_HOME='/opt/instantclient'
+export PARALLEL_SHELL='/bin/bash'
 export PARINIT='T4 w78 prbgqR B=.,?_A_a Q=_s>|'
 export PYENV_ROOT="$HOME/opt/pyenv"
 export PYTHONSTARTUP="$HOME/.pythonrc"

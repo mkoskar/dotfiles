@@ -8,4 +8,4 @@ Type=oneshot
 SyslogIdentifier=%N
 RemainAfterExit=yes
 Environment=DISPLAY=:1
-ExecStart=/usr/bin/bash -lc 'unset SHLVL; systemctl --user import-environment'
+ExecStart=/bin/bash -lc 'unset SHLVL; systemctl --user import-environment'

@@ -8,11 +8,15 @@ if empty($VIMDIR)
 else
     if isdirectory($VIMDIR)
         let $VIMDIR = fnamemodify($VIMDIR, ':p:h')
-        let &rtp = join([escape($VIMDIR, '\,'), &rtp, escape($VIMDIR.'/after', '\,')], ',')
+        call utils#rtpPrepend($VIMDIR)
     else
         call utils#echoError(printf("%s: VIMDIR is not a valid directory", $VIMDIR))
         let $VIMDIR = vimdir_data
     endif
+endif
+
+if has('nvim')
+    call utils#rtpAdd('/usr/share/vim/vimfiles')
 endif
 
 
@@ -437,7 +441,7 @@ nnoremap <silent> <Leader>k :call utils#tryCatchCall('<SID>LocOrQfMove', 'prev')
 " Language Specific
 " ----------------------------------------
 
-set keymap=slovak
+silent! set keymap=slovak
 
 set iminsert=0
 set imsearch=-1

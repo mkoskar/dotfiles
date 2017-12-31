@@ -7,7 +7,7 @@ from_git() {
     local name=$1
     [[ $name ]] || return
     shift
-    echo -e "\n> $name"
+    printf '\n> %s\n' "$name"
     if cd "$name" &>/dev/null; then
         git update
     else

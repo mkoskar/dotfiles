@@ -10,7 +10,6 @@ packadd! dirvish
 packadd! easy-align
 packadd! emmet
 packadd! fugitive
-packadd! fzf
 packadd! fzf-ext
 packadd! goyo
 packadd! limelight

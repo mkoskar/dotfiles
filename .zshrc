@@ -386,7 +386,7 @@ compctl -K _xsession x xx
 # Plugin: zsh-syntax-highlighting
 # ----------------------------------------
 
-__src=/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+__src=~/opt/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 if [[ -e $__src ]]; then
     . "$__src"
     ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)

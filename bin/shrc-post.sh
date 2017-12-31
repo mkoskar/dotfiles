@@ -11,8 +11,8 @@ if [ -d "$PYENV_ROOT" ]; then
     source_opt "$PYENV_ROOT/completions/pyenv.$SHNAME"
 fi
 
-source_opt ~/opt/fzf/shell/completion."$SHNAME"
-source_opt ~/opt/fzf/shell/key-bindings."$SHNAME"
+source_opt /usr/share/fzf/completion."$SHNAME"
+source_opt /usr/share/fzf/key-bindings."$SHNAME"
 
 
 # Login shell only
