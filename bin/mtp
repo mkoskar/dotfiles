@@ -4,10 +4,10 @@
 
 set -eu -o pipefail
 
-mounts=$(grep '^jmtpfs ' /proc/mounts | sort -u)
-readarray -t mounts <<<"$mounts"
-if (( ${#mounts[@]} > 0 )); then
-    echo -e "\nMounts:\n${mounts[*]}"
+mounts=$(grep '^jmtpfs ' /proc/mounts | sort -u) || true
+if [[ $mounts ]]; then
+    readarray -t mounts <<<"$mounts"
+    printf '\nMounts:\n%s\n' "${mounts[*]}"
     echo
     if confirm 'Unmount?' y; then
         PS3='Select: '
@@ -16,17 +16,15 @@ if (( ${#mounts[@]} > 0 )); then
         done
         [[ $sel ]] || exit 2
 
-        sel=($sel)
-        target=${sel[1]}
-
+        read -r sel target _ <<<"$sel"
         fusermount -u "$target"
         rm -d "$target"
     fi
 fi
 
 devices=$(jmtpfs -l 2>/dev/null | grep -P '^\d, .*' | sort -u)
-readarray -t devices <<<"$devices"
-if (( ${#devices[@]} > 0 )); then
+if [[ $devices ]]; then
+    readarray -t devices <<<"$devices"
     echo
     if confirm 'Mount?' y; then
         PS3='Select: '
@@ -35,7 +33,8 @@ if (( ${#devices[@]} > 0 )); then
         done
         [[ $sel ]] || exit 2
 
-        device=($(awk -F ', ' '{ print $1 " " $2 }' <<<"$sel"))
+        device=$(awk -F ', ' '{ print $1 " " $2 }' <<<"$sel")
+        read -ra device <<<"$device"
         target="$HOME/tmp/mtp-${device[0]}-${device[1]}"
 
         if ! findmnt -M "$target" &>/dev/null; then

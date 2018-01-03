@@ -2,8 +2,6 @@
 
 set -eu
 
-prgname=${0##*/}
-
 for i in /sys/class/power_supply/BAT${1:-*}; do
     [[ -e $i ]] || continue
     . "$i/uevent"

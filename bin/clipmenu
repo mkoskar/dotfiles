@@ -10,7 +10,7 @@ out() {
     read -r lines bytes <<<"$tmp"
     if (( bytes > 0 )); then
         tmp=$(head -c 50 <"$tmpfile" | squash | asciionly)
-        printf "%s%d:%d$sep%s\n" "$id" "$lines" "$bytes" "$tmp"
+        printf '%s%d:%d%s%s\n' "$id" "$lines" "$bytes" "$sep" "$tmp"
     fi
 }
 

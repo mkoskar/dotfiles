@@ -9,7 +9,7 @@ handle() {
     set -eu
     local name=$1
     shift
-    echo -e "\n> $name"
+    printf '\n> %s\n' "$name"
     cd "$name"
     "$@"
 }

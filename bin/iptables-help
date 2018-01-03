@@ -8,11 +8,11 @@ Drop ICMP echo requests from all but local addresses:
 
 # ----------------------------------------
 
-For packets with source IP address ADDR/MASK:
+For packets with source IP address ipaddr/mask:
 
 * modify source IP address to primary IP address of outgoing interface
 
-    iptables -t nat -A POSTROUTING -s ADDR/MASK -j MASQUERADE
+    iptables -t nat -A POSTROUTING -s ipaddr/mask -j MASQUERADE
 
 # ----------------------------------------
 
@@ -23,5 +23,10 @@ For TCP packets with destination port 80:
 
     iptables -t nat -A OUTPUT -p tcp --dport 80 -j REDIRECT --to-ports 8080
     iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080
+
+* change destination to ipaddr:port
+
+    iptables -t nat -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination ipaddr:port
+    iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination ipaddr:port
 
 EOF

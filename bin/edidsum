@@ -87,7 +87,7 @@ main() {
             fi
             if (( verbose )); then
                 echo $'\n--------------------------------------------------'
-                echo -e "> $out:\n"
+                printf '> %s:\n\n' "$out"
                 edid-decode "$out/edid" || true
                 echo
             fi

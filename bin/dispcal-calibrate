@@ -7,9 +7,9 @@ prgname=${0##*/}
 echo $'\n--------------------------------------------------'
 echo $'> Select display to continue:\n'
 
-dall=$({ dispwin -? || true; } |& sed -nr "s/^\s*([0-9]+ = 'Screen [0-9]+, Output .*)/\1/p")
+dall=$({ dispwin -? || true; } |& sed -nr "s/^\\s*([0-9]+ = 'Screen [0-9]+, Output .*)/\\1/p")
+[[ $dall ]] || exit 1
 readarray -t dall <<<"$dall"
-(( ${#dall[@]} )) || exit 1
 
 printf '%s\n' "${dall[@]}"
 echo
@@ -46,7 +46,7 @@ trap 'trap - INT; kill -INT -$$' INT
 echo $'\n--------------------------------------------------'
 echo $'> Calibrating & Profiling:\n'
 
-gopts=(-v -d$dsel -ye -P '0.5,0.5,2.0')
+gopts=(-v "-d$dsel" -ye -P '0.5,0.5,2.0')
 
 dispcal "${gopts[@]}" -qm -t6500 -g2.2 -k0 out
 [[ -e out.cal ]] || exit 1

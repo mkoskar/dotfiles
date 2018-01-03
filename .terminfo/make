@@ -9,7 +9,7 @@ make() {
     { infocmp -a1 -A /usr/share/terminfo "$1"; cat; } >"$1"
 }
 
-make linux <<-EOF
+make linux <<-'EOF'
 # ----------------------------------------
     cnorm=\E[?25h\E[?8c,
     rs2=\E[?1000l\E[?25h\E[?8c,
@@ -40,12 +40,12 @@ EOF
 # \E]PE68bbbb
 # \E]PFdddddd
 
-make rxvt-unicode-256color <<-EOF
+make rxvt-unicode-256color <<-'EOF'
 # ----------------------------------------
     clear=\E[H\E[J,
 EOF
 
-make screen-256color <<-EOF
+make screen-256color <<-'EOF'
 # ----------------------------------------
     hs,
     dsl=\E]2;\007,
@@ -57,7 +57,7 @@ make screen-256color <<-EOF
     tsl=\E]2;,
 EOF
 
-make tmux-256color <<-EOF
+make tmux-256color <<-'EOF'
 # ----------------------------------------
     dsl=\E]2;\007,
     sgr=\E[0%?%p6%t;1%;%?%p1%t;7%;%?%p2%t;4%;%?%p3%t;7%;%?%p4%t;5%;%?%p5%t;2%;m%?%p9%t\016%e\017%;,
@@ -77,7 +77,7 @@ EOF
 #   p6 (bold)           1               1   1
 #   p7 (invis)                          8   8
 
-make xterm-256color <<-EOF
+make xterm-256color <<-'EOF'
 # ----------------------------------------
     hs,
     clear=\E[H\E[J,

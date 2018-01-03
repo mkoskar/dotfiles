@@ -26,14 +26,14 @@ MENUER=$prgname menuer "$@" <<-EOF |
     arch                    b https://www.archlinux.org/
     arch-bugs               b https://bugs.archlinux.org/index.php?string={u}
     arch-forums             b https://bbs.archlinux.org/search.php?action=show_new
-    arch-lists              b https://www.google.com/search?q=site:lists.archlinux.org\ {u}
+    arch-lists              b https://www.google.com/search?q=site:lists.archlinux.org\\ {u}
     arch-repos              b https://git.archlinux.org/
     arch-wiki               b https://wiki.archlinux.org/index.php?search={u}
     argyllcms!              b /usr/share/argyllcms/doc/ArgyllDoc.html
     arxiv                   b https://arxiv.org/find
-    aur                     b https://aur.archlinux.org/packages.php?SeB=nd\&K={u}
-    aur-maintainer          b https://aur.archlinux.org/packages.php?SeB=m\&K=$AUR_MAINTAINER
-    aur-name-only           b https://aur.archlinux.org/packages.php?SeB=n\&K={u}
+    aur                     b https://aur.archlinux.org/packages.php?SeB=nd\\&K={u}
+    aur-maintainer          b https://aur.archlinux.org/packages.php?SeB=m\\&K=$AUR_MAINTAINER
+    aur-name-only           b https://aur.archlinux.org/packages.php?SeB=n\\&K={u}
     austin-csrg             b https://www.opengroup.org/austin/docreg.html
     awg                     b https://en.wikipedia.org/wiki/American_wire_gauge#Tables_of_AWG_wire_sizes
     awk                     b https://www.gnu.org/software/gawk/manual/gawk.html
@@ -79,27 +79,27 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ebay                    b https://www.ebay.com/sch/i.html?_nkw={u}
     ecma                    b http://www.ecma-international.org/publications/standards/Standard.htm
     emoji                   b https://en.wikipedia.org/wiki/List_of_emoticons
-    etsi                    b http://www.etsi.org/standards-search#\&sort=3
+    etsi                    b http://www.etsi.org/standards-search#\\&sort=3
     etymology               b http://www.etymonline.com/word/{u}
     filenames               b http://www.dwheeler.com/essays/filenames-in-shell.html
     firefox-about:*         b https://developer.mozilla.org/en-US/Firefox/The_about_protocol
     firefox-about:config    b http://kb.mozillazine.org/Category:Preferences
     firefox-changes         b https://www.mozilla.org/en-US/firefox/releases/
     firefox-changes-dev     b https://developer.mozilla.org/en-US/Firefox/Releases/
-    firefox-relnotes-bugs   b https://bugzilla.mozilla.org/buglist.cgi?query_format=advanced\&f1=cf_tracking_firefox_relnote\&o1=isnotempty\&f2=cf_tracking_firefox_relnote\&o2=substring\&v2={u}\&limit=200\&order=changeddate\ desc
+    firefox-relnotes-bugs   b https://bugzilla.mozilla.org/buglist.cgi?query_format=advanced\\&f1=cf_tracking_firefox_relnote\\&o1=isnotempty\\&f2=cf_tracking_firefox_relnote\\&o2=substring\\&v2={u}\\&limit=200\\&order=changeddate\\ desc
     flp                     b http://www.feynmanlectures.caltech.edu/
     freebsd                 b https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/
     freedesktop             b http://standards.freedesktop.org/
     freedesktop-repos       b https://cgit.freedesktop.org/
     freetype                b https://www.freetype.org/freetype2/docs/documentation.html
     g                       b https://www.google.com/search?q={u}
-    g-operators             b https://support.google.com/websearch/answer/2466433?hl=en\&ref_topic=3081620\&vid=1-635793825968278780-302114999
+    g-operators             b https://support.google.com/websearch/answer/2466433?hl=en\\&ref_topic=3081620\\&vid=1-635793825968278780-302114999
     gcc                     b https://gcc.gnu.org/onlinedocs/
     gg                      b https://groups.google.com/forum/#!search/{u}
     gh                      b https://github.com/
     gh-repos                b https://github.com/mkoskar?tab=repositories
     gh-search               b https://github.com/search?q={u}
-    gi                      b https://www.google.com/search?q={u}\&tbm=ischsr
+    gi                      b https://www.google.com/search?q={u}\\&tbm=ischsr
     gimp!                   b /usr/share/gimp/2.0/help/en/index.html
     git-changes             b https://github.com/git/git/tree/master/Documentation/RelNotes
     glib2                   b https://developer.gnome.org/glib/stable/
@@ -131,7 +131,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     html-spec-webdev        b https://html.spec.whatwg.org/dev/
     http                    b https://tools.ietf.org/html/rfc2616
     i                       b https://www.ixquick.com/do/metasearch.pl?query={u}
-    ii                      b https://www.ixquick.com/do/metasearch.pl?cat=pics\&query={u}
+    ii                      b https://www.ixquick.com/do/metasearch.pl?cat=pics\\&query={u}
     imdb                    b http://www.imdb.com/find?q={u}
     imperial                b https://en.wikipedia.org/wiki/Imperial_units
     intel-core-datasheets   b https://www-ssl.intel.com/content/www/us/en/processors/core/core-technical-resources.html
@@ -141,7 +141,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     irc-freenode            b http://irc.netsplit.de/channels/?net=freenode
     irc-specs               b http://ircv3.net/irc/
     iso                     b http://standards.iso.org/ittf/PubliclyAvailableStandards/index.html
-    iss-sightings           b https://spotthestation.nasa.gov/sightings/view.cfm?country=Slovakia\&region=None\&city=Partizanske
+    iss-sightings           b https://spotthestation.nasa.gov/sightings/view.cfm?country=Slovakia\\&region=None\\&city=Partizanske
     iss-tracker             b http://wsn.spaceflight.esa.int/iss/
     java                    b https://docs.oracle.com/javase/specs/jls/se9/html/index.html
     java-changes            b https://docs.oracle.com/javase/9/language/toc.htm
@@ -207,7 +207,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     netfilter-flow          b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
     nodejs                  b https://nodejs.org/api/
     notes!                  b ~/projects/notes/_build/html/index.html
-    ntrs                    b https://ntrs.nasa.gov/search.jsp?Ntk=All\&Ntt={u}
+    ntrs                    b https://ntrs.nasa.gov/search.jsp?Ntk=All\\&Ntt={u}
     oracle-plsql            b https://docs.oracle.com/database/121/LNPLS/toc.htm
     oracle-sql              b https://docs.oracle.com/database/121/SQLRF/toc.htm
     pango-markup            b https://developer.gnome.org/pango/stable/PangoMarkupFormat.html
@@ -276,15 +276,15 @@ MENUER=$prgname menuer "$@" <<-EOF |
     tlds                    b https://www.iana.org/domains/root/db
     tmux-changes            b https://github.com/tmux/tmux/blob/master/CHANGES
     tor-specs               b https://gitweb.torproject.org/torspec.git/tree/
-    tr                      b https://translate.google.com/?sl=en\&tl=sk\&q={u}
-    tr-de                   b https://translate.google.com/?sl=de\&tl=sk\&q={u}
+    tr                      b https://translate.google.com/?sl=en\\&tl=sk\\&q={u}
+    tr-de                   b https://translate.google.com/?sl=de\\&tl=sk\\&q={u}
     tweets                  b https://tweetdeck.twitter.com/
     types-eth!              b /etc/ethertypes
     types-ip!               b /etc/protocols
     types-ports!            b /etc/services
     ud                      b https://www.urbandictionary.com/define.php?term={u}
     uefi-specs              b http://uefi.org/specifications
-    unicode                 b https://en.wikipedia.org/wiki/Plane_\(Unicode\)
+    unicode                 b https://en.wikipedia.org/wiki/Plane_\\(Unicode\\)
     unicode-charts          b http://unicode.org/charts/
     unicode-convert         b https://r12a.github.io/apps/conversion/
     unicode-emoji           b http://www.unicode.org/emoji/charts/full-emoji-list.html
@@ -310,8 +310,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     xorg                    b https://www.x.org/releases/current/doc/
     yaml                    b http://yaml.org/refcard.html
     yt                      b https://www.youtube.com/results?q={u}
-    yt-channel              b https://www.youtube.com/results?sp=EgIQAlAU\&q={u}
-    yt-playlist             b https://www.youtube.com/results?sp=EgIQA1AU\&q={u}
+    yt-channel              b https://www.youtube.com/results?sp=EgIQAlAU\\&q={u}
+    yt-playlist             b https://www.youtube.com/results?sp=EgIQA1AU\\&q={u}
     zsh                     b http://zsh.sourceforge.net/Doc/Release/index.html
     zsh-changes             b https://github.com/zsh-users/zsh/blob/master/NEWS
 

@@ -27,6 +27,7 @@ sel=$(
         75 150 300 600 \
     2>&1 >/dev/tty
 )
+[[ $sel ]] || exit 1
 readarray -t sel <<<"$sel"
 
 src=${sel[0]}

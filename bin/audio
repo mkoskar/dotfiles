@@ -28,7 +28,8 @@ pa_sink_toggle() {
     local all current tmp
     pacmd stat &>/dev/null || return 0
     tmp=$(pacmd list-sinks | sed -rn 's/^\tname: <(.*)>$/\1/p')
-    [[ $tmp ]] && readarray -t all <<<"$tmp"
+    [[ $tmp ]] || return 1
+    readarray -t all <<<"$tmp"
     current=$(pacmd dump | sed -rn 's/^set-default-sink (.*)$/\1/p')
     local i len=${#all[@]}
     for (( i=0; i<len; i++ )); do
@@ -40,6 +41,7 @@ pa_sink_toggle() {
 }
 
 if (( ! $# )); then
+    trap echo EXIT
     while true; do
         stat=$(status audio)
         printf '\e[1G%s\e[0K' "$stat"
@@ -70,7 +72,6 @@ if (( ! $# )); then
                 ;;
         esac
     done
-    echo
     exit
 fi
 

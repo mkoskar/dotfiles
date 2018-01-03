@@ -18,9 +18,9 @@ HISTIGNORE='exit'
 HISTSIZE=1000
 
 __title='\[\e]2;\u@\h:\w\a\]'
-PS1="$__title\$?\$__statstr:\${BASEDIR:+(\${BASEDIR##*/}):}\W\$ "
+PS1="$__title\$?\$__statstr:\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
 if [[ $HOSTNAME != 'mirci' ]]; then
-    PS1="$__title\$?\$__statstr:\h:\${BASEDIR:+(\${BASEDIR##*/}):}\W\$ "
+    PS1="$__title\$?\$__statstr:\\h:\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
 fi
 
 __prompt_command() {

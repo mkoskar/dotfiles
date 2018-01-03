@@ -2,7 +2,10 @@
 
 set -e
 
-cleanup() { kill 0; }
+cleanup() {
+    # shellcheck disable=SC2046
+    kill $(jobs -p) &>/dev/null || true
+}
 trap cleanup EXIT
 
 xmobar

@@ -52,7 +52,8 @@ xmonad() {
 cleanup() {
     local retstat=$?
     printf '%s: exit %s\n' "$prgname" "$retstat" >&2
-    kill 0
+    # shellcheck disable=SC2046
+    kill $(jobs -p) &>/dev/null || true
 }
 trap cleanup EXIT
 

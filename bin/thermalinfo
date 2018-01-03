@@ -16,7 +16,7 @@ sensors
 
 echo '--------------------------------------------------'
 base='/sys/class/thermal'
-echo -e "> $base:\n"
+printf '> %s:\n\n' "$base"
 
 for cdev in "$base/"cooling_device*; do
     [[ -e $cdev ]] || continue

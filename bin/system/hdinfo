@@ -40,6 +40,6 @@ echo "> hdparm -I -- $target"
 hdparm -I -- "$target"
 
 echo $'\n--------------------------------------------------'
-echo -e "> smartctl -a -- $target\n"
+printf '> smartctl -a -- %s\n\n' "$target"
 
 smartctl -a -- "$target"

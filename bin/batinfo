@@ -2,12 +2,10 @@
 
 set -eu
 
-prgname=${0##*/}
-
 for i in /sys/class/power_supply/BAT${1:-*}; do
     [[ -e $i ]] || continue
     echo $'\n--------------------------------------------------'
-    echo -e "> $i:\n"
+    printf '> %s:\n\n' "$i"
     cat -- "$i/uevent"
 
     batcap=$(batcap "${i##*/BAT}")

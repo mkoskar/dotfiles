@@ -46,18 +46,22 @@ augroup END
 
 set statusline+=%(\ %#ErrorMsg#%(\ %{ale#statusline#Status()}\ %)%*%)
 
-let ale_echo_cursor = 0
-let ale_echo_msg_format = '%severity%: %s [%linter%]'
-let ale_lint_on_enter = 0
+let ale_echo_cursor = 1
+let ale_echo_msg_format = '[%linter%] %code%: %s'
+let ale_lint_on_enter = 1
 let ale_lint_on_insert_leave = 1
 let ale_lint_on_text_changed = 'normal'
-let ale_sh_shellcheck_exclusions = 'SC1003,SC1007,SC1090,SC1091,SC2032,SC2088'
+let ale_sh_shellcheck_exclusions = 'SC1003,SC1007'
 let ale_sign_error = '>'
 let ale_sign_warning = '>'
 let ale_statusline_format = ['E(%d)', 'W(%d)', '']
 
 nnoremap <silent> <C-Space> :ALEDetail<CR>
-nnoremap <silent> <Leader>aa :ALEToggle<CR>
+nmap <silent> <Leader>aa <Plug>(ale_toggle)
+nmap <silent> <Leader>ag <Plug>(ale_first)
+nmap <silent> <Leader>aj <Plug>(ale_next)
+nmap <silent> <Leader>ak <Plug>(ale_previous)
+nmap <silent> <Leader>aG <Plug>(ale_last)
 
 
 " bufexplorer

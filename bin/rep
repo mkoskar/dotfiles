@@ -98,7 +98,7 @@ while true; do
     ts_begin_=$(date +%T -d "@$ts_begin")
 
     (( inline )) || printf '%s' "$ti_rc"
-    (( quiet )) || printf "> started: %s${ti_el}\n" "$ts_begin_" >&2
+    (( quiet )) || printf "> started: %s${ti_el}\\n" "$ts_begin_" >&2
 
     printf -v cmd '%q "$@"' "$1"
     bashx -c "$cmd" "$@" |& tee ${append+-a} "$output" |

@@ -28,7 +28,7 @@ initx() {
 
     trap_err() {
         local retstat=$?
-        printf "\n${ti_error}ERR (%d): %s${ti_reset}\n" "$retstat" "$BASH_COMMAND"
+        printf "\\n${ti_error}ERR (%d): %s${ti_reset}\\n" "$retstat" "$BASH_COMMAND"
         stacktrace "$retstat"
         (( BASH_SUBSHELL )) && exit $retstat || exit 1
     } >&2

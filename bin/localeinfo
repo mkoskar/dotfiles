@@ -8,7 +8,7 @@ set -eu -o pipefail
 
     while read -r cat; do
         echo $'\n--------------------------------------------------'
-        echo -e "> $cat:\n"
+        printf '> %s:\n\n' "$cat"
         locale -k "$cat"
     done <<-EOF
 		LC_ADDRESS

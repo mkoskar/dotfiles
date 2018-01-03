@@ -24,7 +24,8 @@ _usage() {
 	  emoji-test    - emoji keyboard/display test data
 	  select        - creates a menu of characters to choose from
 	EOF
-    echo -e "\n  ${sharedir/#$HOME/\~}:\n"
+
+    printf '\n %s:\n\n' "${sharedir/#$HOME/\~}"
     for i in "$sharedir"/select/*; do
         [[ -e $i ]] || continue
         echo "    select ${i##*/}"
@@ -197,7 +198,7 @@ if [[ $mode = 'select' ]]; then
     if (( xdo )); then
         xdotool key "U$v"
     else
-        printf '%b' "\U$v"
+        printf '%b' "\\U$v"
     fi
 else
     ucd_file "$ver" "$ifile"

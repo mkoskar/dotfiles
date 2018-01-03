@@ -5,7 +5,7 @@ set -eu -o pipefail
 spawn() {
     local wname=$1 wid cdno
     shift
-    # shellcheck disable=SC2128
+    # shellcheck disable=SC2128,SC2207
     if wid=($(xdo id -n "$wname")); then
         if [[ $(xdo id) = "$wid" ]]; then
             xdo hide "$wid"

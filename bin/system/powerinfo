@@ -26,7 +26,7 @@ grep -F 'cpu MHz' /proc/cpuinfo
 
 echo $'\n--------------------------------------------------'
 base='/sys/class/powercap'
-echo -e "> $base:\n"
+printf '> %s\n\n' "$base"
 
 # shellcheck disable=SC2154
 for rapl in "$base/"*; do
@@ -73,7 +73,7 @@ done
 
 echo '--------------------------------------------------'
 base='/sys/devices/system/cpu/intel_pstate'
-echo -e "> $base:\n"
+printf '> %s\n\n' "$base"
 
 get "$base" min_perf_pct
 get "$base" max_perf_pct
@@ -86,7 +86,7 @@ printf '%-25s %-25s %-25s\n\n' \
     "no_turbo: $_no_turbo"
 
 echo '--------------------------------------------------'
-echo -e "> acpi:\n"
+printf '> acpi:\n\n'
 
 acpi -V
 echo

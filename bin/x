@@ -64,8 +64,8 @@ lockfile="/tmp/.X$dispno-lock"
 
 if [[ -e $lockfile ]]; then
     read -ra pid <"$lockfile"
-    echo -e "\nDisplay $dispno is currently in use (pid=$pid).\n"
-    if ps -"$pid"; then
+    printf '\nDisplay %s is currently in use (pid=%s).\n\n' "$dispno" "$pid"
+    if ps --pid "$pid"; then
         echo
         exit 1
     else
@@ -89,17 +89,20 @@ stty=$(stty -g)
 
 cleanup() {
     set +e
-    kill "$pid"
-    trap : HUP
-    (sleep 15; kill -s HUP $$) &
-    wait "$pid"
-    kill -s KILL "$pid" &>/dev/null
+    if [[ $pid ]] && ps --pid "$pid" &>/dev/null; then
+        kill "$pid"
+        trap : HUP
+        (sleep 15; kill -s HUP $$) &
+        wait "$pid"
+        kill -s KILL "$pid" &>/dev/null
+    fi
     stty "$stty" || stty sane
-    kill 0
+    # shellcheck disable=SC2046
+    kill $(jobs -p) &>/dev/null
 }
 trap cleanup EXIT
 
-trap 'DISPLAY=":$dispno" setsid xsession "$@" </dev/null' USR1
+trap 'ready=1' USR1
 (
     trap '' USR1
     exec /usr/lib/xorg-server/Xorg ":$dispno" "vt$vtno" \
@@ -111,4 +114,7 @@ trap 'DISPLAY=":$dispno" setsid xsession "$@" </dev/null' USR1
 pid=$!
 trap : HUP
 (sleep 15; kill -s HUP $$) &
-wait "$pid"
+wait "$pid" || true
+
+[[ ${ready-} ]] || exit 1
+DISPLAY=":$dispno" setsid xsession "$@" </dev/null
