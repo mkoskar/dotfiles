@@ -60,6 +60,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     chrome-searchcode       b https://cs.chromium.org/
     chrome-theming          b https://cs.chromium.org/chromium/src/chrome/browser/themes/browser_theme_pack.cc
     cite                    b http://citeseerx.ist.psu.edu/search?q={u}
+    country-codes           b https://en.wikipedia.org/wiki/ISO_3166-1#Current_codes
     cryptocurr              b https://coinmarketcap.com/
     ctlseqs                 b http://invisible-island.net/xterm/ctlseqs/ctlseqs.html
     ctlseqs1                b http://bjh21.me.uk/all-escapes/all-escapes.txt

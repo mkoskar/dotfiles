@@ -214,7 +214,7 @@ macro attach \cO '<pipe-entry>stdiner -bt b0<enter>' 'view in browser'
 macro browser \ea <exit>\ea 'go to previous mailbox'
 macro browser u /^\\.\\.$<enter><enter> 'go up a dir'
 macro compose Y pfy 'send the message without PGP'
-macro compose v '<edit-from>^Ume.<tab>' 'select from'
+macro compose v '<edit-from>^Ume-<tab>' 'select from'
 
 macro index o <enter>
 macro pager o q
