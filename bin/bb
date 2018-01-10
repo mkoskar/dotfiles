@@ -79,7 +79,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     dom-spec                b https://dom.spec.whatwg.org/
     ebay                    b https://www.ebay.com/sch/i.html?_nkw={u}
     ecma                    b http://www.ecma-international.org/publications/standards/Standard.htm
-    emoji                   b https://en.wikipedia.org/wiki/List_of_emoticons
+    emojis                  b https://emojipedia.org/
+    emoticons               b https://en.wikipedia.org/wiki/List_of_emoticons
     etsi                    b http://www.etsi.org/standards-search#\\&sort=3
     etymology               b http://www.etymonline.com/word/{u}
     filenames               b http://www.dwheeler.com/essays/filenames-in-shell.html
@@ -288,7 +289,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     unicode                 b https://en.wikipedia.org/wiki/Plane_\\(Unicode\\)
     unicode-charts          b http://unicode.org/charts/
     unicode-convert         b https://r12a.github.io/apps/conversion/
-    unicode-emoji           b http://www.unicode.org/emoji/charts/full-emoji-list.html
+    unicode-emojis          b http://www.unicode.org/emoji/charts/full-emoji-list.html
     unicode-gallery         b http://xahlee.info/comp/unicode_index.html
     unicode-math            b http://www.unicode.org/Public/math/revision-15/MathClassEx-15.html
     unicode-table           b http://unicode-table.com/

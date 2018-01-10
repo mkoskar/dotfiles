@@ -47,6 +47,7 @@ pacman -Qdt
 echo $'\n--------------------------------------------------'
 echo $'> Unmet dependencies:\n'
 
+#paccheck --depends --list-broken
 expac -l '\n' %D | sort -u | pacman -T
 
 echo $'\n--------------------------------------------------'

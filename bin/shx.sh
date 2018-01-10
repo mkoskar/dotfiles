@@ -129,7 +129,8 @@ alias man-all-posix='man-all -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
 # ----------------------------------------
 
 alias pac='pacman'
-alias paccheck='paccheck --quiet --file-properties --sha256sum --backup --noextract --noupgrade'
+alias paccheck='paccheck --quiet --depends --opt-depends --files --file-properties --sha256sum --require-mtree --db-files --backup --noextract --noupgrade'
+alias paclog-recent='paclog --after="$(date -I --date=-3days)"'
 alias pactree='pactree --color'
 
 # Target's detailed info

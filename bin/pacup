@@ -8,7 +8,7 @@ sudo pacman -Syu
 echo $'\n--------------------------------------------------'
 echo $'> Cleanup:\n'
 
-pkgs=$(pacman -Qqdtt)
+pkgs=$(pacman -Qqdt)
 [[ ! $pkgs ]] || {
     sudo pacman -Rcsn - <<<"$pkgs"
     echo

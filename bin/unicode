@@ -31,9 +31,10 @@ _usage() {
         echo "    select ${i##*/}"
     done
     for i in "$sharedir"/*; do
-        [[ -e $i ]] || continue
+        [[ -f $i ]] || continue
         echo "    ${i##*/}"
     done
+    echo
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
