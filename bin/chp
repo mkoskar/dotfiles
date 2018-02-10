@@ -114,21 +114,26 @@ fi
 
 if [[ ${CH_DEBUG-} ]]; then
     set -- \
-        --debug-plugin-loading \
         --enable-extension-activity-logging \
         --enable-logging=stderr \
         --v=1 \
         "$@"
 fi
 
-exec "$bin" \
-    --enable-devtools-experiments \
-    --enable-gpu-rasterization \
-    --enable-native-gpu-memory-buffers \
-    --enable-tab-audio-muting \
-    --enable-zero-copy \
-    --force-device-scale-factor=1 \
-    --ignore-gpu-blacklist \
-    --show-component-extension-options \
-    --user-data-dir="$path" \
-    "$@"
+# shellcheck disable=SC2191
+args=(
+    #--extensions-on-chrome-urls
+    #--force-device-scale-factor=1
+    #--restore-last-session
+
+    --enable-devtools-experiments
+    --enable-gpu-rasterization
+    --enable-native-gpu-memory-buffers
+    --enable-tab-audio-muting
+    --enable-zero-copy
+    --ignore-gpu-blacklist
+    --show-component-extension-options
+    --show-saved-copy=primary
+)
+
+exec "$bin" "${args[@]}" --user-data-dir="$path" "$@"

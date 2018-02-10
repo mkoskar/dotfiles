@@ -5,10 +5,6 @@ set -eu
 tzprint() {
     local tz=$1 ts=$2
     case $tz in
-        -)
-            echo $'\n---------------------------------------------------------'
-            return
-            ;;
         +)
             echo
             return
@@ -29,7 +25,7 @@ tzs=(
     +
     local
     UTC
-    -
+    +
     US/Hawaii
     US/Alaska
     US/Pacific
@@ -41,7 +37,7 @@ tzs=(
     America/Los_Angeles
     America/Toronto
     America/New_York
-    -
+    +
     WET
     CET
     EET
@@ -51,19 +47,19 @@ tzs=(
     Europe/Amsterdam
     Europe/Prague
     Europe/Moscow
-    -
+    +
     Asia/Tel_Aviv
     Asia/Dubai
     Asia/Singapore
     Asia/Shanghai
     Asia/Tokyo
-    -
+    +
     Australia/West
     Australia/North
     Australia/South
     +
     Australia/Sydney
-    -
+    +
     Pacific/Auckland
 )
 

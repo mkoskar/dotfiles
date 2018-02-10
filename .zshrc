@@ -84,10 +84,10 @@ alias help='run-help'
 # Window Title
 # ----------------------------------------
 
-function set-window-title {
+set-window-title() {
     local title
     zformat -f title '%n@%m:%s' "s:${PWD/#$HOME/~}"
-    printf '\e]2;%s\e\' "${(V%)title}"
+    hstatus "${(V%)title}"
 }
 add-zsh-hook precmd set-window-title
 
@@ -106,18 +106,18 @@ if [[ $HOST != 'mirci' ]]; then
     PROMPT='$__vimode%?$__statstr:%m:${BASEDIR:+(${BASEDIR##*/}):}%1~%(!.#.$) '
 fi
 
-function expand-dot-to-parent-directory-path {
+expand-dot-to-parent-directory-path() {
     [[ $LBUFFER = *.. ]] && LBUFFER+='/..' || LBUFFER+='.'
 }
 
-function expand-word-alias {
+expand-word-alias() {
     zle expand-word
     zle _expand_alias
 }
 
-function noop { }
+noop() { }
 
-function zle-keymap-select {
+zle-keymap-select() {
     __vimode=':'
     if [[ ! $KEYMAP = 'vicmd' ]]; then
         [[ $ZLE_STATE == *overwrite* ]] && __vimode='^' || __vimode='+'
@@ -125,7 +125,7 @@ function zle-keymap-select {
     zle reset-prompt
 }
 
-function zle-line-init {
+zle-line-init() {
     __pstatus=("${pipestatus[@]}")
     __statstr=
     if (( ${#__pstatus[@]} > 1 )); then
@@ -322,7 +322,7 @@ zstyle ':completion:*:*:*:*:default' list-prompt '%S%m%s'
 zstyle ':completion:*:*:*:*:descriptions' format ' %F{yellow}-- %d --%f'
 zstyle ':completion:*:*:*:*:hosts' use-ip true
 zstyle ':completion:*:*:*:*:manuals' separate-sections true
-zstyle ':completion:*:*:*:*:manuals.(^1*)' insert-sections true
+zstyle ':completion:*:*:*:*:manuals.*' insert-sections true
 zstyle ':completion:*:*:*:*:messages' format ' %F{yellow}-- %d --%f'
 zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm -w'
 zstyle ':completion:*:*:*:*:warnings' format ' %F{yellow}-- no matches found --%f'
@@ -352,7 +352,7 @@ compctl -v v
 
 compdef gitall=git
 
-function _pacl {
+_pacl() {
     local -a packages
     read -cA words
     if [ "${#words}" -eq 2 ]; then
@@ -360,9 +360,9 @@ function _pacl {
     fi
     reply=(${${packages#/var/lib/pacman/local/}%-*-*})
 }
-compctl -K _pacl pacl pacd pacp pacw paci paccheck pkgmark
+compctl -K _pacl pacl pacd pacp pacw paci paccheck pacscripts
 
-function _mkvirtualenv_pyenv {
+_mkvirtualenv_pyenv() {
     local -a versions
     read -cA words
     if [ "${#words}" -eq 2 ]; then
@@ -372,12 +372,12 @@ function _mkvirtualenv_pyenv {
 }
 compctl -K _mkvirtualenv_pyenv mkvirtualenv_pyenv
 
-function _systemd_dot {
+_systemd_dot() {
     reply=(${${(f)"$(systemctl --full --no-legend --no-pager list-units --all)"}%% *})
 }
 compctl -K _systemd_dot systemd_dot
 
-function _xsession {
+_xsession() {
     reply=(${(f)"$(xsession '-?')"})
 }
 compctl -K _xsession x xx

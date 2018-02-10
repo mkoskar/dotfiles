@@ -22,12 +22,15 @@ fi
 
 exec </dev/tty
 
+ti_col0=$(tput hpa 0) || ti_col0='\e[1G'
+ti_clr_eol=$(tput el)
+
 declare -i len=${#items[@]} i=0
 while true; do
     (( len > 0 )) || break
     item=${items[i]}
 
-    printf '\e[1G%s\e[0K' "$((i+1)) : $item" >&2
+    printf "${ti_col0}%s${ti_clr_eol}" "$((i+1)) : $item" >&2
     printf '%s\n' "$item"
 
     (( len > 1 )) || break

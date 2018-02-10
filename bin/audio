@@ -41,10 +41,12 @@ pa_sink_toggle() {
 }
 
 if (( ! $# )); then
+    ti_col0=$(tput hpa 0) || ti_col0='\e[1G'
+    ti_clr_eol=$(tput el)
     trap echo EXIT
     while true; do
         stat=$(status audio)
-        printf '\e[1G%s\e[0K' "$stat"
+        printf "${ti_col0}%s${ti_clr_eol}" "$stat"
         read -N1 -rs c
         case $c in
             [kK])

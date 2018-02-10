@@ -10,4 +10,5 @@ fi
 
 mbsync on
 
+hash neomutt &>/dev/null && exec neomutt "$@"
 exec /usr/bin/mutt "$@"

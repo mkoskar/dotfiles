@@ -2,4 +2,7 @@
 
 set -eu
 
-printf '\e]0;%s\e\\' "$1"
+ti_tsl=$(tput tsl)
+ti_fsl=$(tput fsl)
+
+printf "${ti_tsl}%s${ti_fsl}" "$1"

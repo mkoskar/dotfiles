@@ -56,3 +56,6 @@ keymap "M-;" LIST_MENU
 keymap 0 LINE_BEGIN
 keymap ? HELP
 keymap H BACK
+
+keymap Y EXTERN "clip -a"
+keymap y EXTERN_LINK "clip -a"

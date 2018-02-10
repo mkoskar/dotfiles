@@ -113,7 +113,7 @@ alias man-less="MANPAGER='less -s' man"
 
 alias man-1p='man -s 1p'
 alias man-3p='man -s 3p'
-alias man-posix='man -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
+alias man-posix='man -s 0p,9p,2p,3p,7p,8p,6p,1p,4p,5p'
 
 man_all() {
     pgx man -k . "$@"
@@ -122,7 +122,7 @@ alias man-all='man_all'
 
 alias man-all-1p='man-all -s 1p'
 alias man-all-3p='man-all -s 3p'
-alias man-all-posix='man-all -s 1p,2p,3p,4p,5p,6p,7p,8p,9p'
+alias man-all-posix='man-all -s 0p,9p,2p,3p,7p,8p,6p,1p,4p,5p'
 
 
 # pacman
@@ -431,6 +431,11 @@ systemd_dot() {
     systemd-analyze dot "$@" | dot -Tsvg | stdiner -bt b
 }
 alias systemd-dot='systemd_dot'
+
+terminfo.src() {
+    set -- ~/src/ncurses-*
+    [ -d "$1" ] && pg "$1/misc/terminfo.src"
+}
 
 tree() {
     set -- --dirsfirst -a -I '.git|.svn' --noreport -x "$@"

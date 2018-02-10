@@ -2,86 +2,9 @@
 
 set -eu
 
-cd ~/.terminfo
+cd "${BASH_SOURCE%/*}"
 
-make() {
-    # shellcheck disable=SC2094
-    { infocmp -a1 -A /usr/share/terminfo "$1"; cat; } >"$1"
-}
+(( EUID )) && odir=$PWD || odir='/etc/terminfo'
 
-make linux <<-'EOF'
-# ----------------------------------------
-    cnorm=\E[?25h\E[?8c,
-    rs2=\E[?1000l\E[?25h\E[?8c,
-EOF
-
-# \E[?25h   - Show cursor (DECTCEM).
-# \E[?8c    - Full block hardware cursor.
-# \E[?1000l - Don't send mouse X & Y on button press and release.
-# (See also: /etc/issue)
-
-# VT color palette escape sequences:
-# (See also: /etc/vconsole.rgb)
-#
-# \E]P0000000
-# \E]P19d2d2d
-# \E]P245a345
-# \E]P3db9c2e
-# \E]P4384580
-# \E]P5a43fa4
-# \E]P6229f9f
-# \E]P7aeaeae
-# \E]P84d4d4d
-# \E]P9c04f4f
-# \E]PA70c066
-# \E]PBd4c668
-# \E]PC606cb5
-# \E]PDbe63be
-# \E]PE68bbbb
-# \E]PFdddddd
-
-make rxvt-unicode-256color <<-'EOF'
-# ----------------------------------------
-    clear=\E[H\E[J,
-EOF
-
-make screen-256color <<-'EOF'
-# ----------------------------------------
-    hs,
-    dsl=\E]2;\007,
-    fsl=^G,
-    ritm=\E[23m,
-    rmso=\E[27m,
-    sitm=\E[3m,
-    smso=\E[7m,
-    tsl=\E]2;,
-EOF
-
-make tmux-256color <<-'EOF'
-# ----------------------------------------
-    dsl=\E]2;\007,
-    sgr=\E[0%?%p6%t;1%;%?%p1%t;7%;%?%p2%t;4%;%?%p3%t;7%;%?%p4%t;5%;%?%p5%t;2%;m%?%p9%t\016%e\017%;,
-    tsl=\E]2;,
-EOF
-
-# SGR:
-#
-#   mode                tmux-256color   xterm-256color
-#                                           rxvt-unicode-256color
-#   =================== =============== =========================
-#   p1 (standout)       3               7   7
-#   p2 (underline)      4               4   4
-#   p3 (reverse)        7               7   7
-#   p4 (blink)          5               5   5
-#   p5 (dim)            2               2
-#   p6 (bold)           1               1   1
-#   p7 (invis)                          8   8
-
-make xterm-256color <<-'EOF'
-# ----------------------------------------
-    hs,
-    clear=\E[H\E[J,
-    dsl=\E]2;\007,
-    fsl=^G,
-    tsl=\E]2;,
-EOF
+export TERMINFO='/usr/share/terminfo'
+tic -a -o "$odir" custom.tic

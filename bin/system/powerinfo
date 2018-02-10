@@ -17,9 +17,9 @@ uconv() {
 }
 
 echo $'\n--------------------------------------------------'
-echo $'> cpu:\n'
+echo $'> cpupower frequency-info\n'
 
-cpupower frequency-info
+cpupower frequency-info -o
 
 echo
 grep -F 'cpu MHz' /proc/cpuinfo
@@ -86,7 +86,7 @@ printf '%-25s %-25s %-25s\n\n' \
     "no_turbo: $_no_turbo"
 
 echo '--------------------------------------------------'
-printf '> acpi:\n\n'
+printf '> acpi -V\n\n'
 
 acpi -V
 echo

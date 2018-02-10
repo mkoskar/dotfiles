@@ -140,13 +140,17 @@ set winheight=5
 set statusline=
     \ statusline+=%n
     \ statusline+=\ %<%f
-    \ statusline+=%(\ %{exists('b:run_title')\ ?\ b:run_title\ :\ ''}%)
+    \ statusline+=%(\ %{exists('b:run_title')?b:run_title:''}%)
     \ statusline+=%(\ [%M%W%R]%)
     \ statusline+=%(\ %y%)
+    \ statusline+=%(\ [%{&l:fenc!='utf-8'?&l:fenc:''}]%)
+    \ statusline+=%(\ [%{&l:ff!='unix'?&l:ff:''}]%)
     \ statusline+=%=
-    \ statusline+=0x%-3B
-    \ statusline+=\ %-14(%l,%c%V%)
+    \ statusline+=\ %6(%l:%v%)
     \ statusline+=\ %P
+    \ statusline+=%a
+
+" TODO: tabline
 
 nnoremap <silent> <C-J> <C-W>j
 nnoremap <silent> <C-K> <C-W>k

@@ -64,6 +64,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     cryptocurr              b https://coinmarketcap.com/
     ctlseqs                 b http://invisible-island.net/xterm/ctlseqs/ctlseqs.html
     ctlseqs1                b http://bjh21.me.uk/all-escapes/all-escapes.txt
+    cups                    b https://www.cups.org/documentation.html
     d                       b https://www.merriam-webster.com/dictionary/{u}
     dbus                    b http://dbus.freedesktop.org/doc/dbus-specification.html
     dd                      b https://duckduckgo.com/lite/?q={u}
@@ -90,6 +91,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     firefox-changes-dev     b https://developer.mozilla.org/en-US/Firefox/Releases/
     firefox-relnotes-bugs   b https://bugzilla.mozilla.org/buglist.cgi?query_format=advanced\\&f1=cf_tracking_firefox_relnote\\&o1=isnotempty\\&f2=cf_tracking_firefox_relnote\\&o2=substring\\&v2={u}\\&limit=200\\&order=changeddate\\ desc
     flp                     b http://www.feynmanlectures.caltech.edu/
+    fosdem                  b https://video.fosdem.org/
     freebsd                 b https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/
     freedesktop             b http://standards.freedesktop.org/
     freedesktop-repos       b https://cgit.freedesktop.org/
@@ -99,6 +101,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gcc                     b https://gcc.gnu.org/onlinedocs/
     gg                      b https://groups.google.com/forum/#!search/{u}
     gh                      b https://github.com/
+    gh-dotbin               b https://github.com/mkoskar/dotfiles/tree/master/bin
     gh-repos                b https://github.com/mkoskar?tab=repositories
     gh-search               b https://github.com/search?q={u}
     gi                      b https://www.google.com/search?q={u}\\&tbm=ischsr
@@ -117,13 +120,14 @@ MENUER=$prgname menuer "$@" <<-EOF |
     google-play             b https://play.google.com/store/search?q={u}
     google-products         b https://developers.google.com/products/
     google-search           b https://www.google.com/advanced_search
-    gpg-search              b https://sks-keyservers.net/i/#extract
+    gpg-search              b http://pgp.mit.edu/
     gradle                  b https://gradle.org/docs/
     graphviz                b http://www.graphviz.org/doc/info/index.html
     groovy                  b http://groovy-lang.org/documentation.html
     grub                    b https://www.gnu.org/software/grub/manual/grub.html
     gtk-running             b https://developer.gnome.org/gtk3/stable/gtk-running.html
     guava                   b http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/index.html
+    gutenberg               b https://www.gutenberg.org/wiki/Category:Bookshelf
     hangouts                b https://hangouts.google.com/
     haskell-docs            b https://www.haskell.org/documentation
     haskell-search          b https://www.haskell.org/hoogle/?hoogle={u}
@@ -139,9 +143,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     intel-core-datasheets   b https://www-ssl.intel.com/content/www/us/en/processors/core/core-technical-resources.html
     intel-sdm               b https://software.intel.com/en-us/articles/intel-sdm
     iojs                    b https://iojs.org/api/
-    irc-docs                b https://github.com/grawity/irc-docs
+    irc-docs                b http://ircdocs.horse/
     irc-freenode            b http://irc.netsplit.de/channels/?net=freenode
-    irc-specs               b http://ircv3.net/irc/
     iso                     b http://standards.iso.org/ittf/PubliclyAvailableStandards/index.html
     iss-sightings           b https://spotthestation.nasa.gov/sightings/view.cfm?country=Slovakia\\&region=None\\&city=Partizanske
     iss-tracker             b http://wsn.spaceflight.esa.int/iss/
@@ -212,6 +215,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ntrs                    b https://ntrs.nasa.gov/search.jsp?Ntk=All\\&Ntt={u}
     oracle-plsql            b https://docs.oracle.com/database/121/LNPLS/toc.htm
     oracle-sql              b https://docs.oracle.com/database/121/SQLRF/toc.htm
+    osdev                   b https://wiki.osdev.org/Main_Page
     pango-markup            b https://developer.gnome.org/pango/stable/PangoMarkupFormat.html
     patents                 b https://patents.google.com/
     pep                     b https://www.python.org/dev/peps/
@@ -227,6 +231,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     posix1-ifaces           b $posix1_base/functions/contents.html
     posix1-utils            b $posix1_base/utilities/contents.html
     postgresql              b https://www.postgresql.org/docs/current/static/index.html
+    printing                b https://wiki.linuxfoundation.org/openprinting/database/documentation
     pygments                b http://pygments.org/docs/lexers/
     pypa                    b https://www.pypa.io/
     pypi                    b https://pypi.python.org/pypi
@@ -274,7 +279,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     suckless-repos          b https://git.suckless.org/
     sysrq                   b https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
     systemd-changes         b https://github.com/systemd/systemd/blob/master/NEWS
+    terminfo.src            b http://invisible-island.net/ncurses/terminfo.src.html
     tex                     b https://ctan.org/
+    timezones               b https://upload.wikimedia.org/wikipedia/commons/e/e8/Standard_World_Time_Zones.png
     tlds                    b https://www.iana.org/domains/root/db
     tmux-changes            b https://github.com/tmux/tmux/blob/master/CHANGES
     tor-specs               b https://gitweb.torproject.org/torspec.git/tree/

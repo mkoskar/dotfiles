@@ -10,13 +10,13 @@ get() {
 }
 
 echo $'\n--------------------------------------------------'
-echo $'> sensors:\n'
+echo $'> sensors\n'
 
 sensors
 
 echo '--------------------------------------------------'
 base='/sys/class/thermal'
-printf '> %s:\n\n' "$base"
+printf '> %s\n\n' "$base"
 
 for cdev in "$base/"cooling_device*; do
     [[ -e $cdev ]] || continue

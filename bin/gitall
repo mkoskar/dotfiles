@@ -9,6 +9,7 @@ handle() {
     set -eu
     local name=$1
     shift
+    [[ ${withbar-} ]] && echo
     printf '\n> %s\n' "$name"
     cd "$name"
     "$@"
@@ -25,6 +26,7 @@ case ${2-} in
     up | \
     update \
     )
+        export withbar=1
         pargs+=(--bar)
         ;;
     *)
@@ -32,7 +34,8 @@ case ${2-} in
         ;;
 esac
 
+trap echo EXIT
+
 find . -mindepth 2 -maxdepth 2 -type d -name '.git' -printf '%h\0' |
     sort -z |
     parallel -0 "${pargs[@]}" handle {} "$@"
-echo

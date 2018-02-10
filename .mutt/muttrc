@@ -17,7 +17,6 @@ set mailcap_path = ~/.mutt/mailcap
 set mbox_type = Maildir
 set message_cachedir = ~/.mutt/cache/messages
 set pipe_decode
-set quit
 set recall = ask-no
 set reverse_alias
 set reverse_name
@@ -123,6 +122,7 @@ bind index          zr          collapse-all
 bind index          zc          collapse-thread
 bind index          zo          collapse-thread
 bind index          ,           next-unread-mailbox
+bind index          \cQ         exit
 bind index,pager    &           noop
 bind index,pager    \#          noop
 bind index,pager    o           noop

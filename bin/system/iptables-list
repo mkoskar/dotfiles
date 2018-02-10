@@ -19,8 +19,7 @@ esac
 tables=("$@")
 if (( ! ${#tables[@]} )); then
     src="/proc/net/${prefix}_tables_names"
-    [[ -e $src ]] || exit 0
-    readarray -t tables <"$src"
+    [[ -e $src ]] && readarray -t tables <"$src"
 fi
 
 for table in "${tables[@]}"; do

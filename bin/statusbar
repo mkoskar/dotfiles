@@ -4,7 +4,8 @@ set -e
 
 cleanup() {
     # shellcheck disable=SC2046
-    kill $(jobs -p) &>/dev/null || true
+    #kill $(jobs -p) &>/dev/null || true
+    trap : TERM; kill 0
 }
 trap cleanup EXIT
 

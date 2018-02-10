@@ -5,7 +5,7 @@ set -eu
 for i in /sys/class/power_supply/BAT${1:-*}; do
     [[ -e $i ]] || continue
     echo $'\n--------------------------------------------------'
-    printf '> %s:\n\n' "$i"
+    printf '> %s\n\n' "$i"
     cat -- "$i/uevent"
 
     batcap=$(batcap "${i##*/BAT}")

@@ -78,9 +78,10 @@ if (( delay > 0 )); then
     read_opts=(-t "$delay_s")
 fi
 
-ti_ed=$(tput ed)
-ti_el=$(tput el)
-ti_rc=$(tput rc)
+ti_cur_restore=$(tput rc)
+ti_clr_eol=$(tput el)
+ti_clr_eos=$(tput ed)
+
 cols=$(tput cols)
 lines=$(tput lines)
 
@@ -97,12 +98,12 @@ while true; do
     ts_begin=$(date +%s.%N)
     ts_begin_=$(date +%T -d "@$ts_begin")
 
-    (( inline )) || printf '%s' "$ti_rc"
-    (( quiet )) || printf "> started: %s${ti_el}\\n" "$ts_begin_" >&2
+    (( inline )) || printf '%s' "$ti_cur_restore"
+    (( quiet )) || printf "> started: %s${ti_clr_eol}\\n" "$ts_begin_" >&2
 
     printf -v cmd '%q "$@"' "$1"
     bashx -c "$cmd" "$@" |& tee ${append+-a} "$output" |
-        sed -r "s/\$/$ti_el/" |
+        sed -r "s/\$/$ti_clr_eol/" |
         pr -T -W "$cols" -l $((lines-2)) +1:1
 
     ts_end=$(date +%s.%N)
@@ -114,7 +115,7 @@ while true; do
     fi
 
     if (( notty && delay > 0 )); then
-        (( inline )) || printf '%s' "$ti_ed"
+        (( inline )) || printf '%s' "$ti_clr_eos"
         sleep "$delay_s"
         continue
     fi
@@ -124,8 +125,8 @@ while true; do
             h=
             (( delay > 0 )) && h="waiting for ${delay}ms, " || h=
             h="${h}press any key to start or q|Q to quit"
-            printf "> finished: %s (%s)$ti_el" "$ts_end_" "$h" >&2
-            (( inline )) && echo || printf '%s' "$ti_ed"
+            printf "> finished: %s (%s)$ti_clr_eol" "$ts_end_" "$h" >&2
+            (( inline )) && echo || printf '%s' "$ti_clr_eos"
         fi
         read -N1 -rs "${read_opts[@]}" c || continue
         case $c in [qQ]) break ;; esac

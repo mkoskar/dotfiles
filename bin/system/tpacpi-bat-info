@@ -20,12 +20,12 @@ info() {
 }
 
 echo $'\n--------------------------------------------------'
-echo $'> main:\n'
+echo $'> Main:\n'
 
 info 1
 
 echo $'\n--------------------------------------------------'
-echo $'> secondary:\n'
+echo $'> Secondary:\n'
 
 info 2
 echo

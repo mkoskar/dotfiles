@@ -6,10 +6,13 @@ echo $'> Update:\n'
 sudo pacman -Syu
 
 echo $'\n--------------------------------------------------'
+echo $'> Pacnew/Pacsave:\n'
+
+pacdiff -o
+
+echo $'\n--------------------------------------------------'
 echo $'> Cleanup:\n'
 
 pkgs=$(pacman -Qqdt)
-[[ ! $pkgs ]] || {
-    sudo pacman -Rcsn - <<<"$pkgs"
-    echo
-}
+[[ ! $pkgs ]] || sudo pacman -Rcsn - <<<"$pkgs"
+echo

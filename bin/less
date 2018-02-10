@@ -1,9 +1,22 @@
 #!/usr/bin/env bash
 
-export LESS_TERMCAP_md=$'\e[1;37m'
-export LESS_TERMCAP_se=$'\e[0m'
-export LESS_TERMCAP_so=$'\e[1;37;41m'
-export LESS_TERMCAP_ue=$'\e[0m'
-export LESS_TERMCAP_us=$'\e[4;93m'
+#export LESS_TERMCAP_DEBUG=1
+
+ti_reset=$(tput sgr0)
+
+# enter_bold_mode       bold    md
+# ---                   ---     me
+export LESS_TERMCAP_md=$(tput -S <<<$'bold\nsetaf 7')
+export LESS_TERMCAP_me=${ti_reset}
+
+# enter_underline_mode  smul    us
+# exit_underline_mode   rmul    ue
+export LESS_TERMCAP_us=$(tput -S <<<$'smul\nsetaf 11')
+export LESS_TERMCAP_ue=${ti_reset}
+
+# enter_standout_mode   smso    so
+# exit_standout_mode    rmso    se
+export LESS_TERMCAP_so=$(tput -S <<<$'bold\nsetab 1\nsetaf 7')
+export LESS_TERMCAP_se=${ti_reset}
 
 exec /usr/bin/less "$@"

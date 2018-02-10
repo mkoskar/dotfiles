@@ -17,7 +17,7 @@ HISTFILESIZE=5000
 HISTIGNORE='exit'
 HISTSIZE=1000
 
-__title='\[\e]2;\u@\h:\w\a\]'
+__title="\\[$(hstatus '\u@\h:\w')\\]"
 PS1="$__title\$?\$__statstr:\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
 if [[ $HOSTNAME != 'mirci' ]]; then
     PS1="$__title\$?\$__statstr:\\h:\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
@@ -55,7 +55,7 @@ _pacl() {
     _get_comp_words_by_ref cur prev
     _pacman_pkg Qq
 }
-complete -o nospace -F _pacl pacl pacd pacp pacw paci paccheck pkgmark
+complete -o nospace -F _pacl pacl pacd pacp pacw paci paccheck pacscripts
 
 # ----------------------------------------
 

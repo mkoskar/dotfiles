@@ -44,7 +44,12 @@ augroup END
 " ale
 " ----------------------------------------
 
-set statusline+=%(\ %#ErrorMsg#%(\ %{ale#statusline#Status()}\ %)%*%)
+function! AleStatus() abort
+    let total = ale#statusline#Count(bufnr('%')).total
+    return total == 0 ? '' : printf('[%d]', total)
+endfunction
+
+set statusline+=%(\ %#ErrorMsg#%{AleStatus()}%*%)
 
 let ale_echo_cursor = 1
 let ale_echo_msg_format = '[%linter%] %code%: %s'
@@ -54,7 +59,6 @@ let ale_lint_on_text_changed = 'normal'
 let ale_sh_shellcheck_exclusions = 'SC1003,SC1007'
 let ale_sign_error = '>'
 let ale_sign_warning = '>'
-let ale_statusline_format = ['E(%d)', 'W(%d)', '']
 
 nnoremap <silent> <C-Space> :ALEDetail<CR>
 nmap <silent> <Leader>aa <Plug>(ale_toggle)

@@ -4,7 +4,7 @@
     reqd
     ~~~~
 
-    Simple HTTP server that replies with request's headers in response body.
+    Simple HTTP server for debugging purposes.
 
     :Compatibility: Python 3.x
     :Copyright: (c) 2014 Miroslav Koškár <http://mkoskar.com/>
@@ -12,23 +12,32 @@
 """
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
-import sys
 
 
 class HTTPHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
-        content = self.headers.as_string()
-        body = content.encode('UTF-8', 'replace')
-        sys.stderr.write(content)
+        print(self.requestline)
+        print()
+        print(self.headers.as_string(), end='')
+
+        clen = self.headers.get('Content-Length')
+        ccharset = self.headers.get_content_charset(failobj='ISO-8859-1')
+
+        if clen:
+            buf = self.rfile.read(int(clen))
+            print(buf.decode(ccharset, 'replace'))
+            print()
 
         self.send_response(200)
         self.send_header('Connection', 'close')
-        self.send_header('Content-Length', int(len(body)))
         self.send_header('Content-Type', 'text/plain; charset=UTF-8')
         self.end_headers()
 
-        self.wfile.write(body)
+        print('----------------------------------------')
+
+    def do_POST(self):
+        self.do_GET()
 
 
 httpd = HTTPServer(('', 8080), HTTPHandler)

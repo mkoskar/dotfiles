@@ -2,11 +2,11 @@
 
 set -eu -o pipefail
 
-ti_reset=$'\e[m'
-ti_hi0=$'\e[1;37m'
-ti_hi1=$'\e[1;32m'
-ti_hi2=$'\e[1;31m'
-ti_hi3=$'\e[1;33m'
+ti_reset=$(tput sgr0)
+ti_hi0=$(tput -S <<<$'bold\nsetaf 7')
+ti_hi1=$(tput -S <<<$'bold\nsetaf 2')
+ti_hi2=$(tput -S <<<$'bold\nsetaf 1')
+ti_hi3=$(tput -S <<<$'bold\nsetaf 3')
 
 format="%I, %j (%l, %L) at %a
 ----------------------------------------
