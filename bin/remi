@@ -2,23 +2,18 @@
 
 set -eu -o pipefail
 
-ti_reset=$(tput sgr0)
-ti_hi0=$(tput -S <<<$'bold\nsetaf 7')
-ti_hi1=$(tput -S <<<$'bold\nsetaf 2')
-ti_hi2=$(tput -S <<<$'bold\nsetaf 1')
-ti_hi3=$(tput -S <<<$'bold\nsetaf 3')
-
-ti_hi0_=$ti_reset
-ti_hi1_=$ti_reset
-ti_hi2_=$ti_reset
-ti_hi3_=$ti_reset
-
-[[ -t 1 ]] || {
+if [[ -t 1 ]]; then
+    ti_reset=$(tput sgr0)
+    ti_hi0=$(tput -S <<<$'bold\nsetaf 7'); ti_hi0_=$ti_reset
+    ti_hi1=$(tput -S <<<$'bold\nsetaf 2'); ti_hi1_=$ti_reset
+    ti_hi2=$(tput -S <<<$'bold\nsetaf 1'); ti_hi2_=$ti_reset
+    ti_hi3=$(tput -S <<<$'bold\nsetaf 3'); ti_hi3_=$ti_reset
+else
     ti_hi0='*'; ti_hi0_=$ti_hi0
     ti_hi1='`'; ti_hi1_=$ti_hi1
     ti_hi2='+'; ti_hi2_=$ti_hi2
     ti_hi3='_'; ti_hi3_=$ti_hi3
-}
+fi
 
 rem -q -t"${1:-7}" -ga | sed -r \
     -e '/^No reminders.$/d' \

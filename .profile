@@ -91,6 +91,10 @@ export TERMINFO_DIRS='/etc/terminfo:/usr/share/terminfo'
 export TMUX_TMPDIR=$TMPDIR
 export VDPAU_DRIVER='va_gl'
 
+if hash luarocks 2>/dev/null; then
+    eval "$(luarocks path)"
+fi
+
 if hash nvim 2>/dev/null; then
     export VIMBIN='nvim'
 fi
@@ -110,13 +114,19 @@ export XAUTHORITY="$XDG_DATA_HOME/xorg/Xauthority"
 
 [ "$_PATH" ] || export _PATH=$PATH
 PATH=$_PATH
+
+set -- ~/.gem/ruby/*
+[ -d "$1" ] && PATH="$1/bin:$PATH"
+
 PATH="$HOME/.cargo/bin:$PATH"
-PATH="$HOME/.gem/ruby/2.3.0/bin:$PATH"
-PATH="$HOME/.local/bin:$PATH"
+PATH="$HOME/.luarocks/bin:$PATH"
 PATH="$PYENV_ROOT/bin:$PATH"
+
+PATH="$HOME/.local/bin:$PATH"
 PATH="$HOME/opt/bin:$PATH"
 PATH="$HOME/projects/pub/dockerfiles/bin:$PATH"
 PATH="$HOME/projects/pub/pkgbuilds:$PATH"
 PATH="$HOME/projects/pub/tcolors/bin:$PATH"
+
 PATH="$HOME/bin:$PATH"
 export PATH

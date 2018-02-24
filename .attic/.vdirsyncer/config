@@ -1,0 +1,40 @@
+# SEEALSO: https://raw.githubusercontent.com/untitaker/vdirsyncer/master/example.cfg
+
+[general]
+status_path = ~/.vdirsyncer/status/
+
+# contacts
+
+[pair main_contacts]
+a = main_contacts_local
+b = main_contacts_remote
+
+[storage main_contacts_local]
+type = filesystem
+path = ~/.contacts/
+fileext = .vcf
+
+[storage main_contacts_remote]
+type = carddav
+url = https://owncloud.example.com/remote.php/carddav/addressbooks/bob/
+auth = guess # TODO
+username = TODO
+password = TODO
+
+# calendars
+
+[pair main_calendar]
+a = main_calendar_local
+b = main_calendar_remote
+
+[storage main_calendar_local]
+type = filesystem
+path = ~/.calendars/
+fileext = .ics
+
+[storage main_calendar_remote]
+type = caldav
+url = https://owncloud.example.com/remote.php/caldav/calendars/bob/
+auth = guess # TODO
+username = TODO
+password = TODO

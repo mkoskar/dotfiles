@@ -41,7 +41,7 @@ alias dkri='docker run -i -t -P'
 
 dkip() {
     local target; target=${1:-$(docker ps -lq)}
-    [ ! "$target" ] && return 2
+    [ "$target" ] || return 2
     docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$target"
 }
 
@@ -336,10 +336,7 @@ h() {
 }
 
 i() {
-    if [ $# -eq 0 ]; then
-        shi
-        return
-    fi
+    [ $# -gt 0 ] || { shi; return; }
     case $SHNAME in
         bash) type -a -- "$1" ;;
         zsh) type -af -- "$1" ;;
@@ -368,6 +365,7 @@ alias lsof-pid='lsof_pid'
 on() {
     [ $# -eq 0 ] && return 2
     local p; p=$(command -v "$1") || return 1
+    [ -e "$p" ] || { i "$1"; return; }
     shift
     eval "${*:-ls -la}" "$p"
 }
@@ -422,9 +420,7 @@ shi() {
 }
 
 source_opt() {
-    if [ -e "$1" ]; then
-        . -- "$1"
-    fi
+    [ ! -e "$1" ] || . -- "$1"
 }
 
 systemd_dot() {

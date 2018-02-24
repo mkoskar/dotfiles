@@ -37,16 +37,13 @@ shift $((OPTIND-1))
 # ----------------------------------------
 
 if [[ ! $profile ]]; then
-    filter='^(?!skel$).*$'
-    if [[ $bin_name = 'chromium' ]]; then
-        filter='^(?!proxy-socks$)(?!proxy-tor$)(?!skel$).*$'
-        profiles=(
-            default
-            dev
-            lab
-            plain
-        )
-    fi
+    filter='^(?!proxy-socks$)(?!proxy-tor$)(?!skel$).*$'
+    profiles=(
+        default
+        dev
+        lab
+        plain
+    )
     for p in ~/.config/"$bin_name".*; do
         [[ -d $p ]] || continue
         profiles+=("${p#*"$bin_name".}")
@@ -112,14 +109,6 @@ if [[ ! -e $path && $profile != 'skel' ]]; then
     fi
 fi
 
-if [[ ${CH_DEBUG-} ]]; then
-    set -- \
-        --enable-extension-activity-logging \
-        --enable-logging=stderr \
-        --v=1 \
-        "$@"
-fi
-
 # shellcheck disable=SC2191
 args=(
     #--extensions-on-chrome-urls
@@ -136,4 +125,13 @@ args=(
     --show-saved-copy=primary
 )
 
-exec "$bin" "${args[@]}" --user-data-dir="$path" "$@"
+if [[ ${CH_DEBUG-} ]]; then
+    # shellcheck disable=SC2191
+    args+=(
+        --enable-extension-activity-logging
+        --enable-logging=stderr
+        --v=1
+    )
+fi
+
+exec "$bin" --user-data-dir="$path" "${args[@]}" "$@"

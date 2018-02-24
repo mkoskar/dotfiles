@@ -17,7 +17,7 @@ uconv() {
 }
 
 echo $'\n--------------------------------------------------'
-echo $'> cpupower frequency-info\n'
+echo $'> CPU:\n'
 
 cpupower frequency-info -o
 

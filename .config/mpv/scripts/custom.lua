@@ -1,4 +1,4 @@
-local utils = require 'mp.utils'
+local utils = require('mp.utils')
 local ts_chapter_go = -1
 local ts_playlist_go = -1
 

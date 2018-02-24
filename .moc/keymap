@@ -1,20 +1,21 @@
-# This is the example kepmap file for MOC.  You can define your own key
-# mappings for MOC commands by creating your own keymap file and setting
+# This is the example keymap file for MOC.  You can define your own key
+# bindings for MOC commands by creating your own keymap file and setting
 # the 'Keymap' option in ~/.moc/config.
 #
 # The format of this file is:
 #
 #     - Lines beginning with # are comments.
 #     - Blank lines are ignored.
-#     - Every other line is expected to be in format:
+#     - Every other line is expected to be in one of the formats:
 #
 #           COMMAND = [KEY ...]
+#           COMMAND += KEY ...
 #
 # The KEY can be:
 #
 #     - Just a char, like i, L, ", *
 #     - CTRL-KEY sequence: ^k (CTRL-k), ^4
-#     - ALT-KEY (meta sequence): M-j (ALT-j), M-%
+#     - ALT-KEY (meta) sequence: M-j (ALT-j), M-/
 #     - Special keys: DOWN, UP
 #                     LEFT, RIGHT
 #                     HOME, END
@@ -27,9 +28,35 @@
 #                     ESCAPE
 #                     F1 - F12
 #
+# Note that the use of a digit as a KEY is deprecated.
+#
 # Maximum number of KEYs for one COMMAND is 5.
 #
-# Omitting the KEY for a command will disassociate the KEY from the COMMAND.
+# Omitting the KEY for a COMMAND will unbind all its default keys.  They
+# will also be automatically unbound when you bind new KEYs to it. Individual
+# default KEYs will be automatically unbound when they are explicitly bound
+# to some other COMMAND.
+#
+# Using the '+=' form will cause the KEYs to be appended to any existing
+# (default or explicit) bindings for the COMMAND.  Appending an existing
+# default binding for the same COMMAND will cause MOC to think of that KEY
+# as then being explicitly bound.
+#
+# Only one binding for any given COMMAND can appear in the keymap file.  One
+# exception to this is that if the default keys for a COMMAND are explicitly
+# unbound then a subsequent binding may appear for it.  A second exception
+# is that multiple appending bindings may appear.
+#
+# Meta-key detection is sensitive to the ESCDELAY environment variable (see
+# the manpage for ncurses(3)).  In its absence, MOC resets the default
+# delay to 25ms.  If you need to emulate meta-key sequences using the ESC
+# key, then you may need to set the value of ESCDELAY back to its ncurses
+# default of 1000ms (but doing so will make the response to the ESC key
+# sluggish).
+#
+# If MOC's keypresses are being filtered through some other program (in a
+# GUI environment, for example) which also does meta-key detection, then
+# MOC is at the mercy of the timings with which that program presents them.
 #
 # Default key configuration for MOC (and a list of all available commands):
 
@@ -71,6 +98,7 @@ previous              = b
 toggle_shuffle        = S
 toggle_repeat         = R
 toggle_auto_next      = X
+toggle_mixer          = x
 go_url                = O
 
 # Volume control keys:
@@ -130,15 +158,14 @@ cancel                = ^x ESCAPE
 hide_message          = M
 
 # Softmixer specific keys:
-toggle_mixer          = x
 toggle_softmixer      = w
+toggle_make_mono      = J
 
 # Equalizer specific keys:
 toggle_equalizer      = E
 equalizer_refresh     = e
 equalizer_prev        = ^h
 equalizer_next        = ^l
-toggle_make_mono      = J
 
 # External commands:
 mark_start            = '

@@ -190,6 +190,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     lists1                  b http://markmail.org/
     lists2                  b http://gmane.org/find.php
     lua                     b https://www.lua.org/manual/
+    luarocks                b https://luarocks.org/search?q={u}
     m4-macros               b https://www.gnu.org/software/m4/manual/m4.html#Macro-index
     mailcap                 b https://tools.ietf.org/html/rfc1524
     man-pages               b http://man7.org/linux/man-pages/index.html

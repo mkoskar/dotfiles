@@ -10,14 +10,14 @@ set smartcase
 map <A-j> 5j
 map <A-k> 5k
 
-noremap <A-C-H> 15h
 noremap <A-C-L> 15l
+noremap <A-C-H> 15h
 
 noremap <C-E> 5<C-E>
 noremap <C-Y> 5<C-Y>
 
-noremap zh 15zh
 noremap zl 15zl
+noremap zh 15zh
 
 
 " Displaying Text
@@ -42,8 +42,8 @@ nmap <Space> :nohlsearch \| echo<CR>
 
 nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
-nnoremap <C-H> <C-W>h
 nnoremap <C-L> <C-W>l
+nnoremap <C-H> <C-W>h
 
 
 " Messages and Info
@@ -76,8 +76,8 @@ nmap QA :qall<CR>
 
 nmap <A-l> :action NextTab<CR>
 nmap <A-h> :action PreviousTab<CR>
-nmap <A-S-k> :action MethodUp<CR>
 nmap <A-S-j> :action MethodDown<CR>
+nmap <A-S-k> :action MethodUp<CR>
 nmap c<C-j> :action SplitHorizontally<CR>
 nmap c<C-l> :action SplitVertically<CR>
 

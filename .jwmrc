@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<JWM>
+
+    <RootMenu>
+        <Program label="> term">term</Program>
+        <Separator/>
+        <Restart label="Restart"/>
+        <Exit label="Exit" confirm="true"/>
+    </RootMenu>
+
+    <Tray valign="bottom">
+        <Pager labeled="false"/>
+        <TaskList maxwidth="100"/>
+        <Dock/>
+        <Clock format="%a|%d.%m|%H:%M"/>
+    </Tray>
+
+    <MoveMode coordinates="window">opaque</MoveMode>
+    <ResizeMode coordinates="window">opaque</ResizeMode>
+    <SnapMode distance="10">border</SnapMode>
+
+    <Key mask="mod4" key="q">restart</Key>
+    <Key mask="mod4-S" key="q">exit</Key>
+    <Key mask="mod4-S" key="w">root:1</Key>
+
+    <Key mask="mod4" key="#">desktop#</Key>
+    <Key mask="mod4" key="Down">ddesktop</Key>
+    <Key mask="mod4" key="Up">udesktop</Key>
+    <Key mask="mod4" key="Right">rdesktop</Key>
+    <Key mask="mod4" key="Left">ldesktop</Key>
+    <Key mask="mod4-S" key="Down">sendd</Key>
+    <Key mask="mod4-S" key="Up">sendu</Key>
+    <Key mask="mod4-S" key="Right">sendr</Key>
+    <Key mask="mod4-S" key="Left">sendl</Key>
+
+    <Key mask="mod4" key="Tab">nextstacked</Key>
+    <Key mask="mod4-S" key="Tab">prevstacked</Key>
+    <Key mask="mod4" key="j">nextstacked</Key>
+    <Key mask="mod4" key="k">prevstacked</Key>
+    <Key mask="mod4" key="l">next</Key>
+    <Key mask="mod4" key="h">prev</Key>
+
+    <Key mask="mod4" key="c">close</Key>
+    <Key mask="mod4" key="f">fullscreen</Key>
+    <Key mask="mod4" key="minus">minimize</Key>
+    <Key mask="mod4" key="equal">maximize</Key>
+    <Key mask="mod4" key="m">move</Key>
+    <Key mask="mod4" key="r">resize</Key>
+    <Key mask="mod4" key="w">window</Key>
+
+    <Key key="Down">down</Key>
+    <Key key="Up">up</Key>
+    <Key key="Right">right</Key>
+    <Key key="Left">left</Key>
+    <Key key="j">down</Key>
+    <Key key="k">up</Key>
+    <Key key="l">right</Key>
+    <Key key="h">left</Key>
+    <Key key="Return">select</Key>
+    <Key key="Escape">escape</Key>
+    <Key key="q">escape</Key>
+
+    <!-- Groups -->
+
+    <Group>
+        <Class>^Firefox \(default\)$</Class>
+        <Option>desktop:3</Option>
+    </Group>
+
+    <Group>
+        <Name>^s_aux$</Name>
+        <Option>maximized</Option>
+        <Option>desktop:2</Option>
+    </Group>
+
+    <Group>
+        <Name>^s_tmp$</Name>
+        <Option>maximized</Option>
+        <Option>desktop:2</Option>
+    </Group>
+
+    <Group>
+        <Name>^s_wrk$</Name>
+        <Option>maximized</Option>
+        <Option>desktop:1</Option>
+    </Group>
+
+    <Group>
+        <Name>^sp:.*$</Name>
+        <Option>notitle</Option>
+    </Group>
+
+    <Group>
+        <Name>^term$</Name>
+        <Option>tiled</Option>
+    </Group>
+
+    <Group>
+        <Option>aerosnap</Option>
+        <Option>centered</Option>
+    </Group>
+
+    <!-- Styles -->
+
+    <WindowStyle>
+        <Font>sans-9:bold</Font>
+        <Foreground>#FFFFFF</Foreground>
+        <Background>#555555</Background>
+        <Corner>0</Corner>
+        <Width>1</Width>
+        <Active>
+            <Foreground>#FFFFFF</Foreground>
+            <Background>#0077CC</Background>
+        </Active>
+    </WindowStyle>
+
+    <TrayStyle group="true" list="all">
+        <Font>sans-9:bold</Font>
+        <Foreground>#FFFFFF</Foreground>
+        <Background>#333333</Background>
+    </TrayStyle>
+
+    <PagerStyle>
+        <Font>sans-9:bold</Font>
+        <Foreground>#555555</Foreground>
+        <Background>#333333</Background>
+        <Outline>#000000</Outline>
+        <Text>#FFFFFF</Text>
+        <Active>
+            <Foreground>#0077CC</Foreground>
+            <Background>#004488</Background>
+        </Active>
+    </PagerStyle>
+
+    <TaskListStyle>
+        <Font>sans-9:bold</Font>
+        <Foreground>#FFFFFF</Foreground>
+        <Background>#333333</Background>
+        <Active>
+            <Foreground>#FFFFFF</Foreground>
+            <Background>#555555</Background>
+        </Active>
+    </TaskListStyle>
+
+    <PopupStyle enabled="button">
+        <Font>sans-9:bold</Font>
+        <Foreground>#000000</Foreground>
+        <Background>#999999</Background>
+    </PopupStyle>
+
+    <MenuStyle>
+        <Font>Terminus:pixelsize=16</Font>
+        <Foreground>#FFFFFF</Foreground>
+        <Background>#333333</Background>
+        <Outline>#000000</Outline>
+        <Active>
+            <Foreground>#FFFFFF</Foreground>
+            <Background>#0077CC</Background>
+        </Active>
+    </MenuStyle>
+
+</JWM>

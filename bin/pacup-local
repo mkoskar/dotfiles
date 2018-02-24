@@ -1,22 +1,37 @@
 #!/usr/bin/env bash
 
 echo $'\n--------------------------------------------------'
-echo $'> NPM packages:\n'
+echo $'> Lua packages:\n'
 
 pkgs=(
-    bower
-    browserify
+    inspect
+    mobdebug
+)
+
+for pkg in "${pkgs[@]}"; do
+    luarocks --local install "$pkg"
+done
+
+echo '> luarocks --local list'
+luarocks --local list
+
+echo $'--------------------------------------------------'
+echo $'> Node packages:\n'
+
+pkgs=(
     grunt-cli
     js-beautify
     jshint
     learnyounode
-    remark
     semver
     stream-adventure
 )
-npm install -g "${pkgs[@]}"
+npm -g install "${pkgs[@]}"
 
-echo $'\n--------------------------------------------------'
+echo $'\n> npm -g list\n'
+npm -g list
+
+echo $'--------------------------------------------------'
 echo $'> Python packages:\n'
 
 pkgs=(
@@ -24,6 +39,9 @@ pkgs=(
     when-changed
 )
 pip install --user -U "${pkgs[@]}"
+
+echo $'\n> pip list --user\n'
+pip list --user
 
 echo $'\n--------------------------------------------------'
 echo $'> Ruby packages:\n'
@@ -34,6 +52,9 @@ pkgs=(
 )
 gem install "${pkgs[@]}"
 
+echo $'\n> gem list --local'
+gem list
+
 echo $'\n--------------------------------------------------'
 echo $'> Rust packages:\n'
 
@@ -41,3 +62,7 @@ pkgs=(
     rustfmt
 )
 cargo install "${pkgs[@]}"
+
+echo $'\n> cargo install --list\n'
+cargo install --list
+echo

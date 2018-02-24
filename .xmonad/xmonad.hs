@@ -222,14 +222,14 @@ myConfig = def
         , ("M-S-<Return>", spawn myTerminal)
 
           -- Screens & Workspaces
-        , ("M-w", onPrevNeighbour W.view)
         , ("M-e", onNextNeighbour W.view)
-        , ("M-S-w", onPrevNeighbour W.shift)
+        , ("M-w", onPrevNeighbour W.view)
         , ("M-S-e", onNextNeighbour W.shift)
-        , ("M-z", onPrevNeighbour W.greedyView)
+        , ("M-S-w", onPrevNeighbour W.shift)
         , ("M-x", onNextNeighbour W.greedyView)
-        , ("M-s", moveTo Prev HiddenNonEmptyWS)
+        , ("M-z", onPrevNeighbour W.greedyView)
         , ("M-d", moveTo Next HiddenNonEmptyWS)
+        , ("M-s", moveTo Prev HiddenNonEmptyWS)
 
         --, ("M-u", viewScreen 0)
         , ("M-i", viewScreen 0)
@@ -251,14 +251,14 @@ myConfig = def
         , ("M-<Return>", windows W.swapMaster)
 
           -- Spatial navigation
+        , ("M-C-j", sendMessage $ Go D)
+        , ("M-C-k", sendMessage $ Go U)
         , ("M-C-l", sendMessage $ Go R)
         , ("M-C-h", sendMessage $ Go L)
-        , ("M-C-k", sendMessage $ Go U)
-        , ("M-C-j", sendMessage $ Go D)
+        , ("M-C-S-j", sendMessage $ Swap D)
+        , ("M-C-S-k", sendMessage $ Swap U)
         , ("M-C-S-l", sendMessage $ Swap R)
         , ("M-C-S-h", sendMessage $ Swap L)
-        , ("M-C-S-k", sendMessage $ Swap U)
-        , ("M-C-S-j", sendMessage $ Swap D)
 
           -- Windows & Layouts
         , ("M-n", refresh)
@@ -267,10 +267,10 @@ myConfig = def
         , ("M-<Backspace>", focusUrgent)
         , ("M-<Space>", sendMessage NextLayout)
         , ("M-S-<Space>", setLayout $ Layout myLayoutHook)
-        , ("M-h", sendMessage Shrink)
         , ("M-l", sendMessage Expand)
-        , ("M-S-h", sendMessage MirrorShrink)
+        , ("M-h", sendMessage Shrink)
         , ("M-S-l", sendMessage MirrorExpand)
+        , ("M-S-h", sendMessage MirrorShrink)
         , ("M-,", sendMessage $ IncMasterN 1)
         , ("M-.", sendMessage $ IncMasterN (-1))
         , ("M-t", withFocused $ windows . W.sink)

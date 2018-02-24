@@ -54,10 +54,6 @@ esac
 
 # ----------------------------------------
 
-cpufreq_governor() {
-    cpupower frequency-set -g "$1"
-}
-
 wlan() {
     local dev
     for dev in /sys/class/net/wl*; do
@@ -71,11 +67,13 @@ exec >/dev/null
 
 case $1 in
     1)
-        cpufreq_governor powersave
+        cpupower frequency-set -g powersave
+        cpupower set -b 15
         wlan power_save on
         ;;
     0)
-        cpufreq_governor performance
+        cpupower frequency-set -g performance
+        cpupower set -b 0
         wlan power_save off
         ;;
 esac

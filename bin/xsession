@@ -5,8 +5,10 @@ set -eu
 prgname=${0##*/}
 
 sessions=(
+    jwm
     main
     openbox
+    rio
     xfwm4
     xmonad
 )
@@ -37,6 +39,10 @@ main() {
 openbox() {
     srun -xr tint2
     command openbox --startup 'xsession-hook startup'
+}
+
+rio() {
+    command rio -term term -virtuals 4
 }
 
 xfwm4() {

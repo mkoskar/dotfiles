@@ -5,14 +5,15 @@ set -eu
 prgname=${0##*/}
 
 _usage() {
-    echo "usage: $prgname [-n name] [cmd] [arg]..."
+    echo "usage: $prgname [-n name] [-g geometry] [cmd] [arg]..."
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-while getopts n:h opt; do
+while getopts n:g:h opt; do
     case $opt in
         n) name=$OPTARG ;;
+        g) geometry=$OPTARG ;;
         h) usage ;;
         *) usage_err ;;
     esac
@@ -27,21 +28,18 @@ bin=${TERMBIN:-urxvtc}
 name=${name:-term}
 
 case $bin in
-    mlterm)
-        exec "$bin" -N "$name" -e "$@"
-        ;;
     st)
-        exec "$bin" -n "$name" -e "$@"
+        exec "$bin" -n "$name" ${geometry:+-g "$geometry"} -e "$@"
         ;;
     termite)
         cmd=$(shell-escape "$@")
         exec "$bin" --name "$name" -e "$cmd"
         ;;
     urxvt | urxvtc)
-        exec "$bin" -name "$name" -e "$@"
+        exec "$bin" -name "$name" ${geometry:+-geometry "$geometry"} -e "$@"
         ;;
     xterm)
-        exec "$bin" -name "$name" -e "$@"
+        exec "$bin" -name "$name" ${geometry:+-geometry "$geometry"} -e "$@"
         ;;
     *)
         exit 2

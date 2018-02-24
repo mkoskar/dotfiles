@@ -5,13 +5,13 @@
 # * display number will be the same as currently active VT number
 # * continue only if display number is not used already
 # * client: ~/bin/xsession "$@"
-# * server: Xorg
+# * server: /usr/lib/xorg-server/Xorg
 #
 # If started as 'xx':
 #
 # * display number will be the first free starting with 91
 # * client: ~/bin/xsession "$@"
-# * server: Xephyr
+# * server: /usr/bin/Xephyr
 
 set -eu
 
@@ -34,7 +34,7 @@ xauthset() {
 }
 
 
-# Xephyr
+# /usr/bin/Xephyr
 # ----------------------------------------
 
 if [[ $prgname = 'xx' ]]; then
@@ -54,7 +54,7 @@ if [[ $prgname = 'xx' ]]; then
 fi
 
 
-# Xorg
+# /usr/lib/xorg-server/Xorg
 # ----------------------------------------
 
 vt=$(</sys/class/tty/tty0/active)

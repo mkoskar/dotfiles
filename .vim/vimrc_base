@@ -44,20 +44,18 @@ if empty(maparg('\', 'n'))
     sunmap \
 endif
 
-noremap <silent> j gj
-noremap <silent> k gk
-
 map <silent> <M-j> 5j
 map <silent> <M-k> 5k
 
-noremap <silent> <M-C-H> 10h
 noremap <silent> <M-C-L> 10l
+noremap <silent> <M-C-H> 10h
+nmap <silent> <M-BS> <M-C-H>
 
 noremap <silent> <C-E> 5<C-E>
 noremap <silent> <C-Y> 5<C-Y>
 
-noremap <silent> zh 10zh
 noremap <silent> zl 10zl
+noremap <silent> zh 10zh
 
 " Move visual block <http://vimrcfu.com/snippet/77>
 xnoremap J :move '>+1<CR>gv
@@ -154,30 +152,30 @@ set statusline=
 
 nnoremap <silent> <C-J> <C-W>j
 nnoremap <silent> <C-K> <C-W>k
-nnoremap <silent> <C-H> <C-W>h
 nnoremap <silent> <C-L> <C-W>l
+nnoremap <silent> <C-H> <C-W>h
 nmap <silent> <BS> <C-H>
 
 nnoremap <silent> c<C-J> :below sp<CR>
 nnoremap <silent> c<C-K> :above sp<CR>
-nnoremap <silent> c<C-H> :lefta vsp<CR>
 nnoremap <silent> c<C-L> :rightb vsp<CR>
+nnoremap <silent> c<C-H> :lefta vsp<CR>
 nmap <silent> c<BS> c<C-H>
 
 nnoremap <silent> d<C-J> <C-W>j<C-W>c<C-W>p
 nnoremap <silent> d<C-K> <C-W>k<C-W>c<C-W>p
-nnoremap <silent> d<C-H> <C-W>h<C-W>c<C-W>p
 nnoremap <silent> d<C-L> <C-W>l<C-W>c<C-W>p
+nnoremap <silent> d<C-H> <C-W>h<C-W>c<C-W>p
 nmap <silent> d<BS> d<C-H>
 
 nnoremap <silent> <C-_> <C-W>_
 nnoremap <silent> g<C-J> <C-W>j<C-W>_
 nnoremap <silent> g<C-K> <C-W>k<C-W>_
 
-nnoremap <silent> _ :resize -5<CR>
 nnoremap <silent> + :resize +5<CR>
-nnoremap <silent> <C-W>, :vertical resize -5<CR>
+nnoremap <silent> _ :resize -5<CR>
 nnoremap <silent> <C-W>. :vertical resize +5<CR>
+nnoremap <silent> <C-W>, :vertical resize -5<CR>
 nnoremap <silent> <Leader>q :close<CR>
 
 
@@ -200,8 +198,8 @@ nnoremap <silent> <M-9> 9gt
 nnoremap <silent> <M-0> :tablast<CR>
 nnoremap <silent> <M-n> :tabnew<CR>
 nnoremap <silent> <M-N> :tab split<CR>
-nnoremap <silent> <M-H> :tabmove -1<CR>
 nnoremap <silent> <M-L> :tabmove +1<CR>
+nnoremap <silent> <M-H> :tabmove -1<CR>
 
 function! s:QuitTab(bang) abort
     try
@@ -632,13 +630,13 @@ function! s:MetaSetup(enable) abort
         endif
         let i += 1
     endwhile
-    " Meta + C-H, C-L
+    " Meta + C-L, C-H
     if a:enable
-        exec "set <M-C-H>=\e\x08"
         exec "set <M-C-L>=\e\x0c"
+        exec "set <M-C-H>=\e\x08"
     else
-        set <M-C-H>=
         set <M-C-L>=
+        set <M-C-H>=
     endif
     let g:meta_enabled = a:enable
     if !has('vim_starting')
@@ -766,12 +764,12 @@ endfunction
 
 command! -bar MoveToNextTab call s:MoveToTab(1)
 command! -bar MoveToPrevTab call s:MoveToTab(0)
-nnoremap <silent> <C-W><M-h> :MoveToPrevTab<CR>
 nnoremap <silent> <C-W><M-l> :MoveToNextTab<CR>
+nnoremap <silent> <C-W><M-h> :MoveToPrevTab<CR>
 
 " }}}
 
-" Prev/NextClosedFold <https://stackoverflow.com/questions/9403098/is-it-possible-to-jump-to-closed-folds-in-vim> {{{
+" Next/PrevClosedFold <https://stackoverflow.com/questions/9403098/is-it-possible-to-jump-to-closed-folds-in-vim> {{{
 
 function! s:MoveToClosedFold(next) abort
     let cmd = 'normal! z'.(a:next ? 'j' : 'k')
