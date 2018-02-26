@@ -517,12 +517,6 @@ nnoremap <silent> <Leader>rc :vs <C-R>=fnameescape(vimrc)<CR><CR>
 nnoremap <silent> <Leader>so :source <C-R>=fnameescape(vimrc)<CR>
     \ \| call utils#echoWarn('vimrc reloaded')<CR>
 
-" Hex dump
-xnoremap <silent> <Leader>xxd :!xxd<CR>
-nnoremap <silent> <Leader>xxd :%!xxd<CR>
-xnoremap <silent> <Leader>xxD :!xxd -r<CR>
-nnoremap <silent> <Leader>xxD :%!xxd -r<CR>
-
 " Format
 xnoremap <silent> <Leader>fo :Format<CR>
 nnoremap <silent> <Leader>fo :%Format<CR>
@@ -540,11 +534,11 @@ nnoremap <silent> <Leader>pS :%!squashlns<CR>
 " URLs
 xnoremap <silent> <Leader>uo :SystemRange! urls -o<CR>
 nnoremap <silent> <Leader>uo :.SystemRange! urls -o<CR>
-nnoremap <silent> <Leader>uO :exec line('w0').','.line('w$').'SystemRange! urls -o'<CR>
+nnoremap <silent> <Leader>uO :%SystemRange! urls -o<CR>
 
 xnoremap <silent> <Leader>uy :SystemRange! urls -y<CR>
 nnoremap <silent> <Leader>uy :.SystemRange! urls -y<CR>
-nnoremap <silent> <Leader>uY :exec line('w0').','.line('w$').'SystemRange! urls -y'<CR>
+nnoremap <silent> <Leader>uY :%SystemRange! urls -y<CR>
 
 " Git
 nnoremap <Leader>gg :vert System git show HEAD:./
