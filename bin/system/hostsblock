@@ -25,7 +25,7 @@ else
             mute mv 10-* off
             ;;
         fetch)
-            systemctl start local-hostsblock-fetch.service
+            systemctl start hostsblock-fetch.service
             exit
             ;;
         *)

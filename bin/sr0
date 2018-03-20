@@ -13,7 +13,7 @@ fi
 
 case $1 in
     blank)
-        cdrecord dev="$dev" blank=all
+        cdrecord dev="$dev" blank=fast
         ;;
     iso)
         size=$(isosize "$dev")
@@ -24,6 +24,7 @@ case $1 in
         dd if="$dev" of="$output" bs=2048 count=$blocks
         ;;
     multi)
+        shift
         cdrecord -v -multi dev="$dev" "$@"
         ;;
     *)

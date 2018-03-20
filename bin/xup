@@ -9,15 +9,17 @@ attach() {
         { term -n "$wname" trun mux "$sname" & }
 }
 
-mux -d aux
-mux -d tmp
-mux -d wrk
+mux -d aux &
+mux -d tmp &
+mux -d wrk &
+
+wait
 
 attach tmp
 attach wrk
 
 # wait a bit for tmp -> aux ordering
-sleep 0.5
+sleep 0.3
 attach aux
 
 wait

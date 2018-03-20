@@ -164,6 +164,7 @@ flock -w 30 8 || exit 3
                 esac
                 ;;
         esac
+        sleep 0.3
     fi
 ))
 

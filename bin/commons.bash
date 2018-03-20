@@ -1,6 +1,25 @@
 # Common utilities.
 # :Compatibility: Bash
 
+# set -Eu -o pipefail
+# shopt -s extglob
+#
+# PS4='+ ${BASH_SOURCE[0]}:$LINENO:${FUNCNAME[0]:+${FUNCNAME[0]}:}$?(${PIPESTATUS[*]}): '
+#
+# trap_err() {
+#     local pstatus=($? "${PIPESTATUS[@]}")
+#     local cmd=$BASH_COMMAND
+#     local stat=${pstatus[0]}
+#     if (( ${#pstatus[@]} > 2 )); then
+#         cmd='<pipeline>'
+#         stat+=":${pstatus[1]}$(printf '|%d' "${pstatus[@]:2}")"
+#     fi
+#     printf '%s: line %d: %s: (%s)\n' "${BASH_SOURCE[1]}" \
+#         "${BASH_LINENO[0]}" "$cmd" "$stat"
+#     kill 0
+# } >&2
+# trap trap_err ERR
+
 if [[ -o xtrace ]]; then
     set +x
     xtrace=1
