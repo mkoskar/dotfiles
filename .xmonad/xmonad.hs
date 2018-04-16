@@ -262,8 +262,7 @@ myConfig = def
 
           -- Windows & Layouts
         , ("M-n", refresh)
-        , ("M-c", withFocused $ killWindow)
-        , ("M-S-c", kill)
+        , ("M-c", withFocused killWindow)
         , ("M-<Backspace>", focusUrgent)
         , ("M-<Space>", sendMessage NextLayout)
         , ("M-S-<Space>", setLayout $ Layout myLayoutHook)
@@ -274,13 +273,13 @@ myConfig = def
         , ("M-,", sendMessage $ IncMasterN 1)
         , ("M-.", sendMessage $ IncMasterN (-1))
         , ("M-t", withFocused $ windows . W.sink)
-        , ("M-f M-S-f", withFocused $ float)
+        , ("M-f M-S-f", withFocused float)
         , ("M-f M-b", sendMessage $ Toggle NOBORDERS)
         , ("M-f M-f", sendMessage $ Toggle FULL)
         , ("M-f M-r", sendMessage $ Toggle MIRROR)
         , ("M-f M--", withFocused minimizeWindow)
         , ("M-f M-=", sendMessage RestoreNextMinimizedWin)
-        , ("M-[", withFocused (sendMessage . maximizeRestore))
+        , ("M-[", withFocused $ sendMessage . maximizeRestore)
         ]
 
     -- }}}

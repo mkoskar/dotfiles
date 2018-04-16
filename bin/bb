@@ -325,6 +325,12 @@ MENUER=$prgname menuer "$@" <<-EOF |
     zsh                     b http://zsh.sourceforge.net/Doc/Release/index.html
     zsh-changes             b https://github.com/zsh-users/zsh/blob/master/NEWS
 
+    zz                      b https://www.slov-lex.sk/vyhladavanie-pravnych-predpisov
+    zz-obchodny-zakonnik    b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1991/513/
+    zz-obciansky-zakonnik   b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1964/40/
+    zz-ustava               b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1992/460/
+    zz-zivnostensky-zakon   b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1991/455/
+
     iss-hd                  playx http://www.ustream.tv/channel/iss-hdev-payload
     nasatv                  playx http://www.ustream.tv/nasahdtv
 

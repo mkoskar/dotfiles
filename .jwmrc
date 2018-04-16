@@ -90,10 +90,10 @@
         <Option>notitle</Option>
     </Group>
 
-    <Group>
-        <Name>^term$</Name>
-        <Option>tiled</Option>
-    </Group>
+    <!-- <Group> -->
+    <!--     <Name>^term$</Name> -->
+    <!--     <Option>tiled</Option> -->
+    <!-- </Group> -->
 
     <Group>
         <Option>aerosnap</Option>
