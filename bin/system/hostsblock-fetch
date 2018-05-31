@@ -31,7 +31,7 @@ fetch() {
     read -ra oname <<<"$oname"
     stat=$(
         curl -sSL -C - -z "$CACHEDIR/$oname" -w '%{http_code}' \
-            -A 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36' \
+            -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36' \
             -o "$oname" "$url"
     )
     case $stat in
@@ -52,11 +52,14 @@ fetch() {
 }
 export -f fetch
 
-parallel "${pargs[@]}" -r -j10 fetch <"$CONFDIR/sources" >queue
+grep -vxE '\s*|(\s*#.*)' "$CONFDIR/sources" |
+    parallel "${pargs[@]}" -r -j10 fetch >queue
+
+[[ ! -e $CONFDIR/whitelist ]] || export whitelist=1
 
 {
     sort queue
-    printf '%s\n' "$CONFDIR/whitelist"
+    [[ ! ${whitelist-} ]] || printf '%s\n' "$CONFDIR/whitelist"
 } | xargs -rx sha1sum >sum
 if cmp -s sum "$CACHEDIR/sum"; then
     exit
@@ -68,9 +71,6 @@ process() {
     local oname=${src##*/} mime target
     mime=$(file -b --mime-type -- "$src")
     case $mime in
-        text/plain)
-            target=$1
-            ;;
         application/x-7z-compressed)
             target="$oname.extracted"
             7z x -o"$target" -- "$src" >/dev/null
@@ -78,6 +78,9 @@ process() {
         application/zip)
             target="$oname.extracted"
             unzip -qq -d "$target" -- "$src"
+            ;;
+        text/*)
+            target=$1
             ;;
     esac
     if [[ -d $target ]]; then
@@ -102,20 +105,17 @@ find . -name 'chunk*' -printf '%P\n' >chunks
 post_process() {
     set -eu -o pipefail
     awk '
-    /^#/ || /^\s*$/ { next }
+    /^\s*#/ || /^\s*$/ { next }
     {
         if (NF > 1) target = $2
         else target = $1
         print target
     }' <"$1" |
-    (
-        declare -i retstat=0
-        grep -E -v \
+        grep -vE \
             -e '[^[:alnum:]._-]' \
             -e '^[^[:alnum:]]' -e '[^[:alnum:]]$' \
-            -f "$CONFDIR/whitelist" || retstat=$?
-        (( retstat < 2 )) || exit 2
-    ) | awk '{ print "0.0.0.0 " $0 }' >"$1.done"
+            ${whitelist:+-f "$CONFDIR/whitelist"} |
+            awk '{ print "0.0.0.0 " $0 }' >"$1.done"
 }
 export -f post_process
 

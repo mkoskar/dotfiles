@@ -46,7 +46,6 @@ ext() {
 adm() {
     cd ~
     ext
-    neww -d
 }
 
 aux() {
@@ -158,7 +157,7 @@ flock -w 30 8 || exit 3
                 ;;
             *)
                 case $prgname in
-                    mux) base ;;
+                    mux) new ;;
                     muxx) ext ;;
                     *) exit 2 ;;
                 esac

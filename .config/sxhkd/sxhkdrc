@@ -19,8 +19,8 @@ super + {i,o,u}
 super + alt + ctrl + {k,j,i,u,o,comma,m,period,l}
     wmutil warp_in_window {c,e,n,ne,nw,s,se,sw,w}
 
-super + {c,C}
-    xdo {close,kill}
+super + c
+    xdo close
 
 # ----------------------------------------
 

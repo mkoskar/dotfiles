@@ -89,6 +89,7 @@ export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent}
 export SYSTEMD_LESS=$LESS
 export TERMINFO_DIRS='/etc/terminfo:/usr/share/terminfo'
 export TMUX_TMPDIR=$TMPDIR
+export UAGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'
 export VDPAU_DRIVER='va_gl'
 
 if hash luarocks 2>/dev/null; then

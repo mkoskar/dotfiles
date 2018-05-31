@@ -8,7 +8,7 @@ exec &>>~/.local/share/"$prgname".out
 
 kernel_release=$(uname -r)
 kernel_version="v${kernel_release%%-*}"
-posix1_base='http://pubs.opengroup.org/onlinepubs/9699919799'
+posix_base='http://pubs.opengroup.org/onlinepubs/9699919799'
 
 MENUER=$prgname menuer "$@" <<-EOF |
 
@@ -32,7 +32,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     argyllcms!              b /usr/share/argyllcms/doc/ArgyllDoc.html
     arxiv                   b https://arxiv.org/find
     aur                     b https://aur.archlinux.org/packages.php?SeB=nd\\&K={u}
-    aur-maintainer          b https://aur.archlinux.org/packages.php?SeB=m\\&K=$AUR_MAINTAINER
+    aur-maintainer          b https://aur.archlinux.org/packages.php?SeB=m\\&K="$AUR_MAINTAINER"
     aur-name-only           b https://aur.archlinux.org/packages.php?SeB=n\\&K={u}
     austin-csrg             b https://www.opengroup.org/austin/docreg.html
     awg                     b https://en.wikipedia.org/wiki/American_wire_gauge#Tables_of_AWG_wire_sizes
@@ -53,6 +53,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     calib                   b http://www.xrite.com/online-color-test-challenge
     calib1                  b http://www.lagom.nl/lcd-test/gamma_calibration.php
     charref                 b http://dev.w3.org/html5/html-author/charref
+    chemspider              b http://www.chemspider.com/Search.aspx?q={u}
     chrome-ext              b https://developer.chrome.com/extensions/devguide
     chrome-flags            b http://peter.sh/experiments/chromium-command-line-switches/
     chrome-manifest-app     b https://developer.chrome.com/apps/manifest
@@ -101,7 +102,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gcc                     b https://gcc.gnu.org/onlinedocs/
     gg                      b https://groups.google.com/forum/#!search/{u}
     gh                      b https://github.com/
-    gh-dotbin               b https://github.com/mkoskar/dotfiles/tree/master/bin
+    gh-dotfiles             b https://github.com/mkoskar/dotfiles/tree/master/bin
     gh-repos                b https://github.com/mkoskar?tab=repositories
     gh-search               b https://github.com/search?q={u}
     gi                      b https://www.google.com/search?q={u}\\&tbm=ischsr
@@ -177,14 +178,14 @@ MENUER=$prgname menuer "$@" <<-EOF |
     license                 b https://choosealicense.com/licenses/
     limnoria-subst          b https://github.com/ProgVal/Limnoria/blob/master/src/ircutils.py#L797
     linux-docs              b https://www.kernel.org/doc/Documentation
-    linux-docs!             b /lib/modules/$kernel_release/build/Documentation
+    linux-docs!             b "/lib/modules/$kernel_release/build/Documentation"
     linux-docs-html         b https://www.kernel.org/doc/html/latest/index.html
     linux-lkddb             b https://cateee.net/lkddb/web-lkddb/
     linux-params            b https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html
     linux-repos             b https://git.kernel.org/cgit/
     linux-routing           b http://lartc.org/lartc.html
     linux-specs             b http://refspecs.linuxfoundation.org/
-    linux-src               b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/?id=$kernel_version
+    linux-src               b "https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/?id=$kernel_version"
     linux-sysctl            b https://www.kernel.org/doc/Documentation/sysctl
     lists                   b https://marc.info/
     lists1                  b http://markmail.org/
@@ -222,17 +223,19 @@ MENUER=$prgname menuer "$@" <<-EOF |
     pep                     b https://www.python.org/dev/peps/
     perf                    b http://www.brendangregg.com/perf.html
     perf-full               b http://www.brendangregg.com/Perf/linux_perf_tools_full.png
+    periodic-table          b https://en.wikipedia.org/wiki/Periodic_table#Overview
     perl                    b http://perldoc.perl.org/
     phrik                   b https://wiki.archlinux.org/index.php/Phrik
     pkg                     b https://www.archlinux.org/packages/?q={u}
     pleer                   b http://pleer.net/search?q={u}
-    posix1                  b $posix1_base/index.html
-    posix1-defs             b $posix1_base/basedefs/contents.html
-    posix1-env              b $posix1_base/basedefs/V1_chap08.html
-    posix1-ifaces           b $posix1_base/functions/contents.html
-    posix1-utils            b $posix1_base/utilities/contents.html
+    posix                   b "$posix_base/index.html"
+    posix-defs              b "$posix_base/basedefs/contents.html"
+    posix-env               b "$posix_base/basedefs/V1_chap08.html"
+    posix-ifaces            b "$posix_base/functions/contents.html"
+    posix-utils             b "$posix_base/utilities/contents.html"
     postgresql              b https://www.postgresql.org/docs/current/static/index.html
     printing                b https://wiki.linuxfoundation.org/openprinting/database/documentation
+    pubchem                 b https://www.ncbi.nlm.nih.gov/pccompound?term={u}
     pygments                b http://pygments.org/docs/lexers/
     pypa                    b https://www.pypa.io/
     pypi                    b https://pypi.python.org/pypi
@@ -246,7 +249,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     regex-java              b https://docs.oracle.com/javase/9/docs/api/java/util/regex/Pattern.html
     regex-js                b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
     regex-pcre              b http://www.pcre.org/original/doc/html/pcresyntax.html
-    regex-posix1            b $posix1_base/basedefs/V1_chap09.html
+    regex-posix             b "$posix_base/basedefs/V1_chap09.html"
     regex-python            b https://docs.python.org/3/library/re.html
     regex-python-test       b http://pythex.org/
     regex101                b https://regex101.com/
@@ -268,6 +271,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     sed                     b https://www.gnu.org/software/sed/manual/sed.html
     shakespeare             b http://shakespeare.mit.edu/
     shell-startup           b http://blog.flowblok.id.au/static/images/shell-startup-actual.png
+    si-units                b https://en.wikipedia.org/wiki/International_System_of_Units#Base_units
     so                      b https://stackoverflow.com/search?q={u}
     soundcloud              b https://soundcloud.com/search?q={u}
     spock                   b http://docs.spockframework.org/
@@ -326,6 +330,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     zsh-changes             b https://github.com/zsh-users/zsh/blob/master/NEWS
 
     zz                      b https://www.slov-lex.sk/vyhladavanie-pravnych-predpisov
+    zz-o-prevadzke-vozidiel b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2018/106/
     zz-obchodny-zakonnik    b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1991/513/
     zz-obciansky-zakonnik   b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1964/40/
     zz-ustava               b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1992/460/

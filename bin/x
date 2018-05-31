@@ -5,7 +5,7 @@
 # * display number will be the same as currently active VT number
 # * continue only if display number is not used already
 # * client: ~/bin/xsession "$@"
-# * server: /usr/lib/xorg-server/Xorg
+# * server: /usr/lib/Xorg
 #
 # If started as 'xx':
 #
@@ -54,7 +54,7 @@ if [[ $prgname = 'xx' ]]; then
 fi
 
 
-# /usr/lib/xorg-server/Xorg
+# /usr/lib/Xorg
 # ----------------------------------------
 
 vt=$(</sys/class/tty/tty0/active)
@@ -77,7 +77,7 @@ fi
 xauthset "$dispno"
 
 #exec xinit ~/bin/xsession "$@" -- \
-#    /usr/lib/xorg-server/Xorg ":$dispno" "vt$vtno" \
+#    /usr/lib/Xorg ":$dispno" "vt$vtno" \
 #    -config "${XCONFIG:-xorg.conf.$HOSTNAME}" \
 #    -keeptty \
 #    -noreset \
@@ -105,7 +105,7 @@ trap cleanup EXIT
 trap 'ready=1' USR1
 (
     trap '' USR1
-    exec /usr/lib/xorg-server/Xorg ":$dispno" "vt$vtno" \
+    exec /usr/lib/Xorg ":$dispno" "vt$vtno" \
         -config "${XCONFIG:-xorg.conf.$HOSTNAME}" \
         -keeptty \
         -noreset \

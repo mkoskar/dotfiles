@@ -64,13 +64,13 @@ status_rfkill() {
             val='mixed'
             ;;
         0)
-            val='off (software)'
+            val='off (soft)'
             ;;
         1)
             val='on'
             ;;
         2)
-            val='off (hardware)'
+            val='off (hard)'
             ;;
     esac
     printf '%s' "$val"
