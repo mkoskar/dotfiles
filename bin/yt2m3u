@@ -102,4 +102,4 @@ handle1() {
 }
 
 export -f _curl yt_video yt_playlist yt_channel yt_user handle handle1
-parallel -j10 -k handle {}
+parallel -rk -j10 handle {}

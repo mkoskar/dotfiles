@@ -12,7 +12,7 @@ tzprint() {
         local)
             tz=$(readlink -f /etc/localtime)
             tz=${tz#/usr/share/zoneinfo/}
-            ;;
+            ;&
         *)
             export TZ=$tz
             ;;

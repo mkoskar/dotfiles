@@ -130,7 +130,7 @@ alias man-all-posix='man-all -s 0p,9p,2p,3p,7p,8p,6p,1p,4p,5p'
 
 alias pac='pacman'
 alias paccheck='paccheck --quiet --depends --opt-depends --files --file-properties --sha256sum --require-mtree --db-files --backup --noextract --noupgrade'
-alias paclog-recent='paclog --after="$(date -I --date=-3days)"'
+alias paclog-recent='paclog --after="$(date -I --date=-14days)"'
 alias pactree='pactree --color'
 
 # Target's detailed info
@@ -230,6 +230,7 @@ alias grepcat='grep --exclude-dir=\* .'
 alias gsettingsa='gsettings list-recursively'
 alias headcat='head -vn-0'
 alias info='info --vi-keys'
+alias infocmp0='infocmp -A /usr/share/terminfo'
 alias infocmp='infocmp -a -1'
 alias journal-vaccum='journalctl --vacuum-size=100M --vacuum-files=1'
 alias journal='journalctl -o short-precise -r -b'
@@ -242,9 +243,10 @@ alias makepkg-rebuild='makepkg -Ccsrf'
 alias mnt='findmnt'
 alias moon='curl -sSLf http://wttr.in/moon | head -n-4'
 alias mount-loop='mount -o loop'
-alias mpv-debug='mpv --msg-level=all=debug'
-alias mpv-verbose='mpv --msg-level=all=v'
+alias mpv-debug='mpv --terminal=yes --msg-level=all=debug'
+alias mpv-verbose='mpv --terminal=yes --msg-level=all=v'
 alias mpv-ytdl-reverse='mpv --ytdl-raw-options=playlist-reverse='
+alias mpv='mpv --player-operation-mode=pseudo-gui'
 alias mutt-debug='mutt -d 2'
 alias mv='mv -i'
 alias npmg='npm -g'
@@ -252,6 +254,7 @@ alias od='od -Ax -tc'
 alias odd='od -td1'
 alias odo='od -to1'
 alias odx='od -tx1'
+alias parallel='parallel -r'
 alias patch0='patch -Np0'
 alias patch1='patch -Np1'
 alias ping-mtu='ping -M do -s 2000'
@@ -274,8 +277,12 @@ alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias w3m='w3m -v'
 alias weechat-plain='weechat -d $(mktemp -d)'
 alias wi='curl -sSLf http://wttr.in/ | head -n-3'
-alias ytdl-playlist="youtube-dl --yes-playlist -o '~/download/_youtube-dl/%(playlist)s/[%(playlist_index)s] %(title)s'"
-alias ytdl-stdout='youtube-dl -o -'
+alias xargs1='xargs -r -L1'
+alias ytdl-audio='youtube-dl -f bestaudio/best -x'
+alias ytdl-formats='youtube-dl -F'
+alias ytdl-json='youtube-dl -J'
+alias ytdl-playlist="youtube-dl --yes-playlist -o '~/download/_youtube-dl/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
+alias ytdl-stdout="youtube-dl -f 'best[height<=?1080]' -o -"
 
 a() {
     local d=${1:-5m} ts; ts=$(command date -R)
@@ -283,7 +290,7 @@ a() {
     sleep "${1:-5m}"
     echo 'Beep...'
     notify -u critical 'Beep...' "Time's up!"
-    mpv --load-scripts=no --keep-open=no --loop-playlist=no --loop-file=5 \
+    command mpv --load-scripts=no --loop-file=5 \
         /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
 }
 

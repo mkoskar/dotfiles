@@ -21,11 +21,7 @@ trap cleanup EXIT
 
 src=${1:-$(xclip -o | head -c 255)}
 case $src in
-    http?(s)://www.arconaitv.me/* | \
-    http?(s)://www.euronews.com/* | \
-    http?(s)://www.filmon.com/* | \
     http?(s)://www.rtvs.sk/* | \
-    http?(s)://www.tvcatchup.com/* | \
     http?(s)://www.ustream.tv/* | \
     http?(s)://www.vaughnlive.tv/* \
         )
@@ -37,7 +33,8 @@ case $src in
         exit
         ;;
     http?(s)://*)
-        mpv --force-window=immediate --force-media-title="${2-}" -- "$src"
+        mpv --player-operation-mode=pseudo-gui \
+            --force-media-title="${2-}" -- "$src"
         ;;
     *)
         exit 2

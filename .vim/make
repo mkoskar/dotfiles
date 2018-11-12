@@ -5,7 +5,6 @@ set -eu -o pipefail
 from_git() {
     set -eu
     local name=$1
-    [[ $name ]] || return
     shift
     printf '\n> %s\n' "$name"
     if cd "$name" &>/dev/null; then
@@ -21,7 +20,7 @@ cd ~/.vim
 mkdir -p pack/custom/opt
 cd pack/custom/opt
 
-parallel --bar --colsep '\t+' from_git <<-EOF
+parallel -r --bar --colsep '\t+' from_git <<-EOF
 
 	ansiesc				https://github.com/jakar/vim-AnsiEsc
 	colorschemes		https://github.com/flazz/vim-colorschemes

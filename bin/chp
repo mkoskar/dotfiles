@@ -74,9 +74,10 @@ if [[ ! -e $path && $profile != 'skel' ]]; then
             lab)            frame_color='[255, 34, 0]'  ;;
             plain)          frame_color='[38, 191, 48]' ;;
             proxy-socks)    frame_color='[0, 119, 119]' ;;
-            proxy-tor)      frame_color='[50, 50, 50]'  ;;
+            proxy-tor)      frame_color='[100, 100, 100]'  ;;
             *)              frame_color='[255, 153, 0]' ;;
         esac
+        tab_color='[220, 220, 220]'
 
         cat >manifest.json <<-EOF
 		{
@@ -86,13 +87,13 @@ if [[ ! -e $path && $profile != 'skel' ]]; then
 		    "theme": {
 		        "colors": {
 		            "frame": $frame_color,
-		            "frame_inactive": $frame_color,
-		            "frame_incognito": $frame_color,
-		            "frame_incognito_inactive": $frame_color
+		            "background_tab": $tab_color,
+		            "background_tab_inactive": $tab_color,
+		            "background_tab_incognito": $tab_color,
+		            "background_tab_incognito_inactive": $tab_color
 		        },
 		        "images": {
-		            "theme_frame_overlay": "frame.png",
-		            "theme_frame_overlay_inactive": "frame.png",
+		            "theme_ntp_attribution": "frame.png",
 		            "theme_ntp_background": "frame.png"
 		        },
 		        "properties": {
@@ -123,6 +124,7 @@ args=(
     --ignore-gpu-blacklist
     --show-component-extension-options
     --show-saved-copy=primary
+    --top-chrome-md=material
 )
 
 if [[ ${CH_DEBUG-} ]]; then

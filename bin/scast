@@ -60,5 +60,5 @@ read -r X Y W H <<<"$tmp"
     exec 8<&-
     wait
 
-    mpv --loop-file=inf "$outfile"
+    mpv --player-operation-mode=pseudo-gui --loop-file=inf -- "$outfile"
 ) &

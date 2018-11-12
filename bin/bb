@@ -21,7 +21,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     angularjs               b https://docs.angularjs.org/api
     ansible                 b https://docs.ansible.com/
     ant                     b https://ant.apache.org/manual/
-    apache                  b http://httpd.apache.org/docs/
+    apache                  b https://httpd.apache.org/docs/
     apk                     b https://pkgs.alpinelinux.org/packages?name={u}
     arch                    b https://www.archlinux.org/
     arch-bugs               b https://bugs.archlinux.org/index.php?string={u}
@@ -38,54 +38,57 @@ MENUER=$prgname menuer "$@" <<-EOF |
     awg                     b https://en.wikipedia.org/wiki/American_wire_gauge#Tables_of_AWG_wire_sizes
     awk                     b https://www.gnu.org/software/gawk/manual/gawk.html
     awk1                    b http://awk.freeshell.org/
-    basedir                 b http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+    basedir                 b https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
     bash-abs                b http://tldp.org/LDP/abs/html/
-    bash-changes            b http://mywiki.wooledge.org/BashFAQ/061
-    bash-faq                b http://mywiki.wooledge.org/BashFAQ
-    bash-guide              b http://mywiki.wooledge.org/FullBashGuide
-    bash-guide1             b http://guide.bash.academy/index.html
+    bash-changes            b https://mywiki.wooledge.org/BashFAQ/061
+    bash-faq                b https://mywiki.wooledge.org/BashFAQ
+    bash-guide              b https://mywiki.wooledge.org/FullBashGuide
+    bash-guide1             b https://guide.bash.academy/index.html
     bash-hackers            b http://wiki.bash-hackers.org/start
-    bash-pitfalls           b http://mywiki.wooledge.org/BashPitfalls
-    bash-sheet              b http://mywiki.wooledge.org/BashSheet
-    browserbench            b http://browserbench.org/
+    bash-pitfalls           b https://mywiki.wooledge.org/BashPitfalls
+    bash-sheet              b https://mywiki.wooledge.org/BashSheet
+    browserbench            b https://browserbench.org/
     busybox                 b https://busybox.net/downloads/BusyBox.html
     c-faq                   b http://c-faq.com/
-    calib                   b http://www.xrite.com/online-color-test-challenge
+    calib                   b https://www.xrite.com/online-color-test-challenge
     calib1                  b http://www.lagom.nl/lcd-test/gamma_calibration.php
-    charref                 b http://dev.w3.org/html5/html-author/charref
-    chemspider              b http://www.chemspider.com/Search.aspx?q={u}
+    charref                 b https://dev.w3.org/html5/html-author/charref
+    chemspider              b https://www.chemspider.com/Search.aspx?q={u}
     chrome-ext              b https://developer.chrome.com/extensions/devguide
-    chrome-flags            b http://peter.sh/experiments/chromium-command-line-switches/
+    chrome-flags            b https://peter.sh/experiments/chromium-command-line-switches/
     chrome-manifest-app     b https://developer.chrome.com/apps/manifest
     chrome-manifest-ext     b https://developer.chrome.com/extensions/manifest
     chrome-searchcode       b https://cs.chromium.org/
     chrome-theming          b https://cs.chromium.org/chromium/src/chrome/browser/themes/browser_theme_pack.cc
     cite                    b http://citeseerx.ist.psu.edu/search?q={u}
+    constellations          b https://en.wikipedia.org/wiki/88_modern_constellations#List
     country-codes           b https://en.wikipedia.org/wiki/ISO_3166-1#Current_codes
     cryptocurr              b https://coinmarketcap.com/
-    ctlseqs                 b http://invisible-island.net/xterm/ctlseqs/ctlseqs.html
-    ctlseqs1                b http://bjh21.me.uk/all-escapes/all-escapes.txt
+    ctlseqs                 b https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
+    ctlseqs1                b https://bjh21.me.uk/all-escapes/all-escapes.txt
     cups                    b https://www.cups.org/documentation.html
     d                       b https://www.merriam-webster.com/dictionary/{u}
-    dbus                    b http://dbus.freedesktop.org/doc/dbus-specification.html
+    dbus                    b https://dbus.freedesktop.org/doc/dbus-specification.html
     dd                      b https://duckduckgo.com/lite/?q={u}
     dd-bang                 b https://duckduckgo.com/bang_lite.html
     dd-syntax               b https://duck.co/help/results/syntax
     deb                     b https://packages.debian.org/search?keywords={u}
-    dkim                    b http://dkimcore.org/tools/
-    dm                      b http://www.dailymotion.com/en/relevance/search/{u}
+    debian-gitlab           b https://salsa.debian.org/explore
+    dkim                    b https://dkimcore.org/tools/
+    dm                      b https://www.dailymotion.com/en/relevance/search/{u}
     dns-reserved            b https://tools.ietf.org/html/rfc2606
     docker                  b https://github.com/wsargent/docker-cheat-sheet
     docker-compose          b https://docs.docker.com/compose/compose-file/
     dockerfile              b https://docs.docker.com/engine/reference/builder/
     dom-spec                b https://dom.spec.whatwg.org/
     ebay                    b https://www.ebay.com/sch/i.html?_nkw={u}
-    ecma                    b http://www.ecma-international.org/publications/standards/Standard.htm
+    ecma                    b https://www.ecma-international.org/publications/standards/Standard.htm
+    electronegativity       b https://en.wikipedia.org/wiki/Electronegativity#Electronegativities_of_the_elements
     emojis                  b https://emojipedia.org/
     emoticons               b https://en.wikipedia.org/wiki/List_of_emoticons
-    etsi                    b http://www.etsi.org/standards-search#\\&sort=3
-    etymology               b http://www.etymonline.com/word/{u}
-    filenames               b http://www.dwheeler.com/essays/filenames-in-shell.html
+    etsi                    b https://www.etsi.org/standards-search#\\&sort=3
+    etymology               b https://www.etymonline.com/word/{u}
+    filenames               b https://www.dwheeler.com/essays/filenames-in-shell.html
     firefox-about:*         b https://developer.mozilla.org/en-US/Firefox/The_about_protocol
     firefox-about:config    b http://kb.mozillazine.org/Category:Preferences
     firefox-changes         b https://www.mozilla.org/en-US/firefox/releases/
@@ -94,8 +97,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     flp                     b http://www.feynmanlectures.caltech.edu/
     fosdem                  b https://video.fosdem.org/
     freebsd                 b https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/
-    freedesktop             b http://standards.freedesktop.org/
+    freedesktop-gitlab      b https://gitlab.freedesktop.org/explore
     freedesktop-repos       b https://cgit.freedesktop.org/
+    freedesktop-specs       b https://standards.freedesktop.org/
     freetype                b https://www.freetype.org/freetype2/docs/documentation.html
     g                       b https://www.google.com/search?q={u}
     g-operators             b https://support.google.com/websearch/answer/2466433?hl=en\\&ref_topic=3081620\\&vid=1-635793825968278780-302114999
@@ -108,6 +112,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gi                      b https://www.google.com/search?q={u}\\&tbm=ischsr
     gimp!                   b /usr/share/gimp/2.0/help/en/index.html
     git-changes             b https://github.com/git/git/tree/master/Documentation/RelNotes
+    gitlab                  b https://gitlab.com/explore
     glib2                   b https://developer.gnome.org/glib/stable/
     gmail-nolabel           b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:chats+-in:inbox+-in:sent+-in:draft+-in:trash/n100
     gmail-search            b https://support.google.com/mail/answer/7190
@@ -115,38 +120,37 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gnu-coding              b https://www.gnu.org/prep/standards/standards.html
     gnu-make                b https://www.gnu.org/software/make/manual/make.html#Quick-Reference
     gnu-manuals             b https://www.gnu.org/manual/manual.html
-    gnu-repos               b http://git.savannah.gnu.org/cgit/
+    gnu-repos               b https://git.savannah.gnu.org/cgit/
     go                      b https://golang.org/ref/spec
     google-devs             b https://developers.google.com/
     google-play             b https://play.google.com/store/search?q={u}
     google-products         b https://developers.google.com/products/
+    google-scholar          b https://scholar.google.com/citations?view_op=top_venues
     google-search           b https://www.google.com/advanced_search
-    gpg-search              b http://pgp.mit.edu/
+    gpg-search              b https://pgp.mit.edu/
     gradle                  b https://gradle.org/docs/
-    graphviz                b http://www.graphviz.org/doc/info/index.html
+    graphviz                b https://www.graphviz.org/doc/info/index.html
     groovy                  b http://groovy-lang.org/documentation.html
     grub                    b https://www.gnu.org/software/grub/manual/grub.html
     gtk-running             b https://developer.gnome.org/gtk3/stable/gtk-running.html
-    guava                   b http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/index.html
     gutenberg               b https://www.gutenberg.org/wiki/Category:Bookshelf
     hangouts                b https://hangouts.google.com/
     haskell-docs            b https://www.haskell.org/documentation
     haskell-search          b https://www.haskell.org/hoogle/?hoogle={u}
-    hibernate-orm           b http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
+    hibernate-orm           b https://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
     hn                      b https://news.ycombinator.com/
     html-spec               b https://html.spec.whatwg.org/multipage/
-    html-spec-webdev        b https://html.spec.whatwg.org/dev/
     http                    b https://tools.ietf.org/html/rfc2616
     i                       b https://www.ixquick.com/do/metasearch.pl?query={u}
     ii                      b https://www.ixquick.com/do/metasearch.pl?cat=pics\\&query={u}
-    imdb                    b http://www.imdb.com/find?q={u}
+    imdb                    b https://www.imdb.com/find?q={u}
     imperial                b https://en.wikipedia.org/wiki/Imperial_units
     intel-core-datasheets   b https://www-ssl.intel.com/content/www/us/en/processors/core/core-technical-resources.html
     intel-sdm               b https://software.intel.com/en-us/articles/intel-sdm
     iojs                    b https://iojs.org/api/
-    irc-docs                b http://ircdocs.horse/
+    irc-docs                b https://ircdocs.horse/
     irc-freenode            b http://irc.netsplit.de/channels/?net=freenode
-    iso                     b http://standards.iso.org/ittf/PubliclyAvailableStandards/index.html
+    iso                     b https://standards.iso.org/ittf/PubliclyAvailableStandards/
     iss-sightings           b https://spotthestation.nasa.gov/sightings/view.cfm?country=Slovakia\\&region=None\\&city=Partizanske
     iss-tracker             b http://wsn.spaceflight.esa.int/iss/
     java                    b https://docs.oracle.com/javase/specs/jls/se9/html/index.html
@@ -164,9 +168,10 @@ MENUER=$prgname menuer "$@" <<-EOF |
     jee7                    b https://docs.oracle.com/javaee/7/api/index.html?overview-summary.html
     jee7-docs               b https://docs.oracle.com/javaee/7/index.html
     jee7-spec               b https://jcp.org/en/jsr/detail?id=342
+    journals                b https://en.wikipedia.org/wiki/Lists_of_academic_journals
     jquery                  b https://api.jquery.com/
     js                      b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
-    js-es6                  b http://www.ecma-international.org/ecma-262/6.0/
+    js-es6                  b https://www.ecma-international.org/ecma-262/6.0/
     js-es6-compat           b https://kangax.github.io/compat-table/es6/
     js-es6-overview         b https://github.com/lukehoban/es6features
     js-keys                 b https://w3c.github.io/uievents/tools/key-event-viewer.html
@@ -183,34 +188,34 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-lkddb             b https://cateee.net/lkddb/web-lkddb/
     linux-params            b https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html
     linux-repos             b https://git.kernel.org/cgit/
-    linux-routing           b http://lartc.org/lartc.html
-    linux-specs             b http://refspecs.linuxfoundation.org/
+    linux-routing           b https://lartc.org/lartc.html
+    linux-specs             b https://refspecs.linuxfoundation.org/
     linux-src               b "https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/?id=$kernel_version"
     linux-sysctl            b https://www.kernel.org/doc/Documentation/sysctl
     lists                   b https://marc.info/
-    lists1                  b http://markmail.org/
-    lists2                  b http://gmane.org/find.php
+    lists1                  b https://markmail.org/
+    lists2                  b https://gmane.org/find.php
     lua                     b https://www.lua.org/manual/
     luarocks                b https://luarocks.org/search?q={u}
     m4-macros               b https://www.gnu.org/software/m4/manual/m4.html#Macro-index
     mailcap                 b https://tools.ietf.org/html/rfc1524
     man-pages               b http://man7.org/linux/man-pages/index.html
     material-design         b https://getmdl.io/
-    maven                   b http://maven.apache.org/plugins/index.html
+    maven                   b https://maven.apache.org/plugins/index.html
     maven-central           b https://search.maven.org/
     maven-jcenter           b https://bintray.com/bintray/jcenter
-    maven-popular           b http://mvnrepository.com/popular
+    maven-popular           b https://mvnrepository.com/popular
     mdev                    b https://git.busybox.net/busybox/plain/docs/mdev.txt
     mdn                     b https://developer.mozilla.org/en-US/search?q={u}
     mime                    b https://www.iana.org/assignments/media-types/media-types.xhtml
-    mongodb                 b http://docs.mongodb.org/manual/reference/
+    mongodb                 b https://docs.mongodb.org/manual/reference/
     morse-nato              b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
     mozilla-repos           b https://hg.mozilla.org/
     music                   b https://musicbrainz.org/search?query={u}
-    mutt                    b https://www.neomutt.org/guide/index.html
-    mutt-patterns           b https://www.neomutt.org/guide/advancedusage.html#patterns
-    mutt-regex              b https://www.neomutt.org/guide/advancedusage.html#regexp
-    netfilter               b http://www.netfilter.org/documentation/index.html
+    mutt                    b https://neomutt.org/guide/index.html
+    mutt-patterns           b https://neomutt.org/guide/advancedusage.html#patterns
+    mutt-regex              b https://neomutt.org/guide/advancedusage.html#regexp
+    netfilter               b https://www.netfilter.org/documentation/index.html
     netfilter-flow          b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
     nodejs                  b https://nodejs.org/api/
     notes!                  b ~/projects/notes/_build/html/index.html
@@ -224,10 +229,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     perf                    b http://www.brendangregg.com/perf.html
     perf-full               b http://www.brendangregg.com/Perf/linux_perf_tools_full.png
     periodic-table          b https://en.wikipedia.org/wiki/Periodic_table#Overview
-    perl                    b http://perldoc.perl.org/
+    perl                    b https://perldoc.perl.org/
     phrik                   b https://wiki.archlinux.org/index.php/Phrik
     pkg                     b https://www.archlinux.org/packages/?q={u}
-    pleer                   b http://pleer.net/search?q={u}
     posix                   b "$posix_base/index.html"
     posix-defs              b "$posix_base/basedefs/contents.html"
     posix-env               b "$posix_base/basedefs/V1_chap08.html"
@@ -241,22 +245,23 @@ MENUER=$prgname menuer "$@" <<-EOF |
     pypi                    b https://pypi.python.org/pypi
     python                  b https://docs.python.org/
     python2                 b https://docs.python.org/2/
-    qt                      b http://doc.qt.io/
+    qt                      b https://doc.qt.io/
     quotes                  b https://www.cl.cam.ac.uk/~mgk25/ucs/quotes.html
-    qutebrowser             b http://qutebrowser.org/img/cheatsheet-big.png
+    qutebrowser             b https://qutebrowser.org/img/cheatsheet-big.png
     realworldhaskell        b http://book.realworldhaskell.org/read/
     regex-gnulib            b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html
     regex-java              b https://docs.oracle.com/javase/9/docs/api/java/util/regex/Pattern.html
     regex-js                b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
-    regex-pcre              b http://www.pcre.org/original/doc/html/pcresyntax.html
+    regex-pcre              b https://www.pcre.org/original/doc/html/pcresyntax.html
     regex-posix             b "$posix_base/basedefs/V1_chap09.html"
     regex-python            b https://docs.python.org/3/library/re.html
-    regex-python-test       b http://pythex.org/
+    regex-python-test       b https://pythex.org/
     regex101                b https://regex101.com/
     resolutions             b https://en.wikipedia.org/wiki/List_of_common_resolutions
     rfc                     b https://tools.ietf.org/rfc/index
     rst                     b http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
-    rst-demo!               b ~/projects/lab/docutils/showcase/_build/html/index.html
+    rst-showcase!           b ~/projects/lab/docutils/showcase/build/html/index.html
+    rst-sphinx              b https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html
     rtfm-faqs               b ftp://rtfm.mit.edu/pub/faqs/
     rtfm-usenet             b ftp://rtfm.mit.edu/pub/usenet/
     rust                    b https://doc.rust-lang.org/reference/
@@ -265,26 +270,27 @@ MENUER=$prgname menuer "$@" <<-EOF |
     salt                    b https://docs.saltstack.com/en/latest/contents.html
     salt-modules            b https://docs.saltstack.com/en/latest/ref/index.html
     salt-states             b https://docs.saltstack.com/en/latest/ref/states/
-    scala                   b http://www.scala-lang.org/api/current/
+    scala                   b https://www.scala-lang.org/api/current/
     se                      b https://stackexchange.com/search?q={u}
     se-unix                 b https://unix.stackexchange.com/search?q={u}
     sed                     b https://www.gnu.org/software/sed/manual/sed.html
     shakespeare             b http://shakespeare.mit.edu/
-    shell-startup           b http://blog.flowblok.id.au/static/images/shell-startup-actual.png
+    shell-startup           b https://blog.flowblok.id.au/static/images/shell-startup-actual.png
+    si-quantities           b https://en.wikipedia.org/wiki/International_System_of_Quantities#Base_quantities
     si-units                b https://en.wikipedia.org/wiki/International_System_of_Units#Base_units
     so                      b https://stackoverflow.com/search?q={u}
     soundcloud              b https://soundcloud.com/search?q={u}
-    spock                   b http://docs.spockframework.org/
-    spring                  b http://docs.spring.io/spring/docs/current/spring-framework-reference/html/
-    spring-api              b http://docs.spring.io/spring/docs/current/javadoc-api/overview-summary.html
-    spring-platform         b http://docs.spring.io/platform/docs/current/reference/htmlsingle/#appendix
+    sourceware-repos        b https://sourceware.org/git/
+    spring                  b https://docs.spring.io/spring/docs/current/spring-framework-reference/html/
+    spring-api              b https://docs.spring.io/spring/docs/current/javadoc-api/overview-summary.html
+    spring-platform         b https://docs.spring.io/platform/docs/current/reference/htmlsingle/#appendix
     sql-bnf!                b ~/archive/lib/00-cs/dbms/sql-bnf/index.html
     sqlite                  b https://sqlite.org/docs.html
     sqlite-lang             b https://sqlite.org/lang.html
     suckless-repos          b https://git.suckless.org/
     sysrq                   b https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
     systemd-changes         b https://github.com/systemd/systemd/blob/master/NEWS
-    terminfo.src            b http://invisible-island.net/ncurses/terminfo.src.html
+    terminfo.src            b https://invisible-island.net/ncurses/terminfo.src.html
     tex                     b https://ctan.org/
     timezones               b https://upload.wikimedia.org/wikipedia/commons/e/e8/Standard_World_Time_Zones.png
     tlds                    b https://www.iana.org/domains/root/db
@@ -297,23 +303,25 @@ MENUER=$prgname menuer "$@" <<-EOF |
     types-ip!               b /etc/protocols
     types-ports!            b /etc/services
     ud                      b https://www.urbandictionary.com/define.php?term={u}
-    uefi-specs              b http://uefi.org/specifications
+    uefi-specs              b https://uefi.org/specifications
     unicode                 b https://en.wikipedia.org/wiki/Plane_\\(Unicode\\)
-    unicode-charts          b http://unicode.org/charts/
+    unicode-charts          b https://unicode.org/charts/
     unicode-convert         b https://r12a.github.io/apps/conversion/
-    unicode-emojis          b http://www.unicode.org/emoji/charts/full-emoji-list.html
+    unicode-emojis          b https://www.unicode.org/emoji/charts/full-emoji-list.html
     unicode-gallery         b http://xahlee.info/comp/unicode_index.html
-    unicode-math            b http://www.unicode.org/Public/math/revision-15/MathClassEx-15.html
-    unicode-table           b http://unicode-table.com/
-    unix                    b http://opengroup.org/standards/unix
+    unicode-math            b https://www.unicode.org/Public/math/revision-15/MathClassEx-15.html
+    unicode-table           b https://unicode-table.com/
+    unix                    b https://publications.opengroup.org/standards/unix
     unix-history            b https://upload.wikimedia.org/wikipedia/commons/c/cd/Unix_timeline.en.svg
     unix-history1           b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
     url                     b https://url.spec.whatwg.org/
     usb-connectors          b https://en.wikipedia.org/wiki/USB#Host_and_device_interface_receptacles
     util-linux              b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
+    video-standards         b https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Vector_Video_Standards2.svg/1024px-Vector_Video_Standards2.svg.png
     w                       b https://en.wikipedia.org/w/index.php?search={u}
     w-cz                    b https://cz.wikipedia.org/w/index.php?search={u}
     w-sk                    b https://sk.wikipedia.org/w/index.php?search={u}
+    w3c-specs               b https://www.w3.org/TR/
     webdev-tools            b https://www.browserling.com/tools
     weechat                 b https://weechat.org/files/doc/stable/weechat_user.en.html
     weechat-api             b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
@@ -336,8 +344,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     zz-ustava               b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1992/460/
     zz-zivnostensky-zakon   b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1991/455/
 
-    iss-hd                  playx http://www.ustream.tv/channel/iss-hdev-payload
-    nasatv                  playx http://www.ustream.tv/nasahdtv
+    iss-hd                  playx https://www.ustream.tv/channel/iss-hdev-payload
+    nasatv                  playx https://www.ustream.tv/nasahdtv
 
     fahrenheit              b 'https://www.google.com/search?q={u} fahrenheit in celsius'
     foot                    b 'https://www.google.com/search?q={u} ft in m'

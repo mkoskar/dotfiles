@@ -65,7 +65,7 @@ esac
 
 if hash rofi &>/dev/null; then
     rofi -dmenu -i -sync -multi-select -no-custom \
-        -p "$prompt: " <"$tmpfile" | "${consumer[@]}"
+        -p "$prompt" <"$tmpfile" | "${consumer[@]}"
 else
     dmenu -l 5 -p "$prompt" <"$tmpfile" | "${consumer[@]}"
 fi

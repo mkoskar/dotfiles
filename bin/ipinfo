@@ -4,11 +4,12 @@ set -eu
 
 prgname=${0##*/}
 
-# http://checkip.amazonaws.com/
-# http://ipinfo.io/
+# http://ifconfig.me/
 # https://api.ipify.org/
-# https://ip.anysrc.net/banner
+# https://checkip.amazonaws.com/
+# https://icanhazip.com/
 # https://ip.anysrc.net/json
+# https://ipinfo.io/
 # https://wtfismyip.com/json
 
 if [[ $prgname = 'ipinfo-tor' ]]; then
@@ -25,9 +26,9 @@ trap cleanup EXIT
 
 if (( $# )); then
     ip=$(resolve "$1")
-    url="http://ipinfo.io/$ip"
+    url="https://ipinfo.io/$ip"
 else
-    url='http://ipinfo.io/'
+    url='https://ipinfo.io/'
 fi
 
 stat=$(curl -sSL -w '%{http_code}\t%{url_effective}' -o "$tmpfile" "$url")

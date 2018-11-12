@@ -25,21 +25,21 @@ endfunction
 
 function! utils#cmdlineKillWord(forward) abort
     let buf = getcmdline()
-    let pos = getcmdpos()-1
+    let pos = getcmdpos() - 1
     let idx = utils#moveWord(buf, pos, a:forward)
     if a:forward
-        return strpart(buf, 0, pos).(idx < 0 ? '' : strpart(buf, idx))
+        return strpart(buf, 0, pos) . (idx < 0 ? '' : strpart(buf, idx))
     else
-        call setcmdpos(idx+1)
-        return strpart(buf, 0, idx).strpart(buf, pos)
+        call setcmdpos(idx + 1)
+        return strpart(buf, 0, idx) . strpart(buf, pos)
     endif
 endfunction
 
 function! utils#cmdlineMoveWord(forward) abort
     let buf = getcmdline()
-    let pos = getcmdpos()-1
+    let pos = getcmdpos() - 1
     let idx = utils#moveWord(buf, pos, a:forward)
-    call setcmdpos(idx+1)
+    call setcmdpos(idx + 1)
     return buf
 endfunction
 
@@ -61,14 +61,26 @@ function! utils#rtpAdd(path) abort
     let rtp = split(&rtp, ',')
     let idx = index(rtp, $VIMRUNTIME)
     let path = escape(a:path, '\,')
-    call insert(rtp, path.'/after', idx+1)
+    call insert(rtp, path . '/after', idx + 1)
     call insert(rtp, path, idx)
     let &rtp = join(rtp, ',')
 endfunction
 
 function! utils#rtpPrepend(path) abort
     let path = escape(a:path, '\,')
-    let &rtp = join([path, &rtp, path.'/after'], ',')
+    let &rtp = join([path, &rtp, path . '/after'], ',')
+endfunction
+
+function! utils#shorten(str, len) abort
+    if len(a:str) > a:len
+        return a:str[:a:len - 1] . '…'
+    else
+        return a:str
+    end
+endfunction
+
+function! utils#shortenCmdline(str) abort
+    return utils#shorten(a:str, &ch * &co - 35)
 endfunction
 
 function! utils#tryCatch(cmd) abort

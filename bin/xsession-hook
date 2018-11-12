@@ -10,7 +10,7 @@ startup() {
         main)
             srun clementine
             srun workrave
-            xup &
+            # xup &
             ;;
     esac
 }

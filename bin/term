@@ -28,6 +28,9 @@ bin=${TERMBIN:-urxvtc}
 name=${name:-term}
 
 case $bin in
+    kitty)
+        exec "$bin" --name "$name" "$@"
+        ;;
     st)
         exec "$bin" -n "$name" ${geometry:+-g "$geometry"} -e "$@"
         ;;

@@ -45,8 +45,12 @@ augroup END
 " ----------------------------------------
 
 function! AleStatus() abort
-    let total = ale#statusline#Count(bufnr('%')).total
-    return total == 0 ? '' : printf('[%d]', total)
+    try
+        let total = ale#statusline#Count(bufnr('%')).total
+        return total == 0 ? '' : printf('[%d]', total)
+    finally
+        return ''
+    endtry
 endfunction
 
 set statusline+=%(\ %#ErrorMsg#%{AleStatus()}%*%)
@@ -176,7 +180,7 @@ let limelight_default_coefficient = 0.8
 " ----------------------------------------
 
 let NERDTreeAutoDeleteBuffer = 1
-let NERDTreeBookmarksFile = $VIMDIR.'/.NERDTreeBookmarks'
+let NERDTreeBookmarksFile = $VIMDIR . '/.NERDTreeBookmarks'
 let NERDTreeCaseSensitiveSort = 1
 let NERDTreeHijackNetrw = 0
 let NERDTreeIgnore = ['^\.svn$', '^\.git$', '\.swp$', '\~$']
@@ -237,8 +241,8 @@ nnoremap <silent> <Leader>T :TagbarOpenAutoClose<CR>
 " tcomment
 " ----------------------------------------
 
-let tcommentMaps = 0
-let tcommentOptions = {'whitespace': 'no'}
+let tcomment#options = {'whitespace': 'no'}
+let tcomment_maps = 0
 
 nnoremap <silent> <Leader>C :TCommentBlock<CR>
 nnoremap <silent> <Leader>cc :TComment<CR>

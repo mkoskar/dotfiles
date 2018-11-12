@@ -3,6 +3,11 @@
 if exists('b:did_ftplugin')
     finish
 endif
+let b:did_ftplugin = 1
+
+let b:undo_ftplugin = 'setl modeline<'
+
+setl nomodeline
 
 let s:hunk_pattern = '\m@@ -\d\+\(,\d\+\)\? +\d\+\(,\d\+\)\? @@'
 let s:head_pattern = '\m^--- .\+\n+++ .\+\n'.s:hunk_pattern
@@ -14,7 +19,7 @@ function! s:DiffOpen() abort
     let lnum = search(s:head_pattern, 'Wbc')
     if lnum > 0
         let p1 = substitute(substitute(getline(lnum), '\v^--- "?(.{-})"?(\t.*)?$', '\=submatch(1)', ''), '\m\\"', '"', 'g')
-        let p2 = substitute(substitute(getline(lnum+1), '\v^\+\+\+ "?(.{-})"?(\t.*)?$', '\=submatch(1)', ''), '\m\\"', '"', 'g')
+        let p2 = substitute(substitute(getline(lnum + 1), '\v^\+\+\+ "?(.{-})"?(\t.*)?$', '\=submatch(1)', ''), '\m\\"', '"', 'g')
         exec 'tabnew' fnameescape(p1)
         exec 'vertical rightbelow diffsplit' fnameescape(p2)
         wincmd p
@@ -24,8 +29,8 @@ endfunction
 command! DiffOpen call s:DiffOpen()
 noremap <buffer> <silent> <leader>dc :DiffOpen<CR>
 
-exec "noremap <buffer> <silent> <nowait> [ :call search('".s:head_pattern."', 'Wb') <Bar> normal! 0<CR>"
-exec "noremap <buffer> <silent> <nowait> ] :call search('".s:head_pattern."', 'W') <Bar> normal! 0<CR>"
+exec "noremap <buffer> <silent> <nowait> [ :call search('" . s:head_pattern . "', 'Wb') <Bar> normal! 0<CR>"
+exec "noremap <buffer> <silent> <nowait> ] :call search('" . s:head_pattern . "', 'W') <Bar> normal! 0<CR>"
 
-exec "noremap <buffer> <silent> { :call search('".s:hunk_pattern."', 'Wb')<CR>"
-exec "noremap <buffer> <silent> } :call search('".s:hunk_pattern."', 'W')<CR>"
+exec "noremap <buffer> <silent> { :call search('" . s:hunk_pattern . "', 'Wb')<CR>"
+exec "noremap <buffer> <silent> } :call search('" . s:hunk_pattern . "', 'W')<CR>"

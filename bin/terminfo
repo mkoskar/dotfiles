@@ -21,7 +21,7 @@ cat <<-EOF
 EOF
 
 echo
-echo 'BCE? *yes* if red line(s) follows'
+echo 'BCE? *yes* if red lines follow'
 tput setab 1
 tput el
 echo

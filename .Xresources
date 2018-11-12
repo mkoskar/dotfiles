@@ -76,6 +76,9 @@ URxvt.font:                     xft:Terminus:pixelsize=16, \
                                 xft:Symbola:pixelsize=5, \
                                 xft:Symbola:pixelsize=4
 
+URxvt.italicFont:               xft:DejaVu Sans Mono:italic
+URxvt.boldItalicFont:           xft:DejaVu Sans Mono:italic
+
 !URxvt.depth:                    32
 URxvt.cutchars:                 '"()*,<>[]{}|\''
 URxvt.iso14755:                 true

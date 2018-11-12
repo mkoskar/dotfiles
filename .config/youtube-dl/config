@@ -1,0 +1,4 @@
+# vim: ft=cfg
+
+--format (bestvideo+bestaudio/best)[height<=?1080]
+--output %(title)s.%(ext)s

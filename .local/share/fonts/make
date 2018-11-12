@@ -20,7 +20,8 @@ from_zip() {
 }
 export -f from_zip
 
-parallel --bar from_zip <<-EOF
+parallel -r --bar from_zip <<-EOF
+
 	http://www.fontsquirrel.com/fonts/download/Anonymous
 	http://www.fontsquirrel.com/fonts/download/BPmono
 	http://www.fontsquirrel.com/fonts/download/MonospaceTypewriter
@@ -29,4 +30,5 @@ parallel --bar from_zip <<-EOF
 	http://www.fontsquirrel.com/fonts/download/lekton
 	http://www.fontsquirrel.com/fonts/download/oxygen-mono
 	http://www.fontsquirrel.com/fonts/download/pt-mono
+
 EOF

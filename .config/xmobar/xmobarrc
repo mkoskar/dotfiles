@@ -17,7 +17,7 @@ Config { font = "xft:local_statusbar"
                         [ "-t", "<total>"
                         , "-L", "10"
                         , "-n", "#efefef", "-H", "30"
-                        , "-h", "#ff5555"
+                        , "-h", "#ff6666"
                         , "-m", "2"
                         , "-c", "0"
                         ] 30
@@ -25,11 +25,11 @@ Config { font = "xft:local_statusbar"
                         [ "-t", "<usedratio>"
                         , "-L", "10"
                         , "-n", "#efefef", "-H", "50"
-                        , "-h", "#ff5555"
+                        , "-h", "#ff6666"
                         ] 50
                     , Run Wireless "wlan0"
                         [ "-t", "¡<quality>"
-                        , "-l", "#ff5555", "-L", "30"
+                        , "-l", "#ff6666", "-L", "30"
                         , "-n", "#feed6a", "-H", "60"
                         , "-h", "#efefef"
                         ] 50
@@ -40,12 +40,12 @@ Config { font = "xft:local_statusbar"
                         ]
                     , Run Battery
                         [ "-t", "<watts>❘<left>❘<timeleft>"
-                        , "-l", "#ff5555", "-L", "15"
+                        , "-l", "#ff6666", "-L", "15"
                         , "-n", "#efefef", "-H", "50"
                         , "--"
                         , "-L", "0"
                         , "-m", "#55ff55", "-H", "12"
-                        , "-h", "#ff5555"
+                        , "-h", "#ff6666"
                         ] 50
                     , Run Date "%a❘%d.%m❘%H:%M" "date" 600
                     ]

@@ -1,0 +1,6 @@
+[Unit]
+Description=%N service
+
+[Service]
+ExecStart=/usr/bin/jackdbus auto
+ExecStop=/usr/bin/jack_control exit

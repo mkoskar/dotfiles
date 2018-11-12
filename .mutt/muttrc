@@ -1,8 +1,9 @@
 # vim: ft=muttrc
 
 # Global
+# ----------------------------------------
+
 set abort_nosubject = ask-no
-set abort_unmodified = no
 set alias_file = ~/.mutt/aliases
 set bounce = ask-no
 set certificate_file = ~/.mutt/certificates
@@ -29,6 +30,7 @@ set timeout = 5
 set ts_enabled
 set use_envelope_from
 set wrap = -1
+unset abort_unmodified
 unset beep
 unset collapse_unread
 unset confirmappend
@@ -40,25 +42,47 @@ unset use_domain
 unset user_agent
 unset wait_key
 
+
+# Threading
+# ----------------------------------------
+
+# '&' for each parent message hidden due to limiting
+# '*' threaded by subject instead of message-id
+# '=' duplicate message
+# '?' parent message missing
+
+set duplicate_threads
+unset hide_missing
+unset hide_top_missing
+
+
 # Formats
+# ----------------------------------------
+
 set alias_format = '%2n %t %-40.40r    %a'
+set attach_format = '[%u%D%I] %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s]'
 set compose_format = '-- Mutt: Compose [Approx. msg size: %l   Atts: %a]'
 set date_format = '!%b %d %I:%M'
 set folder_format = '%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f'
 set pager_format = '[%Z] (%C/%m) %n: %s%*  -- (%P)'
 set query_format = '%2c %t %-40.40a    %n %?e?(%e)?'
 set status_format = '[%r] %f (%n/%m)%?d? deleted:%d?%?t? tagged:%t?%?F? flagged:%F?%?p? postponed:%p? %l %?V?-- limit (%M): %V? %> %s/%S (%P)'
-set attach_format = '[%u%D%I] %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s]'
+
 source ~/.mutt/index_format1
 
+
 # Index
+# ----------------------------------------
+
 set reply_regexp = '^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*'
 set sort_aux = reverse-date-received
+
 source ~/.mutt/sort_date
 
+
 # Pager
-alternative_order text/plain text/enriched text/html
-auto_view text/html
+# ----------------------------------------
+
 set menu_scroll
 set pager_context = 5
 set pager_index_lines = 11
@@ -67,7 +91,16 @@ set quote_regexp = '^([ \t]*>)+'
 set tilde
 unset markers
 
+alternative_order text/plain text/enriched text/html
+auto_view text/html
+hdr_order from: to: cc: list-id: list-archive: date: subject:
+ignore *
+unignore from: to: cc: list-id: list-archive: date: subject:
+
+
 # Compose
+# ----------------------------------------
+
 set askcc
 set attribution = 'On %d, %n wrote:'
 set edit_headers
@@ -82,12 +115,10 @@ set reply_to
 set reverse_name
 set signature = ~/.signature
 
-# Headers
-hdr_order from: to: cc: list-id: list-archive: date: subject:
-ignore *
-unignore from: to: cc: list-id: list-archive: date: subject:
 
-# Key bindings
+# Key Bindings
+# ----------------------------------------
+
 bind generic        *           noop
 bind generic        ?           noop
 bind generic        =           noop
@@ -174,6 +205,7 @@ bind attach         \cB         previous-page       # generic
 bind attach         L           bottom-page         # generic
 bind attach         G           last-entry          # generic
 bind attach         g           first-entry         # generic
+bind attach         o           view-attach
 
 bind browser        o           noop
 bind browser        O           noop
@@ -188,41 +220,48 @@ bind editor         \cN         history-down
 bind editor         <space>     noop
 bind editor         \e<space>   buffy-cycle
 
-bind attach         o           view-attach
 
 # Macros
+# ----------------------------------------
+
 macro generic,index \ej )))
 macro generic,index \ek (((
 macro generic,pager <F1> '<shell-escape>pg /usr/share/doc/mutt/manual.txt<enter>' 'show manual'
+
 macro index \'1 '<limit>~d \=0d<enter>' 'limit today messages'
 macro index \'2 '<limit>~d \=1d<enter>' 'limit 1 day old messages'
 macro index \'3 '<limit>~d \>2d<enter>' 'limit 2 days old messages'
 macro index \'\' '<limit>all<enter>' 'cancel limit'
-macro index,pager Z '<shell-escape>mbsync &<enter>' 'trigger mailboxes synchronization'
+macro index \c_ <tag-prefix><save-message> 'save messages'
+macro index o <enter>
 macro index,pager * <tag-pattern>~A<enter> 'tag all'
 macro index,pager 0 <tag-pattern>~N<enter> 'tag new'
 macro index,pager \c? <untag-pattern>~A<enter> 'untag all'
-macro index,pager w <tag-prefix><set-flag> 'set a status flag on all tagged messages'
-macro index,pager W <tag-prefix><clear-flag> 'clear a status flag on all tagged messages'
 macro index,pager - <tag-prefix><clear-flag>N 'mark all tagged messages as read'
+macro index,pager W <tag-prefix><clear-flag> 'clear a status flag on all tagged messages'
+macro index,pager w <tag-prefix><set-flag> 'set a status flag on all tagged messages'
+macro index,pager Z '<shell-escape>mbsync &<enter>' 'trigger mailboxes synchronization'
 macro index,pager \ea '<change-folder>!!<enter>' 'go to previous mailbox'
 macro index,pager y <change-folder>?<toggle-mailboxes> 'show mailboxes list'
 macro index,pager,attach O '<pipe-entry>e0 -c "set bt=nofile"<enter>' 'view in $PAGER'
+
+macro pager \c_ <save-message> 'save message'
 macro pager j >>>>>
 macro pager k <<<<<
+macro pager o q
+
 macro attach \cO '<pipe-entry>stdiner -bt b0<enter>' 'view in browser'
+
 macro browser \ea <exit>\ea 'go to previous mailbox'
 macro browser u /^\\.\\.$<enter><enter> 'go up a dir'
+
 macro compose Y pfy 'send the message without PGP'
 macro compose v '<edit-from>^Ume-<tab>' 'select from'
 
-macro index o <enter>
-macro pager o q
-
-macro index \c_ <tag-prefix><save-message> 'save messages'
-macro pager \c_ <save-message> 'save message'
 
 # NeoMutt: Sidebar
+# ----------------------------------------
+
 set sidebar_divider_char = '|'
 set sidebar_folder_indent
 set sidebar_format = ' %B%?F? [%F]?%* %?N?%N?%C '
@@ -230,25 +269,38 @@ set sidebar_indent_string = ' '
 set sidebar_short_path
 set sidebar_visible
 set sidebar_width = 25
+
 bind index <space> sidebar-open
+
 macro index,pager \eN <sidebar-next> 'sidebar-next'
 macro index,pager \eP <sidebar-prev> 'sidebar-prev'
 macro index,pager \en <sidebar-next><sidebar-open> 'sidebar-next & sidebar-open'
 macro index,pager \ep <sidebar-prev><sidebar-open> 'sidebar-prev & sidebar-open'
 macro index,pager,compose ~ '<enter-command>toggle sidebar_visible<enter>' 'toggle sidebar'
 
+
 # NeoMutt: NNTP
+# ----------------------------------------
+
 set news_cache_dir = ~/.mutt/cache/news
 set newsrc = ~/.mutt/newsrc
+
 bind index,pager i change-newsgroup
 
+
 # NeoMutt: Other
+# ----------------------------------------
+
 set skip_quoted_offset = 5
 set sort_browser = alpha
+
 bind index \eL limit-current-thread
 bind index,pager @ compose-to-sender
 
-# Global includes
+
+# Global Includes
+# ----------------------------------------
+
 source $alias_file
 source ~/.mutt/colors
 source ~/.mutt/pgp

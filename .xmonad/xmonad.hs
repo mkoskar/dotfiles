@@ -17,6 +17,7 @@ import qualified XMonad.StackSet as W
 
 import XMonad.Actions.CycleWS
 import XMonad.Actions.FloatKeys
+import XMonad.Actions.Minimize
 import XMonad.Actions.OnScreen
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.UpdatePointer
@@ -58,7 +59,7 @@ doShiftView w = doShift w <+> (doF $ W.view w)
 
 workspaceOnScreen :: PhysicalScreen -> WorkspaceId -> X ()
 workspaceOnScreen p w = do
-    s <- getScreen p
+    s <- getScreen def p
     windows $ onScreen (W.greedyView w) FocusCurrent (fromMaybe 0 s)
 
 screenCount :: X Int
@@ -81,7 +82,7 @@ myStatusBar conf = statusBar "statusbar" myPP myToggleStrutsKey conf
         , ppSep = " "
         , ppTitle = color "#efefef" "" . shorten 100 . xmobarStrip
         , ppOrder = \(workspaces : layout : title : extras) -> [workspaces, title]
-        , ppSort = getSortByXineramaPhysicalRule
+        , ppSort = getSortByXineramaPhysicalRule def
         }
     myToggleStrutsKey XConfig{modMask = modm} = (modm, xK_b)
 
@@ -118,12 +119,12 @@ myConfig = def
             2 -> do
                 workspaceOnScreen 0 "3"
                 workspaceOnScreen 1 "2"
-                viewScreen 0
+                viewScreen def 0
             _ -> do
                 workspaceOnScreen 0 "8"
                 workspaceOnScreen 1 "3"
                 workspaceOnScreen 2 "2"
-                viewScreen 1
+                viewScreen def 1
         spawn "xsession-hook startup"
 
     myLogHook = ewmhDesktopsLogHook
@@ -136,7 +137,7 @@ myConfig = def
                         {-<+> hintsEventHook-}
 
     myManageHook = composeOne
-                       [ appName <? "sp:" -?> customFloating $ W.RationalRect 0.03 0.03 0.94 0.94
+                       [ appName <? "sp:" -?> customFloating $ W.RationalRect 0.02 0.03 0.96 0.94
                        , appName =? "clementine" -?> doShiftView "8"
                        , appName =? "gpodder" -?> doShift "8"
                        , appName =? "libreoffice" -?> doShiftView "8"
@@ -222,22 +223,22 @@ myConfig = def
         , ("M-S-<Return>", spawn myTerminal)
 
           -- Screens & Workspaces
-        , ("M-e", onNextNeighbour W.view)
-        , ("M-w", onPrevNeighbour W.view)
-        , ("M-S-e", onNextNeighbour W.shift)
-        , ("M-S-w", onPrevNeighbour W.shift)
-        , ("M-x", onNextNeighbour W.greedyView)
-        , ("M-z", onPrevNeighbour W.greedyView)
+        , ("M-e", onNextNeighbour def W.view)
+        , ("M-w", onPrevNeighbour def W.view)
+        , ("M-S-e", onNextNeighbour def W.shift)
+        , ("M-S-w", onPrevNeighbour def W.shift)
+        , ("M-x", onNextNeighbour def W.greedyView)
+        , ("M-z", onPrevNeighbour def W.greedyView)
         , ("M-d", moveTo Next HiddenNonEmptyWS)
         , ("M-s", moveTo Prev HiddenNonEmptyWS)
 
-        --, ("M-u", viewScreen 0)
-        , ("M-i", viewScreen 0)
-        , ("M-o", viewScreen 1)
+        --, ("M-u", viewScreen def 0)
+        , ("M-i", viewScreen def 0)
+        , ("M-o", viewScreen def 1)
 
-        --, ("M-S-u", sendToScreen 0)
-        , ("M-S-i", sendToScreen 0)
-        , ("M-S-o", sendToScreen 1)
+        --, ("M-S-u", sendToScreen def 0)
+        , ("M-S-i", sendToScreen def 0)
+        , ("M-S-o", sendToScreen def 1)
         , ("M-a", toggleWS)
 
           -- Stack navigation
@@ -278,7 +279,7 @@ myConfig = def
         , ("M-f M-f", sendMessage $ Toggle FULL)
         , ("M-f M-r", sendMessage $ Toggle MIRROR)
         , ("M-f M--", withFocused minimizeWindow)
-        , ("M-f M-=", sendMessage RestoreNextMinimizedWin)
+        , ("M-f M-=", withLastMinimized maximizeWindowAndFocus)
         , ("M-[", withFocused $ sendMessage . maximizeRestore)
         ]
 

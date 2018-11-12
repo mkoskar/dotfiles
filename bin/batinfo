@@ -2,13 +2,16 @@
 
 set -eu
 
-for i in /sys/class/power_supply/BAT${1:-*}; do
-    [[ -e $i ]] || continue
+for i in /sys/class/power_supply/${1:-*}; do
+    [[ -r $i/type ]] || continue
+    type=$(<"$i/type")
+    [[ $type = 'Battery' ]] || continue
+
     echo $'\n--------------------------------------------------'
     printf '> %s\n\n' "$i"
-    cat -- "$i/uevent"
+    udevadm info -q property -p "$i"
 
-    batcap=$(batcap "${i##*/BAT}")
+    batcap=$(batcap "${i##*/}")
     printf '\nbatcap [%%]: %s\n' "$batcap"
 done
 echo

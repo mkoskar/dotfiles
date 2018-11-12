@@ -75,17 +75,24 @@ echo '--------------------------------------------------'
 base='/sys/devices/system/cpu/intel_pstate'
 printf '> %s\n\n' "$base"
 
+get "$base" status
 get "$base" min_perf_pct
 get "$base" max_perf_pct
+get "$base" turbo_pct
 get "$base" no_turbo
 
 # shellcheck disable=SC2154
-printf '%-25s %-25s %-25s\n\n' \
-    "min_perf_pct: $_min_perf_pct" \
-    "max_perf_pct: $_max_perf_pct" \
-    "no_turbo: $_no_turbo"
+{
+    printf '%-16s : %-15s\n' status "$_status"
+    printf '%-16s : %-15s   %-16s : %-15s\n' \
+        min_perf_pct "$_min_perf_pct" \
+        max_perf_pct "$_max_perf_pct"
+    printf '%-16s : %-15s   %-16s : %-15s\n' \
+        turbo_pct "$_turbo_pct" \
+        no_turbo "$_no_turbo"
+}
 
-echo '--------------------------------------------------'
+echo $'\n--------------------------------------------------'
 printf '> acpi -V\n\n'
 
 acpi -V
