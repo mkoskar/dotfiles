@@ -6,3 +6,5 @@ folder-hook $my_local 'source ~/.mutt/accounts/local_hook'
 
 mailboxes $my_local
 mailboxes $my_local/INBOX
+
+sidebar_whitelist $my_local $my_local/INBOX

@@ -22,6 +22,7 @@ export -f from_zip
 
 parallel -r --bar from_zip <<-EOF
 
+	http://users.teilar.gr/~g1951d/Symbola.zip
 	http://www.fontsquirrel.com/fonts/download/Anonymous
 	http://www.fontsquirrel.com/fonts/download/BPmono
 	http://www.fontsquirrel.com/fonts/download/MonospaceTypewriter

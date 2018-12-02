@@ -1,25 +1,37 @@
 # vim: ft=muttrc
 
+#color bold
+#color indicator
+#color markers
+#color message
+#color normal
+#color progress
+#color prompt
+#color underline
 color attachment        color174        default
-color error             color255        red
+color error             color231        red
+color hdrdefault        default         color232
 color quoted            color228        default
 color quoted1           color216        default
 color quoted2           color204        default
 color search            black           color214
-color signature         color245        default
-color status            color255        color237
-color tilde             color243        default
-color tree              color255        default
+color signature         color242        default
+color tilde             color238        default
+color tree              color231        default
 
-color header            color156        default     '^From:'
-color header            color156        default     '^Subject:'
+color status            color231        color237
+color status            color231        red         '\[[0-9]+\]'
+
+color header            color156        color232    '^From:'
+color header            color156        color232    '^Subject:'
 
 color body              color110        default     '^--- .*'
 color body              color110        default     '^\+\+\+ .*'
 color body              color228        default     '^@@ .* @@$'
+
 color body              color174        default     '^gpg: .*'
 color body              color167        default     '^gpg: Good signature .*'
-color body              color255        red         '^gpg: BAD signature .*'
+color body              color231        red         '^gpg: BAD signature .*'
 color body              color167        default     "^gpg: Can't check signature: .*"
 color body              color174        default     '^Primary key fingerprint: .*'
 color body              color174        default     '^     Subkey fingerprint: .*'
@@ -31,10 +43,40 @@ color body              color156        default     '(^|[[:space:]])`+[^`]+`+(^|
 color body              color174        default     '(^|[[:space:]])"+[^"]+"+(^|[[:space:]])'
 
 color index             brightwhite     default     ~N
-color index             color167        default     ~F
-color index             color243        default     ~D
-color index             brightyellow    default     ~T
+color index             color242        default     ~D
 
+color index             default         color235    ~T
+color index             brightwhite     color235    ~T~N
+color index             color242        color235    ~T~D
+
+color index             color167        default     ~F
+color index             brightcolor167  default     ~F~N
+color index             color242        default     ~F~D
+color index             color167        color235    ~F~T
+color index             brightcolor167  color235    ~F~T~N
+color index             color242        color235    ~F~T~D
+
+color index             color244        color233    ~v
+
+#color index_author
+#color index_collapsed
+#color index_date
+#color index_flags
+#color index_label
+#color index_number
+#color index_size
+#color index_subject
+#color index_tag
+#color index_tags
+
+#color compose header
+#color compose security_both
+#color compose security_encrypt
+#color compose security_none
+#color compose security_sign
+
+#color sidebar_indicator
+#color sidebar_spoolfile
 color sidebar_divider   color233        default
 color sidebar_flagged   brightred       default
 color sidebar_highlight black           color245

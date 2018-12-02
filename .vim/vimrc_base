@@ -101,11 +101,15 @@ let load_doxygen_syntax = 1
 let python_highlight_all = 1
 
 nnoremap <silent> <Space> :nohlsearch \| echo<CR>
-nnoremap <silent> # :let @/ = '\V' . escape(expand('<cWORD>'), '\/') \| set hls<CR>
-nnoremap <silent> * :let @/ = '\V' . escape(expand('<cword>'), '\/') \| set hls<CR>
+nnoremap <silent> * :let @/ = '\V\<' . escape(expand('<cword>'), '\/') . '\>' \| set hls<CR>
+nnoremap <silent> g* :let @/ = '\V' . escape(expand('<cword>'), '\/') \| set hls<CR>
+nnoremap <silent> # :let @/ = '\V\S\@<!' . escape(expand('<cWORD>'), '\/') . '\S\@!' \| set hls<CR>
+nnoremap <silent> g# :let @/ = '\V' . escape(expand('<cWORD>'), '\/') \| set hls<CR>
+vnoremap <silent> g/ y:let @/ = '\V' . escape(@", '\/') \| call histadd('search', @/) \| set hls<CR>
 
 nnoremap cuc :setl <C-R>=&cuc ? 'nocuc' : 'cuc'<CR><CR>
 nnoremap cul :setl <C-R>=&cul ? 'nocul' : 'cul'<CR><CR>
+
 nnoremap <Leader>V :setl <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
 nnoremap <Leader>col :setl <C-R>=!empty(&cc) ? 'cc=' : 'cc<'<CR><CR>
 nnoremap <Leader>sp :setl <C-R>=&spell ? 'nospell' : 'spell'<CR><CR>

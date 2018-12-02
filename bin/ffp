@@ -20,7 +20,7 @@ case $prgname in
         profile='default'
         ;;
     ffdev)
-        bin='firefox-developer'
+        bin='firefox-developer-edition'
         bin_name='firefox-dev'
         ;;
 esac
@@ -139,6 +139,7 @@ if [[ ! -f user.js ]]; then
 			user_pref('dom.battery.enabled', false);
 			user_pref('dom.event.clipboardevents.enabled', false);
 			user_pref('geo.enabled', false);
+			user_pref('media.av1.enabled', true);
 			user_pref('network.cookie.cookieBehavior', 3);
 			user_pref('network.cookie.lifetimePolicy', 2);
 		EOF

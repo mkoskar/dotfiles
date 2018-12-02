@@ -3,44 +3,51 @@
 # Global
 # ----------------------------------------
 
-set abort_nosubject = ask-no
 set alias_file = ~/.mutt/aliases
 set bounce = ask-no
 set certificate_file = ~/.mutt/certificates
+set change_folder_next
 set delete
 set editor = 'e +/^$ ++1 +noh'
+set flag_safe
 set header_cache = ~/.mutt/cache/headers
 set history = 100
 set history_file = ~/.mutt/history
+set history_remove_dups
 set ispell = 'aspell -e --email-margin=0 --run-together -c'
 set mail_check = 0
+set mail_check_stats
 set mailcap_path = ~/.mutt/mailcap
 set mbox_type = Maildir
+set message_cache_clean
 set message_cachedir = ~/.mutt/cache/messages
 set pipe_decode
-set recall = ask-no
-set reverse_alias
-set reverse_name
 set save_history = 100
 set sleep_time = 0
 set ssl_force_tls
-set ssl_starttls
-set time_inc = 500
+set time_inc = 50
 set timeout = 5
 set ts_enabled
-set use_envelope_from
 set wrap = -1
-unset abort_unmodified
 unset beep
-unset collapse_unread
 unset confirmappend
 unset help
 unset mail_check_recent
 unset mark_old
-unset reverse_realname
 unset use_domain
 unset user_agent
 unset wait_key
+
+unattachments *
+attachments +A */.*
+attachments -A text/x-vcard application/pgp.*
+attachments -A application/x-pkcs7-.*
+attachments +I text/plain
+attachments -A message/external-body
+attachments -I message/external-body
+
+unmime_lookup *
+mime_lookup application/octet-stream
 
 
 # Threading
@@ -52,6 +59,7 @@ unset wait_key
 # '?' parent message missing
 
 set duplicate_threads
+unset collapse_unread
 unset hide_missing
 unset hide_top_missing
 
@@ -61,22 +69,26 @@ unset hide_top_missing
 
 set alias_format = '%2n %t %-40.40r    %a'
 set attach_format = '[%u%D%I] %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s]'
-set compose_format = '-- Mutt: Compose [Approx. msg size: %l   Atts: %a]'
-set date_format = '!%b %d %I:%M'
-set folder_format = '%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f'
-set pager_format = '[%Z] (%C/%m) %n: %s%*  -- (%P)'
+set date_format = '!%b %d'
+set folder_format = '%2C %t %N %F %2l %-8.8u %-8.8g %8s (%5n/%5m) %d %f'
 set query_format = '%2c %t %-40.40a    %n %?e?(%e)?'
-set status_format = '[%r] %f (%n/%m)%?d? deleted:%d?%?t? tagged:%t?%?F? flagged:%F?%?p? postponed:%p? %l %?V?-- limit (%M): %V? %> %s/%S (%P)'
-
-source ~/.mutt/index_format1
+set status_format = '[%r] %f %l (%n/%m)%?F? [%F]?%?p? P:%p?%?d? D:%d?%?t? T:%t?%?V? > %V (%M)? %> %s/%S (%P)'
 
 
 # Index
 # ----------------------------------------
 
 set reply_regexp = '^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*'
+set reverse_alias
 set sort_aux = reverse-date-received
 
+#index-format-hook date ~r<1d '%(! %H:%M)'
+#index-format-hook date ~r<1m '%(!%a %d)'
+#index-format-hook date ~r<1y '%(!%b %d)'
+#index-format-hook date ~A    '%(! %m/%y)'
+#index-format-hook collapsed ~v '+-- %2E messages: '
+
+source ~/.mutt/index_format1
 source ~/.mutt/sort_date
 
 
@@ -85,6 +97,7 @@ source ~/.mutt/sort_date
 
 set menu_scroll
 set pager_context = 5
+set pager_format = '%C [%Z] %c > %n > %s%* (%P)'
 set pager_index_lines = 11
 set pager_stop
 set quote_regexp = '^([ \t]*>)+'
@@ -93,27 +106,72 @@ unset markers
 
 alternative_order text/plain text/enriched text/html
 auto_view text/html
-hdr_order from: to: cc: list-id: list-archive: date: subject:
+
 ignore *
-unignore from: to: cc: list-id: list-archive: date: subject:
+unignore cc date from list-archive list-id subject to user-agent x-mailer x-url
+
+unhdr_order *
+hdr_order date from to cc subject list-id list-archive user-agent x-mailer x-url
 
 
 # Compose
 # ----------------------------------------
 
+set abort_nosubject = ask-no
 set askcc
-set attribution = 'On %d, %n wrote:'
+set compose_format = 'Compose [Approx. msg size: %l  Atts: %a]'
 set edit_headers
 set fast_reply
-set fcc_attach
 set forward_format = 'Fwd: %s'
 set forward_quote
 set include
 set mime_forward = ask-no
 set realname = 'Miroslav Koškár' # overriden by name in $from, if any
+set recall = ask-no
 set reply_to
 set reverse_name
 set signature = ~/.signature
+set use_envelope_from
+unset abort_unmodified
+unset reverse_realname
+
+
+# PGP and S/MIME
+# ----------------------------------------
+
+# %p    Expands to PGPPASSFD=0 when a pass phrase is needed, to an empty
+#       string otherwise. Note: This may be used with a %? construct.
+#
+# %f    Expands to the name of a file containing a message.
+#
+# %s    Expands to the name of a file containing the signature part of a
+#       multipart/signed attachment when verifying it.
+#
+# %a    The value of $pgp_sign_as.
+#
+# %r    One or more key IDs.
+
+set crypt_autosign
+set crypt_replysign
+set crypt_replysignencrypted
+set pgp_auto_decode
+set pgp_clearsign_command = 'gpg --no-verbose --quiet --batch %?p?--passphrase-fd 0? --armor --textmode --clearsign %?a?-u %a? --output - %f'
+set pgp_decode_command = 'gpg --no-verbose --quiet --batch --status-fd=2 %?p?--passphrase-fd 0? --trust-model always --no-auto-check-trustdb --verify-options show-primary-uid-only,no-show-policy-urls --output - %f'
+set pgp_decrypt_command = 'gpg --no-verbose --quiet --batch --status-fd=2 %?p?--passphrase-fd 0? --output - %f'
+set pgp_encrypt_only_command = 'pgpewrap gpg --no-verbose --quiet --batch --armor --textmode --trust-model always --encrypt --output - -- -r %r -- %f'
+set pgp_encrypt_sign_command = 'pgpewrap gpg --no-verbose --quiet --batch %?p?--passphrase-fd 0? --armor --textmode --trust-model always --encrypt --sign %?a?-u %a? --output - -- -r %r -- %f'
+set pgp_export_command = 'gpg --no-verbose --armor --export %r'
+set pgp_good_sign = '^gpgv?: Good signature from '
+set pgp_import_command = 'gpg --no-verbose --import %f'
+set pgp_list_pubring_command = 'gpg --no-verbose --quiet --batch --with-colons --list-keys %r'
+set pgp_list_secring_command = 'gpg --no-verbose --quiet --batch --with-colons --list-secret-keys %r'
+set pgp_sign_command = 'gpg --no-verbose --quiet --batch %?p?--passphrase-fd 0? --armor --textmode --detach-sign %?a?-u %a? --output - %f'
+set pgp_use_gpg_agent
+set pgp_verify_command = 'gpg --no-verbose --quiet --batch --status-fd=2 --trust-model always --no-auto-check-trustdb --verify-options show-primary-uid-only,no-show-policy-urls --verify --output - %s %f'
+set pgp_verify_key_command = 'gpg --verbose --batch --fingerprint --check-sigs %r'
+unset pgp_show_unusable
+
+source ~/.mutt/generate_pgp_auto|
 
 
 # Key Bindings
@@ -144,7 +202,6 @@ bind generic,pager  (           previous-entry
 bind generic,pager  )           next-entry
 
 bind index          x           noop
-bind index          P           noop
 bind index          L           bottom-page         # generic
 bind index          g           first-entry         # generic
 bind index          G           last-entry          # generic
@@ -176,7 +233,8 @@ bind index,pager    ]           next-subthread
 bind index,pager    {           previous-thread
 bind index,pager    }           next-thread
 bind index,pager    p           parent-message
-bind index,pager    p           parent-message
+bind index,pager    P           root-message
+bind index,pager    @           compose-to-sender
 
 bind pager          Q           noop
 bind pager          \e?         help
@@ -189,7 +247,6 @@ bind pager          <           previous-line
 bind pager          <return>    exit
 bind pager          ,           next-unread
 bind pager          .           previous-unread
-bind pager          P           print-message
 bind pager          \ek         previous-entry
 bind pager          \;          previous-entry
 bind pager          \ej         next-entry
@@ -224,15 +281,17 @@ bind editor         \e<space>   buffy-cycle
 # Macros
 # ----------------------------------------
 
+macro generic <F1> '<shell-escape>less /usr/share/doc/mutt/manual.txt<Enter>' 'show Mutt documentation'
+
 macro generic,index \ej )))
 macro generic,index \ek (((
-macro generic,pager <F1> '<shell-escape>pg /usr/share/doc/mutt/manual.txt<enter>' 'show manual'
 
-macro index \'1 '<limit>~d \=0d<enter>' 'limit today messages'
-macro index \'2 '<limit>~d \=1d<enter>' 'limit 1 day old messages'
-macro index \'3 '<limit>~d \>2d<enter>' 'limit 2 days old messages'
+macro index \'1 '<limit>~r \=0d<enter>' 'limit today messages'
+macro index \'2 '<limit>~r \=1d<enter>' 'limit 1 day old messages'
+macro index \'3 '<limit>~r >2d<enter>' 'limit 2 days old messages'
 macro index \'\' '<limit>all<enter>' 'cancel limit'
 macro index \c_ <tag-prefix><save-message> 'save messages'
+macro index \eb '<search>~b ' 'search in message bodies'
 macro index o <enter>
 macro index,pager * <tag-pattern>~A<enter> 'tag all'
 macro index,pager 0 <tag-pattern>~N<enter> 'tag new'
@@ -253,19 +312,20 @@ macro pager o q
 macro attach \cO '<pipe-entry>stdiner -bt b0<enter>' 'view in browser'
 
 macro browser \ea <exit>\ea 'go to previous mailbox'
-macro browser u /^\\.\\.$<enter><enter> 'go up a dir'
+macro browser u p
 
 macro compose Y pfy 'send the message without PGP'
 macro compose v '<edit-from>^Ume-<tab>' 'select from'
 
 
-# NeoMutt: Sidebar
+# Sidebar
 # ----------------------------------------
 
-set sidebar_divider_char = '|'
+#set sidebar_new_mail_only
 set sidebar_folder_indent
 set sidebar_format = ' %B%?F? [%F]?%* %?N?%N?%C '
 set sidebar_indent_string = ' '
+set sidebar_next_new_wrap
 set sidebar_short_path
 set sidebar_visible
 set sidebar_width = 25
@@ -285,17 +345,15 @@ macro index,pager,compose ~ '<enter-command>toggle sidebar_visible<enter>' 'togg
 set news_cache_dir = ~/.mutt/cache/news
 set newsrc = ~/.mutt/newsrc
 
-bind index,pager i change-newsgroup
+bind index,pager \ei change-newsgroup
 
 
 # NeoMutt: Other
 # ----------------------------------------
 
 set skip_quoted_offset = 5
-set sort_browser = alpha
 
 bind index \eL limit-current-thread
-bind index,pager @ compose-to-sender
 
 
 # Global Includes
@@ -303,5 +361,4 @@ bind index,pager @ compose-to-sender
 
 source $alias_file
 source ~/.mutt/colors
-source ~/.mutt/pgp
 source ~/.mutt/accountsrc

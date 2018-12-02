@@ -463,7 +463,7 @@ def cb_command_urls(data, buffer, args):
             count -= 1
         p.stdin.close()
         p.wait()
-    except Exception as e:
+    except Exception:
         return w.WEECHAT_RC_ERROR
     return w.WEECHAT_RC_OK
 

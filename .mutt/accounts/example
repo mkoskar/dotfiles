@@ -12,6 +12,8 @@ folder-hook $my_example ' \
 mailboxes $my_example
 mailboxes $my_example/INBOX
 
+sidebar_whitelist $my_example $my_example/INBOX
+
 # IMAP
 set my_example_imap = imaps://<user>@<host>:993
 set my_example_imap_pass = "`authinfo.py <machine> <login>`"

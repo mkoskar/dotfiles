@@ -125,11 +125,13 @@ MENUER=$prgname menuer "$@" <<-EOF |
     google-devs             b https://developers.google.com/
     google-play             b https://play.google.com/store/search?q={u}
     google-products         b https://developers.google.com/products/
+    google-projects         b https://opensource.google.com/projects/list/featured
     google-scholar          b https://scholar.google.com/citations?view_op=top_venues
     google-search           b https://www.google.com/advanced_search
     gpg-search              b https://pgp.mit.edu/
     gradle                  b https://gradle.org/docs/
     graphviz                b https://www.graphviz.org/doc/info/index.html
+    greek-alphabet          b https://en.wikipedia.org/wiki/Greek_alphabet#Letters
     groovy                  b http://groovy-lang.org/documentation.html
     grub                    b https://www.gnu.org/software/grub/manual/grub.html
     gtk-running             b https://developer.gnome.org/gtk3/stable/gtk-running.html
@@ -177,7 +179,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     js-keys                 b https://w3c.github.io/uievents/tools/key-event-viewer.html
     jsr!                    b ~/archive/lib/00-cs/java/08-jsr/
     jsr-all                 b https://jcp.org/en/jsr/all?sortBy=date
-    latin-greek             b https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English
+    latin-greek-roots       b https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English
     latin-phrases           b https://en.wikipedia.org/wiki/List_of_Latin_phrases
     learnyouahaskell        b http://learnyouahaskell.com/chapters
     license                 b https://choosealicense.com/licenses/
@@ -212,9 +214,11 @@ MENUER=$prgname menuer "$@" <<-EOF |
     morse-nato              b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
     mozilla-repos           b https://hg.mozilla.org/
     music                   b https://musicbrainz.org/search?query={u}
-    mutt                    b https://neomutt.org/guide/index.html
-    mutt-patterns           b https://neomutt.org/guide/advancedusage.html#patterns
-    mutt-regex              b https://neomutt.org/guide/advancedusage.html#regexp
+    mutt                    b http://mutt.org/doc/manual/
+    mutt-changes            b https://gitlab.com/muttmua/mutt/raw/master/UPDATING
+    neomutt                 b https://neomutt.org/guide/index.html
+    neomutt-changes         b https://github.com/neomutt/neomutt/blob/master/ChangeLog.md
+    neomutt-patterns        b https://neomutt.org/guide/advancedusage.html#patterns
     netfilter               b https://www.netfilter.org/documentation/index.html
     netfilter-flow          b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
     nodejs                  b https://nodejs.org/api/
@@ -223,6 +227,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     oracle-plsql            b https://docs.oracle.com/database/121/LNPLS/toc.htm
     oracle-sql              b https://docs.oracle.com/database/121/SQLRF/toc.htm
     osdev                   b https://wiki.osdev.org/Main_Page
+    owl                     b https://owl.purdue.edu/owl/purdue_owl.html
     pango-markup            b https://developer.gnome.org/pango/stable/PangoMarkupFormat.html
     patents                 b https://patents.google.com/
     pep                     b https://www.python.org/dev/peps/
@@ -242,7 +247,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     pubchem                 b https://www.ncbi.nlm.nih.gov/pccompound?term={u}
     pygments                b http://pygments.org/docs/lexers/
     pypa                    b https://www.pypa.io/
-    pypi                    b https://pypi.python.org/pypi
+    pypi                    b https://pypi.org/search/?q={u}
     python                  b https://docs.python.org/
     python2                 b https://docs.python.org/2/
     qt                      b https://doc.qt.io/

@@ -1,4 +1,5 @@
 # vim: ft=muttrc
 
-set index_format = '[%?M?+& ?%Z]  %D  %-25.25F  %s'
+set index_format = '[%Z]  %D  %-25.25F  %s'
+#set index_format = '[%Z]  %@date@  %-25.25F  %@collapsed@%s'
 macro index,pager \e\140 '<enter-command>source ~/.mutt/index_format3<enter>'

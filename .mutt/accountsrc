@@ -5,7 +5,12 @@ set folder = $my_mail
 
 unhook account-hook
 unhook folder-hook
+
+unalternates *
 unmailboxes *
+unsidebar_whitelist *
+unlists *
+unsubscribe *
 
 account-hook . 'unset imap_pass'
 folder-hook . 'source ~/.mutt/accountsrc_pre_hook'
