@@ -31,8 +31,8 @@ shift $((OPTIND-1))
 
 export LANG=C
 
-repodir=$(realpath -- "$1")
-maildir=$(realpath -- "$2")
+repodir=$(realpath -m -- "$1")
+maildir=$(realpath -m -- "$2")
 export repodir maildir
 
 cd "$repodir"
@@ -78,9 +78,8 @@ process() {
 }
 export -f process
 
-parallel --bar process <chunks
+nice parallel --bar process <chunks
 
-echo $'\n--------------------------------------------------'
 printf '> Queued:  %9d\n' "$(wc -l <"$tmpdir/all")"
 printf '> Written: %9d\n' \
     "$(cat "$tmpdir"/x*.out | awk '{ sum += $1 } END { print sum }')"
