@@ -74,7 +74,7 @@ aux() {
 mon() {
     cd ~
 
-    new -n top trun onsighup-terminate conky -q \
+    new -n top trun conky -q \
         \; setw remain-on-exit on \
         \; setw main-pane-width 43 \
         \; selectl main-vertical \

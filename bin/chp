@@ -124,7 +124,6 @@ args=(
     --ignore-gpu-blacklist
     --show-component-extension-options
     --show-saved-copy=primary
-    --top-chrome-md=material
 )
 
 if [[ ${CH_DEBUG-} ]]; then

@@ -85,6 +85,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ecma                    b https://www.ecma-international.org/publications/standards/Standard.htm
     electronegativity       b https://en.wikipedia.org/wiki/Electronegativity#Electronegativities_of_the_elements
     emojis                  b https://emojipedia.org/
+    emojis-codes            b https://www.webpagefx.com/tools/emoji-cheat-sheet/
     emoticons               b https://en.wikipedia.org/wiki/List_of_emoticons
     etsi                    b https://www.etsi.org/standards-search#\\&sort=3
     etymology               b https://www.etymonline.com/word/{u}
@@ -187,6 +188,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-docs              b https://www.kernel.org/doc/Documentation
     linux-docs!             b "/lib/modules/$kernel_release/build/Documentation"
     linux-docs-html         b https://www.kernel.org/doc/html/latest/index.html
+    linux-lists             b http://vger.kernel.org/vger-lists.html
     linux-lkddb             b https://cateee.net/lkddb/web-lkddb/
     linux-params            b https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html
     linux-repos             b https://git.kernel.org/cgit/
@@ -195,8 +197,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-src               b "https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/?id=$kernel_version"
     linux-sysctl            b https://www.kernel.org/doc/Documentation/sysctl
     lists                   b https://marc.info/
-    lists1                  b https://markmail.org/
-    lists2                  b https://gmane.org/find.php
     lua                     b https://www.lua.org/manual/
     luarocks                b https://luarocks.org/search?q={u}
     m4-macros               b https://www.gnu.org/software/m4/manual/m4.html#Macro-index
@@ -311,11 +311,11 @@ MENUER=$prgname menuer "$@" <<-EOF |
     uefi-specs              b https://uefi.org/specifications
     unicode                 b https://en.wikipedia.org/wiki/Plane_\\(Unicode\\)
     unicode-charts          b https://unicode.org/charts/
-    unicode-convert         b https://r12a.github.io/apps/conversion/
     unicode-emojis          b https://www.unicode.org/emoji/charts/full-emoji-list.html
     unicode-gallery         b http://xahlee.info/comp/unicode_index.html
     unicode-math            b https://www.unicode.org/Public/math/revision-15/MathClassEx-15.html
     unicode-table           b https://unicode-table.com/
+    unicode-table1          b https://codepoints.net/
     unix                    b https://publications.opengroup.org/standards/unix
     unix-history            b https://upload.wikimedia.org/wikipedia/commons/c/cd/Unix_timeline.en.svg
     unix-history1           b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg

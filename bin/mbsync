@@ -6,13 +6,13 @@ prgname=${0##*/}
 
 sdu() { systemctl --user --no-block "$@"; }
 
-if (( ! $# )); then
-    sdu start mbsync@head.service
-    sdu start mbsync@tail.service
-    exit
-fi
+(( $# )) || set -- now
 
 case $1 in
+    now)
+        sdu start mbsync@head.service
+        sdu start mbsync@tail.service
+        ;;
     on)
         sdu start mbsync@head.timer
         sdu start mbsync@tail.timer
@@ -24,7 +24,7 @@ case $1 in
         sdu stop mbsync@tail.service
         ;;
     *)
-        echo "usage: $prgname [on | off]" >&2
+        echo "usage: $prgname [now | on | off]" >&2
         exit 2
         ;;
 esac
