@@ -20,7 +20,7 @@ cd ~/.vim
 mkdir -p pack/custom/opt
 cd pack/custom/opt
 
-parallel -r --bar --colsep '\t+' from_git <<-EOF
+grep -vxE '\s*|(\s*#.*)' <<-EOF | parallel --colsep \\t+ --bar from_git
 
 	ansiesc				https://github.com/jakar/vim-AnsiEsc
 	colorschemes		https://github.com/flazz/vim-colorschemes

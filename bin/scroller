@@ -6,11 +6,11 @@
 #
 # Navigation:
 #
-# * q / Q       - quit
-# * g / 0       - beginning
-# * G / $       - end
-# * k / K       - previous
-# * (default)   - next
+#   q / Q       - quit
+#   g / 0       - beginning
+#   G / $       - end
+#   k / K       - previous
+#   (default)   - next
 
 set -eu
 

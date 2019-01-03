@@ -1,7 +1,7 @@
 # Source this file for interactive shell post-initialization.
 # :Compatibility: POSIX
 
-[ "$SHRC_DEBUG" ] && echo '~/bin/shrc-post.sh' >&2
+[ "$SHRC_DEBUG" ] && echo \~/bin/shrc-post.sh >&2
 
 case $- in *i*) ;; *) return ;; esac
 
@@ -20,6 +20,6 @@ source_opt /usr/share/fzf/key-bindings."$SHNAME"
 
 case $- in *l*) ;; *) return ;; esac
 
-if [ "$TTY" = '/dev/tty1' ]; then
+if [ "$TTY" = /dev/tty1 ]; then
     up
 fi

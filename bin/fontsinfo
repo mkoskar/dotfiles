@@ -1,70 +1,115 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
+
+glyph_count() {
+    set -eu -o pipefail
+    local file count
+    while read -r file; do
+        count=$(ftdump "$file" | awk '/glyph count:/ { print $3 }')
+        printf '%5d %s\n' "$count" "$file"
+    done
+}
+export -f glyph_count
+
+if [[ ${1-} = '-' ]]; then
+    fc-list --format='%{file}\n' |
+        parallel --pipe --block 1K --round glyph_count |
+        sort -r
+    exit
+fi
+
+# ----------------------------------------
 
 match() {
+    set -eu
     local match
+    case $1 in \>*)
+        echo $'\n--------------------------------------------------'
+        printf '%s\n\n' "$1"
+        return
+    esac
     match=$(fc-match "$1")
     printf '%-25s %s\n' "$1" "$match"
 }
 export -f match
 
-echo $'\n--------------------------------------------------'
-echo $'> Generic:\n'
+grep -vxE '\s*|(\s*#.*)' <<-EOF | parallel -k match
 
-parallel -rk match <<-EOF
-
+	> Generic:
 	cursive
 	fantasy
 	monospace
 	sans-serif
 	serif
 
-EOF
+	> PostScript:
+	ITC Avant Garde Gothic
+	ITC Bookman
+	Courier
+	Helvetica
+	Helvetica Condensed
+	New Century Schoolbook
+	Palatino
+	Symbol
+	Times
+	ITC Zapf Chancery
+	ITC Zapf Dingbats
 
-echo $'\n--------------------------------------------------'
-echo $'> Other:\n'
-
-parallel -rk match <<-EOF
-
-	Andale Mono
+	> PostScript 3:
+	Albertus
+	Antique Olive
+	Apple Chancery
 	Arial
+	Bodoni
+	Carta
+	Chicago
+	Clarendon
+	Cooper Black
+	Copperplate Gothic
+	Coronet
+	Eurostile
+	Geneva
+	Gill Sans
+	Goudy
+	Helvetica Narrow
+	Hoefler Text
+	ITC Lubalin Graph
+	ITC Mona Lisa Recut
+	Joanna
+	Letter Gothic
+	Marigold
+	Monaco
+	New York
+	Optima
+	Oxford
+	Stempel Garamond
+	Tekton
+	Times New Roman
+	Univers
+	Wingdings
+
+	> Other:
+	Andale Mono
 	Arial Black
 	Arial Narrow
 	Avant Garde
 	Book Antiqua
 	Bookman
-	Calibri
 	Century Gothic
-	Consolas
-	Copperplate Gothic
-	Courier
+	Comic Sans MS
 	Courier New
 	Frutiger
 	Futura
+	Gadget
 	Garamond
-	Geneva
 	Georgia
-	Gill Sans
-	Helvetica
-	Helvetica Condensed
+	Helvetica Neue
 	Impact
-	Lucida Console
-	Lucida Sans Unicode
-	Monaco
-	Palatino
 	Palatino Linotype
-	Symbol
-	Tahoma
-	Times
-	Times New Roman
-	Trebuchet
 	Trebuchet MS
-	Univers
 	Verdana
 	Webdings
-	Wingdings
-	Zapf Dingbats
 
 EOF
 echo

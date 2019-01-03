@@ -3,4 +3,6 @@
 set -eu
 
 (( $# )) || set -- /dev/stdin
-unterm -c 1000 -l 2 -- "$1" | sed '$d'
+
+# TODO: fix unterm's wrapping
+unterm -l 2 -c 1000 -- "$1" | sed '$d'

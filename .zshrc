@@ -1,6 +1,6 @@
 # Executed by zsh(1) for interactive shells.
 
-[[ $SHRC_DEBUG ]] && echo '~/.zshrc' >&2
+[[ $SHRC_DEBUG ]] && echo \~/.zshrc >&2
 
 . ~/bin/term.sh
 
@@ -11,10 +11,10 @@ case $- in *i*) ;; *) return ;; esac
 . ~/bin/shx.sh
 . ~/bin/shrc-pre.sh
 
-HISTFILE="$HOME/.local/share/zsh_history"
+HISTFILE=~/.local/share/zsh_history
 HISTSIZE=1000
 SAVEHIST=5000
-TMPPREFIX="${TMPDIR:-/tmp}/zsh"
+TMPPREFIX=${TMPDIR:-/tmp}/zsh
 
 fpath=(~/.zfunctions $fpath)
 
@@ -96,7 +96,7 @@ add-zsh-hook precmd set-window-title
 # ----------------------------------------
 
 KEYTIMEOUT=1
-WORDCHARS=''
+WORDCHARS=
 #WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
 ZLE_SPACE_SUFFIX_CHARS='&|'
 
@@ -107,7 +107,7 @@ if [[ $HOST != 'mirci' ]]; then
 fi
 
 expand-dot-to-parent-directory-path() {
-    [[ $LBUFFER = *.. ]] && LBUFFER+='/..' || LBUFFER+='.'
+    [[ $LBUFFER = *.. ]] && LBUFFER+=/.. || LBUFFER+=.
 }
 
 expand-word-alias() {
@@ -118,7 +118,7 @@ expand-word-alias() {
 noop() { }
 
 zle-keymap-select() {
-    __vimode=':'
+    __vimode=:
     if [[ ! $KEYMAP = 'vicmd' ]]; then
         [[ $ZLE_STATE == *overwrite* ]] && __vimode='^' || __vimode='+'
     fi
@@ -173,106 +173,106 @@ bindkey -M vicmd "$k" end-of-line
 
 unset k
 
-bindkey '^B' beginning-of-line
-bindkey '^E' end-of-line
-bindkey '\eh' backward-char
-bindkey '\el' forward-char
-bindkey '\eb' backward-word
-bindkey '\ef' emacs-forward-word
-bindkey '\ew' emacs-forward-word
+bindkey ^B beginning-of-line
+bindkey ^E end-of-line
+bindkey \\eh backward-char
+bindkey \\el forward-char
+bindkey \\eb backward-word
+bindkey \\ef emacs-forward-word
+bindkey \\ew emacs-forward-word
 
-bindkey '^U' backward-kill-line
-bindkey '^K' kill-line
-bindkey '^W' backward-kill-word
-bindkey '\ed' kill-word
-bindkey '\ex' delete-char
+bindkey ^U backward-kill-line
+bindkey ^K kill-line
+bindkey ^W backward-kill-word
+bindkey \\ed kill-word
+bindkey \\ex delete-char
 bindkey "${terminfo[kdch1]}" delete-char
+bindkey ^H backward-delete-char
 
-bindkey '^A' all-matches
-bindkey '^D' list-choices
-bindkey '^O' reverse-menu-complete
+bindkey ^A all-matches
+bindkey ^D list-choices
+bindkey ^O reverse-menu-complete
 bindkey "${terminfo[kcbt]}" reverse-menu-complete
-bindkey '^I' complete-word
+bindkey ^I complete-word
 
-bindkey '^G' send-break
-bindkey '^L' clear-screen
-bindkey '^P' history-search-backward
-bindkey '^N' history-search-forward
-bindkey '\ek' up-line
-bindkey '\ej' down-line
+bindkey ^G send-break
+bindkey ^L clear-screen
+bindkey ^P history-search-backward
+bindkey ^N history-search-forward
+bindkey \\ek up-line
+bindkey \\ej down-line
 
-bindkey '\e0' digit-argument
-bindkey '\e1' digit-argument
-bindkey '\e2' digit-argument
-bindkey '\e3' digit-argument
-bindkey '\e4' digit-argument
-bindkey '\e5' digit-argument
-bindkey '\e6' digit-argument
-bindkey '\e7' digit-argument
-bindkey '\e8' digit-argument
-bindkey '\e9' digit-argument
+bindkey \\e0 digit-argument
+bindkey \\e1 digit-argument
+bindkey \\e2 digit-argument
+bindkey \\e3 digit-argument
+bindkey \\e4 digit-argument
+bindkey \\e5 digit-argument
+bindkey \\e6 digit-argument
+bindkey \\e7 digit-argument
+bindkey \\e8 digit-argument
+bindkey \\e9 digit-argument
 
-bindkey '^H' backward-delete-char
-bindkey '^J' accept-line
-bindkey '^M' accept-line
-bindkey '^R' history-incremental-search-backward
-bindkey '^S' history-incremental-search-forward
-bindkey '^V' quoted-insert
-bindkey '^[' vi-cmd-mode
-bindkey '^X^A' vi-cmd-mode
+bindkey ^J accept-line
+bindkey ^M accept-line
+bindkey ^R history-incremental-search-backward
+bindkey ^S history-incremental-search-forward
+bindkey ^V quoted-insert
+bindkey ^\[ vi-cmd-mode
+bindkey ^X^A vi-cmd-mode
 
 bindkey ' ' magic-space
-bindkey '\ee' expand-word-alias
-bindkey '^X^E' edit-command-line
+bindkey \\ee expand-word-alias
+bindkey ^X^E edit-command-line
 
-bindkey '.' expand-dot-to-parent-directory-path
-bindkey '\e.' insert-last-word
-bindkey '\em' copy-earlier-word
-bindkey '\e^M' self-insert-unmeta
-bindkey '^XH' _complete_help
+bindkey . expand-dot-to-parent-directory-path
+bindkey \\e. insert-last-word
+bindkey \\em copy-earlier-word
+bindkey \\e^M self-insert-unmeta
+bindkey ^XH _complete_help
 
-bindkey -M vicmd 'k' up-history
-bindkey -M vicmd 'j' down-history
-bindkey -M vicmd 'u' undo
-bindkey -M vicmd '^G' send-break
-bindkey -M vicmd '^P' history-search-backward
-bindkey -M vicmd '^N' history-search-forward
-bindkey -M vicmd '^R' redo
-bindkey -M vicmd '\ek' up-line
-bindkey -M vicmd '\ej' down-line
+bindkey -M vicmd k up-history
+bindkey -M vicmd j down-history
+bindkey -M vicmd u undo
+bindkey -M vicmd ^G send-break
+bindkey -M vicmd ^P history-search-backward
+bindkey -M vicmd ^N history-search-forward
+bindkey -M vicmd ^R redo
+bindkey -M vicmd \\ek up-line
+bindkey -M vicmd \\ej down-line
 
-bindkey -M vicmd '\ee' expand-word-alias
-bindkey -M vicmd '^X^E' edit-command-line
+bindkey -M vicmd \\ee expand-word-alias
+bindkey -M vicmd ^X^E edit-command-line
 
 bindkey -M isearch . self-insert
 
-bindkey -M menuselect '^U' send-break
+bindkey -M menuselect ^U send-break
 
-bindkey -s '^Xp' '^X^AIpgx '
-bindkey -s '^XP' '^X^AA | pg'
-bindkey -s '^Xx' '^X^A0isudo '
-bindkey -s '^Xh' "^X^Addihistory 25 | gi ''^X^Ai"
-bindkey -s '^Xa' '^X^Aa!!:*'
-bindkey -s '^Xl' '^X^Aa!!:$'
-bindkey -s '^Xs' '^X^Aa!!:gs/'
-bindkey -s '^Xc' '--color=auto '
+bindkey -s ^Xp '^X^AIpgx '
+bindkey -s ^XP '^X^AA | pg'
+bindkey -s ^Xx '^X^A0isudo '
+bindkey -s ^Xh "^X^Addihistory 25 | gi ''^X^Ai"
+bindkey -s ^Xa '^X^Aa!!:*'
+bindkey -s ^Xl '^X^Aa!!:$'
+bindkey -s ^Xs '^X^Aa!!:gs/'
+bindkey -s ^Xc '--color=auto '
 
-bindkey -M vicmd -s '^Xp' 'Ipgx '
-bindkey -M vicmd -s '^XP' 'A | pg'
-bindkey -M vicmd -s '^Xx' 'Isudo '
-bindkey -M vicmd -s '^Xh' "ddihistory 25 | gi ''^X^Ai"
-bindkey -M vicmd -s '^Xa' 'a!!:*'
-bindkey -M vicmd -s '^Xl' 'a!!:$'
-bindkey -M vicmd -s '^Xs' 'a!!:gs/'
+bindkey -M vicmd -s ^Xp 'Ipgx '
+bindkey -M vicmd -s ^XP 'A | pg'
+bindkey -M vicmd -s ^Xx 'Isudo '
+bindkey -M vicmd -s ^Xh "ddihistory 25 | gi ''^X^Ai"
+bindkey -M vicmd -s ^Xa 'a!!:*'
+bindkey -M vicmd -s ^Xl 'a!!:$'
+bindkey -M vicmd -s ^Xs 'a!!:gs/'
 
 
 # Completion
 # ----------------------------------------
 
-zcompdump="$HOME/.cache/zcompdump"
+zcompdump=~/.cache/zcompdump
 compinit -d "$zcompdump"
 {
-    if [[ ! -e "$zcompdump.zwc" || "$zcompdump" -nt "$zcompdump.zwc" ]]; then
+    if [[ ! -e $zcompdump.zwc || $zcompdump -nt $zcompdump.zwc ]]; then
         zcompile "$zcompdump"
     fi
 } &!
@@ -356,7 +356,7 @@ _pacl() {
     local -a packages
     read -cA words
     if [ "${#words}" -eq 2 ]; then
-        packages=(/var/lib/pacman/local/"$1"*(/))
+        packages=(/var/lib/pacman/local/$1*(/))
     fi
     reply=(${${packages#/var/lib/pacman/local/}%-*-*})
 }
@@ -366,7 +366,7 @@ _mkvirtualenv_pyenv() {
     local -a versions
     read -cA words
     if [ "${#words}" -eq 2 ]; then
-        versions=($PYENV_ROOT/versions/"$1"*(/))
+        versions=($PYENV_ROOT/versions/$1*(/))
     fi
     reply=(${${versions#$PYENV_ROOT/versions/}%-*-*})
 }
@@ -378,7 +378,7 @@ _systemd_dot() {
 compctl -K _systemd_dot systemd_dot
 
 _xsession() {
-    reply=(${(f)"$(xsession '-?')"})
+    reply=(${(f)"$(xsession -\?)"})
 }
 compctl -K _xsession x xx
 
@@ -390,29 +390,29 @@ __src=~/opt/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 if [[ -e $__src ]]; then
     . "$__src"
     ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
-    #ZSH_HIGHLIGHT_STYLES[default]='none'
-    #ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red,bold'
-    ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=yellow,bold,underline'
-    ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan,bold'
-    ZSH_HIGHLIGHT_STYLES[builtin]='fg=yellow,bold'
-    ZSH_HIGHLIGHT_STYLES[function]='fg=cyan,bold'
-    ZSH_HIGHLIGHT_STYLES[command]='fg=green,bold'
-    ZSH_HIGHLIGHT_STYLES[precommand]='fg=yellow,bold,underline'
-    ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=white,bold'
-    ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=green,bold,underline'
-    ZSH_HIGHLIGHT_STYLES[path]='fg=15'
-    ZSH_HIGHLIGHT_STYLES[path_prefix]='none'
-    ZSH_HIGHLIGHT_STYLES[path_approx]='none'
-    ZSH_HIGHLIGHT_STYLES[globbing]='fg=11'
-    ZSH_HIGHLIGHT_STYLES[history-expansion]='fg=14'
-    #ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='none'
-    #ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='none'
-    #ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='none'
-    #ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=yellow'
-    #ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=yellow'
-    ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]='fg=11'
-    ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]='fg=15'
-    ZSH_HIGHLIGHT_STYLES[assign]='fg=11'
+    #ZSH_HIGHLIGHT_STYLES[default]=none
+    #ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=red,bold
+    ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=yellow,bold,underline
+    ZSH_HIGHLIGHT_STYLES[alias]=fg=cyan,bold
+    ZSH_HIGHLIGHT_STYLES[builtin]=fg=yellow,bold
+    ZSH_HIGHLIGHT_STYLES[function]=fg=cyan,bold
+    ZSH_HIGHLIGHT_STYLES[command]=fg=green,bold
+    ZSH_HIGHLIGHT_STYLES[precommand]=fg=yellow,bold,underline
+    ZSH_HIGHLIGHT_STYLES[commandseparator]=fg=white,bold
+    ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=green,bold,underline
+    ZSH_HIGHLIGHT_STYLES[path]=fg=15
+    ZSH_HIGHLIGHT_STYLES[path_prefix]=none
+    ZSH_HIGHLIGHT_STYLES[path_approx]=none
+    ZSH_HIGHLIGHT_STYLES[globbing]=fg=11
+    ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=14
+    #ZSH_HIGHLIGHT_STYLES[single-hyphen-option]=none
+    #ZSH_HIGHLIGHT_STYLES[double-hyphen-option]=none
+    #ZSH_HIGHLIGHT_STYLES[back-quoted-argument]=none
+    #ZSH_HIGHLIGHT_STYLES[single-quoted-argument]=fg=yellow
+    #ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=yellow
+    ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=11
+    ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=15
+    ZSH_HIGHLIGHT_STYLES[assign]=fg=11
 fi
 unset __src
 
@@ -423,13 +423,13 @@ unset __src
 __src=~/opt/zsh-history-substring-search/zsh-history-substring-search.zsh
 if [[ -e "$__src" ]]; then
     . "$__src"
-    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=8,fg=15'
-    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=red,fg=15'
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=bg=8,fg=15
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=bg=red,fg=15
 
-    bindkey '^P' history-substring-search-up
-    bindkey '^N' history-substring-search-down
-    bindkey -M vicmd '^P' history-substring-search-up
-    bindkey -M vicmd '^N' history-substring-search-down
+    bindkey ^P history-substring-search-up
+    bindkey ^N history-substring-search-down
+    bindkey -M vicmd ^P history-substring-search-up
+    bindkey -M vicmd ^N history-substring-search-down
 fi
 unset __src
 

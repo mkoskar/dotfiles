@@ -1,6 +1,27 @@
-# See also: lesskey(1)
+#command
 
+?       help
 h       left-scroll
 l       right-scroll
+\eh     no-scroll
+\el     end-scroll
 \40     undo-hilite
+
+#line-edit
+
+^B      home
+^E      end
+\ef     word-right
 ^W      word-backspace
+^P      up
+^N      down
+
+#env
+
+# enter_underline_mode / smul / us
+LESS_TERMCAP_us = [4;93m
+LESS_TERMCAP_ue = [m
+
+# enter_standout_mode / smso / so
+LESS_TERMCAP_so = [1;41;37m
+LESS_TERMCAP_se = [m

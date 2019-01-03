@@ -10,7 +10,6 @@
     dfc = diff --cached
     f = fetch --all
     k = !gitk
-    last = log -p -1
     lg = !git lg1 -100
     lg1 = log --graph --format=lg1 --color
     lg2 = log --graph --format=lg2 --color
@@ -74,3 +73,4 @@
 [user]
     name = Miroslav Koškár
     signingkey = CDC91131
+    useconfigonly = true

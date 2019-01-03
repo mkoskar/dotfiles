@@ -507,7 +507,7 @@ nnoremap <Leader>ma :setl ma noro<CR>
 nnoremap <silent> <Leader>sc :new +setl\ bt=nofile\ bh=wipe\ noswf<CR>
 
 " Reload filetype
-nnoremap <silent> <Leader>ft :<C-R>=!empty(&ft) ? 'setf ' . &ft : 'filetype detect'<CR><CR>
+nnoremap <silent> <Leader>ft :filetype detect<CR>
 
 " Sorting
 xnoremap <silent> <Leader>ss :sort<CR>
@@ -574,7 +574,7 @@ function! s:Format(...) range abort
     exec join([a:firstline . ',' . a:lastline, '!format', ft])
 endfunction
 
-command! -bar -range -nargs=? Format silent Preserve <line1>,<line2> call <SID>Format(<f-args>)
+command! -nargs=? -range -bar Format silent Preserve <line1>,<line2> call <SID>Format(<q-args>)
 
 " }}}
 
@@ -678,10 +678,6 @@ function! s:Preserve(cmd) abort
 endfunction
 
 command! -nargs=1 Preserve call s:Preserve(<q-args>)
-nnoremap <silent> <Leader>pp :Preserve %s/\s\+$//e<CR>
-xnoremap <silent> <Leader>pp :<C-U>Preserve '<,'>s/\s\+$//e<CR>
-nnoremap <silent> <Leader>== :silent Preserve normal! gg=G<CR>
-nnoremap <silent> <Leader>gq :silent Preserve normal! gggqG<CR>
 
 " }}}
 
@@ -721,7 +717,7 @@ function! s:Write(...) abort
     edit!
 endfunction
 
-command! -nargs=? W call s:Write(<f-args>)
+command! -nargs=? -bar W call s:Write(<q-args>)
 
 " }}}
 
@@ -838,20 +834,23 @@ function! s:Run(system, cmd, input, ...) abort
     let b:run_input = a:input
     let b:run_title = (a:system ? '!' : ':') . a:cmd
     let [ma_, ro_] = [&l:ma, &l:ro]
-    setl ma noro
-    silent exec 'Preserve %d_ | silent! put' reg '| 1d_'
-    let [&l:ma, &l:ro] = [ma_, ro_]
+    try
+        setl ma noro
+        silent exec 'Preserve %d_ | put' reg '| 1d_'
+    finally
+        let [&l:ma, &l:ro] = [ma_, ro_]
+    endtry
 endfunction
 
-command! -count=1 -bang -nargs=1 -complete=command Execute
+command! -nargs=1 -count=1 -bang -complete=command Execute
     \ call utils#tryCatchCall('<SID>Run', 0, <q-args>, [], <count> ? <q-bang> : 2, <q-mods>)
 nnoremap <Leader>xe :Execute<Space>
 
-command! -count=1 -bang -nargs=1 -complete=shellcmd System
+command! -nargs=1 -count=1 -bang -complete=shellcmd System
     \ call utils#tryCatchCall('<SID>Run', 1, <q-args>, [], <count> ? <q-bang> : 2, <q-mods>)
-command! -bang -nargs=1 -complete=shellcmd SystemRegister
+command! -nargs=1 -bang -complete=shellcmd SystemRegister
     \ call utils#tryCatchCall('<SID>Run', 1, <q-args>, getreg(v:register, 1, 1), <q-bang>, <q-mods>)
-command! -range -bang -nargs=1 -complete=shellcmd SystemRange
+command! -nargs=1 -range -bang -complete=shellcmd SystemRange
     \ call utils#tryCatchCall('<SID>Run', 1, <q-args>, getline(<line1>, <line2>), <q-bang>, <q-mods>)
 nnoremap <Leader>xs :System<Space>
 xnoremap <Leader>xs y:SystemRegister<Space>
@@ -865,7 +864,7 @@ function! s:Reload(bang) abort
         if &l:buftype =~# '^\(nofile\|quickfix\|terminal\)$'
             throw printf("\"%s\" buffer can't be reloaded", &l:buftype)
         endif
-        exec 'silent Preserve edit' . a:bang
+        silent exec 'Preserve edit' . a:bang
         let status = v:statusmsg
     endif
     let v:statusmsg = printf('[%s] %s', strftime('%H:%M:%S'), status)
@@ -892,11 +891,34 @@ function! s:ReloadT(bang, ...) abort
     endtry
 endfunction
 
-command! -bang -bar -nargs=? ReloadT call utils#tryCatchCall('<SID>ReloadT', <q-bang>, <f-args>)
+command! -nargs=? -bang -bar ReloadT call utils#tryCatchCall('<SID>ReloadT', <q-bang>, <q-args>)
 nnoremap <silent> <Leader>R :ReloadT<CR>
 nnoremap <silent> <Leader>F :ReloadT!<CR>
 
 " }}}
+
+" ----------------------------------------
+
+nnoremap <silent> <Leader>== :Preserve normal! gg=G<CR>
+nnoremap <silent> <Leader>gq :Preserve normal! gggqG<CR>
+
+command! -range -bar Sanitize silent Preserve <line1>,<line2> s/\s\+$//e
+nnoremap <silent> <Leader>pp :%Sanitize<CR>
+xnoremap <silent> <Leader>pp :Sanitize<CR>
+
+command! -nargs=? -range Join call utils#tryCatch('Preserve <line1>,'
+    \. (<line2> > <line1> ? <line2>-1 : <line2>) . 's/\n/'
+    \. (!empty(<q-args>) ? escape(<q-args>, '/&') : ' ') . '/ge')
+
+command! -nargs=? -range Split call utils#tryCatch('Preserve <line1>,<line2>s/'
+    \. (!empty(<q-args>) ? escape(<q-args>, '/') : '\s\+') . '/\r/ge')
+
+function! s:Macro(macro) abort
+    call setreg("m", a:macro)
+    normal! @m
+endfunction
+
+command! -nargs=1 Macro call s:Macro(<q-args>)
 
 " ----------------------------------------
 

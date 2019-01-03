@@ -10,5 +10,8 @@ map <A-k> scroll up
 map A adjust_window width
 map i toggle_index
 
+map p toggle_presentation
+map [presentation] p toggle_presentation
+
 map [index] i toggle_index
 map [index] q toggle_index

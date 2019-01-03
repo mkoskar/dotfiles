@@ -6,17 +6,18 @@ tmpdir=$(mktemp -d)
 cleanup() { rm -rf "$tmpdir"; }
 trap cleanup EXIT
 
-export TMPDIR=$tmpdir
 cd "$tmpdir"
 
 export SHELL=$BASH
+export UAGENT=${UAGENT:-Mozilla/5.0 (Windows NT 10.0; Win64; x64)}
+
 if (( EUID )); then
-    export CONFDIR="$HOME/.config/hostsblock"
-    export CACHEDIR="$HOME/.cache/hostsblock"
+    export CONFDIR=~/.config/hostsblock
+    export CACHEDIR=~/.cache/hostsblock
 else
-    export CONFDIR='/etc/hostsblock'
-    export CACHEDIR='/var/cache/hostsblock'
-    export HOME=$TMPDIR
+    export CONFDIR=/etc/hostsblock
+    export CACHEDIR=/var/cache/hostsblock
+    export HOME=$tmpdir
 fi
 mkdir -p "$CACHEDIR"
 
@@ -25,16 +26,18 @@ pargs=()
 
 fetch() {
     set -eu -o pipefail
-    local url=$1 oname stat
+    local url=$1 oname stat scode surl
     [[ $url ]] || return
-    oname=$(printf '%s' "$url" | sha1sum)
+    oname=$(printf %s "$url" | sha1sum)
     read -ra oname <<<"$oname"
     stat=$(
-        curl -sSL -C - -z "$CACHEDIR/$oname" -w '%{http_code}' \
-            -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36' \
+        curl -sSL -C - -z "$CACHEDIR/$oname" \
+            -w '%{http_code}\t%{url_effective}' \
+            ${UAGENT:+-A "$UAGENT"} \
             -o "$oname" "$url"
     )
-    case $stat in
+    read -r scode surl <<<"$stat"
+    case $scode in
         200)
             mv "$oname" "$CACHEDIR/$oname"
             ;;
@@ -42,10 +45,9 @@ fetch() {
             ;;
         *)
             exec >&2
-            echo "HTTP $stat : $url"
+            echo "HTTP $scode : $surl"
             cat "$oname"
-            echo
-            exit 1
+            return 1
             ;;
     esac
     echo "$CACHEDIR/$oname"
@@ -53,7 +55,7 @@ fetch() {
 export -f fetch
 
 grep -vxE '\s*|(\s*#.*)' "$CONFDIR/sources" |
-    parallel "${pargs[@]}" -r -j10 fetch >queue
+    parallel "${pargs[@]}" -j10 fetch >queue
 
 [[ ! -e $CONFDIR/whitelist ]] || export whitelist=1
 
@@ -99,8 +101,8 @@ process() {
 export -f process
 
 nproc=$(nproc)
-parallel "${pargs[@]}" process <queue | dos2unix | split -d -n "r/$nproc" - chunk
-find . -name 'chunk*' -printf '%P\n' >chunks
+nice parallel "${pargs[@]}" process <queue | dos2unix | split -d -n "r/$nproc" -
+find "$tmpdir" -name 'x*' >chunks
 
 post_process() {
     set -eu -o pipefail

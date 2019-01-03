@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+#
+# See also:
+#
+#   Terminal:
+#
+#       Heatseeker
+#       Icepick
+#       PathPicker
+#       Selecta
+#       fzf
+#       fzy
+#       gof
+#       happyfinder
+#       hmenu
+#       peco
+#       percol
+#       pick
+#       pmenu
+#       selector
+#       skim
+#       slmenu
+#       smenu
+#       tmenu
+#       tpick
+#       vis-menu
+#
+#   GUI:
+#
+#       dmenu
+#       dmenu2
+#       gpicker
+#       rofi
+
+set -eu
+
+opts=(
+    --ansi
+    --cycle
+    --inline-info
+    --multi
+    --tabstop=4
+)
+
+opts_color=(
+    hl:3
+    hl+:214
+    info:-1
+    marker:3
+    pointer:10
+    prompt:10
+)
+
+opts_bind=(
+    ctrl-b:beginning-of-line
+    #ctrl-e:end-of-line
+    alt-h:backward-char
+    alt-l:forward-char
+    #alt-b:backward-word
+    #alt-f:forward-word
+    alt-w:forward-word
+
+    #ctrl-u:unix-line-discard
+    ctrl-k:kill-line
+    ctrl-w:backward-kill-word
+    #alt-d:kill-word
+    alt-x:delete-char
+
+    ctrl-j:accept
+    ctrl-g:cancel
+    ctrl-o:jump
+    alt-m:select-all
+    alt-u:deselect-all
+    ctrl-space:toggle+down
+
+    alt-n:down
+    alt-p:up
+    alt-j:half-page-down
+    alt-k:half-page-up
+    ctrl-alt-j:page-down
+    ctrl-alt-k:page-up
+
+    alt-space:toggle-preview
+    alt-/:toggle-preview-wrap
+    f12:preview-page-down
+    f11:preview-page-up
+)
+
+tmp=${opts[*]}
+IFS=, tmp+=" --color=${opts_color[*]} --bind=${opts_bind[*]}"
+export FZF_DEFAULT_OPTS=$tmp
+export FZF_TMUX=0
+
+case ${1-} in -)
+    printf 'export FZF_DEFAULT_OPTS=%q\n' "$FZF_DEFAULT_OPTS"
+    printf 'export FZF_TMUX=%q\n' "$FZF_TMUX"
+    exit
+esac
+
+#--execute
+#--filter
+#--history
+#--no-bold
+
+exec fzf "$@"

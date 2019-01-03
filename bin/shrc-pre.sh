@@ -1,14 +1,14 @@
 # Source this file for interactive shell pre-initialization.
 # :Compatibility: POSIX
 
-[ "$SHRC_DEBUG" ] && echo '~/bin/shrc-pre.sh' >&2
+[ "$SHRC_DEBUG" ] && echo \~/bin/shrc-pre.sh >&2
 
 case $- in *i*) ;; *) return ;; esac
 
 # ----------------------------------------
 
 CDPATH='.:..:~'
-FCEDIT='fcedit'
+FCEDIT=fcedit
 unset MAILCHECK
 unset MAILPATH
 

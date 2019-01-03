@@ -1,7 +1,7 @@
 # Source this file to get common aliases and functions.
 # :Compatibility: POSIX
 
-[ "$SHRC_DEBUG" ] && echo '~/bin/shx.sh' >&2
+[ "$SHRC_DEBUG" ] && echo \~/bin/shx.sh >&2
 
 if [ "$BASH_VERSION" ]; then
     shopt -s expand_aliases
@@ -13,8 +13,8 @@ SHNAME=${SHNAME##*/}
 SHNAME=${SHNAME#-}
 SHNAME=${SHNAME#r}
 
-case $SHNAME in
-    bash) shopt -qo posix && SHNAME='sh' ;;
+case $SHNAME in bash)
+    shopt -qo posix && SHNAME=sh
 esac
 
 set -o noclobber
@@ -27,7 +27,7 @@ esac
 # docker
 # ----------------------------------------
 
-alias dk='docker'
+alias dk=docker
 alias dkb='docker build'
 alias dkc='docker ps'
 alias dkca='docker ps -a'
@@ -60,12 +60,15 @@ dkstop() {
 # ----------------------------------------
 
 alias grep='LC_ALL=C grep --color=auto'
-alias g='grep -n --color=always'
+
+alias g='grep --color=always'
 alias gi='g -i'
-alias gr="g -r --exclude-dir='.svn' --exclude-dir='.git' --exclude='*.swp' --exclude='*~'"
+alias gr='g -rn --exclude-dir=.svn --exclude-dir=.git --exclude=\*.swp --exclude=\*~'
 alias gri='gr -i'
-alias ack='ack --color'
-alias ag='ag --color --color-path=36 --color-line-number=33 --color-match=41 --nobreak --smart-case --noheading'
+
+alias ack='ack --color-filename=cyan --color-lineno=yellow --color-match=on_red --smart-case --noheading'
+alias ag='ag --color-path=36 --color-line-number=33 --color-match=41 --smart-case --noheading --nobreak'
+alias rg='rg -n --colors path:fg:6 --colors line:fg:3 --colors match:none --colors match:bg:1 --smart-case --no-heading'
 
 
 # java / groovy / maven / gradle
@@ -82,13 +85,13 @@ alias mvn-effective-settings='mvn help:effective-settings'
 mvn_archetype_generate() {
     mvn archetype:generate -Dfilter="$1"
 }
-alias mvn-archetype-generate='mvn_archetype_generate'
+alias mvn-archetype-generate=mvn_archetype_generate
 
 mvn_describe_plugin() {
     [ $# -eq 0 ] && return 2
     mvn help:describe -Dplugin="$1"
 }
-alias mvn-describe-plugin='mvn_describe_plugin'
+alias mvn-describe-plugin=mvn_describe_plugin
 
 
 # ls
@@ -118,7 +121,7 @@ alias man-posix='man -s 0p,9p,2p,3p,7p,8p,6p,1p,4p,5p'
 man_all() {
     pgx man -k . "$@"
 }
-alias man-all='man_all'
+alias man-all=man_all
 
 alias man-all-1p='man-all -s 1p'
 alias man-all-3p='man-all -s 3p'
@@ -128,7 +131,7 @@ alias man-all-posix='man-all -s 0p,9p,2p,3p,7p,8p,6p,1p,4p,5p'
 # pacman
 # ----------------------------------------
 
-alias pac='pacman'
+alias pac=pacman
 alias paccheck='paccheck --quiet --depends --opt-depends --files --file-properties --sha256sum --require-mtree --db-files --backup --noextract --noupgrade'
 alias paclog-recent='paclog --after="$(date -I --date=-14days)"'
 alias pactree='pactree --color'
@@ -160,7 +163,7 @@ pacl() {
 # Target's "depends on"
 pacd() {
     [ $# -eq 0 ] && return 2
-    expac -l '\n' %D "$1"
+    expac -l \\n %D "$1"
 }
 
 # Target's "provides"
@@ -168,29 +171,29 @@ pacp() {
     if [ $# -eq 0 ]; then
         expac -l ' ' '%n %P'
     else
-        expac -l '\n' %P "$1"
+        expac -l \\n %P "$1"
     fi
 }
 
 pacs() {
     [ $# -eq 0 ] && return 2
     pacsearch "$1"
-    cower --color=auto -s "$1"
+    cower --color=always -s "$1"
 }
 
 # Target's "required by" (what depends on target)
 pacw() {
     [ $# -eq 0 ] && return 2
-    expac -l '\n' %N "$1"
+    expac -l \\n %N "$1"
 }
 
 
 # python
 # ----------------------------------------
 
-alias py='python'
-alias ipy='ipython'
-alias q='deactivate'
+alias py=python
+alias ipy=ipython
+alias q=deactivate
 
 
 # Other
@@ -203,9 +206,9 @@ case $SHNAME in mksh) ;; *)
 esac
 
 alias acpi='acpi -V'
-alias an='asciinema'
+alias an=asciinema
 alias aunpack='aunpack -q'
-alias c='calc'
+alias c=calc
 alias cal='cal -m -w -3'
 alias callgrind='valgrind --tool=callgrind'
 alias cower='cower --color=auto'
@@ -223,6 +226,7 @@ alias du='du -hx'
 alias feh='feh -F'
 alias fortune='fortune -c'
 alias free='free -h'
+alias fzy='fzy -l$LINES'
 alias gconfa='gconftool-2 -R /'
 alias glxgears-novsync='vblank_mode=0 glxgears'
 alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
@@ -240,7 +244,7 @@ alias lsdiff='lsdiff -s'
 alias ltime='date +%T'
 alias makepkg-build='makepkg -srf'
 alias makepkg-rebuild='makepkg -Ccsrf'
-alias mnt='findmnt'
+alias mnt=findmnt
 alias moon='curl -sSLf http://wttr.in/moon | head -n-4'
 alias mount-loop='mount -o loop'
 alias mpv-debug='mpv --terminal=yes --msg-level=all=debug'
@@ -259,12 +263,12 @@ alias patch0='patch -Np0'
 alias patch1='patch -Np1'
 alias ping-mtu='ping -M do -s 2000'
 alias qiv='qiv -uLtiGfl --vikeys'
-alias rax='rax2'
+alias rax=rax2
 alias reflector='reflector -p https -c sk -c cz --score 3 -f 3'
 alias rm='rm -I --one-file-system'
-alias sd='systemctl'
+alias sd=systemctl
 alias sdu='systemctl --user'
-alias se='sudoedit'
+alias se=sudoedit
 alias sed-all="sed -r -e 'H;1h;\$!d;x'"
 alias ss='ss -napstu'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
@@ -288,8 +292,8 @@ a() {
     local d=${1:-5m} ts; ts=$(command date -R)
     printf '%s ... alarm after %s\n' "$ts" "$d"
     sleep "${1:-5m}"
-    echo 'Beep...'
-    notify -u critical 'Beep...' "Time's up!"
+    echo Beep...
+    notify -u critical Beep... "Time's up!"
     command mpv --load-scripts=no --loop-file=5 \
         /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
 }
@@ -303,7 +307,7 @@ anplay() {
 anrec() {
     local ts outfile
     ts=$(date +%F.%s)
-    outfile="$HOME/tmp/asciinema-$ts.json"
+    outfile=~/tmp/asciinema-"$ts".json
     asciinema rec -w 2 "$outfile"
 }
 
@@ -320,7 +324,7 @@ cd() {
 
 ctlseqs() {
     set -- ~/src/xterm-*
-    [ -d "$1" ] && squashlns <"$1/ctlseqs.txt" | $PAGER
+    [ -d "$1" ] && squashlns <"$1"/ctlseqs.txt | $PAGER
 }
 
 date() {
@@ -368,7 +372,7 @@ lsmod() {
 lsof_pid() {
     lsof -p "${1:-$$}"
 }
-alias lsof-pid='lsof_pid'
+alias lsof-pid=lsof_pid
 
 on() {
     [ $# -eq 0 ] && return 2
@@ -434,12 +438,13 @@ source_opt() {
 systemd_dot() {
     systemd-analyze dot "$@" | dot -Tsvg | stdiner -bt b
 }
-alias systemd-dot='systemd_dot'
+alias systemd-dot=systemd_dot
 
-terminfo.src() {
+terminfo_src() {
     set -- ~/src/ncurses-*
-    [ -d "$1" ] && pg "$1/misc/terminfo.src"
+    [ -d "$1" ] && pg "$1"/misc/terminfo.src
 }
+alias terminfo-src=terminfo_src
 
 tree() {
     set -- --dirsfirst -a -I '.git|.svn' --noreport -x "$@"
@@ -453,7 +458,7 @@ tree() {
 tsrec() {
     local ts outfile
     ts=$(date +%F.%s)
-    outfile="$HOME/tmp/typescript-$ts"
+    outfile=~/tmp/typescript-"$ts"
     script -- "$outfile"
 }
 
@@ -482,14 +487,14 @@ xserver_log() {
     [ "$dispno" ] || return 1
     $PAGER ~/.local/share/xorg/Xorg."$dispno".log
 }
-alias xserver-log='xserver_log'
+alias xserver-log=xserver_log
 
 xsession_out() {
     local dispno; dispno=${1:-$(xserverq dispno)}
     [ "$dispno" ] || return 1
     $PAGER ~/.local/share/xorg/xsession."$dispno".out
 }
-alias xsession-out='xsession_out'
+alias xsession-out=xsession_out
 
 # ----------------------------------------
 
@@ -504,7 +509,7 @@ if [ -e /usr/bin/virtualenvwrapper.sh ]; then
     export PYTHON2 PYTHON3
     [ "$PYTHON2" ] && mkvirtualenv2() { mkvirtualenv -p "$PYTHON2" "$@"; }
     [ "$PYTHON3" ] && mkvirtualenv3() { mkvirtualenv -p "$PYTHON3" "$@"; }
-    alias wo='workon'
+    alias wo=workon
 
     mkvirtualenv_pyenv() {
         [ $# -eq 0 ] && return 2
@@ -512,5 +517,5 @@ if [ -e /usr/bin/virtualenvwrapper.sh ]; then
         shift
         mkvirtualenv -p "$PYENV_ROOT/versions/$ver/bin/python" "$@"
     }
-    alias mkvirtualenv-pyenv='mkvirtualenv_pyenv'
+    alias mkvirtualenv-pyenv=mkvirtualenv_pyenv
 fi

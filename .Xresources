@@ -15,9 +15,7 @@ XTerm*VT100.colorBDMode:        true
 XTerm*VT100.dynamicColors:      true
 XTerm*VT100.veryBoldColors:     4
 
-! Since xterm does not support font fallback (only single font)
-! it is reasonable to choose a font with a large set of glyphs.
-XTerm*VT100.faceName:           xft:DejaVu Sans Mono:size=10
+XTerm*VT100.faceName:           xft:Terminus:pixelsize=16
 
 XTerm*VT100.bellIsUrgent:       true
 XTerm*VT100.bellOnReset:        false
@@ -57,7 +55,6 @@ URxvt.termName:                 rxvt-unicode-256color
 !URxvt.intensityStyles:          false
 !URxvt.underlineColor:           #fdb436
 URxvt.colorBD:                  15
-URxvt.colorIT:                  #d4c668
 URxvt.cursorColor2:             1
 URxvt.scrollColor:              gray20
 
@@ -70,14 +67,10 @@ URxvt.font:                     xft:Terminus:pixelsize=16, \
                                 xft:Symbola:pixelsize=11, \
                                 xft:Symbola:pixelsize=10, \
                                 xft:Symbola:pixelsize=9, \
-                                xft:Symbola:pixelsize=8, \
-                                xft:Symbola:pixelsize=7, \
-                                xft:Symbola:pixelsize=6, \
-                                xft:Symbola:pixelsize=5, \
-                                xft:Symbola:pixelsize=4
+                                xft:Symbola:pixelsize=8
 
-URxvt.italicFont:               xft:DejaVu Sans Mono:italic
-URxvt.boldItalicFont:           xft:DejaVu Sans Mono:italic
+URxvt.boldItalicFont:           xft:Noto Sans Mono:bold:italic
+URxvt.italicFont:               xft:Noto Sans Mono:italic
 
 !URxvt.depth:                    32
 URxvt.cutchars:                 '"()*,<>[]{}|\''

@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+tmpdir=$(mktemp -d)
+cleanup() { rm -rf "$tmpdir"; }
+trap cleanup EXIT
+
+cd "$tmpdir"
+
+export FONTSDIR=~/.local/share/fonts/fontsup
+export CACHEDIR=~/.cache/fontsup
+
+rm -rf "$FONTSDIR"
+mkdir -p "$FONTSDIR" "$CACHEDIR"
+
+process() {
+    set -eu -o pipefail
+    local url=$1 oname stat scode surl
+    oname=$(printf %s "$url" | sha1sum)
+    read -ra oname <<<"$oname"
+    stat=$(
+        curl -sSL -C - -z "$CACHEDIR/$oname" \
+            -w '%{http_code}\t%{url_effective}' \
+            ${UAGENT:+-A "$UAGENT"} \
+            -o "$oname" "$url"
+    )
+    read -r scode surl <<<"$stat"
+    case $scode in
+        200)
+            mv "$oname" "$CACHEDIR"
+            ;;
+        304)
+            ;;
+        *)
+            exec >&2
+            echo "HTTP $scode : $surl"
+            cat "$oname"
+            return 1
+            ;;
+    esac
+    mkdir "$oname"
+    aunpack -q -X "$oname" "$CACHEDIR/$oname"
+    find "$oname" -iregex '.*\.\(ttf\|otf\)' -exec mv {} "$FONTSDIR" \;
+}
+export -f process
+
+pargs=()
+[[ -t 1 ]] && pargs+=(--bar) || pargs+=(--silent)
+
+grep -vxE '\s*|(\s*#.*)' <<-EOF | parallel "${pargs[@]}" process
+
+	# Borg Sans Mono
+	https://github.com/marnen/borg-sans-mono/files/107663/BorgSansMono.ttf.zip
+
+	# Code New Roman
+	https://fontlibrary.org/assets/downloads/code-new-roman/2a82f29eedcdfe52fc23336e2e30ac22/code-new-roman.zip
+
+	# Cuprum
+	https://fonts.google.com/download?family=Cuprum
+
+	# Fantasque Sans Mono
+	https://github.com/belluzj/fantasque-sans/releases/download/v1.7.2/FantasqueSansMono-Normal.zip
+
+	# Hermit
+	https://pcaro.es/d/otf-hermit-1.21.tar.gz
+
+	# Jura
+	https://fonts.google.com/download?family=Jura
+
+	# Liberation Sans Narrow
+	https://github.com/liberationfonts/liberation-sans-narrow/files/2579431/liberation-narrow-fonts-ttf-1.07.6.tar.gz
+
+	# Meslo LG
+	https://github.com/andreberg/Meslo-Font/raw/master/dist/v1.2.1/Meslo%20LG%20v1.2.1.zip
+
+	# Noto Emoji
+	https://noto-website-2.storage.googleapis.com/pkgs/NotoEmoji-unhinted.zip
+
+	# Nova Mono
+	https://fonts.google.com/download?family=Nova%20Mono
+
+	# Office Code Pro
+	https://github.com/nathco/Office-Code-Pro/archive/1.004.zip
+
+	# Roboto Mono
+	https://fonts.google.com/download?family=Roboto%20Mono
+
+	# Symbola
+	http://users.teilar.gr/~g1951d/Symbola.zip
+
+	# Terminus (TTF)
+	https://files.ax86.net/terminus-ttf/files/latest.zip
+
+	# mononoki
+	https://github.com/madmalik/mononoki/releases/download/1.2/mononoki.zip
+
+EOF

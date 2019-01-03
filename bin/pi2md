@@ -1,24 +1,31 @@
 #!/usr/bin/env bash
 
 set -eu -o pipefail
+shopt -s nullglob
 
 prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname repodir maildir
+	usage: $prgname [-x] [-n msgs_per_chunk] repodir maildir
 
 	Exports all of repodir's emails to maildir.
 
 	  repodir - path to repository of https://public-inbox.org/ format
 	  maildir - path to existing or to be created maildir
+
+	  -x    - create mailbox per chunk
+	  -n    - number of messages per chunk (default: 25000)
 	EOF
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-while getopts h opt; do
+declare -i mb_per_chunk=0 msgs_per_chunk=25000
+while getopts xn:h opt; do
     case $opt in
+        x) mb_per_chunk=1 ;;
+        n) msgs_per_chunk=OPTARG ;;
         h) usage ;;
         *) usage_err ;;
     esac
@@ -30,6 +37,8 @@ shift $((OPTIND-1))
 # ----------------------------------------
 
 export LANG=C
+export delim=$'\c\\\c]\c^\c_' # FS GS RS US
+export mb_per_chunk
 
 repodir=$(realpath -m -- "$1")
 maildir=$(realpath -m -- "$2")
@@ -38,31 +47,38 @@ export repodir maildir
 cd "$repodir"
 git rev-parse
 
-if [[ -d $maildir ]]; then
-    stat "$maildir"/{cur,new,tmp} >/dev/null
+if (( mb_per_chunk )); then
+    if [[ -d $maildir ]]; then
+        echo "$maildir exists" >&2
+        exit 1
+    fi
 else
-    mkdir -p "$maildir"/{cur,new,tmp}
+    if [[ -d $maildir ]]; then
+        stat "$maildir"/{cur,new,tmp} >/dev/null
+    else
+        mkdir -p "$maildir"/{cur,new,tmp}
+    fi
 fi
 
 tmpdir=$(mktemp -d)
 cleanup() { rm -rf "$tmpdir"; }
 trap cleanup EXIT
-export tmpdir
 
-delim=$'\c\\\c]\c^\c_'
-export delim
-
-git log --pretty="%H:m $delim%H %ct" master -- m >"$tmpdir/all"
+git log --reverse --pretty="%H:m $delim%H %ct" master -- m >"$tmpdir"/queue
 
 cd "$tmpdir"
-split -d -l10000 all
-find "$tmpdir" -name 'x*' >chunks
+split -d -l$msgs_per_chunk queue
+find "$tmpdir" -name x\* >chunks
 
 process() {
     set -eu -o pipefail
     cd "$repodir"
+    if (( mb_per_chunk )); then
+        maildir=$maildir/${1##*/}
+        mkdir -p "$maildir"/{cur,new,tmp}
+    fi
     git cat-file --batch='%(rest)' <"$1" |
-        awk -v RS="$delim" -v maildir="$maildir" -v hostname="$HOSTNAME" '
+        gawk -v RS="$delim" -v maildir="$maildir" -v hostname="$HOSTNAME" '
         BEGIN { FS = "\n"; ORS = ""; }
         NR == 1 { next }
         {
@@ -74,13 +90,24 @@ process() {
             close(outfile)
         }
         END { print NR-1 "\n" }
-        ' >"$1.out"
+        '
 }
 export -f process
 
-nice parallel --bar process <chunks
+pargs=()
+[[ -t 1 ]] && pargs+=(--bar) || pargs+=(--silent)
+nice parallel "${pargs[@]}" process <chunks >out
 
-printf '> Queued:  %9d\n' "$(wc -l <"$tmpdir/all")"
-printf '> Written: %9d\n' \
-    "$(cat "$tmpdir"/x*.out | awk '{ sum += $1 } END { print sum }')"
-echo
+declare -i written=0 queued nr
+queued=$(wc -l <queue)
+while read -r nr; do
+    written=$((written+nr))
+done <out
+
+if [[ -t 1 ]]; then
+    printf 'Queued:  %9d\n' $queued
+    printf 'Written: %9d\n' $written
+else
+    printf '%d\n' $queued
+    printf '%d\n' $written
+fi

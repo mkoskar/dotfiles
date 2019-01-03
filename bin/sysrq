@@ -13,7 +13,7 @@ if [[ $prgname = 'sysrq' ]]; then
     exit
 fi
 
-cat <<-'EOF' | $PAGER
+$PAGER <<-EOF
 
 /proc/sys/kernel/sysrq
 ===============================================================================

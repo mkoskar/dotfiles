@@ -38,4 +38,4 @@ trap echo EXIT
 
 find . -mindepth 2 -maxdepth 2 -type d -name '.git' -printf '%h\0' |
     sort -z |
-    parallel -0 "${pargs[@]}" handle {} "$@"
+    parallel "${pargs[@]}" -0 handle {} "$@"

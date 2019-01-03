@@ -31,7 +31,7 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-type='owner' sort='full_name'
+type=owner sort=full_name
 declare -i reverse=0 forks=1 mirrors=1 raw=0
 while getopts t:s:rfFmMRh opt; do
     case $opt in
@@ -69,7 +69,7 @@ esac
 declare -i asc=1
 [[ $sort = 'full_name' ]] || asc=0
 asc=$((asc^reverse))
-(( asc )) && dir='asc' || dir='desc'
+(( asc )) && dir=asc || dir=desc
 
 tmpfile=$(mktemp)
 cleanup() { rm -f "$tmpfile"; }
@@ -78,9 +78,12 @@ trap cleanup EXIT
 stat=$(
     curl -sSLG "https://api.github.com/users/$username/repos" \
         -d "type=$type" -d "sort=$sort" -d "direction=$dir" -d 'per_page=500' \
-        -w '%{http_code}' -o "$tmpfile"
+        -w '%{http_code}\t%{url_effective}' \
+        ${UAGENT:+-A "$UAGENT"} \
+        -o "$tmpfile"
 )
-case $stat in
+read -r scode surl <<<"$stat"
+case $scode in
     200)
         if (( raw )); then
             cat "$tmpfile"
@@ -106,7 +109,7 @@ case $stat in
         fi
         ;;
     *)
-        echo "HTTP $stat" >&2
+        echo "HTTP $scode : $surl" >&2
         cat "$tmpfile" >&2
         exit 1
         ;;

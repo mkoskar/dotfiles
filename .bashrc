@@ -1,6 +1,6 @@
 # Executed by bash(1) for interactive non-login shells.
 
-[[ $SHRC_DEBUG ]] && echo '~/.bashrc' >&2
+[[ $SHRC_DEBUG ]] && echo \~/.bashrc >&2
 
 . ~/bin/term.sh
 
@@ -11,10 +11,10 @@ case $- in *i*) ;; *) return ;; esac
 . ~/bin/shx.sh
 . ~/bin/shrc-pre.sh
 
-HISTCONTROL='ignorespace:erasedups'
-HISTFILE="$HOME/.local/share/bash_history"
+HISTCONTROL=ignorespace:erasedups
+HISTFILE=~/.local/share/bash_history
 HISTFILESIZE=5000
-HISTIGNORE='exit'
+HISTIGNORE=exit
 HISTSIZE=1000
 
 __title="\\[$(hstatus '\u@\h:\w')\\]"
@@ -27,11 +27,11 @@ __prompt_command() {
     local pstatus=("${PIPESTATUS[@]}")
     __statstr=
     if (( ${#pstatus[@]} > 1 )); then
-        __statstr=":${pstatus[0]}$(printf '|%d' "${pstatus[@]:1}")"
+        __statstr=:${pstatus[0]}$(printf '|%d' "${pstatus[@]:1}")
     fi
     history -a
 }
-PROMPT_COMMAND='__prompt_command'
+PROMPT_COMMAND=__prompt_command
 
 shopt -s autocd checkjobs checkwinsize cmdhist dotglob gnu_errfmt histappend \
          histreedit histverify lithist no_empty_cmd_completion

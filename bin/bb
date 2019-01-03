@@ -26,7 +26,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     arch                    b https://www.archlinux.org/
     arch-bugs               b https://bugs.archlinux.org/index.php?string={u}
     arch-forums             b https://bbs.archlinux.org/search.php?action=show_new
-    arch-lists              b https://www.google.com/search?q=site:lists.archlinux.org\\ {u}
+    arch-lists              b https://lists.archlinux.org/
     arch-repos              b https://git.archlinux.org/
     arch-wiki               b https://wiki.archlinux.org/index.php?search={u}
     argyllcms!              b /usr/share/argyllcms/doc/ArgyllDoc.html
@@ -64,6 +64,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     constellations          b https://en.wikipedia.org/wiki/88_modern_constellations#List
     country-codes           b https://en.wikipedia.org/wiki/ISO_3166-1#Current_codes
     cryptocurr              b https://coinmarketcap.com/
+    ctlcodes                b https://en.wikipedia.org/wiki/C0_and_C1_control_codes#C0_\\(ASCII_and_derivatives\\)
     ctlseqs                 b https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
     ctlseqs1                b https://bjh21.me.uk/all-escapes/all-escapes.txt
     cups                    b https://www.cups.org/documentation.html
@@ -99,6 +100,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     fosdem                  b https://video.fosdem.org/
     freebsd                 b https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/
     freedesktop-gitlab      b https://gitlab.freedesktop.org/explore
+    freedesktop-lists       b https://lists.freedesktop.org/
     freedesktop-repos       b https://cgit.freedesktop.org/
     freedesktop-specs       b https://standards.freedesktop.org/
     freetype                b https://www.freetype.org/freetype2/docs/documentation.html
@@ -202,7 +204,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     m4-macros               b https://www.gnu.org/software/m4/manual/m4.html#Macro-index
     mailcap                 b https://tools.ietf.org/html/rfc1524
     man-pages               b http://man7.org/linux/man-pages/index.html
-    material-design         b https://getmdl.io/
+    material-design         b https://material.io/design/
     maven                   b https://maven.apache.org/plugins/index.html
     maven-central           b https://search.maven.org/
     maven-jcenter           b https://bintray.com/bintray/jcenter
@@ -224,6 +226,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     nodejs                  b https://nodejs.org/api/
     notes!                  b ~/projects/notes/_build/html/index.html
     ntrs                    b https://ntrs.nasa.gov/search.jsp?Ntk=All\\&Ntt={u}
+    opentype                b https://docs.microsoft.com/en-us/typography/opentype/spec/
     oracle-plsql            b https://docs.oracle.com/database/121/LNPLS/toc.htm
     oracle-sql              b https://docs.oracle.com/database/121/SQLRF/toc.htm
     osdev                   b https://wiki.osdev.org/Main_Page
@@ -294,6 +297,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     sqlite-lang             b https://sqlite.org/lang.html
     suckless-repos          b https://git.suckless.org/
     sysrq                   b https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
+    systemd                 b https://systemd.io/
     systemd-changes         b https://github.com/systemd/systemd/blob/master/NEWS
     terminfo.src            b https://invisible-island.net/ncurses/terminfo.src.html
     tex                     b https://ctan.org/
@@ -331,10 +335,13 @@ MENUER=$prgname menuer "$@" <<-EOF |
     weechat                 b https://weechat.org/files/doc/stable/weechat_user.en.html
     weechat-api             b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
     weechat-changes         b https://github.com/weechat/weechat/blob/master/ChangeLog.adoc
+    x11                     b https://www.x.org/releases/current/doc/
+    x11-resources           b https://www.x.org/releases/X11R7.7/doc/libXt/intrinsics.html#Loading_the_Resource_Database
     xcb-modules             b https://xcb.freedesktop.org/manual/modules.html
     xmonad                  b https://hackage.haskell.org/package/xmonad
     xmonad-contrib          b https://hackage.haskell.org/package/xmonad-contrib
-    xorg                    b https://www.x.org/releases/current/doc/
+    xorg-lists              b https://lists.x.org/
+    xorg-repos              b https://cgit.freedesktop.org/xorg
     yaml                    b http://yaml.org/refcard.html
     yt                      b https://www.youtube.com/results?q={u}
     yt-channel              b https://www.youtube.com/results?sp=EgIQAlAU\\&q={u}
