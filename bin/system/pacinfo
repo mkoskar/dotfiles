@@ -10,7 +10,7 @@ cleanup() { rm -f "$tmpfile"; }
 trap cleanup EXIT
 
 {
-    cat <<-EOF
+    cat <<-'EOF'
 		[options]
 		Architecture = auto
 		Color
@@ -48,7 +48,7 @@ echo $'\n--------------------------------------------------'
 echo $'> Unmet dependencies:\n'
 
 #paccheck --depends --list-broken
-expac -l '\n' %D | sort -u | pacman -T
+expac -l \\n %D | sort -u | pacman -T
 
 echo $'\n--------------------------------------------------'
 echo $'> Modified "Backup Files":\n'

@@ -2,14 +2,14 @@
 
 set -eu -o pipefail
 
-loghome='/var/log/local'
+loghome=/var/log/local
 mkdir -p "$loghome"
 cd "$loghome"
 
 # ----------------------------------------
 
 ts=$(date +%F.%s)
-logbase='pacman-disowned'
+logbase=pacman-disowned
 pacman-disowned >"$logbase.$ts"
 
 # ----------------------------------------

@@ -16,29 +16,28 @@ fi
 
 user=${1:-${SUDO_USER:-$USER}}
 
-if [[ $user = 'root' ]]; then
+if [[ $user = root ]]; then
     echo 'Refusing to lock for root.' >&2
     exit 1
 fi
 
-export TERM='linux'
+export TERM=linux
 
 # ----------------------------------------
 
 vt=$(</sys/class/tty/tty0/active)
-vtno=${vt##tty}
-vtno_new=8
-vtnew="/dev/tty$vtno_new"
+declare -i vtno=${vt##tty} vtno_new=8
+vtnew=/dev/tty$vtno_new
 
-exec <>"$vtnew" >&0 2>&1
+exec <>$vtnew >&0 2>&1
 
-sysrq_path='/proc/sys/kernel/sysrq'
+sysrq_path=/proc/sys/kernel/sysrq
 sysrq_old=$(<"$sysrq_path")
 echo 0 >"$sysrq_path"
 
 cleanup() {
     clear
-    printf '%d' "$sysrq_old" >"$sysrq_path"
+    printf %d "$sysrq_old" >"$sysrq_path"
     vtswitch-lock -u
     chvt "$vtno"
 }
@@ -49,7 +48,7 @@ tput civis
 
 chvt "$vtno_new"
 vtswitch-lock
-chown -- "$user" "$vtnew"
+chown -- "$user" $vtnew
 
 su - "$user" -c 'away -C away'
 read -rs

@@ -24,7 +24,7 @@ function! Test() abort
     let themes = ['default', 'desert', 'blue', 'evening']
     let l = len(themes)
     for theme in themes
-        exec 'colorscheme '.theme
+        exec 'colorscheme ' . theme
         let c = 0
         while c < 30
             tabnext
@@ -33,7 +33,7 @@ function! Test() abort
             let c += 1
         endwhile
     endfor
-    echomsg 'Test: finished - '.(has('nvim') ? 'NVIM' : 'VIM')
+    echomsg 'Test: finished - ' . (has('nvim') ? 'NVIM' : 'VIM')
 endfunction
 
 nnoremap <silent> <Leader>tt :call Test()<CR>

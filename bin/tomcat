@@ -16,8 +16,8 @@ setup() {
     mkdir -p "$CATALINA_BASE" && cd "$CATALINA_BASE"
 
     log 'Setting up certificate keystore...'
-    keytool -genkeypair -alias tomcat -keyalg RSA -dname 'cn=' \
-            -keystore keystore -storepass secret -keypass secret
+    keytool -genkeypair -alias tomcat -keyalg RSA -dname cn= \
+        -keystore keystore -storepass secret -keypass secret
 
     mkdir -p {bin,conf,lib,logs,temp,webapps}
 
@@ -28,28 +28,27 @@ setup() {
 	EOF
 
     cd ./conf
-
-    ln -s "$CATALINA_HOME/conf/catalina.policy"
-    ln -s "$CATALINA_HOME/conf/catalina.properties"
-    ln -s "$CATALINA_HOME/conf/context.xml"
-    ln -s "$CATALINA_HOME/conf/logging.properties"
-    ln -s "$CATALINA_HOME/conf/server.xml"
-    ln -s "$CATALINA_HOME/conf/tomcat-users.xml"
-    ln -s "$CATALINA_HOME/conf/tomcat-users.xsd"
-    ln -s "$CATALINA_HOME/conf/web.xml"
+    ln -s "$CATALINA_HOME"/conf/catalina.policy .
+    ln -s "$CATALINA_HOME"/conf/catalina.properties .
+    ln -s "$CATALINA_HOME"/conf/context.xml .
+    ln -s "$CATALINA_HOME"/conf/logging.properties .
+    ln -s "$CATALINA_HOME"/conf/server.xml .
+    ln -s "$CATALINA_HOME"/conf/tomcat-users.xml .
+    ln -s "$CATALINA_HOME"/conf/tomcat-users.xsd .
+    ln -s "$CATALINA_HOME"/conf/web.xml .
 }
 
 run() {
-    "$CATALINA_HOME/bin/catalina.sh" run
+    "$CATALINA_HOME"/bin/catalina.sh run
 }
 
 debug() {
-    export JPDA_OPTS='-agentlib:jdwp=transport=dt_socket,address=8010,server=y,suspend=y'
-    "$CATALINA_HOME/bin/catalina.sh" jpda run
+    export JPDA_OPTS=-agentlib:jdwp=transport=dt_socket,address=8010,server=y,suspend=y
+    "$CATALINA_HOME"/bin/catalina.sh jpda run
 }
 
 jdb() {
-    "$CATALINA_HOME/bin/catalina.sh" debug
+    "$CATALINA_HOME"/bin/catalina.sh debug
 }
 
 # ----------------------------------------

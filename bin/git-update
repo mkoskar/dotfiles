@@ -6,7 +6,7 @@ git fetch --all
 git submodule update --recursive
 
 refname=$(git rev-parse --abbrev-ref HEAD)
-if [[ $refname = 'local' ]]; then
+if [[ $refname = local ]]; then
     echo '> _local_ branch - not merging!'
 else
     git merge --ff-only

@@ -425,7 +425,7 @@ set shellredir=&>%s
 " ----------------------------------------
 
 set grepformat=%f:%l:%m
-set grepprg=grep\ -nH\ --exclude-dir='.svn'\ --exclude-dir='.git'\ --exclude='*.swp'\ --exclude='*~'\ $*
+set grepprg=grep\ -nH\ --exclude-dir=.svn\ --exclude-dir=.git\ --exclude=\*.swp\ --exclude=\*~\ $*
 
 set grepformat=%f:%l:%c:%m
 set grepprg=ag\ --vimgrep\ $*

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cat <<-EOF
+cat <<-'EOF'
 
 This is quick and dirty crontab(5) format help.
 

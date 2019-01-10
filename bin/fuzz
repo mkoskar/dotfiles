@@ -97,9 +97,14 @@ case ${1-} in -)
     exit
 esac
 
-#--execute
-#--filter
-#--history
-#--no-bold
+# ----------------------------------------
 
-exec fzf "$@"
+#--execute
+#--history
+
+opts=()
+if [[ -t 0 ]]; then
+    opts+=(--preview='finfo {}')
+fi
+
+exec fzf "${opts[@]}" "$@"

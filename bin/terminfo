@@ -42,7 +42,7 @@ infocmp -a -A /usr/share/terminfo "$TERM" "$TERM" || true
 echo $'\n--------------------------------------------------'
 
 echo
-infocmp -a1 | sed -nr '1,2p; /\b(bce|kbs|kdch1|smso|sitm)[,=]/p'
+infocmp -1a | sed -nr '1,2p; /\b(bce|kbs|kdch1|smso|sitm)[,=]/p'
 
 echo $'\n--------------------------------------------------'
 
@@ -52,12 +52,12 @@ stty -a | perl -n -e '/\b(erase = .*?);/ && print "stty $1\n"'
 echo $'\n--------------------------------------------------'
 
 echo
-read -N1 -rp 'Press BS:            '
+read -r -N 1 -p 'Press BS:            '
 echo
-read -N1 -rp 'Press CTRL+BS:       '
+read -r -N 1 -p 'Press CTRL+BS:       '
 echo
-read -N1 -rp 'Press CTRL+H:        '
+read -r -N 1 -p 'Press CTRL+H:        '
 echo
-read -N1 -rp 'Press CTRL+SHIFT+H:  '
+read -r -N 1 -p 'Press CTRL+SHIFT+H:  '
 echo
 echo

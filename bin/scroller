@@ -34,7 +34,7 @@ while true; do
     printf '%s\n' "$item"
 
     (( len > 1 )) || break
-    read -N1 -rs c
+    read -rs -N 1 c
     case $c in
         [qQ])
             break

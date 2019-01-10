@@ -34,12 +34,12 @@ if [[ $devices ]]; then
         [[ $sel ]] || exit 2
 
         device=$(awk -F ', ' '{ print $1 " " $2 }' <<<"$sel")
-        read -ra device <<<"$device"
-        target="$HOME/tmp/mtp-${device[0]}-${device[1]}"
+        read -r -a device <<<"$device"
+        target=~/tmp/mtp-${device[0]}-${device[1]}
 
         if ! findmnt -M "$target" &>/dev/null; then
             [[ -d $target ]] || mkdir "$target"
-            jmtpfs "-device=${device[0]},${device[1]}" "$target" &>/dev/null
+            jmtpfs -device="${device[0]},${device[1]}" "$target" &>/dev/null
         fi
     fi
 fi

@@ -8,7 +8,7 @@ cd ~/tmp
 
 ts=$(date +%F.%s)
 
-lockfile="$XDG_RUNTIME_DIR/$prgname$DISPLAY.lock"
+lockfile=$XDG_RUNTIME_DIR/$prgname$DISPLAY.lock
 exec 8>"$lockfile"
 flock -n 8 || {
     exec 8<&-
@@ -20,7 +20,7 @@ tmp=$(slop -f '%x %y %w %h')
 read -r X Y W H <<<"$tmp"
 
 (
-    exec &>>~/.local/share/"$prgname.out"
+    exec &>>~/.local/share/"$prgname".out
 
     # See also:
     #
@@ -32,21 +32,21 @@ read -r X Y W H <<<"$tmp"
     #   ffmpeg -h encoder=vp9
     #   https://trac.ffmpeg.org/wiki/Encode/VP9
 
-    outfile="screencast-$ts.webm"
+    outfile=screencast-$ts.webm
     args=(
         -pix_fmt yuv444p
         -codec:v vp9 -crf 15 -b:v 0 -deadline realtime -cpu-used 8
         "$outfile"
     )
 
-    #outfile="screencast-$ts.webm"
+    #outfile=screencast-$ts.webm
     #args=(
     #    -pix_fmt yuv444p
     #    -codec:v vp9 -lossless 1 -deadline realtime -cpu-used 8
     #    "$outfile"
     #)
 
-    #outfile="screencast-$ts.mp4"
+    #outfile=screencast-$ts.mp4
     #args=(
     #    -codec:v h264 -preset ultrafast -qp 0
     #    "$outfile"

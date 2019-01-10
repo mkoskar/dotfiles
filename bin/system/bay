@@ -28,25 +28,25 @@ if (( $# )); then
     esac
 fi
 
-docked=$(<"$dock/docked")
+docked=$(<"$dock"/docked)
 if (( ! docked )); then
-    echo 'undocked' >&2
+    echo undocked >&2
 else
-    echo 'docked' >&2
-    sysdev='/sys/devices/pci0000:00/0000:00:1f.2/ata2/host1/target1:0:0/1:0:0:0'
-    devnames=("$sysdev/block/"*)
+    echo docked >&2
+    sysdev=/sys/devices/pci0000:00/0000:00:1f.2/ata2/host1/target1:0:0/1:0:0:0
+    devnames=("$sysdev"/block/*)
     devname=${devnames[0]}
 
     if [[ -e $devname ]]; then
         devname=${devname##*/}
-        dev="/dev/$devname"
+        dev=/dev/$devname
     else
         echo 'no block device' >&2
         (( undock )) || exit 1
     fi
 
     if (( standby )); then
-        echo 'standby...' >&2
+        echo standby... >&2
         if ! smartctl -i -n standby -- "$dev" &>/dev/null; then
             echo 'already in standby' >&2
         else
@@ -55,24 +55,24 @@ else
     fi
 
     if (( undock )); then
-        echo "sync..." >&2
+        echo sync... >&2
         sync
 
         echo "umountall $devname..." >&2
         umountall "$devname"
 
-        echo 'standby...' >&2
+        echo standby... >&2
         hdparm -y -- "$dev" &>/dev/null
 
         if [[ -e $sysdev ]]; then
-            echo 'detach...' >&2
-            echo 1 >>"$sysdev/delete"
+            echo detach... >&2
+            echo 1 >>"$sysdev"/delete
         fi
 
-        echo 'undock...' >&2
+        echo undock... >&2
         if [[ ! -w $dock/undock ]]; then
             exit 1
         fi
-        echo 1 >>"$dock/undock"
+        echo 1 >>"$dock"/undock
     fi
 fi

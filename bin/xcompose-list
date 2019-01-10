@@ -9,13 +9,13 @@ set -eu -o pipefail
 
     cat "$ifile"
 
-    ifile="$HOME/.XCompose.rfc1345"
+    ifile=~/.XCompose.rfc1345
     echo $'\n--------------------------------------------------'
     printf '> %s\n\n' "$ifile"
 
     cat "$ifile"
 
-    ifile="/usr/share/X11/locale/$LANG/Compose"
+    ifile=/usr/share/X11/locale/$LANG/Compose
     echo $'\n--------------------------------------------------'
     printf '> %s\n\n' "$ifile"
 

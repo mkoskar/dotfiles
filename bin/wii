@@ -23,19 +23,19 @@ Sun:                    %s / %S
 get() {
     local opts ohash cache
     opts=(-m -l "$1")
-    ohash=$(printf '%s' "${opts[@]}" | sha1sum)
-    read -ra ohash <<<"$ohash"
-    cache="$HOME/.cache/shaman-${ohash: -7}.json"
+    ohash=$(printf %s "${opts[@]}" | sha1sum)
+    read -r ohash _ <<<"$ohash"
+    cache=~/.cache/shaman-${ohash: -7}.json
     [[ -e $cache ]] || touch "$cache"
     shaman "${opts[@]}" -f "$format" -c "$cache"
 }
 
 echo
 
-get 'Bratislava,SK'
-get 'Poprad,SK'
-get 'Zilina,SK'
+get Bratislava,SK
+get Poprad,SK
+get Zilina,SK
 
-get 'Berlin,DE'
-get 'London,GB'
-get 'Prague,CZ'
+get Berlin,DE
+get London,GB
+get Prague,CZ

@@ -11,17 +11,17 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-bin='firefox'
+bin=firefox
 bin_name=$bin
 profile=
 
 case $prgname in
     ff)
-        profile='default'
+        profile=default
         ;;
     ffdev)
-        bin='firefox-developer-edition'
-        bin_name='firefox-dev'
+        bin=firefox-developer-edition
+        bin_name=firefox-dev
         ;;
 esac
 
@@ -46,7 +46,7 @@ if [[ ! $profile ]]; then
     )
     for p in ~/.config/"$bin_name".*; do
         [[ -d $p ]] || continue
-        profiles+=("${p#*"$bin_name".}")
+        profiles+=("${p#*$bin_name.}")
     done
     profile=$(
         printf '%s\n' "${profiles[@]}" |
@@ -58,17 +58,17 @@ fi
 [[ ! $profile ]] && exit 1
 
 # Workaround to ensure separate instance per profile.
-export LOGNAME="$USER.$bin_name.$profile"
+export LOGNAME=$USER.$bin_name.$profile
 
-path="$HOME/.config/$bin_name"
-[[ $profile = 'default' ]] || path+=".$profile"
+path=~/.config/$bin_name
+[[ $profile = default ]] || path+=.$profile
 
 mkdir -p "$path"
 cd "$path"
 
 if [[ ! -f user.js ]]; then
     if [[ ! $profile =~ ^plain(-|$) ]]; then
-        cat >>user.js <<-EOF
+        cat >>user.js <<-'EOF'
 			//user_pref('security.ssl.require_safe_negotiation', true);
 
 			user_pref('accessibility.blockautorefresh', true);
@@ -116,7 +116,7 @@ if [[ ! -f user.js ]]; then
 			user_pref('toolkit.telemetry.unified', false);
 		EOF
 
-        [[ ! $profile =~ ^(dev|lab)(-|$) ]] && cat >>user.js <<-EOF
+        [[ ! $profile =~ ^(dev|lab)(-|$) ]] && cat >>user.js <<-'EOF'
 
 			user_pref('media.peerconnection.enabled', false);
 			user_pref('media.peerconnection.ice.default_address_only', true);
@@ -128,7 +128,7 @@ if [[ ! -f user.js ]]; then
 			user_pref('privacy.trackingprotection.enabled', true);
 		EOF
 
-        [[ $profile = 'default' ]] && cat >>user.js <<-EOF
+        [[ $profile = default ]] && cat >>user.js <<-'EOF'
 
 			//user_pref('signon. rememberSignons', false);
 			//user_pref('webgl.disabled', true);
@@ -157,7 +157,7 @@ case $profile in
 esac
 
 if [[ ! -f userChrome.css ]]; then
-    [[ $profile != 'default' ]] && cat >>userChrome.css <<-EOF
+    [[ $profile != default ]] && cat >>userChrome.css <<-EOF
 
 		#TabsToolbar::before {
 		    content: "$profile";

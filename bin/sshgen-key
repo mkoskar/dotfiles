@@ -13,4 +13,4 @@ if (( ! $# )); then
 fi
 
 key_id=$1
-ssh-keygen -t rsa -b 4096 -C "$key_id" -f "ssh_${key_id}_rsa_key"
+ssh-keygen -t rsa -b 4096 -C "$key_id" -f ssh_"$key_id"_rsa_key

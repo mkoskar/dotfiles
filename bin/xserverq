@@ -40,7 +40,7 @@ xserver_dispno() {
 
 xserver_pid() {
     local dispno; dispno=$(xserver_dispno)
-    local lockfile="/tmp/.X$dispno-lock"
+    local lockfile=/tmp/.X$dispno-lock
     [[ -e $lockfile ]] || exit 1
     sed -r 's/\s+//g' "$lockfile"
 }

@@ -4,7 +4,7 @@ set -eu
 
 get() {
     local sep=${3:-/}
-    local in="$1$sep$2" out="_$2"
+    local in=$1$sep$2 out=_$2
     declare -g "$out="
     [[ ! -e $in ]] || declare -g "$out=$(<"$in")"
 }
@@ -14,11 +14,11 @@ echo $'> sensors\n'
 
 sensors
 
-echo '--------------------------------------------------'
-base='/sys/class/thermal'
+echo --------------------------------------------------
+base=/sys/class/thermal
 printf '> %s\n\n' "$base"
 
-for cdev in "$base/"cooling_device*; do
+for cdev in "$base"/cooling_device*; do
     [[ -e $cdev ]] || continue
 
     _cdev=${cdev##*/}
@@ -28,11 +28,12 @@ for cdev in "$base/"cooling_device*; do
     get "$cdev" max_state
 
     # shellcheck disable=SC2154
-    printf '%-18s : %-20s %6s / %6s\n' "$_cdev" "$_type" "$_cur_state" "$_max_state"
+    printf '%-18s : %-20s %6s / %6s\n' \
+        "$_cdev" "$_type" "$_cur_state" "$_max_state"
 done
 echo
 
-for tzone in "$base/"thermal_zone*; do
+for tzone in "$base"/thermal_zone*; do
     [[ -e $tzone ]] || continue
 
     _tzone=${tzone##*/}
@@ -51,7 +52,7 @@ for tzone in "$base/"thermal_zone*; do
         [[ $_passive ]] && printf '  %-16s : %-28s\n' 'passive' "$_passive"
     }
 
-    for tpoint in "$tzone/"trip_point_*_type; do
+    for tpoint in "$tzone"/trip_point_*_type; do
         [[ -e $tpoint ]] || continue
 
         _base=${tpoint%%_type}

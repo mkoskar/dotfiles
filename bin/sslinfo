@@ -2,4 +2,4 @@
 
 set -o pipefail
 
-curl -sSLf 'https://www.howsmyssl.com/a/check' | jq .
+curl -sSLf https://www.howsmyssl.com/a/check | jq .

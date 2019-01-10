@@ -10,7 +10,7 @@ fi
 
 if [[ ${TMUX-} ]]; then
     printf '\ePtmux;\e%s\a\e\\' "$1"
-elif [[ ${TERM%%-*} = 'screen' ]]; then
+elif [[ ${TERM%%-*} = screen ]]; then
     printf '\eP%s\a\e\\' "$1"
 else
     printf '%s\e\\' "$1"

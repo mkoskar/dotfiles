@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-exec gxmessage -center -default okay -font 'monospace 8' -geometry 800x500 -ontop "$@"
+exec gxmessage -geometry 800x500 -ontop -center -default okay \
+    -font 'monospace 8' "$@"

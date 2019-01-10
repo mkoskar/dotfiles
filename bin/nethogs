@@ -5,8 +5,8 @@ set -eu
 ifaces=()
 for dev in /sys/class/net/*; do
     [[ -e $dev ]] || continue
-    operstate=$(<"$dev/operstate")
-    [[ $operstate = 'up' ]] || continue
+    operstate=$(<"$dev"/operstate)
+    [[ $operstate = up ]] || continue
     ifaces+=("${dev##*/}")
 done
 

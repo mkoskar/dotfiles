@@ -4,8 +4,8 @@ set -eu
 
 prgname=${0##*/}
 
-if [[ $prgname = 'b0' ]]; then
-    BBIN='ffp'
+if [[ $prgname = b0 ]]; then
+    BBIN=ffp
     args=(-p quarantine -- --private-window)
 else
     BBIN=${BBIN:-ff}

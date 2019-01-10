@@ -11,17 +11,17 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-bin='chromium'
+bin=chromium
 bin_name=$bin
 profile=
 
 case $prgname in
     ch)
-        profile='default'
+        profile=default
         ;;
     chpg)
-        bin='google-chrome-stable'
-        bin_name='google-chrome'
+        bin=google-chrome-stable
+        bin_name=google-chrome
         ;;
 esac
 
@@ -46,7 +46,7 @@ if [[ ! $profile ]]; then
     )
     for p in ~/.config/"$bin_name".*; do
         [[ -d $p ]] || continue
-        profiles+=("${p#*"$bin_name".}")
+        profiles+=("${p#*$bin_name.}")
     done
     profile=$(
         printf '%s\n' "${profiles[@]}" |
@@ -57,17 +57,17 @@ fi
 
 [[ ! $profile ]] && exit 1
 
-path="$HOME/.config/$bin_name"
-path_skel="$path.skel"
+path=~/.config/$bin_name
+path_skel=$path.skel
 
-[[ $profile = 'default' ]] || path+=".$profile"
+[[ $profile = default ]] || path+=.$profile
 
-if [[ ! -e $path && $profile != 'skel' ]]; then
+if [[ ! -e $path && $profile != skel ]]; then
     [[ -e $path_skel ]] && cp -a "$path_skel" "$path"
 
-    if [[ $profile != 'default' ]]; then
-        mkdir -p "$path/theme"
-        cd "$path/theme"
+    if [[ $profile != default ]]; then
+        mkdir -p "$path"/theme
+        cd "$path"/theme
 
         case $profile in
             dev)            frame_color='[0, 153, 255]' ;;
@@ -106,7 +106,7 @@ if [[ ! -e $path && $profile != 'skel' ]]; then
         pango-view -q --font='monospace 8' \
             --background=transparent --foreground=black --margin='1 2' \
             -t "$profile" -o frame.png
-        set -- --load-extension="$path/theme" "$@"
+        set -- --load-extension="$path"/theme "$@"
     fi
 fi
 

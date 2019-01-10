@@ -2,4 +2,4 @@
 
 set -o pipefail
 
-gpg --with-colons --list-public-keys | awk -F: '/^pub:/ { print $5 }'
+gpg --with-colons --list-public-keys | awk -F : '/^pub:/ { print $5 }'

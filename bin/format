@@ -34,7 +34,7 @@ try() {
 case $ft in
     cs)
         #try uncrustify
-        try astyle --mode=cs --style=break --indent-namespaces -pcH -s"$shiftwidth"
+        try astyle --mode=cs --style=break --indent-namespaces -pcH -s "$shiftwidth"
         ;;
     css)
         try css-beautify -s "$shiftwidth" -f -
@@ -43,7 +43,7 @@ case $ft in
     c | cpp | objc)
         #try clang-format
         #try uncrustify
-        try astyle --mode=c --style=break -pcH -s"$shiftwidth"
+        try astyle --mode=c --style=break -pcH -s "$shiftwidth"
         ;;
     dart)
         try dartfmt
@@ -61,7 +61,7 @@ case $ft in
     java)
         #try clang-format
         #try uncrustify
-        try astyle --mode=java --style=attach -pcH -s"$shiftwidth"
+        try astyle --mode=java --style=attach -pcH -s "$shiftwidth"
         ;;
     javascript)
         #try clang-format
@@ -104,7 +104,7 @@ case $ft in
         exit 0
         ;;
     *)
-        try par -T"$shiftwidth" -w"$textwidth"
+        try par -T "$shiftwidth" -w "$textwidth"
         try fmt -u -w "$textwidth"
         try fold -s -w "$textwidth"
         try wrap -w "$textwidth"

@@ -7,7 +7,7 @@ set -eu
 # ----------------------------------------
 
 vt=$(</sys/class/tty/tty0/active)
-export DISPLAY=":${vt##tty}"
+export DISPLAY=:${vt##tty}
 
 if (( EUID )); then
     case $1 in
@@ -27,7 +27,7 @@ if (( EUID )); then
             audio playback_up
             ;;
         ibm/hotkey)
-            if [[ $2 = 'LEN0068:00' ]]; then
+            if [[ $2 = LEN0068:00 ]]; then
                 xscreen -
             fi
             ;;

@@ -25,7 +25,7 @@ shift $((OPTIND-1))
 # ----------------------------------------
 
 bluectl() {
-    if [[ $1 = 'play-pause' ]]; then
+    if [[ $1 = play-pause ]]; then
         local stat; stat=$(bluectl show | awk '/Status:/ { print $2 }')
         case $stat in
             playing)
@@ -43,11 +43,11 @@ bluectl() {
 
 _playerctl() {
     local stat1 stat2
-    if [[ $1 = 'play-pause' ]]; then
+    if [[ $1 = play-pause ]]; then
         stat1=$(playerctl status)
         playerctl "$1"
         stat2=$(playerctl status)
-        if [[ $stat1 = 'Playing' && $stat2 = 'Playing' ]]; then
+        if [[ $stat1 = Playing && $stat2 = Playing ]]; then
             playerctl stop
         fi
         return
@@ -55,7 +55,7 @@ _playerctl() {
     playerctl "$1"
 }
 
-(( blue )) && ctl='bluectl' || ctl='_playerctl'
+(( blue )) && ctl=bluectl || ctl=_playerctl
 
 case $1 in
     prev)

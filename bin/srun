@@ -37,9 +37,9 @@ shift $((OPTIND-1))
 
 name=${name:-${1##*/}}
 if (( xopt )); then
-    name="$name$DISPLAY"
+    name=$name$DISPLAY
 fi
-name="$name.service"
+name=$name.service
 
 sdu() { systemctl --user "$@"; }
 
@@ -51,5 +51,5 @@ elif sdu --quiet is-failed "$name"; then
 fi
 
 systemd-run --user --no-ask-password \
-            --setenv=DISPLAY="${DISPLAY-}" \
-            --unit="$name" "$@"
+    --setenv=DISPLAY="${DISPLAY-}" \
+    --unit="$name" "$@"

@@ -47,7 +47,7 @@ if (( ! $# )); then
     while true; do
         stat=$(status audio)
         printf "${ti_col0}%s${ti_clr_eol}" "$stat"
-        read -N1 -rs c
+        read -rs -N 1 c
         case $c in
             [kK])
                 playback_up

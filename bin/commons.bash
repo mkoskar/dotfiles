@@ -12,7 +12,7 @@
 #     local stat=${pstatus[0]}
 #     if (( ${#pstatus[@]} > 2 )); then
 #         cmd='<pipeline>'
-#         stat+=":${pstatus[1]}$(printf '|%d' "${pstatus[@]:2}")"
+#         stat+=:${pstatus[1]}$(printf '|%d' "${pstatus[@]:2}")
 #     fi
 #     printf '%s: line %d: %s: (%s)\n' "${BASH_SOURCE[1]}" \
 #         "${BASH_LINENO[0]}" "$cmd" "$stat"
@@ -23,7 +23,7 @@
 if [[ -o xtrace ]]; then
     set +x
     xtrace=1
-    echo '--------------------------------------------------' >&2
+    echo -------------------------------------------------- >&2
 fi
 
 set -Eu -o pipefail
@@ -51,10 +51,10 @@ trap_err() {
     local stat=${pstatus[0]}
     if (( ${#pstatus[@]} > 2 )); then
         cmd='<pipeline>'
-        stat+=":${pstatus[1]}$(printf '|%d' "${pstatus[@]:2}")"
+        stat+=:${pstatus[1]}$(printf '|%d' "${pstatus[@]:2}")
     fi
     if shopt -q extdebug; then
-        printf "\\n${style_error}ERR(%s): %s${style_none}\\n" "$stat" "$cmd"
+        printf "\n${style_error}ERR(%s): %s${style_none}\n" "$stat" "$cmd"
         stacktrace
     else
         printf '%s: line %d: %s: (%s)\n' "${BASH_SOURCE[1]}" \

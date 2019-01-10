@@ -4,10 +4,10 @@ set -eu
 
 prgname=${0##*/}
 
-name='default'
-fifo="$XDG_RUNTIME_DIR/osdd/$name$DISPLAY"
+name=default
+fifo=$XDG_RUNTIME_DIR/osdd/$name$DISPLAY
 
-if [[ $prgname = 'osdd' ]]; then
+if [[ $prgname = osdd ]]; then
     [[ -e $fifo ]] && exit 3
 
     # shellcheck disable=SC2174
@@ -18,11 +18,11 @@ if [[ $prgname = 'osdd' ]]; then
     trap cleanup EXIT
 
     aosd_cat -O 0 -p 2 -x -10 -y 25 -e 0 -d 5 \
-             -t 2 -n local_osd -A 2 -b 215 \
-             -B black -R yellow \
-             -f 0 -u 1000 -o 0 \
-             -l 1 \
-             -k -m -i "$fifo"
+        -t 2 -n local_osd -A 2 -b 215 \
+        -B black -R yellow \
+        -f 0 -u 1000 -o 0 \
+        -l 1 \
+        -k -m -i "$fifo"
     exit
 fi
 

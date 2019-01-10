@@ -2,7 +2,7 @@
 
 set -eu -o pipefail
 
-tmpdir="${TMPDIR:-/tmp}/pacman-disowned-$UID-$$"
+tmpdir=${TMPDIR:-/tmp}/pacman-disowned-$UID-$$
 cleanup() { rm -rf "$tmpdir"; }
 trap cleanup EXIT
 
@@ -33,6 +33,7 @@ find / -mindepth 1 \
         -path /var/lib/pacman -o \
         -path /var/log/local -o \
         -path /var/spool -o \
-    -false \) -prune -false -o \( -type d -printf '%p/\n' -o -print \) | sort >fs
+    -false \) -prune -false -o \
+    \( -type d -printf '%p/\n' -o -print \) | sort >fs
 
 comm -23 fs db

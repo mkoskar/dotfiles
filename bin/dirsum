@@ -7,7 +7,7 @@ prgname=${0##*/}
 (( $# )) && cd -- "$1"
 
 filter=(sed -r 's/ time=\S+//')
-if [[ $prgname = 'dirsum0' ]]; then
+if [[ $prgname = dirsum0 ]]; then
     filter=(cat)
 fi
 

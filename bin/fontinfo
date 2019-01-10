@@ -15,16 +15,16 @@ if [[ ! -e $file ]]; then
 fi
 
 ftdump -n -V "$file" | awk -v file="$file" '
-BEGIN {
-    cmaps = 0
-    printf "%s\n\n", file
-}
-/^charmaps/ {
-    cmaps = 1
-}
-cmaps && /\s+0x[0-9abcdef]+ =>/ {
-    printf "%-60s : %c\n", $0, strtonum($1)
-    next
-}
-{ print }
-' | $PAGER
+    BEGIN {
+        cmaps = 0
+        printf "%s\n\n", file
+    }
+    /^charmaps/ {
+        cmaps = 1
+    }
+    cmaps && /\s+0x[0-9abcdef]+ =>/ {
+        printf "%-60s : %c\n", $0, strtonum($1)
+        next
+    }
+    { print }
+    ' | $PAGER

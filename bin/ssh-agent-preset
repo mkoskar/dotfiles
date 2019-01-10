@@ -2,11 +2,11 @@
 
 set -eu
 
-src="$HOME/.ssh/ssh-agent.presets"
+src=~/.ssh/ssh-agent.presets
 (( $# )) && src=$1
 
 cd ~
 
-while read -ra params; do
-    ssh-add "${params[@]}" </dev/tty
+while read -r -a line; do
+    ssh-add "${line[@]}" </dev/tty
 done <"$src"

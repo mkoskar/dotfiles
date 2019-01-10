@@ -18,7 +18,7 @@ process() {
     set -eu -o pipefail
     local url=$1 oname stat scode surl
     oname=$(printf %s "$url" | sha1sum)
-    read -ra oname <<<"$oname"
+    read -r oname _ <<<"$oname"
     stat=$(
         curl -sSL -C - -z "$CACHEDIR/$oname" \
             -w '%{http_code}\t%{url_effective}' \
@@ -48,7 +48,7 @@ export -f process
 pargs=()
 [[ -t 1 ]] && pargs+=(--bar) || pargs+=(--silent)
 
-grep -vxE '\s*|(\s*#.*)' <<-EOF | parallel "${pargs[@]}" process
+grep -vxE '\s*|(\s*#.*)' <<-'EOF' | parallel "${pargs[@]}" process
 
 	# Borg Sans Mono
 	https://github.com/marnen/borg-sans-mono/files/107663/BorgSansMono.ttf.zip

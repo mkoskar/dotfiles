@@ -8,13 +8,13 @@ if [ "$BASH_VERSION" ]; then
     unset BASH_ENV
 fi
 
-SHNAME=$(cmdline -a0 $$)
+SHNAME=$(cmdline -a 0 $$)
 SHNAME=${SHNAME##*/}
 SHNAME=${SHNAME#-}
 SHNAME=${SHNAME#r}
 
 case $SHNAME in bash)
-    shopt -qo posix && SHNAME=sh
+    shopt -q -o posix && SHNAME=sh
 esac
 
 set -o noclobber
@@ -31,13 +31,13 @@ alias dk=docker
 alias dkb='docker build'
 alias dkc='docker ps'
 alias dkca='docker ps -a'
-alias dkcl='docker ps -l -q'
-alias dke='docker exec -i -t'
+alias dkcl='docker ps -lq'
+alias dke='docker exec -it'
 alias dki='docker images'
 alias dkia='docker images -a'
 alias dkr='docker run -P'
-alias dkrd='docker run -d -P'
-alias dkri='docker run -i -t -P'
+alias dkrd='docker run -dP'
+alias dkri='docker run -itP'
 
 dkip() {
     local target; target=${1:-$(docker ps -lq)}
@@ -48,7 +48,7 @@ dkip() {
 dkrm() {
     confirm 'Remove ALL containers (with volumes). Continue?' n || return 0
     # shellcheck disable=SC2033
-    docker ps -aq | xargs -rx docker rm -v -f
+    docker ps -aq | xargs -rx docker rm -vf
 }
 
 dkstop() {
@@ -151,7 +151,7 @@ paco() {
 # Finds what package provides command
 pacoc() {
     [ $# -eq 0 ] && return 2
-    pth -a "$1" | xargs -r -L1 pacman -Qo
+    pth -a "$1" | xargs -r -L 1 pacman -Qo
 }
 
 # Files provided by package
@@ -209,7 +209,7 @@ alias acpi='acpi -V'
 alias an=asciinema
 alias aunpack='aunpack -q'
 alias c=calc
-alias cal='cal -m -w -3'
+alias cal='cal -3mw'
 alias callgrind='valgrind --tool=callgrind'
 alias cower='cower --color=auto'
 alias cp='cp -ai --reflink=auto'
@@ -226,16 +226,16 @@ alias du='du -hx'
 alias feh='feh -F'
 alias fortune='fortune -c'
 alias free='free -h'
-alias fzy='fzy -l$LINES'
+alias fzy='fzy -l $LINES'
 alias gconfa='gconftool-2 -R /'
 alias glxgears-novsync='vblank_mode=0 glxgears'
 alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
 alias grepcat='grep --exclude-dir=\* .'
 alias gsettingsa='gsettings list-recursively'
-alias headcat='head -vn-0'
+alias headcat='head -v -n -0'
 alias info='info --vi-keys'
 alias infocmp0='infocmp -A /usr/share/terminfo'
-alias infocmp='infocmp -a -1'
+alias infocmp='infocmp -1a'
 alias journal-vaccum='journalctl --vacuum-size=100M --vacuum-files=1'
 alias journal='journalctl -o short-precise -r -b'
 alias llib='tree ~/.local/lib'
@@ -245,7 +245,7 @@ alias ltime='date +%T'
 alias makepkg-build='makepkg -srf'
 alias makepkg-rebuild='makepkg -Ccsrf'
 alias mnt=findmnt
-alias moon='curl -sSLf http://wttr.in/moon | head -n-4'
+alias moon='curl -sSLf http://wttr.in/moon | head -n -4'
 alias mount-loop='mount -o loop'
 alias mpv-debug='mpv --terminal=yes --msg-level=all=debug'
 alias mpv-verbose='mpv --terminal=yes --msg-level=all=v'
@@ -254,13 +254,13 @@ alias mpv='mpv --player-operation-mode=pseudo-gui'
 alias mutt-debug='mutt -d 2'
 alias mv='mv -i'
 alias npmg='npm -g'
-alias od='od -Ax -tc'
-alias odd='od -td1'
-alias odo='od -to1'
-alias odx='od -tx1'
+alias od='od -A x -t c'
+alias odd='od -t d1'
+alias odo='od -t o1'
+alias odx='od -t x1'
 alias parallel='parallel -r'
-alias patch0='patch -Np0'
-alias patch1='patch -Np1'
+alias patch0='patch -N -p 0'
+alias patch1='patch -N -p 1'
 alias ping-mtu='ping -M do -s 2000'
 alias qiv='qiv -uLtiGfl --vikeys'
 alias rax=rax2
@@ -279,13 +279,13 @@ alias top='top -d 1'
 alias topdf='lowriter --convert-to pdf'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias w3m='w3m -v'
-alias weechat-plain='weechat -d $(mktemp -d)'
-alias wi='curl -sSLf http://wttr.in/ | head -n-2'
-alias xargs1='xargs -r -L1'
+alias weechat-plain='weechat -d "$(mktemp -d)"'
+alias wi='curl -sSLf http://wttr.in/ | head -n -2'
+alias xargs1='xargs -r -L 1'
 alias ytdl-audio='youtube-dl -f bestaudio/best -x'
 alias ytdl-formats='youtube-dl -F'
 alias ytdl-json='youtube-dl -J'
-alias ytdl-playlist="youtube-dl --yes-playlist -o '~/download/_youtube-dl/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
+alias ytdl-playlist="youtube-dl --yes-playlist -o ~/download/_youtube-dl/'%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
 alias ytdl-stdout="youtube-dl -f 'best[height<=?1080]' -o -"
 
 a() {
@@ -300,7 +300,7 @@ a() {
 
 anplay() {
     local outfile
-    outfile=$(find ~/tmp -name 'asciinema-*' -print0 | sort -z | tail -zn1)
+    outfile=$(find ~/tmp -name asciinema-\* -print0 | sort -z | tail -zn1)
     [ -e "$outfile" ] && asciinema play "$outfile"
 }
 
@@ -357,7 +357,7 @@ i() {
 }
 
 ifs() {
-    printf '%s' "$IFS" | command od -An -ta -tx1
+    printf %s "$IFS" | command od -A n -t a -t x1
 }
 
 ifs0() {
@@ -436,7 +436,7 @@ source_opt() {
 }
 
 systemd_dot() {
-    systemd-analyze dot "$@" | dot -Tsvg | stdiner -bt b
+    systemd-analyze dot "$@" | dot -T svg | stdiner -bt b
 }
 alias systemd-dot=systemd_dot
 
@@ -447,7 +447,7 @@ terminfo_src() {
 alias terminfo-src=terminfo_src
 
 tree() {
-    set -- --dirsfirst -a -I '.git|.svn' --noreport -x "$@"
+    set -- -ax -I '.git|.svn' --dirsfirst --noreport "$@"
     if [ -t 1 ]; then
         pgx command tree -C "$@"
     else

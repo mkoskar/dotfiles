@@ -7,14 +7,14 @@ pre_hook() {
     (( xorg )) || return
     (( ${#args[@]} )) || return
 
-    if [[ ${args[0]} = '-' ]]; then
+    if [[ ${args[0]} = - ]]; then
         edidsum=$(edidsum -o)
         case $edidsum in
             251b742672f54471057b10e77e4bb2dfaa6a9904)
-                args[0]='dock'
+                args[0]=dock
                 ;;
             *)
-                args[0]='mobile'
+                args[0]=mobile
                 ;;
         esac
     fi
@@ -26,11 +26,14 @@ pre_hook() {
                 --output DP2 --off
                 --output DP3 --off
                 --output HDMI1 --off
-                --output HDMI2 --mode 1920x1200 --pos 1600x0 --rotate normal
                 --output HDMI3 --off
-                --output LVDS1 --primary --mode 1600x900 --pos 0x0 --rotate normal
                 --output VGA1 --off
                 --output VIRTUAL1 --off
+
+                --output HDMI2 --mode 1920x1200 --pos 1600x0
+                    --rotate normal
+                --output LVDS1 --mode 1600x900 --pos 0x0
+                    --rotate normal --primary
             )
             ;;
         mobile)
@@ -41,9 +44,11 @@ pre_hook() {
                 --output HDMI1 --off
                 --output HDMI2 --off
                 --output HDMI3 --off
-                --output LVDS1 --mode 1600x900 --pos 0x0 --rotate normal
                 --output VGA1 --off
                 --output VIRTUAL1 --off
+
+                --output LVDS1 --mode 1600x900 --pos 0x0
+                    --rotate normal
             )
             ;;
     esac

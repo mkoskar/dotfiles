@@ -51,7 +51,7 @@ adm() {
 aux() {
     cd ~
 
-    local notesdir="$HOME/projects/notes/src"
+    local notesdir=~/projects/notes/src
     new -n notes -c "$notesdir" trun e \
         \; setw remain-on-exit on \
         \; setw main-pane-width 116 \
@@ -116,7 +116,7 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-socket='default'
+socket=default
 declare -i attach=1
 while getopts ds:h opt; do
     case $opt in
@@ -131,7 +131,7 @@ shift $((OPTIND-1))
 # ----------------------------------------
 
 if [[ ${TMUX-} ]]; then
-    IFS=, read -ra var <<<"$TMUX"
+    IFS=, read -r -a var <<<"$TMUX"
     if [[ $socket = "${var[0]##*/}" ]]; then
         echo "$prgname: cannot operate from within session of the same target socket" >&2
         exit 1
@@ -141,12 +141,12 @@ fi
 if (( $# )); then
     session=$1
 else
-    session="$PWD/"
+    session=$PWD/
     session=${session/#$HOME\//\~/}
     session=${session%/}
 fi
 
-(exec 8>"$XDG_RUNTIME_DIR/mux.lock"
+(exec 8>"$XDG_RUNTIME_DIR"/mux.lock
 flock -w 30 8 || exit 3
 (exec 8<&-
 

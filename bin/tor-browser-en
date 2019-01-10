@@ -2,12 +2,12 @@
 
 set -eu
 
-target="$HOME/.tor-browser-en/INSTALL/Browser"
+target=~/.tor-browser-en/INSTALL/Browser
 
 if [[ -e $target ]]; then
     cd "$target"
-    [[ -L .gtkrc-2.0 ]] || ln -s ~/.gtkrc-2.0
-    [[ -L .icons ]] || ln -s ~/.icons
+    [[ -L .gtkrc-2.0 ]] || ln -s ~/.gtkrc-2.0 .
+    [[ -L .icons ]] || ln -s ~/.icons .
     [[ -L Downloads ]] || ln -s ~/download Downloads
 fi
 

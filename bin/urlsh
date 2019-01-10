@@ -13,14 +13,14 @@ src=${1:-$(xclip -o | head -c 255)}
 case $src in
     http?(s)://*)
         curl -sSf -F c=@- -w '%{redirect_url}\n' -o "$tmpfile" \
-            https://ptpb.pw/u?r=1 <<<"$src"
+            https://ptpb.pw/u\?r=1 <<<"$src"
         ;;
     *)
         exit 2
         ;;
 esac
 
-histfile="$HOME/.local/share/${prgname}_history"
+histfile=~/.local/share/${prgname}_history
 ts=$(date +%F.%s)
 
 cat >>"$histfile" <<-EOF

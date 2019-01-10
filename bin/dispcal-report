@@ -7,12 +7,12 @@ prgname=${0##*/}
 echo $'\n--------------------------------------------------'
 echo $'> _ICC_PROFILE atoms:\n'
 
-dall=$({ dispwin -? || true; } |& sed -nr "s/^\\s*([0-9]+ = 'Monitor [0-9]+, Output .*)/\\1/p")
+dall=$({ dispwin -\? || true; } |& sed -nr "s/^\s*([0-9]+ = 'Monitor [0-9]+, Output .*)/\1/p")
 [[ $dall ]] || exit 1
 readarray -t dall <<<"$dall"
 
 for (( i=0; i<${#dall[@]}; i++ )); do
-    (( i > 0 )) && atom="_ICC_PROFILE_$i" || atom='_ICC_PROFILE'
+    (( i > 0 )) && atom=_ICC_PROFILE_$i || atom=_ICC_PROFILE
     xprop -root -len 8 "$atom"
 done
 
@@ -22,7 +22,7 @@ echo $'> Select display to continue:\n'
 printf '%s\n' "${dall[@]}"
 echo
 
-read -N1 -rsp 'Your choice: ' dsel
+read -rs -N 1 -p 'Your choice: ' dsel
 echo
 
 if [[ ! $dsel =~ ^[1-9]$ ]] || (( dsel > ${#dall[@]} )); then
@@ -35,7 +35,7 @@ printf '%s\n' "${dall[$((dsel-1))]}"
 # ArgyllCMS doesn't handle SIGINT properly
 trap 'trap - INT; kill -INT -$$' INT
 
-gopts=(-v "-d$dsel" -ye -Yp -P '0.5,0.5,2.0')
+gopts=(-v -d "$dsel" -y e -Y p -P '0.5,0.5,2.0')
 
 echo $'\n--------------------------------------------------'
 echo $'> Calibrated display:\n'

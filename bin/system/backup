@@ -9,10 +9,10 @@ fi
 
 prgname=${0##*/}
 
-part='/dev/disk/by-uuid/a10fd9bc-f55c-4d83-8bb7-a0345da60247'
-fs='/dev/disk/by-uuid/95908df8-35c5-4f39-a57b-ca0a091b4eda'
-target='/mnt/backups'
-mapper='/dev/mapper/backups'
+part=/dev/disk/by-uuid/a10fd9bc-f55c-4d83-8bb7-a0345da60247
+fs=/dev/disk/by-uuid/95908df8-35c5-4f39-a57b-ca0a091b4eda
+target=/mnt/backups
+mapper=/dev/mapper/backups
 
 log_prefix="$prgname $$"
 log() { printf '%s\n' "$log_prefix: $*"; } >&2
@@ -21,7 +21,7 @@ cleanup() {
     log "exiting ($?)"
     if [[ -e $part ]]; then
         log 'setting standby'
-        part_rp=$(realpath "$part")
+        part_rp=$(realpath -- "$part")
         hdparm -S 12 "${part_rp%%[0-9]}" &>/dev/null
     fi
 }
@@ -29,7 +29,7 @@ trap cleanup EXIT
 
 # backup-setup
 
-if [[ $prgname = 'backup-setup' ]]; then
+if [[ $prgname = backup-setup ]]; then
     if [[ ! -e $part ]]; then
         log 'target partition missing'
         exit 1
@@ -55,10 +55,10 @@ fi
 
 # backup
 
-logdir='/var/log/local'
+logdir=/var/log/local
 mkdir -p "$logdir"
 
-exec 8>>"$logdir/backup.log"
+exec 8>>"$logdir"/backup.log
 if [[ -t 2 ]]; then
     exec &> >(tee -a /dev/fd/8 >&2)
 else
@@ -97,11 +97,12 @@ ts_begin=$(date +%s)
 ts_begin_=$(date +%F.%s -d "@$ts_begin")
 log "-- $ts_begin_"
 
-mkdir -p "$target/full-backup"
-rsync -aAHSX / "$target/full-backup/master" \
+mkdir -p "$target"/full-backup
+rsync -aAHSX / "$target"/full-backup/master \
       --delete \
-      --backup "--backup-dir=../$ts_begin_" \
-      --exclude-from=- <<-EOF
+      --backup \
+      --backup-dir=../"$ts_begin_" \
+      --exclude-from=- <<-'EOF'
 	/boot/lost+found
 	/dev/*
 	/home/*/.cache/*

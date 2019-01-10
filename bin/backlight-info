@@ -5,10 +5,10 @@ set -eu
 for dev in /sys/class/backlight/*; do
     [[ -e $dev ]] || continue
 
-    brightness=$(<"$dev/brightness")
-    actual_brightness=$(<"$dev/actual_brightness")
-    max_brightness=$(<"$dev/max_brightness")
-    type=$(<"$dev/type")
+    brightness=$(<"$dev"/brightness)
+    actual_brightness=$(<"$dev"/actual_brightness)
+    max_brightness=$(<"$dev"/max_brightness)
+    type=$(<"$dev"/type)
 
     printf '%-40s %-8s %-8s %-8s %s\n' \
         "$dev" \

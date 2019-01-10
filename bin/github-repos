@@ -67,7 +67,7 @@ case $sort in created | updated | pushed | full_name) ;; *)
 esac
 
 declare -i asc=1
-[[ $sort = 'full_name' ]] || asc=0
+[[ $sort = full_name ]] || asc=0
 asc=$((asc^reverse))
 (( asc )) && dir=asc || dir=desc
 

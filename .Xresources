@@ -3,50 +3,6 @@
 #include ".xcolors/default"
 
 
-! XTerm
-! ----------------------------------------
-
-XTerm.termName:                 xterm-256color
-XTerm.ptyInitialErase:          false
-
-!XTerm*VT100.boldColors:         false
-XTerm*VT100.colorBD:            #dddddd
-XTerm*VT100.colorBDMode:        true
-XTerm*VT100.dynamicColors:      true
-XTerm*VT100.veryBoldColors:     4
-
-XTerm*VT100.faceName:           xft:Terminus:pixelsize=16
-
-XTerm*VT100.bellIsUrgent:       true
-XTerm*VT100.bellOnReset:        false
-XTerm*VT100.decTerminalID:      340
-XTerm*VT100.metaSendsEscape:    true
-XTerm*VT100.numColorRegisters:  1024
-XTerm*VT100.printAttributes:    0
-XTerm*VT100.printerCommand:     cat > $(mktemp -p ~/tmp xterm.XXXXXX)
-XTerm*VT100.saveLines:          8192
-XTerm*VT100.scrollKey:          true
-XTerm*VT100.scrollTtyOutput:    false
-XTerm*VT100.utf8:               2
-
-XTerm*VT100.translations:       #override \n\
-                                :Ctrl ~Alt <Key>H: string(\177) \n\
-                                :Ctrl <Key>plus: larger-vt-font() \n\
-                                :Ctrl <Key>minus: smaller-vt-font() \n\
-                                :Ctrl <Key>equal: set-vt-font(d) \n\
-                                :~Shift <Key>Print: print() \n\
-                                :Shift <Key>Print: print-everything() \n\
-                                :Shift <Key>Up: scroll-back(1, line) \n\
-                                :Shift <Key>Down: scroll-forw(1, line) \n\
-                                :Shift <Key>Home: scroll-back(9999, line) \n\
-                                :Shift <Key>End: scroll-forw(9999, line) \n\
-                                :Shift <Key>Return: scroll-forw(9999, line)
-
-#undef TCOLOR_PREFIX
-#define TCOLOR_PREFIX *VT100.
-#include ".xcolors/resources"
-
-
 ! URxvt
 ! ----------------------------------------
 
@@ -56,7 +12,7 @@ URxvt.termName:                 rxvt-unicode-256color
 !URxvt.underlineColor:           #fdb436
 URxvt.colorBD:                  15
 URxvt.cursorColor2:             1
-URxvt.scrollColor:              gray20
+URxvt.scrollColor:              gray40
 
 URxvt.font:                     xft:Terminus:pixelsize=16, \
                                 xft:Symbola, \
@@ -69,8 +25,8 @@ URxvt.font:                     xft:Terminus:pixelsize=16, \
                                 xft:Symbola:pixelsize=9, \
                                 xft:Symbola:pixelsize=8
 
-URxvt.boldItalicFont:           xft:Noto Sans Mono:bold:italic
-URxvt.italicFont:               xft:Noto Sans Mono:italic
+URxvt.boldItalicFont:           xft:Dejavu Sans Mono:bold:italic
+URxvt.italicFont:               xft:Dejavu Sans Mono:italic
 
 !URxvt.depth:                    32
 URxvt.cutchars:                 '"()*,<>[]{}|\''
@@ -88,21 +44,13 @@ URxvt.scrollstyle:              plain
 URxvt.thickness:                5
 URxvt.urgentOnBell:             true
 
-! ASCII BS  == 8   == \010 == ^H
-! ASCII DEL == 127 == \177 == ^?
-
-! BackSpace = BS
-! C-BackSpace = DEL
-! C-h = BS
+! 1) BackSpace = ^H (BS)
 !URxvt.backspacekey:             \010
 !URxvt.keysym.C-BackSpace:       \177
+!URxvt.keysym.C-H:               \177
 
-! BackSpace = DEL
-! C-BackSpace = BS
-! C-h = DEL
+! 2) BackSpace = ^? (DEL)
 URxvt.keysym.C-h:               \177
-URxvt.keysym.M-C-h:             builtin:
-URxvt.keysym.S-C-h:             builtin:
 
 URxvt.keysym.Shift-Up:          command:\033]720;1\007
 URxvt.keysym.Shift-Down:        command:\033]721;1\007
@@ -121,6 +69,72 @@ URxvt.keysym.M-C-o:             perl:url-picker
 
 #undef TCOLOR_PREFIX
 #define TCOLOR_PREFIX URxvt.
+#include ".xcolors/resources"
+
+
+! XTerm
+! ----------------------------------------
+
+XTerm.termName:                     xterm-256color
+
+!XTerm.fontWarnings:                 2
+!XTerm.reportColors:                 true
+!XTerm.reportFonts:                  true
+
+!XTerm.vt100.boldColors:             false
+XTerm.vt100.bellIsUrgent:           true
+XTerm.vt100.bellOnReset:            false
+XTerm.vt100.colorBD:                #dddddd
+XTerm.vt100.colorBDMode:            true
+XTerm.vt100.decTerminalID:          340
+XTerm.vt100.dynamicColors:          true
+XTerm.vt100.metaSendsEscape:        true
+XTerm.vt100.numColorRegisters:      1024
+XTerm.vt100.printAttributes:        0
+XTerm.vt100.printerCommand:         cat > $(mktemp -p ~/tmp xterm.XXXXXX)
+XTerm.vt100.saveLines:              8192
+XTerm.vt100.scrollKey:              true
+XTerm.vt100.scrollTtyOutput:        false
+XTerm.vt100.showMissingGlyphs:      true
+XTerm.vt100.veryBoldColors:         4
+
+XTerm.vt100.faceName:               Dejavu Sans Mono
+XTerm.vt100.faceSize:               12
+XTerm.vt100.renderFont:             false
+
+XTerm.vt100.font:                   7x13
+XTerm.vt100.utf8Fonts.font1:        -*-tamsyn-medium-*-*-*-9-*-*-*-*-*-*-*
+XTerm.vt100.utf8Fonts.font2:        -*-tamsyn-medium-*-*-*-12-*-*-*-*-*-*-*
+XTerm.vt100.utf8Fonts.font3:        -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
+XTerm.vt100.utf8Fonts.font4:        -*-terminus-medium-*-*-*-16-*-*-*-*-*-*-*
+XTerm.vt100.utf8Fonts.font5:        -*-terminus-medium-*-*-*-20-*-*-*-*-*-*-*
+XTerm.vt100.utf8Fonts.font6:        -*-terminus-medium-*-*-*-24-*-*-*-*-*-*-*
+XTerm.vt100.utf8Fonts.font:         -*-terminus-medium-*-*-*-16-*-*-*-*-*-*-*
+
+XTerm.vt100.scrollBarBorder:        0
+XTerm.vt100.scrollbar.background:   black
+XTerm.vt100.scrollbar.foreground:   gray40
+XTerm.vt100.scrollbar.thickness:    5
+XTerm.vt100.scrollbar.thumb:        None
+
+XTerm.vt100.translations:           #override \n\
+                                    :Ctrl ~Alt <Key>H: string(\177) \n\
+                                    :Ctrl <Key>plus: larger-vt-font() \n\
+                                    :Ctrl <Key>minus: smaller-vt-font() \n\
+                                    :Ctrl <Key>equal: set-vt-font(d) \n\
+                                    :~Shift <Key>Print: print() \n\
+                                    :Shift <Key>Print: print-everything() \n\
+                                    :Shift <Key>Up: scroll-back(1, line) \n\
+                                    :Shift <Key>Down: scroll-forw(1, line) \n\
+                                    :Shift <Key>Home: scroll-back(9999, line) \n\
+                                    :Shift <Key>End: scroll-forw(9999, line) \n\
+                                    :Shift <Key>Return: scroll-forw(9999, line)
+
+XTerm*SimpleMenu*font:              -*-terminus-medium-*-*-*-14-*-*-*-*-*-*-*
+XTerm*SimpleMenu*menuLabel.font:    -*-terminus-bold-*-*-*-14-*-*-*-*-*-*-*
+
+#undef TCOLOR_PREFIX
+#define TCOLOR_PREFIX XTerm.vt100.
 #include ".xcolors/resources"
 
 

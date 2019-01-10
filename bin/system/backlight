@@ -65,7 +65,10 @@ if args.value:
     if re.match(r'^([+-]?\d+|\d+(,\d+)+)$', args.value):
         values = list(map(lambda x: int(x), args.value.split(',')))
     else:
-        print('{}: error: {}'.format(parser.prog, 'argument value: invalid format'),
+        print('{}: error: {}'.format(
+                  parser.prog,
+                  'argument value: invalid format'
+              ),
               file=stderr)
         parser.print_help(file=stderr)
         exit(2)

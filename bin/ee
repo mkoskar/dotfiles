@@ -3,8 +3,8 @@
 set -eu
 
 if [[ ! ${VIMSERVER-} && ${TMUX-} ]]; then
-    IFS=, read -ra var <<<"$TMUX"
-    export VIMSERVER="$TMPDIR/nvim-tmux-${var[1]}-${var[2]}"
+    IFS=, read -r -a var <<<"$TMUX"
+    export VIMSERVER=$TMPDIR/nvim-tmux-${var[1]}-${var[2]}
 fi
 [[ ${VIMSERVER-} ]] || exit 1
 

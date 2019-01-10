@@ -4,8 +4,8 @@ set -eu
 
 for i in /sys/class/power_supply/${1:-*}; do
     [[ -r $i/type ]] || continue
-    type=$(<"$i/type")
-    [[ $type = 'Battery' ]] || continue
+    type=$(<"$i"/type)
+    [[ $type = Battery ]] || continue
 
     echo $'\n--------------------------------------------------'
     printf '> %s\n\n' "$i"

@@ -16,7 +16,7 @@ fi
 
 args=()
 for i in "${playlists[@]}"; do
-    args+=("--playlist=./$i")
+    args+=(--playlist=./"$i")
 done
 
 tmpfile=$(mktemp)

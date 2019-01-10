@@ -10,7 +10,7 @@ set -eu -o pipefail
         echo $'\n--------------------------------------------------'
         printf '> %s:\n\n' "$cat"
         locale -k "$cat"
-    done <<-EOF
+    done <<-'EOF'
 		LC_ADDRESS
 		LC_COLLATE
 		LC_CTYPE

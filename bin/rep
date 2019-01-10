@@ -10,7 +10,8 @@ _usage() {
 
 	Execute 'cmd [arg]...' repeatedly.
 
-	  -d delay  - wait for 'delay' milliseconds; <0 = wait forever, 0 = don't wait at all (default: 1000)
+	  -d delay  - wait for 'delay' milliseconds; <0 = wait forever,
+	              0 = don't wait at all (default: 1000)
 	  -t        - terminate if 'cmd' finished in less than 'delta' milliseconds
 	  -T delta  - (default: 400)
 	  -o output - redirect stdout and sterr to 'output'
@@ -24,7 +25,7 @@ usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
 unset append
-dopt= Topt= output='/dev/null'
+dopt= Topt= output=/dev/null
 declare -i term=0 inline=0 cur=0 quiet=0
 while getopts d:tT:o:aiIqh opt; do
     case $opt in
@@ -98,8 +99,8 @@ while true; do
     ts_begin=$(date +%s.%N)
     ts_begin_=$(date +%T -d "@$ts_begin")
 
-    (( inline )) || printf '%s' "$ti_cur_restore"
-    (( quiet )) || printf "> started: %s${ti_clr_eol}\\n" "$ts_begin_" >&2
+    (( inline )) || printf %s "$ti_cur_restore"
+    (( quiet )) || printf "> started: %s${ti_clr_eol}\n" "$ts_begin_" >&2
 
     printf -v cmd '%q "$@"' "$1"
     bashx -c "$cmd" "$@" |& tee ${append+-a} "$output" |
@@ -115,20 +116,19 @@ while true; do
     fi
 
     if (( notty && delay > 0 )); then
-        (( inline )) || printf '%s' "$ti_clr_eos"
+        (( inline )) || printf %s "$ti_clr_eos"
         sleep "$delay_s"
         continue
     fi
 
     if (( delay != 0 )); then
         if (( ! quiet )); then
-            h=
             (( delay > 0 )) && h="waiting for ${delay}ms, " || h=
             h="${h}press any key to start or q|Q to quit"
             printf "> finished: %s (%s)$ti_clr_eol" "$ts_end_" "$h" >&2
-            (( inline )) && echo || printf '%s' "$ti_clr_eos"
+            (( inline )) && echo || printf %s "$ti_clr_eos"
         fi
-        read -N1 -rs "${read_opts[@]}" c || continue
+        read -rs -N 1 "${read_opts[@]}" c || continue
         case $c in [qQ]) break ;; esac
     fi
 done

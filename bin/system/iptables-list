@@ -12,13 +12,13 @@ prgname=${0##*/}
 # ----------------------------------------
 
 case $prgname in
-    ip6*) prefix='ip6' ;;
-    *) prefix='ip' ;;
+    ip6*) prefix=ip6 ;;
+    *) prefix=ip ;;
 esac
 
 tables=("$@")
 if (( ! ${#tables[@]} )); then
-    src="/proc/net/${prefix}_tables_names"
+    src=/proc/net/${prefix}_tables_names
     [[ -e $src ]] && readarray -t tables <"$src"
 fi
 

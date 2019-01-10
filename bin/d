@@ -7,27 +7,27 @@ cmd=(diff "$@")
 prgname=${0##*/}
 
 main() (
-        case $prgname in
-            d0)
-                "${cmd[@]}"
-                ;;
-            *)
-                tmpfile=$(mktemp)
-                cleanup() { rm -f "$tmpfile"; }
-                trap cleanup EXIT
+    case $prgname in
+        d0)
+            "${cmd[@]}"
+            ;;
+        *)
+            tmpfile=$(mktemp)
+            cleanup() { rm -f "$tmpfile"; }
+            trap cleanup EXIT
 
-                declare -i retstat=0
-                "${cmd[@]}" >"$tmpfile" || retstat=$?
+            declare -i retstat=0
+            "${cmd[@]}" >"$tmpfile" || retstat=$?
 
-                echo '---'
-                diffstat -p1 <"$tmpfile"
+            echo ---
+            diffstat -p 1 <"$tmpfile"
 
-                echo
-                filterdiff -v --remove-timestamps --annotate <"$tmpfile"
+            echo
+            filterdiff -v --remove-timestamps --annotate <"$tmpfile"
 
-                return $retstat
-                ;;
-        esac
+            return "$retstat"
+            ;;
+    esac
 )
 
 main | PAGER_TITLE=${cmd[*]} PAGER_EX='setf diff' pg0

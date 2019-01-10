@@ -25,7 +25,7 @@ declare -i mb_per_chunk=0 msgs_per_chunk=25000
 while getopts xn:h opt; do
     case $opt in
         x) mb_per_chunk=1 ;;
-        n) msgs_per_chunk=OPTARG ;;
+        n) msgs_per_chunk=$OPTARG ;;
         h) usage ;;
         *) usage_err ;;
     esac
@@ -67,7 +67,7 @@ trap cleanup EXIT
 git log --reverse --pretty="%H:m $delim%H %ct" master -- m >"$tmpdir"/queue
 
 cd "$tmpdir"
-split -d -l$msgs_per_chunk queue
+split -d -l "$msgs_per_chunk" queue
 find "$tmpdir" -name x\* >chunks
 
 process() {
@@ -77,8 +77,8 @@ process() {
         maildir=$maildir/${1##*/}
         mkdir -p "$maildir"/{cur,new,tmp}
     fi
-    git cat-file --batch='%(rest)' <"$1" |
-        gawk -v RS="$delim" -v maildir="$maildir" -v hostname="$HOSTNAME" '
+    git cat-file --batch='%(rest)' <"$1" | gawk -v RS="$delim" \
+        -v maildir="$maildir" -v hostname="$HOSTNAME" '
         BEGIN { FS = "\n"; ORS = ""; }
         NR == 1 { next }
         {
@@ -89,8 +89,7 @@ process() {
             print >outfile
             close(outfile)
         }
-        END { print NR-1 "\n" }
-        '
+        END { print NR-1 "\n" }'
 }
 export -f process
 
@@ -105,9 +104,9 @@ while read -r nr; do
 done <out
 
 if [[ -t 1 ]]; then
-    printf 'Queued:  %9d\n' $queued
-    printf 'Written: %9d\n' $written
+    printf 'Queued:  %9d\n' "$queued"
+    printf 'Written: %9d\n' "$written"
 else
-    printf '%d\n' $queued
-    printf '%d\n' $written
+    printf '%d\n' "$queued"
+    printf '%d\n' "$written"
 fi

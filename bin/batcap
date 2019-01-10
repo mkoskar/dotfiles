@@ -4,21 +4,21 @@ set -eu
 
 for i in /sys/class/power_supply/${1:-*}; do
     [[ -r $i/type ]] || continue
-    type=$(<"$i/type")
-    [[ $type = 'Battery' ]] || continue
+    type=$(<"$i"/type)
+    [[ $type = Battery ]] || continue
 
     unset full full_design
     if [[ -r $i/energy_full && -r $i/energy_full_design ]]; then
-        full=$(<"$i/energy_full")
-        full_design=$(<"$i/energy_full_design")
+        full=$(<"$i"/energy_full)
+        full_design=$(<"$i"/energy_full_design)
     elif [[ -r $i/charge_full && -r $i/charge_full_design ]]; then
-        full=$(<"$i/charge_full")
-        full_design=$(<"$i/charge_full_design")
+        full=$(<"$i"/charge_full)
+        full_design=$(<"$i"/charge_full_design)
     fi
 
     if [[ ${full-} && ${full_design} ]]; then
         calc -qp -- <<<"round($full / $full_design * 100, 2)"
     else
-        echo 'n/a'
+        echo n/a
     fi
 done

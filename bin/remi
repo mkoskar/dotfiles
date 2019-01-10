@@ -9,15 +9,15 @@ if [[ -t 1 ]]; then
     ti_hi2=$(tput -S <<<$'bold\nsetaf 1'); ti_hi2_=$ti_reset
     ti_hi3=$(tput -S <<<$'bold\nsetaf 3'); ti_hi3_=$ti_reset
 else
-    ti_hi0='*'; ti_hi0_=$ti_hi0
-    ti_hi1='`'; ti_hi1_=$ti_hi1
-    ti_hi2='+'; ti_hi2_=$ti_hi2
-    ti_hi3='_'; ti_hi3_=$ti_hi3
+    ti_hi0=\*; ti_hi0_=$ti_hi0
+    ti_hi1=\`; ti_hi1_=$ti_hi1
+    ti_hi2=+; ti_hi2_=$ti_hi2
+    ti_hi3=_; ti_hi3_=$ti_hi3
 fi
 
-rem -q -t"${1:-7}" -ga | sed -r \
+rem -aq -g -t"${1:-7}" | sed -r \
     -e '/^No reminders.$/d' \
-    -e "s/^(Today.*ago):/$ti_hi2\\1$ti_hi2_:/" \
-    -e "s/^(Today):/$ti_hi3\\1$ti_hi3_:/" \
-    -e "s/^(Today.*):/$ti_hi0\\1$ti_hi0_:/" \
-    -e "s/^(Tomorrow.*):/$ti_hi1\\1$ti_hi1_:/"
+    -e "s/^(Today.*ago):/$ti_hi2\1$ti_hi2_:/" \
+    -e "s/^(Today):/$ti_hi3\1$ti_hi3_:/" \
+    -e "s/^(Today.*):/$ti_hi0\1$ti_hi0_:/" \
+    -e "s/^(Tomorrow.*):/$ti_hi1\1$ti_hi1_:/"

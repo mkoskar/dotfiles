@@ -17,28 +17,29 @@ fi
 # ----------------------------------------
 
 case $prgname in
-    ip6*) prefix='ip6' ;;
-    *) prefix='ip' ;;
+    ip6*) prefix=ip6 ;;
+    *) prefix=ip ;;
 esac
 
 table=$1
 chain=$2
 
 "${prefix}tables" -t "$table" -F "$chain"
-"${prefix}tables" -t "$table" -S | tac | awk -v chain="$chain" '
-function escape(str) {
-    gsub(/[\\.*?+|^$(){}\[\]]/, "\\\\&", str)
-    return str
-}
-BEGIN {
-    _chain = escape(chain)
-}
-$0 ~ "\\s+" _chain "(\\s*|$)" {
-    if ($1 == "-A") printf "-D "
-    else if ($1 == "-N") printf "-X "
-    for (i=2; i<=NF; i++) printf $i " "
-    printf "\n"
-}
-' | while read -ra args; do
-    "${prefix}tables" -t "$table" "${args[@]}"
-done
+"${prefix}tables" -t "$table" -S | tac |
+    awk -v chain="$chain" '
+        function escape(str) {
+            gsub(/[\\.*?+|^$(){}\[\]]/, "\\\\&", str)
+            return str
+        }
+        BEGIN {
+            _chain = escape(chain)
+        }
+        $0 ~ "\\s+" _chain "(\\s*|$)" {
+            if ($1 == "-A") printf "-D "
+            else if ($1 == "-N") printf "-X "
+            for (i=2; i<=NF; i++) printf $i " "
+            printf "\n"
+        }' |
+    while read -r -a args; do
+        "${prefix}tables" -t "$table" "${args[@]}"
+    done

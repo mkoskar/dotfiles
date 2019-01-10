@@ -42,18 +42,20 @@ def get_authinfo_password(machine, login, port=None,
         print('Warning: {0} should have mode {1}'
               .format(srcfile, oct(expected_mode)[2:]), file=stderr)
 
-    authinfo = subprocess.check_output(['gpg', '-q', '--no-tty', '-d', srcfile],
+    authinfo = subprocess.check_output(['gpg', '-q', '--no-tty', '-d',
+                                        srcfile],
                                        universal_newlines=True)
 
     if port:
-        p = re.compile('^machine\s*{0}\s*login\s*{1}\s*password\s*(\S*)\s*port\s*{2}\s*$'
-                       .format(re.escape(machine), re.escape(login), re.escape(port)),
-                       re.M)
+        p = re.compile(
+            r'^machine\s*{0}\s*login\s*{1}\s*password\s*(\S*)\s*port\s*{2}\s*$'
+            .format(re.escape(machine), re.escape(login), re.escape(port)),
+            re.M)
         res = p.search(authinfo)
         if res:
             return prefix + res.group(1)
 
-    p = re.compile('^machine\s*{0}\s*login\s*{1}\s*password\s*(\S*)\s*$'
+    p = re.compile(r'^machine\s*{0}\s*login\s*{1}\s*password\s*(\S*)\s*$'
                    .format(re.escape(machine), re.escape(login)), re.M)
     res = p.search(authinfo)
     return prefix + res.group(1) if res else None

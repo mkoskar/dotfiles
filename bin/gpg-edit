@@ -11,8 +11,8 @@ fi
 
 file=$(realpath -- "$1")
 basename=${file##*/}
-phash=$(printf '%s' "$file" | sha1sum)
-read -ra phash <<<"$phash"
+phash=$(printf %s "$file" | sha1sum)
+read -r phash _ <<<"$phash"
 
 if [[ ! -f $file ]]; then
     echo 'regular file expected' >&2
@@ -24,21 +24,21 @@ if [[ ${file%%\.gpg} = "$file" ]]; then
     exit 1
 fi
 
-mode_expected='600'
+mode_expected=600
 
 chmod "$mode_expected" "$file"
-cp -af "$file" "$file.bak"
+cp -af "$file" "$file".bak
 
 egpg "$file" || true
 chmod "$mode_expected" "$file"
 
-mtime1=$(stat -c '%Y' "$file.bak")
-mtime2=$(stat -c '%Y' "$file")
+mtime1=$(stat -c %Y "$file".bak)
+mtime2=$(stat -c %Y "$file")
 
 if [[ $mtime1 = "$mtime2" ]]; then
     echo 'not touched' >&2
-    rm "$file.bak"
+    rm "$file".bak
 else
-    cp -af "$file.bak" ~/archive/gpg-edit/"${phash: -8}__$basename.$mtime1"
-    mv "$file.bak" "$file.old"
+    cp -af "$file".bak ~/archive/gpg-edit/"${phash: -8}__$basename.$mtime1"
+    mv "$file".bak "$file".old
 fi

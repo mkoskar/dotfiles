@@ -13,10 +13,10 @@ if hash resolvconf &>/dev/null; then
     echo $'> resolvconf:\n'
 
     resolvconf -l
-    tail -vn +1 /etc/resolvconf.conf
+    tail -v -n +1 /etc/resolvconf.conf
 fi
 
 echo $'\n--------------------------------------------------\n'
 
-tail -vn +1 /etc/resolv.conf
+tail -v -n +1 /etc/resolv.conf
 echo

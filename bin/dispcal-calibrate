@@ -7,14 +7,14 @@ prgname=${0##*/}
 echo $'\n--------------------------------------------------'
 echo $'> Select display to continue:\n'
 
-dall=$({ dispwin -? || true; } |& sed -nr "s/^\\s*([0-9]+ = 'Monitor [0-9]+, Output .*)/\\1/p")
+dall=$({ dispwin -\? || true; } |& sed -nr "s/^\s*([0-9]+ = 'Monitor [0-9]+, Output .*)/\1/p")
 [[ $dall ]] || exit 1
 readarray -t dall <<<"$dall"
 
 printf '%s\n' "${dall[@]}"
 echo
 
-read -N1 -rsp 'Your choice: ' dsel
+read -rs -N 1 -p 'Your choice: ' dsel
 echo
 
 if [[ ! $dsel =~ ^[1-9]$ ]] || (( dsel > ${#dall[@]} )); then
@@ -22,7 +22,7 @@ if [[ ! $dsel =~ ^[1-9]$ ]] || (( dsel > ${#dall[@]} )); then
 fi
 
 ts=$(date +%F.%s)
-odir="$HOME/.local/share/icc/d$dsel.$ts"
+odir=~/.local/share/icc/d$dsel.$ts
 
 mkdir -p "$odir"
 cd "$odir"
@@ -46,12 +46,12 @@ trap 'trap - INT; kill -INT -$$' INT
 echo $'\n--------------------------------------------------'
 echo $'> Calibrating & Profiling:\n'
 
-gopts=(-v "-d$dsel" -ye -P '0.5,0.5,2.0')
+gopts=(-v -d "$dsel" -y e -P '0.5,0.5,2.0')
 
-dispcal "${gopts[@]}" -qm -t6500 -g2.2 -k0 out
+dispcal "${gopts[@]}" -q m -t 6500 -g 2.2 -k 0 out
 [[ -e out.cal ]] || exit 1
 
 cp /usr/share/DisplayCAL/ti1/d3-e4-s5-g49-m5-b0-f0.ti1 out.ti1
-dispread "${gopts[@]}" -Yp -N -k out.cal out
-colprof -v -Zp out
+dispread "${gopts[@]}" -Nk -Y p out.cal out
+colprof -v -Z p out
 echo

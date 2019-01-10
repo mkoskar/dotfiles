@@ -6,11 +6,12 @@ newdirs=(~/mail/*/INBOX/new/)
 declare -i prevnew=0
 
 out() {
-    local new; new=$(find "${newdirs[@]}" -type f | wc -l)
+    declare -i new delta
+    new=$(find "${newdirs[@]}" -type f | wc -l)
     if (( new > 0 )); then
         printf '<fc=#55ff55>%d</fc>' "$new"
         delta=$((new-prevnew))
-        (( delta > 0 )) && printf '<fc=#feed6a>(+%d)</fc>' $delta
+        (( delta > 0 )) && printf '<fc=#feed6a>(+%d)</fc>' "$delta"
     fi
     echo
     prevnew=$new

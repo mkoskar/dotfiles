@@ -19,7 +19,7 @@ usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
 cmd="expac -H M '%w %m %n'"
-sargs=(-k2,2nr)
+sargs=(-k 2,2nr)
 declare -i explicit=0
 while getopts edrsth opt; do
     case $opt in
@@ -29,7 +29,7 @@ while getopts edrsth opt; do
         s) ;;
         t)
             cmd="expac --timefmt='%F %T' '%w %l %n'"
-            sargs=(-k2,3r)
+            sargs=(-k 2,3r)
             ;;
         h) usage ;;
         *) usage_err ;;

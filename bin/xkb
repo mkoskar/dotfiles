@@ -2,14 +2,7 @@
 
 set -eu
 
-if [[ ${1-} = '-' ]]; then
-
-    # caps:ctrl_modifier            Make Caps Lock an additional Ctrl.
-    # keypad:pointerkeys            Shift+NumLock toggles PointerKeys.
-    # lv3:ralt_switch_multikey      Right Alt (3rd level), Shift+Right Alt key is Compose.
-    # nbsp:level3                   Non-breakable space character at third level.
-    # shift:both_capslock_cancel    Both Shift keys together activate Caps Lock, one Shift key deactivates.
-    # terminate:ctrl_alt_bksp       Key sequence to kill the X server.
+if [[ ${1-} = - ]]; then
 
     # shellcheck disable=SC2054
     opts=(

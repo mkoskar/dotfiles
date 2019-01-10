@@ -33,30 +33,30 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-drm='/sys/class/drm'
+drm=/sys/class/drm
 
 if (( exoff )); then
     declare -A bus2out bus_map
 
-    bus2out['i915 gmbus dpb']='HDMI-A-1'
-    bus2out['i915 gmbus dpc']='HDMI-A-2'
-    bus2out['i915 gmbus dpd']='HDMI-A-3'
-    bus2out['i915 gmbus panel']='LVDS-1'
-    bus2out['i915 gmbus vga']='VGA-1'
+    bus2out[i915 gmbus dpb]=HDMI-A-1
+    bus2out[i915 gmbus dpc]=HDMI-A-2
+    bus2out[i915 gmbus dpd]=HDMI-A-3
+    bus2out[i915 gmbus panel]=LVDS-1
+    bus2out[i915 gmbus vga]=VGA-1
 
     cd "$drm"
     for card in card[0-9]; do
         cd "$drm/$card"
         for bus in device/i2c-*; do
             bus_num=${bus##*-}
-            bus_name=$(<"$bus/name")
+            bus_name=$(<"$bus"/name)
             out_name=${bus2out[$bus_name]-}
             [[ $out_name ]] && bus_map[$card-$out_name]=$bus_num
         done
         for out in "$card"-*; do
             for bus in i2c-*; do
                 bus_num=${bus##*-}
-                bus_name=$(<"$bus/name")
+                bus_name=$(<"$bus"/name)
                 bus_map[$out]=$bus_num
                 break
             done
@@ -70,9 +70,9 @@ main() {
     for card in card[0-9]; do
         cd "$drm/$card"
         for out in "$card"-*; do
-            status=$(<"$out/status")
-            [[ $status = 'connected' ]] || continue
-            edid=$(hexdump -e '16/1 "%02x"' <"$out/edid")
+            status=$(<"$out"/status)
+            [[ $status = connected ]] || continue
+            edid=$(hexdump -e '16/1 "%02x"' <"$out"/edid)
             if (( exoff )); then
                 bus_num=${bus_map[$out]-}
                 if [[ $bus_num ]]; then
@@ -82,13 +82,13 @@ main() {
                 fi
                 if power=$(ddcutil -t "${ddcargs[@]}" getvcp d6); then
                     read -r _ _ _ power <<<"$power"
-                    [[ $power = 'x05' ]] && continue
+                    [[ $power = x05 ]] && continue
                 fi
             fi
             if (( verbose )); then
                 echo $'\n--------------------------------------------------'
                 printf '> %s:\n\n' "$out"
-                edid-decode "$out/edid" || true
+                edid-decode "$out"/edid || true
                 echo
             fi
             printf '%s %s\n' "$out" "$edid"
@@ -100,5 +100,5 @@ main() {
 if (( raw || verbose )); then
     main
 else
-    main | sha1sum | awk '{print $1}'
+    main | sha1sum | awk '{ print $1 }'
 fi

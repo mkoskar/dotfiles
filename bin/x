@@ -24,7 +24,7 @@ fi
 
 # ----------------------------------------
 
-datadir="$HOME/.local/share/xorg"
+datadir=~/.local/share/xorg
 mkdir -p "$datadir"
 
 xauthset() {
@@ -37,7 +37,7 @@ xauthset() {
 # /usr/bin/Xephyr
 # ----------------------------------------
 
-if [[ $prgname = 'xx' ]]; then
+if [[ $prgname = xx ]]; then
     for (( dispno=91; 1; dispno++ )); do
         [[ -e /tmp/.X$dispno-lock ]] || break
     done
@@ -60,10 +60,10 @@ fi
 vt=$(</sys/class/tty/tty0/active)
 vtno=${vt##tty}
 dispno=$vtno
-lockfile="/tmp/.X$dispno-lock"
+lockfile=/tmp/.X$dispno-lock
 
 if [[ -e $lockfile ]]; then
-    read -ra pid <"$lockfile"
+    read -r pid <"$lockfile"
     printf '\nDisplay %s is currently in use (pid=%s).\n\n' "$dispno" "$pid"
     if ps --pid "$pid"; then
         echo
@@ -102,7 +102,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-trap 'ready=1' USR1
+trap ready=1 USR1
 (
     trap '' USR1
     exec /usr/lib/Xorg ":$dispno" "vt$vtno" \
@@ -117,4 +117,4 @@ trap : HUP
 wait "$pid" || true
 
 [[ ${ready-} ]] || exit 1
-DISPLAY=":$dispno" setsid xsession "$@" </dev/null
+DISPLAY=:$dispno setsid xsession "$@" </dev/null

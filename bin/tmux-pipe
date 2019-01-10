@@ -14,7 +14,7 @@ if (( $# )); then
     h=$1
     p=${2:-0}
     s=$((-p))
-    e=$((s + h - 1))
+    e=$((s+h-1))
 fi
 
-tmux capture-pane -pJ -S ${s:--} -E ${e:--}
+tmux capture-pane -pJ -S "${s:--}" -E "${e:--}"

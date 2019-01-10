@@ -12,13 +12,13 @@ prgname=${0##*/}
 # ----------------------------------------
 
 case $prgname in
-    ip6*) prefix='ip6' ;;
-    *) prefix='ip' ;;
+    ip6*) prefix=ip6 ;;
+    *) prefix=ip ;;
 esac
 
 tables=("$@")
 if (( ! ${#tables[@]} )); then
-    src="/proc/net/${prefix}_tables_names"
+    src=/proc/net/${prefix}_tables_names
     [[ -e $src ]] || exit 0
     readarray -t tables <"$src"
 fi
@@ -26,7 +26,7 @@ fi
 for table in "${tables[@]}"; do
     case $table in
         filter)
-            cat <<-EOF
+            cat <<-'EOF'
 			*filter
 			:INPUT ACCEPT [0:0]
 			:FORWARD ACCEPT [0:0]
@@ -35,7 +35,7 @@ for table in "${tables[@]}"; do
 			EOF
         ;;
         mangle)
-            cat <<-EOF
+            cat <<-'EOF'
 			*mangle
 			:PREROUTING ACCEPT [0:0]
 			:INPUT ACCEPT [0:0]
@@ -46,7 +46,7 @@ for table in "${tables[@]}"; do
 			EOF
         ;;
         nat)
-            cat <<-EOF
+            cat <<-'EOF'
 			*nat
 			:PREROUTING ACCEPT [0:0]
 			:INPUT ACCEPT [0:0]
@@ -56,7 +56,7 @@ for table in "${tables[@]}"; do
 			EOF
         ;;
         raw)
-            cat <<-EOF
+            cat <<-'EOF'
 			*raw
 			:PREROUTING ACCEPT [0:0]
 			:OUTPUT ACCEPT [0:0]
@@ -64,7 +64,7 @@ for table in "${tables[@]}"; do
 			EOF
         ;;
         security)
-            cat <<-EOF
+            cat <<-'EOF'
 			*security
 			:INPUT ACCEPT [0:0]
 			:FORWARD ACCEPT [0:0]

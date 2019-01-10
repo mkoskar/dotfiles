@@ -12,7 +12,7 @@ prgname=${0##*/}
 # https://ipinfo.io/
 # https://wtfismyip.com/json
 
-if [[ $prgname = 'ipinfo-tor' ]]; then
+if [[ $prgname = ipinfo-tor ]]; then
     if (( ! $# )); then
         echo "usage: $prgname hostname" >&2
         exit 2
@@ -26,9 +26,9 @@ trap cleanup EXIT
 
 if (( $# )); then
     ip=$(resolve "$1")
-    url="https://ipinfo.io/$ip"
+    url=https://ipinfo.io/$ip
 else
-    url='https://ipinfo.io/'
+    url=https://ipinfo.io/
 fi
 
 stat=$(curl -sSL -w '%{http_code}\t%{url_effective}' -o "$tmpfile" "$url")

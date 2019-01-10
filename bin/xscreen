@@ -9,12 +9,13 @@ args=("$@")
 
 xserver=$(xserverq name)
 declare -i xorg=0
-[[ $xserver = 'Xorg' ]] && xorg=1
+[[ $xserver = Xorg ]] && xorg=1
 
 pre_hook() { :; }
 post_hook() { apod set & }
 
-src="$HOME/bin/xscreen.$HOSTNAME"
+src=~/bin/xscreen.$HOSTNAME
+# shellcheck disable=SC1090
 [[ -e $src ]] && . "$src"
 
 pre_hook

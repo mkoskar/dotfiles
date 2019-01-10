@@ -10,6 +10,6 @@ fi
 for dev in /sys/class/net/*; do
     [[ -e $dev ]] || continue
     dev=${dev##*/}
-    [[ $dev != 'lo' ]] || continue
+    [[ $dev != lo ]] || continue
     ip link set dev "$dev" down
 done

@@ -7,7 +7,7 @@ set -eu -o pipefail
 prgname=${0##*/}
 
 run() {
-    if [[ $prgname = 'manpg' ]]; then
+    if [[ $prgname = manpg ]]; then
         export PAGER_TITLE=${MAN_PN-}
         args+=(-c 'setf man')
     fi
@@ -19,7 +19,7 @@ run() {
     exec -a "($prgname)" "${VIMBIN:-vim}" -O -u ~/.vim/vimrc_pg "${args[@]}"
 }
 
-if [[ $prgname = 'pgx' ]]; then
+if [[ $prgname = pgx ]]; then
     if (( ! $# )); then
         echo "usage: $prgname cmd [arg]..." >&2
         exit 2
@@ -46,7 +46,7 @@ if (( $# )) || [[ -t 0 ]]; then
 fi
 
 filter=(cat)
-if [[ $prgname = 'manpg' ]]; then
+if [[ $prgname = manpg ]]; then
     filter=(col -bx)
 fi
 

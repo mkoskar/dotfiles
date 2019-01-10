@@ -13,10 +13,10 @@ prgname=${0##*/}
 
 # ----------------------------------------
 
-devname='nbd0'
-dev="/dev/$devname"
+devname=nbd0
+dev=/dev/$devname
 
-if [[ $prgname  = 'img-umount' ]]; then
+if [[ $prgname = img-umount ]]; then
     umountall "$devname"
     qemu-nbd -d "$dev"
     exit

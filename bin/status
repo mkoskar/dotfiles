@@ -6,7 +6,7 @@ shopt -s inherit_errexit
 export LC_ALL=C
 prgname=${0##*/}
 
-if [[ $prgname = 'status-osd' ]]; then
+if [[ $prgname = status-osd ]]; then
     out=$(status "$@")
     [[ -t 1 ]] && printf '%s\n' "$out"
     osd "$out" || true
@@ -19,13 +19,17 @@ xset q &>/dev/null && xcon=1
 status_audio() {
     local pval rval
     pval=$(
-        unset DISPLAY; amixer get Master |
-            gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) { print a[2] " " a[1]; exit }'
+        unset DISPLAY; amixer get Master | gawk '
+            match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {
+                print a[2] " " a[1]; exit
+            }'
     )
     amixer -c 0 get Headphone,1 | grep -Fq 'Playback [on]' && pval="$pval +dock"
     rval=$(
-        unset DISPLAY; amixer get Capture |
-            gawk 'match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) { print a[2] " " a[1]; exit }'
+        unset DISPLAY; amixer get Capture | gawk '
+            match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {
+                print a[2] " " a[1]; exit
+            }'
     )
     printf 'audio: %s / %s\n' "$pval" "$rval"
 }
@@ -41,15 +45,15 @@ status_bluetooth() {
 }
 
 status_dpms() {
-    local val='-'
+    local val=-
     if (( xcon )); then
-        xset q | grep -Fq 'DPMS is Enabled' && val='on' || val='off'
+        xset q | grep -Fq 'DPMS is Enabled' && val=on || val=off
     fi
     printf 'dpms: %s\n' "$val"
 }
 
 status_pa_sink() {
-    local val='-'
+    local val=-
     if pacmd stat &>/dev/null; then
         val=$(ponymix defaults | sed -nr '/^sink /{n;s/^\s*//;p}')
     fi
@@ -57,39 +61,39 @@ status_pa_sink() {
 }
 
 status_rfkill() {
-    local val='-' state
+    local val=- state
     state=$(rfkill-state -a "$1")
     case $state in
         -1)
-            val='mixed'
+            val=mixed
             ;;
         0)
             val='off (soft)'
             ;;
         1)
-            val='on'
+            val=on
             ;;
         2)
             val='off (hard)'
             ;;
     esac
-    printf '%s' "$val"
+    printf %s "$val"
 }
 
 status_touchpad() {
-    local val='-' state
+    local val=- state
     if (( xcon )); then
         state=$(touchpad)
-        case $state in 1) val='on' ;; 0) val='off' ;; esac
+        case $state in 1) val=on ;; 0) val=off ;; esac
     fi
     printf 'touchpad: %s\n' "$val"
 }
 
 status_trackpoint_wheel() {
-    local val='-' state
+    local val=- state
     if (( xcon )); then
         state=$(trackpoint-wheel)
-        case $state in 1) val='on' ;; 0) val='off' ;; esac
+        case $state in 1) val=on ;; 0) val=off ;; esac
     fi
     printf 'trackpoint wheel: %s\n' "$val"
 }
@@ -100,9 +104,9 @@ status_wifi() {
 }
 
 status_xkb() {
-    local val='-'
+    local val=-
     if (( xcon )); then
-        val=$(xkblayout-state print '%s')
+        val=$(xkblayout-state print %s)
     fi
     printf 'xkb: %s\n' "$val"
 }

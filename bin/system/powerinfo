@@ -4,7 +4,7 @@ set -eu
 
 get() {
     local sep=${3:-/}
-    local in="$1$sep$2" out="_$2"
+    local in=$1$sep$2 out=_$2
     declare -g "$out=$(<"$in")"
 }
 
@@ -25,11 +25,11 @@ echo
 grep -F 'cpu MHz' /proc/cpuinfo
 
 echo $'\n--------------------------------------------------'
-base='/sys/class/powercap'
+base=/sys/class/powercap
 printf '> %s\n\n' "$base"
 
 # shellcheck disable=SC2154
-for rapl in "$base/"*; do
+for rapl in "$base"/*; do
     [[ -e $rapl/name ]] || continue
     _rapl=${rapl##*/}
 
@@ -43,14 +43,14 @@ for rapl in "$base/"*; do
 
     get "$rapl" enabled
 
-    (( _enabled )) && _enabled='*' || _enabled=' '
+    (( _enabled )) && _enabled=\* || _enabled=' '
 
     printf '(%s) %-16s : %-15s %8sJ / %8sJ\n' \
         "$_enabled" "$_rapl" "$_name" \
         "$_energy" "$_max_energy_range"
 
     for (( i=0; i<10; i++ )); do
-        _base="$rapl/constraint_$i"
+        _base=$rapl/constraint_$i
         [[ -e ${_base}_name ]] || break
 
         get "$_base" name _
@@ -71,8 +71,8 @@ for rapl in "$base/"*; do
     echo
 done
 
-echo '--------------------------------------------------'
-base='/sys/devices/system/cpu/intel_pstate'
+echo --------------------------------------------------
+base=/sys/devices/system/cpu/intel_pstate
 printf '> %s\n\n' "$base"
 
 get "$base" status

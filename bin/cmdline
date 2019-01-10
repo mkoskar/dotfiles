@@ -31,7 +31,7 @@ shift $((OPTIND-1))
 pid=${1:-$PPID}
 [ "$pid" -gt 0 ] 2>/dev/null || usage_err
 
-infile="/proc/$pid/cmdline"
+infile=/proc/$pid/cmdline
 [[ -e $infile ]] || exit 1
 
 readarray -t -d '' args <"$infile"
@@ -40,5 +40,5 @@ if (( argi < 0 )); then
     shell-escape "${args[@]}"
 else
     (( argi < ${#args[@]} )) || exit 1
-    printf '%s' "${args[$argi]}"
+    printf %s "${args[$argi]}"
 fi

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cat <<-EOF
+cat <<-'EOF'
 
 Drop ICMP echo requests from all but local addresses:
 

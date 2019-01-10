@@ -4,16 +4,16 @@ set -eu
 
 prgname=${0##*/}
 
-if [[ $prgname = 'sysrq' ]]; then
-    sysrqf='/proc/sys/kernel/sysrq'
+if [[ $prgname = sysrq ]]; then
+    sysrqf=/proc/sys/kernel/sysrq
     if (( $# )); then
-        printf '%d' "$1" >"$sysrqf"
+        printf %d "$1" >"$sysrqf"
     fi
     cat "$sysrqf"
     exit
 fi
 
-$PAGER <<-EOF
+$PAGER <<-'EOF'
 
 /proc/sys/kernel/sysrq
 ===============================================================================

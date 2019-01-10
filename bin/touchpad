@@ -12,7 +12,8 @@ prop='Device Enabled'
 state() {
     declare -i val=0
     # prop is hardcoded above and ERE safe, hence no need to escape it
-    val=$(xinput list-props "$name" | awk -F: -v prop="$prop" '$0 ~ "^\\s*" prop " \\([0-9]+\\):" { print $2 }')
+    val=$(xinput list-props "$name" | awk -F : -v prop="$prop" \
+        '$0 ~ "^\\s*" prop " \\([0-9]+\\):" { print $2 }')
     echo $((val > 0))
 }
 
@@ -21,12 +22,12 @@ if (( ! $# )); then
     exit
 fi
 
-if [[ $1 = 'toggle' ]]; then
+if [[ $1 = toggle ]]; then
     state=$(state)
     case $state in 1) set -- 0 ;; *) set -- 1 ;; esac
 fi
 
-case ${1-} in
+case $1 in
     1 | on | true)
         valset=1
         ;;

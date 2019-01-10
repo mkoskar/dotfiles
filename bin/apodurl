@@ -26,9 +26,9 @@ parser = argparse.ArgumentParser(
     description=textwrap.dedent(
         """
         Prints <http://apod.nasa.gov/> image URL.
-        If target URL doesn't end with recognized format extension (gif, jpeg, png)
-        preview image URL is returned instead (this covers situations when target
-        URL points to a video file instead of an image).
+        If target URL doesn't end with one of recognized format extensions
+        (gif, jpeg, png) preview image URL is returned instead (this covers
+        situations when target URL points to a video file instead of an image).
         """
     )
 )
@@ -43,7 +43,9 @@ try:
     opener = urllib.request.build_opener(HTTPCookieProcessor())
     opener.addheaders = [
         ('User-Agent', 'Mozilla/5.0'),
-        ('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
+        ('Accept',
+         'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'),
+        ('Accept-Language', 'en-US,en;q=0.5')
     ]
     resp = opener.open(url)
     html = resp.read().decode('ISO-8859-1')

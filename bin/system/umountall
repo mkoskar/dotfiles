@@ -24,29 +24,29 @@ shift $((OPTIND-1))
 
 stop_device() {
     local devname=$1 devtype dmname
-    local dev="/dev/$devname"
+    local dev=/dev/$devname
 
     [[ -e $devname ]] || return 1
 
-    devtype=$(lsblk -drno TYPE "$dev" 2>/dev/null) || return 1
+    devtype=$(lsblk -drn -o TYPE "$dev" 2>/dev/null) || return 1
     case $devtype in
         crypt)
-            read -r dmname <"$devname/dm/name"
+            read -r dmname <"$devname"/dm/name
             cryptsetup remove "$dmname"
             ;;
         lvm | dm)
-            read -r dmname <"$devname/dm/name"
+            read -r dmname <"$devname"/dm/name
             dmsetup --noudevsync remove "$dmname"
             ;;
         raid*)
-            IFS=: read -r metadata _ <"$devname/md/metadata_version"
-            if [[ $metadata = 'external' ]]; then
+            IFS=: read -r metadata _ <"$devname"/md/metadata_version
+            if [[ $metadata = external ]]; then
                 mdadm --wait-clean "$dev"
             fi
             mdadm --stop "$dev"
             ;;
         dmraid)
-            read -r dmname <"$devname/dm/name"
+            read -r dmname <"$devname"/dm/name
             dmraid -an "$dmname"
             ;;
         loop)
@@ -57,20 +57,20 @@ stop_device() {
 
 umount_device() {
     local devname=$1 devtype type name holder
-    local dev="/dev/$devname"
+    local dev=/dev/$devname
 
     [[ -e $devname ]] || return 1
 
-    devtype=$(lsblk -drno TYPE "$dev" 2>/dev/null) || return 1
-    if [[ $devtype = 'disk' ]]; then
-        lsblk -rno TYPE,NAME "$dev" |
+    devtype=$(lsblk -drn -o TYPE "$dev" 2>/dev/null) || return 1
+    if [[ $devtype = disk ]]; then
+        lsblk -rn -o TYPE,NAME "$dev" |
             while read -r type name; do
-                [[ $type = 'part' ]] || continue
+                [[ $type = part ]] || continue
                 umount_device "$name"
             done
     fi
 
-    for holder in "$devname/holders/"*; do
+    for holder in "$devname"/holders/*; do
         [[ -e $holder ]] || continue
         umount_device "${holder##*/}"
     done
@@ -84,8 +84,8 @@ umount_device() {
 
 cd /sys/class/block
 
-[[ $1 != /* ]] && dev="/dev/$1" || dev=$1
-dev=$(realpath "$dev")
+[[ $1 != /* ]] && dev=/dev/$1 || dev=$1
+dev=$(realpath -- "$dev")
 devname=${dev##*/}
 
 umount_device "$devname"

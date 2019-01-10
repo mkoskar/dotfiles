@@ -12,7 +12,7 @@ glyph_count() {
 }
 export -f glyph_count
 
-if [[ ${1-} = '-' ]]; then
+if [[ ${1-} = - ]]; then
     fc-list --format='%{file}\n' |
         parallel --pipe --block 1K --round glyph_count |
         sort -r
@@ -34,7 +34,7 @@ match() {
 }
 export -f match
 
-grep -vxE '\s*|(\s*#.*)' <<-EOF | parallel -k match
+grep -vxE '\s*|(\s*#.*)' <<-'EOF' | parallel -k match
 
 	> Generic:
 	cursive

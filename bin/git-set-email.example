@@ -4,8 +4,8 @@ set -eu
 
 PS3='Select: '
 emails=(
-    'email1'
-    'email2'
+    email1
+    email2
 )
 select sel in "${emails[@]}"; do
     break

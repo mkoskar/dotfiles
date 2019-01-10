@@ -13,7 +13,7 @@ export TTY
 export GPG_TTY=$TTY
 export TERMORIG=$TERM
 
-if [ "${TERM%%-*}" = 'screen' ]; then
+if [ "${TERM%%-*}" = screen ]; then
     export TERM=screen-256color
 fi
 

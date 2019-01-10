@@ -10,23 +10,30 @@ else
     tmpfile=$(mktemp)
     cleanup() { rm -f "$tmpfile"; }
     trap cleanup EXIT
-    cat >"$tmpfile"
+    head -c 255 >"$tmpfile"
     ifile=$tmpfile
 fi
 
 echo
-file -b --mime -- "$ifile"
+mime=$(file -b --mime -- "$ifile")
+printf '%s\n' "$mime"
 file -b -- "$ifile"
 echo
 
 [[ -f $ifile ]] || exit 0
 
-tmp=$(wc "$ifile")
-read -r lines words bytes _ <<<"$tmp"
-printf '%d bytes, %d words, %d lines\n' "$bytes" "$words" "$lines"
-echo
-
-declare -i n=128
-echo "(Canonical hexdump limited to first $n bytes)"
-hexdump -C -n "$n" "$ifile"
+case $mime in
+    inode/*)
+        ;;
+    text/*)
+        declare -i n=30
+        echo "(Content limited to first $n lines)"
+        head -n "$n" -- "$ifile"
+        ;;
+    *)
+        declare -i n=128
+        echo "(Canonical hexdump limited to first $n bytes)"
+        hexdump -C -n "$n" "$ifile"
+        ;;
+esac
 echo

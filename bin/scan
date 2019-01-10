@@ -13,17 +13,17 @@ set -eu
 # See also: /etc/sane.d/pixma.conf
 
 sel=$(
-    dialog --keep-tite --separate-widget $'\n' --backtitle 'scan' \
-    --no-items --nocancel --default-item 'Flatbed' --menu 'Source:' 12 35 12 \
-        'Flatbed' \
+    dialog --keep-tite --separate-widget $'\n' --backtitle scan \
+    --no-items --nocancel --default-item Flatbed --menu Source: 12 35 12 \
+        Flatbed \
         'Automatic Document Feeder' \
         'ADF Duplex' \
     --and-widget \
-    --no-items --nocancel --default-item 'Gray' --menu 'Mode:' 12 35 12 \
-        'Color' \
-        'Gray' \
+    --no-items --nocancel --default-item Gray --menu Mode: 12 35 12 \
+        Color \
+        Gray \
     --and-widget \
-    --no-items --nocancel --default-item 150 --menu 'Resolution:' 12 35 12 \
+    --no-items --nocancel --default-item 150 --menu Resolution: 12 35 12 \
         75 150 300 600 \
     2>&1 >/dev/tty
 )
@@ -37,7 +37,7 @@ resolution=${sel[2]}
 [[ ! $src || ! $mode || ! $resolution ]] && exit 1
 
 ts=$(date +%F.%s)
-name="${ts}_$mode-${resolution}dpi"
+name=${ts}_$mode-${resolution}dpi
 
 # shellcheck disable=SC2191
 opts=(
@@ -48,13 +48,13 @@ opts=(
     -x 210
     -y 297
     --format=tiff
-    --batch="$name-%d.tiff"
+    --batch="$name"-%d.tiff
     --progress
 )
 
 cd ~/download/_scanner
 
-if [[ $src = 'Flatbed' ]]; then
+if [[ $src = Flatbed ]]; then
     scanimage "${opts[@]}" --batch-prompt
 else
     scanimage "${opts[@]}"

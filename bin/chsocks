@@ -10,20 +10,20 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-bin='chp'
-profile='proxy-socks'
+bin=chp
+profile=proxy-socks
 declare -i port=1080
 args=()
 
-if [[ $prgname = 'chtor' ]]; then
-    profile='proxy-tor'
+if [[ $prgname = chtor ]]; then
+    profile=proxy-tor
     port=9050
     args+=(--incognito)
 fi
 
 while getopts gp:P:h opt; do
     case $opt in
-        g) bin='chpg' ;;
+        g) bin=chpg ;;
         p) profile=$OPTARG ;;
         P) port=$OPTARG ;;
         h) usage ;;
@@ -35,7 +35,7 @@ shift $((OPTIND-1))
 # ----------------------------------------
 
 exec "$bin" -p "$profile" -- \
-    --proxy-server="socks://127.0.0.1:$port" \
+    --proxy-server=socks://127.0.0.1:"$port" \
     --proxy-bypass-list='<local>' \
     --host-resolver-rules='MAP * ~NOTFOUND, EXCLUDE 127.0.0.1, EXCLUDE ::1, EXCLUDE localhost' \
     "${args[@]}" \

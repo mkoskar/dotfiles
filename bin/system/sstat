@@ -7,33 +7,33 @@ ss -s
 stat() {
     netstat -apeW --numeric-host --numeric-ports "$@" 2>/dev/null |
         awk '
-        NR > 2 {
-            format = "%-8s %-15s %-30s %-30s %-16s %-22s\n"
+            NR > 2 {
+                format = "%-8s %-15s %-30s %-30s %-16s %-22s\n"
 
-            gsub(/0\.0\.0\.0:/, "*:")
-            gsub(/127\.0\.0\.1:/, "local:")
-            gsub(/:::/, "*:")
-            gsub(/::1:/, "local:")
+                gsub(/0\.0\.0\.0:/, "*:")
+                gsub(/127\.0\.0\.1:/, "local:")
+                gsub(/:::/, "*:")
+                gsub(/::1:/, "local:")
 
-            if ($1 ~ "^udp") {
-                printf format, $1, "-", $4, $5, $6, $8
-            }
-            else if ($1 ~ "^tcp" ) {
-                if ($6 == "LISTEN") $6 = "." $6
-                else if ($6 == "ESTABLISHED") $6 = ":" $6
-                printf format, $1, $6, $4, $5, $7, $9
-            }
-        }
-        ' | sort -b -k1,1r -k2,2 -k3,3
+                if ($1 ~ "^udp") {
+                    printf format, $1, "-", $4, $5, $6, $8
+                }
+                else if ($1 ~ "^tcp" ) {
+                    if ($6 == "LISTEN") $6 = "." $6
+                    else if ($6 == "ESTABLISHED") $6 = ":" $6
+                    printf format, $1, $6, $4, $5, $7, $9
+                }
+            }' |
+        sort -b -k 1,1r -k 2,2 -k 3,3
 }
 
-stat -u6
+stat -u 6
 echo
 
-stat -u4
+stat -u 4
 echo
 
-stat -t6
+stat -t 6
 echo
 
-stat -t4
+stat -t 4

@@ -8,9 +8,9 @@ kernel_release=$(uname -r)
 
 case $prgname in
     modules-builtin)
-        $PAGER <"/lib/modules/$kernel_release/modules.builtin"
+        $PAGER </lib/modules/"$kernel_release"/modules.builtin
         ;;
     *)
-        $PAGER <"/lib/modules/$kernel_release/modules.order"
+        $PAGER </lib/modules/"$kernel_release"/modules.order
         ;;
 esac

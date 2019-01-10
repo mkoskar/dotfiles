@@ -5,7 +5,7 @@ set -eu
 (( $# )) || set -- ls
 
 echo
-for socket in "${TMUX_TMPDIR:-/tmp}/tmux-$UID/"*; do
+for socket in "${TMUX_TMPDIR:-/tmp}/tmux-$UID"/*; do
     [[ -S $socket ]] || continue
     echo "> $socket"
     tmux -S "$socket" -- "$@" || true

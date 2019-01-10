@@ -5,8 +5,8 @@ shopt -s extglob inherit_errexit
 
 prgname=${0##*/}
 
-cachedir="$HOME/.cache/$prgname"
-sharedir="$HOME/.local/share/$prgname"
+cachedir=~/.cache/$prgname
+sharedir=~/.local/share/$prgname
 
 _usage() {
     cat <<-EOF
@@ -39,7 +39,7 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-ver='latest'
+ver=latest
 declare -i force_display=0 xdo=0
 while getopts v:xdh opt; do
     case $opt in
@@ -59,7 +59,7 @@ ver() {
     case $ver in
         latest)
             local now mtime
-            local tmpfile="$tmpdir/latest"
+            local tmpfile=$tmpdir/latest
             declare -i check=1
             if [[ -e latest ]]; then
                 now=$(date +%s)
@@ -67,15 +67,19 @@ ver() {
                 (( mtime + 60*60*24*7 < now )) && check=1 || check=0
             fi
             if (( check )); then
-                local stat url="http://www.unicode.org/Public/zipped/$ver/ReadMe.txt"
-                stat=$(curl -sSL -w '%{http_code}' -o "$tmpfile" "$url")
-                case $stat in
+                local stat scode surl
+                local url=http://www.unicode.org/Public/zipped/$ver/ReadMe.txt
+                stat=$(curl -sSL -w %{http_code} -o "$tmpfile" "$url")
+                read -r scode surl <<<"$stat"
+                case $scode in
                     200)
                         sed -nr 's/for Version ([0-9]+\.[0-9]+\.[0-9]+) of the Unicode Standard./\1/p' \
                             <"$tmpfile" >latest
                         ;;
                     *)
-                        echo "HTTP $stat : $url" >&2
+                        exec >&2
+                        echo "HTTP $scode : $surl"
+                        cat "$tmpfile"
                         exit 1
                         ;;
                 esac
@@ -83,10 +87,10 @@ ver() {
             ver=$(<latest)
             ;;
         +([0-9]))
-            ver="$ver.0.0"
+            ver=$ver.0.0
             ;;
         +([0-9]).+([0-9]))
-            ver="$ver.0"
+            ver=$ver.0
             ;;
     esac
     printf '%s\n' "$ver"
@@ -95,17 +99,20 @@ ver() {
 ucd_file() {
     local ver=$1 ofile=$2
     [[ -e $ver/$ofile ]] && return
-    local zfile="UCD-$ver.zip"
+    local zfile=UCD-$ver.zip
     if [[ ! -e $zfile ]]; then
-        local stat tmpfile="$tmpdir/$zfile"
-        local url="http://www.unicode.org/Public/zipped/$ver/UCD.zip"
-        stat=$(curl -sSL -w '%{http_code}' -o "$tmpfile" "$url")
-        case $stat in
+        local stat scode surl tmpfile=$tmpdir/$zfile
+        local url=http://www.unicode.org/Public/zipped/$ver/UCD.zip
+        stat=$(curl -sSL -w %{http_code} -o "$tmpfile" "$url")
+        read -r scode surl <<<"$stat"
+        case $scode in
             200)
                 mv "$tmpfile" "$zfile"
                 ;;
             *)
-                echo "HTTP $stat : $url" >&2
+                exec >&2
+                echo "HTTP $scode : $surl"
+                cat "$tmpfile"
                 exit 1
                 ;;
         esac
@@ -123,29 +130,32 @@ trap cleanup EXIT
 mode=${1-}
 case $mode in
     '')
-        ifile='NamesList.txt'
+        ifile=NamesList.txt
         ;;
     blocks)
-        ifile='Blocks.txt'
+        ifile=Blocks.txt
         ;;
     scripts)
-        ifile='Scripts.txt'
+        ifile=Scripts.txt
         ;;
     data | select)
-        ifile='UnicodeData.txt'
+        ifile=UnicodeData.txt
         ;;
     emoji-data | emoji-test)
-        ifile="$mode.txt"
+        ifile=$mode.txt
         if [[ ! -e $ifile ]]; then
-            tmpfile="$tmpdir/$ifile"
-            url="http://www.unicode.org/Public/emoji/5.0/$ifile"
-            stat=$(curl -sSL -w '%{http_code}' -o "$tmpfile" "$url")
-            case $stat in
+            tmpfile=$tmpdir/$ifile
+            url=http://www.unicode.org/Public/emoji/5.0/$ifile
+            stat=$(curl -sSL -w %{http_code} -o "$tmpfile" "$url")
+            read -r scode surl <<<"$stat"
+            case $scode in
                 200)
                     mv "$tmpfile" "$ifile"
                     ;;
                 *)
-                    echo "HTTP $stat : $url" >&2
+                    exec >&2
+                    echo "HTTP $scode : $surl"
+                    cat "$tmpfile"
                     exit 1
                     ;;
             esac
@@ -161,14 +171,14 @@ esac
 
 ver=$(ver "$ver")
 
-if [[ $mode = 'select' ]]; then
+if [[ $mode = select ]]; then
     sub=${2-}
     if [[ ! $sub ]]; then
         ucd_file "$ver" "$ifile"
         cd "$ver"
-        ofile='select'
+        ofile=select
         if [[ ! -e $ofile || $ifile -nt $ofile ]]; then
-            awk -F ';' '
+            awk -F \; '
             {
                 cp = strtonum("0x" $1)
                 if (cp >= 0xd800 && cp <= 0xf8ff)
@@ -180,9 +190,9 @@ if [[ $mode = 'select' ]]; then
             }
             ' <"$ifile" >"$ofile"
         fi
-        ifile="$cachedir/$ver/$ofile"
+        ifile=$cachedir/$ver/$ofile
     else
-        ifile="$sharedir/select/$sub"
+        ifile=$sharedir/select/$sub
     fi
     if (( force_display )); then
         $PAGER "$ifile"
@@ -199,7 +209,7 @@ if [[ $mode = 'select' ]]; then
     if (( xdo )); then
         xdotool key "U$v"
     else
-        printf '%b' "\\U$v"
+        printf %b "\U$v"
     fi
 else
     ucd_file "$ver" "$ifile"

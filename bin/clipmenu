@@ -20,9 +20,9 @@ trap cleanup EXIT
 
 cd "$tmpdir"
 
-sep='|'
-id_psel="psel$sep"
-id_clip="clip$sep"
+sep=\|
+id_psel=psel$sep
+id_clip=clip$sep
 prompt=${1:-$prgname}
 
 tmp=$({
@@ -34,13 +34,13 @@ tmp=$({
 read -r sel <<<"$tmp"
 
 case $sel in
-    "$id_psel"*)
+    $id_psel*)
         cat psel
         ;;
-    "$id_clip"*)
+    $id_clip*)
         cat clip
         ;;
     *)
-        printf '%s' "$sel"
+        printf %s "$sel"
         ;;
 esac

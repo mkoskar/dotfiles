@@ -11,4 +11,4 @@ pw_length=${1:-20}
 # -c    Include at least one capital letter in the password.
 # -n    Include at least one number in the password.
 # -y    Include at least one special character in the password.
-pwgen -c -n -y "$pw_length" 1
+pwgen -cny "$pw_length" 1
