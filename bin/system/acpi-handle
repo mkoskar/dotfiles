@@ -6,6 +6,27 @@ set -eu
 
 # ----------------------------------------
 
+# Lenovo T530:
+#
+#   MUTE    button/mute
+#   VOLDN   button/volumedown
+#   VOLUP   button/volumeup
+#   MIC     button/f20
+#   PROG1   button/prog1
+#
+#   Fn+F1   button/fnf1
+#   Fn+F2   n/a
+#   Fn+F3   button/screenlock
+#   Fn+F4   button/sleep
+#   Fn+F5   button/wlan
+#   Fn+F6   n/a
+#   Fn+F7   video/switchmode
+#   Fn+F8   video/brightnessdown
+#   Fn+F9   video/brightnessup
+#   Fn+F10  cd/prev
+#   Fn+F11  cd/play
+#   Fn+F12  cd/next
+
 vt=$(</sys/class/tty/tty0/active)
 export DISPLAY=:${vt##tty}
 
@@ -18,7 +39,7 @@ if (( EUID )); then
             audio playback_toggle
             ;;
         button/screenlock)
-            lock
+            sudo lock
             ;;
         button/volumedown)
             audio playback_down

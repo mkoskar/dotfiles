@@ -86,10 +86,13 @@ XTerm.vt100.bellIsUrgent:           true
 XTerm.vt100.bellOnReset:            false
 XTerm.vt100.colorBD:                #dddddd
 XTerm.vt100.colorBDMode:            true
+XTerm.vt100.cutNewline:             false
 XTerm.vt100.decTerminalID:          340
 XTerm.vt100.dynamicColors:          true
 XTerm.vt100.metaSendsEscape:        true
 XTerm.vt100.numColorRegisters:      1024
+XTerm.vt100.on3Clicks:              regex [^[:blank:]]+
+XTerm.vt100.on4Clicks:              regex ^.*$
 XTerm.vt100.printAttributes:        0
 XTerm.vt100.printerCommand:         cat > $(mktemp -p ~/tmp xterm.XXXXXX)
 XTerm.vt100.saveLines:              8192
@@ -118,17 +121,37 @@ XTerm.vt100.scrollbar.thickness:    5
 XTerm.vt100.scrollbar.thumb:        None
 
 XTerm.vt100.translations:           #override \n\
-                                    :Ctrl ~Alt <Key>H: string(\177) \n\
-                                    :Ctrl <Key>plus: larger-vt-font() \n\
-                                    :Ctrl <Key>minus: smaller-vt-font() \n\
-                                    :Ctrl <Key>equal: set-vt-font(d) \n\
-                                    :~Shift <Key>Print: print() \n\
-                                    :Shift <Key>Print: print-everything() \n\
-                                    :Shift <Key>Up: scroll-back(1, line) \n\
-                                    :Shift <Key>Down: scroll-forw(1, line) \n\
-                                    :Shift <Key>Home: scroll-back(9999, line) \n\
-                                    :Shift <Key>End: scroll-forw(9999, line) \n\
-                                    :Shift <Key>Return: scroll-forw(9999, line)
+                                    :Ctrl ~Alt <Key>H   : string(\177) \n\
+                                    \
+                                    :Ctrl <Key>plus     : larger-vt-font() \n\
+                                    :Ctrl <Key>minus    : smaller-vt-font() \n\
+                                    :Ctrl <Key>equal    : set-vt-font(d) \n\
+                                    \
+                                    :Shift <Key>Print   : print-everything() \n\
+                                    :<Key>Print         : print() \n\
+                                    \
+                                    :Shift <Key>Up      : scroll-back(1, line) \n\
+                                    :Shift <Key>Down    : scroll-forw(1, line) \n\
+                                    :Shift <Key>Home    : scroll-to(begin) \n\
+                                    :Shift <Key>End     : scroll-to(end) \n\
+                                    :Shift <Key>Return  : scroll-to(end) \n\
+                                    :Ctrl Alt <Key>[    : keymap(visual)
+
+XTerm.vt100.visualKeymap.translations: \
+                                    #override \n\
+                                    :Alt <Key>k     : scroll-back(5, line) \n\
+                                    :Alt <Key>j     : scroll-forw(5, line) \n\
+                                    :<Key>k         : scroll-back(1, line) \n\
+                                    :<Key>j         : scroll-forw(1, line) \n\
+                                    :<Key>u         : scroll-back(1, halfpage) \n\
+                                    :<Key>d         : scroll-forw(1, halfpage) \n\
+                                    :<Key>b         : scroll-back(1, page) \n\
+                                    :<Key>f         : scroll-forw(1, page) \n\
+                                    :<Key>(2+)g     : scroll-to(begin) \n\
+                                    :<Key>G         : scroll-to(end) \n\
+                                    :<Key>q         : keymap(None) scroll-to(end) \n\
+                                    :<Key>Return    : keymap(None) scroll-to(end) \n\
+                                    :<Key>          : ignore()
 
 XTerm*SimpleMenu*font:              -*-terminus-medium-*-*-*-14-*-*-*-*-*-*-*
 XTerm*SimpleMenu*menuLabel.font:    -*-terminus-bold-*-*-*-14-*-*-*-*-*-*-*

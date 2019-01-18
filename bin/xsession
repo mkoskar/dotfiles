@@ -83,7 +83,7 @@ xscreen -
 srun -xr compton
 srun -xr osdd
 
-(sleep 1; exec sxhkd) &
+(sleep 1; srun -xr sxhkd) &
 /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
 
 if [[ ${XSESSION-} ]]; then

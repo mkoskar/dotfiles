@@ -12,7 +12,7 @@ posix_base=http://pubs.opengroup.org/onlinepubs/9699919799
 
 MENUER=$prgname menuer "$@" <<-EOF |
 
-    !                       b https://mkoskar.com/
+    !                       b file:///"$HOME"/tmp
     ImageMagick             b https://www.imagemagick.org/script/command-line-tools.php
     ImageMagick-scripts     b http://www.fmwconcepts.com/imagemagick/
     amazon                  b https://www.amazon.com/s/field-keywords={u}
@@ -336,7 +336,10 @@ MENUER=$prgname menuer "$@" <<-EOF |
     weechat-api             b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
     weechat-changes         b https://github.com/weechat/weechat/blob/master/ChangeLog.adoc
     x11                     b https://www.x.org/releases/current/doc/
-    x11-resources           b https://www.x.org/releases/X11R7.7/doc/libXt/intrinsics.html#Loading_the_Resource_Database
+    x11-resdb               b https://www.x.org/releases/current/doc/libXt/intrinsics.html#Loading_the_Resource_Database
+    x11-translations        b https://www.x.org/releases/current/doc/libXt/intrinsics.html#Translation_Table_Syntax
+    x11-xkbguide            b http://www.charvolant.org/doug/xkb/html/index.html
+    x11-xkbproto            b https://www.x.org/releases/current/doc/kbproto/xkbproto.html
     xcb-modules             b https://xcb.freedesktop.org/manual/modules.html
     xmonad                  b https://hackage.haskell.org/package/xmonad
     xmonad-contrib          b https://hackage.haskell.org/package/xmonad-contrib

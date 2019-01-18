@@ -192,6 +192,7 @@ if not monitors:
     print('{}: error: no monitors'.format(parser.prog), file=stderr)
     exit(1)
 
+monitors_orig = monitors
 monitors_xy = list(monitors)
 monitors_xy.sort(key=lambda mon: (mon.x, mon.y))
 monitors_yx = list(monitors)
@@ -233,7 +234,7 @@ elif args.primary:
             sel = imon
             break
     if not sel:
-        sel = monitors[0]
+        sel = monitors_orig[0]
 elif args.focused or args.move:
     if not focused:
         print('{}: error: no focused monitor'.format(parser.prog), file=stderr)

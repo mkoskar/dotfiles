@@ -6,7 +6,7 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [options]
+	usage: $prgname [options] [file]
 
 	Open / Yank / Select an URL.
 
@@ -40,6 +40,10 @@ shift $((OPTIND-1))
 tmpfile=$(mktemp)
 cleanup() { rm -f "$tmpfile"; }
 trap cleanup EXIT
+
+if [[ ${1--} != - ]] ; then
+    exec <"$1"
+fi
 
 (( reverse )) && filter=(tac) || filter=(cat)
 xurls | "${filter[@]}" >"$tmpfile"

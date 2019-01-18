@@ -574,7 +574,7 @@ function! s:Format(...) range abort
     exec join([a:firstline . ',' . a:lastline, '!format', ft])
 endfunction
 
-command! -nargs=? -range -bar Format silent Preserve <line1>,<line2> call <SID>Format(<q-args>)
+command! -nargs=? -range -bar Format silent Preserve <line1>,<line2> call <SID>Format(<f-args>)
 
 " }}}
 
@@ -717,7 +717,7 @@ function! s:Write(...) abort
     edit!
 endfunction
 
-command! -nargs=? -bar W call s:Write(<q-args>)
+command! -nargs=? -bar W call s:Write(<f-args>)
 
 " }}}
 
@@ -914,7 +914,7 @@ command! -nargs=? -range Split call utils#tryCatch('Preserve <line1>,<line2>s/'
     \. (!empty(<q-args>) ? escape(<q-args>, '/') : '\s\+') . '/\r/ge')
 
 function! s:Macro(macro) abort
-    call setreg("m", a:macro)
+    call setreg('m', a:macro)
     normal! @m
 endfunction
 
@@ -948,9 +948,9 @@ augroup vimrc_base
     autocmd!
 
     autocmd BufEnter,BufWinEnter * match none
-
     autocmd BufWritePre * let &backupext = substitute(expand('%:p:h'), '/', '%', 'g')
     autocmd CmdwinEnter * call utils#bufSpecial()
+    autocmd FileChangedRO * setl noro
 
     "autocmd BufReadPost *
     "    \  if line("'\"") >= 1 && line("'\"") <= line('$') && &ft !~# 'commit'
@@ -973,6 +973,8 @@ augroup vimrc_base
 
     autocmd QuickFixCmdPost [^l]* cwindow
     autocmd QuickFixCmdPost l* lwindow
+
+    " ----------------------------------------
 
     autocmd BufWritePost ~/.Xresources !xrdb -load ~/.Xresources
 

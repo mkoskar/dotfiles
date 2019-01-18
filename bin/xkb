@@ -2,7 +2,134 @@
 
 set -eu
 
+# Lenovo T530:
+#
+#   MUTE    keycode 121     (keysym 0x1008ff12, XF86AudioMute)
+#   VOLDN   keycode 122     (keysym 0x1008ff11, XF86AudioLowerVolume)
+#   VOLUP   keycode 123     (keysym 0x1008ff13, XF86AudioRaiseVolume)
+#   MIC     keycode 198     (keysym 0x1008ffb2, XF86AudioMicMute)
+#   PROG1   keycode 156     (keysym 0x1008ff41, XF86Launch1)
+#
+#   Fn+F1   n/a
+#   Fn+F2   n/a
+#   Fn+F3   keycode 160     (keysym 0x1008ff2d, XF86ScreenSaver)
+#   Fn+F4   keycode 150     (keysym 0x1008ff2f, XF86Sleep)
+#   Fn+F5   keycode 246     (keysym 0x1008ff95, XF86WLAN)
+#   Fn+F6   keycode 220     (keysym 0x1008ff8f, XF86WebCam)
+#   Fn+F7   keycode 235     (keysym 0x1008ff59, XF86Display)
+#   Fn+F8   keycode 232     (keysym 0x1008ff03, XF86MonBrightnessDown)
+#   Fn+F9   keycode 233     (keysym 0x1008ff02, XF86MonBrightnessUp)
+#   Fn+F10  keycode 173     (keysym 0x1008ff16, XF86AudioPrev)
+#   Fn+F11  keycode 172     (keysym 0x1008ff14, XF86AudioPlay)
+#   Fn+F12  keycode 171     (keysym 0x1008ff17, XF86AudioNext)
+#
+#   Fn+1    keycode 248
+#   Fn+2    keycode 248
+#   Fn+B    keycode 127 + Control_L (keysym 0xff6b, Break)
+#   Fn+K    keycode 78              (keysym 0xff14, Scroll_Lock)
+#   Fn+P    keycode 127             (keysym 0xff13, Pause)
+#   Fn+S    keycode 107 + Alt_L     (keysym 0xff15, Sys_Req)
+
+xkb_default() {
+    cat <<-'EOF'
+	xkb_keymap {
+
+	    xkb_keycodes {
+	        include "evdev"
+	        include "aliases(qwerty)"
+	    };
+
+	    xkb_types {
+	        include "complete"
+
+	        type "CUSTOM_1" {
+	            modifiers= Shift+Alt+Control;
+	            map[Shift]= Level2;
+	            map[Alt]= Level3;
+	            map[Control]= Level4;
+	            level_name[Level1]= "Base";
+	            level_name[Level2]= "Shift";
+	            level_name[Level3]= "Alt";
+	            level_name[Level4]= "Ctrl";
+	        };
+	    };
+
+	    xkb_compat {
+	        include "complete"
+
+	        interpret Shift_R+AnyOfOrNone(all) {
+	            action= SetMods(modifiers=Shift,clearLocks);
+	        };
+	    };
+
+	    xkb_symbols {
+	        // you get SEGFAULTs all over if you split this up
+	        include "pc+us(cz_sk_de)+sk(qwerty):2+cz(qwerty):3"
+	        include "inet(evdev)"
+	        include "level3(ralt_switch_multikey)"
+	        include "terminate(ctrl_alt_bksp)"
+
+	        key <RTSH> {
+	            type= "CUSTOM_1",
+	            [ Shift_R, Caps_Lock, ISO_Next_Group, MouseKeys_Enable ]
+	        };
+
+	        replace key <CAPS> {
+	            type= "TWO_LEVEL",
+	            [ SetControls(controls=Overlay1), LockControls(controls=Overlay1) ]
+	        };
+
+	        // !accel (accel=no) works despite xkbcomp reporting an error:
+	        // Error: Field accel is not defined for an action of type MovePtr
+	        key <LatK> { [ MovePtr(y=-50,!accel), MovePtr(y=-1) ] };
+	        key <LatJ> { [ MovePtr(y=+50,!accel), MovePtr(y=+1) ] };
+	        key <LatH> { [ MovePtr(x=-50,!accel), MovePtr(x=-1) ] };
+	        key <LatL> { [ MovePtr(x=+50,!accel), MovePtr(x=+1) ] };
+
+	        key <LatU> { [ PtrBtn(button=1) ] };
+	        key <LatI> { [ PtrBtn(button=2) ] };
+	        key <LatO> { [ PtrBtn(button=3) ] };
+
+	        // overlay1: arrow keys
+	        key <LatY> { overlay1 = <END> };
+	        key <LatU> { overlay1 = <PGDN> };
+	        key <LatI> { overlay1 = <PGUP> };
+	        key <LatO> { overlay1 = <HOME> };
+	        key <LatK> { overlay1 = <UP> };
+	        key <LatJ> { overlay1 = <DOWN> };
+	        key <LatH> { overlay1 = <LEFT> };
+	        key <LatL> { overlay1 = <RGHT> };
+
+	        // overlay1: numpad keys
+	        //key <AE07> { overlay1 = <KP7> };
+	        //key <AE08> { overlay1 = <KP8> };
+	        //key <AE09> { overlay1 = <KP9> };
+	        //key <AE10> { overlay1 = <KPDV> };
+	        //key <LatU> { overlay1 = <KP4> };
+	        //key <LatI> { overlay1 = <KP5> };
+	        //key <LatO> { overlay1 = <KP6> };
+	        //key <LatP> { overlay1 = <KPMU> };
+	        //key <LatJ> { overlay1 = <KP1> };
+	        //key <LatK> { overlay1 = <KP2> };
+	        //key <LatL> { overlay1 = <KP3> };
+	        //key <AC10> { overlay1 = <KPSU> };
+	        //key <LatM> { overlay1 = <KP0> };
+	        //key <AB09> { overlay1 = <KPDL> };
+	        //key <AB10> { overlay1 = <KPAD> };
+	    };
+
+	    xkb_geometry {
+	        include "pc(pc105)"
+	    };
+	};
+	EOF
+}
+
 if [[ ${1-} = - ]]; then
+
+    xtest=$(xinput list --id-only 'keyboard:Virtual core XTEST keyboard')
+
+    # ----------------------------------------
 
     # shellcheck disable=SC2054
     opts=(
@@ -10,18 +137,16 @@ if [[ ${1-} = - ]]; then
         -layout us,sk,cz
         -variant cz_sk_de,qwerty,qwerty
         -option
-        -option caps:ctrl_modifier
-        -option keypad:pointerkeys
         -option lv3:ralt_switch_multikey
-        -option nbsp:level3
-        -option shift:both_capslock_cancel
         -option terminate:ctrl_alt_bksp
     )
 
-    setxkbmap "${opts[@]}"
+    #setxkbmap "${opts[@]}"
+    #[[ $xtest ]] && setxkbmap "${opts[@]}" -device "$xtest"
 
-    xtest=$(xinput list --id-only 'keyboard:Virtual core XTEST keyboard')
-    [[ $xtest ]] && setxkbmap "${opts[@]}" -device "$xtest"
+    # ----------------------------------------
+
+    xkb_default | xkbcomp -w 0 - "$DISPLAY"
 
     set -- 0
 fi
