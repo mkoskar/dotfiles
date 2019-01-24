@@ -21,6 +21,7 @@ fpath=(~/.zfunctions $fpath)
 typeset -gU path fpath cdpath
 
 zmodload zsh/complist
+zmodload zsh/datetime
 zmodload zsh/system
 
 autoload -Uz add-zsh-hook
@@ -100,10 +101,10 @@ WORDCHARS=
 #WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
 ZLE_SPACE_SUFFIX_CHARS='&|'
 
-PROMPT='$__vimode%?$__statstr:${BASEDIR:+(${BASEDIR##*/}):}%1~%(!.#.$) '
+PROMPT='$__vimode$__statstr:${BASEDIR:+(${BASEDIR##*/}):}%1~%(!.#.$) '
 PROMPT2='$__vimode> '
-if [[ $HOST != 'mirci' ]]; then
-    PROMPT='$__vimode%?$__statstr:%m:${BASEDIR:+(${BASEDIR##*/}):}%1~%(!.#.$) '
+if [[ $HOST != mirci ]]; then
+    PROMPT='$__vimode$__statstr:%m:${BASEDIR:+(${BASEDIR##*/}):}%1~%(!.#.$) '
 fi
 
 expand-dot-to-parent-directory-path() {
@@ -117,6 +118,25 @@ expand-word-alias() {
 
 noop() { }
 
+precmd() {
+    local pstatus=($? "${pipestatus[@]}") __cmd_dur
+    __statstr=${pstatus[1]}
+    if (( ${#pstatus} > 2 )); then
+        __statstr+=:${(j:|:)pstatus:1}
+    fi
+    __cmd_dur=$((EPOCHSECONDS-__cmd_start))
+    if (( __cmd_dur > 10 )); then
+        __long_cmd=$__cmd
+        __long_cmd_start=$__cmd_start
+        __long_cmd_dur=$__cmd_dur
+    fi
+}
+
+preexec() {
+    __cmd=$3
+    __cmd_start=$EPOCHSECONDS
+}
+
 zle-keymap-select() {
     __vimode=:
     if [[ ! $KEYMAP = 'vicmd' ]]; then
@@ -126,11 +146,6 @@ zle-keymap-select() {
 }
 
 zle-line-init() {
-    __pstatus=("${pipestatus[@]}")
-    __statstr=
-    if (( ${#__pstatus[@]} > 1 )); then
-        __statstr=":${__pstatus[1]}$(printf '|%s' "${__pstatus[@]:1}")"
-    fi
     zle zle-keymap-select
 }
 

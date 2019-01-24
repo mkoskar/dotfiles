@@ -253,6 +253,7 @@ alias mpv-ytdl-reverse='mpv --ytdl-raw-options=playlist-reverse='
 alias mpv='mpv --player-operation-mode=pseudo-gui'
 alias mutt-debug='mutt -d 2'
 alias mv='mv -i'
+alias nmap-all='nmap -p 1-65535'
 alias npmg='npm -g'
 alias od='od -A x -t c'
 alias odd='od -t d1'
@@ -271,6 +272,7 @@ alias sdu='systemctl --user'
 alias se=sudoedit
 alias sed-all="sed -r -e 'H;1h;\$!d;x'"
 alias ss='ss -napstu'
+alias sslcon='openssl s_client -showcerts -connect'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
 alias sudo-off='sudo -K'
 alias sudo-on='sudo -v'
@@ -282,11 +284,34 @@ alias w3m='w3m -v'
 alias weechat-plain='weechat -d "$(mktemp -d)"'
 alias wi='curl -sSLf http://wttr.in/ | head -n -2'
 alias xargs1='xargs -r -L 1'
+alias xinput-test='xinput test-xi2 --root'
 alias ytdl-audio='youtube-dl -f bestaudio/best -x'
 alias ytdl-formats='youtube-dl -F'
 alias ytdl-json='youtube-dl -J'
 alias ytdl-playlist="youtube-dl --yes-playlist -o ~/download/_youtube-dl/'%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
 alias ytdl-stdout="youtube-dl -f 'best[height<=?1080]' -o -"
+
+_() {
+    printf '%s @ %s in %s\n' "$USER" "${HOST:-$HOSTNAME}" "$PWD"
+    gitroot=$(git rev-parse --git-dir 2>/dev/null) || return 0
+    printf '\n> %s\n' "$gitroot"
+    git branch --points-at HEAD --format='%(HEAD) %(color:bold yellow)%(refname:short)%(color:reset) %(objectname:short) %(if)%(upstream)%(then)[%(color:bold yellow)%(upstream:short)%(color:reset)%(if)%(upstream:track)%(then): %(color:bold red)%(upstream:track,nobracket)%(color:reset)%(end)]%(end) %(subject)'
+    echo
+    git --no-pager lg -3
+}
+alias ,=_
+
+__() {
+    # shellcheck disable=SC2154
+    if [ "$__long_cmd" ]; then
+        echo
+        printf '$ %s\n' "$__long_cmd"
+        printf '%s (%d sec)\n' \
+            "$(date -R -d @"$__long_cmd_start")" "$__long_cmd_dur"
+        echo
+    fi
+}
+alias ,,=__
 
 a() {
     local d=${1:-5m} ts; ts=$(command date -R)
@@ -300,7 +325,7 @@ a() {
 
 anplay() {
     local outfile
-    outfile=$(find ~/tmp -name asciinema-\* -print0 | sort -z | tail -zn1)
+    outfile=$(find ~/tmp -name asciinema-\* -print0 | sort -z | tail -z -n 1)
     [ -e "$outfile" ] && asciinema play "$outfile"
 }
 
@@ -389,6 +414,10 @@ optset() {
         [ ${#1} -gt 1 ] && return 2
         case $- in *$1*) ;; *) return 1 ;; esac
     fi
+}
+
+path() {
+    tr : \\n <<<$PATH
 }
 
 pstree() {

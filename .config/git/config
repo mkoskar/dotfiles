@@ -12,14 +12,13 @@
     k = !gitk
     lg = !git lg1 -100
     lg1 = log --graph --format=lg1 --color
-    lg2 = log --graph --format=lg2 --color
     lga = !git lg --all
     ls = ls-files
     ls-untracked = ls-files --others --directory
+    remotes = remote -v
     set-email = !git-set-email
     set-upstream = remote add upstream
-    st = status -s
-    stu = status -su
+    st = status -sb --show-stash
     up = update
     update = !git-update
 
@@ -63,9 +62,11 @@
 [mergetool "custom"]
     cmd = mergetool "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
 
+[pager]
+    branch = false
+
 [pretty]
-    lg1 = format:%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(bold white)— %an%C(reset)%C(bold yellow)%d%C(reset)
-    lg2 = format:%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset) %C(bold white)— %an%C(reset)
+    lg1 = %C(bold blue)%h%Creset %C(bold white)%an%Creset %C(bold green)(%ar)%Creset%C(bold yellow)%d%Creset%n %s
 
 [push]
     default = nothing

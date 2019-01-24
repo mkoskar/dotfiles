@@ -22,8 +22,6 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-[[ -e $2 ]] || usage_err
-
 case $1 in
     dsa | ec | rsa)
         openssl "$1" -in "$2"

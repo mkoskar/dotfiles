@@ -18,18 +18,31 @@ HISTIGNORE=exit
 HISTSIZE=1000
 
 __title="\\[$(hstatus '\u@\h:\w')\\]"
-PS1="$__title\$?\$__statstr:\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
+PS1="$__title\$__statstr:\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
 if [[ $HOSTNAME != 'mirci' ]]; then
-    PS1="$__title\$?\$__statstr:\\h:\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
+    PS1="$__title\$__statstr:\\h:\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
 fi
 
+__preexec() {
+    __cmd=$BASH_COMMAND
+    __cmd_start=$EPOCHSECONDS
+}
+
 __prompt_command() {
-    local pstatus=("${PIPESTATUS[@]}")
-    __statstr=
-    if (( ${#pstatus[@]} > 1 )); then
-        __statstr=:${pstatus[0]}$(printf '|%d' "${pstatus[@]:1}")
+    local pstatus=($? "${PIPESTATUS[@]}") __cmd_dur
+    __statstr=${pstatus[0]}
+    if (( ${#pstatus[@]} > 2 )); then
+        __statstr+=:$(IFS=\|; echo "${pstatus[*]:1}")
+    fi
+    __cmd_dur=$((EPOCHSECONDS-__cmd_start))
+    # shellcheck disable=SC2034
+    if (( __cmd_dur > 10 )); then
+        __long_cmd=$__cmd
+        __long_cmd_start=$__cmd_start
+        __long_cmd_dur=$__cmd_dur
     fi
     history -a
+    trap __preexec DEBUG
 }
 PROMPT_COMMAND=__prompt_command
 

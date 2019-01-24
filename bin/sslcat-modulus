@@ -24,6 +24,4 @@ shift $((OPTIND-1))
 
 case $1 in dsa | ec | rsa | x509 | req) ;; *) usage_err ;; esac
 
-[[ -e $2 ]] || usage_err
-
 openssl "$1" -modulus -noout -in "$2" | sha1sum

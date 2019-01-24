@@ -122,5 +122,5 @@ export -f post_process
 
 nice parallel "${pargs[@]}" post_process <chunks
 
-xargs -r -I{} cat {}.done <chunks | sort -u >"$CACHEDIR"/hosts
+xargs -r -I {} cat {}.done <chunks | sort -u >"$CACHEDIR"/hosts
 mv sum "$CACHEDIR"/sum
