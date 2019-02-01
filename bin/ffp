@@ -55,7 +55,7 @@ if [[ ! $profile ]]; then
     )
 fi
 
-[[ ! $profile ]] && exit 1
+[[ $profile ]] || exit 1
 
 # Workaround to ensure separate instance per profile.
 export LOGNAME=$USER.$bin_name.$profile

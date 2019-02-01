@@ -1,4 +1,4 @@
 # vim: ft=muttrc
 
 set sort = reverse-date-received
-macro index \140 '<enter-command>source ~/.mutt/sort_threads<enter>'
+macro index \140 '<enter-command>source $my_home/sort_threads<enter>'

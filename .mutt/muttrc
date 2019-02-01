@@ -3,24 +3,29 @@
 # Global
 # ----------------------------------------
 
-set alias_file = ~/.mutt/aliases
+set my_home = ~/.mutt
+
+set my_mail = "`printf %s "${MAILDIR:-$HOME/mail}"`"
+set folder = $my_mail
+
+set alias_file = $my_home/aliases
 set bounce = ask-no
-set certificate_file = ~/.mutt/certificates
+set certificate_file = $my_home/certificates
 set change_folder_next
 set delete
 set editor = 'e +/^$ ++1 +noh'
 set flag_safe
-set header_cache = ~/.mutt/cache/headers
+set header_cache = $my_home/cache/headers
 set history = 100
-set history_file = ~/.mutt/history
+set history_file = $my_home/history
 set history_remove_dups
 set ispell = 'aspell -e --email-margin=0 --run-together -c'
-set mail_check = 0
+set mail_check = 60
 set mail_check_stats
-set mailcap_path = ~/.mutt/mailcap
+set mailcap_path = $my_home/mailcap
 set mbox_type = Maildir
 set message_cache_clean
-set message_cachedir = ~/.mutt/cache/messages
+set message_cachedir = $my_home/cache/messages
 set pipe_decode
 set save_history = 100
 set sleep_time = 0
@@ -38,12 +43,13 @@ unset use_domain
 unset user_agent
 unset wait_key
 
-unattachments *
 attachments +A */.*
-attachments -A text/x-vcard application/pgp.*
+attachments -A application/pgp.*
 attachments -A application/x-pkcs7-.*
-attachments +I text/plain
 attachments -A message/external-body
+attachments -A text/x-vcard
+
+attachments +I text/plain
 attachments -I message/external-body
 
 unmime_lookup *
@@ -67,11 +73,11 @@ unset hide_top_missing
 # Formats
 # ----------------------------------------
 
-set alias_format = '%2n %t %-40.40r    %a'
+set alias_format = '%3n %t %-40.40r    %a'
 set attach_format = '[%u%D%I] %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s]'
 set date_format = '!%b %d'
-set folder_format = '%2C %t %N %F %2l %-8.8u %-8.8g %8s (%5n/%5m) %d %f'
-set query_format = '%2c %t %-40.40a    %n %?e?(%e)?'
+set folder_format = '%3C %t %N %F %3l %-8.8u %-8.8g %8s (%5n/%5m) %d %f'
+set query_format = '%3c %t %-40.40a    %n %?e?(%e)?'
 set status_format = '[%r] %f %l (%n/%m)%?F? [%F]?%?p? P:%p?%?d? D:%d?%?t? T:%t?%?V? > %V (%M)? %> %s/%S (%P)'
 
 
@@ -86,10 +92,10 @@ set sort_aux = reverse-date-received
 #index-format-hook date ~r<1m '%(!%a %d)'
 #index-format-hook date ~r<1y '%(!%b %d)'
 #index-format-hook date ~A    '%(! %m/%y)'
-#index-format-hook collapsed ~v '+-- %2E messages: '
+#index-format-hook collapsed ~v '+-- %3E messages: '
 
-source ~/.mutt/index_format1
-source ~/.mutt/sort_date
+source $my_home/index_format1
+source $my_home/sort_date
 
 
 # Pager
@@ -104,7 +110,10 @@ set quote_regexp = '^([ \t]*>)+'
 set tilde
 unset markers
 
+unalternative_order *
 alternative_order text/plain text/enriched text/html
+
+unauto_view *
 auto_view text/html
 
 ignore *
@@ -135,6 +144,9 @@ set use_envelope_from
 unset abort_unmodified
 unset reverse_realname
 
+unmy_hdr *
+my_hdr OpenPGP: url=https://keybase.io/mkoskar/key.asc
+
 
 # PGP and S/MIME
 # ----------------------------------------
@@ -151,7 +163,6 @@ unset reverse_realname
 #
 # %r    One or more key IDs.
 
-set crypt_autosign
 set crypt_replysign
 set crypt_replysignencrypted
 set pgp_auto_decode
@@ -170,8 +181,6 @@ set pgp_use_gpg_agent
 set pgp_verify_command = 'gpg --no-verbose --quiet --batch --status-fd=2 --trust-model always --no-auto-check-trustdb --verify-options show-primary-uid-only,no-show-policy-urls --verify --output - %s %f'
 set pgp_verify_key_command = 'gpg --verbose --batch --fingerprint --check-sigs %r'
 unset pgp_show_unusable
-
-source ~/.mutt/generate_pgp_auto|
 
 
 # Key Bindings
@@ -203,13 +212,14 @@ bind generic,pager  )           next-entry
 
 bind index          x           noop
 bind index          L           bottom-page         # generic
+bind index          M           middle-page         # generic
 bind index          g           first-entry         # generic
 bind index          G           last-entry          # generic
 bind index          zm          collapse-all
 bind index          zr          collapse-all
 bind index          zc          collapse-thread
 bind index          zo          collapse-thread
-bind index          ,           next-unread-mailbox
+bind index          .           next-unread-mailbox
 bind index          \cQ         exit
 bind index,pager    &           noop
 bind index,pager    \#          noop
@@ -226,6 +236,8 @@ bind index,pager    \cD         half-down           # generic
 bind index,pager    \cU         half-up             # generic
 bind index,pager    \cP         previous-undeleted  # generic
 bind index,pager    \cN         next-undeleted      # generic
+bind index,pager    \cY         next-line
+bind index,pager    \cE         previous-line
 bind index,pager    s           sort-mailbox
 bind index,pager    S           sort-reverse
 bind index,pager    [           previous-subthread
@@ -235,6 +247,8 @@ bind index,pager    }           next-thread
 bind index,pager    p           parent-message
 bind index,pager    P           root-message
 bind index,pager    @           compose-to-sender
+bind index,pager    ,@          display-address
+bind index,pager    ,r          recall-message
 
 bind pager          Q           noop
 bind pager          \e?         help
@@ -245,8 +259,8 @@ bind pager          <up>        previous-line
 bind pager          >           next-line
 bind pager          <           previous-line
 bind pager          <return>    exit
-bind pager          ,           next-unread
-bind pager          .           previous-unread
+bind pager          .           next-unread
+bind pager          \e.         previous-unread
 bind pager          \ek         previous-entry
 bind pager          \;          previous-entry
 bind pager          \ej         next-entry
@@ -269,6 +283,7 @@ bind browser        O           noop
 bind browser        N           search-opposite     # generic
 bind browser        s           sort
 bind browser        S           sort-reverse
+bind browser        e           view-file
 
 bind editor         \cT         noop
 bind editor         \cO         complete-query
@@ -281,8 +296,6 @@ bind editor         \e<space>   buffy-cycle
 # Macros
 # ----------------------------------------
 
-macro generic <F1> '<shell-escape>less /usr/share/doc/mutt/manual.txt<Enter>' 'show Mutt documentation'
-
 macro generic,index \ej )))
 macro generic,index \ek (((
 
@@ -293,6 +306,7 @@ macro index \'\' '<limit>all<enter>' 'cancel limit'
 macro index \c_ <tag-prefix><save-message> 'save messages'
 macro index \eb '<search>~b ' 'search in message bodies'
 macro index o <enter>
+macro index q <change-folder>!<enter> 'go to spoolfile mailbox'
 macro index,pager * <tag-pattern>~A<enter> 'tag all'
 macro index,pager 0 <tag-pattern>~N<enter> 'tag new'
 macro index,pager \c? <untag-pattern>~A<enter> 'untag all'
@@ -300,9 +314,9 @@ macro index,pager - <tag-prefix><clear-flag>N 'mark all tagged messages as read'
 macro index,pager W <tag-prefix><clear-flag> 'clear a status flag on all tagged messages'
 macro index,pager w <tag-prefix><set-flag> 'set a status flag on all tagged messages'
 macro index,pager Z '<shell-escape>mbsync &<enter>' 'trigger mailboxes synchronization'
-macro index,pager \ea '<change-folder>!!<enter>' 'go to previous mailbox'
-macro index,pager y <change-folder>?<toggle-mailboxes> 'show mailboxes list'
-macro index,pager,attach O '<pipe-entry>e0 -c "set bt=nofile"<enter>' 'view in $PAGER'
+macro index,pager \ea <change-folder>!!<enter> 'go to previous mailbox'
+macro index,pager <tab> <change-folder>? 'browse mailboxes'
+macro index,pager,attach O '<pipe-entry>e0 -c set\ bt=nofile<enter>' 'view in $PAGER'
 
 macro pager \c_ <save-message> 'save message'
 macro pager j >>>>>
@@ -312,10 +326,12 @@ macro pager o q
 macro attach \cO '<pipe-entry>stdiner -bt b0<enter>' 'view in browser'
 
 macro browser \ea <exit>\ea 'go to previous mailbox'
+macro browser <space> <return>
+macro browser o <return>
 macro browser u p
 
-macro compose Y pfy 'send the message without PGP'
-macro compose v '<edit-from>^Ume-<tab>' 'select from'
+macro compose Y pcy 'send the message without PGP'
+macro compose v <edit-from>^Ume-<tab> 'select from'
 
 
 # Sidebar
@@ -332,8 +348,8 @@ set sidebar_width = 25
 
 bind index <space> sidebar-open
 
-macro index,pager \eN <sidebar-next> 'sidebar-next'
-macro index,pager \eP <sidebar-prev> 'sidebar-prev'
+macro index,pager \eN <sidebar-next> sidebar-next
+macro index,pager \eP <sidebar-prev> sidebar-prev
 macro index,pager \en <sidebar-next><sidebar-open> 'sidebar-next & sidebar-open'
 macro index,pager \ep <sidebar-prev><sidebar-open> 'sidebar-prev & sidebar-open'
 macro index,pager,compose ~ '<enter-command>toggle sidebar_visible<enter>' 'toggle sidebar'
@@ -342,10 +358,47 @@ macro index,pager,compose ~ '<enter-command>toggle sidebar_visible<enter>' 'togg
 # NeoMutt: NNTP
 # ----------------------------------------
 
-set news_cache_dir = ~/.mutt/cache/news
-set newsrc = ~/.mutt/newsrc
+set group_index_format = '%4C %M%N (%6n/%6s) %-45.45f %d'
+set news_cache_dir = $my_home/cache/news
+set nntp_context = 5000
+unset catchup_newsgroup
+unset newsrc
 
-bind index,pager \ei change-newsgroup
+bind browser + uncatchup
+bind browser - catchup
+bind browser \cR reload-active
+bind browser \eS subscribe-pattern
+bind browser \eU unsubscribe-pattern
+bind browser \es subscribe
+bind browser \eu unsubscribe
+
+
+# NeoMutt: Notmuch
+# ----------------------------------------
+
+# D : draft
+# F : flagged
+# P : passed
+# R : replied
+# S : unread (added when 'S' flag is not present)
+
+# nm_flagged_tag : flagged
+# nm_replied_tag : replied
+# nm_unread_tag  : unread
+
+set nm_exclude_tags = deleted,spam
+set nm_record_tags = sent
+set vfolder_format = '%3C %t %N %F %3l %-8.8u %-8.8g %8s (%5n/%5m) %d %f'
+
+# quasi-delete
+bind index \e< vfolder-window-backward
+bind index \e> vfolder-window-forward
+bind index,pager + entire-thread
+bind index,pager X vfolder-from-query
+bind index,pager \e<space> sidebar-toggle-virtual
+bind index,pager x change-vfolder
+
+macro index,pager \e<tab> <change-vfolder>? 'browse virtual folders'
 
 
 # NeoMutt: Other
@@ -354,11 +407,12 @@ bind index,pager \ei change-newsgroup
 set skip_quoted_offset = 5
 
 bind index \eL limit-current-thread
+bind index \e/ show-log-messages
 
 
 # Global Includes
 # ----------------------------------------
 
 source $alias_file
-source ~/.mutt/colors
-source ~/.mutt/accountsrc
+source $my_home/colors
+source $my_home/accounts

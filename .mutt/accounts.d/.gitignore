@@ -3,3 +3,5 @@
 !/.gitignore
 !/example*
 !/local*
+!/post_*
+!/pre_*

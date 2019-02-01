@@ -1,0 +1,7 @@
+# vim: ft=muttrc
+
+set my_local = $my_mail/local
+
+folder-hook (^$my_local) 'source $my_accounts/local_hook'
+
+sidebar_whitelist $my_local $my_local/INBOX

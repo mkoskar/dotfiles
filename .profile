@@ -72,7 +72,6 @@ export LESSHISTFILE=-
 export LESSOPEN='|highlight --quiet -O xterm256 -s bluegreen %s'
 export MAILDIR=~/mail
 export MANSECT=0:9:2:3:7:8:6:1:4:5
-export NNTPSERVER=snews://news.eternal-september.org
 export NO_AT_BRIDGE=1
 export ORACLE_HOME=/opt/instantclient
 export PARALLEL_SHELL=/bin/bash
@@ -114,7 +113,6 @@ export BZR_LOG=$XDG_DATA_HOME/bzr.log
 export CCACHE_DIR=$XDG_CACHE_HOME/ccache
 export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc
 export MPLAYER_HOME=$XDG_CONFIG_HOME/mplayer
-export NOTMUCH_CONFIG=$XDG_CONFIG_HOME/notmuch
 export XAUTHORITY=$XDG_DATA_HOME/xorg/Xauthority
 
 [ "$_PATH" ] || export _PATH=$PATH

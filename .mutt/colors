@@ -75,9 +75,9 @@ color index             color244        color233    ~v
 #color compose security_none
 #color compose security_sign
 
+#color sidebar_highlight
 #color sidebar_indicator
 #color sidebar_spoolfile
 color sidebar_divider   color233        default
 color sidebar_flagged   brightred       default
-color sidebar_highlight black           color245
 color sidebar_new       brightwhite     default

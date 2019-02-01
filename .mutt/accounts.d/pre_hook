@@ -1,0 +1,49 @@
+# vim: ft=muttrc
+
+set my_base = $my_mail
+set folder = $my_base
+
+set copy
+set postpone = ask-yes
+unset from
+unset mbox
+unset move
+
+set spoolfile = ^
+set my_cur = $spoolfile
+
+set spoolfile = $my_base/_spoolfile_
+set record = $my_base/_record_
+set postponed = $my_base/_postponed_
+set my_mbarchived = $my_base/_archived_
+set trash = $my_base/_trash_
+set my_mbtrash = $trash
+
+unset crypt_autosign
+unset hostname
+unset news_server       # NeoMutt: NNTP
+unset newsrc            # NeoMutt: NNTP
+unset nm_default_uri    # NeoMutt: notmuch
+unset pgp_sign_as       # this will use GPG's default-key
+unset query_command
+unset sendmail
+
+unhook save-hook
+
+unalternates *
+unsubscribe *
+
+bind index,pager m mail
+bind index,pager r reply
+bind index,pager f forward-message
+bind index,pager A noop
+bind index,pager \e1 noop
+bind index,pager \e2 noop
+bind index,pager \e3 noop
+bind index,pager \e4 noop
+bind index,pager \e0 noop
+bind index,pager \& noop
+bind index,pager,browser \ei noop
+
+macro index,pager y <change-folder>?<toggle-mailboxes> 'browse folder'
+macro index,pager \eI <change-folder>$my_news_spool<enter> 'open last visited newsgroup'

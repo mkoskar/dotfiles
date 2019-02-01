@@ -9,19 +9,16 @@ SyncState *
 # example
 # ----------------------------------------
 
-IMAPAccount example
+IMAPStore example-remote
 Host <host>
 User <user>
 PassCmd "authinfo.py <machine> <login>"
 SSLType IMAPS
-CertificateFile /etc/ssl/certs/ca-certificates.crt
-
-IMAPStore example-remote
-Account example
 
 MaildirStore example-local
 Path ~/mail/example/
 Inbox ~/mail/example/INBOX
+SubFolders Verbatim
 Flatten .
 
 Channel example

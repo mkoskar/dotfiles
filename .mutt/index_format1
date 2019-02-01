@@ -2,4 +2,4 @@
 
 set index_format = '[%Z]  %D  %?y?%-25.25Y&%-25.25L?  %s'
 #set index_format = '[%Z]  %@date@  %?y?%-25.25Y&%-25.25L?  %@collapsed@%s'
-macro index,pager \e\140 '<enter-command>source ~/.mutt/index_format2<enter>'
+macro index,pager \e\140 '<enter-command>source $my_home/index_format2<enter>'

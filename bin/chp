@@ -55,17 +55,19 @@ if [[ ! $profile ]]; then
     )
 fi
 
-[[ ! $profile ]] && exit 1
+[[ $profile ]] || exit 1
 
 path=~/.config/$bin_name
 path_skel=$path.skel
 
 [[ $profile = default ]] || path+=.$profile
 
-if [[ ! -e $path && $profile != skel ]]; then
-    [[ -e $path_skel ]] && cp -a "$path_skel" "$path"
+if [[ $profile != skel ]]; then
+    if [[ ! -e $path && -e $path_skel ]]; then
+        cp -a "$path_skel" "$path"
+    fi
 
-    if [[ $profile != default ]]; then
+    if [[ $profile != default && ! -e $path/theme ]]; then
         mkdir -p "$path"/theme
         cd "$path"/theme
 

@@ -1,7 +1,10 @@
 # vim: ft=muttrc
 
-set from = $USER
 set my_base = $my_local
 
-# Mailboxes
+set from = $USER
+
 set spoolfile = $my_local/INBOX
+unset trash
+
+source $my_accounts/post_hook.inc

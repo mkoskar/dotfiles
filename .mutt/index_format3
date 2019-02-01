@@ -2,4 +2,4 @@
 
 set index_format = '[%Z]  %D  %-25.25a  %s'
 #set index_format = '[%Z]  %@date@  %-25.25a  %@collapsed@%s'
-macro index,pager \e\140 '<enter-command>source ~/.mutt/index_format1<enter>'
+macro index,pager \e\140 '<enter-command>source $my_home/index_format1<enter>'
