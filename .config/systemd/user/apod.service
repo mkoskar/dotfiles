@@ -4,5 +4,5 @@ Description=%N service
 [Service]
 Type=oneshot
 SyslogIdentifier=%N
-ExecStart=/bin/bash -c 'apod get'
-ExecStart=-/bin/bash -c 'apod set'
+ExecStart=/bin/sh -c 'apod get'
+ExecStart=-/bin/sh -c 'apod set'

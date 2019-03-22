@@ -4,7 +4,7 @@ set -eu
 
 cd "${BASH_SOURCE%/*}"
 
-(( EUID )) && odir=$PWD || odir='/etc/terminfo'
+(( EUID )) && odir=$PWD || odir=/etc/terminfo
 
-export TERMINFO='/usr/share/terminfo'
+export TERMINFO=/usr/share/terminfo
 tic -a -o "$odir" custom.tic

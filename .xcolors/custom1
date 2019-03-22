@@ -24,38 +24,38 @@
 
 ! ----------------------------------------
 
-#define TCOLOR_FG #000000
-#define TCOLOR_BG #ffffff
-#define TCOLOR_CUR #000000
+#define TCOLOR_FG #aeaeae
+#define TCOLOR_BG #000000
+#define TCOLOR_CUR #dddddd
 
 ! black
-#define TCOLOR0 #000000
+#define TCOLOR0 #050505
 #define TCOLOR8 #4d4d4d
 
 ! red
-#define TCOLOR1 #cd0000
-#define TCOLOR9 #ff0000
+#define TCOLOR1 #9d2d2d
+#define TCOLOR9 #c04f4f
 
 ! green
-#define TCOLOR2 #00cd00
-#define TCOLOR10 #00ff00
+#define TCOLOR2 #45a345
+#define TCOLOR10 #70c066
 
 ! yellow
-#define TCOLOR3 #cdcd00
-#define TCOLOR11 #ffff00
+#define TCOLOR3 #db9c2e
+#define TCOLOR11 #d4c668
 
 ! blue
-#define TCOLOR4 #0000cd
-#define TCOLOR12 #0000ff
+#define TCOLOR4 #384580
+#define TCOLOR12 #606cb5
 
 ! magenta
-#define TCOLOR5 #cd00cd
-#define TCOLOR13 #ff00ff
+#define TCOLOR5 #a43fa4
+#define TCOLOR13 #be63be
 
 ! cyan
-#define TCOLOR6 #00cdcd
-#define TCOLOR14 #00ffff
+#define TCOLOR6 #229f9f
+#define TCOLOR14 #68bbbb
 
 ! white
-#define TCOLOR7 #e5e5e5
-#define TCOLOR15 #ffffff
+#define TCOLOR7 #aeaeae
+#define TCOLOR15 #dddddd

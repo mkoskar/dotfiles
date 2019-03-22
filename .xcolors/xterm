@@ -3,6 +3,7 @@
 #undef TCOLOR_FG
 #undef TCOLOR_BG
 #undef TCOLOR_CUR
+
 #undef TCOLOR0
 #undef TCOLOR1
 #undef TCOLOR2
@@ -11,6 +12,7 @@
 #undef TCOLOR5
 #undef TCOLOR6
 #undef TCOLOR7
+
 #undef TCOLOR8
 #undef TCOLOR9
 #undef TCOLOR10
@@ -20,22 +22,40 @@
 #undef TCOLOR14
 #undef TCOLOR15
 
+! ----------------------------------------
+
 #define TCOLOR_FG #000000
 #define TCOLOR_BG #ffffff
 #define TCOLOR_CUR #000000
+
+! black
 #define TCOLOR0 #000000
-#define TCOLOR1 #cd0000
-#define TCOLOR2 #00cd00
-#define TCOLOR3 #cdcd00
-#define TCOLOR4 #0000ee
-#define TCOLOR5 #cd00cd
-#define TCOLOR6 #00cdcd
-#define TCOLOR7 #e5e5e5
 #define TCOLOR8 #7f7f7f
+
+! red
+#define TCOLOR1 #cd0000
 #define TCOLOR9 #ff0000
+
+! green
+#define TCOLOR2 #00cd00
 #define TCOLOR10 #00ff00
+
+! yellow
+#define TCOLOR3 #cdcd00
 #define TCOLOR11 #ffff00
+
+! blue
+#define TCOLOR4 #0000ee
 #define TCOLOR12 #5c5cff
+
+! magenta
+#define TCOLOR5 #cd00cd
 #define TCOLOR13 #ff00ff
+
+! cyan
+#define TCOLOR6 #00cdcd
 #define TCOLOR14 #00ffff
+
+! white
+#define TCOLOR7 #e5e5e5
 #define TCOLOR15 #ffffff

@@ -50,6 +50,7 @@
     ;sslverify = false
 
 [log]
+    date = human
     decorate = short
 
 [mailinfo]
@@ -66,7 +67,7 @@
     branch = false
 
 [pretty]
-    lg1 = %C(bold blue)%h%Creset %C(bold white)%an%Creset %C(bold green)(%ar)%Creset%C(bold yellow)%d%Creset%n %s
+    lg1 = %C(bold blue)%h%Creset %C(bold white)%an%Creset %C(bold green)(%ad)%Creset%C(bold yellow)%d%Creset%n %s
 
 [push]
     default = nothing

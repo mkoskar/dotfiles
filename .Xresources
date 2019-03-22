@@ -11,7 +11,6 @@ URxvt.termName:                 rxvt-unicode-256color
 !URxvt.intensityStyles:          false
 !URxvt.underlineColor:           #fdb436
 URxvt.colorBD:                  15
-URxvt.cursorColor2:             1
 URxvt.scrollColor:              gray40
 
 URxvt.font:                     xft:Terminus:pixelsize=16, \

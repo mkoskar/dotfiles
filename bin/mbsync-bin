@@ -21,3 +21,4 @@ cleanup() {
 trap cleanup EXIT
 
 /usr/bin/mbsync -q -c ~/.config/mbsyncrc "$1"
+notmuch --config ~/.config/notmuch.main new --quiet

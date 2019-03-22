@@ -163,7 +163,7 @@ are listed below.
 `selfie <bin/selfie>`_
     Simple selfie utility with a preview.
 
-`sort-blocks <bin/sort-blocks>`_
+`sortb <bin/sortb>`_
     Sort whitespace lines separated blocks.
 
 `srun <bin/srun>`_

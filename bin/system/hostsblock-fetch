@@ -9,7 +9,7 @@ trap cleanup EXIT
 cd "$tmpdir"
 
 export SHELL=$BASH
-export UAGENT=${UAGENT:-Mozilla/5.0}
+export UAGENT=${UAGENT:-Mozilla/5.0 (Windows NT 10.0; Win64; x64)}
 
 if (( EUID )); then
     export CONFDIR=~/.config/hostsblock
@@ -113,7 +113,7 @@ post_process() {
             if (NF > 1) target = $2
             else target = $1
             print target
-        }' <"$1" \ |
+        }' <"$1" |
         grep -vE -e '[^[:alnum:]._-]' -e '^[^[:alnum:]]' -e '[^[:alnum:]]$' \
             ${whitelist:+-f "$CONFDIR"/whitelist} |
         awk '{ print "0.0.0.0 " $0 }' >"$1".done

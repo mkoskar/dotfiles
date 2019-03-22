@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-#
-# See also:
-#
-#   https://0x0.st/
-#   https://paste.xinu.at/
 
 set -eu
 
@@ -25,16 +20,19 @@ outfile=$tmpdir/out
 
 [[ -s $infile ]] || exit 1
 
-case ${PB:-ptpb} in
+case ${PB:-0x0} in
+    0x0)
+        curl -sSLf -F file="@$infile" -o "$outfile" https://0x0.st/
+        cat "$outfile"
+        ;;
+    clbin)
+        curl -sSLf -F clbin="<$infile" -o "$outfile" https://clbin.com/
+        cat "$outfile"
+        ;;
     ix)
         # /<id>/<lexer>#n-<line>
         curl -sSLf -F f:1="@$infile" -o "$outfile" http://ix.io/
         cat "$outfile"
-        ;;
-    ptpb)
-        # /<id>/<lexer>/<formatter>#L-<line>
-        curl -sSf -F c="@$infile" -w '%{redirect_url}\n' -o "$outfile" \
-            https://ptpb.pw/\?r=1
         ;;
     sprunge)
         # /<id>?<lexer>#n-<line>

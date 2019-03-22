@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -eu
+
+for i in /sys/class/drm/*/edid; do
+    echo $'\n--------------------------------------------------'
+    printf '> %s\n\n' "$i"
+    edid-decode -c "$i" || true
+done
+echo

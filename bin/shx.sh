@@ -281,7 +281,6 @@ alias top='top -d 1'
 alias topdf='lowriter --convert-to pdf'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias w3m='w3m -v'
-alias weechat-plain='weechat -d "$(mktemp -d)"'
 alias wi='curl -sSLf http://wttr.in/ | head -n -2'
 alias xargs1='xargs -r -L 1'
 alias xinput-test='xinput test-xi2 --root'
@@ -291,8 +290,12 @@ alias ytdl-json='youtube-dl -J'
 alias ytdl-playlist="youtube-dl --yes-playlist -o ~/download/_youtube-dl/'%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
 alias ytdl-stdout="youtube-dl -f 'best[height<=?1080]' -o -"
 
+_ti_bold=$(tput bold)
+_ti_sgr0=$(tput sgr0)
+
 _() {
-    printf '%s @ %s in %s\n' "$USER" "${HOST:-$HOSTNAME}" "$PWD"
+    printf "%s @ %s in $_ti_bold%s$_ti_sgr0\n" \
+        "$USER" "${HOST:-$HOSTNAME}" "$PWD"
     gitroot=$(git rev-parse --git-dir 2>/dev/null) || return 0
     printf '\n> %s\n' "$gitroot"
     git branch --points-at HEAD --format='%(HEAD) %(color:bold yellow)%(refname:short)%(color:reset) %(objectname:short) %(if)%(upstream)%(then)[%(color:bold yellow)%(upstream:short)%(color:reset)%(if)%(upstream:track)%(then): %(color:bold red)%(upstream:track,nobracket)%(color:reset)%(end)]%(end) %(subject)'

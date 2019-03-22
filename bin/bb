@@ -324,7 +324,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     unix-history            b https://upload.wikimedia.org/wikipedia/commons/c/cd/Unix_timeline.en.svg
     unix-history1           b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
     url                     b https://url.spec.whatwg.org/
-    usb-connectors          b https://en.wikipedia.org/wiki/USB#Host_and_device_interface_receptacles
+    usb-connectors          b https://en.wikipedia.org/wiki/USB_hardware#Connectors
     util-linux              b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
     video-standards         b https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Vector_Video_Standards2.svg/1024px-Vector_Video_Standards2.svg.png
     w                       b https://en.wikipedia.org/w/index.php\?search={u}

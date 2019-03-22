@@ -1,6 +1,6 @@
 ! vim: ft=xdefaults
 
-#include "default0"
+#include "default"
 
 #undef TCOLOR_BG
 #undef TCOLOR0

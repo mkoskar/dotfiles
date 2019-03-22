@@ -30,8 +30,8 @@ set username usenet
 posting_host mkoskar.com
 visible_headers Date:,Followup-To:,From:,Newsgroups:,Reply-To:,Subject:
 
-%nnrpaccess snews://news.eternal-september.org username password
-server snews://news.eternal-september.org .local/share/slrn/newsrc
+%nnrpaccess snews://news.eternal-september.org:563 username password
+server snews://news.eternal-september.org:563 .local/share/slrn/newsrc
 
 group_display_format 0 " %F %-5u  %40n  %d"
 group_display_format 1 " %F %-5u [%-5u]  %40n  %d"

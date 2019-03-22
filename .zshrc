@@ -16,13 +16,15 @@ HISTSIZE=1000
 SAVEHIST=5000
 TMPPREFIX=${TMPDIR:-/tmp}/zsh
 
-fpath=(~/.zfunctions $fpath)
-
 typeset -gU path fpath cdpath
+fpath=(~/.zfunctions $fpath)
 
 zmodload zsh/complist
 zmodload zsh/datetime
 zmodload zsh/system
+
+zmodload zsh/parameter
+: $userdirs
 
 autoload -Uz add-zsh-hook
 autoload -Uz bracketed-paste-magic
@@ -38,7 +40,6 @@ setopt auto_cd
 setopt auto_pushd
 setopt auto_resume
 setopt brace_ccl
-setopt cdable_vars
 setopt combining_chars
 setopt complete_in_word
 setopt extended_history
@@ -75,11 +76,19 @@ unsetopt hist_beep
 unsetopt hup
 
 
-# Aliases
+# Aliases / Named directories
 # ----------------------------------------
 
 unalias run-help &>/dev/null
 alias help='run-help'
+
+hash -d fonts=~/.local/share/fonts
+hash -d journal=/var/log/journal
+hash -d logs=/var/log
+hash -d systemd-system=/etc/systemd/system
+hash -d systemd-user=~/.config/systemd/user
+hash -d udev.rules.d=/etc/udev/rules.d
+hash -d xorg.conf.d=/etc/X11/xorg.conf.d
 
 
 # Window Title
@@ -316,6 +325,12 @@ compinit -d "$zcompdump"
 #   Used to discriminate between the types of matches a completion
 #   function can generate in a certain context; see 'Standard Tags'.
 
+# See also:
+#
+#   ^X? _complete_debug
+#   ^XH _complete_help
+#   ^Xt _complete_tag
+
 zstyle ':completion:*' completer _complete _match
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' insert-unambiguous true
@@ -327,7 +342,8 @@ zstyle ':completion:*:complete:*:*:*' use-cache true
 
 zstyle ':completion:*:*:(rm|kill|diff):*:*' ignore-line other
 zstyle ':completion:*:*:-command-:*:*' group-order aliases reserved-words builtins functions commands
-zstyle ':completion:*:*:cd:*:*' group-order named-directories directory-stack path-directories local-directories
+zstyle ':completion:*:*:-tilde-:*:*' group-order named-directories users
+zstyle ':completion:*:*:cd:*:*' group-order path-directories local-directories
 zstyle ':completion:*:*:kill:*:*' force-list always
 zstyle ':completion:*:*:kill:*:*' insert-ids single
 zstyle ':completion:*:*:kill:*:*' menu true select

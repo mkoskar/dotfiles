@@ -35,7 +35,7 @@ export XDG_RUNTIME_DIR=/run/user/$UID
 
 export TMPDIR=/tmp/$USER
 [ -e "$TMPDIR" ] || mkdir -m 700 "$TMPDIR"
-if [ "$(stat -c '%a' "$TMPDIR")" != 700 ]; then
+if [ "$(stat -c %a "$TMPDIR")" != 700 ]; then
     printf '%s has wrong access rights\n' "$TMPDIR" >&2
     exit 1
 fi
@@ -90,7 +90,7 @@ export TMUX_TMPDIR=$TMPDIR
 export UAGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'
 export VDPAU_DRIVER=va_gl
 
-if hash fuxx 2>/dev/null; then
+if hash fuzz 2>/dev/null; then
     eval "$(fuzz -)"
 fi
 

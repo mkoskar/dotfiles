@@ -513,7 +513,7 @@ nnoremap <silent> <Leader>ft :filetype detect<CR>
 xnoremap <silent> <Leader>ss :sort<CR>
 xnoremap <silent> <Leader>su :sort u<CR>
 xnoremap <silent> <Leader>sr :sort!<CR>
-xnoremap <silent> <Leader>sb :!sort-blocks<CR>
+xnoremap <silent> <Leader>sb :!sortb<CR>
 
 " Working with diffs
 nnoremap <silent> <Leader>d; :,diffget<CR>
@@ -874,8 +874,9 @@ endfunction
 command! -bang -bar Reload call utils#tryCatchCall('<SID>Reload', <q-bang>)
 nnoremap <silent> <Leader>rr :Reload<CR>
 
-function! s:ReloadT(bang, ...) abort
-    let d = get(a:, 1, 1)
+function! s:ReloadT(bang, d) abort
+    let d = str2nr(a:d)
+    let d = d == 0 ? 1 : d
     try
         let v:statusmsg = ''
         while 1
@@ -986,5 +987,5 @@ augroup vimrc_base
     autocmd FileType {c,cpp}{,.*} let &l:path = '.,,**,/usr/include'
 
     autocmd FileType make setl ts=4 sw=4 noet
-    autocmd FileType rst setl ts=8 sw=3
+    autocmd FileType rst setl ts=8 sw=3 fdm=manual
 augroup END
