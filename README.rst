@@ -112,9 +112,6 @@ are listed below.
 `menuer <bin/menuer>`_
     Turn STDIN lines into parametrized menu.
 
-`mtp <bin/mtp>`_
-    Simple ``jmtpfs`` frontend.
-
 `osd <bin/osd>`_, `osdd <bin/osdd>`_
     OSD based on improved version of ``aosd_cat``.
 

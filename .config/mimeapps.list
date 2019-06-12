@@ -143,6 +143,8 @@ video/x-msvideo=mpv.desktop
 video/x-ogm+ogg=mpv.desktop
 video/x-theora=mpv.desktop
 
+x-scheme-handler/viber=viber.desktop
+
 [Removed Associations]
 application/pdf=gimp.desktop;inkscape.desktop
 application/postscript=gimp.desktop;inkscape.desktop

@@ -81,10 +81,10 @@ xkb_default() {
 
 	        // !accel (accel=no) works despite xkbcomp reporting an error:
 	        // Error: Field accel is not defined for an action of type MovePtr
-	        key <LatK> { [ MovePtr(y=-50,!accel), MovePtr(y=-1) ] };
-	        key <LatJ> { [ MovePtr(y=+50,!accel), MovePtr(y=+1) ] };
-	        key <LatH> { [ MovePtr(x=-50,!accel), MovePtr(x=-1) ] };
-	        key <LatL> { [ MovePtr(x=+50,!accel), MovePtr(x=+1) ] };
+	        key <LatK> { [ MovePtr(y=-25,!accel), MovePtr(y=-1) ] };
+	        key <LatJ> { [ MovePtr(y=+25,!accel), MovePtr(y=+1) ] };
+	        key <LatH> { [ MovePtr(x=-25,!accel), MovePtr(x=-1) ] };
+	        key <LatL> { [ MovePtr(x=+25,!accel), MovePtr(x=+1) ] };
 
 	        key <LatU> { [ PtrBtn(button=1) ] };
 	        key <LatI> { [ PtrBtn(button=2) ] };
@@ -127,24 +127,16 @@ xkb_default() {
 
 if [[ ${1-} = - ]]; then
 
-    xtest=$(xinput list --id-only 'keyboard:Virtual core XTEST keyboard')
-
-    # ----------------------------------------
-
     # shellcheck disable=SC2054
-    opts=(
-        -model pc105
-        -layout us,sk,cz
-        -variant cz_sk_de,qwerty,qwerty
-        -option
-        -option lv3:ralt_switch_multikey
-        -option terminate:ctrl_alt_bksp
-    )
-
+    #opts=(
+    #    -model pc105
+    #    -layout us,sk,cz
+    #    -variant cz_sk_de,qwerty,qwerty
+    #    -option
+    #    -option lv3:ralt_switch_multikey
+    #    -option terminate:ctrl_alt_bksp
+    #)
     #setxkbmap "${opts[@]}"
-    #[[ $xtest ]] && setxkbmap "${opts[@]}" -device "$xtest"
-
-    # ----------------------------------------
 
     xkb_default | xkbcomp -w 0 - "$DISPLAY"
 

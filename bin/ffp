@@ -130,6 +130,8 @@ if [[ ! -f user.js ]]; then
 
         [[ $profile = default ]] && cat >>user.js <<-'EOF'
 
+			//user_pref('network.cookie.cookieBehavior', 3);
+			//user_pref('network.cookie.lifetimePolicy', 1);
 			//user_pref('signon. rememberSignons', false);
 			//user_pref('webgl.disabled', true);
 
@@ -140,8 +142,6 @@ if [[ ! -f user.js ]]; then
 			user_pref('dom.event.clipboardevents.enabled', false);
 			user_pref('geo.enabled', false);
 			user_pref('media.av1.enabled', true);
-			user_pref('network.cookie.cookieBehavior', 3);
-			user_pref('network.cookie.lifetimePolicy', 2);
 		EOF
     fi
 fi

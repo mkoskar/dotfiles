@@ -37,7 +37,7 @@ case $ft in
         try astyle --mode=cs --style=break --indent-namespaces -pcH -s "$shiftwidth"
         ;;
     css)
-        try css-beautify -s "$shiftwidth" -f -
+        try css-beautify -s "$shiftwidth"
         try sass-convert --from css --to css --indent "$shiftwidth"
         ;;
     c | cpp | objc)
@@ -55,7 +55,7 @@ case $ft in
         try stylish-haskell
         ;;
     html)
-        try html-beautify -s "$shiftwidth" -f -
+        try html-beautify -s "$shiftwidth"
         try tidy -config ~/.tidyrc --indent-spaces "$shiftwidth" -wrap "$textwidth"
         ;;
     java)
@@ -65,10 +65,10 @@ case $ft in
         ;;
     javascript)
         #try clang-format
-        try js-beautify -s "$shiftwidth" -w "$textwidth" -f -
+        try js-beautify -s "$shiftwidth" -w "$textwidth"
         ;;
     json)
-        try js-beautify -s "$shiftwidth" -f -
+        try js-beautify -s "$shiftwidth"
         ;;
     markdown)
         try remark --silent --no-color

@@ -987,5 +987,5 @@ augroup vimrc_base
     autocmd FileType {c,cpp}{,.*} let &l:path = '.,,**,/usr/include'
 
     autocmd FileType make setl ts=4 sw=4 noet
-    autocmd FileType rst setl ts=8 sw=3 fdm=manual
+    autocmd FileType rst setl ts=8 sw=4 fdm=manual
 augroup END

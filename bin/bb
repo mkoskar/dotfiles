@@ -8,7 +8,7 @@ exec &>>~/.local/share/"$prgname".out
 
 kernel_release=$(uname -r)
 kernel_version=v${kernel_release%%-*}
-posix_base=http://pubs.opengroup.org/onlinepubs/9699919799
+posix_base=https://pubs.opengroup.org/onlinepubs/9699919799
 
 MENUER=$prgname menuer "$@" <<-EOF |
 
@@ -44,7 +44,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     bash-faq                b https://mywiki.wooledge.org/BashFAQ
     bash-guide              b https://mywiki.wooledge.org/FullBashGuide
     bash-guide1             b https://guide.bash.academy/index.html
-    bash-hackers            b http://wiki.bash-hackers.org/start
+    bash-hackers            b https://wiki.bash-hackers.org/start
     bash-pitfalls           b https://mywiki.wooledge.org/BashPitfalls
     bash-sheet              b https://mywiki.wooledge.org/BashSheet
     browserbench            b https://browserbench.org/
@@ -60,7 +60,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     chrome-manifest-ext     b https://developer.chrome.com/extensions/manifest
     chrome-searchcode       b https://cs.chromium.org/
     chrome-theming          b https://cs.chromium.org/chromium/src/chrome/browser/themes/browser_theme_pack.cc
-    cite                    b http://citeseerx.ist.psu.edu/search\?q={u}
+    cite                    b https://citeseerx.ist.psu.edu/search\?q={u}
     constellations          b https://en.wikipedia.org/wiki/88_modern_constellations#List
     country-codes           b https://en.wikipedia.org/wiki/ISO_3166-1#Current_codes
     cryptocurr              b https://coinmarketcap.com/
@@ -147,6 +147,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     html-spec               b https://html.spec.whatwg.org/multipage/
     http                    b https://tools.ietf.org/html/rfc2616
     i                       b https://www.ixquick.com/do/metasearch.pl\?query={u}
+    iban                    b https://en.wikipedia.org/wiki/International_Bank_Account_Number#IBAN_formats_by_country
     ii                      b https://www.ixquick.com/do/metasearch.pl\?cat=pics\&query={u}
     imdb                    b https://www.imdb.com/find\?q={u}
     imperial                b https://en.wikipedia.org/wiki/Imperial_units
@@ -158,19 +159,14 @@ MENUER=$prgname menuer "$@" <<-EOF |
     iso                     b https://standards.iso.org/ittf/PubliclyAvailableStandards/
     iss-sightings           b https://spotthestation.nasa.gov/sightings/view.cfm\?country=Slovakia\&region=None\&city=Partizanske
     iss-tracker             b http://wsn.spaceflight.esa.int/iss/
-    java                    b https://docs.oracle.com/javase/specs/jls/se9/html/index.html
-    java-changes            b https://docs.oracle.com/javase/9/language/toc.htm
-    java-jvm                b https://docs.oracle.com/javase/specs/jvms/se9/html/index.html
+    java                    b https://docs.oracle.com/javase
+    java-specs              b https://docs.oracle.com/javase/specs/index.html
     java-tutorials          b https://docs.oracle.com/javase/tutorial/reallybigindex.html
     java8-changes           b https://docs.oracle.com/javase/8/docs/technotes/guides/language/enhancements.html
-    jdk                     b https://docs.oracle.com/javase/9/docs/api/index.html\?overview-summary.html
-    jdk-docs                b https://docs.oracle.com/javase/9/
-    jdk8                    b https://docs.oracle.com/javase/8/docs/api/index.html\?overview-summary.html
-    jdk8-docs               b https://docs.oracle.com/javase/8/docs
-    jee                     b https://javaee.github.io/javaee-spec/javadocs/index.html\?overview-summary.html
+    jee-apis                b https://javaee.github.io/javaee-spec/javadocs/index.html\?overview-summary.html
     jee-docs                b https://javaee.github.io/glassfish/documentation
     jee-spec                b https://jcp.org/en/jsr/detail\?id=366
-    jee7                    b https://docs.oracle.com/javaee/7/api/index.html\?overview-summary.html
+    jee7-apis               b https://docs.oracle.com/javaee/7/api/index.html\?overview-summary.html
     jee7-docs               b https://docs.oracle.com/javaee/7/index.html
     jee7-spec               b https://jcp.org/en/jsr/detail\?id=342
     journals                b https://en.wikipedia.org/wiki/Lists_of_academic_journals
@@ -258,7 +254,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     qutebrowser             b https://qutebrowser.org/img/cheatsheet-big.png
     realworldhaskell        b http://book.realworldhaskell.org/read/
     regex-gnulib            b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html
-    regex-java              b https://docs.oracle.com/javase/9/docs/api/java/util/regex/Pattern.html
+    regex-java              b https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/util/regex/Pattern.html
     regex-js                b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
     regex-pcre              b https://www.pcre.org/original/doc/html/pcresyntax.html
     regex-posix             b "$posix_base"/basedefs/V1_chap09.html
@@ -316,10 +312,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     unicode                 b https://en.wikipedia.org/wiki/Plane_\(Unicode\)
     unicode-charts          b https://unicode.org/charts/
     unicode-emojis          b https://www.unicode.org/emoji/charts/full-emoji-list.html
-    unicode-gallery         b http://xahlee.info/comp/unicode_index.html
     unicode-math            b https://www.unicode.org/Public/math/revision-15/MathClassEx-15.html
-    unicode-table           b https://unicode-table.com/
-    unicode-table1          b https://codepoints.net/
     unix                    b https://publications.opengroup.org/standards/unix
     unix-history            b https://upload.wikimedia.org/wikipedia/commons/c/cd/Unix_timeline.en.svg
     unix-history1           b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
@@ -338,14 +331,14 @@ MENUER=$prgname menuer "$@" <<-EOF |
     x11                     b https://www.x.org/releases/current/doc/
     x11-resdb               b https://www.x.org/releases/current/doc/libXt/intrinsics.html#Loading_the_Resource_Database
     x11-translations        b https://www.x.org/releases/current/doc/libXt/intrinsics.html#Translation_Table_Syntax
-    x11-xkbguide            b http://www.charvolant.org/doug/xkb/html/index.html
+    x11-xkbguide            b https://www.charvolant.org/doug/xkb/html/index.html
     x11-xkbproto            b https://www.x.org/releases/current/doc/kbproto/xkbproto.html
     xcb-modules             b https://xcb.freedesktop.org/manual/modules.html
     xmonad                  b https://hackage.haskell.org/package/xmonad
     xmonad-contrib          b https://hackage.haskell.org/package/xmonad-contrib
     xorg-lists              b https://lists.x.org/
     xorg-repos              b https://cgit.freedesktop.org/xorg
-    yaml                    b http://yaml.org/refcard.html
+    yaml                    b https://yaml.org/refcard.html
     yt                      b https://www.youtube.com/results\?q={u}
     yt-channel              b https://www.youtube.com/results\?sp=EgIQAlAU\&q={u}
     yt-playlist             b https://www.youtube.com/results\?sp=EgIQA1AU\&q={u}
@@ -353,7 +346,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     zsh-changes             b https://github.com/zsh-users/zsh/blob/master/NEWS
 
     zz                      b https://www.slov-lex.sk/vyhladavanie-pravnych-predpisov
-    zz-o-prevadzke-vozidiel b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2018/106/
+    zz-o-premavke           b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2009/8/
+    zz-o-premavke-vyhlaska  b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2009/9/
     zz-obchodny-zakonnik    b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1991/513/
     zz-obciansky-zakonnik   b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1964/40/
     zz-ustava               b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1992/460/
