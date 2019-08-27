@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+{
+    ssh -Q help | while read -r opt; do
+        echo $'\n--------------------------------------------------'
+        printf '> ssh -Q %s\n\n' "$opt"
+        ssh -Q "$opt" </dev/null
+    done
+    echo
+} | $PAGER

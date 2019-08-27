@@ -47,11 +47,10 @@ MENUER=$prgname menuer "$@" <<-EOF |
     bash-hackers            b https://wiki.bash-hackers.org/start
     bash-pitfalls           b https://mywiki.wooledge.org/BashPitfalls
     bash-sheet              b https://mywiki.wooledge.org/BashSheet
+    batteries               b https://en.wikipedia.org/wiki/List_of_battery_sizes#Cylindrical_batteries
     browserbench            b https://browserbench.org/
     busybox                 b https://busybox.net/downloads/BusyBox.html
     c-faq                   b http://c-faq.com/
-    calib                   b https://www.xrite.com/online-color-test-challenge
-    calib1                  b http://www.lagom.nl/lcd-test/gamma_calibration.php
     charref                 b https://dev.w3.org/html5/html-author/charref
     chemspider              b https://www.chemspider.com/Search.aspx\?q={u}
     chrome-ext              b https://developer.chrome.com/extensions/devguide
@@ -180,6 +179,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     jsr-all                 b https://jcp.org/en/jsr/all\?sortBy=date
     latin-greek-roots       b https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English
     latin-phrases           b https://en.wikipedia.org/wiki/List_of_Latin_phrases
+    lcd-test                b http://www.lagom.nl/lcd-test/all_tests.php
     learnyouahaskell        b http://learnyouahaskell.com/chapters
     license                 b https://choosealicense.com/licenses/
     limnoria-subst          b https://github.com/ProgVal/Limnoria/blob/master/src/ircutils.py#L797
@@ -207,6 +207,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     maven-popular           b https://mvnrepository.com/popular
     mdev                    b https://git.busybox.net/busybox/plain/docs/mdev.txt
     mdn                     b https://developer.mozilla.org/en-US/search\?q={u}
+    memory-cards            b https://en.wikipedia.org/wiki/Comparison_of_memory_cards
     mime                    b https://www.iana.org/assignments/media-types/media-types.xhtml
     mongodb                 b https://docs.mongodb.org/manual/reference/
     morse-nato              b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
@@ -263,6 +264,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     regex101                b https://regex101.com/
     resolutions             b https://en.wikipedia.org/wiki/List_of_common_resolutions
     rfc                     b https://tools.ietf.org/rfc/index
+    rpi                     b https://www.raspberrypi.org/documentation/hardware/raspberrypi/README.md
     rst                     b http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
     rst-showcase!           b ~/projects/lab/docutils/showcase/build/html/index.html
     rst-sphinx              b https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html

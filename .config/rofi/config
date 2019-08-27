@@ -20,8 +20,8 @@ rofi.kb-move-char-back:         Left,Alt+h
 rofi.kb-move-char-forward:      Right,Control+f,Alt+l
 rofi.kb-move-front:             Control+a,Control+b
 rofi.kb-move-word-forward:      Alt+f,Alt+w
-rofi.kb-page-next:              Page_Down,Alt+n,Alt+period
-rofi.kb-page-prev:              Page_Up,Alt+p,Alt+comma
+rofi.kb-page-next:              Page_Down,Alt+n
+rofi.kb-page-prev:              Page_Up,Alt+p
 rofi.kb-primary-paste:          Control+V,Shift+Insert,Control+y
 rofi.kb-remove-word-back:       Control+w
 rofi.kb-remove-word-forward:    Alt+d

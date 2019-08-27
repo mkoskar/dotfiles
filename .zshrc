@@ -85,6 +85,7 @@ alias help='run-help'
 hash -d fonts=~/.local/share/fonts
 hash -d journal=/var/log/journal
 hash -d logs=/var/log
+hash -d run="$XDG_RUNTIME_DIR"
 hash -d systemd-system=/etc/systemd/system
 hash -d systemd-user=~/.config/systemd/user
 hash -d udev.rules.d=/etc/udev/rules.d

@@ -42,7 +42,7 @@ xkb_default() {
 	    xkb_types {
 	        include "complete"
 
-	        type "CUSTOM_1" {
+	        type "CUSTOM1" {
 	            modifiers= Shift+Alt+Control;
 	            map[Shift]= Level2;
 	            map[Alt]= Level3;
@@ -70,7 +70,7 @@ xkb_default() {
 	        include "terminate(ctrl_alt_bksp)"
 
 	        key <RTSH> {
-	            type= "CUSTOM_1",
+	            type= "CUSTOM1",
 	            [ Shift_R, Caps_Lock, ISO_Next_Group, MouseKeys_Enable ]
 	        };
 

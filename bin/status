@@ -115,10 +115,10 @@ if (( ! $# )); then
     status_pa_sink
     status_audio
     status_backlight
-    status_bluetooth
+    status_bluetooth && true
     status_dpms
-    status_touchpad
-    status_trackpoint_wheel
+    status_touchpad && true
+    status_trackpoint_wheel && true
     status_wifi
     status_xkb
     exit

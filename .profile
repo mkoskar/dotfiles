@@ -59,6 +59,9 @@ export JDK_HOME=/usr/lib/jvm/default
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.opengl=true -Dsun.java2d.xrender=true -Dswing.aatext=true'
 
+#export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent}
+export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh}
+
 export AUR_MAINTAINER=mkoskar
 export CCACHE_PATH=/usr/bin
 export DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
@@ -83,7 +86,6 @@ export QT_QPA_PLATFORMTHEME=gtk2
 export QUOTING_STYLE=literal
 export RANGER_LOAD_DEFAULT_RC=FALSE
 export SAL_USE_VCLPLUGIN=gtk
-export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent}
 export SYSTEMD_LESS=$LESS
 export TERMINFO_DIRS=/etc/terminfo:/usr/share/terminfo
 export TMUX_TMPDIR=$TMPDIR

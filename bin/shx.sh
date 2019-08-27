@@ -244,7 +244,7 @@ alias lsdiff='lsdiff -s'
 alias ltime='date +%T'
 alias makepkg-build='makepkg -srf'
 alias makepkg-rebuild='makepkg -Ccsrf'
-alias mnt=findmnt
+alias mnt='findmnt --real'
 alias moon='curl -sSLf http://wttr.in/moon | head -n -4'
 alias mount-loop='mount -o loop'
 alias mpv-debug='mpv --terminal=yes --msg-level=all=debug'
@@ -281,13 +281,16 @@ alias top='top -d 1'
 alias topdf='lowriter --convert-to pdf'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias w3m='w3m -v'
+alias watch='watch -n 1'
 alias wi='curl -sSLf http://wttr.in/ | head -n -2'
 alias xargs1='xargs -r -L 1'
 alias xinput-test='xinput test-xi2 --root'
+alias ytdl-audio-album="ytdl-audio --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
+alias ytdl-audio-all='ytdl-audio --yes-playlist'
 alias ytdl-audio='youtube-dl -f bestaudio/best -x'
 alias ytdl-formats='youtube-dl -F'
 alias ytdl-json='youtube-dl -J'
-alias ytdl-playlist="youtube-dl --yes-playlist -o ~/download/_youtube-dl/'%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
+alias ytdl-playlist="youtube-dl --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
 alias ytdl-stdout="youtube-dl -f 'best[height<=?1080]' -o -"
 
 _ti_bold=$(tput bold)
