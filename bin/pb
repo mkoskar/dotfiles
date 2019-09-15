@@ -25,18 +25,13 @@ case ${PB:-0x0} in
         curl -sSLf -F file="@$infile" -o "$outfile" https://0x0.st/
         cat "$outfile"
         ;;
-    clbin)
-        curl -sSLf -F clbin="<$infile" -o "$outfile" https://clbin.com/
-        cat "$outfile"
-        ;;
     ix)
         # /<id>/<lexer>#n-<line>
         curl -sSLf -F f:1="@$infile" -o "$outfile" http://ix.io/
         cat "$outfile"
         ;;
-    sprunge)
-        # /<id>?<lexer>#n-<line>
-        curl -sSLf -F sprunge="@$infile" -o "$outfile" http://sprunge.us/
+    rs)
+        curl -sSLf --data-binary "@$infile" -o "$outfile" https://paste.rs/
         cat "$outfile"
         ;;
     *)

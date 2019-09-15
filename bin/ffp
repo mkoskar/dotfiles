@@ -66,84 +66,97 @@ path=~/.config/$bin_name
 mkdir -p "$path"
 cd "$path"
 
-if [[ ! -f user.js ]]; then
+if [[ ! -f user.js.lock ]]; then
+
+    cat >user.js.in <<-'EOF'
+		user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+	EOF
+
     if [[ ! $profile =~ ^plain(-|$) ]]; then
-        cat >>user.js <<-'EOF'
-			//user_pref('security.ssl.require_safe_negotiation', true);
 
-			user_pref('accessibility.blockautorefresh', true);
-			user_pref('browser.ctrlTab.previews', true);
-			user_pref('browser.fixup.alternate.enabled', false);
-			user_pref('browser.newtabpage.directory.ping', '');
-			user_pref('browser.newtabpage.directory.source', '');
-			user_pref('browser.newtabpage.enabled', false);
-			user_pref('browser.newtabpage.enhanced', false);
-			user_pref('browser.search.geoSpecificDefaults', false);
-			user_pref('browser.shell.checkDefaultBrowser', false);
-			user_pref('browser.startup.homepage', 'about:blank');
-			user_pref('browser.startup.homepage_override.mstone', 'ignore');
-			user_pref('browser.startup.page', 3);
-			user_pref('browser.tabs.animate', false);
-			user_pref('browser.tabs.closeWindowWithLastTab', false);
-			user_pref('browser.tabs.warnOnClose', false);
-			user_pref('browser.tabs.warnOnCloseOtherTabs', false);
-			user_pref('browser.tabs.warnOnOpen', false);
-			user_pref('browser.urlbar.suggest.searches', true);
-			user_pref('datareporting.policy.dataSubmissionEnabled', false);
-			user_pref('devtools.chrome.enabled', true);
-			user_pref('devtools.command-button-measure.enabled', true);
-			user_pref('devtools.command-button-paintflashing.enabled', true);
-			user_pref('devtools.command-button-rulers.enabled', true);
-			user_pref('devtools.debugger.remote-enabled', true);
-			user_pref('devtools.dom.enabled', true);
-			user_pref('devtools.editor.keymap', 'vim');
-			user_pref('devtools.editor.tabsize', 4);
-			user_pref('devtools.inspector.showUserAgentStyles', true);
-			user_pref('devtools.scratchpad.enabled', true);
-			user_pref('devtools.webconsole.persistlog', true);
-			user_pref('devtools.webconsole.timestampMessages', true);
-			user_pref('plugin.defaultXpi.state', 1);
-			user_pref('plugin.state.flash', 1);
-			user_pref('plugin.state.java', 1);
-			user_pref('privacy.cpd.offlineApps', true);
-			user_pref('privacy.cpd.openWindows', true);
-			user_pref('privacy.cpd.siteSettings', true);
-			user_pref('reader.parse-on-load.enabled', false);
-			user_pref('security.ssl3.dhe_rsa_aes_128_sha', false);
-			user_pref('security.ssl3.dhe_rsa_aes_256_sha', false);
-			user_pref('toolkit.telemetry.archive.enabled', false);
-			user_pref('toolkit.telemetry.enabled', false);
-			user_pref('toolkit.telemetry.unified', false);
+        cat >>user.js.in <<-'EOF'
+
+			user_pref("accessibility.blockautorefresh", true);
+			user_pref("app.shield.optoutstudies.enabled", false);
+			user_pref("browser.ctrlTab.previews", true);
+			user_pref("browser.fixup.alternate.enabled", false);
+			user_pref("browser.newtabpage.directory.ping", "");
+			user_pref("browser.newtabpage.directory.source", "");
+			user_pref("browser.newtabpage.enabled", false);
+			user_pref("browser.newtabpage.enhanced", false);
+			user_pref("browser.search.geoSpecificDefaults", false);
+			user_pref("browser.shell.checkDefaultBrowser", false);
+			user_pref("browser.startup.homepage", "about:blank");
+			user_pref("browser.startup.homepage_override.mstone", "ignore");
+			user_pref("browser.startup.page", 3);
+			user_pref("browser.tabs.animate", false);
+			user_pref("browser.tabs.closeWindowWithLastTab", false);
+			user_pref("browser.tabs.warnOnClose", false);
+			user_pref("browser.tabs.warnOnCloseOtherTabs", false);
+			user_pref("browser.tabs.warnOnOpen", false);
+			user_pref("datareporting.healthreport.uploadEnabled", false);
+			user_pref("datareporting.policy.dataSubmissionEnabled", false);
+			user_pref("devtools.cache.disabled", true);
+			user_pref("devtools.chrome.enabled", true);
+			user_pref("devtools.command-button-measure.enabled", true);
+			user_pref("devtools.command-button-paintflashing.enabled", true);
+			user_pref("devtools.command-button-rulers.enabled", true);
+			user_pref("devtools.debugger.remote-enabled", true);
+			user_pref("devtools.dom.enabled", true);
+			user_pref("devtools.editor.keymap", "vim");
+			user_pref("devtools.editor.tabsize", 4);
+			user_pref("devtools.inspector.showUserAgentStyles", true);
+			user_pref("devtools.onboarding.telemetry.logged", true);
+			user_pref("devtools.scratchpad.enabled", true);
+			user_pref("devtools.webconsole.persistlog", true);
+			user_pref("devtools.webconsole.timestampMessages", true);
+			user_pref("devtools.webide.autoinstallADBExtension", false);
+			user_pref("devtools.webide.autoinstallADBHelper", false);
+			user_pref("network.dns.disablePrefetch", true);
+			user_pref("network.prefetch-next", false);
+			user_pref("plugin.defaultXpi.state", 1);
+			user_pref("plugin.state.java", 1);
+			user_pref("privacy.cpd.offlineApps", true);
+			user_pref("privacy.cpd.openWindows", true);
+			user_pref("privacy.cpd.siteSettings", true);
+			user_pref("reader.parse-on-load.enabled", false);
+			user_pref("security.ssl3.dhe_rsa_aes_128_sha", false);
+			user_pref("security.ssl3.dhe_rsa_aes_256_sha", false);
+			user_pref("toolkit.cosmeticAnimations.enabled", false);
+			user_pref("toolkit.telemetry.archive.enabled", false);
+			user_pref("toolkit.telemetry.enabled", false);
+			user_pref("toolkit.telemetry.unified", false);
 		EOF
 
-        [[ ! $profile =~ ^(dev|lab)(-|$) ]] && cat >>user.js <<-'EOF'
+        [[ ! $profile =~ ^(dev|lab)(-|$) ]] && cat >>user.js.in <<-'EOF'
 
-			user_pref('media.peerconnection.enabled', false);
-			user_pref('media.peerconnection.ice.default_address_only', true);
-			user_pref('network.http.pipelining', true);
-			user_pref('network.http.proxy.pipelining', true);
-			user_pref('network.http.referer.XOriginPolicy', 1);
-			user_pref('network.http.referer.spoofSource', true);
-			user_pref('privacy.donottrackheader.enabled', true);
-			user_pref('privacy.trackingprotection.enabled', true);
+			user_pref("media.peerconnection.enabled", false);
+			user_pref("media.peerconnection.ice.default_address_only", true);
+			user_pref("network.http.pipelining", true);
+			user_pref("network.http.proxy.pipelining", true);
+			user_pref("network.http.referer.XOriginPolicy", 1);
+			user_pref("network.http.referer.spoofSource", true);
+			user_pref("privacy.donottrackheader.enabled", true);
+			user_pref("privacy.trackingprotection.enabled", true);
 		EOF
 
-        [[ $profile = default ]] && cat >>user.js <<-'EOF'
+        [[ $profile = default ]] && cat >>user.js.in <<-'EOF'
 
-			//user_pref('network.cookie.cookieBehavior', 3);
-			//user_pref('network.cookie.lifetimePolicy', 1);
-			//user_pref('signon. rememberSignons', false);
-			//user_pref('webgl.disabled', true);
-
-			user_pref('beacon.enabled', false);
-			user_pref('browser.safebrowsing.enabled', false);
-			user_pref('browser.safebrowsing.malware.enabled', false);
-			user_pref('dom.battery.enabled', false);
-			user_pref('dom.event.clipboardevents.enabled', false);
-			user_pref('geo.enabled', false);
-			user_pref('media.av1.enabled', true);
+			//user_pref("network.cookie.cookieBehavior", 3);
+			//user_pref("network.cookie.lifetimePolicy", 1);
+			//user_pref("signon. rememberSignons", false);
+			//user_pref("webgl.disabled", true);
+			user_pref("beacon.enabled", false);
+			user_pref("browser.safebrowsing.enabled", false);
+			user_pref("browser.safebrowsing.malware.enabled", false);
+			user_pref("dom.battery.enabled", false);
+			user_pref("dom.event.clipboardevents.enabled", false);
+			user_pref("geo.enabled", false);
 		EOF
+
     fi
+
+    sed -r '/^\s*$/d' user.js.in | sort -u -o user.js
 fi
 
 mkdir -p chrome
@@ -156,9 +169,8 @@ case $profile in
     *)          frame_color='#ff9900' ;;
 esac
 
-if [[ ! -f userChrome.css ]]; then
-    [[ $profile != default ]] && cat >>userChrome.css <<-EOF
-
+if [[ ! -f userChrome.css.lock ]]; then
+    [[ $profile != default ]] && cat >userChrome.css <<-EOF
 		#TabsToolbar::before {
 		    content: "$profile";
 		    background: $frame_color;
@@ -166,7 +178,7 @@ if [[ ! -f userChrome.css ]]; then
 		    display: -moz-box;
 		    font-family: monospace;
 		    font-weight: bold;
-		    padding: 7px 5px 0;
+		    padding: 10px 7px 0 5px;
 		}
 	EOF
 fi

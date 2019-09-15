@@ -95,7 +95,6 @@ if [[ $profile != skel ]]; then
 		            "background_tab_incognito_inactive": $tab_color
 		        },
 		        "images": {
-		            "theme_ntp_attribution": "frame.png",
 		            "theme_ntp_background": "frame.png"
 		        },
 		        "properties": {

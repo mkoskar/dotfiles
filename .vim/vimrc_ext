@@ -4,7 +4,13 @@ let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 
 source ~/.vim/vimrc_base
 
+"packadd! deoplete
+"packadd! deoplete-ternjs
 "packadd! easymotion
+"packadd! jspc.vim
+"packadd! neomake
+"packadd! tern_for_vim
+packadd! ale
 packadd! bufexplorer
 packadd! dirvish
 packadd! easy-align
@@ -25,19 +31,8 @@ packadd! unimpaired
 packadd! vim-snippets
 packadd! visualrepeat
 
-"packadd! neomake
-packadd! ale
-
-"packadd! deoplete
-"packadd! deoplete-ternjs
-"packadd! jspc.vim
-"packadd! tern_for_vim
-
 augroup vimrc_ext_lazy_plugins
     autocmd!
-
-    "autocmd FileType python
-    "    \ call packadd ycm | call youcompleteme#Enable()
 augroup END
 
 
@@ -60,9 +55,11 @@ let ale_echo_msg_format = '[%linter%] %code%: %s'
 let ale_lint_on_enter = 1
 let ale_lint_on_insert_leave = 1
 let ale_lint_on_text_changed = 'normal'
-let ale_sh_shellcheck_exclusions = 'SC1003,SC1007,SC1083,SC2088,SC2191'
 let ale_sign_error = '>'
 let ale_sign_warning = '>'
+
+let ale_python_flake8_options = '--ignore=E265,E266'
+let ale_sh_shellcheck_exclusions = 'SC1003,SC1007,SC1083,SC2088,SC2191'
 
 nnoremap <silent> <C-Space> :ALEDetail<CR>
 nmap <silent> <Leader>aa <Plug>(ale_toggle)
@@ -79,6 +76,11 @@ let bufExplorerFindActive = 0
 let bufExplorerShowRelativePath = 1
 
 nnoremap <silent> <Leader>bb :BufExplorer<CR>
+
+augroup vimrc_ext_bufexplorer
+    autocmd!
+    autocmd FileType bufexplorer call utils#bufSpecial()
+augroup END
 
 
 " ctrlp
@@ -117,6 +119,12 @@ let deoplete#enable_smart_case = 1
 let dirvish_hijack_netrw = 0
 let dirvish_mode = ':sort | sort ,^.*/,'
 
+augroup vimrc_ext_dirvish
+    autocmd!
+    autocmd FileType dirvish call utils#bufSpecial()
+        \| nmap <buffer> q <Plug>(dirvish_quit)
+augroup END
+
 
 " easy-align
 " ----------------------------------------
@@ -144,18 +152,6 @@ map <Leader>\ <Plug>(easymotion-prev)
 
 let user_emmet_leader_key = '<C-Y>'
 let user_emmet_mode = 'i'
-
-
-" filebeagle
-" ----------------------------------------
-
-let filebeagle_hijack_netrw = 0
-let filebeagle_show_hidden = 1
-let filebeagle_show_line_numbers = 0
-let filebeagle_suppress_keymaps = 1
-
-"nmap <silent> - <Plug>FileBeagleOpenCurrentBufferDir
-"nmap <silent> <Leader>gg <Plug>FileBeagleOpenCurrentWorkingDir
 
 
 " fugitive
@@ -196,6 +192,11 @@ nnoremap <silent> <F2> :NERDTreeToggle<CR>
 nnoremap <silent> <Leader>tf :NERDTreeFind<CR>
 nnoremap <silent> <Leader>tt :NERDTreeToggle<CR>
 
+augroup vimrc_ext_nerdtree
+    autocmd!
+    autocmd FileType nerdtree call utils#bufSpecial()
+augroup END
+
 
 " syntastic
 " ----------------------------------------
@@ -214,9 +215,7 @@ let syntastic_style_error_symbol = '>'
 let syntastic_style_warning_symbol = '>'
 let syntastic_warning_symbol = '>'
 
-let syntastic_python_flake8_args = '--ignore=E501,E128'
 let syntastic_sh_checkers = ['shellcheck']
-let syntastic_sh_shellcheck_args = '--exclude=SC1007,SC1090,SC1091,SC2015,SC2032,SC2033,SC2088,SC2094,SC2139,SC2148'
 
 nnoremap <silent> <Leader>SS :SyntasticCheck<CR>
 nnoremap <silent> <Leader>Si :SyntasticInfo<CR>
@@ -266,11 +265,15 @@ let undotree_SplitWidth = 31
 
 nnoremap <silent> <F4> :silent UndotreeToggle<CR>
 
+augroup vimrc_ext_undotree
+    autocmd!
+    autocmd FileType undotree call utils#bufSpecial()
+augroup END
+
 
 " ----------------------------------------
 
 function! s:ColorsSet() abort
-
     hi link bufExplorerActBuf Directory
     hi link bufExplorerAltBuf Type
     hi link bufExplorerCurBuf Statement
@@ -290,24 +293,11 @@ function! s:ColorsSet() abort
     hi link EasyMotionShade Comment
     hi link EasyMotionTarget2First EasyMotionTarget
     hi link EasyMotionTarget2Second EasyMotionTarget
-
 endfunction
 
 call s:ColorsSet()
 
 augroup vimrc_ext
     autocmd!
-
     autocmd ColorScheme * call <SID>ColorsSet()
-
-    autocmd User FileBeagleReadPre
-        \  unmap <buffer> <BS>
-        \| nmap <buffer> <silent> u <Plug>(FileBeagleBufferFocusOnPrevious)
-
-    autocmd FileType bufexplorer call utils#bufSpecial()
-    autocmd FileType dirvish call utils#bufSpecial()
-    autocmd FileType filebeagle call utils#bufSpecial()
-    autocmd FileType nerdtree call utils#bufSpecial()
-    autocmd FileType tagbar call utils#bufSpecial()
-    autocmd FileType undotree call utils#bufSpecial()
 augroup END

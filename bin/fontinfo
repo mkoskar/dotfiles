@@ -14,7 +14,7 @@ if [[ ! -e $file ]]; then
     file=$(fc-match -f %{file} "$file")
 fi
 
-ftdump -n -V "$file" | awk -v file="$file" '
+ftdump -C -n "$file" | awk -v file="$file" '
     BEGIN {
         cmaps = 0
         printf "%s\n\n", file

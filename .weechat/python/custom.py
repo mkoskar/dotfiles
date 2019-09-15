@@ -81,7 +81,7 @@ def sort():
         w.buffer_merge(b.buffer, a.buffer)
         return b
 
-    for number, buffers in buffers_by_number.iteritems():
+    for number, buffers in buffers_by_number.items():
         if len(buffers) > 1:
             buffers.sort(key=lambda bi: [bi.short_name, bi.full_name])
             functools.reduce(merge, buffers)

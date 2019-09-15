@@ -68,5 +68,5 @@ def _():
         event.current_buffer.open_in_editor(event.cli)
 
 
-_()
+#_()
 del _

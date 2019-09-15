@@ -130,7 +130,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     google-projects         b https://opensource.google.com/projects/list/featured
     google-scholar          b https://scholar.google.com/citations\?view_op=top_venues
     google-search           b https://www.google.com/advanced_search
-    gpg-search              b https://pgp.mit.edu/
     gradle                  b https://gradle.org/docs/
     graphviz                b https://www.graphviz.org/doc/info/index.html
     greek-alphabet          b https://en.wikipedia.org/wiki/Greek_alphabet#Letters
@@ -235,6 +234,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     perf-full               b http://www.brendangregg.com/Perf/linux_perf_tools_full.png
     periodic-table          b https://en.wikipedia.org/wiki/Periodic_table#Overview
     perl                    b https://perldoc.perl.org/
+    pgp-search              b https://pgp.key-server.io/
     phrik                   b https://wiki.archlinux.org/index.php/Phrik
     pkg                     b https://www.archlinux.org/packages/\?q={u}
     posix                   b "$posix_base"/index.html
