@@ -5,14 +5,14 @@ set -eu
 (( $# )) || exit 2
 
 name=$1
-ts_begin=$(date +%s)
+ts_beg=$(date +%s)
 
 cleanup() {
     local retstat=$?
     local ts_end; ts_end=$(date +%s)
     printf "exiting after %d minutes, %d seconds (%d)" \
-        $(((ts_end-ts_begin)/60)) \
-        $(((ts_end-ts_begin)%60)) \
+        $(((ts_end-ts_beg)/60)) \
+        $(((ts_end-ts_beg)%60)) \
         $retstat
     if (( retstat )); then
         notify -u critical "mbsync $name"

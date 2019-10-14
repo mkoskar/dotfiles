@@ -1,8 +1,8 @@
 super + colon
-    wmutil spawn sp:adm term -n \{\} -g 180x48 trun mux adm
+    wmutil spawn sp:adm srun -Nsxl term -n \{\} -g 180x48 trun mux adm
 
 super + semicolon ; super + semicolon
-    wmutil spawn sp:mon term -n \{\} -g 180x48 trun mux mon
+    wmutil spawn sp:mon srun -Nsxl term -n \{\} -g 180x48 trun mux mon
 
 super + alt + {J,L,K,H}
     xdo resize {-h ,-w }{+,-}50
@@ -51,13 +51,13 @@ super + Print
     sshot
 
 super + p
-    dmenu_run
+    dmenu_run -
 
 super + semicolon ; T
     touchpad toggle
 
 super + semicolon ; a
-    b http://apod.nasa.gov/
+    srun -Nsxl b http://apod.nasa.gov/
 
 super + semicolon ; b
     bluetooth-toggle
@@ -87,16 +87,13 @@ super + semicolon ; {m,M}
     {markx-url,markx}
 
 super + semicolon ; {p,P}
-    playx{_,-menu}
+    srun -Nsxl playx{_,-menu}
 
 super + semicolon ; {u,U}
     unicode -x select{ fav,_}
 
-super + shift + Home
-    term trun wow
-
 super + shift + Return
-    term
+    srun -Nsxl term
 
 super + {F1,F2,F3}
     xkb {0,1,2}
@@ -108,7 +105,7 @@ super + {_,shift + }Insert
     clip{_, -p && notify 'PRIMARY -> CLIPBOARD'}
 
 super + {_,shift + }apostrophe
-    bb{_, dd}
+    srun -Nsxl bb{_, dd}
 
 # ----------------------------------------
 

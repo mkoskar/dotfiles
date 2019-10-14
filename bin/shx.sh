@@ -14,6 +14,7 @@ SHNAME=${SHNAME#-}
 SHNAME=${SHNAME#r}
 
 case $SHNAME in bash)
+    # shellcheck disable=SC2209
     shopt -q -o posix && SHNAME=sh
 esac
 
@@ -133,7 +134,7 @@ alias man-all-posix='man-all -s 0p,9p,2p,3p,7p,8p,6p,1p,4p,5p'
 
 alias pac=pacman
 alias paccheck='paccheck --quiet --depends --opt-depends --files --file-properties --sha256sum --require-mtree --db-files --backup --noextract --noupgrade'
-alias paclog-recent='paclog --after="$(date -I --date=-14days)"'
+alias paclog-recent='paclog --after="$(date -I -d -7days)"'
 alias pactree='pactree --color'
 
 # Target's detailed info
@@ -300,13 +301,18 @@ _ti_bold=$(tput bold)
 _ti_sgr0=$(tput sgr0)
 
 _() {
+    echo
     printf "%s @ %s in $_ti_bold%s$_ti_sgr0\n" \
         "$USER" "${HOST:-$HOSTNAME}" "$PWD"
+    echo
     gitroot=$(git rev-parse --git-dir 2>/dev/null) || return 0
-    printf '\n> %s\n' "$gitroot"
+    printf '> %s\n' "$gitroot"
     git branch --points-at HEAD --format='%(HEAD) %(color:bold yellow)%(refname:short)%(color:reset) %(objectname:short) %(if)%(upstream)%(then)[%(color:bold yellow)%(upstream:short)%(color:reset)%(if)%(upstream:track)%(then): %(color:bold red)%(upstream:track,nobracket)%(color:reset)%(end)]%(end) %(subject)'
+    echo '--------------------------------------------------'
+    git status -s --show-stash
     echo
     git --no-pager lg -3
+    echo
 }
 alias ,=_
 
@@ -324,10 +330,10 @@ alias ,,=__
 
 a() {
     local d=${1:-5m} ts; ts=$(command date -R)
-    printf '%s ... alarm after %s\n' "$ts" "$d"
+    printf '%s ... alarm in %s\n' "$ts" "$d"
     sleep "${1:-5m}"
     echo Beep...
-    notify -u critical Beep... "Time's up!"
+    notify -u critical "Beep... Time's up!"
     command mpv --load-scripts=no --loop-file=5 \
         /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
 }
@@ -399,6 +405,7 @@ ifs0() {
 '
 }
 
+# shellcheck disable=SC2120
 lsmod() {
     pgx command lsmod "$@"
 }
@@ -426,7 +433,7 @@ optset() {
 }
 
 path() {
-    tr : \\n <<<$PATH
+    tr : \\n <<<"$PATH"
 }
 
 pstree() {
@@ -438,6 +445,7 @@ reexec() {
     eval exec "$cmdline"
 }
 
+# shellcheck disable=SC1090
 reload() {
     . /etc/profile
     . ~/.profile
@@ -469,6 +477,7 @@ shi() {
     esac
 }
 
+# shellcheck disable=SC1090
 source_opt() {
     [ ! -e "$1" ] || . -- "$1"
 }
@@ -521,16 +530,32 @@ xrandr() {
 }
 
 xserver_log() {
-    local dispno; dispno=${1:-$(xserverq dispno)}
-    [ "$dispno" ] || return 1
-    $PAGER ~/.local/share/xorg/Xorg."$dispno".log
+    local dispno; dispno=$(env ${1+DISPLAY=:"$1"} xserverq dispno) || return 1
+    local logfile=~/.local/share/xorg/Xorg."$dispno".log
+    [ -e "$logfile" ] || return 1
+    $PAGER "$logfile"
 }
 alias xserver-log=xserver_log
 
+xserver_reset() {
+    confirm 'Careful! Continue?' n || return 0
+    local pid; pid=$(env ${1+DISPLAY=:"$1"} xserverq pid) || return 1
+    kill -s HUP "$pid"
+}
+alias xserver-reset=xserver_reset
+
+xserver_terminate() {
+    confirm 'Careful! Continue?' n || return 0
+    local pid; pid=$(env ${1+DISPLAY=:"$1"} xserverq pid) || return 1
+    kill "$pid"
+}
+alias xserver-terminate=xserver_terminate
+
 xsession_out() {
-    local dispno; dispno=${1:-$(xserverq dispno)}
-    [ "$dispno" ] || return 1
-    $PAGER ~/.local/share/xorg/xsession."$dispno".out
+    local screen; screen=$(env ${1+DISPLAY=:"$1"} xserverq screen) || return 1
+    local outfile=~/.local/share/xorg/xsession."$screen".out
+    [ -e "$outfile" ] || return 1
+    $PAGER "$outfile"
 }
 alias xsession-out=xsession_out
 

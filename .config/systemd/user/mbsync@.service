@@ -4,4 +4,4 @@ Description=%N service
 [Service]
 Type=oneshot
 SyslogIdentifier=%N
-ExecStart=/bin/sh -c 'mbsync-bin %i'
+ExecStart=%h/bin/mbsync-bin %i

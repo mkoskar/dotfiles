@@ -2,27 +2,18 @@
 
 set -eu
 
-if [[ ! ${VIMSERVER-} && ${TMUX-} ]]; then
-    IFS=, read -r -a var <<<"$TMUX"
-    export VIMSERVER=$TMPDIR/nvim-tmux-${var[1]}-${var[2]}
-fi
-[[ ${VIMSERVER-} ]] || exit 1
-
-(( $# )) || set -- .
+[[ ${TMUX-} ]] || exit 1
+IFS=, read -r -a tmux <<<"$TMUX"
+name=ee.${tmux[1]}.${tmux[2]}
 
 case ${VIMBIN:-vim} in
     vim)
-        exec vim --servername "$VIMSERVER" \
-            --remote-tab-silent "$@"
+        exec vim --servername "$name" --remote-tab-silent "$@"
         ;;
     nvim)
-        if [[ -e $VIMSERVER ]]; then
-            nvr --servername "$VIMSERVER" \
-                --remote-tab "$@" \
-                -c 'doau BufEnter' &>/dev/null && exit
-        fi
-        # shellcheck disable=SC2016
-        exec nvim --cmd 'call serverstart($VIMSERVER)' "$@"
+        addr=$XDG_RUNTIME_DIR/$name
+        [[ -e $addr ]] || exec nvim --listen "$addr" "$@"
+        exec nvr --servername "$addr" --remote-tab "$@"
         ;;
     *)
         exit 2

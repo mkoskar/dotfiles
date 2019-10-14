@@ -1,37 +1,44 @@
 #!/usr/bin/env bash
 
-set -u
+set -eu
 
 export NOOSD=1
 
-# shellcheck disable=SC2034
-args=("$@")
-
-xserver=$(xserverq name)
-declare -i xorg=0
-[[ $xserver = Xorg ]] && xorg=1
-
-pre_hook() { :; }
 post_hook() { apod set & }
 
 src=~/bin/xscreen.$HOSTNAME
 # shellcheck disable=SC1090
 [[ -e $src ]] && . "$src"
 
-pre_hook
+xserver=$(xserverq name)
+dispno=$(xserverq dispno)
 
-if (( xorg )); then
-    (sleep 1; backlight-auto) &
-    xrandr --dpi 96
-    touchpad off
-    trackpoint-wheel on
-fi
+set +e
 
-xset b off s off dpms 0 0 300 r rate 500 35
+xset b off s off r rate 500 35
+xrdb -load ~/.Xresources
+
+case $xserver in
+    Xorg)
+        (sleep 1; exec backlight-auto) &
+        xconfig=$(<"$XDG_RUNTIME_DIR/xorg/xconfig:$dispno")
+        layout_hook_"$xconfig" "$@"
+        xrandr --dpi 96
+        xset dpms 0 0 300
+        touchpad off
+        trackpoint-wheel on
+        ;;
+    Xephyr)
+        xrdb -merge - <<<'Xft.dpi: 96'
+        xrandr &>/dev/null # fixes screen after resize
+        ;;
+esac
+
+xkb -
+numlockx on
+
 xsetroot -cursor_name left_ptr
 hsetroot || xsetroot -solid black
-numlockx on
-xkb -
 
 post_hook
 true

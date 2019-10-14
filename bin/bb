@@ -270,6 +270,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     rst-sphinx              b https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html
     rtfm-faqs               b ftp://rtfm.mit.edu/pub/faqs/
     rtfm-usenet             b ftp://rtfm.mit.edu/pub/usenet/
+    russian-alphabet        b https://en.wikipedia.org/wiki/Russian_alphabet#Table
     rust                    b https://doc.rust-lang.org/reference/
     rust-api                b https://doc.rust-lang.org/std/
     rust-book               b https://doc.rust-lang.org/book/

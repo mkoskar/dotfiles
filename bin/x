@@ -1,17 +1,4 @@
 #!/usr/bin/env bash
-#
-# X session startup script.
-#
-# * display number will be the same as currently active VT number
-# * continue only if display number is not used already
-# * client: ~/bin/xsession "$@"
-# * server: /usr/lib/Xorg
-#
-# If started as 'xx':
-#
-# * display number will be the first free starting with 91
-# * client: ~/bin/xsession "$@"
-# * server: /usr/bin/Xephyr
 
 set -eu
 
@@ -24,8 +11,14 @@ fi
 
 # ----------------------------------------
 
-datadir=~/.local/share/xorg
-mkdir -p "$datadir"
+redir() {
+    local dispno=$1
+    local datadir=~/.local/share/xorg
+    mkdir -p "$datadir"
+    exec &>"$datadir/$prgname.$dispno.out"
+    echo $'\n--------------------------------------------------'
+    printf '> %s: %s\n\n' "$prgname" "${*:2}" >&2
+}
 
 xauthset() {
     local dispno=$1
@@ -33,68 +26,113 @@ xauthset() {
     xauth -q add ":$dispno" . "$cookie" &>/dev/null
 }
 
+sdu() { systemctl --user "$@"; }
 
-# /usr/bin/Xephyr
 # ----------------------------------------
 
-if [[ $prgname = xx ]]; then
-    for (( dispno=91; 1; dispno++ )); do
-        [[ -e /tmp/.X$dispno-lock ]] || break
-    done
+case $prgname in
+    xx)
+        for (( dispno=91; 1; dispno++ )); do
+            [[ -e /tmp/.X$dispno-lock ]] || break
+        done
 
-    xauthset "$dispno"
+        (( $# )) || set -- openbox
 
-    unset XSESSION
-    xinit ~/bin/xsession "$@" -- \
-        /usr/bin/Xephyr ":$dispno" \
-        -dpi 96 \
-        -resizeable \
-        &>"$datadir/xsession.$dispno.out" &
-    exit
-fi
+        sargs=(
+            /usr/bin/Xephyr ":$dispno"
+            -dpi 96
+            -noreset
+            -resizeable
+            -verbosity 10
+        )
+        ;;
 
+    *)
+        vt=$(</sys/class/tty/tty0/active)
+        vtno=${vt##tty}
+        dispno=$vtno
+        lockfile=/tmp/.X$dispno-lock
 
-# /usr/lib/Xorg
+        if [[ -e $lockfile ]]; then
+            read -r pid <"$lockfile"
+            printf '\nDisplay %s is currently in use (pid=%s).\n\n' \
+                "$dispno" "$pid"
+            if ps --pid "$pid"; then
+                echo
+                exit 1
+            else
+                echo
+                rm -f "$lockfile"
+            fi
+        fi
+
+        xconfig=${XCONFIG-}
+        if [[ ! $xconfig ]]; then
+            case $HOSTNAME in
+                mirci)
+                    ;;
+            esac
+            [[ $xconfig ]] || xconfig=default
+        fi
+
+        fqxconfig=xorg.conf.$HOSTNAME
+        [[ $xconfig = default ]] || fqxconfig+=.$xconfig
+
+        xcfile=$XDG_RUNTIME_DIR/xorg/xconfig:$dispno
+        mkdir -p "${xcfile%/*}"
+        printf '%s\n' "$xconfig" >"$xcfile"
+
+        # shellcheck disable=SC2015
+        if (( ! $# )); then
+            case $HOSTNAME in
+                mirci)
+                    case $xconfig in
+                        default)
+                            (( dispno == 1 )) &&
+                                set -- main ||
+                                set -- openbox
+                            ;;
+                        zaphod)
+                            (( dispno == 1 )) &&
+                                set -- main -- openbox ||
+                                set -- openbox -- openbox
+                            ;;
+                    esac
+                    ;;
+            esac
+        fi
+
+        (( $# )) || set -- openbox
+
+        sargs=(
+            /usr/lib/Xorg ":$dispno" "vt$vtno"
+            -config "$fqxconfig"
+            -keeptty
+            -logverbose 10
+            -noreset
+            -novtswitch
+            -quiet
+        )
+        ;;
+esac
+
 # ----------------------------------------
 
-vt=$(</sys/class/tty/tty0/active)
-vtno=${vt##tty}
-dispno=$vtno
-lockfile=/tmp/.X$dispno-lock
-
-if [[ -e $lockfile ]]; then
-    read -r pid <"$lockfile"
-    printf '\nDisplay %s is currently in use (pid=%s).\n\n' "$dispno" "$pid"
-    if ps --pid "$pid"; then
-        echo
-        exit 1
-    else
-        echo
-        rm -f "$lockfile"
-    fi
-fi
-
+redir "$dispno" "$@"
 xauthset "$dispno"
 
-#exec xinit ~/bin/xsession "$@" -- \
-#    /usr/lib/Xorg ":$dispno" "vt$vtno" \
-#    -config "${XCONFIG:-xorg.conf.$HOSTNAME}" \
-#    -keeptty \
-#    -noreset \
-#    -novtswitch \
-#    </dev/null &>"$datadir/xsession.$dispno.out"
-
-exec &>"$datadir/xsession.$dispno.out"
 stty=$(stty -g)
 
 cleanup() {
+    local retstat=$?
+    printf '\n> %s: exit %s\n' "$prgname" "$retstat" >&2
     set +e
-    if [[ $pid ]] && ps --pid "$pid" &>/dev/null; then
-        kill "$pid"
-        trap : HUP
-        (sleep 15; kill -s HUP $$) &
-        wait "$pid"
-        kill -s KILL "$pid" &>/dev/null
+    sdu stop xdisplay@:"$dispno".target
+    if [[ $spid ]] && ps --pid "$spid" &>/dev/null; then
+        kill "$spid"
+        trap : HUP; (sleep 15; kill -s HUP $$) &
+        wait "$spid"
+        kill -s KILL "$spid" &>/dev/null
     fi
     stty "$stty" || stty sane
     # shellcheck disable=SC2046
@@ -102,19 +140,37 @@ cleanup() {
 }
 trap cleanup EXIT
 
-trap ready=1 USR1
-(
-    trap '' USR1
-    exec /usr/lib/Xorg ":$dispno" "vt$vtno" \
-        -config "${XCONFIG:-xorg.conf.$HOSTNAME}" \
-        -keeptty \
-        -noreset \
-        -novtswitch
-) &
-pid=$!
-trap : HUP
-(sleep 15; kill -s HUP $$) &
-wait "$pid" || true
+trap ready=1 USR1; (trap '' USR1; exec "${sargs[@]}") & spid=$!
+trap : HUP; (sleep 15; kill -s HUP $$) &
+wait "$spid" || true
+trap '' HUP
 
-[[ ${ready-} ]] || exit 1
-DISPLAY=:$dispno setsid xsession "$@" </dev/null
+aargs=("$@")
+while true; do
+    [[ ${ready-} ]] || exit 1
+    unset ready
+
+    sdu stop xdisplay@:"$dispno".target
+    sdu start xdisplay@:"$dispno".target
+
+    set -- "${aargs[@]}"
+    scrno=0 args=()
+    while true; do
+        if (( ! $# )) || [[ $1 == -- ]]; then
+            if (( ${#args[@]} )); then
+                DISPLAY=:$dispno.$scrno xsession "${args[@]}"
+            fi
+            (( $# )) || break
+            scrno=$((scrno+1))
+            args=()
+            shift
+            continue
+        fi
+        args+=("$1")
+        shift
+    done
+
+    retstat=0
+    wait "$spid" || retstat=$?
+    (( retstat > 128 )) || break
+done

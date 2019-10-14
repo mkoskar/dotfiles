@@ -38,11 +38,11 @@ case ${1-} in
         ;;
     shoot)
         gphoto2 --quiet --capture-image-and-download \
-                --hook-script ~/bin/camhook \
+                --hook-script ~/bin/cam-hook \
                 --interval "${2:-0}"
         ;;
     watch)
-        gphoto2 --quiet --capture-tethered --hook-script ~/bin/camhook
+        gphoto2 --quiet --capture-tethered --hook-script ~/bin/cam-hook
         ;;
     *)
         usage_err

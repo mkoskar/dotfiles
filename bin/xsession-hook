@@ -2,23 +2,75 @@
 
 set -eu
 
-event=$1
-session=$XSESSION
+screen=$(xserverq screen)
+sfile=$XDG_RUNTIME_DIR/xorg/xsession:$screen
+exec 8>"$sfile".lock
+flock -n 8 && exit 3
+session=$(<"$sfile")
 
-startup() {
-    case $session in
-        main)
-            srun clementine
-            srun workrave
-            # xup &
-            ;;
-    esac
-}
+sdu() { systemctl --user "$@"; }
 
-case $event in
+case ${1-} in
+    '')
+        printf '%s\n' "$session"
+        ;;
+
+    pre)
+        sdu start xsession@:"$screen".target
+        srun -x compton
+        srun -x osdd
+        srun -x -n polkit-agent /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
+        srun -xl -n sxhkd bash -c 'sleep 1; exec sxhkd'
+        case $session in
+            openbox | xfwm4)
+                srun -x tint2
+                ;;
+            xmonad | main)
+                srun -x tray
+                ;;
+        esac
+        ;;
+
+    post)
+        sdu stop xsession@:"$screen".target
+        srun -NX xterm
+        ;;
+
+    exec)
+        case $session in
+            jwm)
+                exec jwm
+                ;;
+            openbox)
+                exec openbox --startup 'xsession-hook startup'
+                ;;
+            rio)
+                exec rio -term term -virtuals 4
+                ;;
+            xfwm4)
+                exec xfwm4 --compositor=off
+                ;;
+            xmonad | main)
+                exec xmonad
+                ;;
+            *)
+                exec "${@:2}"
+                ;;
+        esac
+        ;;
+
     startup)
-        startup
+        case $session in
+            main)
+                srun -xl clementine
+                srun -x workrave
+                # xup &
+                wait
+                ;;
+        esac
+        ;;
+
+    *)
+        exit 2
         ;;
 esac
-
-wait

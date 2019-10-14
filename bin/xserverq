@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-#
-# Get information about X server (based on DISPLAY environment variable).
 
 set -eu
 shopt -s inherit_errexit
@@ -9,14 +7,15 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [cmd | dispno | name | pid]
+	usage: $prgname cmd
 
-	Get information about X server (based on DISPLAY environment variable).
+	Get information about local X server (based on DISPLAY environment variable).
 
-	  cmd     - get command-line
-	  dispno  - get display number
-	  name    - get command name
 	  pid     - get PID
+	  cmd     - get command-line
+	  name    - get command name
+	  dispno  - get display number
+	  screen  - get canonical screen address
 	EOF
 }
 usage() { _usage; exit 0; }
@@ -31,12 +30,6 @@ done
 shift $((OPTIND-1))
 
 # ----------------------------------------
-
-xserver_dispno() {
-    xset q &>/dev/null || exit 1
-    [[ $DISPLAY =~ ^:([0-9]+)(\.[0-9]+)?$ ]] || exit 1
-    printf '%d\n' "${BASH_REMATCH[1]}"
-}
 
 xserver_pid() {
     local dispno; dispno=$(xserver_dispno)
@@ -55,18 +48,20 @@ xserver_name() {
     ps --pid "$pid" -o comm=
 }
 
+xserver_dispno() {
+    [[ $DISPLAY =~ ^:([0-9]+)(\.[0-9]+)?$ ]] || exit 1
+    printf '%d\n' "${BASH_REMATCH[1]}"
+}
+
+xserver_screen() {
+    [[ $DISPLAY =~ ^:([0-9]+)(\.([0-9]+))?$ ]] || exit 1
+    printf '%d.%d\n' "${BASH_REMATCH[1]}" "${BASH_REMATCH[3]}"
+}
+
 case ${1-} in
-    cmd)
-        xserver_cmd
-        ;;
-    dispno)
-        xserver_dispno
-        ;;
-    name)
-        xserver_name
-        ;;
-    pid)
-        xserver_pid
+    pid | cmd | name | dispno | screen)
+        # shellcheck disable=SC2086
+        xserver_$1
         ;;
     *)
         usage_err

@@ -2,9 +2,9 @@
 
 set -eu
 
-target=$TMPDIR/camhook.jpg
+target=$TMPDIR/cam-hook.jpg
 
-preview_pidfile=$XDG_RUNTIME_DIR/camhook_preview.pid
+preview_pidfile=$XDG_RUNTIME_DIR/cam-hook_preview.pid
 preview_cleanup() { rm -f "$preview_pidfile"; }
 
 preview() (

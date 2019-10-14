@@ -2,7 +2,9 @@
 
 set -eu
 
-export RXVT_SOCKET=$XDG_RUNTIME_DIR/urxvtd$DISPLAY
+screen=$(xserverq screen)
+export RXVT_SOCKET=$XDG_RUNTIME_DIR/urxvtd:$screen
+
 bin=/usr/bin/urxvtc
 
 declare -i retstat=0

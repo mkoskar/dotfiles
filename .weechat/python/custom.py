@@ -22,7 +22,7 @@ class Expando(object):
 
 
 def cmd(command, buffer='', mute=True):
-    w.command(buffer, ('/mute ' if mute else '') + command)
+    w.command(buffer, ('/mute ' if mute else '/') + command)
 
 
 w.register(
@@ -85,7 +85,7 @@ def sort():
         if len(buffers) > 1:
             buffers.sort(key=lambda bi: [bi.short_name, bi.full_name])
             functools.reduce(merge, buffers)
-            cmd('/input switch_active_buffer', buffers[-1].buffer)
+            cmd('input switch_active_buffer', buffers[-1].buffer)
 
     #def sort_key(bi):
     #    return [bi.short_name, bi.full_name]
@@ -214,43 +214,43 @@ def layout_current_name():
 
 def cb_command_layout_reset(data, buffer, args):
     if not args:
-        cmd('/layout apply windows')
+        cmd('layout apply windows')
         return w.WEECHAT_RC_OK
 
     if args == 'base':
-        cmd('/window merge all')
-        cmd('/window splith 15')
-        cmd('/buffer perl.highmon')
-        cmd('/window down')
+        cmd('window merge all')
+        cmd('window splith 15')
+        cmd('buffer perl.highmon')
+        cmd('window down')
 
     if args == 'horiz':
-        cmd('/window merge all')
-        cmd('/window splith 15')
-        cmd('/buffer perl.highmon')
-        cmd('/window down')
-        cmd('/window splith')
-        cmd('/window down')
+        cmd('window merge all')
+        cmd('window splith 15')
+        cmd('buffer perl.highmon')
+        cmd('window down')
+        cmd('window splith')
+        cmd('window down')
 
     if args == 'vert':
-        cmd('/window merge all')
-        cmd('/window splith 15')
-        cmd('/buffer perl.highmon')
-        cmd('/window down')
-        cmd('/window splitv')
+        cmd('window merge all')
+        cmd('window splith 15')
+        cmd('buffer perl.highmon')
+        cmd('window down')
+        cmd('window splitv')
 
     elif args == 'core':
-        cmd('/window merge all')
-        cmd('/window splith 15')
-        cmd('/buffer perl.highmon')
-        cmd('/window down')
-        cmd('/buffer core.weechat')
+        cmd('window merge all')
+        cmd('window splith 15')
+        cmd('buffer perl.highmon')
+        cmd('window down')
+        cmd('buffer core.weechat')
 
     elif args == 'bitlbee':
-        cmd('/window merge all')
-        cmd('/window splith 15')
-        cmd('/buffer perl.highmon')
-        cmd('/window down')
-        cmd('/buffer bitlbee.&bitlbee')
+        cmd('window merge all')
+        cmd('window splith 15')
+        cmd('buffer perl.highmon')
+        cmd('window down')
+        cmd('buffer bitlbee.&bitlbee')
 
     return w.WEECHAT_RC_OK
 
@@ -258,12 +258,12 @@ def cb_command_layout_reset(data, buffer, args):
 w.hook_command('layout_reset', '', '', '', '', 'cb_command_layout_reset', '')
 
 keys = {
-    'meta- ': '/layout_reset',
-    'meta-;meta-1': '/layout_reset core',
-    'meta-;meta-2': '/layout_reset bitlbee',
-    'meta-;meta-3': '/layout_reset base',
-    'meta-;meta-4': '/layout_reset horiz',
-    'meta-;meta-5': '/layout_reset vert',
+    'meta- ': 'layout_reset',
+    'meta-;meta-1': 'layout_reset core',
+    'meta-;meta-2': 'layout_reset bitlbee',
+    'meta-;meta-3': 'layout_reset base',
+    'meta-;meta-4': 'layout_reset horiz',
+    'meta-;meta-5': 'layout_reset vert',
 }
 
 w.key_bind('default', keys)
@@ -301,14 +301,14 @@ def cb_command_tab_go(data, buffer, args):
     tab_dst = maybe_tab(args)
     if tab_dst is None:
         return w.WEECHAT_RC_ERROR
-    cmd('/layout apply _zoom windows')
-    cmd('/layout del _zoom')
+    cmd('layout apply _zoom windows')
+    cmd('layout del _zoom')
     if tab_cur is not None and layout_find(str(tab_cur)):
-        cmd('/layout store %s windows' % tab_cur)
+        cmd('layout store %s windows' % tab_cur)
     if layout_find(str(tab_dst)):
-        cmd('/layout apply %s windows' % tab_dst)
+        cmd('layout apply %s windows' % tab_dst)
     else:
-        cmd('/layout store %s windows' % tab_dst)
+        cmd('layout store %s windows' % tab_dst)
     tab_cur = tab_dst
     w.bar_item_update('tabs')
     return w.WEECHAT_RC_OK
@@ -328,7 +328,7 @@ def cb_command_tab_next(data, buffer, args):
         tab_dst = next(
             (tab for tab in tabs if tab > tab_cur), tabs[-1 if norewind else 0]
         )
-    cmd('/tab_go %s' % tab_dst)
+    cmd('tab_go %s' % tab_dst)
     return w.WEECHAT_RC_OK
 
 
@@ -347,7 +347,7 @@ def cb_command_tab_prev(data, buffer, args):
             (tab for tab in reversed(tabs)
              if tab < tab_cur), tabs[0 if norewind else -1]
         )
-    cmd('/tab_go %s' % tab_dst)
+    cmd('tab_go %s' % tab_dst)
     return w.WEECHAT_RC_OK
 
 
@@ -359,8 +359,8 @@ def cb_command_tab_del(data, buffer, args):
         target = tab_cur
     if target is None:
         return w.WEECHAT_RC_ERROR
-    cmd('/layout del %s' % target)
-    cmd('/tab_prev -norewind')
+    cmd('layout del %s' % target)
+    cmd('tab_prev -norewind')
     return w.WEECHAT_RC_OK
 
 
@@ -378,13 +378,13 @@ w.hook_command('tab_del', '', '', '', '', 'cb_command_tab_del', '')
 w.bar_item_new('tabs', 'cb_bar_item_tabs', '')
 
 keys = {
-    'meta-0': '/tab_del',
-    'meta-l': '/tab_next',
-    'meta-h': '/tab_prev',
+    'meta-0': 'tab_del',
+    'meta-l': 'tab_next',
+    'meta-h': 'tab_prev',
 }
 
 for i in range(1, 10):
-    keys['meta-%d' % i] = '/tab_go %d' % i
+    keys['meta-%d' % i] = 'tab_go %d' % i
 
 w.key_bind('default', keys)
 
@@ -409,8 +409,8 @@ def windows_buffer_iter():
 def cb_command_allwin_set_unread(data, buffer, args):
     for window, buffer in windows_buffer_iter():
         window_number = w.hdata_integer(hd_win, window, 'number')
-        cmd('/input set_unread_current_buffer', buffer)
-        cmd('/window scroll_bottom -window %s' % window_number)
+        cmd('input set_unread_current_buffer', buffer)
+        cmd('window scroll_bottom -window %s' % window_number)
     return w.WEECHAT_RC_OK
 
 
@@ -425,10 +425,23 @@ w.hook_command(
 
 
 def cb_command_grep_nick(data, buffer, args):
-    bname = w.buffer_get_string(w.current_buffer(), 'full_name')
-    cmd('/filter del grep_%s' % bname)
+    bname = w.buffer_get_string(buffer, 'full_name')
+    cmd('filter del grep_%s' % bname)
     if args:
-        cmd('/filter add grep_%s %s !nick_%s *' % (bname, bname, args))
+        cmd('filter add grep_%s %s !nick_%s *' % (bname, bname, args))
+    return w.WEECHAT_RC_OK
+
+
+def cb_command_renick(data, buffer, args):
+    nick_old = w.buffer_get_string(buffer, 'localvar_nick')
+    if not nick_old:
+        return w.WEECHAT_RC_ERROR
+    nick_new = nick_old.rstrip('_')
+    if nick_new == nick_old:
+        return w.WEECHAT_RC_OK
+    cmd('msg NickServ ghost %s' % nick_new)
+    cmd('msg NickServ release %s' % nick_new)
+    cmd('nick %s' % nick_new)
     return w.WEECHAT_RC_OK
 
 
@@ -469,6 +482,7 @@ def cb_command_urls(data, buffer, args):
 
 
 w.hook_command('grep_nick', '', '', '', '', 'cb_command_grep_nick', '')
+w.hook_command('renick', '', '', '', '', 'cb_command_renick', '')
 w.hook_command('urls_open', '', '', '', '', 'cb_command_urls', 'open')
 w.hook_command('urls_yank', '', '', '', '', 'cb_command_urls', 'yank')
 

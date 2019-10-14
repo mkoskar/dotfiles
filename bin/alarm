@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -eu
+
+sdu() { systemctl --user --quiet "$@"; }
+
+case ${1-} in
+    '')
+        sdu list-timers --all 'alarm-*'
+        exit
+        ;;
+    mute)
+        sdu stop alarm-\*.service
+        exit
+        ;;
+    clear)
+        sdu stop alarm-\*
+        exit
+        ;;
+esac
+
+name=$1
+[[ $name =~ [][?*.] ]] && exit 2
+
+case ${2-} in
+    run)
+        shift 2
+        notify -u critical "Alarm \"$name\"... ${*:-DO IT!}"
+        mpv --load-scripts=no --loop-file=5 \
+            /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
+        ;;
+    at | in)
+        sub=$2
+        shift 2
+        [[ $name = - ]] && name=$(openssl rand -hex 4)
+        sdu stop alarm-"$name".time[r]
+        [[ $sub = at ]] &&
+            args=(--on-calendar="$1") ||
+            args=(--on-active="$1")
+        srun -r -n alarm-"$name" -- "${args[@]}" \
+            --timer-property=AccuracySec=1s \
+            alarm "$name" run "${@:2}"
+        ;;
+    *)
+        exit 2
+        ;;
+esac

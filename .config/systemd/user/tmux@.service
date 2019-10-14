@@ -1,0 +1,11 @@
+[Unit]
+Description=%N service
+
+[Service]
+Type=forking
+SyslogIdentifier=%N
+ExecStart=/usr/bin/tmux -L %i new -d -s !
+Restart=always
+
+[Install]
+WantedBy=default.target

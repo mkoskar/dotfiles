@@ -4,5 +4,5 @@ set -eu
 
 [[ ${TMUX-} ]] || exit 1
 
-IFS=, read -r -a var <<<"$TMUX"
-printf '%s\n' "${var[0]##*/}"
+IFS=, read -r -a tmux <<<"$TMUX"
+printf '%s\n' "${tmux[0]##*/}"

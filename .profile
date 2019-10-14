@@ -60,7 +60,8 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.opengl=true -Dsun.java2d.xrender=true -Dswing.aatext=true'
 
 #export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent}
-export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh}
+#export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh}
+export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/keyring/ssh}
 
 export AUR_MAINTAINER=mkoskar
 export CCACHE_PATH=/usr/bin
@@ -69,6 +70,7 @@ export ENV=~/.shrc
 export GRADLE_HOME=/usr/share/java/gradle
 export GREP_COLORS=sl=:cx=:mt=41:fn=36:ln=33:bn=33:se=:ne
 export GTK_IM_MODULE=xim
+export GTK_MODULES=canberra-gtk-module
 export LD_LIBRARY_PATH=~/opt/lib
 export LESS=-AqRS#3ciPs
 export LESSHISTFILE=-
@@ -116,6 +118,8 @@ export CCACHE_DIR=$XDG_CACHE_HOME/ccache
 export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc
 export MPLAYER_HOME=$XDG_CONFIG_HOME/mplayer
 export XAUTHORITY=$XDG_DATA_HOME/xorg/Xauthority
+export XMOBAR_DATA_DIR=$XDG_DATA_HOME/xmobar
+export XMONAD_DATA_DIR=$XDG_DATA_HOME/xmonad
 
 [ "$_PATH" ] || export _PATH=$PATH
 PATH=$_PATH

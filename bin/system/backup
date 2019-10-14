@@ -93,15 +93,15 @@ if ! findmnt -M "$target" -S "$mapper" &>/dev/null; then
     exit 12
 fi
 
-ts_begin=$(date +%s)
-ts_begin_=$(date +%F.%s -d "@$ts_begin")
-log "-- $ts_begin_"
+ts_beg=$(date +%s)
+ts_beg_=$(date +%F.%s -d "@$ts_beg")
+log "-- $ts_beg_"
 
 mkdir -p "$target"/full-backup
 rsync -aAHSX / "$target"/full-backup/master \
       --delete \
       --backup \
-      --backup-dir=../"$ts_begin_" \
+      --backup-dir=../"$ts_beg_" \
       --exclude-from=- <<-'EOF'
 	/boot/lost+found
 	/dev/*
@@ -124,4 +124,4 @@ rsync -aAHSX / "$target"/full-backup/master \
 EOF
 
 ts_end=$(date +%s)
-log "total time: $(((ts_end-ts_begin)/60)) minutes, $(((ts_end-ts_begin)%60)) seconds"
+log "total time: $(((ts_end-ts_beg)/60)) minutes, $(((ts_end-ts_beg)%60)) seconds"

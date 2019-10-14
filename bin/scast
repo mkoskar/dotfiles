@@ -8,7 +8,8 @@ cd ~/tmp
 
 ts=$(date +%F.%s)
 
-lockfile=$XDG_RUNTIME_DIR/$prgname$DISPLAY.lock
+screen=$(xserverq screen)
+lockfile=$XDG_RUNTIME_DIR/$prgname:$screen.lock
 exec 8>"$lockfile"
 flock -n 8 || {
     exec 8<&-

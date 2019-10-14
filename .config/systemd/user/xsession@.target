@@ -1,0 +1,4 @@
+[Unit]
+Description=%N target
+
+Wants=urxvtd@%i.service

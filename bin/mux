@@ -131,8 +131,8 @@ shift $((OPTIND-1))
 # ----------------------------------------
 
 if [[ ${TMUX-} ]]; then
-    IFS=, read -r -a var <<<"$TMUX"
-    if [[ $socket = "${var[0]##*/}" ]]; then
+    IFS=, read -r -a tmux <<<"$TMUX"
+    if [[ $socket = "${tmux[0]##*/}" ]]; then
         echo "$prgname: cannot operate from within session of the same target socket" >&2
         exit 1
     fi
@@ -157,9 +157,8 @@ flock -w 30 8 || exit 3
                 ;;
             *)
                 case $prgname in
-                    mux) new ;;
                     muxx) ext ;;
-                    *) exit 2 ;;
+                    *) new ;;
                 esac
                 ;;
         esac

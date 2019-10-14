@@ -5,18 +5,16 @@ set -eu
 prgname=${0##*/}
 
 name=default
-fifo=$XDG_RUNTIME_DIR/osdd/$name$DISPLAY
+screen=$(xserverq screen)
+fifo=$XDG_RUNTIME_DIR/osdd/$name:$screen
 
 if [[ $prgname = osdd ]]; then
-    [[ -e $fifo ]] && exit 3
+    mkdir -p "${fifo%/*}"
 
-    # shellcheck disable=SC2174
-    mkdir -p -m 700 "${fifo%/*}"
-    mkfifo -m 600 "$fifo"
+    exec 8>"$fifo".lock
+    flock -n 8 || exit 3
 
-    cleanup() { rm -f "$fifo"; }
-    trap cleanup EXIT
-
+    [[ -e $fifo ]] || mkfifo "$fifo"
     aosd_cat -O 0 -p 2 -x -10 -y 25 -e 0 -d 5 \
         -t 2 -n local_osd -A 2 -b 215 \
         -B black -R yellow \
@@ -27,6 +25,6 @@ if [[ $prgname = osdd ]]; then
 fi
 
 [[ ${NOOSD-} ]] && exit
-
 [[ ! -p $fifo ]] && exit 1
-printf '%s\n' "$*" >"$fifo"
+exec 8<>"$fifo"
+printf '%s\n' "$*" >&8

@@ -1,0 +1,179 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+sessions=(
+
+    # Official repos (10/2019)
+    # ----------------------------------------
+    # awesome
+    # blackbox
+    # bspwm
+    # enlightenment
+    # fluxbox
+    # fvwm
+    # herbstluftwm
+    # i3            # (i3-gaps, i3-wm)
+    # icewm
+    # jwm
+    # kwin_x11      # (kwin) KDE Plasma
+    # lwm
+    # marco         # fork of Metacity
+    # metacity      # GNOME 2.x / GNOME Flashback; using GTK 3.x since 3.12.0
+    # muffin        # Cinnamon; fork of Mutter
+    # mutter        # GNOME 3.x; using Clutter toolkit
+    # notion
+    # openbox
+    # pekwm
+    # qtile
+    # ratpoison
+    # rio           # (plan9)
+    # spectrwm      # formerly scrotwm
+    # twm           # (xorg-twm)
+    # xfwm4
+    # xmonad
+
+    # AUR (10/2019)
+    # ----------------------------------------
+    # 2bwm
+    # 9wm
+    # adwm
+    # aewm
+    # aewm++
+    # afterstep
+    # alopex
+    # antares
+    # antiwm
+    # berry
+    # bubbles
+    # catwm
+    # chamfer
+    # ctwm
+    # cwm
+    # dwin
+    # dwm
+    # echinus
+    # etwm
+    # evilwm
+    # failsafewm
+    # flatman
+    # flwm
+    # foo-wm
+    # frankenwm
+    # gala
+    # glass-wm
+    # goomwwm
+    # heliwm
+    # howm
+    # ion3
+    # jbwm
+    # karmen
+    # katriawm
+    # larswm
+    # leftwm
+    # mantis-wm
+    # matwm2
+    # mcwm
+    # mlvwm
+    # moksha
+    # olvwm
+    # pawm
+    # qvwm
+    # sawfish
+    # stumpwm
+    # subtle
+    # tinywm
+    # tritium
+    # ude
+    # unagi
+    # uwm
+    # vtwm
+    # waimea
+    # windowchef
+    # windowlab
+    # windowmaker
+    # windwm
+    # wingo
+    # wm2
+    # wmfs
+    # wmii
+    # wmx
+    # wtftw
+    # wumwum
+    # xdwm
+    # yeahwm
+
+    # ----------------------------------------
+
+    # berry
+    # bubbles
+    # chamfer
+    # dwm
+    # echinus
+    # i3
+    # katriawm
+    # leftwm
+    # mcwm
+    # sawfish
+    # stumpwm
+    # windowchef
+    # wmii
+    2bwm
+    adwm
+    alopex
+    cwm
+    fvwm
+    marco           # fork of Metacity
+    notion
+    rio
+
+    # ----------------------------------------
+
+    jwm
+    openbox
+    xfwm4
+    xmonad
+
+    main
+)
+
+if (( ! $# )); then
+    printf '%s\n' "${sessions[@]}"
+    exit
+fi
+
+if [[ $prgname = xsession ]]; then
+    exec srun -X -n xsession xsession-bin "$@"
+fi
+
+screen=$(xserverq screen)
+sfile=$XDG_RUNTIME_DIR/xorg/xsession:$screen
+exec 8>"$sfile".lock
+flock -n 8 || exit 3
+
+exec &>~/.local/share/xorg/xsession."$screen".out
+echo $'\n--------------------------------------------------'
+printf '> xsession: %s\n\n' "$*" >&2
+
+session=unknown
+for i in "${sessions[@]}"; do
+    [[ $1 = "$i" ]] && { session=$i; break; }
+done
+printf '%s\n' "$session" >"$sfile"
+printf 'session: %s\n' "$session" >&2
+
+cleanup() {
+    local retstat=$?
+    printf '\n> xsession: exit %s\n' "$retstat" >&2
+    set +e
+    xsession-hook post
+    # shellcheck disable=SC2046
+    kill $(jobs -p) &>/dev/null
+}
+trap cleanup EXIT
+
+xscreen -
+xsession-hook pre
+xsession-hook exec "$@"

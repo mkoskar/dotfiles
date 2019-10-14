@@ -6,25 +6,37 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [-n name] [-r] [-x] cmd [arg]...
+	usage: $prgname [option]... cmd [arg]...
 
 	Execute 'cmd [arg]...' as transient service inside user's service manager.
 
 	  -n name   - name of the target (default: cmd)
+	  -N        - use generated name
 	  -r        - stop target first
-	  -x        - target is \$DISPLAY specific
+	  -s        - run as scope unit
+	  -x        - target is \$DISPLAY specific (xsession@.target)
+	  -X        - target is \$DISPLAY specific (xdisplay@.target)
+	  -l        - log to ~/.local/share/$prgname.out (ignored for -s)
+	  -L        - log to ~/.local/share/\$name.out (ignored for -s)
+	  -q        - (quiet) don't log (ignored for -s)
 	EOF
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
 name=
-declare -i ropt=0 xopt=0
-while getopts n:rxh opt; do
+declare -i Nopt=0 ropt=0 sopt=0 xopt=0 Xopt=0 lopt=0 Lopt=0 qopt=0
+while getopts n:NsrxXlLqh opt; do
     case $opt in
-        n) name=$OPTARG ;;
+        n) name=$OPTARG Nopt=0 ;;
+        N) Nopt=1 name= ;;
         r) ropt=1 ;;
+        s) sopt=1 ;;
         x) xopt=1 ;;
+        X) Xopt=1 xopt=1 ;;
+        l) lopt=1 Lopt=0 qopt=0 ;;
+        L) Lopt=1 lopt=0 qopt=0 ;;
+        q) qopt=1 lopt=0 Lopt=0 ;;
         h) usage ;;
         *) usage_err ;;
     esac
@@ -35,21 +47,68 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-name=${name:-${1##*/}}
-if (( xopt )); then
-    name=$name$DISPLAY
-fi
-name=$name.service
-
 sdu() { systemctl --user "$@"; }
 
-if sdu --quiet is-active "$name"; then
-    (( ropt )) || exit 0
-    sdu stop "$name"
-elif sdu --quiet is-failed "$name"; then
-    sdu reset-failed "$name"
+name=${name:-${1##*/}}
+[[ $name =~ [][?*.] ]] && exit 2
+if (( Nopt )); then
+    name=$(openssl rand -hex 4)
+    name=srun-$name
+fi
+[[ $name ]] || exit 2
+if (( xopt )); then
+    screen=$(xserverq screen)
+    name=$name:$screen
 fi
 
-systemd-run --user --no-ask-password \
-    --setenv=DISPLAY="${DISPLAY-}" \
-    --unit="$name" "$@"
+if (( !Nopt )); then
+    # shellcheck disable=SC2125
+    (( sopt )) && pattern=$name.scop[e] || pattern=$name.servic[e]
+    (( ropt )) && sdu stop "$pattern"
+    sdu reset-failed "$pattern"
+fi
+
+args=(
+    --user
+    --quiet
+    --no-ask-password
+    --unit="$name"
+    --description="$name"
+)
+
+if (( sopt )); then
+    args+=(--scope)
+else
+    args+=(-p Type=exec -p SyslogIdentifier="$name")
+    if (( lopt )); then
+        args+=(-p StandardOutput=append:"$HOME/.local/share/$prgname.out")
+    fi
+    if (( Lopt )); then
+        args+=(-p StandardOutput=file:"$HOME/.local/share/$name.out")
+    fi
+    if (( qopt )); then
+        args+=(-p StandardOutput=null)
+    fi
+fi
+
+if (( Nopt )); then
+    args+=(-p CollectMode=inactive-or-failed)
+fi
+
+if (( xopt )); then
+    if (( Xopt )); then
+        dispno=${screen%%.*}
+        args+=(
+            -p Requisite=xdisplay@:"$dispno".target
+            -p After=xdisplay@:"$dispno".target
+        )
+    else
+        args+=(
+            -p Requisite=xsession@:"$screen".target
+            -p After=xsession@:"$screen".target
+        )
+    fi
+    args+=(-E DISPLAY="$DISPLAY")
+fi
+
+exec systemd-run "${args[@]}" "$@"

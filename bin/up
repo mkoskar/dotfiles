@@ -4,10 +4,11 @@ echo $'\n--------------------------------------------------'
 echo $'> Setup backup:\n'
 sudo backup-setup
 
-echo $'\n--------------------------------------------------'
-echo $'> Setup SSH tunnels:\n'
-sshup
+#echo $'\n--------------------------------------------------'
+#echo $'> Setup SSH tunnels:\n'
+#sshup
 
 echo $'\n--------------------------------------------------'
-echo '> Start X session:'
+echo $'> Start X session:\n'
+confirm 'Continue?' y || exit 0
 exec x

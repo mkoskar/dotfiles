@@ -1,0 +1,11 @@
+[Unit]
+Description=%N service
+Requisite=xsession@%i.target
+After=xsession@%i.target
+
+[Service]
+SyslogIdentifier=%N
+Environment=DISPLAY=%i
+Environment=RXVT_SOCKET=%t/urxvtd%i
+ExecStart=/usr/bin/urxvtd -q -o
+Restart=always

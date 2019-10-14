@@ -96,11 +96,11 @@ if (( ! inline )); then
 fi
 
 while true; do
-    ts_begin=$(date +%s.%N)
-    ts_begin_=$(date +%T -d "@$ts_begin")
+    ts_beg=$(date +%s.%N)
+    ts_beg_=$(date +%T -d "@$ts_beg")
 
     (( inline )) || printf %s "$ti_cur_restore"
-    (( quiet )) || printf "> started: %s${ti_clr_eol}\n" "$ts_begin_" >&2
+    (( quiet )) || printf "> started: %s${ti_clr_eol}\n" "$ts_beg_" >&2
 
     printf -v cmd '%q "$@"' "$1"
     bashx -c "$cmd" "$@" |& tee ${append+-a} "$output" |
@@ -111,7 +111,7 @@ while true; do
     ts_end_=$(date +%T -d "@$ts_end")
 
     if (( term )); then
-        should_term=$(bc -l <<<"($ts_end-$ts_begin) < $term_delta/1000")
+        should_term=$(bc -l <<<"($ts_end-$ts_beg) < $term_delta/1000")
         (( should_term == 1 )) && break
     fi
 

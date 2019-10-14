@@ -1,25 +1,20 @@
 # vim: ft=sh
 
-pre_hook() {
-    local edidsum
-    declare -g args xorg
-
-    (( xorg )) || return
-    (( ${#args[@]} )) || return
-
-    if [[ ${args[0]} = - ]]; then
+layout_hook_default() {
+    local edidsum xrandr
+    (( $# )) || return
+    if [[ $1 = - ]]; then
         edidsum=$(edidsum -o)
         case $edidsum in
             251b742672f54471057b10e77e4bb2dfaa6a9904)
-                args[0]=dock
+                set -- dock
                 ;;
             *)
-                args[0]=mobile
+                set -- mobile
                 ;;
         esac
     fi
-
-    case ${args[0]} in
+    case $1 in
         dock)
             xrandr=(
                 --output DP1 --off
@@ -29,7 +24,6 @@ pre_hook() {
                 --output HDMI3 --off
                 --output VGA1 --off
                 --output VIRTUAL1 --off
-
                 --output HDMI2 --mode 1920x1200 --pos 1600x0
                     --rotate normal
                 --output LVDS1 --mode 1600x900 --pos 0x0
@@ -46,10 +40,12 @@ pre_hook() {
                 --output HDMI3 --off
                 --output VGA1 --off
                 --output VIRTUAL1 --off
-
                 --output LVDS1 --mode 1600x900 --pos 0x0
                     --rotate normal
             )
+            ;;
+        *)
+            return
             ;;
     esac
     xrandr "${xrandr[@]}"

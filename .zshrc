@@ -410,7 +410,7 @@ _systemd_dot() {
 compctl -K _systemd_dot systemd_dot
 
 _xsession() {
-    reply=(${(f)"$(xsession -\?)"})
+    reply=(${(f)"$(xsession)"})
 }
 compctl -K _xsession x xx
 

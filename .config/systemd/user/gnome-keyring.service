@@ -1,0 +1,10 @@
+[Unit]
+Description=%N service
+IgnoreOnIsolate=true
+
+[Service]
+ExecStart=/usr/bin/gnome-keyring-daemon --foreground
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
