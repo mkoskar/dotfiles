@@ -337,6 +337,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     x11-xkbguide            b https://www.charvolant.org/doug/xkb/html/index.html
     x11-xkbproto            b https://www.x.org/releases/current/doc/kbproto/xkbproto.html
     xcb-modules             b https://xcb.freedesktop.org/manual/modules.html
+    xlib                    b https://tronche.com/gui/x/xlib/
     xmonad                  b https://hackage.haskell.org/package/xmonad
     xmonad-contrib          b https://hackage.haskell.org/package/xmonad-contrib
     xorg-lists              b https://lists.x.org/

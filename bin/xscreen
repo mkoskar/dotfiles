@@ -36,9 +36,8 @@ esac
 
 xkb -
 numlockx on
-
-xsetroot -cursor_name left_ptr
-hsetroot || xsetroot -solid black
+xsetroot -solid black -cursor_name left_ptr
+hsetroot
 
 post_hook
 true

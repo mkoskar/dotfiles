@@ -39,51 +39,42 @@ parser = argparse.ArgumentParser(
             * order index
             * native order index
             * 0/1 - primary
-            * 0/1 - currently focused
+            * 0/1 - pointed
+            * 0/1 - focused
             * x
             * y
             * width
             * height
             * width in millimeters
             * height in millimeters
-
-        Examples:
-
-            # All monitors ordered from top to bottom and left to right
-            $ lsmon
-
-            # 3rd / primary / currently focused monitor
-            $ lsmon --index 2 / --primary / --focused
-
-            # Monitor on the right and below from currently focused one
-            $ lsmon 1r 1d
         """
     )
 )
 parser.add_argument(
-    '--pointer',
-    action='store_true',
-    help='focus is determined by pointer location'
+    '--screen', type=int, default=-1,
+    help='index of X screen used (default: negative for preferred)'
 )
 parser.add_argument(
-    '--nowrap', action='store_false', dest='wrap', help="don't wrap moves"
-)
-parser.add_argument(
-    '--order',
-    choices=['xy', 'yx', 'keep'],
-    default='yx',
+    '--order', choices=['xy', 'yx', 'keep'], default='yx',
     help='order to be used for --index and next/previous moves (default: yx)'
 )
 group = parser.add_mutually_exclusive_group()
 group.add_argument('--index', type=int, help='select by index')
 group.add_argument('--primary', action='store_true', help='select primary')
+group.add_argument('--pointed', action='store_true', help='select pointed')
 group.add_argument('--focused', action='store_true', help='select focused')
 parser.add_argument(
-    'move',
-    nargs='*',
-    help='"{amount}{direction}" is move in direction relative to selected '
-    'monitor (focused by default) by specified amount of steps; '
+    'move', nargs='*',
+    help='"{repeat}{direction}" is repeated move in direction relative to '
+    'the selected monitor (focused by default); '
     'n/N - next, p/P - previous, r/R - right, l/L - left, d/D - down, u/U - up'
+)
+parser.add_argument(
+    '--fallback', action='store_true',
+    help='when unable to select use 1st rather than error'
+)
+parser.add_argument(
+    '--nowrap', action='store_false', dest='wrap', help="don't wrap moves"
 )
 args = parser.parse_args()
 
@@ -151,22 +142,28 @@ class Monitor:
                 self._wraps[dir] = mon
                 return mon
 
-    def moven(self, dir, amount, wrap=True):
-        if amount < 0:
+    def moven(self, dir, repeat, wrap=True):
+        if repeat < 0:
             dir = dir.flip()
         mon = self
-        for i in range(abs(amount)):
+        for i in range(abs(repeat)):
             mon = mon.move(dir, wrap=wrap)
         return mon
+
+
+def error(msg):
+    print('{}: error: {}'.format(parser.prog, msg), file=stderr)
+    exit(1)
 
 
 def format(monitors):
     for mon in monitors:
         print(
-            '{} {} {} {} {} {} {} {} {} {}'.format(
+            '{} {} {} {} {} {} {} {} {} {} {}'.format(
                 mon.idx,
                 mon.idx_orig,
                 mon.primary,
+                1 if mon is pointed else 0,
                 1 if mon is focused else 0,
                 mon.x,
                 mon.y,
@@ -181,16 +178,16 @@ def format(monitors):
 conn = xcffib.connect()
 randr = conn(xcffib.randr.key)
 setup = conn.get_setup()
-screen = setup.roots[conn.pref_screen]
-randr_monitors = randr.GetMonitors(screen.root, True).reply().monitors
 
-monitors = [
-    Monitor(idx, randr_monitor)
-    for idx, randr_monitor in enumerate(randr_monitors)
-]
+try:
+    screen = setup.roots[conn.pref_screen if args.screen < 0 else args.screen]
+except IndexError:
+    error('screen index out of range')
+
+randr_monitors = randr.GetMonitors(screen.root, True).reply().monitors
+monitors = [Monitor(i, mon) for i, mon in enumerate(randr_monitors)]
 if not monitors:
-    print('{}: error: no monitors'.format(parser.prog), file=stderr)
-    exit(1)
+    error('no monitors')
 
 monitors_orig = monitors
 monitors_xy = list(monitors)
@@ -203,43 +200,57 @@ if args.order == 'xy':
 elif args.order == 'yx':
     monitors = monitors_yx
 
-for i, imon in enumerate(monitors):
-    imon.idx = i
+for i, mon in enumerate(monitors):
+    mon.idx = i
+
+pointed = None
+pointer = conn.core.QueryPointer(screen.root).reply()
+for i, mon in enumerate(monitors):
+    if mon.overlap(pointer.root_x, pointer.root_y, 1, 1):
+        pointed = mon
+        break
 
 focused = None
-FOCUS_NONE = xcffib.NONE
-FOCUS_PTRROOT = xcffib.xproto.InputFocus.PointerRoot
 window = conn.core.GetInputFocus().reply().focus
-if args.pointer or window in (FOCUS_NONE, FOCUS_PTRROOT, screen.root):
-    pointer = conn.core.QueryPointer(screen.root).reply()
-    for i, imon in enumerate(monitors):
-        if imon.overlap(pointer.root_x, pointer.root_y, 1, 1):
-            focused = imon
-            break
-else:
+if screen.root == conn.core.QueryTree(window).reply().root:
     max_area = 0
     geom = conn.core.GetGeometry(window).reply()
-    for i, imon in enumerate(monitors):
-        area = imon.overlap(geom.x, geom.y, geom.width, geom.height)
+    for i, mon in enumerate(monitors):
+        area = mon.overlap(geom.x, geom.y, geom.width, geom.height)
         if area > max_area:
             max_area = area
-            focused = imon
+            focused = mon
 
-sel = None
+selected = None
 if args.index is not None:
-    sel = monitors[args.index % len(monitors)]
+    try:
+        selected = monitors[args.index]
+    except IndexError:
+        error('index out of range')
 elif args.primary:
-    for i, imon in enumerate(monitors):
-        if imon.primary:
-            sel = imon
+    for i, mon in enumerate(monitors):
+        if mon.primary:
+            selected = mon
             break
-    if not sel:
-        sel = monitors_orig[0]
+    if not selected:
+        if args.fallback:
+            selected = monitors_orig[0]
+        else:
+            error('no primary monitor')
+elif args.pointed:
+    selected = pointed
+    if not selected:
+        if args.fallback:
+            selected = monitors_orig[0]
+        else:
+            error('no pointed monitor')
 elif args.focused or args.move:
-    if not focused:
-        print('{}: error: no focused monitor'.format(parser.prog), file=stderr)
-        exit(1)
-    sel = focused
+    selected = focused
+    if not selected:
+        if args.fallback:
+            selected = monitors_orig[0]
+        else:
+            error('no focused monitor')
 
 if args.move:
     for i, imon in enumerate(monitors_xy):
@@ -260,33 +271,32 @@ if args.move:
     for move in args.move:
         match = move_pattern.match(move)
         if not match:
-            print('{}: error: invalid move'.format(parser.prog), file=stderr)
-            exit(1)
-        amount = int(match.group(1))
+            error('invalid move')
+        repeat = int(match.group(1))
         dir = match.group(2)
         if dir.lower() == 'n':
             if args.wrap:
-                seli = (sel.idx + amount) % len(monitors)
+                idx = (selected.idx + repeat) % len(monitors)
             else:
-                seli = min(sel.idx + amount, len(monitors) - 1)
-            sel = monitors[seli]
+                idx = min(selected.idx + repeat, len(monitors) - 1)
+            selected = monitors[idx]
         elif dir.lower() == 'p':
             if args.wrap:
-                seli = (sel.idx - amount) % len(monitors)
+                idx = (selected.idx - repeat) % len(monitors)
             else:
-                seli = max(0, sel.idx - amount)
-            sel = monitors[seli]
+                idx = max(0, selected.idx - repeat)
+            selected = monitors[idx]
         elif dir.lower() == 'r':
-            sel = sel.moven(Direction.RIGHT, amount, args.wrap)
+            selected = selected.moven(Direction.RIGHT, repeat, args.wrap)
         elif dir.lower() == 'l':
-            sel = sel.moven(Direction.LEFT, amount, args.wrap)
+            selected = selected.moven(Direction.LEFT, repeat, args.wrap)
         elif dir.lower() == 'd':
-            sel = sel.moven(Direction.DOWN, amount, args.wrap)
+            selected = selected.moven(Direction.DOWN, repeat, args.wrap)
         elif dir.lower() == 'u':
-            sel = sel.moven(Direction.UP, amount, args.wrap)
-    format([sel])
+            selected = selected.moven(Direction.UP, repeat, args.wrap)
+    format([selected])
 else:
-    if sel:
-        format([sel])
+    if selected:
+        format([selected])
     else:
         format(monitors)

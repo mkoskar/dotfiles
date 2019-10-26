@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -eu
+
+addr=$1
+
+dbus() {
+    gdbus call --system \
+        -d org.bluez \
+        -o /org/bluez/hci0/dev_"${addr//:/_}" \
+        "$@"
+}
+
+connected=$(dbus -m org.freedesktop.DBus.Properties.Get org.bluez.Network1 Connected)
+case $connected in
+    '(<false>,)')
+        dbus -m org.bluez.Network1.Connect nap >/dev/null
+        ;;
+    '(<true>,)')
+        dbus -m org.bluez.Network1.Disconnect >/dev/null
+        ;;
+esac

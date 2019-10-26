@@ -41,7 +41,7 @@ process() {
     esac
     mkdir "$oname"
     aunpack -q -X "$oname" "$CACHEDIR/$oname"
-    find "$oname" -iregex '.*\.\(ttf\|otf\)' -exec mv {} "$FONTSDIR" \;
+    find "$oname" -iregex '.*\.\(otf\|pcf\|ttf\)' -exec mv {} "$FONTSDIR" \;
 }
 export -f process
 

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# fetch/pull/rebase
+# =================
+#
+#     remote:
+#         branch.<name>.remote
+#         "origin"
+#
+#     remote url:
+#         remote.<name>.url
+#
+#     refspec:
+#         remote.<name>.fetch
+#
+#     upstream branch:
+#         branch.<name>.merge (remote part of refspec)
+#         "first refspec fetched"
+#
+# push
+# ====
+#
+#     remote:
+#         branch.<name>.pushRemote
+#         remote.pushDefault
+#         branch.<name>.remote
+#
+#     remote url:
+#         remote.<name>.pushurl
+#         remote.<name>.url
+#
+#     refspec:
+#         remote.<name>.push
+#
+#     push.default (action if no refspec is explicitly given)
+
+cat <<-'EOF'
+
+TODO
+
+EOF

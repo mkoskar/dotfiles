@@ -10,10 +10,10 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-declare -i blue=0
+declare -i bopt=0
 while getopts bh opt; do
     case $opt in
-        b) blue=1 ;;
+        b) bopt=1 ;;
         h) usage ;;
         *) usage_err ;;
     esac
@@ -24,24 +24,23 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-bluectl() {
+bctl() {
     if [[ $1 = play-pause ]]; then
-        local stat; stat=$(bluectl show | awk '/Status:/ { print $2 }')
+        local stat; stat=$(bctl show | awk '/Status:/ { print $2 }')
         case $stat in
             playing)
-                bluectl pause
+                bctl pause
                 ;;
             *)
-                bluectl play
+                bctl play
                 ;;
         esac
         return
     fi
-    # hack which happens to workaround bluetooth-player input issues
     (sleep 0.01; echo "$1"; sleep 0.01) | bluetooth-player 2>/dev/null
 }
 
-_playerctl() {
+lctl() {
     local stat1 stat2
     if [[ $1 = play-pause ]]; then
         stat1=$(playerctl status)
@@ -55,14 +54,18 @@ _playerctl() {
     playerctl "$1"
 }
 
-(( blue )) && ctl=bluectl || ctl=_playerctl
+playerctl() {
+    command playerctl -p clementine "$@"
+}
+
+(( bopt )) && ctl=bctl || ctl=lctl
 
 case $1 in
     prev)
         set -- previous
         ;&
     play | pause | play-pause | stop | next)
-        "$ctl" "$1"
+        "$ctl" "$1" &>/dev/null
         ;;
     *)
         usage_err

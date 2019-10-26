@@ -56,11 +56,10 @@ complete -o nospace -A function fn
 complete -o nospace -c i
 complete -o nospace -c on
 complete -o nospace -c pacoc
-complete -o nospace -c watch
 complete -o nospace -f paco
 complete -o nospace -v v
 
-_pacl() {
+_pacpkgs() {
     COMPREPLY=()
     . /usr/share/bash-completion/completions/pacman
     # shellcheck disable=SC2034
@@ -68,7 +67,7 @@ _pacl() {
     _get_comp_words_by_ref cur prev
     _pacman_pkg Qq
 }
-complete -o nospace -F _pacl pacl pacd pacp pacw paci paccheck pacscripts
+complete -o nospace -F _pacpkgs pacd paci pacl pacp pacr pacw paccheck pacscripts
 
 # ----------------------------------------
 

@@ -135,39 +135,34 @@ alias man-all-posix='man-all -s 0p,9p,2p,3p,7p,8p,6p,1p,4p,5p'
 alias pac=pacman
 alias paccheck='paccheck --quiet --depends --opt-depends --files --file-properties --sha256sum --require-mtree --db-files --backup --noextract --noupgrade'
 alias paclog-recent='paclog --after="$(date -I -d -7days)"'
+alias pacman-log='pg /var/log/pacman.log'
 alias pactree='pactree --color'
 
-# Target's detailed info
-paci() {
-    [ $# -eq 0 ] && return 2
-    pacman -Qii -- "$@" || pacman -Sii -- "$@" || cower -i -- "$@"
-} 2>/dev/null
-
-# Finds what package provides file or directory
-paco() {
-    [ $# -eq 0 ] && return 2
-    pacman -Qo -- "$@"
-}
-
-# Finds what package provides command
-pacoc() {
-    [ $# -eq 0 ] && return 2
-    pth -a "$1" | xargs -r -L 1 pacman -Qo
-}
-
-# Files provided by package
-pacl() {
-    [ $# -eq 0 ] && return 2
-    pacman -Qql -- "$1" || pacman -Fql -- "$1"
-} 2>/dev/null
-
-# Target's "depends on"
 pacd() {
     [ $# -eq 0 ] && return 2
     expac -l \\n %D "$1"
 }
 
-# Target's "provides"
+paci() {
+    [ $# -eq 0 ] && return 2
+    pacman -Qii -- "$@" || pacman -Sii -- "$@" || auracle info -- "$@"
+} 2>/dev/null
+
+pacl() {
+    [ $# -eq 0 ] && return 2
+    pacman -Qql -- "$1" || pacman -Fql -- "$1"
+} 2>/dev/null
+
+paco() {
+    [ $# -eq 0 ] && return 2
+    pacman -Qo -- "$@"
+}
+
+pacoc() {
+    [ $# -eq 0 ] && return 2
+    pth -a "$1" | xargs -r -L 1 pacman -Qo
+}
+
 pacp() {
     if [ $# -eq 0 ]; then
         expac -l ' ' '%n %P'
@@ -176,13 +171,18 @@ pacp() {
     fi
 }
 
+pacr() {
+    [ $# -eq 0 ] && return 2
+    confirm 'Careful! Continue?' n || return 0
+    sudo pacman -Rcsn "$@"
+}
+
 pacs() {
     [ $# -eq 0 ] && return 2
     pacsearch "$1"
-    cower --color=always -s "$1"
+    auracle --color=always search -- "$1"
 }
 
-# Target's "required by" (what depends on target)
 pacw() {
     [ $# -eq 0 ] && return 2
     expac -l \\n %N "$1"
@@ -206,13 +206,13 @@ case $SHNAME in mksh) ;; *)
     alias ....='cd ../../..'
 esac
 
+alias aa=auracle
 alias acpi='acpi -V'
 alias an=asciinema
 alias aunpack='aunpack -q'
 alias c=calc
 alias cal='cal -3mw'
 alias callgrind='valgrind --tool=callgrind'
-alias cower='cower --color=auto'
 alias cp='cp -ai --reflink=auto'
 alias curl-as='curl -A "$UAGENT"'
 alias date0='date -Ins'
@@ -240,7 +240,6 @@ alias headcat='head -v -n -0'
 alias info='info --vi-keys'
 alias infocmp0='infocmp -A /usr/share/terminfo'
 alias infocmp='infocmp -1a'
-alias journal-vaccum='journalctl --vacuum-size=100M --vacuum-files=1'
 alias journal='journalctl -o short-precise -r -b'
 alias llib='tree ~/.local/lib'
 alias lsblk='lsblk -o NAME,KNAME,MAJ:MIN,ROTA,RM,RO,TYPE,SIZE,FSTYPE,MOUNTPOINT,MODEL'
@@ -301,15 +300,22 @@ _ti_bold=$(tput bold)
 _ti_sgr0=$(tput sgr0)
 
 _() {
+    local cwd gitdir branch
+    cwd=$PWD
+    case $cwd in "$HOME" | "$HOME"/*) cwd=\~${cwd##$HOME} ;; esac
     echo
     printf "%s @ %s in $_ti_bold%s$_ti_sgr0\n" \
-        "$USER" "${HOST:-$HOSTNAME}" "$PWD"
+        "$USER" "${HOST:-$HOSTNAME}" "$cwd"
     echo
-    gitroot=$(git rev-parse --git-dir 2>/dev/null) || return 0
-    printf '> %s\n' "$gitroot"
-    git branch --points-at HEAD --format='%(HEAD) %(color:bold yellow)%(refname:short)%(color:reset) %(objectname:short) %(if)%(upstream)%(then)[%(color:bold yellow)%(upstream:short)%(color:reset)%(if)%(upstream:track)%(then): %(color:bold red)%(upstream:track,nobracket)%(color:reset)%(end)]%(end) %(subject)'
-    echo '--------------------------------------------------'
-    git status -s --show-stash
+    gitdir=$(git rev-parse --git-dir 2>/dev/null) || return 0
+    printf '> %s\n' "$gitdir"
+    branch=$(git branch --show-current)
+    branch=${branch:-HEAD}
+    git branch \
+        --format='%(HEAD) %(color:bold yellow)%(refname:short)%(color:reset) %(objectname:short) %(if)%(upstream)%(then)[%(color:bold yellow)%(upstream:short)%(color:reset)%(if)%(upstream:track)%(then): %(color:bold red)%(upstream:track,nobracket)%(color:reset)%(end)] %(end)%(subject)' \
+        -l "$branch"
+    git --no-pager stash list
+    git status -s
     echo
     git --no-pager lg -3
     echo
@@ -531,7 +537,7 @@ xrandr() {
 
 xserver_log() {
     local dispno; dispno=$(env ${1+DISPLAY=:"$1"} xserverq dispno) || return 1
-    local logfile=~/.local/share/xorg/Xorg."$dispno".log
+    local logfile=~/.local/share/xorg/Xorg:"$dispno".log
     [ -e "$logfile" ] || return 1
     $PAGER "$logfile"
 }
@@ -553,7 +559,7 @@ alias xserver-terminate=xserver_terminate
 
 xsession_out() {
     local screen; screen=$(env ${1+DISPLAY=:"$1"} xserverq screen) || return 1
-    local outfile=~/.local/share/xorg/xsession."$screen".out
+    local outfile=~/.local/share/xorg/xsession:"$screen".out
     [ -e "$outfile" ] || return 1
     $PAGER "$outfile"
 }

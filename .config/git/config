@@ -1,18 +1,21 @@
 [alias]
     b = branch --all -vv
     ci = commit
+    clean-all = clean -dx
+    clean-ignored = clean -dX
     clone-shallow = clone --depth 100
     co = checkout
-    conf = config --local --list
+    conf = !git config --local --list | sort
+    confa = !git config --list | sort | pg
     d = difftool
     dc = difftool --cached
     df = diff
     dfc = diff --cached
     f = fetch --all
     k = !gitk
-    lg = !git lg1 -100
-    lg1 = log --graph --format=lg1 --color
-    lga = !git lg --all
+    lg = !git lg1 -20
+    lg1 = log --format=lg1 --graph --decorate-refs-exclude='*/HEAD' --color
+    lga = !git lg1
     ls = ls-files
     ls-untracked = ls-files --others --directory
     remotes = remote -v
@@ -65,6 +68,7 @@
 
 [pager]
     branch = false
+    conf = false
 
 [pretty]
     lg1 = %C(bold blue)%h%Creset %C(bold white)%an%Creset %C(bold green)(%ad)%Creset%C(bold yellow)%d%Creset%n %s

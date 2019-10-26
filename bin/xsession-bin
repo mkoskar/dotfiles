@@ -131,10 +131,10 @@ sessions=(
 
     # ----------------------------------------
 
-    jwm
-    openbox
-    xfwm4
-    xmonad
+    jwm             # zaphod: 1) loses input focus on entering window on other X screen 2) window stays "active"
+    openbox         # zaphod: good
+    xfwm4           # zaphod: good
+    xmonad          # zaphod: 1) loses input focus on entering other X screen 2) window stays "active"
 
     main
 )
@@ -153,7 +153,7 @@ sfile=$XDG_RUNTIME_DIR/xorg/xsession:$screen
 exec 8>"$sfile".lock
 flock -n 8 || exit 3
 
-exec &>~/.local/share/xorg/xsession."$screen".out
+exec &>~/.local/share/xorg/xsession:"$screen".out
 echo $'\n--------------------------------------------------'
 printf '> xsession: %s\n\n' "$*" >&2
 

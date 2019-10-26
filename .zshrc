@@ -377,14 +377,15 @@ compctl -m pgx
 compctl -m pth
 compctl -m rep
 compctl -m socksify
+compctl -m srun
 compctl -m torify
 compctl -m torsocks
-compctl -m watch
+compctl -m watchx
 compctl -v v
 
 compdef gitall=git
 
-_pacl() {
+_pacpkgs() {
     local -a packages
     read -cA words
     if [ "${#words}" -eq 2 ]; then
@@ -392,7 +393,7 @@ _pacl() {
     fi
     reply=(${${packages#/var/lib/pacman/local/}%-*-*})
 }
-compctl -K _pacl pacl pacd pacp pacw paci paccheck pacscripts
+compctl -K _pacpkgs pacd paci pacl pacp pacr pacw paccheck pacscripts
 
 _mkvirtualenv_pyenv() {
     local -a versions

@@ -2,7 +2,7 @@
 <JWM>
 
     <RootMenu>
-        <Program label="> term">term</Program>
+        <Program label="term">term</Program>
         <Separator/>
         <Restart label="Restart"/>
         <Exit label="Exit" confirm="true"/>

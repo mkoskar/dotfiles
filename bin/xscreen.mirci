@@ -1,19 +1,15 @@
 # vim: ft=sh
 
+layout_profile() {
+    case $(edidsum -o) in
+        251b742672f54471057b10e77e4bb2dfaa6a9904) echo dock ;;
+    esac
+}
+
 layout_hook_default() {
-    local edidsum xrandr
+    local xrandr
     (( $# )) || return
-    if [[ $1 = - ]]; then
-        edidsum=$(edidsum -o)
-        case $edidsum in
-            251b742672f54471057b10e77e4bb2dfaa6a9904)
-                set -- dock
-                ;;
-            *)
-                set -- mobile
-                ;;
-        esac
-    fi
+    [[ $1 = - ]] && set -- "$(layout_profile)"
     case $1 in
         dock)
             xrandr=(
@@ -21,16 +17,13 @@ layout_hook_default() {
                 --output DP2 --off
                 --output DP3 --off
                 --output HDMI1 --off
+                --output HDMI2 --mode 1920x1200 --pos 1600x0 --rotate normal
                 --output HDMI3 --off
+                --output LVDS1 --mode 1600x900 --pos 0x0 --rotate normal --primary
                 --output VGA1 --off
-                --output VIRTUAL1 --off
-                --output HDMI2 --mode 1920x1200 --pos 1600x0
-                    --rotate normal
-                --output LVDS1 --mode 1600x900 --pos 0x0
-                    --rotate normal --primary
             )
             ;;
-        mobile)
+        *)
             xrandr=(
                 --output DP1 --off
                 --output DP2 --off
@@ -38,14 +31,53 @@ layout_hook_default() {
                 --output HDMI1 --off
                 --output HDMI2 --off
                 --output HDMI3 --off
+                --output LVDS1 --mode 1600x900 --pos 0x0 --rotate normal
                 --output VGA1 --off
-                --output VIRTUAL1 --off
-                --output LVDS1 --mode 1600x900 --pos 0x0
-                    --rotate normal
             )
             ;;
+    esac
+    xrandr "${xrandr[@]}"
+}
+
+layout_hook_zaphod() {
+    local screen xrandr
+    (( $# )) || return
+    screen=$(xserverq screen)
+    case ${screen##*.} in
+        0)
+            xrandr=(
+                --output LVDS1 --mode 1600x900 --pos 0x0 --rotate normal
+            )
+            ;;
+        1)
+            [[ $1 = - ]] && set -- "$(layout_profile)"
+            case $1 in
+                dock)
+                    xrandr=(
+                        --output DP1 --off
+                        --output DP2 --off
+                        --output DP3 --off
+                        --output HDMI1 --off
+                        --output HDMI2 --mode 1920x1200 --pos 0x0 --rotate normal
+                        --output HDMI3 --off
+                        --output VGA1 --off
+                    )
+                    ;;
+                *)
+                    xrandr=(
+                        --output DP1 --auto
+                        --output DP2 --auto
+                        --output DP3 --auto
+                        --output HDMI1 --auto
+                        --output HDMI2 --auto
+                        --output HDMI3 --auto
+                        --output VGA1 --auto
+                    )
+                    ;;
+            esac
+            ;;
         *)
-            return
+            return;
             ;;
     esac
     xrandr "${xrandr[@]}"

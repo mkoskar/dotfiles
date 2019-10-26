@@ -17,16 +17,16 @@ case ${1-} in
 
     pre)
         sdu start xsession@:"$screen".target
-        srun -x compton
-        srun -x osdd
-        srun -x -n polkit-agent /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
-        srun -xl -n sxhkd bash -c 'sleep 1; exec sxhkd'
+        srun -rx compton
+        srun -rx osdd
+        srun -rx -n polkit-agent /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
+        srun -rxl -n sxhkd bash -c 'sleep 1; exec sxhkd'
         case $session in
             openbox | xfwm4)
-                srun -x tint2
+                srun -rxl tint2
                 ;;
             xmonad | main)
-                srun -x tray
+                srun -rx tray
                 ;;
         esac
         ;;

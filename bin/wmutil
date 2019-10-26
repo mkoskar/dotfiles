@@ -21,6 +21,10 @@ spawn() {
     fi
 }
 
+warp_mouse() {
+    xdotool mousemove -- ${3:+--screen "$3"} "$1" "$2"
+}
+
 warp_in_window() {
     local wid attrs x y w h
     wid=$(xdo id)
@@ -37,20 +41,32 @@ warp_in_window() {
         sw) x=$((x+w)); y=$((y+h)) ;;
         w) x=$((x+w)); y=$((y+h/2)) ;;
     esac
-    wmp -a "$x" "$y"
+    warp_mouse "$x" "$y"
 }
 
 warp_to_primary() {
     local mon x y w h
-    mon=$(lsmon --nowrap --primary "$@")
-    read -r _ _ _ _ x y w h _ _<<<"$mon"
-    wmp -a $((x+w/2)) $((y+h/2))
+    mon=$(lsmon --primary --nowrap --fallback "$@")
+    read -r _ _ _ _ _ x y w h _ _ <<<"$mon"
+    warp_mouse $((x+w/2)) $((y+h/2))
+}
+
+warp_to_screen() {
+    local scr s
+    local mon x y w h
+    scr=$(lsscr --pointed "$@")
+    read -r s _ <<<"$scr"
+    mon=$(lsmon --screen "$s" --primary --nowrap --fallback)
+    read -r _ _ _ _ _ x y w h _ _ <<<"$mon"
+    warp_mouse $((x+w/2)) $((y+h/2)) "$s"
 }
 
 case $1 in
     spawn | \
+    warp_mouse | \
     warp_in_window | \
-    warp_to_primary)
+    warp_to_primary | \
+    warp_to_screen)
         "$@"
         ;;
     *)

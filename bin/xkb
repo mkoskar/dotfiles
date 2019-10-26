@@ -73,9 +73,14 @@ xkb_default() {
 	            [ Shift_R, Caps_Lock, ISO_Next_Group, MouseKeys_Enable ]
 	        };
 
+	        replace key <LSGT> {
+	            type= "ONE_LEVEL",
+	            [ SetControls(controls=MouseKeys) ]
+	        };
+
 	        replace key <CAPS> {
-	            type= "TWO_LEVEL",
-	            [ SetControls(controls=Overlay1), LockControls(controls=Overlay1) ]
+	            type= "ONE_LEVEL",
+	            [ SetControls(controls=Overlay1) ]
 	        };
 
 	        replace key <FK11> {
@@ -90,41 +95,40 @@ xkb_default() {
 	            actions= [ NoAction(), NoAction(), NoAction(), NoAction(), SwitchScreen(screen=+1,!same) ]
 	        };
 
+	        key <LatU> { [ PtrBtn(button=1) ] };
+	        key <LatI> { [ PtrBtn(button=2) ] };
+	        key <LatO> { [ PtrBtn(button=3) ] };
 	        key <LatK> { [ MovePtr(y=-25,!accel), MovePtr(y=-1) ] };
 	        key <LatJ> { [ MovePtr(y=+25,!accel), MovePtr(y=+1) ] };
 	        key <LatH> { [ MovePtr(x=-25,!accel), MovePtr(x=-1) ] };
 	        key <LatL> { [ MovePtr(x=+25,!accel), MovePtr(x=+1) ] };
 
-	        key <LatU> { [ PtrBtn(button=1) ] };
-	        key <LatI> { [ PtrBtn(button=2) ] };
-	        key <LatO> { [ PtrBtn(button=3) ] };
-
 	        // overlay1: arrow keys
-	        key <LatY> { overlay1 = <END> };
-	        key <LatU> { overlay1 = <PGDN> };
-	        key <LatI> { overlay1 = <PGUP> };
-	        key <LatO> { overlay1 = <HOME> };
-	        key <LatK> { overlay1 = <UP> };
-	        key <LatJ> { overlay1 = <DOWN> };
-	        key <LatH> { overlay1 = <LEFT> };
-	        key <LatL> { overlay1 = <RGHT> };
+	        key <LatY> { overlay1= <END> };
+	        key <LatU> { overlay1= <PGDN> };
+	        key <LatI> { overlay1= <PGUP> };
+	        key <LatO> { overlay1= <HOME> };
+	        key <LatK> { overlay1= <UP> };
+	        key <LatJ> { overlay1= <DOWN> };
+	        key <LatH> { overlay1= <LEFT> };
+	        key <LatL> { overlay1= <RGHT> };
 
 	        // overlay1: numpad keys
-	        //key <AE07> { overlay1 = <KP7> };
-	        //key <AE08> { overlay1 = <KP8> };
-	        //key <AE09> { overlay1 = <KP9> };
-	        //key <AE10> { overlay1 = <KPDV> };
-	        //key <LatU> { overlay1 = <KP4> };
-	        //key <LatI> { overlay1 = <KP5> };
-	        //key <LatO> { overlay1 = <KP6> };
-	        //key <LatP> { overlay1 = <KPMU> };
-	        //key <LatJ> { overlay1 = <KP1> };
-	        //key <LatK> { overlay1 = <KP2> };
-	        //key <LatL> { overlay1 = <KP3> };
-	        //key <AC10> { overlay1 = <KPSU> };
-	        //key <LatM> { overlay1 = <KP0> };
-	        //key <AB09> { overlay1 = <KPDL> };
-	        //key <AB10> { overlay1 = <KPAD> };
+	        //key <AE07> { overlay1= <KP7> };
+	        //key <AE08> { overlay1= <KP8> };
+	        //key <AE09> { overlay1= <KP9> };
+	        //key <AE10> { overlay1= <KPDV> };
+	        //key <LatU> { overlay1= <KP4> };
+	        //key <LatI> { overlay1= <KP5> };
+	        //key <LatO> { overlay1= <KP6> };
+	        //key <LatP> { overlay1= <KPMU> };
+	        //key <LatJ> { overlay1= <KP1> };
+	        //key <LatK> { overlay1= <KP2> };
+	        //key <LatL> { overlay1= <KP3> };
+	        //key <AC10> { overlay1= <KPSU> };
+	        //key <LatM> { overlay1= <KP0> };
+	        //key <AB09> { overlay1= <KPDL> };
+	        //key <AB10> { overlay1= <KPAD> };
 	    };
 
 	    xkb_geometry {

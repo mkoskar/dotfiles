@@ -13,6 +13,9 @@ super + alt + {j,l,k,h}
 super + {_,ctrl + ,shift + }y
     xdotool click --clearmodifiers {1,2,3}
 
+super + minus
+    wmutil warp_to_screen 1n
+
 super + {i,o,u}
     wmutil warp_to_primary{_, 1r, 1l}
 

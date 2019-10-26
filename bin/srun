@@ -58,7 +58,7 @@ fi
 [[ $name ]] || exit 2
 if (( xopt )); then
     screen=$(xserverq screen)
-    name=$name:$screen
+    (( sopt )) && name=$name:$screen || name=$name@:$screen
 fi
 
 if (( !Nopt )); then
@@ -81,7 +81,8 @@ if (( sopt )); then
 else
     args+=(-p Type=exec -p SyslogIdentifier="$name")
     if (( lopt )); then
-        args+=(-p StandardOutput=append:"$HOME/.local/share/$prgname.out")
+        (( xopt )) && logname=$prgname:$screen || logname=$prgname
+        args+=(-p StandardOutput=append:"$HOME/.local/share/$logname.out")
     fi
     if (( Lopt )); then
         args+=(-p StandardOutput=file:"$HOME/.local/share/$name.out")
