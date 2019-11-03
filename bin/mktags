@@ -15,7 +15,7 @@ cdup() {
 }
 
 if [[ ${BASEDIR-} ]]; then
-    cd "$BASEDIR"
+    cd -- "$BASEDIR"
 else
     cdup
 fi

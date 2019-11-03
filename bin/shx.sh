@@ -213,6 +213,7 @@ alias aunpack='aunpack -q'
 alias c=calc
 alias cal='cal -3mw'
 alias callgrind='valgrind --tool=callgrind'
+alias cmd=command
 alias cp='cp -ai --reflink=auto'
 alias curl-as='curl -A "$UAGENT"'
 alias date0='date -Ins'
@@ -296,41 +297,32 @@ alias ytdl-json='youtube-dl -J'
 alias ytdl-playlist="youtube-dl --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
 alias ytdl-stdout="youtube-dl -f 'best[height<=?1080]' -o -"
 
-_ti_bold=$(tput bold)
-_ti_sgr0=$(tput sgr0)
-
 _() {
-    local cwd gitdir branch
-    cwd=$PWD
-    case $cwd in "$HOME" | "$HOME"/*) cwd=\~${cwd##$HOME} ;; esac
-    echo
-    printf "%s @ %s in $_ti_bold%s$_ti_sgr0\n" \
-        "$USER" "${HOST:-$HOSTNAME}" "$cwd"
-    echo
-    gitdir=$(git rev-parse --git-dir 2>/dev/null) || return 0
-    printf '> %s\n' "$gitdir"
-    branch=$(git branch --show-current)
-    branch=${branch:-HEAD}
-    git branch \
-        --format='%(HEAD) %(color:bold yellow)%(refname:short)%(color:reset) %(objectname:short) %(if)%(upstream)%(then)[%(color:bold yellow)%(upstream:short)%(color:reset)%(if)%(upstream:track)%(then): %(color:bold red)%(upstream:track,nobracket)%(color:reset)%(end)] %(end)%(subject)' \
-        -l "$branch"
-    git --no-pager stash list
     git status -s
-    echo
-    git --no-pager lg -3
-    echo
 }
 alias ,=_
 
 __() {
+    local cwd gitdir
+    cwd=$PWD
+    case $cwd in "$HOME" | "$HOME"/*) cwd=\~${cwd##$HOME} ;; esac
+    printf '\n%s @ %s in %s\n\n' "$USER" "${HOST:-$HOSTNAME}" "$cwd"
     # shellcheck disable=SC2154
     if [ "$__long_cmd" ]; then
-        echo
-        printf '$ %s\n' "$__long_cmd"
-        printf '%s (%d sec)\n' \
-            "$(date -R -d @"$__long_cmd_start")" "$__long_cmd_dur"
-        echo
+        printf '$ %s\n%s (%d sec)\n\n' \
+            "$__long_cmd" \
+            "$(date -R -d @"$__long_cmd_start")" \
+            "$__long_cmd_dur"
     fi
+    gitdir=$(git rev-parse --git-dir 2>/dev/null) || return 0
+    case $gitdir in "$HOME" | "$HOME"/*) gitdir=\~${gitdir##$HOME} ;; esac
+    echo '--------------------------------------------------'
+    printf '> %s\n\n' "$gitdir"
+    git conf
+    echo $'\n--------------------------------------------------'
+    echo $'> git-stash:\n'
+    git -P stash list
+    echo
 }
 alias ,,=__
 
@@ -362,9 +354,9 @@ unbase() { unset BASEDIR; }
 
 cd() {
     if [ $# -eq 0 ]; then
-        command cd "${BASEDIR:-${SHOME:-$HOME}}"
+        command cd -- "${BASEDIR:-${SHOME:-$HOME}}"
     else
-        command cd "$@"
+        command cd -- "$@"
     fi
 }
 

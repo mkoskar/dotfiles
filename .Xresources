@@ -57,7 +57,7 @@ URxvt.keysym.Shift-Home:        command:\033]720;9999\007
 URxvt.keysym.Shift-End:         command:\033]721;9999\007
 URxvt.keysym.Shift-Return:      command:\033]721;9999\007
 
-URxvt.perl-ext-common:          default,-option-popup,-readline,-searchable-scrollback,confirm-paste,keyboard-select,url-select,url-picker
+URxvt.perl-ext-common:          confirm-paste,keyboard-select,matcher,url-picker,url-select
 URxvt.url-picker.launcher:      b
 URxvt.url-select.launcher:      b
 URxvt.url-select.underline:     true

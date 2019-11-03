@@ -184,7 +184,6 @@ let NERDTreeMapCWD = 'cD'
 let NERDTreeMapHelp = '<F1>'
 let NERDTreeShowBookmarks = 1
 let NERDTreeShowHidden = 1
-let NERDTreeStatusline = "%{exists('b:NERDTreeRoot')?b:NERDTreeRoot.path._strForUI():''}"
 let NERDTreeWinSize = 31
 
 nnoremap <silent> <F1> :NERDTreeFind<CR>

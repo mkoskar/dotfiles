@@ -4,7 +4,7 @@
 
 my $url =
    qr{
-      (?:https?://|ftp://|news://|mailto:|file://|\bwww\.)
+      (?:https?://|ftp://|s?news://|mailto:|file://|\bwww\.)
       [a-zA-Z0-9\-\@;\/?:&=%\$_.+!*\x27,~#]*
       ( 
          # Allow a pair of matched parentheses

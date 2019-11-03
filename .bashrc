@@ -17,7 +17,9 @@ HISTFILESIZE=5000
 HISTIGNORE=exit
 HISTSIZE=1000
 
-__title="\\[$(hstatus '\u@\h:\w')\\]"
+__ti_tsl=$(tput tsl)
+__ti_fsl=$(tput fsl)
+__title="\\[$__ti_tsl\u@\h:\w$__ti_fsl\\]"
 PS1="$__title\$__statstr:\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
 if [[ $HOSTNAME != 'mirci' ]]; then
     PS1="$__title\$__statstr:\\h:\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "

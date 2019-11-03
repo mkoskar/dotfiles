@@ -92,17 +92,6 @@ hash -d udev.rules.d=/etc/udev/rules.d
 hash -d xorg.conf.d=/etc/X11/xorg.conf.d
 
 
-# Window Title
-# ----------------------------------------
-
-set-window-title() {
-    local title
-    zformat -f title '%n@%m:%s' "s:${PWD/#$HOME/~}"
-    hstatus "${(V%)title}"
-}
-add-zsh-hook precmd set-window-title
-
-
 # ZLE
 # ----------------------------------------
 
@@ -111,10 +100,11 @@ WORDCHARS=
 #WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
 ZLE_SPACE_SUFFIX_CHARS='&|'
 
-PROMPT='$__vimode$__statstr:${BASEDIR:+(${BASEDIR##*/}):}%1~%(!.#.$) '
+__title="%{${terminfo[tsl]}%n@%m:%~${terminfo[fsl]}%}"
+PROMPT='$__title$__vimode$__statstr:${BASEDIR:+(${${BASEDIR##*/}//\%/%%}):}%1~%(!.#.$) '
 PROMPT2='$__vimode> '
 if [[ $HOST != mirci ]]; then
-    PROMPT='$__vimode$__statstr:%m:${BASEDIR:+(${BASEDIR##*/}):}%1~%(!.#.$) '
+    PROMPT='$__title$__vimode$__statstr:%m:${BASEDIR:+(${${BASEDIR##*/}//\%/%%}):}%1~%(!.#.$) '
 fi
 
 expand-dot-to-parent-directory-path() {

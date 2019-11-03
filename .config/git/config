@@ -1,33 +1,157 @@
 [alias]
-    b = branch --all -vv
+
+#'\
+#%(if:notequals=refs/remotes)%(refname:rstrip=-2)\
+#%(then)\
+#%(if)%(HEAD)%(then)* %(color:green)%(else)%(if)%(worktreepath)%(then)+ %(color:cyan)%(else)  %(end)%(end)%(align:50,left)%(refname:lstrip=2)%(end)%(color:reset)\
+# %(objectname:short)\
+#%(if:notequals=*)%(HEAD)%(then)%(if)%(worktreepath)%(then) (%(color:cyan)%(worktreepath)%(color:reset))%(end)%(end)\
+#%(if)%(upstream)%(then) [%(color:yellow)%(upstream:short)%(color:reset)%(if)%(upstream:track)%(then): %(upstream:track,nobracket)%(end)]%(end) %(contents:subject)\
+#%(else)\
+#  %(color:red)%(align:50,left)remotes/%(refname:lstrip=2)%(end)%(color:reset)\
+#%(if)%(symref)%(then) -> %(symref:short)\
+#%(else) %(objectname:short) %(contents:subject)%(end)\
+#%(end)\
+#'
+
+    b = branch -vv -l --format='\
+%(if:notequals=refs/remotes)%(refname:rstrip=-2)\
+%(then)\
+%(if)%(HEAD)%(then)* %(color:green)%(else)%(if)%(worktreepath)%(then)+ %(color:cyan)%(else)  %(color:11)%(end)%(end)%(refname:lstrip=2)%(color:reset)\
+%(if:notequals=*)%(HEAD)%(then)%(if)%(worktreepath)%(then) (%(color:cyan)%(worktreepath)%(color:reset))%(end)%(end)\
+%(if)%(upstream)%(then) <<< %(color:yellow)%(upstream:short)%(color:reset)%(if)%(upstream:track)%(then): %(color:15 red)%(upstream:track,nobracket)%(color:reset)%(end)%(end)\
+%(if)%(push)%(then) >>> %(color:yellow)%(push:short)%(color:reset)%(if)%(push:track)%(then): %(color:15 red)%(push:track,nobracket)%(color:reset)%(end)%(end)\
+%0a    %(objectname:short) %(authorname) (%(authordate:relative)) %(contents:subject)\
+%(else)\
+  %(color:red)%(refname:lstrip=2)%(color:reset)\
+%0a    %(if)%(symref)%(then) -> %(symref:short)%(else)%(objectname:short) %(contents:subject)%(end)\
+%(end)\
+'
+
+    ba = b --all
     ci = commit
     clean-all = clean -dx
     clean-ignored = clean -dX
     clone-shallow = clone --depth 100
     co = checkout
-    conf = !git config --local --list | sort
-    confa = !git config --list | sort | pg
+    conf = !git config -l --local | sort
+    confa = !git config -l | sort | pg
     d = difftool
     dc = difftool --cached
     df = diff
     dfc = diff --cached
     f = fetch --all
+    forward = merge --ff-only
     k = !gitk
-    lg = !git lg1 -20
+    lg = !git -P lg1 -10
     lg1 = log --format=lg1 --graph --decorate-refs-exclude='*/HEAD' --color
-    lga = !git lg1
+    lga = lg1
     ls = ls-files
-    ls-untracked = ls-files --others --directory
+    ls-untracked = ls-files -o --directory
+    push-current = -c push.default=current pushv
+    push-matching = -c push.default=matching pushv
+    push-upstream = -c push.default=upstream pushv
+    pushv = push -v
     remotes = remote -v
     set-email = !git-set-email
     set-upstream = remote add upstream
-    st = status -sb --show-stash
+    set-upstream-head = remote set-head upstream -a
+    st = status -s
     up = update
     update = !git-update
 
+[color "advise"]
+    #hint =
+
+[color "blame"]
+    #highlightrecent
+    #repeatedlines =
+
+[color "branch"]
+    #current = 110
+    #local =
+    #plain =
+    #remote = 167
+    #reset =
+    #worktree =
+    upstream = 3
+
+[color "decorate"]
+    HEAD = bold yellow
+    branch = bold yellow
+    #grafted =
+    remoteBranch = bold yellow
+    #stash =
+    #tag =
+
+[color "diff"]
+    #commit =
+    #context =
+    #contextBold =
+    #contextDimmed =
+    #frag =
+    #func =
+    #meta =
+    #new =
+    #newBold =
+    #newDimmed =
+    #newMoved =
+    #newMovedAlternative =
+    #newMovedAlternativeDimmed =
+    #newMovedDimmed =
+    #old =
+    #oldBold =
+    #oldDimmed =
+    #oldMoved =
+    #oldMovedAlternative =
+    #oldMovedAlternativeDimmed =
+    #oldMovedDimmed =
+    #whitespace =
+
+[color "grep"]
+    #column =
+    #context =
+    #filename =
+    #function =
+    #lineNumber =
+    #matchContext =
+    #matchSelected =
+    #selected =
+    #separator =
+
+[color "interactive"]
+    #error =
+    #header =
+    #help =
+    #plain =
+    #prompt =
+    #reset =
+
+[color "push"]
+    #error =
+
+[color "remote"]
+    #error =
+    #hint =
+    #success =
+    #warning =
+
+[color "status"]
+    #branch =
+    #changed =
+    #header =
+    #localBranch =
+    #noBranch =
+    #remoteBranch =
+    #unmerged =
+    #untracked =
+    #updated =
+
+[color "transport"]
+    #rejected =
+
 [color]
     pager = false
-    ui = auto
 
 [commit]
     template = ~/.config/git/commit.template
@@ -41,6 +165,9 @@
 
 [difftool "custom"]
     cmd = difftool "$LOCAL" "$REMOTE"
+
+[fetch]
+    prune = true
 
 [format]
     coverletter = auto

@@ -20,13 +20,13 @@ xrdb -load ~/.Xresources
 
 case $xserver in
     Xorg)
-        (sleep 1; exec backlight-auto) &
         xconfig=$(<"$XDG_RUNTIME_DIR/xorg/xconfig:$dispno")
         layout_hook_"$xconfig" "$@"
         xrandr --dpi 96
         xset dpms 0 0 300
         touchpad off
         trackpoint-wheel on
+        (sleep 1; exec backlight-auto) &
         ;;
     Xephyr)
         xrdb -merge - <<<'Xft.dpi: 96'

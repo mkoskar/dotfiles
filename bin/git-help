@@ -24,6 +24,7 @@
 #         branch.<name>.pushRemote
 #         remote.pushDefault
 #         branch.<name>.remote
+#         "origin"
 #
 #     remote url:
 #         remote.<name>.pushurl
@@ -36,6 +37,23 @@
 
 cat <<-'EOF'
 
-TODO
+    push
+    ====
+
+        git push
+        git push remote
+        git push remote src
+
+        git push remote HEAD
+        $ git -c push.default=current push
+
+        git push remote HEAD:dst
+        git push remote src:dst
+        git push remote +src:dst
+
+        git push remote :dst
+
+        git push remote :
+        $ git -c push.default=matching push
 
 EOF

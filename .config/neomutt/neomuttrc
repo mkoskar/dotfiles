@@ -1,0 +1,3 @@
+# vim: ft=muttrc
+
+source ~/.mutt/neomuttrc

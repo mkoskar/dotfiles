@@ -1,0 +1,14 @@
+# vim: ft=muttrc
+
+set my_home = ~/.mutt
+
+source $my_home/neomuttrc_base
+source $my_home/accounts
+
+unvirtual-mailboxes *
+
+account-hook . 'unset nntp_pass nntp_authenticators'
+folder-hook . 'source $my_accounts/pre_hook.neomutt'
+
+#source $my_accounts/main_notmuch
+source $my_accounts/news

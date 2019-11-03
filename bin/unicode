@@ -175,7 +175,7 @@ if [[ $mode = select ]]; then
     sub=${2-}
     if [[ ! $sub ]]; then
         ucd_file "$ver" "$ifile"
-        cd "$ver"
+        cd -- "$ver"
         ofile=select
         if [[ ! -e $ofile || $ifile -nt $ofile ]]; then
             awk -F \; '

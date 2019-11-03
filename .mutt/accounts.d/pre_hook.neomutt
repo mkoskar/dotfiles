@@ -1,0 +1,5 @@
+# vim: ft=muttrc
+
+unset news_server
+unset newsrc
+unset nm_default_uri

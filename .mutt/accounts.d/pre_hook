@@ -21,9 +21,6 @@ set my_mbtrash = $trash
 
 unset crypt_autosign
 unset hostname
-unset news_server       # NeoMutt: NNTP
-unset newsrc            # NeoMutt: NNTP
-unset nm_default_uri    # NeoMutt: notmuch
 unset pgp_sign_as       # this will use GPG's default-key
 unset query_command
 unset sendmail
@@ -46,4 +43,3 @@ bind index,pager \& noop
 bind index,pager,browser \ei noop
 
 macro index,pager y <change-folder>?<toggle-mailboxes> 'browse folder'
-macro index,pager \eI <change-folder>$my_news_spool<enter> 'open last visited newsgroup'

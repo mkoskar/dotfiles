@@ -921,6 +921,10 @@ endfunction
 
 command! -nargs=1 Macro call s:Macro(<q-args>)
 
+command! ScriptNames Execute scriptnames
+
+command! RuntimePath exec 'Execute set rtp' | exec 'norm df=' | Split,
+
 " ----------------------------------------
 
 filetype plugin indent on
@@ -928,15 +932,19 @@ if !exists('g:syntax_on')
     syntax enable
 endif
 
-" just get rid of these
-let loaded_getscript = 1
+let loaded_2html_plugin = 1
 let loaded_getscriptPlugin = 1
-let loaded_logipat = 1
-let loaded_netrw = 1
+let loaded_logiPat = 1
 let loaded_netrwPlugin = 1
 let loaded_rrhelper = 1
-let loaded_vimball = 1
+let loaded_spellfile_plugin = 1
 let loaded_vimballPlugin = 1
+
+if has('nvim')
+    let loaded_man = 1
+    let loaded_remote_plugins = 1
+    let loaded_tutor_mode_plugin = 1
+endif
 
 packadd enhanced-diff | PatienceDiff
 
@@ -981,7 +989,7 @@ augroup vimrc_base
 
     autocmd FileType diff call utils#bufSpecial()
     autocmd FileType mail call utils#bufSpecial() | setl tw=72
-    autocmd FileType man call utils#bufSpecial() | setl noma ts=8 | unmap <buffer> q
+    autocmd FileType man call utils#bufSpecial() | setl noma ts=8
     autocmd FileType tar call utils#bufSpecial()
     autocmd FileType zip call utils#bufSpecial()
     autocmd FileType {c,cpp}{,.*} let &l:path = '.,,**,/usr/include'

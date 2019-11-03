@@ -6,14 +6,9 @@ unhook account-hook
 unhook folder-hook
 
 unmailboxes *
-unvirtual-mailboxes * # NeoMutt: Notmuch
 unsidebar_whitelist *
 
-source $my_home/mailboxes|
-
 account-hook . 'unset imap_pass'
-account-hook . 'unset nntp_pass nntp_authenticators' # NeoMutt: NNTP
-
 folder-hook . 'source $my_accounts/pre_hook'
 
 source $my_accounts/local
@@ -21,8 +16,6 @@ macro index,pager \e<f1> <change-folder>$my_local/INBOX<enter>
 
 source $my_accounts/main
 macro index,pager \e<f2> <change-folder>$my_main/INBOX<enter>
-
-source $my_accounts/news
 
 # Default INBOX
 set spoolfile = $my_main/INBOX

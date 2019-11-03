@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+mail=${MAILDIR:-$HOME/mail}
+mkdir -p "$mail"
+
+account=$1
+comm=${2-}
+root=$mail/$account
+
+print() {
+    [[ $comm ]] || { cat; return; }
+    if [[ $comm = neomutt ]]; then
+        printf 'named-mailboxes %q %q\n' "$account" "$root"/INBOX
+    fi
+    while read -r mb; do
+        [[ ${mb##*/} = \[Gmail\]* ]] && continue
+        printf 'mailboxes %q\n' "$mb"
+    done
+}
+
+find -L -- "$root" -type d -name new -printf '%h\n' | sort | print

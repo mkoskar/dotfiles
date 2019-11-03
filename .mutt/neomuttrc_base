@@ -1,0 +1,64 @@
+# vim: ft=muttrc
+
+set my_home = ~/.mutt
+
+source $my_home/muttrc_base
+
+
+# NNTP
+# ----------------------------------------
+
+set group_index_format = '%4C %M%N (%6n/%6s) %-45.45f %d'
+set news_cache_dir = $my_home/cache/news
+set nntp_context = 5000
+unset catchup_newsgroup
+unset newsrc
+
+bind browser + uncatchup
+bind browser - catchup
+bind browser \cR reload-active
+bind browser \eS subscribe-pattern
+bind browser \eU unsubscribe-pattern
+
+
+# Notmuch
+# ----------------------------------------
+
+# D : draft
+# F : flagged
+# P : passed
+# R : replied
+# S : unread (added when 'S' flag is not present)
+
+# nm_flagged_tag : flagged
+# nm_replied_tag : replied
+# nm_unread_tag  : unread
+
+set nm_exclude_tags = deleted,spam
+set nm_record_tags = sent
+set vfolder_format = '%3C %t %N %F %3l %-8.8u %-8.8g %8s (%5n/%5m) %d %f'
+
+# quasi-delete
+bind index \e< vfolder-window-backward
+bind index \e> vfolder-window-forward
+bind index,pager + entire-thread
+bind index,pager X vfolder-from-query
+bind index,pager \e<space> sidebar-toggle-virtual
+bind index,pager x change-vfolder
+
+macro index,pager \e<tab> <change-vfolder>? 'browse virtual folders'
+
+
+# Colors
+# ----------------------------------------
+
+color status color231 red '\[[0-9]+\]'
+
+
+# Other
+# ----------------------------------------
+
+set skip_quoted_offset = 5
+
+bind index \eL limit-current-thread
+bind index \e/ show-log-messages

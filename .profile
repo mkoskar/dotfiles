@@ -77,6 +77,7 @@ export LESSHISTFILE=-
 export LESSOPEN='|highlight --quiet -O xterm256 -s bluegreen %s'
 export MAILDIR=~/mail
 export MANSECT=0:9:2:3:7:8:6:1:4:5
+export MANWIDTH=80
 export NO_AT_BRIDGE=1
 export ORACLE_HOME=/opt/instantclient
 export PARALLEL_SHELL=/bin/bash
