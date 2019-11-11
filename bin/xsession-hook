@@ -38,8 +38,11 @@ case ${1-} in
 
     exec)
         case $session in
-            jwm)
-                exec jwm
+            kodi)
+                exec kodi -fs --debug
+                ;;
+            main)
+                exec xmonad
                 ;;
             openbox)
                 exec openbox --startup 'xsession-hook startup'
@@ -49,9 +52,6 @@ case ${1-} in
                 ;;
             xfwm4)
                 exec xfwm4 --compositor=off
-                ;;
-            xmonad | main)
-                exec xmonad
                 ;;
             *)
                 exec "${@:2}"

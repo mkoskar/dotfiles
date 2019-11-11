@@ -1,9 +1,10 @@
 # vim: ft=muttrc
 
 set my_home = ~/.mutt
+set shell = /bin/bash
 
 set my_comm = "`ps --pid $PPID -o comm=`"
-set my_mail = "`printf %s "${MAILDIR:-$HOME/mail}"`"
+set my_mail = $MAILDIR
 set folder = $my_mail
 
 set alias_file = $my_home/aliases
@@ -18,8 +19,9 @@ set history = 100
 set history_file = $my_home/history
 set history_remove_dups
 set ispell = 'aspell -e --email-margin=0 --run-together -c'
-set mail_check = 60
+set mail_check = 5
 set mail_check_stats
+set mail_check_stats_interval = 5
 set mailcap_path = $my_home/mailcap
 set mbox_type = Maildir
 set message_cache_clean

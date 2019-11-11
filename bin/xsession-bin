@@ -127,14 +127,15 @@ sessions=(
     fvwm
     marco           # fork of Metacity
     notion
-    rio
 
     # ----------------------------------------
 
-    jwm             # zaphod: 1) loses input focus on entering window on other X screen 2) window stays "active"
-    openbox         # zaphod: good
-    xfwm4           # zaphod: good
-    xmonad          # zaphod: 1) loses input focus on entering other X screen 2) window stays "active"
+    jwm
+    kodi
+    openbox
+    rio
+    xfwm4
+    xmonad
 
     main
 )

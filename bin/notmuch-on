@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -eu
+
+acct=$1
+conf=~/.config/notmuch/$acct
+[[ -e $conf ]] || exit 1
+shift
+
+export NOTMUCH_CONFIG=$conf
+export NOTMUCH_DEBUG_QUERY=1
+
+exec notmuch "$@"

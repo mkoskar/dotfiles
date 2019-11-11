@@ -179,7 +179,6 @@ nnoremap <silent> + :resize +5<CR>
 nnoremap <silent> _ :resize -5<CR>
 nnoremap <silent> <C-W>. :vertical resize +5<CR>
 nnoremap <silent> <C-W>, :vertical resize -5<CR>
-nnoremap <silent> <Leader>q :close<CR>
 
 
 " Multiple Tab Pages
@@ -554,7 +553,11 @@ nnoremap <silent> <Leader>uy :.SystemRange! urls -y<CR>
 nnoremap <silent> <Leader>uY :%SystemRange! urls -y<CR>
 
 " Git
-nnoremap <Leader>gg :vert System git show HEAD:./
+nnoremap <Leader>gg :vertical System git show HEAD:./
+
+" Other
+nnoremap <silent> <Leader>q :close<CR>
+nnoremap <silent> <C-W><C-F> :vertical normal! <C-V><C-W>f<CR>
 
 " ----------------------------------------
 
@@ -921,9 +924,11 @@ endfunction
 
 command! -nargs=1 Macro call s:Macro(<q-args>)
 
-command! ScriptNames Execute scriptnames
+command! DelDirs Preserve g/\/$/d
 
-command! RuntimePath exec 'Execute set rtp' | exec 'norm df=' | Split,
+command! RuntimePath exec 'Execute set rtp' | exec 'normal! df=' | Split,
+
+command! ScriptNames Execute scriptnames
 
 " ----------------------------------------
 

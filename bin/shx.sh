@@ -134,7 +134,6 @@ alias man-all-posix='man-all -s 0p,9p,2p,3p,7p,8p,6p,1p,4p,5p'
 
 alias pac=pacman
 alias paccheck='paccheck --quiet --depends --opt-depends --files --file-properties --sha256sum --require-mtree --db-files --backup --noextract --noupgrade'
-alias paclog-recent='paclog --after="$(date -I -d -7days)"'
 alias pacman-log='pg /var/log/pacman.log'
 alias pactree='pactree --color'
 
@@ -152,6 +151,11 @@ pacl() {
     [ $# -eq 0 ] && return 2
     pacman -Qql -- "$1" || pacman -Fql -- "$1"
 } 2>/dev/null
+
+paclog_recent() {
+    paclog --action=all | paclog --after="$(date -I -d -7days)"
+}
+alias paclog-recent=paclog_recent
 
 paco() {
     [ $# -eq 0 ] && return 2
@@ -255,8 +259,8 @@ alias mpv-debug='mpv --terminal=yes --msg-level=all=debug'
 alias mpv-verbose='mpv --terminal=yes --msg-level=all=v'
 alias mpv-ytdl-reverse='mpv --ytdl-raw-options=playlist-reverse='
 alias mpv='mpv --player-operation-mode=pseudo-gui'
-alias mutt-debug='mutt -d 2'
 alias mv='mv -i'
+alias neomutt-debug='neomutt -d 5 -l ~/tmp/neomutt.log'
 alias nmap-all='nmap -p 1-65535'
 alias npmg='npm -g'
 alias od='od -A x -t c'

@@ -1,0 +1,19 @@
+# vim: ft=dosini
+
+[database]
+path=<path>
+
+[maildir]
+synchronize_flags=true
+
+[new]
+tags=new;unread;
+ignore=/.*/\\.[^/]*$/
+
+[search]
+exclude_tags=deleted;spam;
+
+[user]
+name=<name>
+primary_email=<primary_email>
+other_email=<other_email>;

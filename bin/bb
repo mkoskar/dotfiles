@@ -116,7 +116,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     git-changes             b https://github.com/git/git/tree/master/Documentation/RelNotes
     gitlab                  b https://gitlab.com/explore
     glib2                   b https://developer.gnome.org/glib/stable/
-    gmail-nolabel           b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:chats+-in:inbox+-in:sent+-in:draft+-in:trash/n100
+    gmail-nolabel           b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:inbox+-in:draft+-in:sent+-in:spam+-in:trash/n100
     gmail-search            b https://support.google.com/mail/answer/7190
     gnome-api               b https://developer.gnome.org/references
     gnu-coding              b https://www.gnu.org/prep/standards/standards.html
@@ -342,6 +342,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     xmonad-contrib          b https://hackage.haskell.org/package/xmonad-contrib
     xorg-lists              b https://lists.x.org/
     xorg-repos              b https://cgit.freedesktop.org/xorg
+    xterm-changes           b https://invisible-island.net/xterm/xterm.log.html
     yaml                    b https://yaml.org/refcard.html
     yt                      b https://www.youtube.com/results\?q={u}
     yt-channel              b https://www.youtube.com/results\?sp=EgIQAlAU\&q={u}

@@ -5,4 +5,4 @@ set -eu
 ti_tsl=$(tput tsl)
 ti_fsl=$(tput fsl)
 
-printf "${ti_tsl}%s${ti_fsl}" "$1"
+printf "$ti_tsl%s$ti_fsl" "$1"

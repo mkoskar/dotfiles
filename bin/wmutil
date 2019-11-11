@@ -22,7 +22,7 @@ spawn() {
 }
 
 warp_mouse() {
-    xdotool mousemove -- ${3:+--screen "$3"} "$1" "$2"
+    xdotool mousemove ${3:+--screen "$3"} -- "$1" "$2"
 }
 
 warp_in_window() {

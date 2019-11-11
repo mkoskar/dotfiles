@@ -19,7 +19,7 @@ HISTSIZE=1000
 
 __ti_tsl=$(tput tsl)
 __ti_fsl=$(tput fsl)
-__title="\\[$__ti_tsl\u@\h:\w$__ti_fsl\\]"
+[[ $__ti_tsl ]] && __title="\\[$__ti_tsl\u@\h:\w$__ti_fsl\\]"
 PS1="$__title\$__statstr:\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
 if [[ $HOSTNAME != 'mirci' ]]; then
     PS1="$__title\$__statstr:\\h:\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
@@ -69,7 +69,8 @@ _pacpkgs() {
     _get_comp_words_by_ref cur prev
     _pacman_pkg Qq
 }
-complete -o nospace -F _pacpkgs pacd paci pacl pacp pacr pacw paccheck pacscripts
+complete -o nospace -F _pacpkgs \
+    paccheck pacd paci pacl pacp pacr pacscripts pactree pacw
 
 # ----------------------------------------
 

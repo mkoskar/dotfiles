@@ -38,15 +38,11 @@ set nm_exclude_tags = deleted,spam
 set nm_record_tags = sent
 set vfolder_format = '%3C %t %N %F %3l %-8.8u %-8.8g %8s (%5n/%5m) %d %f'
 
-# quasi-delete
 bind index \e< vfolder-window-backward
 bind index \e> vfolder-window-forward
 bind index,pager + entire-thread
-bind index,pager X vfolder-from-query
-bind index,pager \e<space> sidebar-toggle-virtual
-bind index,pager x change-vfolder
-
-macro index,pager \e<tab> <change-vfolder>? 'browse virtual folders'
+bind index,pager x vfolder-from-query
+bind index,pager X vfolder-from-query-readonly
 
 
 # Colors

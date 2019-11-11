@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -eu
+
+var=$1
+val=${2//\'/"'\''"}
+
+printf "set %s = '%s'\n" "$var" "$val"

@@ -100,7 +100,7 @@ WORDCHARS=
 #WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
 ZLE_SPACE_SUFFIX_CHARS='&|'
 
-__title="%{${terminfo[tsl]}%n@%m:%~${terminfo[fsl]}%}"
+[[ ${terminfo[tsl]} ]] && __title="%{${terminfo[tsl]}%n@%m:%~${terminfo[fsl]}%}"
 PROMPT='$__title$__vimode$__statstr:${BASEDIR:+(${${BASEDIR##*/}//\%/%%}):}%1~%(!.#.$) '
 PROMPT2='$__vimode> '
 if [[ $HOST != mirci ]]; then
@@ -377,13 +377,11 @@ compdef gitall=git
 
 _pacpkgs() {
     local -a packages
-    read -cA words
-    if [ "${#words}" -eq 2 ]; then
-        packages=(/var/lib/pacman/local/$1*(/))
-    fi
+    packages=(/var/lib/pacman/local/$1*(/))
     reply=(${${packages#/var/lib/pacman/local/}%-*-*})
 }
-compctl -K _pacpkgs pacd paci pacl pacp pacr pacw paccheck pacscripts
+compctl -K _pacpkgs \
+    paccheck pacd paci pacl pacp pacr pacscripts pactree pacw
 
 _mkvirtualenv_pyenv() {
     local -a versions
@@ -403,7 +401,7 @@ compctl -K _systemd_dot systemd_dot
 _xsession() {
     reply=(${(f)"$(xsession)"})
 }
-compctl -K _xsession x xx
+compctl -K _xsession x xx xsession
 
 
 # Plugin: zsh-syntax-highlighting

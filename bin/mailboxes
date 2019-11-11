@@ -2,17 +2,17 @@
 
 set -eu -o pipefail
 
-mail=${MAILDIR:-$HOME/mail}
+mail=$MAILDIR
 mkdir -p "$mail"
 
-account=$1
+acct=$1
 comm=${2-}
-root=$mail/$account
+root=$mail/$acct
 
 print() {
     [[ $comm ]] || { cat; return; }
     if [[ $comm = neomutt ]]; then
-        printf 'named-mailboxes %q %q\n' "$account" "$root"/INBOX
+        printf 'named-mailboxes %q %q\n' "$acct" "$root"/INBOX
     fi
     while read -r mb; do
         [[ ${mb##*/} = \[Gmail\]* ]] && continue
