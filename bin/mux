@@ -15,7 +15,7 @@ exists () {
 }
 
 new() {
-    cmd new -d -s "$session" sleep 1 \; setw remain-on-exit on
+    cmd new -d -s "$session" sleep 1 \; set remain-on-exit on
     cmd setenv -t "=$session" SHOME "$PWD" \; neww -k -t "=$session:0" "$@"
 }
 
@@ -32,11 +32,11 @@ base() {
 
 ext() {
     new trun ranger \
-        \; setw remain-on-exit on
+        \; set remain-on-exit on
 
     neww trun ee \
-        \; setw remain-on-exit on \
-        \; setw main-pane-width 84 \
+        \; set remain-on-exit on \
+        \; set main-pane-width 84 \
         \; selectl main-vertical \
         \; splitw -h
 }
@@ -53,20 +53,20 @@ aux() {
 
     local notesdir=~/projects/notes/src
     new -n notes -c "$notesdir" trun e \
-        \; setw remain-on-exit on \
-        \; setw main-pane-width 116 \
+        \; set remain-on-exit on \
+        \; set main-pane-width 116 \
         \; selectl main-vertical \
         \; splitw -h -c "$notesdir" \
         \; resize-pane -Z -t :.+
 
     neww -n mail trun mutt \
-        \; setw remain-on-exit on
+        \; set remain-on-exit on
 
     neww -n chat trun weechat \
-        \; setw remain-on-exit on
+        \; set remain-on-exit on
 
     neww -n feeds trun newsboat -q \
-        \; setw remain-on-exit on
+        \; set remain-on-exit on
 
     cmd selectw -t "=$session:1"
 }
@@ -75,22 +75,22 @@ mon() {
     cd ~
 
     new -n top trun conky -q \
-        \; setw remain-on-exit on \
-        \; setw main-pane-width 43 \
+        \; set remain-on-exit on \
+        \; set main-pane-width 43 \
         \; selectl main-vertical \
         \; splitw -h trun htop
 
     neww -n journal trun journalctl --system -f \
-        \; setw remain-on-exit on \
+        \; set remain-on-exit on \
         \; selectl even-vertical \
         \; splitw -v trun journalctl --user -f \
         \; selectp -t :.0
 
     neww -n sstat trun pgx sstat \
-        \; setw remain-on-exit on
+        \; set remain-on-exit on
 
     neww -n iftop trun iftop -i eth0 \
-        \; setw remain-on-exit on \
+        \; set remain-on-exit on \
         \; splitw -v trun iftop -i wlan0
 
     neww -n logs -c /var/log

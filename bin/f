@@ -3,7 +3,4 @@
 find . -mindepth 1 \
     -type d \( \
         -name .git -o \
-        -name .idea -o \
-        -name .svn -o \
-        -name .vim -o \
     -false \) -prune -false -o -true "$@"

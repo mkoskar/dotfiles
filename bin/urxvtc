@@ -4,6 +4,7 @@ set -eu
 
 screen=$(xserverq screen)
 export RXVT_SOCKET=$XDG_RUNTIME_DIR/urxvtd:$screen
+unset SHLVL
 
 bin=/usr/bin/urxvtc
 

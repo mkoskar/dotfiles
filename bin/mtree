@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+prgname=${0##*/}
+
+_usage() {
+    echo "usage: $prgname [-t] [directory]"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+declare -i time=0
+while getopts th opt; do
+    case $opt in
+        t) time=1 ;;
+        h) usage ;;
+        *) usage_err ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# ----------------------------------------
+
+(( $# )) && cd -- "$1"
+
+mopts=!all,flags,gname,uname,mode,type,device,link,sha1
+
+if (( time )); then
+    mopts+=,time
+fi
+
+bsdtar -c -f - --format mtree --options mtree:"$mopts" . | sort -k 1,1

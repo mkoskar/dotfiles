@@ -75,7 +75,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     deb                     b https://packages.debian.org/search\?keywords={u}
     debian-gitlab           b https://salsa.debian.org/explore
     dkim                    b https://dkimcore.org/tools/
-    dm                      b https://www.dailymotion.com/en/relevance/search/{u}
     dns-reserved            b https://tools.ietf.org/html/rfc2606
     docker                  b https://github.com/wsargent/docker-cheat-sheet
     docker-compose          b https://docs.docker.com/compose/compose-file/
@@ -249,6 +248,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     pypa                    b https://www.pypa.io/
     pypi                    b https://pypi.org/search/\?q={u}
     python                  b https://docs.python.org/
+    python-dist             b https://docs.python.org/3/library/distribution.html
     python2                 b https://docs.python.org/2/
     qt                      b https://doc.qt.io/
     quotes                  b https://www.cl.cam.ac.uk/~mgk25/ucs/quotes.html
@@ -281,10 +281,13 @@ MENUER=$prgname menuer "$@" <<-EOF |
     se                      b https://stackexchange.com/search\?q={u}
     se-unix                 b https://unix.stackexchange.com/search\?q={u}
     sed                     b https://www.gnu.org/software/sed/manual/sed.html
+    semver                  b https://semver.org
+    setuptools              b https://setuptools.readthedocs.io/en/latest/
     shakespeare             b http://shakespeare.mit.edu/
     shell-startup           b https://blog.flowblok.id.au/static/images/shell-startup-actual.png
     si-quantities           b https://en.wikipedia.org/wiki/International_System_of_Quantities#Base_quantities
     si-units                b https://en.wikipedia.org/wiki/International_System_of_Units#Base_units
+    slovniky                b https://slovnik.juls.savba.sk/
     so                      b https://stackoverflow.com/search\?q={u}
     soundcloud              b https://soundcloud.com/search\?q={u}
     sourceware-repos        b https://sourceware.org/git/

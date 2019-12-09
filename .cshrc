@@ -1,1 +1,1 @@
-# Executed by tcsh(1) for interactive shells.
+# Executed by csh(1) for interactive shells.

@@ -7,7 +7,28 @@ conf=~/.config/notmuch/$acct
 [[ -e $conf ]] || exit 1
 shift
 
+export AFEW_CONFIG=~/.config/afew/$acct
 export NOTMUCH_CONFIG=$conf
-export NOTMUCH_DEBUG_QUERY=1
+#export NOTMUCH_DEBUG_QUERY=1
 
-exec notmuch "$@"
+afew() { ~/projects/pub/afew/.venv/bin/afew "$@"; }
+
+lock() {
+    exec 8>"$XDG_RUNTIME_DIR/notmuch-$acct.lock"
+    flock 8 || exit 3
+}
+
+case $1 in
+    +new)
+        lock
+        notmuch new --quiet
+        afew --tag --new
+        afew --move-mails
+        ;;
+    +tags)
+        notmuch search --output=tags '*'
+        ;;
+    *)
+        exec notmuch "$@"
+        ;;
+esac

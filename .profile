@@ -59,9 +59,9 @@ export JDK_HOME=/usr/lib/jvm/default
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.opengl=true -Dsun.java2d.xrender=true -Dswing.aatext=true'
 
-#export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent}
 #export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh}
-export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/keyring/ssh}
+#export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/keyring/ssh}
+export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent}
 
 export AUR_MAINTAINER=mkoskar
 export CCACHE_PATH=/usr/bin
@@ -82,7 +82,13 @@ export NO_AT_BRIDGE=1
 export ORACLE_HOME=/opt/instantclient
 export PARALLEL_SHELL=/bin/bash
 export PARINIT='T4 w78 prbgqR B=.,?_A_a Q=_s>|'
-export PYENV_ROOT=~/opt/pyenv
+export PIPENV_COLORBLIND=1
+export PIPENV_HIDE_EMOJIS=1
+export PIPENV_NOSPIN=1
+export PIPENV_SHELL_FANCY=1
+export PIPENV_VENV_IN_PROJECT=1
+export PIPX_BIN_DIR=~/.local/pipx/bin
+export PYENV_ROOT=~/.pyenv
 export PYTHONSTARTUP=~/.pythonrc
 export QT_IM_MODULE=xim
 export QT_QPA_PLATFORMTHEME=gtk2
@@ -130,13 +136,11 @@ set -- ~/.gem/ruby/*
 
 PATH=~/.cargo/bin:$PATH
 PATH=~/.luarocks/bin:$PATH
-PATH=$PYENV_ROOT/bin:$PATH
-
+PATH=~/.local/pipx/bin:$PATH
 PATH=~/.local/bin:$PATH
 PATH=~/opt/bin:$PATH
 PATH=~/projects/pub/dockerfiles/bin:$PATH
 PATH=~/projects/pub/pkgbuilds:$PATH
 PATH=~/projects/pub/tcolors/bin:$PATH
-
 PATH=~/bin:$PATH
 export PATH

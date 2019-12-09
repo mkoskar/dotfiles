@@ -11,8 +11,6 @@ case $- in *i*) ;; *) return ;; esac
 . ~/bin/shx.sh
 . ~/bin/shrc-pre.sh
 
-HISTFILE=~/.local/share/zsh_history
-HISTSIZE=1000
 SAVEHIST=5000
 TMPPREFIX=${TMPDIR:-/tmp}/zsh
 
@@ -22,11 +20,10 @@ fpath=(~/.zfunctions $fpath)
 zmodload zsh/complist
 zmodload zsh/datetime
 zmodload zsh/system
-
 zmodload zsh/parameter
-: $userdirs
 
 autoload -Uz add-zsh-hook
+autoload -Uz bashcompinit
 autoload -Uz bracketed-paste-magic
 autoload -Uz compinit
 autoload -Uz copy-earlier-word
@@ -80,7 +77,7 @@ unsetopt hup
 # ----------------------------------------
 
 unalias run-help &>/dev/null
-alias help='run-help'
+alias help=run-help
 
 hash -d fonts=~/.local/share/fonts
 hash -d journal=/var/log/journal
@@ -101,11 +98,20 @@ WORDCHARS=
 ZLE_SPACE_SUFFIX_CHARS='&|'
 
 [[ ${terminfo[tsl]} ]] && __title="%{${terminfo[tsl]}%n@%m:%~${terminfo[fsl]}%}"
-PROMPT='$__title$__vimode$__statstr:${BASEDIR:+(${${BASEDIR##*/}//\%/%%}):}%1~%(!.#.$) '
-PROMPT2='$__vimode> '
+
+PS1='${BASEDIR:+(${${BASEDIR##*/}//\%/%%}):}%1~%(!.#.$) '
 if [[ $HOST != mirci ]]; then
-    PROMPT='$__title$__vimode$__statstr:%m:${BASEDIR:+(${${BASEDIR##*/}//\%/%%}):}%1~%(!.#.$) '
+    PS1=%m:$PS1
 fi
+PS1=\$__statstr:$PS1
+if [[ $PIPENV_ACTIVE && $VIRTUAL_ENV ]]; then
+    __venv=${VIRTUAL_ENV%/*}
+    __venv=${__venv##*/}
+    PS1="($__venv) $PS1"
+fi
+PS1=\$__vimode$PS1
+PS1=\$__title$PS1
+PS2='$__vimode> '
 
 expand-dot-to-parent-directory-path() {
     [[ $LBUFFER = *.. ]] && LBUFFER+=/.. || LBUFFER+=.
@@ -139,8 +145,8 @@ preexec() {
 
 zle-keymap-select() {
     __vimode=:
-    if [[ ! $KEYMAP = 'vicmd' ]]; then
-        [[ $ZLE_STATE == *overwrite* ]] && __vimode='^' || __vimode='+'
+    if [[ ! $KEYMAP = vicmd ]]; then
+        [[ $ZLE_STATE == *overwrite* ]] && __vimode=^ || __vimode=+
     fi
     zle reset-prompt
 }
@@ -160,7 +166,7 @@ zle -N noop
 zle -N zle-keymap-select
 zle -N zle-line-init
 
-bindkey -rR '^A-^_'
+bindkey -rR ^A-^_
 
 for k in {@.._}; do
     bindkey "\e^$k" noop
@@ -291,10 +297,11 @@ compinit -d "$zcompdump"
         zcompile "$zcompdump"
     fi
 } &!
+bashcompinit
 
 # zshcompsys(1)
 #
-# > completion:<function>:<completer>:<command>:<argument>:<tag>
+# :completion:<function>:<completer>:<command>:<argument>:<tag>
 #
 # function:
 #   Function, if completion is called from a named widget rather than
@@ -376,27 +383,17 @@ compctl -v v
 compdef gitall=git
 
 _pacpkgs() {
-    local -a packages
-    packages=(/var/lib/pacman/local/$1*(/))
-    reply=(${${packages#/var/lib/pacman/local/}%-*-*})
+    local -a pkgs
+    pkgs=(/var/lib/pacman/local/$1*(/))
+    reply=(${${pkgs#/var/lib/pacman/local/}%-*-*})
 }
 compctl -K _pacpkgs \
     paccheck pacd paci pacl pacp pacr pacscripts pactree pacw
 
-_mkvirtualenv_pyenv() {
-    local -a versions
-    read -cA words
-    if [ "${#words}" -eq 2 ]; then
-        versions=($PYENV_ROOT/versions/$1*(/))
-    fi
-    reply=(${${versions#$PYENV_ROOT/versions/}%-*-*})
-}
-compctl -K _mkvirtualenv_pyenv mkvirtualenv_pyenv
-
-_systemd_dot() {
+_systemd_units() {
     reply=(${${(f)"$(systemctl --full --no-legend --no-pager list-units --all)"}%% *})
 }
-compctl -K _systemd_dot systemd_dot
+compctl -K _systemd_units _systemd_dot
 
 _xsession() {
     reply=(${(f)"$(xsession)"})

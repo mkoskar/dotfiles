@@ -1,5 +1,4 @@
-# Executed by POSIX sh(1p) and mksh(1) for interactive shells based on ENV
-# environment variable reference.
+# Executed by interactive shells based on ENV environment variable reference.
 
 [ "$SHRC_DEBUG" ] && echo \~/.shrc >&2
 
@@ -12,11 +11,14 @@ case $- in *i*) ;; *) return ;; esac
 . ~/bin/shx.sh
 . ~/bin/shrc-pre.sh
 
-HISTFILE=~/.local/share/${SHNAME}_history
-HISTSIZE=1000
-
 HOSTNAME=$(uname -n)
-PS1='$USER@$HOSTNAME:${PWD##*/}$ '
+
+PS1="\${BASEDIR:+(\${BASEDIR##*/}):}\${PWD##*/}$ "
+if [ "$HOSTNAME" != mirci ]; then
+    PS1=\$HOSTNAME:$PS1
+fi
+
+set -o vi
 
 # ----------------------------------------
 

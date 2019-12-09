@@ -1,5 +1,4 @@
 # Source this file to initialize terminal.
-# :Compatibility: POSIX
 
 unset TERMDONE
 

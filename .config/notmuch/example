@@ -7,13 +7,13 @@ path=<path>
 synchronize_flags=true
 
 [new]
-tags=new;unread;
-ignore=/.*/\\.[^/]*$/
+tags=new
+ignore=/(^|.*/)[.].*/
 
 [search]
-exclude_tags=deleted;spam;
+exclude_tags=
 
 [user]
 name=<name>
 primary_email=<primary_email>
-other_email=<other_email>;
+other_email=<other_email>

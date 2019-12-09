@@ -1,28 +1,36 @@
 # Source this file to get common aliases and functions.
-# :Compatibility: POSIX
 
 [ "$SHRC_DEBUG" ] && echo \~/bin/shx.sh >&2
 
 if [ "$BASH_VERSION" ]; then
-    shopt -s expand_aliases
-    unset BASH_ENV
+    SHNAME=bash
+elif [ "$ZSH_VERSION" ]; then
+    SHNAME=zsh
+elif [ "$KSH_VERSION" ]; then
+    case $KSH_VERSION in
+        *LEGACY*) SHNAME=lksh ;;
+        *MIRBSD*) SHNAME=mksh ;;
+        *PD*) SHNAME=pdksh ;;
+        *) SHNAME=ksh ;;
+    esac
+else
+    read -r SHNAME </proc/$$/comm
 fi
 
-SHNAME=$(cmdline -a 0 $$)
-SHNAME=${SHNAME##*/}
-SHNAME=${SHNAME#-}
-SHNAME=${SHNAME#r}
-
-case $SHNAME in bash)
-    # shellcheck disable=SC2209
-    shopt -q -o posix && SHNAME=sh
+# shellcheck disable=SC2034,SC2209
+case $SHNAME in
+    bash)
+        shopt -q -o posix && SHMODE=sh || SHMODE=bash
+        shopt -s expand_aliases
+        unset BASH_ENV
+        ;;
+    zsh) SHMODE=$(emulate) ;;
+    *ksh) SHMODE=ksh ;;
+    *) SHMODE=sh ;;
 esac
 
 set -o noclobber
-
-case $SHNAME in bash | zsh | mksh)
-    set -o pipefail
-esac
+case $SHNAME in bash | zsh | *ksh) set -o pipefail ;; esac
 
 
 # docker
@@ -48,7 +56,6 @@ dkip() {
 
 dkrm() {
     confirm 'Remove ALL containers (with volumes). Continue?' n || return 0
-    # shellcheck disable=SC2033
     docker ps -aq | xargs -rx docker rm -vf
 }
 
@@ -57,22 +64,23 @@ dkstop() {
 }
 
 
-# grep / ack / ag / pt / rg
+# grep
 # ----------------------------------------
 
 alias grep='LC_ALL=C grep --color=auto'
-
 alias g='grep --color=always'
 alias gi='g -i'
-alias gr='g -rn --exclude-dir=.svn --exclude-dir=.git --exclude=\*.swp --exclude=\*~'
+
+gr() {
+    g -rnH --exclude-dir=.git "$@" | sort -i -t : -k 1,1
+}
 alias gri='gr -i'
 
-alias ack='ack --color-filename=cyan --color-lineno=yellow --color-match=on_red --smart-case --noheading'
-alias ag='ag --color-path=36 --color-line-number=33 --color-match=41 --smart-case --noheading --nobreak'
-alias rg='rg -n --colors path:fg:6 --colors line:fg:3 --colors match:none --colors match:bg:1 --smart-case --no-heading'
+alias ag='ag --smart-case --noheading --nobreak --color-path=36 --color-line-number=33 --color-match=41'
+alias rg='rg --sort path -n --smart-case --no-heading --colors path:fg:6 --colors line:fg:3 --colors match:none --colors match:bg:1'
 
 
-# java / groovy / maven / gradle
+# java
 # ----------------------------------------
 
 alias gradle-dependencies='gradle -q dependencies'
@@ -83,16 +91,16 @@ alias mvn-dependency-tree='mvn dependency:tree'
 alias mvn-effective-pom='mvn help:effective-pom'
 alias mvn-effective-settings='mvn help:effective-settings'
 
-mvn_archetype_generate() {
+_mvn_archetype_generate() {
     mvn archetype:generate -Dfilter="$1"
 }
-alias mvn-archetype-generate=mvn_archetype_generate
+alias mvn-archetype-generate=_mvn_archetype_generate
 
-mvn_describe_plugin() {
+_mvn_describe_plugin() {
     [ $# -eq 0 ] && return 2
     mvn help:describe -Dplugin="$1"
 }
-alias mvn-describe-plugin=mvn_describe_plugin
+alias mvn-describe-plugin=_mvn_describe_plugin
 
 
 # ls
@@ -119,10 +127,10 @@ alias man-1p='man -s 1p'
 alias man-3p='man -s 3p'
 alias man-posix='man -s 0p,9p,2p,3p,7p,8p,6p,1p,4p,5p'
 
-man_all() {
+_man_all() {
     pgx man -k . "$@"
 }
-alias man-all=man_all
+alias man-all=_man_all
 
 alias man-all-1p='man-all -s 1p'
 alias man-all-3p='man-all -s 3p'
@@ -136,6 +144,11 @@ alias pac=pacman
 alias paccheck='paccheck --quiet --depends --opt-depends --files --file-properties --sha256sum --require-mtree --db-files --backup --noextract --noupgrade'
 alias pacman-log='pg /var/log/pacman.log'
 alias pactree='pactree --color'
+
+_paclog_recent() {
+    paclog --action=all | paclog --after="$(date -I -d -7days)"
+}
+alias paclog-recent=_paclog_recent
 
 pacd() {
     [ $# -eq 0 ] && return 2
@@ -151,11 +164,6 @@ pacl() {
     [ $# -eq 0 ] && return 2
     pacman -Qql -- "$1" || pacman -Fql -- "$1"
 } 2>/dev/null
-
-paclog_recent() {
-    paclog --action=all | paclog --after="$(date -I -d -7days)"
-}
-alias paclog-recent=paclog_recent
 
 paco() {
     [ $# -eq 0 ] && return 2
@@ -175,7 +183,7 @@ pacp() {
     fi
 }
 
-pacr() {
+pacrm() {
     [ $# -eq 0 ] && return 2
     confirm 'Careful! Continue?' n || return 0
     sudo pacman -Rcsn "$@"
@@ -198,17 +206,14 @@ pacw() {
 
 alias py=python
 alias ipy=ipython
-alias q=deactivate
 
 
 # Other
 # ----------------------------------------
 
-case $SHNAME in mksh) ;; *)
-    alias ..='cd ..'
-    alias ...='cd ../..'
-    alias ....='cd ../../..'
-esac
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
 
 alias aa=auracle
 alias acpi='acpi -V'
@@ -330,6 +335,52 @@ __() {
 }
 alias ,,=__
 
+_lsof_pid() {
+    lsof -p "${1:-$$}"
+}
+alias lsof-pid=_lsof_pid
+
+_systemd_dot() {
+    systemd-analyze dot "$@" | dot -T svg | stdiner -bt b
+}
+alias systemd-dot=_systemd_dot
+
+_terminfo_src() {
+    set -- ~/src/ncurses-*
+    [ -d "$1" ] && pg "$1"/misc/terminfo.src
+}
+alias terminfo-src=_terminfo_src
+
+_xserver_log() {
+    local dispno; dispno=$(env ${1+DISPLAY=:"$1"} xserverq dispno) || return 1
+    local logfile=~/.local/share/xorg/Xorg:"$dispno".log
+    [ -e "$logfile" ] || return 1
+    $PAGER "$logfile"
+}
+alias xserver-log=_xserver_log
+
+_xserver_reset() {
+    confirm 'Careful! Continue?' n || return 0
+    local pid; pid=$(env ${1+DISPLAY=:"$1"} xserverq pid) || return 1
+    kill -s HUP "$pid"
+}
+alias xserver-reset=_xserver_reset
+
+_xserver_terminate() {
+    confirm 'Careful! Continue?' n || return 0
+    local pid; pid=$(env ${1+DISPLAY=:"$1"} xserverq pid) || return 1
+    kill "$pid"
+}
+alias xserver-terminate=_xserver_terminate
+
+_xsession_out() {
+    local screen; screen=$(env ${1+DISPLAY=:"$1"} xserverq screen) || return 1
+    local outfile=~/.local/share/xorg/xsession:"$screen".out
+    [ -e "$outfile" ] || return 1
+    $PAGER "$outfile"
+}
+alias xsession-out=_xsession_out
+
 a() {
     local d=${1:-5m} ts; ts=$(command date -R)
     printf '%s ... alarm in %s\n' "$ts" "$d"
@@ -376,11 +427,11 @@ date() {
 
 fn() {
     if [ $# -eq 0 ]; then
-        declare -f | $PAGER
+        typeset -f | $PAGER
     else
-        declare -f -- "$1" || return 1
+        typeset -f -- "$1" || return 1
         case $SHNAME in bash)
-            (shopt -s extdebug; printf '# '; declare -F -- "$1")
+            (shopt -s extdebug; printf '# '; typeset -F -- "$1")
         esac
     fi
 }
@@ -412,11 +463,6 @@ lsmod() {
     pgx command lsmod "$@"
 }
 
-lsof_pid() {
-    lsof -p "${1:-$$}"
-}
-alias lsof-pid=lsof_pid
-
 on() {
     [ $# -eq 0 ] && return 2
     local p; p=$(command -v "$1") || return 1
@@ -435,7 +481,7 @@ optset() {
 }
 
 path() {
-    tr : \\n <<<"$PATH"
+    printf '%s\n' "$PATH" | tr : \\n
 }
 
 pstree() {
@@ -451,7 +497,7 @@ reexec() {
 reload() {
     . /etc/profile
     . ~/.profile
-    case $SHNAME in
+    case $SHMODE in
         bash) . ~/.bashrc ;;
         zsh) . ~/.zshrc ;;
         *) . ~/.shrc ;;
@@ -459,7 +505,9 @@ reload() {
 }
 
 shi() {
+    printf '%s(%s): ' "$SHNAME" "$SHMODE"
     cmdline
+    printf '$-: %s\n' "$-"
     printf '$$: %s\n' "$$"
     printf 'PPID: %s\n' "$PPID"
     case $SHNAME in
@@ -474,29 +522,27 @@ shi() {
             printf 'PID: %s\n' "${sysparams[pid]}"
             printf 'SHLVL: %s\n' "$SHLVL"
             printf 'SUBSHELL: %s\n' "$ZSH_SUBSHELL"
-            printf 'VERSION: %s\n' "$ZSH_VERSION"
+            printf 'VERSION: %s (%s)\n' "$ZSH_VERSION" "$ZSH_PATCHLEVEL"
+            ;;
+        mksh)
+            printf 'PID: %s\n' "$BASHPID"
+            printf 'SHLVL: %s\n' "$SHLVL"
+            printf 'VERSION: %s\n' "$KSH_VERSION"
+            ;;
+        *ksh)
+            printf 'SHLVL: %s\n' "$SHLVL"
+            printf 'VERSION: %s\n' "$KSH_VERSION"
             ;;
     esac
 }
 
-# shellcheck disable=SC1090
 source_opt() {
+    # shellcheck disable=SC1090
     [ ! -e "$1" ] || . -- "$1"
 }
 
-systemd_dot() {
-    systemd-analyze dot "$@" | dot -T svg | stdiner -bt b
-}
-alias systemd-dot=systemd_dot
-
-terminfo_src() {
-    set -- ~/src/ncurses-*
-    [ -d "$1" ] && pg "$1"/misc/terminfo.src
-}
-alias terminfo-src=terminfo_src
-
 tree() {
-    set -- -ax -I '.git|.svn' --dirsfirst --noreport "$@"
+    set -- -ax -I .git --dirsfirst --noreport "$@"
     if [ -t 1 ]; then
         pgx command tree -C "$@"
     else
@@ -512,11 +558,16 @@ tsrec() {
 }
 
 v() {
-    if [ $# -eq 0 ]; then
-        declare -p | $PAGER
-    else
-        declare -p -- "$1"
-    fi
+    case $SHNAME in bash | zsh | *ksh)
+        if [ $# -eq 0 ]; then
+            typeset -p | $PAGER
+        else
+            typeset -p -- "$@"
+        fi
+        return
+        ;;
+    esac
+    set | $PAGER
 }
 
 xkbkeymap() {
@@ -530,57 +581,3 @@ xrandr() {
         command xrandr "$@"
     fi
 }
-
-xserver_log() {
-    local dispno; dispno=$(env ${1+DISPLAY=:"$1"} xserverq dispno) || return 1
-    local logfile=~/.local/share/xorg/Xorg:"$dispno".log
-    [ -e "$logfile" ] || return 1
-    $PAGER "$logfile"
-}
-alias xserver-log=xserver_log
-
-xserver_reset() {
-    confirm 'Careful! Continue?' n || return 0
-    local pid; pid=$(env ${1+DISPLAY=:"$1"} xserverq pid) || return 1
-    kill -s HUP "$pid"
-}
-alias xserver-reset=xserver_reset
-
-xserver_terminate() {
-    confirm 'Careful! Continue?' n || return 0
-    local pid; pid=$(env ${1+DISPLAY=:"$1"} xserverq pid) || return 1
-    kill "$pid"
-}
-alias xserver-terminate=xserver_terminate
-
-xsession_out() {
-    local screen; screen=$(env ${1+DISPLAY=:"$1"} xserverq screen) || return 1
-    local outfile=~/.local/share/xorg/xsession:"$screen".out
-    [ -e "$outfile" ] || return 1
-    $PAGER "$outfile"
-}
-alias xsession-out=xsession_out
-
-# ----------------------------------------
-
-case $SHNAME in bash | zsh | *ksh) ;; *) return ;; esac
-
-# virtualenvwrapper
-if [ -e /usr/bin/virtualenvwrapper.sh ]; then
-    . /usr/bin/virtualenvwrapper_lazy.sh
-
-    PYTHON2=$(command -v python2)
-    PYTHON3=$(command -v python3)
-    export PYTHON2 PYTHON3
-    [ "$PYTHON2" ] && mkvirtualenv2() { mkvirtualenv -p "$PYTHON2" "$@"; }
-    [ "$PYTHON3" ] && mkvirtualenv3() { mkvirtualenv -p "$PYTHON3" "$@"; }
-    alias wo=workon
-
-    mkvirtualenv_pyenv() {
-        [ $# -eq 0 ] && return 2
-        local ver=$1
-        shift
-        mkvirtualenv -p "$PYENV_ROOT/versions/$ver/bin/python" "$@"
-    }
-    alias mkvirtualenv-pyenv=mkvirtualenv_pyenv
-fi

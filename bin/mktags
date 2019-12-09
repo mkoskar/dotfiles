@@ -4,12 +4,7 @@ set -eu
 
 cdup() {
     case $PWD in / | ~) return 1 ;; esac
-    [[ \
-        -d .git ||
-        -d .idea ||
-        -d .svn ||
-        -d .vim \
-    ]] && return
+    [[ -d .git ]] && return
     cd ..
     cdup
 }
@@ -22,5 +17,3 @@ fi
 
 touch tags
 ctags
-
-# vim: ft=sh

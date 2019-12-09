@@ -1,0 +1,43 @@
+#compdef example
+
+# See also:
+#
+#   * http://zsh.sourceforge.net/Doc/Release/Completion-System.html#Completion-System
+#   * https://github.com/zsh-users/zsh-completions/blob/master/zsh-completions-howto.org
+#
+#   ^X? _complete_debug
+#   ^XH _complete_help
+#   ^Xt _complete_tag
+
+# ----------------------------------------
+
+# _describe [-12JVx] [ -oO | -t tag ] descr name1 [ name2 ] [ opt ... ]
+#           [ -- name1 [ name2 ] [ opt ... ] ... ]
+
+#names=(
+#    'aaa:description'
+#    'bbb:description'
+#)
+#_describe -t tag1 descr names
+
+# ----------------------------------------
+
+# _alternative [ -O name ] [ -C name ] spec ...
+
+#_alternative \
+#    'tag1:descr1:(a b)' \
+#    'tag2:descr2:((a:desc1 b:desc2))' \
+#    'tag3:descr3:_files'
+
+# ----------------------------------------
+
+# _arguments [ -nswWCRS ] [ -A pat ] [ -O name ] [ -M matchspec ]
+#            [ : ] spec ...
+
+#_arguments \
+#    '-a[a opt]' \
+#    '-f[file]:filename:_files' \
+#    ':1st arg:_files' \
+#    ':2nd arg:_files' \
+#    '::opt arg:_files' \
+#    ':3rd arg:(a b c)'

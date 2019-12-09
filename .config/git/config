@@ -19,8 +19,8 @@
 %(then)\
 %(if)%(HEAD)%(then)* %(color:green)%(else)%(if)%(worktreepath)%(then)+ %(color:cyan)%(else)  %(color:11)%(end)%(end)%(refname:lstrip=2)%(color:reset)\
 %(if:notequals=*)%(HEAD)%(then)%(if)%(worktreepath)%(then) (%(color:cyan)%(worktreepath)%(color:reset))%(end)%(end)\
-%(if)%(upstream)%(then) <<< %(color:yellow)%(upstream:short)%(color:reset)%(if)%(upstream:track)%(then): %(color:15 red)%(upstream:track,nobracket)%(color:reset)%(end)%(end)\
-%(if)%(push)%(then) >>> %(color:yellow)%(push:short)%(color:reset)%(if)%(push:track)%(then): %(color:15 red)%(push:track,nobracket)%(color:reset)%(end)%(end)\
+%(if)%(upstream)%(then) <<< %(if)%(upstream:track)%(then)%(color:15 red)%(upstream:track,nobracket)%(color:reset) %(end)%(color:yellow)%(upstream:short)%(color:reset)%(end)\
+%(if)%(push)%(then) >>> %(if)%(push:track)%(then): %(color:15 red)%(push:track,nobracket)%(color:reset) %(end)%(color:yellow)%(push:short)%(color:reset)%(end)\
 %0a    %(objectname:short) %(authorname) (%(authordate:relative)) %(contents:subject)\
 %(else)\
   %(color:red)%(refname:lstrip=2)%(color:reset)\
@@ -47,15 +47,14 @@
     lg1 = log --format=lg1 --graph --decorate-refs-exclude='*/HEAD' --color
     lga = lg1
     ls = ls-files
-    ls-untracked = ls-files -o --directory
+    lsu = ls-files -o --directory
     push-current = -c push.default=current pushv
     push-matching = -c push.default=matching pushv
     push-upstream = -c push.default=upstream pushv
     pushv = push -v
     remotes = remote -v
     set-email = !git-set-email
-    set-upstream = remote add upstream
-    set-upstream-head = remote set-head upstream -a
+    set-upstream = !git-set-upstream
     st = status -s
     up = update
     update = !git-update
@@ -171,6 +170,7 @@
 
 [format]
     coverletter = auto
+    signoff = true
     thread = shallow
 
 [grep]

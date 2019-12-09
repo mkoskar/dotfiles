@@ -1,5 +1,4 @@
 # Common utilities.
-# :Compatibility: Bash
 
 # set -Eu -o pipefail
 # shopt -s extglob

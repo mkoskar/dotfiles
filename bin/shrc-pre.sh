@@ -1,11 +1,13 @@
 # Source this file for interactive shell pre-initialization.
-# :Compatibility: POSIX
 
 [ "$SHRC_DEBUG" ] && echo \~/bin/shrc-pre.sh >&2
 
 case $- in *i*) ;; *) return ;; esac
 
 # ----------------------------------------
+
+HISTFILE=~/.local/share/${SHNAME}_history
+HISTSIZE=1000
 
 CDPATH='.:..:~'
 FCEDIT=fcedit

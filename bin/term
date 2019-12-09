@@ -26,6 +26,7 @@ shift $((OPTIND-1))
 
 bin=${TERMBIN:-urxvtc}
 name=${name:-term}
+unset SHLVL
 
 case $bin in
     kitty)

@@ -8,6 +8,7 @@ set completion-map-case on
 set echo-control-characters off
 set editing-mode vi
 set enable-bracketed-paste on
+set history-size 1000
 set keyseq-timeout 10
 set mark-symlinked-directories on
 set menu-complete-display-prefix on
@@ -64,6 +65,8 @@ $include ~/.inputrc.esc
 "\C-L": clear-screen
 "\C-P": history-search-backward
 "\C-N": history-search-forward
+"\ek": previous-screen-line
+"\ej": next-screen-line
 
 "\e0": digit-argument
 "\e1": digit-argument
@@ -117,6 +120,9 @@ $endif
 set keymap vi-command
 
 $include ~/.inputrc.esc
+
+"\ek": previous-screen-line
+"\ej": next-screen-line
 
 "\C-X\C-Xv": dump-variables
 "\C-X\C-Xf": dump-functions

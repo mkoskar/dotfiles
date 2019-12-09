@@ -1,0 +1,4 @@
+#compdef pip
+
+_arguments \
+    '*: :($(PIP_AUTO_COMPLETE=1 COMP_WORDS="$words" COMP_CWORD=$((CURRENT-1)) pip))'

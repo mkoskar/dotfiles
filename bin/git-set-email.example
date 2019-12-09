@@ -13,5 +13,3 @@ done
 
 git config user.email "$sel"
 confirm 'Set commit.gpgsign?' y && git config commit.gpgsign true
-
-git config --local --list

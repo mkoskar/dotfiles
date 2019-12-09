@@ -1,5 +1,2 @@
 [SpamFilter]
 [KillThreadsFilter]
-[ListMailsFilter]
-[ArchiveSentMailsFilter]
-[InboxFilter]

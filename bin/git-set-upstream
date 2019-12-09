@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -eu
+
+export LC_ALL=C
+remote=${1:-upstream}
+[[ $remote =~ ^[a-z][0-9a-z_-]*$ ]] || exit 1
+
+if git remote | grep -Fxq "$remote"; then
+    git fetch "$remote"
+else
+    read -r -p 'Fetch/Push URL: ' url
+    git remote add "$remote" -f -- "$url"
+fi
+
+git remote set-head "$remote" -a
+git remote show "$remote"
+
+cmd="git branch --set-upstream-to=$remote/HEAD"
+confirm "> $cmd" y && eval "$cmd"
+
+cmd='git config remote.pushdefault origin'
+confirm "> $cmd" y && eval "$cmd"
+
+cmd='git config push.default current'
+confirm "> $cmd" y && eval "$cmd"

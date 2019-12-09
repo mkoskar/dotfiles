@@ -1,1 +1,33 @@
 edit on
+history size 1000
+history unique 1000
+
+bind -v
+
+bind ^B ed-move-to-beg
+bind ^E ed-move-to-end
+
+bind ^U vi-kill-line-prev
+bind ^K ed-kill-line
+bind ^W ed-delete-prev-word
+
+bind ^A ed-ignore
+bind ^D vi-list-or-eof
+bind ^O ed-ignore
+bind ^I ed-ignore
+
+bind ^G ed-start-over
+bind ^L ed-clear-screen
+bind ^P ed-search-prev-history
+bind ^N ed-search-next-history
+
+bind ^X^A vi-command-mode
+
+bind -s ^X^Xb '\e:bind -l\n'
+bind -s ^X^Xh '\e:history -l\n'
+bind -s ^X^Xs '\e:setty\n'
+bind -s ^X^Xt '\e:telltc\n'
+
+bind -s ^Xp '\eIpgx '
+bind -s ^XP '\eA | pg'
+bind -s ^Xx '\eIsudo '

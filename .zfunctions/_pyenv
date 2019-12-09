@@ -1,0 +1,5 @@
+#compdef pyenv
+
+_arguments \
+    ': :("${(f)$(pyenv commands)}")' \
+    '*: :("${(f)$(pyenv completions ${words[2,-2]})}")'

@@ -12,18 +12,24 @@ case $- in *i*) ;; *) return ;; esac
 . ~/bin/shrc-pre.sh
 
 HISTCONTROL=ignorespace:erasedups
-HISTFILE=~/.local/share/bash_history
 HISTFILESIZE=5000
 HISTIGNORE=exit
-HISTSIZE=1000
 
 __ti_tsl=$(tput tsl)
 __ti_fsl=$(tput fsl)
 [[ $__ti_tsl ]] && __title="\\[$__ti_tsl\u@\h:\w$__ti_fsl\\]"
-PS1="$__title\$__statstr:\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
-if [[ $HOSTNAME != 'mirci' ]]; then
-    PS1="$__title\$__statstr:\\h:\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
+
+PS1="\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
+if [[ $HOSTNAME != mirci ]]; then
+    PS1=\\h:$PS1
 fi
+PS1=\$__statstr:$PS1
+if [[ $PIPENV_ACTIVE && $VIRTUAL_ENV ]]; then
+    __venv=${VIRTUAL_ENV%/*}
+    __venv=${__venv##*/}
+    PS1="($__venv) $PS1"
+fi
+PS1=$__title$PS1
 
 __preexec() {
     __cmd=$BASH_COMMAND
@@ -49,7 +55,7 @@ __prompt_command() {
 PROMPT_COMMAND=__prompt_command
 
 shopt -s autocd checkjobs checkwinsize cmdhist dotglob gnu_errfmt histappend \
-         histreedit histverify lithist no_empty_cmd_completion
+    histreedit histverify lithist no_empty_cmd_completion
 
 # some can't detect editing-mode set in ~/.inputrc early enough (e.g., fzf)
 set -o vi
