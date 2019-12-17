@@ -250,6 +250,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     python                  b https://docs.python.org/
     python-dist             b https://docs.python.org/3/library/distribution.html
     python2                 b https://docs.python.org/2/
+    qemu                    b https://qemu.weilnetz.de/doc/qemu-doc.html
     qt                      b https://doc.qt.io/
     quotes                  b https://www.cl.cam.ac.uk/~mgk25/ucs/quotes.html
     qutebrowser             b https://qutebrowser.org/img/cheatsheet-big.png

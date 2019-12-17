@@ -9,7 +9,11 @@ case $- in *i*) ;; *) return ;; esac
 source_opt /usr/share/fzf/completion."$SHMODE"
 source_opt /usr/share/fzf/key-bindings."$SHMODE"
 
-eval "$(register-python-argcomplete pipx)"
+case $SHNAME in bash | zsh)
+    if command -v register-python-argcomplete >/dev/null; then
+        eval "$(register-python-argcomplete pipx)"
+    fi
+esac
 
 
 # Login shell only

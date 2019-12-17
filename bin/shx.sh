@@ -465,7 +465,7 @@ lsmod() {
 
 on() {
     [ $# -eq 0 ] && return 2
-    local p; p=$(command -v "$1") || return 1
+    local p; p=$(command -v -- "$1") || return 1
     [ -e "$p" ] || { i "$1"; return; }
     shift
     eval "${*:-ls -la}" "$p"
