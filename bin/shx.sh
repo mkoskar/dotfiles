@@ -152,7 +152,7 @@ alias paclog-recent=_paclog_recent
 
 pacd() {
     [ $# -eq 0 ] && return 2
-    expac -l \\n %D "$1"
+    expac -l \\n %D "$@"
 }
 
 paci() {
@@ -162,7 +162,7 @@ paci() {
 
 pacl() {
     [ $# -eq 0 ] && return 2
-    pacman -Qql -- "$1" || pacman -Fql -- "$1"
+    pacman -Qql -- "$@" || pacman -Fql -- "$@"
 } 2>/dev/null
 
 paco() {
@@ -172,14 +172,14 @@ paco() {
 
 pacoc() {
     [ $# -eq 0 ] && return 2
-    pth -a "$1" | xargs -r -L 1 pacman -Qo
+    pth -a "$@" | xargs -r -L 1 pacman -Qo
 }
 
 pacp() {
     if [ $# -eq 0 ]; then
         expac -l ' ' '%n %P'
     else
-        expac -l \\n %P "$1"
+        expac -l \\n %P "$@"
     fi
 }
 
@@ -197,7 +197,7 @@ pacs() {
 
 pacw() {
     [ $# -eq 0 ] && return 2
-    expac -l \\n %N "$1"
+    expac -l \\n %N "$@"
 }
 
 
@@ -280,6 +280,8 @@ alias qiv='qiv -uLtiGfl --vikeys'
 alias rax=rax2
 alias reflector='reflector -p https -c sk -c cz --score 3 -f 3'
 alias rm='rm -I --one-file-system'
+alias rsync='rsync -aHAXS'
+alias scp='scp -rp'
 alias sd=systemctl
 alias sdu='systemctl --user'
 alias se=sudoedit
@@ -295,6 +297,7 @@ alias topdf='lowriter --convert-to pdf'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
 alias w3m='w3m -v'
 alias watch='watch -n 1'
+alias weechat='weechat -a'
 alias wi='curl -sSLf http://wttr.in/ | head -n -2'
 alias xargs1='xargs -r -L 1'
 alias xinput-test='xinput test-xi2 --root'
@@ -429,9 +432,9 @@ fn() {
     if [ $# -eq 0 ]; then
         typeset -f | $PAGER
     else
-        typeset -f -- "$1" || return 1
+        typeset -f -- "$@" || return 1
         case $SHNAME in bash)
-            (shopt -s extdebug; printf '# '; typeset -F -- "$1")
+            (shopt -s extdebug; typeset -F -- "$@")
         esac
     fi
 }
@@ -443,9 +446,9 @@ h() {
 i() {
     [ $# -gt 0 ] || { shi; return; }
     case $SHNAME in
-        bash) type -a -- "$1" ;;
-        zsh) type -af -- "$1" ;;
-        *) type "$1" ;;
+        bash) type -a -- "$@" ;;
+        zsh) type -af -- "$@" ;;
+        *) type "$@" ;;
     esac
 }
 

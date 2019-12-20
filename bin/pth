@@ -25,7 +25,7 @@ shift $((OPTIND-1))
 # ----------------------------------------
 
 if (( all )); then
-    type -Pa -- "$1"
+    type -Pa -- "$@"
 else
-    type -P -- "$1"
+    type -P -- "$@"
 fi

@@ -3,6 +3,7 @@
 set -eu -o pipefail
 
 {
+    exec 2>&1
     echo $'\n--------------------------------------------------'
     echo $'> ARP/NDISC cache:\n'
 

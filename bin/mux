@@ -62,7 +62,7 @@ aux() {
     neww -n mail trun mutt \
         \; set remain-on-exit on
 
-    neww -n chat trun weechat \
+    neww -n chat trun weechat -a \
         \; set remain-on-exit on
 
     neww -n feeds trun newsboat -q \

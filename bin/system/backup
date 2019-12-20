@@ -98,7 +98,7 @@ ts_beg_=$(date +%F.%s -d "@$ts_beg")
 log "-- $ts_beg_"
 
 mkdir -p "$target"/full-backup
-rsync -aAHSX / "$target"/full-backup/master \
+rsync -aHAXS / "$target"/full-backup/master \
       --delete \
       --backup \
       --backup-dir=../"$ts_beg_" \

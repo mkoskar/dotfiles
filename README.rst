@@ -67,9 +67,6 @@ are listed below.
 `dict <bin/dict>`_
     Simple DICT (``dict.org``) client.
 
-`dirsum <bin/dirsum>`_, `dirsum0 <bin/dirsum0>`_
-    Make SHA1 digest of a directory content and its metadata reliably.
-
 `dispcal-calibrate <bin/dispcal-calibrate>`_, `dispcal-clear <bin/dispcal-clear>`_, `dispcal-report <bin/dispcal-report>`_
     Monitor calibrating utilities.
 
@@ -117,9 +114,6 @@ are listed below.
 
 `pacblame <bin/pacblame>`_
     Blame installed packages by installed size, date, etc.
-
-`pacinfo <bin/system/pacinfo>`_
-    Pretty pacman status report.
 
 `pacman-altered <bin/system/pacman-altered>`_, `pacman-altered-job <bin/system/pacman-altered-job>`_
     Run this daily and receive report of what files has changed.

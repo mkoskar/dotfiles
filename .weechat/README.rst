@@ -56,30 +56,3 @@ weechat
     /trigger addreplace complete_last_nick command_run "/input complete_next"
     /trigger set complete_last_nick conditions ${type} == channel && ${buffer.input_buffer_length} == 0 && ${last_nick}
     /trigger set complete_last_nick command /input insert ${last_nick}
-
-
-bitlbee
--------
-
-::
-
-    <?xml version="1.0"?>
-    <user nick="miro" password="" version="1">
-        <account autoconnect="true" handle="" password="" protocol="jabber" tag="gtalk">
-            <setting name="nick_format">%full_name_g</setting>
-            <setting name="oauth">on</setting>
-        </account>
-        <account autoconnect="true" handle="mkoskar" password="" protocol="twitter" tag="twitter_mkoskar">
-            <setting name="commands">strict</setting>
-        </account>
-        <channel name="&amp;bitlbee" type="control">
-            <setting name="auto_join">true</setting>
-            <setting name="show_users">online%,away+</setting>
-        </channel>
-        <channel name="&amp;gtalk" type="control">
-            <setting name="account">gtalk</setting>
-            <setting name="auto_join">true</setting>
-            <setting name="fill_by">account</setting>
-            <setting name="show_users">online%,away+,offline</setting>
-        </channel>
-    </user>

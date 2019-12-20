@@ -3,7 +3,7 @@
 set -eu
 
 git fetch --all
-git submodule update --recursive
+git submodule update --init --recursive
 
 refname=$(git rev-parse --abbrev-ref HEAD)
 if [[ $refname = local ]]; then

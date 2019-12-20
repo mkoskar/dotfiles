@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-set -o pipefail
-
-curl -sSLf https://www.howsmyssl.com/a/check | jq .
