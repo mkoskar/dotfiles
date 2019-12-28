@@ -27,13 +27,7 @@ stat() {
         sort -b -k 1,1r -k 2,2 -k 3,3
 }
 
-stat -u 6
+stat -u
 echo
 
-stat -u 4
-echo
-
-stat -t 6
-echo
-
-stat -t 4
+stat -t

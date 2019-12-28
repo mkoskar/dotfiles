@@ -1,0 +1,11 @@
+[Unit]
+Description=%N service
+
+[Service]
+SyslogIdentifier=%N
+ExecStart=/usr/bin/weechat-headless \
+    -P alias,buflist,charset,irc,logger,perl,python,relay,spell,trigger
+Restart=always
+
+[Install]
+WantedBy=default.target

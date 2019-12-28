@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+set -eu
+
+name=TEST
+fqname=qemu."$name"
+
+opts=(
+    # Standard options
+    # ----------------------------------------
+
+    -machine q35    # Standard PC (Q35 + ICH9, 2009)
+    -cpu host       # KVM processor with all supported host features
+    -accel kvm
+    -smp 1
+    -boot menu=on
+    -m 1G
+    -name "$name",process="$fqname"
+
+    -device ide-cd,drive=cdr0               # virtual IDE CD-ROM
+    #-device scsi-hd,drive=hd0,scsi-id=0     # virtual SCSI disk
+    #-device virtio-net,id=net0,netdev=hostnet0,mac=52:54:cb:22:18:ab
+    #-device intel-iommu                     # Intel IOMMU (VT-d) DMA Remapping device
+    -device virtio-balloon
+    -device virtio-rng
+    -device virtio-scsi,id=scsi
+
+    # Block device options
+    # ----------------------------------------
+
+    -drive id=cdr0,media=cdrom,if=none,file=/home/miro/download/iso/archlinux-2019.12.01-x86_64.iso,readonly,cache=none
+    #-drive id=hd0,media=disk,if=none,file=/var/lib/qemu/main/disk0.raw,format=raw
+
+    # Display options
+    # ----------------------------------------
+
+    -display gtk
+    #-display vnc=127.0.0.1:1
+    #-spice addr=127.0.0.1,port=1923,disable-ticketing
+    -vga std
+
+    # Network options
+    # ----------------------------------------
+
+    #-netdev bridge,id=hostnet0
+
+    # Debug/Expert options
+    # ----------------------------------------
+
+    -serial file:"$HOME"/tmp/"$fqname".ttyS0
+    -monitor stdio
+    -show-cursor
+    -nodefaults
+    #-readconfig ~/tmp/"$fqname".conf
+    -writeconfig ~/tmp/"$fqname".conf
+    -no-user-config
+)
+
+qemu-system-x86_64 "${opts[@]}"

@@ -2,7 +2,8 @@
 
 set -e
 
-#ssh-agent-preset
+ssh-agent-preset
 gpg-agent-preset
 
 systemctl --user reload-or-restart ssh-tunnel@baobab
+systemctl --user reload-or-restart ssh-tunnel@maple

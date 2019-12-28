@@ -1,0 +1,12 @@
+[Unit]
+Description=%N service
+
+[Service]
+Type=forking
+SyslogIdentifier=%N
+ExecStart=/usr/bin/tmux -L weechat new -d -s ! weechat \
+    -P alias,buflist,charset,irc,logger,perl,python,relay,spell,trigger
+Restart=always
+
+[Install]
+WantedBy=default.target

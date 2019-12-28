@@ -17,10 +17,6 @@ SCRIPT_DESC = 'Personal customizations'
 # ----------------------------------------
 
 
-class Expando(object):
-    pass
-
-
 def cmd(command, buffer='', mute=True):
     w.command(buffer, ('/mute ' if mute else '/') + command)
 
@@ -36,12 +32,13 @@ w.register(
 )
 
 hd_buf = w.hdata_get('buffer')
+hd_layout = w.hdata_get('layout')
 hd_ldata = w.hdata_get('line_data')
 hd_line = w.hdata_get('line')
 hd_lines = w.hdata_get('lines')
 hd_scroll = w.hdata_get('window_scroll')
+hd_server = w.hdata_get('irc_server')
 hd_win = w.hdata_get('window')
-hd_layout = w.hdata_get('layout')
 
 # }}}
 
@@ -49,11 +46,11 @@ hd_layout = w.hdata_get('layout')
 # ----------------------------------------
 
 MERGE_RULES = [
-    r'^irc\.freenode([^.]*)\.#(bash|zsh)$',
-    r'^irc\.freenode([^.]*)\.#archlinux(-offtopic)?$',
+    r'^irc\.\|*freenode([^.]*)\.#(bash|zsh)$',
+    r'^irc\.\|*freenode([^.]*)\.#archlinux(-offtopic)?$',
 ]
 
-timer_sort = None
+timer_sort_merged = None
 
 
 def buffers_iter():
@@ -61,46 +58,6 @@ def buffers_iter():
     while item:
         yield item
         item = w.hdata_pointer(hd_buf, item, 'next_buffer')
-
-
-def sort():
-    buffers_by_number = {}
-
-    for buffer in buffers_iter():
-        bi = Expando()
-        bi.buffer = buffer
-        bi.number = w.buffer_get_integer(buffer, 'number')
-        bi.full_name = w.buffer_get_string(buffer, 'full_name')
-        bi.short_name = w.buffer_get_string(buffer, 'short_name')
-        buffers = buffers_by_number.get(bi.number, [])
-        buffers.append(bi)
-        buffers_by_number[bi.number] = buffers
-
-    def merge(a, b):
-        w.buffer_unmerge(b.buffer, 0)
-        w.buffer_merge(b.buffer, a.buffer)
-        return b
-
-    for number, buffers in buffers_by_number.items():
-        if len(buffers) > 1:
-            buffers.sort(key=lambda bi: [bi.short_name, bi.full_name])
-            functools.reduce(merge, buffers)
-            cmd('input switch_active_buffer', buffers[-1].buffer)
-
-    #def sort_key(bi):
-    #    return [bi.short_name, bi.full_name]
-    #
-    #buffers = [buffers[0] for buffers in buffers_by_number.values()]
-    #buffers.sort(key=sort_key)
-    #for i, bi in enumerate(buffers):
-    #    w.buffer_set(bi.buffer, 'number', str(i+1))
-
-
-def sort_lazy():
-    global timer_sort
-    if timer_sort:
-        return
-    timer_sort = w.hook_timer(1, 0, 1, 'cb_timer_sort', '')
 
 
 def merge(buffer):
@@ -115,51 +72,88 @@ def merge(buffer):
         w.buffer_set(buffer, 'localvar_del_merge_group', '')
         return
     for _buffer in buffers_iter():
-        _bname = w.buffer_get_string(_buffer, 'full_name')
         _merge_group = w.buffer_get_string(_buffer, 'localvar_merge_group')
-        if bname == _bname:
+        if buffer == _buffer:
+            continue
+        if not _merge_group:
             continue
         if merge_group == _merge_group:
-            w.buffer_merge(buffer, _buffer)
+            w.buffer_merge(_buffer, buffer)
             break
+
+
+def sort_merged():
+    buffers_by_number = {}
+
+    for buffer in buffers_iter():
+        bnum = w.buffer_get_integer(buffer, 'number')
+        buffers = buffers_by_number.get(bnum, [])
+        buffers.append(buffer)
+        buffers_by_number[bnum] = buffers
+
+    def sort_key(buffer):
+        bname = w.buffer_get_string(buffer, 'full_name')
+        key = [w.buffer_get_string(buffer, 'short_name')]
+        key.extend(reversed(bname.split('.')))
+        return key
+
+    def merge(a, b):
+        w.buffer_unmerge(b, 0)
+        w.buffer_merge(b, a)
+        return b
+
+    for bnum, buffers in buffers_by_number.items():
+        if len(buffers) > 1:
+            buffers.sort(key=sort_key)
+            active = 0
+            for idx, buffer in enumerate(buffers):
+                if w.buffer_get_integer(buffer, 'active') == 1:
+                    active = idx
+            functools.reduce(merge, buffers)
+            cmd('input switch_active_buffer', buffers[active - 1])
+
+
+def cb_timer_sort_merged(data, remaining_calls):
+    global timer_sort_merged
+    sort_merged()
+    timer_sort_merged = None
+    return w.WEECHAT_RC_OK
 
 
 def buffer_init(buffer):
     bname = w.buffer_get_string(buffer, 'full_name')
+    bits = bname.split('.')
 
-    match = re.match(r'^irc\.freenode([^.]*)\.#archlinux($|-.*)$', bname)
+    match = re.match(r'^irc\.\|*freenode([^.]*)\.#archlinux($|-.*)$', bname)
     if match:
-        sname = '#arch' + match.group(2)
-        if sname == '#arch-offtopic':
-            sname = '#arch-ot'
-        w.buffer_set(buffer, 'short_name', sname)
+        name = '#arch' + match.group(2)
+        if name == '#arch-offtopic':
+            name = '#arch-ot'
+        w.buffer_set(buffer, 'short_name', name)
 
-    if bname == 'irc.bitlbee.#twitter_mkoskar':
+    if re.match(r'irc\.\|*bitlbee\.#twitter_mkoskar', bname):
+        w.buffer_set(buffer, 'short_name', '#twitter')
         w.buffer_set(buffer, 'highlight_words', '@mkoskar')
-
-    elif bname == 'irc.gitter.#neovim/neovim':
+    elif re.match(r'irc\.\|*gitter\.#neovim/neovim', bname):
         w.buffer_set(buffer, 'short_name', '#neovim')
 
-    w.buffer_set(buffer, 'nicklist', '0')
+    w.buffer_set(buffer, 'time_for_each_line', '0')
+    if bname == 'perl.highmon':
+        w.buffer_set(buffer, 'time_for_each_line', '1')
 
-    if bname != 'perl.highmon':
-        w.buffer_set(buffer, 'time_for_each_line', '0')
+    btype = w.buffer_get_string(buffer, 'localvar_type')
+    if btype == 'server':
+        w.buffer_set(buffer, 'short_name', '@' + bits[2])
+    elif btype == 'private':
+        w.buffer_set(buffer, 'short_name', '+' + bits[2])
+    elif btype == 'channel':
+        nicklist = int(re.match(r'^irc\.\|*bitlbee\.&', bname) is not None)
+        w.buffer_set(buffer, 'nicklist', str(nicklist))
 
     merge(buffer)
-    sort_lazy()
-
-
-def channel_init(buffer):
-    bname = w.buffer_get_string(buffer, 'full_name')
-    nicklist = int(re.match(r'^irc\.bitlbee\.&', bname) is not None)
-    w.buffer_set(buffer, 'nicklist', str(nicklist))
-
-
-def cb_timer_sort(data, remaining_calls):
-    global timer_sort
-    sort()
-    timer_sort = None
-    return w.WEECHAT_RC_OK
+    global timer_sort_merged
+    if not timer_sort_merged:
+        timer_sort_merged = w.hook_timer(5, 0, 1, 'cb_timer_sort_merged', '')
 
 
 def cb_signal_buffer_opened(data, signal, buffer):
@@ -167,13 +161,10 @@ def cb_signal_buffer_opened(data, signal, buffer):
     return w.WEECHAT_RC_OK
 
 
-def cb_signal_irc_channel_opened(data, signal, buffer):
-    channel_init(buffer)
-    return w.WEECHAT_RC_OK
-
-
 w.hook_signal('buffer_opened', 'cb_signal_buffer_opened', '')
-w.hook_signal('irc_channel_opened', 'cb_signal_irc_channel_opened', '')
+w.hook_signal('irc_channel_opened', 'cb_signal_buffer_opened', '')
+w.hook_signal('irc_pv_opened', 'cb_signal_buffer_opened', '')
+w.hook_signal('irc_server_opened', 'cb_signal_buffer_opened', '')
 
 buffers = list(buffers_iter())
 for buffer in buffers:
@@ -424,6 +415,40 @@ w.hook_command(
 # ----------------------------------------
 
 
+def servers_iter():
+    item = w.hdata_get_list(hd_server, 'irc_servers')
+    while item:
+        yield item
+        item = w.hdata_pointer(hd_server, item, 'next_server')
+
+
+def server_opt(server_name, opt_name):
+    opt = w.config_get('irc.server.%s.%s' % (server_name, opt_name))
+    if w.config_option_is_null(opt):
+        opt = w.config_get('irc.server_default.%s' % opt_name)
+    return w.config_string(opt)
+
+
+def connect_relay(server_name):
+    cmd('server add |%s localhost/9000 -temp -ssl -nossl_verify '
+        '-password=%s:${sec.data.relay}' % (server_name, server_name))
+    cmd('connect |%s' % server_name)
+
+
+def cb_command_connect_relay(data, buffer, args):
+    if not args:
+        for server in servers_iter():
+            name = w.hdata_string(hd_server, server, 'name')
+            if name.startswith('|'):
+                continue
+            if not w.config_string_to_boolean(server_opt(name, 'autoconnect')):
+                continue
+            connect_relay(name)
+    else:
+        connect_relay(args)
+    return w.WEECHAT_RC_OK
+
+
 def cb_command_grep_nick(data, buffer, args):
     bname = w.buffer_get_string(buffer, 'full_name')
     cmd('filter del grep_%s' % bname)
@@ -481,9 +506,21 @@ def cb_command_urls(data, buffer, args):
     return w.WEECHAT_RC_OK
 
 
+def cb_server_complete(data, name, buffer, completion):
+    for server in servers_iter():
+        name = w.hdata_string(hd_server, server, 'name')
+        if name.startswith('|'):
+            continue
+        w.hook_completion_list_add(completion, name, 0, w.WEECHAT_LIST_POS_END)
+    return w.WEECHAT_RC_OK
+
+
+w.hook_command('connect_relay', '', '', '', '%(server_complete)', 'cb_command_connect_relay', '')
 w.hook_command('grep_nick', '', '', '', '', 'cb_command_grep_nick', '')
 w.hook_command('renick', '', '', '', '', 'cb_command_renick', '')
 w.hook_command('urls_open', '', '', '', '', 'cb_command_urls', 'open')
 w.hook_command('urls_yank', '', '', '', '', 'cb_command_urls', 'yank')
+
+w.hook_completion('server_complete', '', 'cb_server_complete', '')
 
 # }}}

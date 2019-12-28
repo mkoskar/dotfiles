@@ -151,8 +151,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     intel-core-datasheets   b https://www-ssl.intel.com/content/www/us/en/processors/core/core-technical-resources.html
     intel-sdm               b https://software.intel.com/en-us/articles/intel-sdm
     iojs                    b https://iojs.org/api/
+    irc-channels            b http://irc.netsplit.de/channels/\?net=freenode
     irc-docs                b https://ircdocs.horse/
-    irc-freenode            b http://irc.netsplit.de/channels/\?net=freenode
     iso                     b https://standards.iso.org/ittf/PubliclyAvailableStandards/
     iss-sightings           b https://spotthestation.nasa.gov/sightings/view.cfm\?country=Slovakia\&region=None\&city=Partizanske
     iss-tracker             b http://wsn.spaceflight.esa.int/iss/
