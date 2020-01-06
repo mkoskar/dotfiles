@@ -100,9 +100,10 @@ ZLE_SPACE_SUFFIX_CHARS='&|'
 [[ ${terminfo[tsl]} ]] && __title="%{${terminfo[tsl]}%n@%m:%~${terminfo[fsl]}%}"
 
 PS1='${BASEDIR:+(${${BASEDIR##*/}//\%/%%}):}%1~%(!.#.$) '
-if [[ $HOST != mirci ]]; then
-    PS1=%m:$PS1
-fi
+case $ENVTYPE in
+    termux) PS1=$TERMUX_HOST:$PS1 ;;
+    *) [[ $HOST = mirci ]] || PS1=%m:$PS1 ;;
+esac
 PS1=\$__statstr:$PS1
 if [[ $PIPENV_ACTIVE && $VIRTUAL_ENV ]]; then
     __venv=${VIRTUAL_ENV%/*}

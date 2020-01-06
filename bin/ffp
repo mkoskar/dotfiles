@@ -146,12 +146,17 @@ if [[ ! -f user.js.lock ]]; then
 			//user_pref("network.cookie.lifetimePolicy", 1);
 			//user_pref("signon. rememberSignons", false);
 			//user_pref("webgl.disabled", true);
+
 			user_pref("beacon.enabled", false);
 			user_pref("browser.safebrowsing.enabled", false);
 			user_pref("browser.safebrowsing.malware.enabled", false);
 			user_pref("dom.battery.enabled", false);
 			user_pref("dom.event.clipboardevents.enabled", false);
 			user_pref("geo.enabled", false);
+
+			user_pref("layers.acceleration.force-enabled", true);
+			user_pref("layers.gpu-process.force-enabled", true);
+			user_pref("media.hardware-video-decoding.force-enabled", true);
 		EOF
 
     fi

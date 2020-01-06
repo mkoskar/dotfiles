@@ -1,0 +1,5 @@
+#compdef busybox
+
+_arguments \
+    ':function:($(busybox --list))' \
+    '*: :_files'

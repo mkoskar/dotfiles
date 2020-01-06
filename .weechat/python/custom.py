@@ -28,7 +28,7 @@ w.register(
     SCRIPT_LICENSE,
     SCRIPT_DESC,
     '',
-    '',
+    ''
 )
 
 hd_buf = w.hdata_get('buffer')
@@ -40,6 +40,27 @@ hd_scroll = w.hdata_get('window_scroll')
 hd_server = w.hdata_get('irc_server')
 hd_win = w.hdata_get('window')
 
+
+def key_bind(ctxt, key, val):
+    cmd(f'/key bindctxt {ctxt} {key} {val}')
+
+
+def cb_bar_item_cmd_btn(data, item, window):
+    return data
+
+
+def cb_hsignal_cmd_btn_click(data, signal, hashtable):
+    cmd(data)
+    return w.WEECHAT_RC_OK
+
+
+def bar_item_cmd_btn(name, label, cmd):
+    w.bar_item_new(name, 'cb_bar_item_cmd_btn', label)
+    w.hook_hsignal(f'{name}_click', 'cb_hsignal_cmd_btn_click', cmd)
+    w.bar_item_update(name)
+    key_bind('mouse', f'@item({name}):button1', f'hsignal:{name}_click')
+
+
 # }}}
 
 # Buffers {{{
@@ -50,7 +71,8 @@ MERGE_RULES = [
     r'^irc\.\|*freenode([^.]*)\.#archlinux(-offtopic)?$',
 ]
 
-timer_sort_merged = None
+timer_sort_merge = None
+core = w.buffer_search_main()
 
 
 def buffers_iter():
@@ -113,16 +135,16 @@ def sort_merged():
             cmd('input switch_active_buffer', buffers[active - 1])
 
 
-def cb_timer_sort_merged(data, remaining_calls):
-    global timer_sort_merged
+def cb_timer_sort_merge(data, remaining_calls):
+    global timer_sort_merge
     sort_merged()
-    timer_sort_merged = None
+    timer_sort_merge = None
     return w.WEECHAT_RC_OK
 
 
 def buffer_init(buffer):
     bname = w.buffer_get_string(buffer, 'full_name')
-    bits = bname.split('.')
+    bname_ = bname.split('.')
 
     match = re.match(r'^irc\.\|*freenode([^.]*)\.#archlinux($|-.*)$', bname)
     if match:
@@ -131,10 +153,10 @@ def buffer_init(buffer):
             name = '#arch-ot'
         w.buffer_set(buffer, 'short_name', name)
 
-    if re.match(r'irc\.\|*bitlbee\.#twitter_mkoskar', bname):
+    if re.match(r'^irc\.\|*bitlbee\.#twitter_mkoskar$', bname):
         w.buffer_set(buffer, 'short_name', '#twitter')
         w.buffer_set(buffer, 'highlight_words', '@mkoskar')
-    elif re.match(r'irc\.\|*gitter\.#neovim/neovim', bname):
+    elif re.match(r'^irc\.\|*gitter\.#neovim/neovim$', bname):
         w.buffer_set(buffer, 'short_name', '#neovim')
 
     w.buffer_set(buffer, 'time_for_each_line', '0')
@@ -143,17 +165,17 @@ def buffer_init(buffer):
 
     btype = w.buffer_get_string(buffer, 'localvar_type')
     if btype == 'server':
-        w.buffer_set(buffer, 'short_name', '@' + bits[2])
+        w.buffer_set(buffer, 'short_name', '@' + bname_[2])
     elif btype == 'private':
-        w.buffer_set(buffer, 'short_name', '+' + bits[2])
+        w.buffer_set(buffer, 'short_name', '+' + bname_[2])
     elif btype == 'channel':
         nicklist = int(re.match(r'^irc\.\|*bitlbee\.&', bname) is not None)
         w.buffer_set(buffer, 'nicklist', str(nicklist))
 
     merge(buffer)
-    global timer_sort_merged
-    if not timer_sort_merged:
-        timer_sort_merged = w.hook_timer(5, 0, 1, 'cb_timer_sort_merged', '')
+    global timer_sort_merge
+    if not timer_sort_merge:
+        timer_sort_merge = w.hook_timer(5, 0, 1, 'cb_timer_sort_merge', '')
 
 
 def cb_signal_buffer_opened(data, signal, buffer):
@@ -204,60 +226,64 @@ def layout_current_name():
 
 
 def cb_command_layout_reset(data, buffer, args):
+    cmd('layout del _zoom')
     if not args:
-        cmd('layout apply windows')
+        if tab_cur is not None:
+            preset = w.buffer_get_string(
+                core, f'localvar_tab{tab_cur}_preset'
+            )
+            if preset:
+                cmd(f'layout_reset {preset}')
+            else:
+                cmd(f'layout apply tab{tab_cur}_saved windows')
+                cmd(f'layout store tab{tab_cur} windows')
         return w.WEECHAT_RC_OK
 
-    if args == 'base':
-        cmd('window merge all')
-        cmd('window splith 15')
-        cmd('buffer perl.highmon')
-        cmd('window down')
+    if args == '-':
+        if tab_cur is not None:
+            cmd(f'layout del tab{tab_cur}_saved')
+            w.buffer_set(core, f'localvar_del_tab{tab_cur}_preset', '')
+        return w.WEECHAT_RC_OK
 
-    if args == 'horiz':
-        cmd('window merge all')
-        cmd('window splith 15')
-        cmd('buffer perl.highmon')
-        cmd('window down')
-        cmd('window splith')
-        cmd('window down')
+    cmd('window merge all')
+    cmd('window splith 15')
+    cmd('buffer perl.highmon')
+    cmd('window down')
 
-    if args == 'vert':
-        cmd('window merge all')
-        cmd('window splith 15')
-        cmd('buffer perl.highmon')
-        cmd('window down')
-        cmd('window splitv')
-
-    elif args == 'core':
-        cmd('window merge all')
-        cmd('window splith 15')
-        cmd('buffer perl.highmon')
-        cmd('window down')
+    if args == 'core':
         cmd('buffer core.weechat')
-
     elif args == 'bitlbee':
-        cmd('window merge all')
-        cmd('window splith 15')
-        cmd('buffer perl.highmon')
-        cmd('window down')
         cmd('buffer bitlbee.&bitlbee')
+    elif args == 'twitter':
+        cmd('buffer bitlbee.#twitter_mkoskar')
+    elif args:
+        cmd(f'buffer {args}')
 
+    if tab_cur is not None:
+        cmd(f'layout store tab{tab_cur} windows')
+        w.buffer_set(core, f'localvar_set_tab{tab_cur}_preset', args)
+    return w.WEECHAT_RC_OK
+
+
+def cb_command_layout_save(data, buffer, args):
+    if tab_cur is not None:
+        cmd(f'layout store tab{tab_cur}_saved windows')
+        cmd(f'layout store tab{tab_cur} windows')
+        w.buffer_set(core, f'localvar_del_tab{tab_cur}_preset', '')
     return w.WEECHAT_RC_OK
 
 
 w.hook_command('layout_reset', '', '', '', '', 'cb_command_layout_reset', '')
+w.hook_command('layout_save', '', '', '', '', 'cb_command_layout_save', '')
 
-keys = {
-    'meta- ': 'layout_reset',
-    'meta-;meta-1': 'layout_reset core',
-    'meta-;meta-2': 'layout_reset bitlbee',
-    'meta-;meta-3': 'layout_reset base',
-    'meta-;meta-4': 'layout_reset horiz',
-    'meta-;meta-5': 'layout_reset vert',
-}
+bar_item_cmd_btn('btn_layout_reset', '[RST]', '/layout_reset')
+bar_item_cmd_btn('btn_layout_save', '[SAV]', '/layout_save')
 
-w.key_bind('default', keys)
+key_bind('default', 'meta-space', '/layout_reset')
+key_bind('default', 'meta-;meta-space', '/layout_save')
+key_bind('default', 'meta-;meta-1', '/layout_reset core')
+key_bind('default', 'meta-;meta-2', '/layout_reset bitlbee')
+key_bind('default', 'meta-;meta-3', '/layout_reset twitter')
 
 # }}}
 
@@ -265,6 +291,7 @@ w.key_bind('default', keys)
 # ----------------------------------------
 
 tab_cur = None
+bar_item_tabs = None
 
 
 def maybe_tab(src):
@@ -280,11 +307,26 @@ def maybe_tab(src):
 def tabs_all():
     tabs = []
     for name in layouts_name_iter():
-        tab = maybe_tab(name)
-        if tab is not None:
-            tabs.append(tab)
+        match = re.match(r'^tab(\d+)$', name)
+        if match:
+            tab = maybe_tab(match.group(1))
+            if tab is not None:
+                tabs.append(tab)
     tabs.sort()
     return tabs
+
+
+def cb_command_tab_del(data, buffer, args):
+    global tab_cur
+    if args:
+        target = maybe_tab(args)
+    else:
+        target = tab_cur
+    if target is None:
+        return w.WEECHAT_RC_ERROR
+    cmd(f'layout del tab{target}')
+    cmd('tab_prev -norewind')
+    return w.WEECHAT_RC_OK
 
 
 def cb_command_tab_go(data, buffer, args):
@@ -294,13 +336,13 @@ def cb_command_tab_go(data, buffer, args):
         return w.WEECHAT_RC_ERROR
     cmd('layout apply _zoom windows')
     cmd('layout del _zoom')
-    if tab_cur is not None and layout_find(str(tab_cur)):
-        cmd('layout store %s windows' % tab_cur)
-    if layout_find(str(tab_dst)):
-        cmd('layout apply %s windows' % tab_dst)
-    else:
-        cmd('layout store %s windows' % tab_dst)
+    if tab_cur is not None and layout_find(f'tab{tab_cur}'):
+        cmd(f'layout store tab{tab_cur} windows')
     tab_cur = tab_dst
+    if layout_find(f'tab{tab_cur}'):
+        cmd(f'layout apply tab{tab_cur} windows')
+    else:
+        cmd('layout_reset')
     w.bar_item_update('tabs')
     return w.WEECHAT_RC_OK
 
@@ -319,7 +361,7 @@ def cb_command_tab_next(data, buffer, args):
         tab_dst = next(
             (tab for tab in tabs if tab > tab_cur), tabs[-1 if norewind else 0]
         )
-    cmd('tab_go %s' % tab_dst)
+    cmd(f'tab_go {tab_dst}')
     return w.WEECHAT_RC_OK
 
 
@@ -338,46 +380,51 @@ def cb_command_tab_prev(data, buffer, args):
             (tab for tab in reversed(tabs)
              if tab < tab_cur), tabs[0 if norewind else -1]
         )
-    cmd('tab_go %s' % tab_dst)
+    cmd(f'tab_go {tab_dst}')
     return w.WEECHAT_RC_OK
 
 
-def cb_command_tab_del(data, buffer, args):
-    global tab_cur
-    if args:
-        target = maybe_tab(args)
-    else:
-        target = tab_cur
-    if target is None:
-        return w.WEECHAT_RC_ERROR
-    cmd('layout del %s' % target)
-    cmd('tab_prev -norewind')
-    return w.WEECHAT_RC_OK
-
-
-def cb_bar_item_tabs(data, item, window):
-    tabs = tabs_all()
-    return ' '.join(
-        map(lambda tab: '[%s]' % tab if tab == tab_cur else str(tab), tabs)
-    )
-
-
+w.hook_command('tab_del', '', '', '', '', 'cb_command_tab_del', '')
 w.hook_command('tab_go', '', '', '', '', 'cb_command_tab_go', '')
 w.hook_command('tab_next', '', '', '', '', 'cb_command_tab_next', '')
 w.hook_command('tab_prev', '', '', '', '', 'cb_command_tab_prev', '')
-w.hook_command('tab_del', '', '', '', '', 'cb_command_tab_del', '')
-w.bar_item_new('tabs', 'cb_bar_item_tabs', '')
 
-keys = {
-    'meta-0': 'tab_del',
-    'meta-l': 'tab_next',
-    'meta-h': 'tab_prev',
-}
+
+def cb_bar_item_tabs(data, item, window):
+    global bar_item_tabs
+    val = ' '.join(
+        map(lambda tab: f'${{color:white,red}}t{tab}${{color:reset}}'
+            if tab == tab_cur else f't{tab}', tabs_all())
+    )
+    val = w.string_eval_expression(val, {}, {}, {})
+    bar_item_tabs = w.string_remove_color(val, '')
+    return val
+
+
+def cb_hsignal_tabs_click(data, signal, hashtable):
+    if bar_item_tabs:
+        col = int(hashtable['_bar_item_col'])
+        if 0 < col <= len(bar_item_tabs):
+            tab = col // 3 + 1
+            cmd(f'tab_go {tab}')
+    return w.WEECHAT_RC_OK
+
+
+w.bar_item_new('tabs', 'cb_bar_item_tabs', '')
+w.hook_hsignal('tabs_click', 'cb_hsignal_tabs_click', '')
+
+bar_item_cmd_btn('btn_tab_del', '[-]', '/tab_del')
+bar_item_cmd_btn('btn_tab_next', '[>>]', '/tab_next')
+bar_item_cmd_btn('btn_tab_prev', '[<<]', '/tab_prev')
+
+key_bind('default', 'meta-0', '/tab_del')
+key_bind('default', 'meta-l', '/tab_next')
+key_bind('default', 'meta-h', '/tab_prev')
 
 for i in range(1, 10):
-    keys['meta-%d' % i] = 'tab_go %d' % i
+    key_bind('default', f'meta-{i}', f'/tab_go {i}')
 
-w.key_bind('default', keys)
+key_bind('mouse', '@item(tabs):button1', 'hsignal:tabs_click')
 
 # }}}
 
@@ -401,13 +448,12 @@ def cb_command_allwin_set_unread(data, buffer, args):
     for window, buffer in windows_buffer_iter():
         window_number = w.hdata_integer(hd_win, window, 'number')
         cmd('input set_unread_current_buffer', buffer)
-        cmd('window scroll_bottom -window %s' % window_number)
+        cmd(f'window scroll_bottom -window {window_number}')
     return w.WEECHAT_RC_OK
 
 
-w.hook_command(
-    'allwin_set_unread', '', '', '', '', 'cb_command_allwin_set_unread', ''
-)
+w.hook_command('allwin_set_unread', '', '', '', '',
+               'cb_command_allwin_set_unread', '')
 
 # }}}
 
@@ -423,16 +469,16 @@ def servers_iter():
 
 
 def server_opt(server_name, opt_name):
-    opt = w.config_get('irc.server.%s.%s' % (server_name, opt_name))
+    opt = w.config_get(f'irc.server.{server_name}.{opt_name}')
     if w.config_option_is_null(opt):
-        opt = w.config_get('irc.server_default.%s' % opt_name)
+        opt = w.config_get(f'irc.server_default.{opt_name}')
     return w.config_string(opt)
 
 
 def connect_relay(server_name):
-    cmd('server add |%s localhost/9000 -temp -ssl -nossl_verify '
-        '-password=%s:${sec.data.relay}' % (server_name, server_name))
-    cmd('connect |%s' % server_name)
+    cmd(f'server add |{server_name} localhost/9000 -temp -ssl -nossl_verify '
+        f'-password={server_name}:${{sec.data.relay}}')
+    cmd(f'connect |{server_name}')
 
 
 def cb_command_connect_relay(data, buffer, args):
@@ -451,9 +497,9 @@ def cb_command_connect_relay(data, buffer, args):
 
 def cb_command_grep_nick(data, buffer, args):
     bname = w.buffer_get_string(buffer, 'full_name')
-    cmd('filter del grep_%s' % bname)
+    cmd(f'filter del grep_{bname}')
     if args:
-        cmd('filter add grep_%s %s !nick_%s *' % (bname, bname, args))
+        cmd(f'filter add grep_{bname} {bname} !nick_{args} *')
     return w.WEECHAT_RC_OK
 
 
@@ -464,9 +510,9 @@ def cb_command_renick(data, buffer, args):
     nick_new = nick_old.rstrip('_')
     if nick_new == nick_old:
         return w.WEECHAT_RC_OK
-    cmd('msg NickServ ghost %s' % nick_new)
-    cmd('msg NickServ release %s' % nick_new)
-    cmd('nick %s' % nick_new)
+    cmd(f'msg NickServ ghost {nick_new}')
+    cmd(f'msg NickServ release {nick_new}')
+    cmd(f'nick {nick_new}')
     return w.WEECHAT_RC_OK
 
 
@@ -496,7 +542,7 @@ def cb_command_urls(data, buffer, args):
                 line = w.hdata_pointer(hd_line, line, 'prev_line')
                 continue
             lmsg = w.hdata_string(hd_ldata, ldata, 'message')
-            p.stdin.write('%s\n' % w.string_remove_color(lmsg, ''))
+            p.stdin.write(f"{w.string_remove_color(lmsg, '')}")
             line = w.hdata_pointer(hd_line, line, 'prev_line')
             count -= 1
         p.stdin.close()
@@ -506,7 +552,15 @@ def cb_command_urls(data, buffer, args):
     return w.WEECHAT_RC_OK
 
 
-def cb_server_complete(data, name, buffer, completion):
+w.hook_command('connect_relay', '', '', '', '%(irc_servers)',
+               'cb_command_connect_relay', '')
+w.hook_command('grep_nick', '', '', '', '', 'cb_command_grep_nick', '')
+w.hook_command('renick', '', '', '', '', 'cb_command_renick', '')
+w.hook_command('urls_open', '', '', '', '', 'cb_command_urls', 'open')
+w.hook_command('urls_yank', '', '', '', '', 'cb_command_urls', 'yank')
+
+
+def cb_completion_irc_servers(data, name, buffer, completion):
     for server in servers_iter():
         name = w.hdata_string(hd_server, server, 'name')
         if name.startswith('|'):
@@ -515,12 +569,48 @@ def cb_server_complete(data, name, buffer, completion):
     return w.WEECHAT_RC_OK
 
 
-w.hook_command('connect_relay', '', '', '', '%(server_complete)', 'cb_command_connect_relay', '')
-w.hook_command('grep_nick', '', '', '', '', 'cb_command_grep_nick', '')
-w.hook_command('renick', '', '', '', '', 'cb_command_renick', '')
-w.hook_command('urls_open', '', '', '', '', 'cb_command_urls', 'open')
-w.hook_command('urls_yank', '', '', '', '', 'cb_command_urls', 'yank')
+w.hook_completion('irc_servers', '', 'cb_completion_irc_servers', '')
 
-w.hook_completion('server_complete', '', 'cb_server_complete', '')
+bar_item_cmd_btn('btn_zoom', '[Z]', '/input zoom_merged_buffer')
+bar_item_cmd_btn('btn_switch', '[X]', '/input switch_active_buffer')
+bar_item_cmd_btn('btn_toggle_buflist', '[BL]', '/TOGGLE_BUFLIST')
+bar_item_cmd_btn('btn_toggle_nicklist', '[NL]', '/TOGGLE_NICKLIST')
+bar_item_cmd_btn('btn_toggle_time', '[T]', '/TOGGLE_TIME')
+
+bar = w.bar_search('TEST')
+if bar:
+    w.bar_remove(bar)
+w.bar_new(
+    'TEST', 'off', '0', 'root', '', 'bottom', 'horizontal', 'vertical',
+    '1', '1', 'default', 'default', 'default', 'off',
+    ','.join([
+        'btn_zoom',
+        'btn_switch',
+        'btn_layout_reset',
+        'btn_layout_save',
+        'btn_tab_del',
+        'btn_tab_prev',
+        'btn_tab_next',
+        'btn_toggle_buflist',
+        'btn_toggle_nicklist',
+        'btn_toggle_time',
+    ])
+)
+
+
+def cb_timer_startup(data, remaining_calls):
+    cmd('tab_go 1')
+    cmd('layout_reset core')
+    cmd('tab_go 2')
+    cmd('layout_reset bitlbee')
+    cmd('tab_go 3')
+    cmd('layout_reset twitter')
+    cmd('tab_go 4')
+    cmd('layout_reset #archlinux')
+    cmd('tab_go 1')
+    return w.WEECHAT_RC_OK
+
+
+w.hook_timer(1, 0, 1, 'cb_timer_startup', '')
 
 # }}}

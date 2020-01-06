@@ -497,9 +497,12 @@ reexec() {
     eval exec "$cmdline"
 }
 
-# shellcheck disable=SC1090
+# shellcheck disable=SC1090,SC2153
 reload() {
-    . /etc/profile
+    case $ENVTYPE in
+        termux) . "$PREFIX"/etc/profile ;;
+        *) . /etc/profile ;;
+    esac
     . ~/.profile
     case $SHMODE in
         bash) . ~/.bashrc ;;

@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e -o pipefail
-
 ss -s
 
 stat() {
@@ -11,9 +9,9 @@ stat() {
                 format = "%-8s %-15s %-30s %-30s %-16s %-22s\n"
 
                 gsub(/0\.0\.0\.0:/, "*:")
-                gsub(/127\.0\.0\.1:/, "local:")
+                gsub(/127\.0\.0\.1:/, "lo:")
                 gsub(/:::/, "*:")
-                gsub(/::1:/, "local:")
+                gsub(/::1:/, "lo:")
 
                 if ($1 ~ "^udp") {
                     printf format, $1, "-", $4, $5, $6, $8

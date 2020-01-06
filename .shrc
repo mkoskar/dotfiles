@@ -14,9 +14,10 @@ case $- in *i*) ;; *) return ;; esac
 HOSTNAME=$(uname -n)
 
 PS1="\${BASEDIR:+(\${BASEDIR##*/}):}\${PWD##*/}$ "
-if [ "$HOSTNAME" != mirci ]; then
-    PS1=\$HOSTNAME:$PS1
-fi
+case $ENVTYPE in
+    termux) PS1=$TERMUX_HOST:$PS1 ;;
+    *) [ "$HOSTNAME" = mirci ] || PS1=\$HOSTNAME:$PS1 ;;
+esac
 
 set -o vi
 

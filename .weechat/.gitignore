@@ -3,5 +3,5 @@
 /keys
 /logs
 /script
-/sec.conf
+/sec*.conf
 /weechat.log

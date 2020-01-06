@@ -12,6 +12,7 @@
 !/.local/share/unicode/
 !/.mutt/
 !/.terminfo/
+!/.termux/
 !/.urxvt/
 !/.urxvt/ext/
 !/.vim/

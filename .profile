@@ -4,6 +4,11 @@
 
 [ "$SHRC_DEBUG" ] && echo \~/.profile >&2
 
+export LANG=en_US.UTF-8
+export LC_COLLATE=C
+export LC_MEASUREMENT=C
+export LC_PAPER=C
+
 umask 022
 
 require() {
@@ -13,11 +18,14 @@ require() {
     exec /bin/bash --noprofile --norc -l -i
 }
 
+if [ ! "$USER" ]; then
+    USER=$(id -un)
+    export USER
+fi
+export LOGNAME=$USER
+
 require HOME "$HOME"
 require USER "$USER"
-require PATH "$PATH"
-require LOGNAME "$LOGNAME"
-
 unset -f require
 
 if [ ! "$UID" ]; then
@@ -25,19 +33,33 @@ if [ ! "$UID" ]; then
     export UID
 fi
 
-export LANG=en_US.UTF-8
-export LC_COLLATE=C
-export LC_MEASUREMENT=C
-export LC_PAPER=C
+export ENVTYPE=unknown
+case $HOME in */com.termux/*) export ENVTYPE=termux ;; esac
 
-export SHELL=${SHELL:-/bin/bash}
-export XDG_RUNTIME_DIR=/run/user/$UID
+case $ENVTYPE in
+    termux)
+        export SYSPREFIX=$PREFIX
+        export TMPDIR=$HOME/tmp
+        export XDG_RUNTIME_DIR=$TMPDIR/run
+        export TERMUX_HOST=$(getprop net.hostname)
+        ;;
+    *)
+        export SYSPREFIX=/usr
+        export TMPDIR=/tmp/$USER
+        export XDG_RUNTIME_DIR=/run/user/$UID
+        ;;
+esac
 
-export TMPDIR=/tmp/$USER
+export SHELL=${SHELL:-$SYSPREFIX/bin/bash}
+
 [ -e "$TMPDIR" ] || mkdir -m 700 "$TMPDIR"
 if [ "$(stat -c %a "$TMPDIR")" != 700 ]; then
     printf '%s has wrong access rights\n' "$TMPDIR" >&2
-    exit 1
+fi
+
+[ -e "$XDG_RUNTIME_DIR" ] || mkdir -m 700 "$XDG_RUNTIME_DIR"
+if [ "$(stat -c %a "$XDG_RUNTIME_DIR")" != 700 ]; then
+    printf '%s has wrong access rights\n' "$XDG_RUNTIME_DIR" >&2
 fi
 
 [ "$TERM" ] || TERM=dumb
@@ -54,8 +76,8 @@ export MANPAGER=manpg
 export PAGER=pg
 export TERMINAL=term
 
-export JAVA_HOME=/usr/lib/jvm/default-runtime
-export JDK_HOME=/usr/lib/jvm/default
+export JAVA_HOME=$SYSPREFIX/lib/jvm/default-runtime
+export JDK_HOME=$SYSPREFIX/lib/jvm/default
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.opengl=true -Dsun.java2d.xrender=true -Dswing.aatext=true'
 
@@ -63,24 +85,24 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.opengl=true 
 #export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/keyring/ssh}
 export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent}
 
+#export LESSOPEN='|highlight --quiet -O xterm256 -s bluegreen %s'
 export AUR_MAINTAINER=mkoskar
-export CCACHE_PATH=/usr/bin
+export CCACHE_PATH=$SYSPREFIX/bin
 export DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
 export ENV=~/.shrc
-export GRADLE_HOME=/usr/share/java/gradle
+export GRADLE_HOME=$SYSPREFIX/share/java/gradle
 export GREP_COLORS=sl=:cx=:mt=41:fn=36:ln=33:bn=33:se=:ne
 export GTK_IM_MODULE=xim
 export GTK_MODULES=canberra-gtk-module
 export LD_LIBRARY_PATH=~/opt/lib
 export LESS=-AqRS#3ciPs
 export LESSHISTFILE=-
-export LESSOPEN='|highlight --quiet -O xterm256 -s bluegreen %s'
 export MAILDIR=~/mail
 export MANSECT=0:9:2:3:7:8:6:1:4:5
 export MANWIDTH=80
 export NO_AT_BRIDGE=1
 export ORACLE_HOME=/opt/instantclient
-export PARALLEL_SHELL=/bin/bash
+export PARALLEL_SHELL=$SYSPREFIX/bin/bash
 export PARINIT='T4 w78 prbgqR B=.,?_A_a Q=_s>|'
 export PIPENV_COLORBLIND=1
 export PIPENV_HIDE_EMOJIS=1
@@ -96,7 +118,7 @@ export QUOTING_STYLE=literal
 export RANGER_LOAD_DEFAULT_RC=FALSE
 export SAL_USE_VCLPLUGIN=gtk
 export SYSTEMD_LESS=$LESS
-export TERMINFO_DIRS=/etc/terminfo:/usr/share/terminfo
+export TERMINFO_DIRS=/etc/terminfo:$SYSPREFIX/share/terminfo
 export TMUX_TMPDIR=$TMPDIR
 export UAGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'
 export VDPAU_DRIVER=va_gl

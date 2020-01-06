@@ -6,8 +6,8 @@ case $- in *i*) ;; *) return ;; esac
 
 # ----------------------------------------
 
-source_opt /usr/share/fzf/completion."$SHMODE"
-source_opt /usr/share/fzf/key-bindings."$SHMODE"
+source_opt "$SYSPREFIX/share/fzf/completion.$SHMODE"
+source_opt "$SYSPREFIX/share/fzf/key-bindings.$SHMODE"
 
 case $SHNAME in bash | zsh)
     if command -v register-python-argcomplete >/dev/null; then

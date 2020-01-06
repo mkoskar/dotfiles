@@ -2,6 +2,8 @@
 
 [[ $SHRC_DEBUG ]] && echo \~/.bashrc >&2
 
+[[ ${BASH_SOURCE[1]} = /etc/profile ]] && return
+
 . ~/bin/term.sh
 
 # ----------------------------------------
@@ -20,9 +22,10 @@ __ti_fsl=$(tput fsl)
 [[ $__ti_tsl ]] && __title="\\[$__ti_tsl\u@\h:\w$__ti_fsl\\]"
 
 PS1="\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
-if [[ $HOSTNAME != mirci ]]; then
-    PS1=\\h:$PS1
-fi
+case $ENVTYPE in
+    termux) PS1=$TERMUX_HOST:$PS1 ;;
+    *) [[ $HOSTNAME = mirci ]] || PS1=\\h:$PS1 ;;
+esac
 PS1=\$__statstr:$PS1
 if [[ $PIPENV_ACTIVE && $VIRTUAL_ENV ]]; then
     __venv=${VIRTUAL_ENV%/*}
