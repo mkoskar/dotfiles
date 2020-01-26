@@ -31,7 +31,6 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.Minimize
 import XMonad.Hooks.PositionStoreHooks
 import XMonad.Hooks.SetWMName
-import XMonad.Hooks.ToggleHook
 import XMonad.Hooks.UrgencyHook
 
 import XMonad.Layout.BoringWindows
@@ -41,6 +40,7 @@ import XMonad.Layout.Maximize
 import XMonad.Layout.Minimize
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
+import XMonad.Layout.NoBorders
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
 import XMonad.Layout.TrackFloating
@@ -135,7 +135,7 @@ myConfig = def
     myHandleEventHook = ewmhDesktopsEventHook
                         <+> docksEventHook
                         <+> minimizeEventHook
-                        -- <+> fullscreenEventHook
+                        <+> fullscreenEventHook
                         <+> positionStoreEventHook
                         <+> hintsEventHook
                         <+> focusOnMouseMove
@@ -169,7 +169,6 @@ myConfig = def
                        , title =? "qiv" -?> doShiftView "9"
                        ]
                    <+> composeAll [ isDialog --> doCenterFloat ]
-                   <+> toggleHook "doFloat" doFloat
                    <+> positionStoreManageHook Nothing
 
     myLayoutHook = avoidStruts
@@ -178,6 +177,7 @@ myConfig = def
                    $ boringWindows
                    $ minimize
                    $ maximize
+                   $ smartBorders
                    $ configurableNavigation noNavigateBorders
                    $ mkToggle (single NOBORDERS)
                    $ mkToggle (single FULL)

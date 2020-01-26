@@ -1,6 +1,6 @@
 # Executed by interactive shells based on ENV environment variable reference.
 
-[ "$SHRC_DEBUG" ] && echo \~/.shrc >&2
+[ "$SHRC_DEBUG" ] && echo ~/.shrc >&2
 
 . ~/bin/term.sh
 
@@ -11,13 +11,8 @@ case $- in *i*) ;; *) return ;; esac
 . ~/bin/shx.sh
 . ~/bin/shrc-pre.sh
 
-HOSTNAME=$(uname -n)
-
 PS1="\${BASEDIR:+(\${BASEDIR##*/}):}\${PWD##*/}$ "
-case $ENVTYPE in
-    termux) PS1=$TERMUX_HOST:$PS1 ;;
-    *) [ "$HOSTNAME" = mirci ] || PS1=\$HOSTNAME:$PS1 ;;
-esac
+[ "$HOSTNAME" = mirci ] || PS1=$HOSTNAME:$PS1
 
 set -o vi
 

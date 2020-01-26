@@ -16,11 +16,6 @@ SCRIPT_DESC = 'Personal customizations'
 # Global {{{
 # ----------------------------------------
 
-
-def cmd(command, buffer='', mute=True):
-    w.command(buffer, ('/mute ' if mute else '/') + command)
-
-
 w.register(
     SCRIPT_NAME,
     SCRIPT_AUTHOR,
@@ -31,34 +26,47 @@ w.register(
     ''
 )
 
+hd_bar = w.hdata_get('bar')
+hd_bar_win = w.hdata_get('bar_window')
+hd_bar_item = w.hdata_get('bar_item')
 hd_buf = w.hdata_get('buffer')
 hd_layout = w.hdata_get('layout')
-hd_ldata = w.hdata_get('line_data')
 hd_line = w.hdata_get('line')
+hd_line_data = w.hdata_get('line_data')
 hd_lines = w.hdata_get('lines')
-hd_scroll = w.hdata_get('window_scroll')
 hd_server = w.hdata_get('irc_server')
 hd_win = w.hdata_get('window')
+hd_win_scroll = w.hdata_get('window_scroll')
+
+
+def cmd(command, buffer='', mute=True):
+    w.command(buffer, ('/mute ' if mute else '/') + command)
 
 
 def key_bind(ctxt, key, val):
     cmd(f'/key bindctxt {ctxt} {key} {val}')
 
 
-def cb_bar_item_cmd_btn(data, item, window):
-    return data
+def cb_bar_item_cmd_btn(data, item, window, buffer, extra_info):
+    item_name = w.hdata_string(hd_bar_item, item, 'name')
+    extra_vars = {}
+    if item_name == 'btn_win_zoom':
+        extra_vars['zoom'] = '1' if layout_find('_zoom') else '0'
+    return w.string_eval_expression(data, {
+        'window': window, 'buffer': buffer}, extra_vars, {})
 
 
-def cb_hsignal_cmd_btn_click(data, signal, hashtable):
-    cmd(data)
+def cb_bar_item_cmd_btn_update(data, signal, buffer):
+    w.bar_item_update(data)
     return w.WEECHAT_RC_OK
 
 
-def bar_item_cmd_btn(name, label, cmd):
-    w.bar_item_new(name, 'cb_bar_item_cmd_btn', label)
-    w.hook_hsignal(f'{name}_click', 'cb_hsignal_cmd_btn_click', cmd)
+def bar_item_cmd_btn(name, label, cmd, update_on=[]):
+    w.bar_item_new('(extra)' + name, 'cb_bar_item_cmd_btn', label)
     w.bar_item_update(name)
-    key_bind('mouse', f'@item({name}):button1', f'hsignal:{name}_click')
+    key_bind('mouse', f'@item({name}):button1', cmd)
+    for signal in update_on:
+        w.hook_signal(signal, 'cb_bar_item_cmd_btn_update', name)
 
 
 # }}}
@@ -67,8 +75,8 @@ def bar_item_cmd_btn(name, label, cmd):
 # ----------------------------------------
 
 MERGE_RULES = [
-    r'^irc\.\|*freenode([^.]*)\.#(bash|zsh)$',
-    r'^irc\.\|*freenode([^.]*)\.#archlinux(-offtopic)?$',
+    r'^irc\.freenode[^.]*\.#(bash|zsh)$',
+    r'^irc\.freenode[^.]*\.#archlinux(-offtopic)?$',
 ]
 
 timer_sort_merge = None
@@ -146,17 +154,17 @@ def buffer_init(buffer):
     bname = w.buffer_get_string(buffer, 'full_name')
     bname_ = bname.split('.')
 
-    match = re.match(r'^irc\.\|*freenode([^.]*)\.#archlinux($|-.*)$', bname)
+    match = re.match(r'^irc\.freenode[^.]*\.#archlinux($|-.*)$', bname)
     if match:
-        name = '#arch' + match.group(2)
+        name = '#arch' + match.group(1)
         if name == '#arch-offtopic':
             name = '#arch-ot'
         w.buffer_set(buffer, 'short_name', name)
 
-    if re.match(r'^irc\.\|*bitlbee\.#twitter_mkoskar$', bname):
+    if re.match(r'^irc\.bitlbee[^.]*\.#twitter_mkoskar$', bname):
         w.buffer_set(buffer, 'short_name', '#twitter')
         w.buffer_set(buffer, 'highlight_words', '@mkoskar')
-    elif re.match(r'^irc\.\|*gitter\.#neovim/neovim$', bname):
+    elif re.match(r'^irc\.gitter[^.]*\.#neovim/neovim$', bname):
         w.buffer_set(buffer, 'short_name', '#neovim')
 
     w.buffer_set(buffer, 'time_for_each_line', '0')
@@ -169,7 +177,7 @@ def buffer_init(buffer):
     elif btype == 'private':
         w.buffer_set(buffer, 'short_name', '+' + bname_[2])
     elif btype == 'channel':
-        nicklist = int(re.match(r'^irc\.\|*bitlbee\.&', bname) is not None)
+        nicklist = int(re.match(r'^irc\.bitlbee[^.]*\.&', bname) is not None)
         w.buffer_set(buffer, 'nicklist', str(nicklist))
 
     merge(buffer)
@@ -246,16 +254,16 @@ def cb_command_layout_reset(data, buffer, args):
         return w.WEECHAT_RC_OK
 
     cmd('window merge all')
-    cmd('window splith 15')
+    cmd('window splith 20')
     cmd('buffer perl.highmon')
     cmd('window down')
 
     if args == 'core':
         cmd('buffer core.weechat')
     elif args == 'bitlbee':
-        cmd('buffer bitlbee.&bitlbee')
+        cmd('buffer &bitlbee')
     elif args == 'twitter':
-        cmd('buffer bitlbee.#twitter_mkoskar')
+        cmd('buffer #twitter')
     elif args:
         cmd(f'buffer {args}')
 
@@ -276,8 +284,8 @@ def cb_command_layout_save(data, buffer, args):
 w.hook_command('layout_reset', '', '', '', '', 'cb_command_layout_reset', '')
 w.hook_command('layout_save', '', '', '', '', 'cb_command_layout_save', '')
 
-bar_item_cmd_btn('btn_layout_reset', '[RST]', '/layout_reset')
-bar_item_cmd_btn('btn_layout_save', '[SAV]', '/layout_save')
+bar_item_cmd_btn('btn_layout_reset', 'RESET', '/layout_reset')
+bar_item_cmd_btn('btn_layout_save', 'SAVE', '/layout_save')
 
 key_bind('default', 'meta-space', '/layout_reset')
 key_bind('default', 'meta-;meta-space', '/layout_save')
@@ -291,7 +299,6 @@ key_bind('default', 'meta-;meta-3', '/layout_reset twitter')
 # ----------------------------------------
 
 tab_cur = None
-bar_item_tabs = None
 
 
 def maybe_tab(src):
@@ -343,7 +350,7 @@ def cb_command_tab_go(data, buffer, args):
         cmd(f'layout apply tab{tab_cur} windows')
     else:
         cmd('layout_reset')
-    w.bar_item_update('tabs')
+    bar_item_update_tabs()
     return w.WEECHAT_RC_OK
 
 
@@ -353,7 +360,7 @@ def cb_command_tab_next(data, buffer, args):
     tabs = tabs_all()
     if not len(tabs):
         tab_cur = None
-        w.bar_item_update('tabs')
+        bar_item_update_tabs()
         return w.WEECHAT_RC_OK
     if tab_cur is None or len(tabs) == 1:
         tab_dst = tabs[0]
@@ -371,7 +378,7 @@ def cb_command_tab_prev(data, buffer, args):
     tabs = tabs_all()
     if not len(tabs):
         tab_cur = None
-        w.bar_item_update('tabs')
+        bar_item_update_tabs()
         return w.WEECHAT_RC_OK
     if tab_cur is None or len(tabs) == 1:
         tab_dst = tabs[0]
@@ -390,41 +397,45 @@ w.hook_command('tab_next', '', '', '', '', 'cb_command_tab_next', '')
 w.hook_command('tab_prev', '', '', '', '', 'cb_command_tab_prev', '')
 
 
-def cb_bar_item_tabs(data, item, window):
-    global bar_item_tabs
-    val = ' '.join(
-        map(lambda tab: f'${{color:white,red}}t{tab}${{color:reset}}'
-            if tab == tab_cur else f't{tab}', tabs_all())
-    )
-    val = w.string_eval_expression(val, {}, {}, {})
-    bar_item_tabs = w.string_remove_color(val, '')
-    return val
+def cb_bar_item_tab(data, item, window):
+    tab = maybe_tab(data)
+    if tab not in tabs_all():
+        return ''
+    return w.string_eval_expression(
+        f'${{color:white,red}}[{tab}]${{color:reset}}'
+        if tab == tab_cur else f'[{tab}]', {}, {}, {})
 
 
-def cb_hsignal_tabs_click(data, signal, hashtable):
-    if bar_item_tabs:
-        col = int(hashtable['_bar_item_col'])
-        if 0 < col <= len(bar_item_tabs):
-            tab = col // 3 + 1
-            cmd(f'tab_go {tab}')
+def cb_hsignal_tab_click(data, signal, hashtable):
+    col = int(hashtable['_bar_item_col'])
+    if col > 2:
+        return w.WEECHAT_RC_OK
+    tab = maybe_tab(data)
+    if tab not in tabs_all():
+        return w.WEECHAT_RC_OK
+    cmd(f'tab_go {tab}')
     return w.WEECHAT_RC_OK
 
 
-w.bar_item_new('tabs', 'cb_bar_item_tabs', '')
-w.hook_hsignal('tabs_click', 'cb_hsignal_tabs_click', '')
+def bar_item_update_tabs():
+    for i in range(1, 10):
+        w.bar_item_update(f'tab{i}')
 
-bar_item_cmd_btn('btn_tab_del', '[-]', '/tab_del')
-bar_item_cmd_btn('btn_tab_next', '[>>]', '/tab_next')
-bar_item_cmd_btn('btn_tab_prev', '[<<]', '/tab_prev')
+
+for i in range(1, 10):
+    w.bar_item_new(f'tab{i}', 'cb_bar_item_tab', str(i))
+    w.hook_hsignal(f'tab{i}_click', 'cb_hsignal_tab_click', str(i))
+    key_bind('mouse', f'@item(tab{i}):button1', f'hsignal:tab{i}_click')
+    key_bind('default', f'meta-{i}', f'/tab_go {i}')
+    cmd(f'alias add {i} tab_go {i}')
+
+bar_item_cmd_btn('btn_tab_del', 'TAB×', '/tab_del')
+bar_item_cmd_btn('btn_tab_next', 'TAB+', '/tab_next')
+bar_item_cmd_btn('btn_tab_prev', 'TAB-', '/tab_prev')
 
 key_bind('default', 'meta-0', '/tab_del')
 key_bind('default', 'meta-l', '/tab_next')
 key_bind('default', 'meta-h', '/tab_prev')
-
-for i in range(1, 10):
-    key_bind('default', f'meta-{i}', f'/tab_go {i}')
-
-key_bind('mouse', '@item(tabs):button1', 'hsignal:tabs_click')
 
 # }}}
 
@@ -476,16 +487,16 @@ def server_opt(server_name, opt_name):
 
 
 def connect_relay(server_name):
-    cmd(f'server add |{server_name} localhost/9000 -temp -ssl -nossl_verify '
+    cmd(f'server add {server_name}~ localhost/9000 -temp -ssl -nossl_verify '
         f'-password={server_name}:${{sec.data.relay}}')
-    cmd(f'connect |{server_name}')
+    cmd(f'connect {server_name}~')
 
 
 def cb_command_connect_relay(data, buffer, args):
     if not args:
         for server in servers_iter():
             name = w.hdata_string(hd_server, server, 'name')
-            if name.startswith('|'):
+            if name.endswith('~'):
                 continue
             if not w.config_string_to_boolean(server_opt(name, 'autoconnect')):
                 continue
@@ -522,11 +533,11 @@ def cb_command_urls(data, buffer, args):
     lines = w.hdata_pointer(hd_buf, buffer, 'lines')
     line = w.hdata_pointer(hd_lines, lines, 'last_line')
     if scroll:
-        after = w.hdata_integer(hd_scroll, scroll, 'lines_after')
+        after = w.hdata_integer(hd_win_scroll, scroll, 'lines_after')
         while after > 0 and line:
             ldata = w.hdata_pointer(hd_line, line, 'data')
             line = w.hdata_pointer(hd_line, line, 'prev_line')
-            if w.hdata_char(hd_ldata, ldata, 'displayed'):
+            if w.hdata_char(hd_line_data, ldata, 'displayed'):
                 after -= 1
     try:
         if data == 'open':
@@ -538,10 +549,10 @@ def cb_command_urls(data, buffer, args):
         count = 100
         while count > 0 and line:
             ldata = w.hdata_pointer(hd_line, line, 'data')
-            if not w.hdata_char(hd_ldata, ldata, 'displayed'):
+            if not w.hdata_char(hd_line_data, ldata, 'displayed'):
                 line = w.hdata_pointer(hd_line, line, 'prev_line')
                 continue
-            lmsg = w.hdata_string(hd_ldata, ldata, 'message')
+            lmsg = w.hdata_string(hd_line_data, ldata, 'message')
             p.stdin.write(f"{w.string_remove_color(lmsg, '')}")
             line = w.hdata_pointer(hd_line, line, 'prev_line')
             count -= 1
@@ -563,7 +574,7 @@ w.hook_command('urls_yank', '', '', '', '', 'cb_command_urls', 'yank')
 def cb_completion_irc_servers(data, name, buffer, completion):
     for server in servers_iter():
         name = w.hdata_string(hd_server, server, 'name')
-        if name.startswith('|'):
+        if name.endswith('~'):
             continue
         w.hook_completion_list_add(completion, name, 0, w.WEECHAT_LIST_POS_END)
     return w.WEECHAT_RC_OK
@@ -571,31 +582,105 @@ def cb_completion_irc_servers(data, name, buffer, completion):
 
 w.hook_completion('irc_servers', '', 'cb_completion_irc_servers', '')
 
-bar_item_cmd_btn('btn_zoom', '[Z]', '/input zoom_merged_buffer')
-bar_item_cmd_btn('btn_switch', '[X]', '/input switch_active_buffer')
-bar_item_cmd_btn('btn_toggle_buflist', '[BL]', '/TOGGLE_BUFLIST')
-bar_item_cmd_btn('btn_toggle_nicklist', '[NL]', '/TOGGLE_NICKLIST')
-bar_item_cmd_btn('btn_toggle_time', '[T]', '/TOGGLE_TIME')
+bar_item_cmd_btn(
+    'btn_filter',
+    '[${if:${buffer.filter}?F:f}${if:${info:filters_enabled}?+:-}]',
+    '/filter toggle @',
+    ['buffer_switch', 'window_switch',
+     'buffer_filters_enabled', 'buffer_filters_disabled',
+     'filters_enabled', 'filters_disabled']
+)
 
-bar = w.bar_search('TEST')
+bar_item_cmd_btn(
+    'btn_server',
+    '${if:${type}==channel?@ ${server}}',
+    '/server jump',
+    ['buffer_switch', 'window_switch']
+)
+
+bar_item_cmd_btn(
+    'btn_zoom',
+    '${if:${buffer.mixed_lines}!=0x0?[${if:${buffer.zoomed}?Z:z}]}',
+    '/input zoom_merged_buffer',
+    ['buffer_switch', 'window_switch', 'buffer_zoomed', 'buffer_unzoomed']
+)
+
+bar_item_cmd_btn('btn_scroll_unread', '[u]', '/window scroll_unread')
+bar_item_cmd_btn('btn_set_unread', '[U]', '/input set_unread_current_buffer')
+
+bar_item_cmd_btn('btn_clear', '/CL', '/CL')
+bar_item_cmd_btn('btn_clearhot', '/CLH', '/CLH')
+bar_item_cmd_btn('btn_close', '/C', '/C')
+bar_item_cmd_btn('btn_quit', '/BYE', '/BYE')
+
+bar_item_cmd_btn('btn_bare', 'BARE', '/window bare')
+bar_item_cmd_btn('btn_connect_relay', 'CON~', '/connect_relay')
+bar_item_cmd_btn('btn_disconnect', 'CON×', '/disconnect -all')
+
+bar_item_cmd_btn('btn_win_close', '[×]', '/window close -window ${if:"${_window_number}"=="*"?${window.number}:${_window_number}}')
+bar_item_cmd_btn(
+    'btn_win_zoom',
+    '${if:${zoom}?${color:white,red}[¬]${color:reset}:[¬]}',
+    '/window zoom -window ${if:"${_window_number}"=="*"?${window.number}:${_window_number}}',
+    ['window_switch', 'window_zoomed', 'window_unzoomed']
+)
+bar_item_cmd_btn('btn_win_only', '[*]', '/window merge -window ${if:"${_window_number}"=="*"?${window.number}:${_window_number}} all')
+bar_item_cmd_btn('btn_win_split', '[s]', '/window splith -window ${if:"${_window_number}"=="*"?${window.number}:${_window_number}}')
+bar_item_cmd_btn('btn_win_vsplit', '[v]', '/window splitv -window ${if:"${_window_number}"=="*"?${window.number}:${_window_number}}')
+bar_item_cmd_btn('btn_win_grow', '[+]', '/window resize -window ${if:"${_window_number}"=="*"?${window.number}:${_window_number}} +5')
+bar_item_cmd_btn('btn_win_shrink', '[-]', '/window resize -window ${if:"${_window_number}"=="*"?${window.number}:${_window_number}} -5')
+
+bar_item_cmd_btn('btn_toggle_buflist', 'BUFL', '/TOGGLE_BUFLIST')
+bar_item_cmd_btn('btn_toggle_nicklist', 'NICKL', '/TOGGLE_NICKLIST')
+bar_item_cmd_btn('btn_toggle_prefix', 'PREF', '/TOGGLE_PREFIX')
+bar_item_cmd_btn('btn_toggle_time', 'TIME', '/TOGGLE_TIME')
+
+bar = w.bar_search('fn')
 if bar:
     w.bar_remove(bar)
 w.bar_new(
-    'TEST', 'off', '0', 'root', '', 'bottom', 'horizontal', 'vertical',
-    '1', '1', 'default', 'default', 'default', 'off',
-    ','.join([
-        'btn_zoom',
-        'btn_switch',
-        'btn_layout_reset',
-        'btn_layout_save',
-        'btn_tab_del',
-        'btn_tab_prev',
-        'btn_tab_next',
+    'fn', 'on', '200', 'root', '',
+    'right', 'columns_horizontal', 'vertical',
+    '0', '0', 'default', 'default', 'default', 'on',
+    ', ,'.join([
+        'btn_connect_relay',
+        'btn_disconnect',
         'btn_toggle_buflist',
         'btn_toggle_nicklist',
         'btn_toggle_time',
+        'btn_toggle_prefix',
+        'btn_bare',
+        'btn_layout_save',
+        'btn_layout_reset',
+        'btn_tab_next',
+        'btn_tab_prev',
+        'btn_tab_del',
+        'btn_quit',
+        'btn_close',
+        'btn_clear',
+        'btn_clearhot',
     ])
 )
+bar_item_cmd_btn('btn_fn', '>>', '/bar toggle fn')
+
+bar = w.bar_search('win_fn')
+if bar:
+    w.bar_remove(bar)
+w.bar_new(
+    'win_fn', 'on', '0', 'window', '',
+    'top', 'columns_horizontal', 'vertical',
+    '0', '0', 'default', 'default', '233', 'off',
+    ','.join([
+        'btn_win_close',
+        'btn_win_zoom',
+        'btn_win_only',
+        'btn_win_split',
+        'btn_win_vsplit',
+        'btn_win_grow',
+        'btn_win_shrink',
+    ])
+)
+bar_item_cmd_btn('btn_win_fn', '>>', '/bar toggle win_fn')
 
 
 def cb_timer_startup(data, remaining_calls):
@@ -612,5 +697,43 @@ def cb_timer_startup(data, remaining_calls):
 
 
 w.hook_timer(1, 0, 1, 'cb_timer_startup', '')
+
+key_bind('mouse', '@item(buffer_name):button1', '/input switch_active_buffer')
+key_bind('mouse', '@item(buffer_short_name):button1', '/input switch_active_buffer')
+key_bind('mouse', '@item(mode_indicator):button1', '/vimode_go_to_normal')
+key_bind('mouse', '@item(scroll):button1', '/window scroll_bottom')
+
+
+def adjust_for_width():
+    term_width = int(w.info_get('term_width', ''))
+    cmd('/bar hide win_fn')
+    if term_width < 80:
+        cmd('/bar show fn')
+        cmd('/bar hide buflist')
+        cmd('/set weechat.look.prefix_align none')
+    else:
+        cmd('/bar hide fn')
+        cmd('/bar show buflist')
+        cmd('/set weechat.look.prefix_align right')
+
+
+def cb_signal_sigwinch(data, signal, buffer):
+    adjust_for_width()
+    return w.WEECHAT_RC_OK
+
+
+w.hook_signal('signal_sigwinch', 'cb_signal_sigwinch', '')
+adjust_for_width()
+
+
+def cb_signal_post_switch(data, signal, buffer):
+    term_width = int(w.info_get('term_width', ''))
+    if term_width < 80:
+        cmd('/bar hide buflist')
+    return w.WEECHAT_RC_OK
+
+
+w.hook_signal('buffer_switch', 'cb_signal_post_switch', '')
+w.hook_signal('window_switch', 'cb_signal_post_switch', '')
 
 # }}}

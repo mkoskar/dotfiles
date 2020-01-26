@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent
+rm -f "$SSH_AUTH_SOCK"
+exec ssh-agent -a "$SSH_AUTH_SOCK" -D

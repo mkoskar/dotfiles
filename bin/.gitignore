@@ -3,4 +3,5 @@
 *.py[co]
 __pycache__
 
+/busybox
 /git-set-email

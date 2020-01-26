@@ -34,11 +34,11 @@ else
     curl -s "dict://dict.org/define * \"${*//[\"\\]/ }\"" |
         dos2unix |
         awk '
-        /^\s*$/ { squashing = 1; next }
-        /^\.$/  { squashing = 0; print $0; printf "\n"; next }
-        { if (squashing) printf "\n"; squashing = 0; print $0 }
-        /^150 [0-9]+ definitions retrieved/ { printf "\n" }
-        /^151 "/ { printf "\n" }
+            /^\s*$/ { squashing = 1; next }
+            /^\.$/  { squashing = 0; print $0; printf "\n"; next }
+            { if (squashing) printf "\n"; squashing = 0; print $0 }
+            /^150 [0-9]+ definitions retrieved/ { printf "\n" }
+            /^151 "/ { printf "\n" }
         ' |
         PAGER_EX='setf dict' $PAGER
 fi

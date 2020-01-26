@@ -18,4 +18,5 @@ awk -v squash=$squash '
     {
         if (!seen_text) next
         buf = (squash ? "\n" : buf $0 "\n")
-    }'
+    }
+'

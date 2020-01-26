@@ -39,7 +39,7 @@ chain=$2
             else if ($1 == "-N") printf "-X "
             for (i=2; i<=NF; i++) printf $i " "
             printf "\n"
-        }' |
-    while read -r -a args; do
+        }
+    ' | while read -r -a args; do
         "${prefix}tables" -t "$table" "${args[@]}"
     done

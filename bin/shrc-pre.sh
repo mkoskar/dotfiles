@@ -1,6 +1,6 @@
 # Source this file for interactive shell pre-initialization.
 
-[ "$SHRC_DEBUG" ] && echo \~/bin/shrc-pre.sh >&2
+[ "$SHRC_DEBUG" ] && echo ~/bin/shrc-pre.sh >&2
 
 case $- in *i*) ;; *) return ;; esac
 

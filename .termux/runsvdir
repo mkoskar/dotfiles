@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -eu
+
+lvl_new=${1:-default}
+
+cd ~/.termux
+[[ -d svdir.$lvl_new ]] || {
+    printf 'no such runlevel: %s\n' "$lvl_new" >&2
+    exit 1
+}
+
+lvl_cur=$(readlink -f svdir)
+lvl_cur=${lvl_cur##*/svdir.}
+
+[[ $lvl_new = "$lvl_cur" ]] || {
+    ln -snf svdir."$lvl_new" svdir
+    ln -snf svdir."$lvl_cur" svdir.prev
+}
+
+printf 'runlevel: %s\n' "$lvl_new" >&2
+
+start-stop-daemon \
+    --pidfile "$XDG_RUNTIME_DIR"/runsvdir.pid \
+    --make-pidfile --background --oknodo --verbose \
+    --start runsvdir "$PWD"/svdir >&2

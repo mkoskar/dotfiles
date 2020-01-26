@@ -1,6 +1,6 @@
 # Source this file for interactive shell post-initialization.
 
-[ "$SHRC_DEBUG" ] && echo \~/bin/shrc-post.sh >&2
+[ "$SHRC_DEBUG" ] && echo ~/bin/shrc-post.sh >&2
 
 case $- in *i*) ;; *) return ;; esac
 
@@ -21,6 +21,4 @@ esac
 
 case $- in *l*) ;; *) return ;; esac
 
-if [ "$TTY" = /dev/tty1 ]; then
-    up
-fi
+up

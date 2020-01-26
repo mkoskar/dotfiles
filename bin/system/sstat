@@ -21,7 +21,8 @@ stat() {
                     else if ($6 == "ESTABLISHED") $6 = ":" $6
                     printf format, $1, $6, $4, $5, $7, $9
                 }
-            }' |
+            }
+        ' |
         sort -b -k 1,1r -k 2,2 -k 3,3
 }
 

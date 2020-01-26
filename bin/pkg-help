@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+cat <<-'EOF'
+
+    dpkg / apt
+    ==========
+
+    dpkg -V, --verify
+    dpkg -C, --audit
+    dpkg --get-selections
+
+    dpkg[-query] -l, --list
+    dpkg[-query] -s, --status
+    dpkg[-query] -L, --listfiles
+    dpkg[-query] -S, --search
+
+    apt list
+    apt list --installed
+    apt search
+    apt show
+
+    apt update
+    apt full-upgrade
+    apt install
+    apt install --reinstall
+    apt remove
+
+EOF

@@ -77,19 +77,20 @@ process() {
         maildir=$maildir/${1##*/}
         mkdir -p "$maildir"/{cur,new,tmp}
     fi
-    git cat-file --batch='%(rest)' <"$1" | gawk -v RS="$delim" \
-        -v maildir="$maildir" -v hostname="$HOSTNAME" '
-        BEGIN { FS = "\n"; ORS = ""; }
-        NR == 1 { next }
-        {
-            match($0, /^(\S+) (\S+)\n/, m)
-            sub("[^\n]*\n", "") # remove first line
-            sub("\n$", "") # remove last line
-            outfile = maildir "/cur/" m[2] ".O" m[1] "." hostname ":2,S"
-            print >outfile
-            close(outfile)
-        }
-        END { print NR-1 "\n" }'
+    git cat-file --batch='%(rest)' <"$1" |
+        gawk -v RS="$delim" -v maildir="$maildir" -v hostname="$HOSTNAME" '
+            BEGIN { FS = "\n"; ORS = ""; }
+            NR == 1 { next }
+            {
+                match($0, /^(\S+) (\S+)\n/, m)
+                sub("[^\n]*\n", "") # remove first line
+                sub("\n$", "") # remove last line
+                outfile = maildir "/cur/" m[2] ".O" m[1] "." hostname ":2,S"
+                print >outfile
+                close(outfile)
+            }
+            END { print NR-1 "\n" }
+        '
 }
 export -f process
 

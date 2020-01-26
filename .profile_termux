@@ -1,0 +1,3 @@
+# ~/.profile_termux
+
+export SVDIR=~/.termux/svdir

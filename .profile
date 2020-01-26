@@ -1,8 +1,7 @@
 # Executed by login shells.
 # Not read by bash(1), if ~/.bash_profile or ~/.bash_login exists.
-# :Compatibility: POSIX
 
-[ "$SHRC_DEBUG" ] && echo \~/.profile >&2
+[ "$SHRC_DEBUG" ] && echo ~/.profile >&2
 
 export LANG=en_US.UTF-8
 export LC_COLLATE=C
@@ -11,6 +10,12 @@ export LC_PAPER=C
 
 umask 022
 
+if [ ! "$USER" ]; then
+    USER=$(id -un)
+    export USER
+fi
+export LOGNAME=$USER
+
 require() {
     [ "$2" ] && return
     printf '%s is not set or null\n' "$1" >&2
@@ -18,30 +23,28 @@ require() {
     exec /bin/bash --noprofile --norc -l -i
 }
 
-if [ ! "$USER" ]; then
-    USER=$(id -un)
-    export USER
-fi
-export LOGNAME=$USER
-
 require HOME "$HOME"
 require USER "$USER"
-unset -f require
 
 if [ ! "$UID" ]; then
     UID=$(id -u)
     export UID
 fi
 
-export ENVTYPE=unknown
-case $HOME in */com.termux/*) export ENVTYPE=termux ;; esac
+if [ -e /etc/os-release ]; then
+    OSID=$(awk -F = '/^ID=/ { print $2 }' </etc/os-release)
+elif [ -e /usr/lib/os-release ]; then
+    OSID=$(awk -F = '/^ID=/ { print $2 }' </usr/lib/os-release)
+fi
+OSID=${OSID:-linux}
+case $HOME in */com.termux/*) OSID=termux ;; esac
+export OSID
 
-case $ENVTYPE in
+case $OSID in
     termux)
         export SYSPREFIX=$PREFIX
         export TMPDIR=$HOME/tmp
         export XDG_RUNTIME_DIR=$TMPDIR/run
-        export TERMUX_HOST=$(getprop net.hostname)
         ;;
     *)
         export SYSPREFIX=/usr
@@ -62,6 +65,12 @@ if [ "$(stat -c %a "$XDG_RUNTIME_DIR")" != 700 ]; then
     printf '%s has wrong access rights\n' "$XDG_RUNTIME_DIR" >&2
 fi
 
+XDG_CACHE_HOME=~/.cache
+XDG_CONFIG_HOME=~/.config
+XDG_DATA_HOME=~/.local/share
+
+mkdir -p "$XDG_CACHE_HOME" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME"
+
 [ "$TERM" ] || TERM=dumb
 export TERM
 
@@ -76,6 +85,29 @@ export MANPAGER=manpg
 export PAGER=pg
 export TERMINAL=term
 
+[ "$_PATH" ] || export _PATH=$PATH
+
+PATH=~/bin
+PATH=$PATH:~/projects/pub/tcolors/bin
+PATH=$PATH:~/projects/pub/pkgbuilds
+PATH=$PATH:~/projects/pub/dockerfiles/bin
+PATH=$PATH:~/opt/bin
+PATH=$PATH:~/.local/bin
+PATH=$PATH:~/.local/pipx/bin
+PATH=$PATH:~/.luarocks/bin
+PATH=$PATH:~/.cargo/bin
+
+set -- ~/.gem/ruby/*
+[ -d "$1" ] && PATH=$PATH:$1/bin
+
+PATH=$PATH:$_PATH
+PATH=$PATH:/usr/local/bin/busybox
+PATH=$PATH:~/bin/system
+PATH=$PATH:~/bin/busybox
+export PATH
+
+# ----------------------------------------
+
 export JAVA_HOME=$SYSPREFIX/lib/jvm/default-runtime
 export JDK_HOME=$SYSPREFIX/lib/jvm/default
 export _JAVA_AWT_WM_NONREPARENTING=1
@@ -86,12 +118,16 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.opengl=true 
 export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent}
 
 #export LESSOPEN='|highlight --quiet -O xterm256 -s bluegreen %s'
+export ASPROOT=~/.asp
 export AUR_MAINTAINER=mkoskar
+export BZR_LOG=$XDG_DATA_HOME/bzr.log
+export CCACHE_DIR=$XDG_CACHE_HOME/ccache
 export CCACHE_PATH=$SYSPREFIX/bin
 export DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
 export ENV=~/.shrc
 export GRADLE_HOME=$SYSPREFIX/share/java/gradle
 export GREP_COLORS=sl=:cx=:mt=41:fn=36:ln=33:bn=33:se=:ne
+export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc
 export GTK_IM_MODULE=xim
 export GTK_MODULES=canberra-gtk-module
 export LD_LIBRARY_PATH=~/opt/lib
@@ -100,6 +136,7 @@ export LESSHISTFILE=-
 export MAILDIR=~/mail
 export MANSECT=0:9:2:3:7:8:6:1:4:5
 export MANWIDTH=80
+export MPLAYER_HOME=$XDG_CONFIG_HOME/mplayer
 export NO_AT_BRIDGE=1
 export ORACLE_HOME=/opt/instantclient
 export PARALLEL_SHELL=$SYSPREFIX/bin/bash
@@ -122,6 +159,9 @@ export TERMINFO_DIRS=/etc/terminfo:$SYSPREFIX/share/terminfo
 export TMUX_TMPDIR=$TMPDIR
 export UAGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'
 export VDPAU_DRIVER=va_gl
+export XAUTHORITY=$XDG_DATA_HOME/xorg/Xauthority
+export XMOBAR_DATA_DIR=$XDG_DATA_HOME/xmobar
+export XMONAD_DATA_DIR=$XDG_DATA_HOME/xmonad
 
 if hash fuzz 2>/dev/null; then
     eval "$(fuzz -)"
@@ -135,34 +175,23 @@ if hash nvim 2>/dev/null; then
     export VIMBIN=nvim
 fi
 
-XDG_CACHE_HOME=~/.cache
-XDG_CONFIG_HOME=~/.config
-XDG_DATA_HOME=~/.local/share
+# ----------------------------------------
 
-mkdir -p "$XDG_CACHE_HOME" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME"
+source_opt() {
+    # shellcheck disable=SC1090
+    [ ! -e "$1" ] || {
+        [ "$SHRC_DEBUG" ] && printf '%s\n' "$1" >&2
+        . -- "$1"
+    }
+}
 
-export ASPROOT=~/.asp
-export BZR_LOG=$XDG_DATA_HOME/bzr.log
-export CCACHE_DIR=$XDG_CACHE_HOME/ccache
-export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc
-export MPLAYER_HOME=$XDG_CONFIG_HOME/mplayer
-export XAUTHORITY=$XDG_DATA_HOME/xorg/Xauthority
-export XMOBAR_DATA_DIR=$XDG_DATA_HOME/xmobar
-export XMONAD_DATA_DIR=$XDG_DATA_HOME/xmonad
+HOSTNAME=$(uname -n)
+case $OSID in termux)
+    # shellcheck disable=SC2155
+    export TERMUX_HOST=$(getprop net.hostname)
+    HOSTNAME=${TERMUX_HOST:-$HOSTNAME}
+    ;;
+esac
 
-[ "$_PATH" ] || export _PATH=$PATH
-PATH=$_PATH
-
-set -- ~/.gem/ruby/*
-[ -d "$1" ] && PATH=$1/bin:$PATH
-
-PATH=~/.cargo/bin:$PATH
-PATH=~/.luarocks/bin:$PATH
-PATH=~/.local/pipx/bin:$PATH
-PATH=~/.local/bin:$PATH
-PATH=~/opt/bin:$PATH
-PATH=~/projects/pub/dockerfiles/bin:$PATH
-PATH=~/projects/pub/pkgbuilds:$PATH
-PATH=~/projects/pub/tcolors/bin:$PATH
-PATH=~/bin:$PATH
-export PATH
+source_opt ~/.profile_"$OSID"
+source_opt ~/.profile."$HOSTNAME"

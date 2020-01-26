@@ -64,7 +64,6 @@ case ${1-} in
             main)
                 srun -xl clementine
                 srun -x workrave
-                # xup &
                 wait
                 ;;
         esac

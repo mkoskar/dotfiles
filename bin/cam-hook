@@ -4,24 +4,14 @@ set -eu
 
 target=$TMPDIR/cam-hook.jpg
 
-preview_pidfile=$XDG_RUNTIME_DIR/cam-hook_preview.pid
-preview_cleanup() { rm -f "$preview_pidfile"; }
-
 preview() (
-    echo $$ >"$preview_pidfile"
-    trap preview_cleanup EXIT
+    exec 8>"$XDG_RUNTIME_DIR"/cam-hook_preview.lock
+    flock -n 8 || exit 0
     qiv -tiGfl --vikeys -T "$target"
 )
 
-case $ACTION in
-    init)
-        ;;
-    start)
-        ;;
-    download)
-        cp -- "$ARGUMENT" "$target"
-        [[ -e $preview_pidfile ]] || preview &
-        ;;
-    stop)
-        ;;
+case $ACTION in download)
+    cp -- "$ARGUMENT" "$target"
+    preview &
+    ;;
 esac

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+srv=${PWD##*/}
+host=${srv##*@}
+
+exec autossh -M 0 -F ~/.ssh/config.tunnels -N "$host"

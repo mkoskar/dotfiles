@@ -1,14 +1,25 @@
 #!/usr/bin/env bash
 
-echo $'\n--------------------------------------------------'
-echo $'> Setup backup:\n'
-sudo backup-setup
+case $OSID in
+    termux)
+        ~/.termux/runsvdir &>/dev/null
+        ssh-agent-preset
+        ;;
+    *)
+        [[ $(tty) = /dev/tty1 ]] || exit 0
 
-#echo $'\n--------------------------------------------------'
-#echo $'> Setup SSH tunnels:\n'
-#sshup
+        echo $'\n--------------------------------------------------'
+        echo $'> Setup backup:\n'
+        sudo backup-setup
 
-echo $'\n--------------------------------------------------'
-echo $'> Start X session:\n'
-confirm 'Continue?' y || exit 0
-exec x
+        echo $'\n--------------------------------------------------'
+        echo $'> Presets:\n'
+        #gpg-agent-preset
+        ssh-agent-preset
+
+        echo $'\n--------------------------------------------------'
+        echo $'> Start X session:\n'
+        confirm 'Continue?' y || exit 0
+        exec x
+        ;;
+esac

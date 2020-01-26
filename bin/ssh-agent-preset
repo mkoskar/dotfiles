@@ -2,11 +2,21 @@
 
 set -eu
 
-src=~/.ssh/ssh-agent.presets
-(( $# )) && src=$1
-
 cd ~
 
-while read -r -a line; do
-    ssh-add "${line[@]}" </dev/tty
+[[ -t 0 ]] && src=.ssh/ssh-agent.presets || src=/dev/stdin
+
+declare -i retry=10
+while true; do
+    declare -i retstat=0
+    ssh-add -l &>/dev/null || retstat=$?
+    (( retstat == 0 )) && exit  # >0 identities loaded
+    (( retstat == 1 )) && break # no identities loaded
+    (( retry > 0 )) || exit 2   # can't connect
+    retry=$((retry-1))
+    sleep 0.2
+done
+
+while read -r -a args; do
+    ssh-add "${args[@]}" </dev/tty
 done <"$src"

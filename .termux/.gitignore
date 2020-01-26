@@ -1,3 +1,8 @@
 !*
 
-*/
+/sv/*/log/@*
+/sv/*/log/current
+/sv/*/log/lock
+/svdir
+/svdir.prev
+supervise/

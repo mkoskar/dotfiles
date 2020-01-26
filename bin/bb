@@ -67,6 +67,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ctlseqs                 b https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
     ctlseqs1                b https://bjh21.me.uk/all-escapes/all-escapes.txt
     cups                    b https://www.cups.org/documentation.html
+    cve                     b https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword={u}
     d                       b https://www.merriam-webster.com/dictionary/{u}
     dbus                    b https://dbus.freedesktop.org/doc/dbus-specification.html
     dd                      b https://duckduckgo.com/lite/\?q={u}
@@ -271,6 +272,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     rst-sphinx              b https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html
     rtfm-faqs               b ftp://rtfm.mit.edu/pub/faqs/
     rtfm-usenet             b ftp://rtfm.mit.edu/pub/usenet/
+    runit                   b http://smarden.org/runit/
     russian-alphabet        b https://en.wikipedia.org/wiki/Russian_alphabet#Table
     rust                    b https://doc.rust-lang.org/reference/
     rust-api                b https://doc.rust-lang.org/std/
@@ -308,6 +310,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     tlds                    b https://www.iana.org/domains/root/db
     tmux-changes            b https://github.com/tmux/tmux/blob/master/CHANGES
     tor-specs               b https://gitweb.torproject.org/torspec.git/tree/
+    toybox                  b https://github.com/landley/toybox
     tr                      b https://translate.google.com/\?sl=en\&tl=sk\&q={u}
     tr-de                   b https://translate.google.com/\?sl=de\&tl=sk\&q={u}
     tweets                  b https://tweetdeck.twitter.com/

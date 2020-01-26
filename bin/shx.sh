@@ -1,6 +1,6 @@
 # Source this file to get common aliases and functions.
 
-[ "$SHRC_DEBUG" ] && echo \~/bin/shx.sh >&2
+[ "$SHRC_DEBUG" ] && echo ~/bin/shx.sh >&2
 
 if [ "$BASH_VERSION" ]; then
     SHNAME=bash
@@ -19,18 +19,29 @@ fi
 
 # shellcheck disable=SC2034,SC2209
 case $SHNAME in
-    bash)
-        shopt -q -o posix && SHMODE=sh || SHMODE=bash
-        shopt -s expand_aliases
-        unset BASH_ENV
-        ;;
+    bash) shopt -q -o posix && SHMODE=sh || SHMODE=bash ;;
     zsh) SHMODE=$(emulate) ;;
     *ksh) SHMODE=ksh ;;
     *) SHMODE=sh ;;
 esac
 
+# ----------------------------------------
+
 set -o noclobber
+case $SHNAME in bash)
+    shopt -s expand_aliases
+    unset BASH_ENV
+    ;;
+esac
 case $SHNAME in bash | zsh | *ksh) set -o pipefail ;; esac
+
+# shellcheck disable=SC2153
+case $SHNAME in
+    bash) ;;
+    zsh) HOSTNAME=$HOST ;;
+    *) HOSTNAME=$(uname -n) ;;
+esac
+case $OSID in termux) HOSTNAME=${TERMUX_HOST:-$HOSTNAME} ;; esac
 
 
 # docker
@@ -319,7 +330,7 @@ __() {
     local cwd gitdir
     cwd=$PWD
     case $cwd in "$HOME" | "$HOME"/*) cwd=\~${cwd##$HOME} ;; esac
-    printf '\n%s @ %s in %s\n\n' "$USER" "${HOST:-$HOSTNAME}" "$cwd"
+    printf '\n%s @ %s in %s\n\n' "$USER" "$HOSTNAME" "$cwd"
     # shellcheck disable=SC2154
     if [ "$__long_cmd" ]; then
         printf '$ %s\n%s (%d sec)\n\n' \
@@ -499,8 +510,8 @@ reexec() {
 
 # shellcheck disable=SC1090,SC2153
 reload() {
-    case $ENVTYPE in
-        termux) . "$PREFIX"/etc/profile ;;
+    case $OSID in
+        termux) . "$SYSPREFIX"/etc/profile ;;
         *) . /etc/profile ;;
     esac
     . ~/.profile

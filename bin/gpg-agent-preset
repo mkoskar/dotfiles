@@ -1,18 +1,23 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
+set -eu
 
-preset() {
-    local pass
-    IFS= read -rs -p "Passphrase for (${1:0:8}...): " pass </dev/tty
-    echo
-    [[ $pass ]] || return 1
-    pass=$(printf %s "$pass" | xxd -p)
-    gpg-connect-agent <<<"PRESET_PASSPHRASE $1 -1 $pass"
-}
+cd ~
 
-[[ -t 0 ]] && src=~/.gnupg/gpg-agent.presets || src=/dev/stdin
+[[ -t 0 ]] && src=.gnupg/gpg-agent.presets || src=/dev/stdin
+
+declare -i retry=10
+while true; do
+    gpg-connect-agent <<<'GETINFO version' &>/dev/null && break
+    (( retry > 0 )) || exit 2
+    retry=$((retry-1))
+    sleep 0.2
+done
 
 while read -r keygrip; do
-    preset "$keygrip"
+    IFS= read -rs -p "Passphrase for (${keygrip:0:8}...): " pass </dev/tty
+    echo
+    [[ $pass ]] || continue
+    pass=$(printf %s "$pass" | xxd -p)
+    gpg-connect-agent <<<"PRESET_PASSPHRASE $keygrip -1 $pass"
 done <"$src"

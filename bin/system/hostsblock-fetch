@@ -113,7 +113,8 @@ post_process() {
             if (NF > 1) target = $2
             else target = $1
             print target
-        }' <"$1" |
+        }
+    ' <"$1" |
         grep -vE -e '[^[:alnum:]._-]' -e '^[^[:alnum:]]' -e '[^[:alnum:]]$' \
             ${whitelist:+-f "$CONFDIR"/whitelist} |
         awk '{ print "0.0.0.0 " $0 }' >"$1".done

@@ -179,15 +179,15 @@ if [[ $mode = select ]]; then
         ofile=select
         if [[ ! -e $ofile || $ifile -nt $ofile ]]; then
             awk -F \; '
-            {
-                cp = strtonum("0x" $1)
-                if (cp >= 0xd800 && cp <= 0xf8ff)
-                    next
-                if (cp <= 0x1f || cp >= 0x7f && cp <= 0x9f)
-                    printf "%05X : %-80s\n", cp, $11
-                else if (cp < 0x20000)
-                    printf "%05X : %-80s %c\n", cp, $2, cp
-            }
+                {
+                    cp = strtonum("0x" $1)
+                    if (cp >= 0xd800 && cp <= 0xf8ff)
+                        next
+                    if (cp <= 0x1f || cp >= 0x7f && cp <= 0x9f)
+                        printf "%05X : %-80s\n", cp, $11
+                    else if (cp < 0x20000)
+                        printf "%05X : %-80s %c\n", cp, $2, cp
+                }
             ' <"$ifile" >"$ofile"
         fi
         ifile=$cachedir/$ver/$ofile
