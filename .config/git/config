@@ -20,7 +20,7 @@
 %(if)%(HEAD)%(then)* %(color:green)%(else)%(if)%(worktreepath)%(then)+ %(color:cyan)%(else)  %(color:11)%(end)%(end)%(refname:lstrip=2)%(color:reset)\
 %(if:notequals=*)%(HEAD)%(then)%(if)%(worktreepath)%(then) (%(color:cyan)%(worktreepath)%(color:reset))%(end)%(end)\
 %(if)%(upstream)%(then) <<< %(if)%(upstream:track)%(then)%(color:15 red)%(upstream:track,nobracket)%(color:reset) %(end)%(color:yellow)%(upstream:short)%(color:reset)%(end)\
-%(if)%(push)%(then) >>> %(if)%(push:track)%(then): %(color:15 red)%(push:track,nobracket)%(color:reset) %(end)%(color:yellow)%(push:short)%(color:reset)%(end)\
+%(if)%(push)%(then) >>> %(if)%(push:track)%(then)%(color:15 red)%(push:track,nobracket)%(color:reset) %(end)%(color:yellow)%(push:short)%(color:reset)%(end)\
 %0a    %(objectname:short) %(authorname) (%(authordate:relative)) %(contents:subject)\
 %(else)\
   %(color:red)%(refname:lstrip=2)%(color:reset)\

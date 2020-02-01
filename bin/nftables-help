@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+cat <<-'EOF'
+
+    Address families:
+        ip (default)
+        ip6
+        inet
+        arp
+        bridge
+        netdev
+
+    Hooks (depend on address family):
+       prerouting
+       input
+       forward
+       output
+       postrouting
+       ingress
+
+    Ruleset (whole set of tables and chains)
+
+    Tables (containers for chains, sets and stateful objects)
+
+    Chains (containers for rules)
+        * Type: filter, nat, route
+        * Policy: accept (default), drop
+
+    # ----------------------------------------
+
+    nft list ruleset
+    nft flush ruleset
+
+EOF

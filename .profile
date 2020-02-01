@@ -44,12 +44,10 @@ case $OSID in
     termux)
         export SYSPREFIX=$PREFIX
         export TMPDIR=$HOME/tmp
-        export XDG_RUNTIME_DIR=$TMPDIR/run
         ;;
     *)
         export SYSPREFIX=/usr
         export TMPDIR=/tmp/$USER
-        export XDG_RUNTIME_DIR=/run/user/$UID
         ;;
 esac
 
@@ -59,6 +57,9 @@ export SHELL=${SHELL:-$SYSPREFIX/bin/bash}
 if [ "$(stat -c %a "$TMPDIR")" != 700 ]; then
     printf '%s has wrong access rights\n' "$TMPDIR" >&2
 fi
+
+export XDG_RUNTIME_DIR=/run/user/$UID
+[ -e /run/user ] || export XDG_RUNTIME_DIR=$TMPDIR/run
 
 [ -e "$XDG_RUNTIME_DIR" ] || mkdir -m 700 "$XDG_RUNTIME_DIR"
 if [ "$(stat -c %a "$XDG_RUNTIME_DIR")" != 700 ]; then

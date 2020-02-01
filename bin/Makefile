@@ -1,24 +1,22 @@
-.PHONY: install busybox system
+.PHONY: install busybox system clean
 
 ifeq (0, $(shell id -u))
-dest = /usr/local/bin
+    dest := /usr/local/bin
 else
-dest = $(HOME)/bin
+    dest := $(HOME)/bin
 endif
 
-override dest_ := $(abspath $(dest))
-override dest := $(realpath $(dest))
-ifeq (, $(dest))
-$(error $(dest_) does not exist)
-endif
+busybox := $(shell which busybox)
+
+# ----------------------------------------
 
 install: busybox system
 
 busybox:
 	rm -rf $(dest)/busybox
-ifneq (, $(shell which busybox))
+ifneq (, $(busybox))
 	mkdir $(dest)/busybox
-	busybox --install -s $(dest)/busybox
+	$(busybox) --install -s $(dest)/busybox
 endif
 
 system:
