@@ -1,1 +1,1 @@
-/home/miro/.vim/filetype.vim
+../../.vim/filetype.vim

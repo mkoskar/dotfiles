@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
-
 {
     echo $'\n--------------------------------------------------'
     echo $'> pactl info\n'

@@ -4,19 +4,21 @@
 
 set -eu -o pipefail
 
+bin=$(pth -s qutebrowser)
+
 case ${1-} in
     --) shift ;;
-    -*) exec /usr/bin/qutebrowser "$@" ;;
+    -*) exec "$bin" "$@" ;;
 esac
 
 uhash=$(printf %s "$USER" | sha1sum)
 read -r uhash _ <<<"$uhash"
 socket=$XDG_RUNTIME_DIR/qutebrowser/ipc-$uhash
 
-[[ -S $socket ]] || exec /usr/bin/qutebrowser -- "$@"
+[[ -S $socket ]] || exec "$bin" -- "$@"
 
 (( $# )) || set -- about:blank
 
 printf -v args ',"%s"' "${@/\"/\\\"}"
 printf '{"args":[%s], "target_arg":"auto", "protocol_version":1}\n' \
-    "${args:1}" | socat - UNIX-CONNECT:"$socket"
+    "${args:1}" | socat - local:"$socket"

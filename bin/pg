@@ -36,23 +36,16 @@ if [[ $prgname = pgx ]]; then
 fi
 
 if [[ ! -t 1 ]]; then
-    exec cat -- "$@"
-fi
-
-if (( $# )) || [[ -t 0 ]]; then
-    exec 0<&1
+    if [[ $prgname = manpg ]]; then
+        cat "$@" | col -bx
+    else
+        cat "$@"
+    fi
+elif (( $# )) || [[ -t 0 ]]; then
     run "$@"
-    exit
-fi
-
-filter=(cat)
-if [[ $prgname = manpg ]]; then
-    filter=(col -bx)
-fi
-
-"${filter[@]}" | {
+else
     exec 8<&0 0<&1
     export PAGER_TITLE=${PAGER_TITLE:--stdin-}
     args=(-c 'call InitStdin()')
     run
-}
+fi

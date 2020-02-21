@@ -1,0 +1,53 @@
+# PulseAudio
+# ----------------------------------------
+#
+# See also:
+#   /usr/share/doc/alsa-plugins/README-pulse
+
+pcm.!pulse {
+    type pulse
+    fallback sysdefault
+    hint {
+        show on
+        description "PulseAudio Sound Server"
+    }
+}
+
+ctl.!pulse {
+    type pulse
+    fallback sysdefault
+}
+
+
+# JACK
+# ----------------------------------------
+#
+# See also:
+#   /usr/share/doc/alsa-plugins/README-jack
+
+pcm.!jack {
+    type plug
+    slave.pcm {
+        type jack
+        playback_ports {
+            0 system:playback_1
+            1 system:playback_2
+        }
+        capture_ports {
+            0 system:capture_1
+            1 system:capture_2
+        }
+    }
+    hint {
+        show on
+        description "JACK Audio Connection Kit"
+    }
+}
+
+# ----------------------------------------
+
+defaults.namehint.extended on
+defaults.namehint.showall on
+
+pcm.!default pulse
+ctl.!default pulse

@@ -11,4 +11,6 @@ fi
 mbsync on
 
 hash neomutt &>/dev/null && exec neomutt -n "$@"
-exec /usr/bin/mutt -n "$@"
+
+bin=$(pth -s mutt)
+exec "$bin" -n "$@"

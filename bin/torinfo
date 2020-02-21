@@ -5,7 +5,7 @@ set -e
 echo $'\n--------------------------------------------------'
 echo $'> Config:\n'
 
-socat - UNIX-CONNECT:/var/run/tor/control.sock <<-'EOF'
+socat - local:/var/run/tor/control.sock <<-'EOF'
 	AUTHENTICATE
 	GETINFO config-text
 	GETINFO orconn-status

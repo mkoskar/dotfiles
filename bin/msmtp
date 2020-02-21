@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
 
-/usr/bin/msmtp -C ~/.config/msmtprc "$@"
+set -eu
+
+bin=$(pth -s msmtp)
+exec "$bin" -C ~/.config/msmtprc "$@"

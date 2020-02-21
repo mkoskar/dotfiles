@@ -19,6 +19,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     amazon-de               b https://www.amazon.de/s/field-keywords={u}
     amazon-uk               b https://www.amazon.co.uk/s/field-keywords={u}
     angularjs               b https://docs.angularjs.org/api
+    animals                 b https://en.wikipedia.org/wiki/List_of_animal_names
     ansible                 b https://docs.ansible.com/
     ant                     b https://ant.apache.org/manual/
     apache                  b https://httpd.apache.org/docs/
@@ -76,7 +77,10 @@ MENUER=$prgname menuer "$@" <<-EOF |
     deb                     b https://packages.debian.org/search\?keywords={u}
     debian-gitlab           b https://salsa.debian.org/explore
     dkim                    b https://dkimcore.org/tools/
+    dns-parameters          b https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml
     dns-reserved            b https://tools.ietf.org/html/rfc2606
+    dns-terminology         b https://tools.ietf.org/html/rfc7719
+    dnssec                  b https://dnssec-debugger.verisignlabs.com/
     docker                  b https://github.com/wsargent/docker-cheat-sheet
     docker-compose          b https://docs.docker.com/compose/compose-file/
     dockerfile              b https://docs.docker.com/engine/reference/builder/

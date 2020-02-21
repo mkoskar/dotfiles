@@ -1,0 +1,140 @@
+#!/usr/bin/env bash
+
+$PAGER <<-'EOF'
+
+https://serverfault.com/questions/331936/setting-the-hostname-fqdn-or-short-name
+https://support.google.com/a/answer/2573637
+https://support.google.com/a/answer/48090
+https://tools.ietf.org/html/rfc7719
+https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml
+
+class: (in, hs, ch, ...) [default: in]
+type:  (a, any, mx, ns, soa, hinfo, axfr, txt, ...) [default: a]
+
+----------------------------------------
+
+/etc/gai.conf
+/etc/host.conf
+/etc/hostname
+/etc/hosts
+/etc/nsswitch.conf
+/etc/resolv.conf
+
+LOCALDOMAIN=
+RES_OPTIONS=
+
+$ getent -s dns hosts <hostname>    # lookup for <hostname>
+$ getent -s dns hosts <ip>          # reverse lookup for <ip>
+
+Hostname:
+
+    * hostname <hostname>
+    * /etc/hostname - aka "static" hostname
+    * managed by systemd-hostnamed (hostnamectl)
+
+FQDN:
+
+    * name getaddrinfo(3) returns for the hostname returned by gethostname(2)
+    * alias for the FQDN using /etc/hosts e.g., "127.0.1.1 hostname.example.com hostname"
+    * /etc/resolv.conf e.g., "search example.com"
+
+
+dig
+---
+
+    -4/-6           use IPv4/IPv6 query transport only
+    -r              do not read ~/.digrc
+    -x              do a reverse lookup
+
+    +[no]aaonly     Set AA flag in query (+[no]aaflag)
+    +[no]adflag     Set AD flag in query (default: on)
+    +[no]cdflag     Set checking disabled flag in query
+    +[no]multiline  Print records in an expanded format
+    +[no]nssearch   Search all authoritative nameservers
+    +[no]qr         Print question before sending
+    +[no]rdflag     Recursive mode (+[no]recurse)
+    +[no]short      Display nothing except short form of answers - global option
+    +[no]tcp        TCP mode (+[no]vc)
+    +[no]trace      Trace delegation down from root [+dnssec]
+    +[no]ttlunits   Display TTLs in human-readable units
+    +bufsize=###    Set EDNS0 Max UDP packet size
+    +timeout=###    Set query timeout (default: 5 seconds)
+
+    $ dig [@server] [name] [type] [class]
+    $ dig +cd [name] [type]
+    $ dig +tcp +cd +nssearch [name]
+    $ dig +tcp +trace [name] [type]
+
+
+delv
+----
+
+    -4/-6           use IPv4/IPv6 query transport only
+    -d level        set debugging level
+    -i              disable DNSSEC validation
+
+    +[no]cdflag     Set checking disabled flag in query
+    +[no]mtrace     Trace messages received
+    +[no]rtrace     Trace resolver fetches
+    +[no]tcp        TCP mode
+    +[no]vtrace     Trace validation process
+
+    $ delv [@server] [name] [type] [class]
+    $ delv +cd -t any [name]
+    $ delv +cd +mt +rt +vt [name] [type]
+
+
+host
+----
+
+    -4/-6   use IPv4/IPv6 query transport only
+    -T      enables TCP/IP mode
+    -a      is equivalent to -v -t ANY
+    -r      disables recursive processing
+    -s      a SERVFAIL response should stop query
+    -t      specifies the query type
+
+    $ host name [server]
+    $ host -T -a name
+
+
+nslookup
+--------
+
+    exit
+    server <server>
+    set all
+    set debug
+    set fail
+    set recurse
+    set type=any
+    set vc
+
+    $ nslookup [name|-] [server]
+    $ nslookup -vc -fail -type=any
+
+
+drill
+-----
+
+    -4/-6       Use IPv4/IPv6 query transport only
+    -Q          Quiet mode
+    -T          Trace name from the root down
+    -V level    Be more verbose
+    -t          Use TCP/IP when querying a server
+    -u          Use UDP when querying a server
+    -x          Do a reverse lookup
+
+    QR, qr: set, unset QueRy (default: on)
+    AA, aa: set, unset Authoritative Answer (default: off)
+    TC, tc: set, unset TrunCated (default: off)
+    RD, rd: set, unset Recursion Desired (default: on)
+    CD, cd: set, unset Checking Disabled (default: off)
+    RA, ra: set, unset Recursion Available (default: off)
+    AD, ad: set, unset Authenticated Data (default: off)
+
+    $ drill name [@server] [type] [class]
+    $ drill -o CD name [type]
+    $ drill -o T name [type]
+
+EOF

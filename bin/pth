@@ -10,10 +10,11 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-declare -i all=0
-while getopts ah opt; do
+declare -i all=0 system=0
+while getopts ash opt; do
     case $opt in
         a) all=1 ;;
+        s) system=1 ;;
         h) usage ;;
         *) usage_err ;;
     esac
@@ -23,6 +24,10 @@ shift $((OPTIND-1))
 (( $# )) || usage_err
 
 # ----------------------------------------
+
+if (( system )); then
+    export PATH=$SYSPATH
+fi
 
 if (( all )); then
     type -Pa -- "$@"

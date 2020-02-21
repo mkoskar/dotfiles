@@ -4,7 +4,8 @@ cat <<-'EOF'
 
 Drop ICMP echo requests from all but local addresses:
 
-    iptables -A INPUT -m addrtype ! --src-type LOCAL -p icmp --icmp-type echo-request -j DROP
+    iptables [-t filter]
+        -A INPUT -m addrtype ! --src-type LOCAL -p icmp --icmp-type echo-request -j DROP
 
 # ----------------------------------------
 
@@ -12,7 +13,8 @@ For packets with source IP address ipaddr/mask:
 
 * modify source IP address to primary IP address of outgoing interface
 
-    iptables -t nat -A POSTROUTING -s ipaddr/mask -j MASQUERADE
+    iptables -t nat
+        -A POSTROUTING -s <ipaddr/mask> -o <oifname> -j MASQUERADE
 
 # ----------------------------------------
 
@@ -21,12 +23,14 @@ For TCP packets with destination port 80:
 * change destination IP address to primary IP address of incoming interface
 * change destination port to 8080
 
-    iptables -t nat -A OUTPUT -p tcp --dport 80 -j REDIRECT --to-ports 8080
-    iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080
+    iptables -t nat
+        -A OUTPUT -p tcp --dport 80 -j REDIRECT --to-ports 8080
+        -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080
 
 * change destination to ipaddr:port
 
-    iptables -t nat -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination ipaddr:port
-    iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination ipaddr:port
+    iptables -t nat
+        -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination ipaddr:port
+        -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination ipaddr:port
 
 EOF

@@ -19,8 +19,10 @@
         fzf \
         git \
         htop \
+        linux-man-pages \
         make \
         man \
+        ncurses-utils \
         netcat \
         openssl-tool \
         parallel \
@@ -39,18 +41,3 @@
 
     $ rm -rf .* *
     $ git clone --recurse-submodules <dotfiles> .
-
-    ~/.secrets
-
-    ~/.ssh
-        * config
-        * config.tunnels
-        * ssh-agent.presets
-        * <keys>
-
-    ~/.weechat
-        * sec.conf
-
-    $SYSPREFIX/etc/ssh
-        * sshd_config
-        * <keys>

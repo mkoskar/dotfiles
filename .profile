@@ -62,7 +62,8 @@ export XDG_RUNTIME_DIR=/run/user/$UID
 [ -e /run/user ] || export XDG_RUNTIME_DIR=$TMPDIR/run
 
 [ -e "$XDG_RUNTIME_DIR" ] || mkdir -m 700 "$XDG_RUNTIME_DIR"
-if [ "$(stat -c %a "$XDG_RUNTIME_DIR")" != 700 ]; then
+if [ -e "$XDG_RUNTIME_DIR" ] &&
+   [ "$(stat -c %a "$XDG_RUNTIME_DIR")" != 700 ]; then
     printf '%s has wrong access rights\n' "$XDG_RUNTIME_DIR" >&2
 fi
 
@@ -86,7 +87,7 @@ export MANPAGER=manpg
 export PAGER=pg
 export TERMINAL=term
 
-[ "$_PATH" ] || export _PATH=$PATH
+[ "$SYSPATH" ] || export SYSPATH=$PATH
 
 PATH=~/bin
 PATH=$PATH:~/projects/pub/tcolors/bin
@@ -101,10 +102,10 @@ PATH=$PATH:~/.cargo/bin
 set -- ~/.gem/ruby/*
 [ -d "$1" ] && PATH=$PATH:$1/bin
 
-PATH=$PATH:$_PATH
-PATH=$PATH:/usr/local/bin/busybox
 PATH=$PATH:~/bin/system
+PATH=$PATH:$SYSPATH
 PATH=$PATH:~/bin/busybox
+PATH=$PATH:/usr/local/bin/busybox
 export PATH
 
 # ----------------------------------------

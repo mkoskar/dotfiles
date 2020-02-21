@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
 
+set -eu
+
 (( $# )) || set -- -n 8.8.8.8
-exec /usr/bin/mtr "$@"
+
+bin=$(pth -s mtr)
+exec "$bin" "$@"

@@ -55,8 +55,10 @@ endfunction
 
 augroup vimrc_pg
     autocmd!
-    autocmd BufRead * setl ro noma
-    if $PRGNAME == 'pg0'
+    if $PRGNAME == 'manpg'
+        autocmd BufRead * silent! %!col -bx
+    elseif $PRGNAME == 'pg0'
         autocmd BufRead * setl noml ft=
     endif
+    autocmd BufRead * setl ro noma
 augroup END

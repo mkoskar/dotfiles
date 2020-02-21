@@ -16,4 +16,4 @@ if (( ! ${#ifaces[@]} )); then
 fi
 
 exec 2>/dev/null
-sudo /usr/bin/nethogs "$@" "${ifaces[@]}"
+sudo nethogs "$@" "${ifaces[@]}"

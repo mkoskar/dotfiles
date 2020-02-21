@@ -10,15 +10,12 @@
     echo $'\n--------------------------------------------------'
     echo $'> Bridges:\n'
 
-    brctl show
+    bridge link
 
     echo $'\n--------------------------------------------------'
     echo $'> Addressing:\n'
 
     ip addr
-    echo
-
-    ip maddr
 
     echo $'\n--------------------------------------------------'
     echo $'> Routing:\n'
@@ -26,9 +23,9 @@
     ip rule
     echo
 
-    routel local
+    ip route
     echo
 
-    routel main
+    ip -6 route
     echo
 } | $PAGER

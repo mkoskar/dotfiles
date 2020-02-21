@@ -3,4 +3,5 @@
 set -eu
 
 hstatus "${0##*/}"
-exec /usr/bin/newsboat -q
+bin=$(pth -s newsboat)
+exec "$bin" -q

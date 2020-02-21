@@ -9,4 +9,4 @@ if (( ! $# )); then
     exit 2
 fi
 
-exec /usr/bin/proxychains -q -f ~/.proxychains/"$prgname".conf "$@"
+proxychains -q -f ~/.proxychains/"$prgname".conf "$@"
