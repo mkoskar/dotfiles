@@ -17,10 +17,17 @@ function! utils#echoWarn(msg) abort
     endif
 endfunction
 
+function! utils#echo(msg) abort
+    if !empty(a:msg)
+        redraw
+        echohl None | echo a:msg
+    endif
+endfunction
+
 " ----------------------------------------
 
 function! utils#bufSpecial() abort
-    setl nonu nornu nowrap nolist nobl cc=0 fdc=0 signcolumn=no
+    setl nonu nornu nowrap nolist nobl cc= fdc=0 signcolumn=no
 endfunction
 
 function! utils#cmdlineKillWord(forward) abort

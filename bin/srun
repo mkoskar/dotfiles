@@ -93,7 +93,7 @@ else
 fi
 
 if (( Nopt )); then
-    args+=(-p CollectMode=inactive-or-failed)
+    args+=(-G)
 fi
 
 if (( xopt )); then

@@ -1,0 +1,22 @@
+#compdef businfo
+
+local curcontext=$curcontext state line
+
+_arguments \
+    '--user' \
+    ':: :->service'
+
+case $state in
+    service)
+        local -a busctl services
+        busctl=(busctl --no-pager --no-legend)
+        if [[ $words[2] = --user ]]; then
+            busctl+=(--user)
+        fi
+        services=(${(Q)${(z)"$($busctl \
+            call org.freedesktop.DBus /org/freedesktop/DBus \
+            org.freedesktop.DBus ListNames)"}[3,-1]})
+        services=(${services//:/\\:})
+        _describe -t services services services
+        ;;
+esac

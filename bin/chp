@@ -58,7 +58,6 @@ fi
 
 path=~/.config/$bin_name
 path_skel=$path.skel
-
 [[ $profile = default ]] || path+=.$profile
 
 if [[ $profile != skel ]]; then
@@ -66,11 +65,12 @@ if [[ $profile != skel ]]; then
         cp -a "$path_skel" "$path"
     fi
 
-    if [[ $profile != default && ! -e $path/theme ]]; then
+    if [[ ! -e $path/theme ]]; then
         mkdir -p "$path"/theme
         cd "$path"/theme
 
         case $profile in
+            default)        frame_color='[200, 200, 200]' ;;
             dev)            frame_color='[0, 153, 255]' ;;
             lab)            frame_color='[255, 34, 0]'  ;;
             plain)          frame_color='[38, 191, 48]' ;;
@@ -78,7 +78,6 @@ if [[ $profile != skel ]]; then
             proxy-tor)      frame_color='[100, 100, 100]'  ;;
             *)              frame_color='[255, 153, 0]' ;;
         esac
-        tab_color='[220, 220, 220]'
 
         cat >manifest.json <<-EOF
 		{
@@ -88,42 +87,45 @@ if [[ $profile != skel ]]; then
 		    "theme": {
 		        "colors": {
 		            "frame": $frame_color,
-		            "background_tab": $tab_color,
-		            "background_tab_inactive": $tab_color,
-		            "background_tab_incognito": $tab_color,
-		            "background_tab_incognito_inactive": $tab_color
+		            "frame_incognito": $frame_color,
+		            "ntp_text": [0, 0, 0]
 		        },
 		        "images": {
-		            "theme_ntp_background": "frame.png"
+		            "theme_ntp_background": "ntpbg.png"
 		        },
 		        "properties": {
 		            "ntp_background_alignment": "top left",
 		            "ntp_logo_alternate": 0
+		        },
+		        "tints": {
+		            "background_tab" : [-1, 0.1, 0.9],
+		            "frame_inactive" : [-1, -1, 0.7],
+		            "frame_incognito_inactive" : [-1, -1, 0.7]
 		        }
 		    }
 		}
 		EOF
-        pango-view -q --font='monospace 8' \
-            --background=transparent --foreground=black --margin='1 2' \
-            -t "$profile" -o frame.png
-        set -- --load-extension="$path"/theme "$@"
+        pango-view -q --font='sans 8' \
+            --background=transparent --foreground=black --margin=5 \
+            -t "$profile" -o ntpbg.png
     fi
 fi
 
-# shellcheck disable=SC2191
-args=(
+args=(--user-data-dir="$path")
+if [[ -e $path/theme ]]; then
+    args+=(--load-extension="$path"/theme)
+fi
+
+args+=(
     #--extensions-on-chrome-urls
     #--force-device-scale-factor=1
     #--restore-last-session
-
     --enable-devtools-experiments
     --enable-gpu-rasterization
-    --enable-native-gpu-memory-buffers
-    --enable-tab-audio-muting
+    --enable-media-internals-devtools
     --enable-zero-copy
     --ignore-gpu-blacklist
     --show-component-extension-options
-    --show-saved-copy=primary
 )
 
 if [[ ${CH_DEBUG-} ]]; then
@@ -135,4 +137,4 @@ if [[ ${CH_DEBUG-} ]]; then
     )
 fi
 
-exec "$bin" --user-data-dir="$path" "${args[@]}" "$@"
+exec "$bin" "${args[@]}" "$@"

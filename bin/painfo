@@ -11,4 +11,4 @@
 
     pactl list
     echo
-} | $PAGER
+} |& $PAGER

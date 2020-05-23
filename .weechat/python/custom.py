@@ -2,6 +2,7 @@
 # vim: fdm=marker
 
 from subprocess import Popen, PIPE
+from types import SimpleNamespace
 import functools
 import re
 
@@ -38,13 +39,19 @@ hd_server = w.hdata_get('irc_server')
 hd_win = w.hdata_get('window')
 hd_win_scroll = w.hdata_get('window_scroll')
 
+core = w.buffer_search_main()
 
-def cmd(command, buffer='', mute=True):
+
+def cmd(command, buffer=core, mute=True):
     w.command(buffer, ('/mute ' if mute else '/') + command)
 
 
+def msg(message, buffer):
+    w.command(buffer, message)
+
+
 def key_bind(ctxt, key, val):
-    cmd(f'/key bindctxt {ctxt} {key} {val}')
+    cmd(f'key bindctxt {ctxt} {key} {val}')
 
 
 def cb_bar_item_cmd_btn(data, item, window, buffer, extra_info):
@@ -80,7 +87,6 @@ MERGE_RULES = [
 ]
 
 timer_sort_merge = None
-core = w.buffer_search_main()
 
 
 def buffers_iter():
@@ -402,8 +408,8 @@ def cb_bar_item_tab(data, item, window):
     if tab not in tabs_all():
         return ''
     return w.string_eval_expression(
-        f'${{color:white,red}}[{tab}]${{color:reset}}'
-        if tab == tab_cur else f'[{tab}]', {}, {}, {})
+        f'${{color:white,red}}{{{tab}}}${{color:reset}}'
+        if tab == tab_cur else f'{{{tab}}}', {}, {}, {})
 
 
 def cb_hsignal_tab_click(data, signal, hashtable):
@@ -553,7 +559,7 @@ def cb_command_urls(data, buffer, args):
                 line = w.hdata_pointer(hd_line, line, 'prev_line')
                 continue
             lmsg = w.hdata_string(hd_line_data, ldata, 'message')
-            p.stdin.write(f"{w.string_remove_color(lmsg, '')}")
+            p.stdin.write(f"{w.string_remove_color(lmsg, '')}".encode())
             line = w.hdata_pointer(hd_line, line, 'prev_line')
             count -= 1
         p.stdin.close()
@@ -706,15 +712,15 @@ key_bind('mouse', '@item(scroll):button1', '/window scroll_bottom')
 
 def adjust_for_width():
     term_width = int(w.info_get('term_width', ''))
-    cmd('/bar hide win_fn')
+    cmd('bar hide win_fn')
     if term_width < 80:
-        cmd('/bar show fn')
-        cmd('/bar hide buflist')
-        cmd('/set weechat.look.prefix_align none')
+        cmd('bar show fn')
+        cmd('bar hide buflist')
+        cmd('set weechat.look.prefix_align none')
     else:
-        cmd('/bar hide fn')
-        cmd('/bar show buflist')
-        cmd('/set weechat.look.prefix_align right')
+        cmd('bar hide fn')
+        cmd('bar show buflist')
+        cmd('set weechat.look.prefix_align right')
 
 
 def cb_signal_sigwinch(data, signal, buffer):
@@ -729,7 +735,7 @@ adjust_for_width()
 def cb_signal_post_switch(data, signal, buffer):
     term_width = int(w.info_get('term_width', ''))
     if term_width < 80:
-        cmd('/bar hide buflist')
+        cmd('bar hide buflist')
     return w.WEECHAT_RC_OK
 
 
@@ -737,3 +743,43 @@ w.hook_signal('buffer_switch', 'cb_signal_post_switch', '')
 w.hook_signal('window_switch', 'cb_signal_post_switch', '')
 
 # }}}
+
+
+# TODO
+# ----------------------------------------
+
+
+def tag_by_prefix(tags, prefix):
+    tag = next(filter(lambda i: i.startswith(prefix), tags), None)
+    return tag.lstrip(prefix) if tag else None
+
+
+def auto_hi(ctx):
+    if not ctx.highlight:
+        return
+    match = re.match(r'^\s*(hi|ohai|hello)(\s+|$)', ctx.message)
+    if not match:
+        return
+    msg(f'hi {ctx.nick}', ctx.buffer)
+
+
+def handle_privmsg(ctx):
+    if ctx.bnick == 'miro':
+        auto_hi(ctx)
+
+
+def cb_print_privmsg(data, buffer, date, tags, displayed, highlight,
+                     prefix, message):
+    bname = w.buffer_get_string(buffer, 'full_name')
+    bnick = w.buffer_get_string(buffer, 'localvar_nick')
+    tags = tags.split(',')
+    self_msg = 'self_msg' in tags
+    #addressed = re.match(rf'^\s*{re.escape(bnick)}(\s|[:,])+(.*)$', message)
+    host = tag_by_prefix(tags, 'host_')
+    nick = tag_by_prefix(tags, 'nick_')
+    ctx = SimpleNamespace(**locals())
+    handle_privmsg(ctx)
+    return w.WEECHAT_RC_OK
+
+
+#w.hook_print('', 'irc_privmsg', '', 1, 'cb_print_privmsg', '')

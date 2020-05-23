@@ -62,11 +62,11 @@ let ale_python_flake8_options = '--ignore=E265,E266'
 let ale_sh_shellcheck_exclusions = 'SC1003,SC1007,SC1083,SC2088,SC2191'
 
 nnoremap <silent> <C-Space> :ALEDetail<CR>
-nmap <silent> <Leader>aa <Plug>(ale_toggle)
-nmap <silent> <Leader>ag <Plug>(ale_first)
-nmap <silent> <Leader>aj <Plug>(ale_next)
-nmap <silent> <Leader>ak <Plug>(ale_previous)
-nmap <silent> <Leader>aG <Plug>(ale_last)
+nmap <Leader>aa <Plug>(ale_toggle)
+nmap <Leader>ag <Plug>(ale_first)
+nmap <Leader>aj <Plug>(ale_next)
+nmap <Leader>ak <Plug>(ale_previous)
+nmap <Leader>aG <Plug>(ale_last)
 
 
 " bufexplorer
@@ -118,6 +118,8 @@ let deoplete#enable_smart_case = 1
 
 let dirvish_hijack_netrw = 0
 let dirvish_mode = ':sort | sort ,^.*/,'
+
+nmap <M--> <Plug>(dirvish_up)
 
 augroup vimrc_ext_dirvish
     autocmd!

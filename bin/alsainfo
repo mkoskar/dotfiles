@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+headcat() { head -v -n -0 "$@"; }
+
+{
+    echo $'\n--------------------------------------------------'
+    echo $'> amixer info\n'
+
+    amixer info
+    echo
+    amixer -c 0 info
+
+    echo $'\n--------------------------------------------------'
+    echo $'> /proc/asound \n'
+
+    headcat /proc/asound/{cards,devices,modules,pcm,version}
+
+    echo $'\n--------------------------------------------------'
+    echo $'> aplay -l / arecord -l\n'
+
+    aplay -l
+    echo
+    arecord -l
+
+    echo $'\n--------------------------------------------------'
+    echo $'> aplay -L\n'
+
+    aplay -L
+    echo
+} |& $PAGER

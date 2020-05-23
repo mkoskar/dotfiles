@@ -15,7 +15,7 @@ from sys import stderr
 import argparse
 import fcntl
 
-parser = argparse.ArgumentParser(description='Locks (or unlocks) VT switching.')
+parser = argparse.ArgumentParser(description='Locks/unlocks VT switching.')
 parser.add_argument('-u', '--unlock', action='store_true', help='unlock')
 args = parser.parse_args()
 

@@ -5,7 +5,8 @@ $PAGER <<-'EOF'
 https://serverfault.com/questions/331936/setting-the-hostname-fqdn-or-short-name
 https://support.google.com/a/answer/2573637
 https://support.google.com/a/answer/48090
-https://tools.ietf.org/html/rfc7719
+https://tools.ietf.org/html/rfc8499
+https://wiki.archlinux.org/index.php/Domain_name_resolution#DNS_servers
 https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml
 
 class: (in, hs, ch, ...) [default: in]

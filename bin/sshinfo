@@ -9,4 +9,4 @@ set -eu -o pipefail
         ssh -Q "$opt" </dev/null
     done
     echo
-} | $PAGER
+} |& $PAGER

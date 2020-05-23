@@ -5,7 +5,7 @@ let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 source ~/.vim/vimrc_base
 
 set buftype=nowrite
-set colorcolumn=0
+set colorcolumn=
 set laststatus=1
 set nobackup
 set nolist

@@ -2,21 +2,19 @@
 
 set -eu
 
-addr=$1
+bus=org.bluez
+iface=org.bluez.Network1
+object=/org/bluez/hci0/dev_"${1//:/_}"
 
-dbus() {
-    gdbus call --system \
-        -d org.bluez \
-        -o /org/bluez/hci0/dev_"${addr//:/_}" \
-        "$@"
-}
+call() { gdbus call --system -d "$bus" -o "$object" -m "$@"; }
+prop() { call org.freedesktop.DBus.Properties.Get "$@"; }
 
-connected=$(dbus -m org.freedesktop.DBus.Properties.Get org.bluez.Network1 Connected)
+connected=$(prop "$iface" Connected)
 case $connected in
     '(<false>,)')
-        dbus -m org.bluez.Network1.Connect nap >/dev/null
+        call "$iface".Connect nap >/dev/null
         ;;
     '(<true>,)')
-        dbus -m org.bluez.Network1.Disconnect >/dev/null
+        call "$iface".Disconnect >/dev/null
         ;;
 esac

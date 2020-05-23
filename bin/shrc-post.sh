@@ -9,7 +9,7 @@ case $- in *i*) ;; *) return ;; esac
 source_opt "$SYSPREFIX/share/fzf/completion.$SHMODE"
 source_opt "$SYSPREFIX/share/fzf/key-bindings.$SHMODE"
 
-case $SHNAME in bash | zsh)
+case $SHMODE in bash | zsh)
     if command -v register-python-argcomplete >/dev/null; then
         eval "$(register-python-argcomplete pipx)"
     fi

@@ -3,22 +3,19 @@
 # See also:
 #
 #   * http://zsh.sourceforge.net/Doc/Release/Completion-System.html#Completion-System
+#   * http://zsh.sourceforge.net/Doc/Release/Completion-Widgets.html#Completion-Special-Parameters
 #   * https://github.com/zsh-users/zsh-completions/blob/master/zsh-completions-howto.org
 #
 #   ^X? _complete_debug
 #   ^XH _complete_help
-#   ^Xt _complete_tag
-
-# ----------------------------------------
-
-# _describe [-12JVx] [ -oO | -t tag ] descr name1 [ name2 ] [ opt ... ]
-#           [ -- name1 [ name2 ] [ opt ... ] ... ]
-
-#names=(
-#    'aaa:description'
-#    'bbb:description'
-#)
-#_describe -t tag1 descr names
+#
+#   _alternative
+#   _arguments
+#   _describe
+#   _message
+#   _required
+#   _values
+#   _wanted
 
 # ----------------------------------------
 
@@ -41,3 +38,14 @@
 #    ':2nd arg:_files' \
 #    '::opt arg:_files' \
 #    ':3rd arg:(a b c)'
+
+# ----------------------------------------
+
+# _describe [-12JVx] [ -oO | -t tag ] descr name1 [ name2 ] [ opt ... ]
+#           [ -- name1 [ name2 ] [ opt ... ] ... ]
+
+#names=(
+#    'aaa:description'
+#    'bbb:description'
+#)
+#_describe -t tag1 descr names

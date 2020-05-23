@@ -25,4 +25,4 @@ set -eu -o pipefail
 		LC_TIME
 	EOF
     echo
-} | $PAGER
+} |& $PAGER

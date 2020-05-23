@@ -28,4 +28,4 @@ ftdump -C -n "$file" |
             next
         }
         { print }
-    ' | $PAGER
+    ' |& $PAGER

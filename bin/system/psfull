@@ -4,4 +4,4 @@ set -u -o pipefail
 
 ps -N --ppid 2 --sort=sid,pgid,ppid,pid \
 --format ppid,pid,sid,pgid,user,pri,ni,vsz:7,rss:7,sz:7,stat,\
-%cpu,%mem,stime,etime,time,tname,wchan:25,unit:25,comm,cmd "$@" | $PAGER
+%cpu,%mem,stime,etime,time,tname,wchan:25,unit:25,comm,cmd "$@" |& $PAGER

@@ -4,14 +4,6 @@ set -eu
 
 prgname=${0##*/}
 
-# http://ifconfig.me/
-# https://api.ipify.org/
-# https://checkip.amazonaws.com/
-# https://icanhazip.com/
-# https://ip.anysrc.net/json
-# https://ipinfo.io/
-# https://wtfismyip.com/json
-
 if [[ $prgname = ipinfo-tor ]]; then
     if (( ! $# )); then
         echo "usage: $prgname hostname" >&2

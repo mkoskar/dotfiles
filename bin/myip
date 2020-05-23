@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# http://whatismyip.akamai.com/
+# https://api.ipify.org/
+# https://checkip.amazonaws.com/
+# https://icanhazip.com/
+# https://ifconfig.me/
+# https://ip.anysrc.net/plain/clientip
+
+# @ns1-1.akamaitech.net whoami.akamai.net a
+# @ns1.google.com o-o.myaddr.l.google.com txt
+
+dig -4 -r +tcp +short @resolver1.opendns.com myip.opendns.com a
+dig -6 -r +tcp +short @resolver1.opendns.com myip.opendns.com aaaa

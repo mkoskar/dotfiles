@@ -10,7 +10,7 @@ else
         let $VIMDIR = fnamemodify($VIMDIR, ':p:h')
         call utils#rtpPrepend($VIMDIR)
     else
-        call utils#echoError(printf("%s: VIMDIR is not a valid directory", $VIMDIR))
+        call utils#echoError(printf('%s: VIMDIR is not a valid directory', $VIMDIR))
         let $VIMDIR = vimdir_data
     endif
 endif
@@ -44,8 +44,10 @@ if empty(maparg('\', 'n'))
     sunmap \
 endif
 
-map <silent> <M-j> 5j
-map <silent> <M-k> 5k
+noremap <silent> - ^
+
+noremap <silent> <M-j> 5j
+noremap <silent> <M-k> 5k
 
 noremap <silent> <M-C-L> 10l
 noremap <silent> <M-C-H> 10h
@@ -60,6 +62,12 @@ noremap <silent> zh 10zh
 " Move visual block <http://vimrcfu.com/snippet/77>
 xnoremap J :move '>+1<CR>gv
 xnoremap K :move '<-2<CR>gv
+
+nnoremap <silent> * :let @/ = '\V\<' . escape(expand('<cword>'), '\/') . '\>' \| set hls<CR>
+nnoremap <silent> g* :let @/ = '\V' . escape(expand('<cword>'), '\/') \| set hls<CR>
+nnoremap <silent> # :let @/ = '\V\S\@<!' . escape(expand('<cWORD>'), '\/') . '\S\@!' \| set hls<CR>
+nnoremap <silent> g# :let @/ = '\V' . escape(expand('<cWORD>'), '\/') \| set hls<CR>
+vnoremap <silent> g/ y:let @/ = '\V' . escape(@", '\/') \| call histadd('search', @/) \| set hls<CR>
 
 
 " Tags
@@ -101,18 +109,43 @@ let load_doxygen_syntax = 1
 let python_highlight_all = 1
 
 nnoremap <silent> <Space> :nohlsearch \| echo<CR>
-nnoremap <silent> * :let @/ = '\V\<' . escape(expand('<cword>'), '\/') . '\>' \| set hls<CR>
-nnoremap <silent> g* :let @/ = '\V' . escape(expand('<cword>'), '\/') \| set hls<CR>
-nnoremap <silent> # :let @/ = '\V\S\@<!' . escape(expand('<cWORD>'), '\/') . '\S\@!' \| set hls<CR>
-nnoremap <silent> g# :let @/ = '\V' . escape(expand('<cWORD>'), '\/') \| set hls<CR>
-vnoremap <silent> g/ y:let @/ = '\V' . escape(@", '\/') \| call histadd('search', @/) \| set hls<CR>
 
-nnoremap cuc :setl <C-R>=&cuc ? 'nocuc' : 'cuc'<CR><CR>
-nnoremap cul :setl <C-R>=&cul ? 'nocul' : 'cul'<CR><CR>
-
-nnoremap <Leader>V :setl <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
-nnoremap <Leader>col :setl <C-R>=!empty(&cc) ? 'cc=' : 'cc<'<CR><CR>
+nnoremap <Leader>cuc :setl <C-R>=&cuc ? 'nocuc' : 'cuc'<CR><CR>
+nnoremap <Leader>cul :setl <C-R>=&cul ? 'nocul' : 'cul'<CR><CR>
 nnoremap <Leader>sp :setl <C-R>=&spell ? 'nospell' : 'spell'<CR><CR>
+
+function! s:ccToggle() abort
+    if !empty(&l:cc)
+        let w:cc = &l:cc
+        let &l:cc = ''
+    else
+        let &l:cc = get(w:, 'cc', &g:cc)
+    endif
+    call utils#echo(printf(':setl cc=%s', &l:cc))
+endfunction
+
+function! s:ccToggleColumn(col) abort
+    if index(split(&l:cc, ','), string(a:col)) < 0
+        exec 'setl cc+=' . a:col
+    else
+        exec 'setl cc-=' . a:col
+    endif
+    call utils#echo(printf(':setl cc=%s', &l:cc))
+endfunction
+
+function! s:ccCycle() abort
+    if !empty(&l:cc) && &l:cc != &g:cc
+        let w:cc_cycle = &l:cc
+        let &l:cc = &g:cc
+    else
+        let &l:cc = get(w:, 'cc_cycle', &g:cc)
+    endif
+    call utils#echo(printf(':setl cc=%s', &l:cc))
+endfunction
+
+nnoremap <silent> <Leader>col :call <SID>ccToggle()<CR>
+nnoremap <silent> <Leader>coL :call <SID>ccToggleColumn(virtcol('.'))<CR>
+nnoremap <silent> <Leader>co< :call <SID>ccCycle()<CR>
 
 function! s:ColorsReset() abort
     if has('gui_running')
@@ -249,6 +282,8 @@ set titlestring=
 " ----------------------------------------
 
 set mouse=
+
+nnoremap <Leader>M :set <C-R>=!empty(&mouse) ? 'mouse=' : 'mouse=a'<CR><CR>
 
 
 " TUI/GUI
@@ -473,6 +508,8 @@ set virtualedit=block
 
 let &viewdir = $VIMDIR . '/.view'
 let &viminfo = "!,'100,<50,s10,h,n" . $VIMDIR . '/.viminfo'
+
+nnoremap <Leader>V :setl <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
 
 nnoremap <silent> <Leader>re :redraw!<CR>
 
@@ -843,6 +880,7 @@ function! s:Run(system, cmd, input, ...) abort
     try
         setl ma noro
         silent exec 'Preserve %d_ | put' reg '| 1d_'
+    catch /:E353:/
     finally
         let [&l:ma, &l:ro] = [ma_, ro_]
     endtry

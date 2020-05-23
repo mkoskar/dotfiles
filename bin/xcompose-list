@@ -20,4 +20,4 @@ set -eu -o pipefail
     printf '> %s\n\n' "$ifile"
 
     sed -nr '/^\s*</{s/\s+/ /g; p}' "$ifile" | sort
-} | $PAGER
+} |& $PAGER

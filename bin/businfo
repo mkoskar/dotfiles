@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -eu
+
+busctl=(busctl --no-pager)
+if [[ ${1-} = --user ]]; then
+    busctl+=(--user)
+    shift
+fi
+
+if (( ! $# )); then
+    "${busctl[@]}" list --full --acquired --activatable |& $PAGER
+    exit
+fi
+
+dest=$1
+while read -r object; do
+    echo $'\n--------------------------------------------------'
+    printf '> %s\n\n' "$object"
+    "${busctl[@]}" introspect -- "$dest" "$object"
+done < <("${busctl[@]}" tree --list -- "$dest") |& $PAGER

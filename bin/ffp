@@ -69,6 +69,9 @@ cd "$path"
 if [[ ! -f user.js.lock ]]; then
 
     cat >user.js.in <<-'EOF'
+		// user.js
+		// ----------------------------------------
+
 		user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 	EOF
 
@@ -161,7 +164,7 @@ if [[ ! -f user.js.lock ]]; then
 
     fi
 
-    sed -r '/^\s*$/d' user.js.in | sort -u -o user.js
+    sed -r -e '/^\s*$/d' -e '/^\s*\/\//d' user.js.in | sort -u -o user.js
 fi
 
 mkdir -p chrome
@@ -175,7 +178,14 @@ case $profile in
 esac
 
 if [[ ! -f userChrome.css.lock ]]; then
-    [[ $profile != default ]] && cat >userChrome.css <<-EOF
+
+    cat >userChrome.css <<-'EOF'
+		// userChrome.css
+		// ----------------------------------------
+	EOF
+
+    [[ $profile != default ]] && cat >>userChrome.css <<-EOF
+
 		#TabsToolbar::before {
 		    content: "$profile";
 		    background: $frame_color;

@@ -48,7 +48,7 @@ try:
         ('Accept-Language', 'en-US,en;q=0.5')
     ]
     resp = opener.open(url)
-    html = resp.read().decode('ISO-8859-1')
+    html = resp.read().decode()
 
     pq = PyQuery(html)
     img_el = pq('body').find('center a img')

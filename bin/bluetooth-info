@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-pgx gdbus introspect --system -d org.bluez -o / -r -p

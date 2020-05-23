@@ -120,6 +120,7 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.opengl=true 
 export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent}
 
 #export LESSOPEN='|highlight --quiet -O xterm256 -s bluegreen %s'
+export ANSIBLE_COLOR_VERBOSE=yellow
 export ASPROOT=~/.asp
 export AUR_MAINTAINER=mkoskar
 export BZR_LOG=$XDG_DATA_HOME/bzr.log
@@ -157,6 +158,9 @@ export QUOTING_STYLE=literal
 export RANGER_LOAD_DEFAULT_RC=FALSE
 export SAL_USE_VCLPLUGIN=gtk
 export SYSTEMD_LESS=$LESS
+export S_COLORS=auto
+export S_TIME_DEF_TIME=UTC
+export S_TIME_FORMAT=ISO
 export TERMINFO_DIRS=/etc/terminfo:$SYSPREFIX/share/terminfo
 export TMUX_TMPDIR=$TMPDIR
 export UAGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'
@@ -183,7 +187,7 @@ source_opt() {
     # shellcheck disable=SC1090
     [ ! -e "$1" ] || {
         [ "$SHRC_DEBUG" ] && printf '%s\n' "$1" >&2
-        . -- "$1"
+        . "$1"
     }
 }
 

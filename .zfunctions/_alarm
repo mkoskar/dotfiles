@@ -1,0 +1,4 @@
+#compdef alarm
+
+_arguments \
+    ':::(clear help mute -)'

@@ -18,7 +18,7 @@ main() {
 }
 
 if [[ -t 1 ]]; then
-    main | $PAGER
+    main |& $PAGER
 else
     main
 fi

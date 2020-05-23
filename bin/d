@@ -30,4 +30,8 @@ main() (
     esac
 )
 
-main | PAGER_TITLE=${cmd[*]} PAGER_EX='setf diff' pg0
+if [[ -t 1 ]]; then
+    main |& PAGER_TITLE=${cmd[*]} PAGER_EX='setf diff' pg0
+else
+    main
+fi

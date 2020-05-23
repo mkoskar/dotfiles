@@ -2,4 +2,4 @@
 
 set -u -o pipefail
 
-zcat /proc/config.gz | $PAGER
+zcat /proc/config.gz |& $PAGER

@@ -19,12 +19,12 @@ fpath=(~/.zfunctions $fpath)
 
 zmodload zsh/complist
 zmodload zsh/datetime
-zmodload zsh/system
 zmodload zsh/parameter
+zmodload zsh/system
 
-autoload -Uz add-zsh-hook
+autoload -Uz add-zle-hook-widget
 autoload -Uz bashcompinit
-autoload -Uz bracketed-paste-magic
+autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz copy-earlier-word
 autoload -Uz edit-command-line
@@ -46,13 +46,12 @@ setopt hist_find_no_dups
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
 setopt hist_ignore_space
+setopt hist_reduce_blanks
 setopt hist_save_no_dups
 setopt hist_verify
 setopt inc_append_history
 setopt interactive_comments
 setopt long_list_jobs
-setopt nomultios
-setopt nonomatch
 setopt notify
 setopt path_dirs
 setopt posix_builtins
@@ -71,6 +70,9 @@ unsetopt check_jobs
 unsetopt flow_control
 unsetopt hist_beep
 unsetopt hup
+unsetopt list_beep
+unsetopt multios
+unsetopt nomatch
 
 
 # Aliases / Named directories
@@ -82,7 +84,7 @@ alias help=run-help
 hash -d fonts=~/.local/share/fonts
 hash -d journal=/var/log/journal
 hash -d logs=/var/log
-hash -d run="$XDG_RUNTIME_DIR"
+hash -d run=$XDG_RUNTIME_DIR
 hash -d systemd-system=/etc/systemd/system
 hash -d systemd-user=~/.config/systemd/user
 hash -d udev.rules.d=/etc/udev/rules.d
@@ -94,10 +96,8 @@ hash -d xorg.conf.d=/etc/X11/xorg.conf.d
 
 KEYTIMEOUT=1
 WORDCHARS=
-#WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
+#WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>' (default)
 ZLE_SPACE_SUFFIX_CHARS='&|'
-
-[[ ${terminfo[tsl]} ]] && __title="%{${terminfo[tsl]}%n@%m:%~${terminfo[fsl]}%}"
 
 PS1='${BASEDIR:+(${${BASEDIR##*/}//\%/%%}):}%1~%(!.#.$) '
 [[ $HOSTNAME = mirci ]] || PS1=$HOSTNAME:$PS1
@@ -105,10 +105,12 @@ PS1=\$__statstr:$PS1
 if [[ $PIPENV_ACTIVE && $VIRTUAL_ENV ]]; then
     __venv=${VIRTUAL_ENV%/*}
     __venv=${__venv##*/}
-    PS1="($__venv) $PS1"
+    PS1=($__venv)\ $PS1
 fi
 PS1=\$__vimode$PS1
-PS1=\$__title$PS1
+if [[ $terminfo[tsl] ]]; then
+    PS1=%{$terminfo[tsl]%n@%m:%~$terminfo[fsl]%}$PS1
+fi
 PS2='$__vimode> '
 
 expand-dot-to-parent-directory-path() {
@@ -116,16 +118,16 @@ expand-dot-to-parent-directory-path() {
 }
 
 expand-word-alias() {
-    zle expand-word
+    zle _expand_word
     zle _expand_alias
 }
 
 noop() { }
 
 precmd() {
-    local pstatus=($? "${pipestatus[@]}") __cmd_dur
-    __statstr=${pstatus[1]}
-    if (( ${#pstatus} > 2 )); then
+    local pstatus=($? $pipestatus) __cmd_dur
+    __statstr=$pstatus[1]
+    if (( $#pstatus > 2 )); then
         __statstr+=:${(j:|:)pstatus:1}
     fi
     __cmd_dur=$((EPOCHSECONDS-__cmd_start))
@@ -154,7 +156,6 @@ zle-line-init() {
 }
 
 zle -C all-matches complete-word _generic
-zle -N bracketed-paste bracketed-paste-magic
 zle -N complete-help _complete_help
 zle -N copy-earlier-word
 zle -N edit-command-line
@@ -167,28 +168,28 @@ zle -N zle-line-init
 bindkey -rR ^A-^_
 
 for k in {@.._}; do
-    bindkey "\e^$k" noop
-    bindkey -M vicmd "\e^$k" noop
+    bindkey \e^$k noop
+    bindkey -M vicmd \e^$k noop
 done
 
 for k in {\ ..~}; do
-    bindkey "\e$k" noop
-    bindkey -M vicmd "\e$k" noop
+    bindkey \e$k noop
+    bindkey -M vicmd \e$k noop
 done
 
 for k in kich1 kpp knp kf{1..12}; do
-    k=${terminfo[$k]}
-    bindkey "$k" noop
-    bindkey -M vicmd "$k" noop
+    k=$terminfo[$k]
+    bindkey $k noop
+    bindkey -M vicmd $k noop
 done
 
-k=${terminfo[khome]}
-bindkey "$k" beginning-of-line
-bindkey -M vicmd "$k" beginning-of-line
+k=$terminfo[khome]
+bindkey $k beginning-of-line
+bindkey -M vicmd $k beginning-of-line
 
-k=${terminfo[kend]}
-bindkey "$k" end-of-line
-bindkey -M vicmd "$k" end-of-line
+k=$terminfo[kend]
+bindkey $k end-of-line
+bindkey -M vicmd $k end-of-line
 
 unset k
 
@@ -205,13 +206,13 @@ bindkey ^K kill-line
 bindkey ^W backward-kill-word
 bindkey \\ed kill-word
 bindkey \\ex delete-char
-bindkey "${terminfo[kdch1]}" delete-char
+bindkey $terminfo[kdch1] delete-char
 bindkey ^H backward-delete-char
 
 bindkey ^A all-matches
 bindkey ^D list-choices
 bindkey ^O reverse-menu-complete
-bindkey "${terminfo[kcbt]}" reverse-menu-complete
+bindkey $terminfo[kcbt] reverse-menu-complete
 bindkey ^I complete-word
 
 bindkey ^G send-break
@@ -289,10 +290,10 @@ bindkey -M vicmd -s ^Xs 'a!!:gs/'
 # ----------------------------------------
 
 zcompdump=~/.cache/zcompdump
-compinit -d "$zcompdump"
+compinit -d $zcompdump
 {
     if [[ ! -e $zcompdump.zwc || $zcompdump -nt $zcompdump.zwc ]]; then
-        zcompile "$zcompdump"
+        zcompile $zcompdump
     fi
 } &!
 bashcompinit
@@ -325,7 +326,6 @@ bashcompinit
 #
 #   ^X? _complete_debug
 #   ^XH _complete_help
-#   ^Xt _complete_tag
 
 zstyle ':completion:*' completer _complete _match
 zstyle ':completion:*' group-name ''
@@ -344,7 +344,7 @@ zstyle ':completion:*:*:kill:*:*' force-list always
 zstyle ':completion:*:*:kill:*:*' insert-ids single
 zstyle ':completion:*:*:kill:*:*' menu true select
 
-zstyle ':completion:*:*:*:*:default' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*:*:*:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:*:*:*:default' list-prompt '%S%m%s'
 zstyle ':completion:*:*:*:*:descriptions' format ' %F{yellow}-- %d --%f'
 zstyle ':completion:*:*:*:*:hosts' use-ip true
@@ -388,66 +388,80 @@ _pacpkgs() {
 compctl -K _pacpkgs \
     paccheck pacd paci pacl pacp pacr pacscripts pactree pacw
 
-_systemd_units() {
-    reply=(${${(f)"$(systemctl --full --no-legend --no-pager list-units --all)"}%% *})
-}
-compctl -K _systemd_units _systemd_dot
-
 _xsession() {
     reply=(${(f)"$(xsession)"})
 }
 compctl -K _xsession x xx xsession
 
 
-# Plugin: zsh-syntax-highlighting
+# Plugins
 # ----------------------------------------
 
-__src=~/opt/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-if [[ -e $__src ]]; then
-    . "$__src"
-    ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
-    #ZSH_HIGHLIGHT_STYLES[default]=none
-    #ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=red,bold
-    ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=yellow,bold,underline
-    ZSH_HIGHLIGHT_STYLES[alias]=fg=cyan,bold
-    ZSH_HIGHLIGHT_STYLES[builtin]=fg=yellow,bold
-    ZSH_HIGHLIGHT_STYLES[function]=fg=cyan,bold
-    ZSH_HIGHLIGHT_STYLES[command]=fg=green,bold
-    ZSH_HIGHLIGHT_STYLES[precommand]=fg=yellow,bold,underline
-    ZSH_HIGHLIGHT_STYLES[commandseparator]=fg=white,bold
-    ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=green,bold,underline
-    ZSH_HIGHLIGHT_STYLES[path]=fg=15
-    ZSH_HIGHLIGHT_STYLES[path_prefix]=none
-    ZSH_HIGHLIGHT_STYLES[path_approx]=none
-    ZSH_HIGHLIGHT_STYLES[globbing]=fg=11
-    ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=14
-    #ZSH_HIGHLIGHT_STYLES[single-hyphen-option]=none
-    #ZSH_HIGHLIGHT_STYLES[double-hyphen-option]=none
-    #ZSH_HIGHLIGHT_STYLES[back-quoted-argument]=none
-    #ZSH_HIGHLIGHT_STYLES[single-quoted-argument]=fg=yellow
-    #ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=yellow
-    ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=11
-    ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=15
-    ZSH_HIGHLIGHT_STYLES[assign]=fg=11
+plugin() {
+    local name=$1
+    for base in ~/opt /usr/share/zsh/plugins; do
+        [[ -e $base/$name ]] || continue
+        . $base/$name/$name.zsh
+        return $?
+    done
+    return 1
+}
+
+if plugin zsh-autosuggestions; then
+    ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=()
+    ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+    ZSH_AUTOSUGGEST_COMPLETION_IGNORE='rm *'
+    ZSH_AUTOSUGGEST_HISTORY_IGNORE='rm *'
+    ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+    ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=(emacs-forward-word-autosuggest)
+    ZSH_AUTOSUGGEST_USE_ASYNC=1
+    autosuggest-enable-accept() {
+        if (( $+_ZSH_AUTOSUGGEST_DISABLED )); then
+            zle autosuggest-enable
+        else
+            zle autosuggest-accept
+        fi
+    }
+    emacs-forward-word-autosuggest() { zle emacs-forward-word; }
+    zle -N autosuggest-enable-accept
+    zle -N emacs-forward-word-autosuggest
+    add-zle-hook-widget zle-line-init autosuggest-disable
+    bindkey '^ ' autosuggest-enable-accept
+    bindkey '\e ' emacs-forward-word-autosuggest
+    bindkey '\e^ ' autosuggest-toggle
 fi
-unset __src
 
+if plugin zsh-syntax-highlighting; then
+    #ZSH_HIGHLIGHT_PATTERN+=(pattern style)
+    #ZSH_HIGHLIGHT_REGEXP+=(pattern style)
+    ZSH_HIGHLIGHT_HIGHLIGHTERS=(brackets main pattern regexp)
+    ZSH_HIGHLIGHT_MAXLENGTH=50
+    ZSH_HIGHLIGHT_STYLES[alias]=fg=cyan,bold
+    ZSH_HIGHLIGHT_STYLES[assign]=fg=11
+    ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=15
+    ZSH_HIGHLIGHT_STYLES[builtin]=fg=yellow,bold
+    ZSH_HIGHLIGHT_STYLES[command]=fg=green,bold
+    ZSH_HIGHLIGHT_STYLES[commandseparator]=fg=white,bold
+    ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=11
+    ZSH_HIGHLIGHT_STYLES[function]=fg=cyan,bold
+    ZSH_HIGHLIGHT_STYLES[globbing]=fg=11
+    ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=green,bold,underline
+    ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=14
+    ZSH_HIGHLIGHT_STYLES[path]=fg=15
+    ZSH_HIGHLIGHT_STYLES[precommand]=fg=yellow,bold,underline
+    ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=yellow,bold,underline
+fi
 
-# Plugin: zsh-history-substring-search
-# ----------------------------------------
-
-__src=~/opt/zsh-history-substring-search/zsh-history-substring-search.zsh
-if [[ -e "$__src" ]]; then
-    . "$__src"
+if plugin zsh-history-substring-search; then
+    HISTORY_SUBSTRING_SEARCH_FUZZY=1
+    HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS=
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=bg=8,fg=15
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=bg=red,fg=15
-
     bindkey ^P history-substring-search-up
     bindkey ^N history-substring-search-down
     bindkey -M vicmd ^P history-substring-search-up
     bindkey -M vicmd ^N history-substring-search-down
 fi
-unset __src
 
 
 # ----------------------------------------

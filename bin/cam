@@ -5,7 +5,7 @@ set -eu
 prgname=${0##*/}
 
 _usage() {
-    echo "usage: $prgname {dump | info | shoot | watch}" >&2
+    echo "usage: $prgname {dump | info | shoot | watch}"
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2

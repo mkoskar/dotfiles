@@ -31,4 +31,4 @@ hostname=$(hostname)
 
     cmd grep ^hosts: /etc/nsswitch.conf
     echo
-} | $PAGER
+} |& $PAGER

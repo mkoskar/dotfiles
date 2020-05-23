@@ -20,7 +20,12 @@ MENUER=$prgname menuer "$@" <<-EOF |
     amazon-uk               b https://www.amazon.co.uk/s/field-keywords={u}
     angularjs               b https://docs.angularjs.org/api
     animals                 b https://en.wikipedia.org/wiki/List_of_animal_names
-    ansible                 b https://docs.ansible.com/
+    ansible                 b https://docs.ansible.com/ansible/latest/index.html
+    ansible-config          b https://docs.ansible.com/ansible/latest/reference_appendices/config.html
+    ansible-filters         b https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html
+    ansible-modules         b https://docs.ansible.com/ansible/latest/modules/modules_by_category.html
+    ansible-playbook        b https://docs.ansible.com/ansible/latest/reference_appendices/playbooks_keywords.html
+    ansible-special-vars    b https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html
     ant                     b https://ant.apache.org/manual/
     apache                  b https://httpd.apache.org/docs/
     apk                     b https://pkgs.alpinelinux.org/packages\?name={u}
@@ -40,15 +45,18 @@ MENUER=$prgname menuer "$@" <<-EOF |
     awk                     b https://www.gnu.org/software/gawk/manual/gawk.html
     awk1                    b http://awk.freeshell.org/
     basedir                 b https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+    bash                    b https://www.gnu.org/software/bash/manual/html_node/index.html
     bash-abs                b http://tldp.org/LDP/abs/html/
     bash-changes            b https://mywiki.wooledge.org/BashFAQ/061
     bash-faq                b https://mywiki.wooledge.org/BashFAQ
     bash-guide              b https://mywiki.wooledge.org/FullBashGuide
     bash-guide1             b https://guide.bash.academy/index.html
     bash-hackers            b https://wiki.bash-hackers.org/start
+    bash-param-expansion    b https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html#Shell-Parameter-Expansion
     bash-pitfalls           b https://mywiki.wooledge.org/BashPitfalls
     bash-sheet              b https://mywiki.wooledge.org/BashSheet
     batteries               b https://en.wikipedia.org/wiki/List_of_battery_sizes#Cylindrical_batteries
+    bluetooth-profiles      b https://en.wikipedia.org/wiki/List_of_Bluetooth_profiles
     browserbench            b https://browserbench.org/
     busybox                 b https://busybox.net/downloads/BusyBox.html
     c-faq                   b http://c-faq.com/
@@ -56,7 +64,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     chemspider              b https://www.chemspider.com/Search.aspx\?q={u}
     chrome-ext              b https://developer.chrome.com/extensions/devguide
     chrome-flags            b https://peter.sh/experiments/chromium-command-line-switches/
-    chrome-manifest-app     b https://developer.chrome.com/apps/manifest
     chrome-manifest-ext     b https://developer.chrome.com/extensions/manifest
     chrome-searchcode       b https://cs.chromium.org/
     chrome-theming          b https://cs.chromium.org/chromium/src/chrome/browser/themes/browser_theme_pack.cc
@@ -79,7 +86,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     dkim                    b https://dkimcore.org/tools/
     dns-parameters          b https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml
     dns-reserved            b https://tools.ietf.org/html/rfc2606
-    dns-terminology         b https://tools.ietf.org/html/rfc7719
+    dns-terminology         b https://tools.ietf.org/html/rfc8499
     dnssec                  b https://dnssec-debugger.verisignlabs.com/
     docker                  b https://github.com/wsargent/docker-cheat-sheet
     docker-compose          b https://docs.docker.com/compose/compose-file/
@@ -108,7 +115,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     freedesktop-specs       b https://standards.freedesktop.org/
     freetype                b https://www.freetype.org/freetype2/docs/documentation.html
     g                       b https://www.google.com/search\?q={u}
-    g-operators             b https://support.google.com/websearch/answer/2466433\?hl=en\&ref_topic=3081620\&vid=1-635793825968278780-302114999
+    g-operators             b https://ahrefs.com/blog/google-advanced-search-operators/
     gcc                     b https://gcc.gnu.org/onlinedocs/
     gg                      b https://groups.google.com/forum/#!search/{u}
     gh                      b https://github.com/
@@ -124,6 +131,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gmail-search            b https://support.google.com/mail/answer/7190
     gnome-api               b https://developer.gnome.org/references
     gnu-coding              b https://www.gnu.org/prep/standards/standards.html
+    gnu-lists               b https://lists.gnu.org/archive/html/
     gnu-make                b https://www.gnu.org/software/make/manual/make.html#Quick-Reference
     gnu-manuals             b https://www.gnu.org/manual/manual.html
     gnu-repos               b https://git.savannah.gnu.org/cgit/
@@ -171,6 +179,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     jee7-apis               b https://docs.oracle.com/javaee/7/api/index.html\?overview-summary.html
     jee7-docs               b https://docs.oracle.com/javaee/7/index.html
     jee7-spec               b https://jcp.org/en/jsr/detail\?id=342
+    jinja                   b https://jinja.palletsprojects.com/
     journals                b https://en.wikipedia.org/wiki/Lists_of_academic_journals
     jquery                  b https://api.jquery.com/
     js                      b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
@@ -245,7 +254,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     posix-defs              b "$posix_base"/basedefs/contents.html
     posix-env               b "$posix_base"/basedefs/V1_chap08.html
     posix-ifaces            b "$posix_base"/functions/contents.html
+    posix-param-expansion   b "$posix_base"/utilities/V3_chap02.html#tag_18_06_02
     posix-utils             b "$posix_base"/utilities/contents.html
+    posix-utils-index       b https://shellhaters.org/
     postgresql              b https://www.postgresql.org/docs/current/static/index.html
     printing                b https://wiki.linuxfoundation.org/openprinting/database/documentation
     pubchem                 b https://www.ncbi.nlm.nih.gov/pccompound\?term={u}
@@ -338,6 +349,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     w-cz                    b https://cz.wikipedia.org/w/index.php\?search={u}
     w-sk                    b https://sk.wikipedia.org/w/index.php\?search={u}
     w3c-specs               b https://www.w3.org/TR/
+    wayland                 b https://wayland-book.com/
     webdev-tools            b https://www.browserling.com/tools
     weechat                 b https://weechat.org/files/doc/stable/weechat_user.en.html
     weechat-api             b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
@@ -354,16 +366,21 @@ MENUER=$prgname menuer "$@" <<-EOF |
     xorg-lists              b https://lists.x.org/
     xorg-repos              b https://cgit.freedesktop.org/xorg
     xterm-changes           b https://invisible-island.net/xterm/xterm.log.html
-    yaml                    b https://yaml.org/refcard.html
+    yaml                    b https://yaml.org/spec/1.2/spec.html
+    yaml-refcard            b https://yaml.org/refcard.html
     yt                      b https://www.youtube.com/results\?q={u}
     yt-channel              b https://www.youtube.com/results\?sp=EgIQAlAU\&q={u}
     yt-playlist             b https://www.youtube.com/results\?sp=EgIQA1AU\&q={u}
     zsh                     b http://zsh.sourceforge.net/Doc/Release/index.html
     zsh-changes             b https://github.com/zsh-users/zsh/blob/master/NEWS
+    zsh-guide               b http://zsh.sourceforge.net/Guide/zshguide.html
+    zsh-param-expansion     b http://zsh.sourceforge.net/Doc/Release/Expansion.html#Parameter-Expansion
 
     zz                      b https://www.slov-lex.sk/vyhladavanie-pravnych-predpisov
+    zz-(new)                b https://www.zakonypreludi.sk/zz/nove-znenie
     zz-o-premavke           b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2009/8/
     zz-o-premavke-vyhlaska  b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2009/9/
+    zz-o-prevadzke          b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2018/106/
     zz-obchodny-zakonnik    b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1991/513/
     zz-obciansky-zakonnik   b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1964/40/
     zz-ustava               b https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1992/460/

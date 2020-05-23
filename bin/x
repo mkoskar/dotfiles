@@ -158,7 +158,7 @@ while true; do
     set -- "${aargs[@]}"
     scrno=0 args=()
     while true; do
-        if (( ! $# )) || [[ $1 == -- ]]; then
+        if (( ! $# )) || [[ $1 = -- ]]; then
             if (( ${#args[@]} )); then
                 DISPLAY=:$dispno.$scrno xsession "${args[@]}"
             fi

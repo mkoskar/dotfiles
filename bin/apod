@@ -4,15 +4,15 @@ set -eu
 
 prgname=${0##*/}
 
-path=~/.cache/apod/latest
+cd ~/.cache/apod
 
 case ${1-} in
     get)
         url=$(apodurl)
-        curl -sSLf --create-dirs -o "$path" --url "$url"
+        curl -sSLf --create-dirs -o cur --url "$url"
         ;;
     set)
-        [[ -e $path ]] && feh --bg-max --no-fehbg "$path"
+        [[ -e cur ]] && feh --bg-max --no-fehbg cur
         ;;
     *)
         echo "usage: $prgname {get | set}" >&2

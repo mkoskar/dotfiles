@@ -32,6 +32,7 @@ args = parser.parse_args()
 try:
     with open('/sys/class/tty/tty0/active', 'r') as f:
         active_vt = f.read().strip()
+        print('VT: {}'.format(active_vt))
 
     with open('/dev/' + active_vt, 'w') as f:
         v = ioctl(f, 0x4B3B, 'I')[0]

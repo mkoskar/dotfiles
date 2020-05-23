@@ -2,46 +2,56 @@
 
 set -eu
 
+prgname=${0##*/}
+
+_usage() {
+    cat <<-EOF
+	usage: $prgname [list [PATTERN]
+	       $prgname clear [PATTERN]
+	       $prgname mute [PATTERN]
+	       $prgname {at | in} SPEC [NAME | -] [ARGS...]
+	EOF
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+# ----------------------------------------
+
 sdu() { systemctl --user --quiet "$@"; }
 
-case ${1-} in
-    '')
-        sdu list-timers --all 'alarm-*'
-        exit
+sub=${1-}
+shift || true
+case $sub in
+    '' | list)
+        sdu list-timers --all alarm-"${1:-*}"
         ;;
     mute)
-        sdu stop alarm-\*.service
-        exit
+        sdu stop alarm-"${1:-*}".service
         ;;
     clear)
-        sdu stop alarm-\*
-        exit
+        sdu stop alarm-"${1:-*}"
         ;;
-esac
-
-name=$1
-[[ $name =~ [][?*.] ]] && exit 2
-
-case ${2-} in
     run)
-        shift 2
-        notify -u critical "Alarm \"$name\"... ${*:-DO IT!}"
-        mpv --load-scripts=no --loop-file=5 \
+        name=$1
+        shift
+        notify -u critical "Alarm \"$name\"${*:+ : $*}"
+        mpv --load-scripts=no --loop-file=1 \
             /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
         ;;
     at | in)
-        sub=$2
-        shift 2
-        [[ $name = - ]] && name=$(openssl rand -hex 4)
-        sdu stop alarm-"$name".time[r]
+        (( $# )) || usage_err
         [[ $sub = at ]] &&
             args=(--on-calendar="$1") ||
             args=(--on-active="$1")
+        name=${2:--}
+        [[ $name = - ]] && name=$(openssl rand -hex 4)
+        [[ $name =~ [][?*.-] ]] && usage_err
+        sdu stop alarm-"$name".time[r]
         srun -r -n alarm-"$name" -- "${args[@]}" \
             --timer-property=AccuracySec=1s \
-            alarm "$name" run "${@:2}"
+            alarm run "$name" "${@:3}"
         ;;
     *)
-        exit 2
+        usage_err
         ;;
 esac

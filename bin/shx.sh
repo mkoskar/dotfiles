@@ -17,31 +17,27 @@ else
     read -r SHNAME </proc/$$/comm
 fi
 
-# shellcheck disable=SC2034,SC2209
-case $SHNAME in
-    bash) shopt -q -o posix && SHMODE=sh || SHMODE=bash ;;
-    zsh) SHMODE=$(emulate) ;;
-    *ksh) SHMODE=ksh ;;
-    *) SHMODE=sh ;;
-esac
+shmode() {
+    case $SHNAME in
+        bash) shopt -q -o posix && echo sh || echo bash ;;
+        zsh) emulate ;;
+        *ksh) echo ksh ;;
+        *) echo sh ;;
+    esac
+}
+SHMODE=$(shmode)
 
 # ----------------------------------------
 
 set -o noclobber
-case $SHNAME in bash)
+if [ "$SHMODE" = bash ]; then
     shopt -s expand_aliases
     unset BASH_ENV
-    ;;
-esac
-case $SHNAME in bash | zsh | *ksh) set -o pipefail ;; esac
+fi
+case $SHMODE in bash | zsh | ksh) set -o pipefail ;; esac
 
-# shellcheck disable=SC2153
-case $SHNAME in
-    bash) ;;
-    zsh) HOSTNAME=$HOST ;;
-    *) HOSTNAME=$(uname -n) ;;
-esac
-case $OSID in termux) HOSTNAME=${TERMUX_HOST:-$HOSTNAME} ;; esac
+[ "$HOSTNAME" ] || HOSTNAME=${HOST:-$(uname -n)}
+[ "$OSID" = termux ] && HOSTNAME=${TERMUX_HOST:-$HOSTNAME}
 
 
 # docker
@@ -81,10 +77,7 @@ dkstop() {
 alias grep='LC_ALL=C grep --color=auto'
 alias g='grep --color=always'
 alias gi='g -i'
-
-gr() {
-    g -rnH --exclude-dir=.git "$@" | sort -i -t : -k 1,1
-}
+alias gr='g -rnH --exclude-dir=.git'
 alias gri='gr -i'
 
 alias ag='ag --smart-case --noheading --nobreak --color-path=36 --color-line-number=33 --color-match=41'
@@ -117,7 +110,7 @@ alias mvn-describe-plugin=_mvn_describe_plugin
 # ls
 # ----------------------------------------
 
-alias ls='ls --group-directories-first --color=auto'
+alias ls='ls -F --group-directories-first --color=auto'
 alias l='ls -1A'
 alias la='ll -A'
 alias lc='lt -c'
@@ -157,7 +150,7 @@ alias pacman-log='pg /var/log/pacman.log'
 alias pactree='pactree --color'
 
 _paclog_recent() {
-    paclog --action=all | paclog --after="$(date -I -d -7days)"
+    paclog --action=all | paclog --after="$(date -I -d -7days)" | $PAGER
 }
 alias paclog-recent=_paclog_recent
 
@@ -228,21 +221,31 @@ alias ....='cd ../../..'
 
 alias aa=auracle
 alias acpi='acpi -V'
+alias alarm-hourly='alarm at \*:0'
 alias an=asciinema
+alias ansible-config-changed='ansible-config dump --only-changed'
+alias ansible-config-help='ansible-config list'
+alias ansible-facts='ansible -m setup'
+alias ansible-hostvars='ansible -m debug -a var=hostvars'
+alias ansible-inventory-graph='ansible-inventory --graph'
+alias ansible-modules='ansible-doc -l'
+alias ansible-playbook-tasks='ansible-playbook --list-tasks'
 alias aunpack='aunpack -q'
 alias c=calc
 alias cal='cal -3mw'
 alias callgrind='valgrind --tool=callgrind'
+alias caps='filecap -d'
 alias cmd=command
 alias cp='cp -ai --reflink=auto'
 alias curl-as='curl -A "$UAGENT"'
+alias curl-head='curl -I'
+alias curl='curl -sSL'
 alias date0='date -Ins'
 alias dconfa='dconf dump /'
 alias dd='dd status=progress'
 alias delv-trace='delv +cd +mt +rt +vt -t any'
 alias delv='delv +cd -t any'
-alias df0='\df -h'
-alias df='df -h -x tmpfs -x devtmpfs'
+alias df='df -h -x devtmpfs -x tmpfs'
 alias dig-nocheck='dig +cd'
 alias dig-nssearch='dig +tcp +cd +nssearch'
 alias dig-trace='dig +tcp +trace'
@@ -251,7 +254,7 @@ alias dmesg='dmesg -HTx'
 alias dpms-off='xset dpms force off'
 alias drill-nocheck='drill -o CD'
 alias drill-trace='drill -T'
-alias dstat='dstat -cglmnpry --tcp'
+alias dstat='dstat -tlycgm --vm -rdn'
 alias du='du -hx'
 alias ed='ed -p :'
 alias feh='feh -F'
@@ -259,6 +262,7 @@ alias fortune='fortune -c'
 alias free='free -h'
 alias fzy='fzy -l $LINES'
 alias gconfa='gconftool-2 -R /'
+alias getfattr='getfattr --absolute-names -d -m -'
 alias glxgears-novsync='vblank_mode=0 glxgears'
 alias gpg-agent-reload='gpg-connect-agent reloadagent /bye'
 alias gpg-agent-sessionenv="gpg-connect-agent 'getinfo std_session_env' /bye"
@@ -298,17 +302,23 @@ alias parallel='parallel -r'
 alias patch0='patch -N -p 0'
 alias patch1='patch -N -p 1'
 alias ping-mtu='ping -M do -s 2000'
+alias pr='pr -T -W "$COLUMNS"'
 alias qiv='qiv -uLtiGfl --vikeys'
 alias rax=rax2
 alias reflector='reflector -p https -c sk -c cz --score 3 -f 3'
 alias rm='rm -I --one-file-system'
 alias rsync='rsync -aHAXS'
+alias sarrec='sar -D -o ~/tmp'
+alias sarsvg='sadf -g -O showinfo,showtoc ~/tmp --'
 alias scp='scp -rp'
+alias sd-sysusers='systemd-sysusers --cat-config'
+alias sd-tmpfiles='systemd-tmpfiles --cat-config'
 alias sd=systemctl
 alias sdu='systemctl --user'
 alias se=sudoedit
 alias sed-all="sed -r -e 'H;1h;\$!d;x'"
 alias socat='socat readline,history=/dev/null'
+alias speaker-test='speaker-test -t wav -c 2'
 alias ss='ss -napstu'
 alias ssh0='ssh -S none'
 alias sslcon='openssl s_client -showcerts -connect'
@@ -316,10 +326,13 @@ alias stat="stat -c '%A %a %h %U %G %s %y %N'"
 alias sudo-off='sudo -K'
 alias sudo-on='sudo -v'
 alias sys='systool -av'
-alias tcpdump='tcpdump -tttne'
+alias tcpdump='tcpdump -ne -vvv'
 alias tmux-killall='tmux-all kill-server'
 alias top='top -d 1'
 alias topdf='lowriter --convert-to pdf'
+alias tshark-prefs='\tshark -G currentprefs'
+alias tshark-protocols='\tshark -G protocols'
+alias tshark='tshark -nV'
 alias udevadm-info-dev='udevadm info --name'
 alias udevadm-info-sys='udevadm info --path'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
@@ -328,9 +341,10 @@ alias watch='watch -n 1'
 alias weechat-tmux='tmux -L weechat attach'
 alias weechat='weechat -a'
 alias whois='whois -H'
-alias wi='curl -sSLf http://wttr.in/ | head -n -2'
+alias wi='curl -sSLf http://wttr.in/?Fqn'
 alias xargs1='xargs -r -L 1'
 alias xinput-test='xinput test-xi2 --root'
+alias yaml='yq .'
 alias ytdl-audio-album="ytdl-audio --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
 alias ytdl-audio-all='ytdl-audio --yes-playlist'
 alias ytdl-audio='youtube-dl -f bestaudio/best -x'
@@ -338,6 +352,11 @@ alias ytdl-formats='youtube-dl -F'
 alias ytdl-json='youtube-dl -J'
 alias ytdl-playlist="youtube-dl --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
 alias ytdl-stdout="youtube-dl -f 'best[height<=?1080]' -o -"
+
+alias _gdbus-session='gdbus introspect -r --session -o /'
+alias _gdbus-system='gdbus introspect -r --system -o /'
+alias gdbus-bluez='_gdbus-system -d org.bluez'
+alias gdbus-login='_gdbus-system -d org.freedesktop.login1'
 
 _() {
     git status -s
@@ -526,14 +545,14 @@ reexec() {
     eval exec "$cmdline"
 }
 
-# shellcheck disable=SC1090,SC2153
+# shellcheck disable=SC1090
 reload() {
     case $OSID in
         termux) . "$SYSPREFIX"/etc/profile ;;
         *) . /etc/profile ;;
     esac
     . ~/.profile
-    case $SHMODE in
+    case $(shmode) in
         bash) . ~/.bashrc ;;
         zsh) . ~/.zshrc ;;
         *) . ~/.shrc ;;
@@ -541,7 +560,7 @@ reload() {
 }
 
 shi() {
-    printf '%s(%s): ' "$SHNAME" "$SHMODE"
+    printf '%s(%s): ' "$SHNAME" "$(shmode)"
     cmdline
     printf '$-: %s\n' "$-"
     printf '$$: %s\n' "$$"
@@ -574,17 +593,18 @@ shi() {
 
 source_opt() {
     # shellcheck disable=SC1090
-    [ ! -e "$1" ] || . -- "$1"
+    [ ! -e "$1" ] || . "$1"
 }
 
 tree() {
-    set -- -ax -I .git --dirsfirst --noreport "$@"
+    set -- -axF -I .git --dirsfirst --noreport "$@"
     if [ -t 1 ]; then
         pgx command tree -C "$@"
     else
         command tree "$@"
     fi
 }
+alias treei='tree -pugshDif'
 
 tsrec() {
     local ts outfile
