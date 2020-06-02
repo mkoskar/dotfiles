@@ -108,9 +108,7 @@ if [[ $PIPENV_ACTIVE && $VIRTUAL_ENV ]]; then
     PS1=($__venv)\ $PS1
 fi
 PS1=\$__vimode$PS1
-if [[ $terminfo[tsl] ]]; then
-    PS1=%{$terminfo[tsl]%n@%m:%~$terminfo[fsl]%}$PS1
-fi
+[[ $terminfo[tsl] ]] && PS1=%{$terminfo[tsl]%n@%m:%~$terminfo[fsl]%}$PS1
 PS2='$__vimode> '
 
 expand-dot-to-parent-directory-path() {
@@ -146,7 +144,7 @@ preexec() {
 zle-keymap-select() {
     __vimode=:
     if [[ ! $KEYMAP = vicmd ]]; then
-        [[ $ZLE_STATE == *overwrite* ]] && __vimode=^ || __vimode=+
+        [[ $ZLE_STATE = *overwrite* ]] && __vimode=^ || __vimode=+
     fi
     zle reset-prompt
 }
@@ -179,17 +177,22 @@ done
 
 for k in kich1 kpp knp kf{1..12}; do
     k=$terminfo[$k]
+    [[ $k ]] || continue
     bindkey $k noop
     bindkey -M vicmd $k noop
 done
 
 k=$terminfo[khome]
-bindkey $k beginning-of-line
-bindkey -M vicmd $k beginning-of-line
+if [[ $k ]]; then
+    bindkey $k beginning-of-line
+    bindkey -M vicmd $k beginning-of-line
+fi
 
 k=$terminfo[kend]
-bindkey $k end-of-line
-bindkey -M vicmd $k end-of-line
+if [[ $k ]]; then
+    bindkey $k end-of-line
+    bindkey -M vicmd $k end-of-line
+fi
 
 unset k
 
@@ -206,13 +209,13 @@ bindkey ^K kill-line
 bindkey ^W backward-kill-word
 bindkey \\ed kill-word
 bindkey \\ex delete-char
-bindkey $terminfo[kdch1] delete-char
+[[ $terminfo[kdch1] ]] && bindkey $terminfo[kdch1] delete-char
 bindkey ^H backward-delete-char
 
 bindkey ^A all-matches
 bindkey ^D list-choices
 bindkey ^O reverse-menu-complete
-bindkey $terminfo[kcbt] reverse-menu-complete
+[[ $terminfo[kcbt] ]] && bindkey $terminfo[kcbt] reverse-menu-complete
 bindkey ^I complete-word
 
 bindkey ^G send-break

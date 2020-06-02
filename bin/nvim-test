@@ -6,7 +6,7 @@ prgname=${0##*/}
 
 cd ~/tmp
 
-config=~/.config/nvim/init-test.vim
+config=~/.config/vim/test1.vim
 
 vim -u "$config"
 tmux -L "$prgname" new vim -u "$config"

@@ -319,6 +319,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     sysrq                   b https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
     systemd                 b https://systemd.io/
     systemd-changes         b https://github.com/systemd/systemd/blob/master/NEWS
+    systemd-troubleshooting b https://freedesktop.org/wiki/Software/systemd/Debugging/
     terminfo.src            b https://invisible-island.net/ncurses/terminfo.src.html
     tex                     b https://ctan.org/
     timezones               b https://upload.wikimedia.org/wikipedia/commons/e/e8/Standard_World_Time_Zones.png

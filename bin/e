@@ -17,4 +17,4 @@ case $prgname in
         ;;
 esac
 
-exec "${VIMBIN:-vim}" -p "$@"
+exec "${VIMBIN:-vim}" -Np "$@"

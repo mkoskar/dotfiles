@@ -180,8 +180,8 @@ esac
 if [[ ! -f userChrome.css.lock ]]; then
 
     cat >userChrome.css <<-'EOF'
-		// userChrome.css
-		// ----------------------------------------
+		/* userChrome.css */
+		/* ---------------------------------------- */
 	EOF
 
     [[ $profile != default ]] && cat >>userChrome.css <<-EOF

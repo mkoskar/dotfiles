@@ -15,6 +15,8 @@ if &t_Co >= 256 || has('gui_running')
     hi ColorColumn      guifg=NONE          guibg=#303030       gui=NONE
     hi Comment          ctermfg=242         ctermbg=NONE        cterm=NONE
     hi Comment          guifg=#6c6c6c       guibg=NONE          gui=NONE
+    hi Conceal          ctermfg=238         ctermbg=NONE        cterm=NONE
+    hi Conceal          guifg=#444444       guibg=NONE          gui=NONE
     hi Constant         ctermfg=174         ctermbg=NONE        cterm=NONE
     hi Constant         guifg=#d78787       guibg=NONE          gui=NONE
     hi Cursor           ctermfg=bg          ctermbg=153         cterm=NONE
@@ -37,6 +39,8 @@ if &t_Co >= 256 || has('gui_running')
     hi DiffText         guifg=#ffffff       guibg=#9d2d2d       gui=NONE
     hi Directory        ctermfg=151         ctermbg=NONE        cterm=NONE
     hi Directory        guifg=#afd7af       guibg=NONE          gui=NONE
+    hi EndOfBuffer      ctermfg=238         ctermbg=NONE        cterm=NONE
+    hi EndOfBuffer      guifg=#444444       guibg=NONE          gui=NONE
     hi Error            ctermfg=167         ctermbg=234         cterm=NONE
     hi Error            guifg=#d75f5f       guibg=#1c1c1c       gui=NONE
     hi ErrorMsg         ctermfg=231         ctermbg=1           cterm=NONE
@@ -61,18 +65,20 @@ if &t_Co >= 256 || has('gui_running')
     hi MoreMsg          guifg=#ffff87       guibg=NONE          gui=NONE
     hi NonText          ctermfg=238         ctermbg=NONE        cterm=NONE
     hi NonText          guifg=#444444       guibg=NONE          gui=NONE
-    hi PMenuSbar        ctermfg=NONE        ctermbg=59          cterm=NONE
-    hi PMenuSbar        guifg=NONE          guibg=#5f5f5f       gui=NONE
-    hi PMenuThumb       ctermfg=NONE        ctermbg=102         cterm=NONE
-    hi PMenuThumb       guifg=NONE          guibg=#878787       gui=NONE
     hi Pmenu            ctermfg=243         ctermbg=232         cterm=NONE
     hi Pmenu            guifg=#767676       guibg=#080808       gui=NONE
+    hi PmenuSbar        ctermfg=NONE        ctermbg=59          cterm=NONE
+    hi PmenuSbar        guifg=NONE          guibg=#5f5f5f       gui=NONE
     hi PmenuSel         ctermfg=185         ctermbg=234         cterm=NONE
     hi PmenuSel         guifg=#d7d75f       guibg=#1c1c1c       gui=NONE
+    hi PmenuThumb       ctermfg=NONE        ctermbg=102         cterm=NONE
+    hi PmenuThumb       guifg=NONE          guibg=#878787       gui=NONE
     hi PreProc          ctermfg=167         ctermbg=NONE        cterm=NONE
     hi PreProc          guifg=#d75f5f       guibg=NONE          gui=NONE
     hi Question         ctermfg=fg          ctermbg=NONE        cterm=NONE
     hi Question         guifg=fg            guibg=NONE          gui=NONE
+    hi QuickFixLine     ctermfg=NONE        ctermbg=236         cterm=bold
+    hi QuickFixLine     guifg=NONE          guibg=#303030       gui=bold
     hi Search           ctermfg=bg          ctermbg=214         cterm=NONE
     hi Search           guifg=bg            guibg=#ffaf00       gui=NONE
     hi SignColumn       ctermfg=145         ctermbg=233         cterm=NONE
@@ -95,6 +101,10 @@ if &t_Co >= 256 || has('gui_running')
     hi StatusLine       guifg=#ffffff       guibg=#3a3a3a       gui=bold
     hi StatusLineNC     ctermfg=244         ctermbg=237         cterm=NONE
     hi StatusLineNC     guifg=#808080       guibg=#3a3a3a       gui=NONE
+    hi StatusLineTerm   ctermfg=231         ctermbg=237         cterm=bold
+    hi StatusLineTerm   guifg=#ffffff       guibg=#3a3a3a       gui=bold
+    hi StatusLineTermNC ctermfg=244         ctermbg=237         cterm=NONE
+    hi StatusLineTermNC guifg=#808080       guibg=#3a3a3a       gui=NONE
     hi TabLine          ctermfg=244         ctermbg=237         cterm=NONE
     hi TabLine          guifg=#808080       guibg=#3a3a3a       gui=NONE
     hi TabLineFill      ctermfg=187         ctermbg=237         cterm=NONE
@@ -105,6 +115,10 @@ if &t_Co >= 256 || has('gui_running')
     hi Title            guifg=#5fafd7       guibg=NONE          gui=NONE
     hi Todo             ctermfg=185         ctermbg=234         cterm=NONE
     hi Todo             guifg=#d7d75f       guibg=#1c1c1c       gui=NONE
+    hi ToolbarButton    ctermfg=bg          ctermbg=185         cterm=bold
+    hi ToolbarButton    guifg=bg            guibg=#d7d75f       gui=bold
+    hi ToolbarLine      ctermfg=NONE        ctermbg=236         cterm=NONE
+    hi ToolbarLine      guifg=NONE          guibg=#303030       gui=NONE
     hi Type             ctermfg=110         ctermbg=NONE        cterm=NONE
     hi Type             guifg=#87afd7       guibg=NONE          gui=NONE
     hi Underlined       ctermfg=fg          ctermbg=NONE        cterm=underline
@@ -120,51 +134,3 @@ if &t_Co >= 256 || has('gui_running')
     hi WildMenu         ctermfg=bg          ctermbg=185         cterm=bold
     hi WildMenu         guifg=bg            guibg=#d7d75f       gui=bold
 endif
-
-hi link Boolean                         Constant
-hi link Character                       Constant
-hi link Conditional                     Statement
-hi link Debug                           Special
-hi link Define                          PreProc
-hi link Delimiter                       Special
-hi link Exception                       Statement
-hi link Float                           Number
-hi link Function                        Identifier
-hi link HelpCommand                     Statement
-hi link HelpExample                     Statement
-hi link Include                         PreProc
-hi link Keyword                         Statement
-hi link Label                           Statement
-hi link Macro                           PreProc
-hi link Number                          Constant
-hi link Operator                        Statement
-hi link PreCondit                       PreProc
-hi link Repeat                          Statement
-hi link SpecialChar                     Special
-hi link SpecialComment                  Special
-hi link StorageClass                    Type
-hi link String                          Constant
-hi link Structure                       Type
-hi link Tag                             Special
-hi link Typedef                         Type
-hi link asciidocQuotedEmphasized        PreProc
-hi link diffAdded                       Identifier
-hi link diffBDiffer                     Statement
-hi link diffCommon                      Statement
-hi link diffDiffer                      Statement
-hi link diffIdentical                   Statement
-hi link diffIndexLine                   Type
-hi link diffIsA                         Statement
-hi link diffNoEOL                       Statement
-hi link diffOnly                        Statement
-hi link diffRemoved                     Constant
-hi link htmlBold                        Normal
-hi link htmlEndTag                      htmlTagName
-hi link htmlItalic                      Normal
-hi link htmlLink                        Function
-hi link htmlSpecialTagName              htmlTagName
-hi link htmlTag                         htmlTagName
-hi link markdownItalic                  PreProc
-hi link xmlEndTag                       Statement
-hi link xmlTag                          Statement
-hi link xmlTagName                      Statement

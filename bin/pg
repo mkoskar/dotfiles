@@ -16,7 +16,7 @@ run() {
     fi
     args+=(-- "$@")
     export PRGNAME=$prgname
-    exec -a "($prgname)" "${VIMBIN:-vim}" -O -u ~/.vim/vimrc_pg "${args[@]}"
+    exec -a "($prgname)" "${VIMBIN:-vim}" -NO -u ~/.vim/vimrc_pg "${args[@]}"
 }
 
 if [[ $prgname = pgx ]]; then

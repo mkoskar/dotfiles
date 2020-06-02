@@ -1,12 +1,13 @@
 " Vim syntax file
 " Language: DICT protocol
 
-if exists('b:current_syntax')
-    finish
-endif
-
+if exists('b:current_syntax') | finish | endif
 let s:cpo_save = &cpo
 set cpo&vim
+
+" ----------------------------------------
+
+syn case ignore
 
 syn sync fromstart
 set foldmethod=syntax
@@ -30,7 +31,7 @@ hi def link dictString PreProc
 hi def link dictReference Statement
 hi def link dictAnnotation Constant
 
-let b:current_syntax = 'dict'
+" ----------------------------------------
 
 let &cpo = s:cpo_save
-unlet s:cpo_save
+let b:current_syntax = 'dict'

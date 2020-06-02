@@ -1,6 +1,7 @@
 " vim: ft=vim fdm=marker
 
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
+let $BASEDIR = ''
 
 source ~/.vim/vimrc_base
 
@@ -14,11 +15,7 @@ set signcolumn=no
 set tabstop=8
 set virtualedit=all
 
-let &viminfo = "!,'100,<50,s10,h,n" . $VIMDIR . '/.viminfo_pg'
-
-" FIXME: disable temporarily to get rid of:
-"   E575: Error while reading ShaDa file: mark entry at position XY has invalid line number
-let &viminfo = ''
+let &viminfofile = $VIMDIR . '/.viminfo_pg'
 
 " ----------------------------------------
 
@@ -47,10 +44,8 @@ endfunction
 function! InitPgx() abort
     setl ro noma
     exec '0System' $CMD
-    if !empty($PAGER_TITLE)
-        file $PAGER_TITLE
-    endif
     AnsiEsc
+    call utils#echo(utils#shortenCmdline(v:statusmsg))
 endfunction
 
 augroup vimrc_pg

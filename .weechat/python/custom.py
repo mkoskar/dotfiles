@@ -527,9 +527,9 @@ def cb_command_renick(data, buffer, args):
     nick_new = nick_old.rstrip('_')
     if nick_new == nick_old:
         return w.WEECHAT_RC_OK
-    cmd(f'msg NickServ ghost {nick_new}')
-    cmd(f'msg NickServ release {nick_new}')
-    cmd(f'nick {nick_new}')
+    cmd(f'msg NickServ ghost {nick_new}', buffer)
+    cmd(f'msg NickServ release {nick_new}', buffer)
+    cmd(f'nick {nick_new}', buffer)
     return w.WEECHAT_RC_OK
 
 

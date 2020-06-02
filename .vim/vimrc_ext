@@ -82,6 +82,15 @@ augroup vimrc_ext_bufexplorer
     autocmd FileType bufexplorer call utils#bufSpecial()
 augroup END
 
+hi link bufExplorerActBuf Directory
+hi link bufExplorerAltBuf Type
+hi link bufExplorerCurBuf Statement
+hi link bufExplorerHelp String
+hi link bufExplorerHidBuf Normal
+hi link bufExplorerInactBuf Normal
+hi link bufExplorerMapping Identifier
+hi link bufExplorerTitle PreProc
+
 
 " ctrlp
 " ----------------------------------------
@@ -119,7 +128,7 @@ let deoplete#enable_smart_case = 1
 let dirvish_hijack_netrw = 0
 let dirvish_mode = ':sort | sort ,^.*/,'
 
-nmap <M--> <Plug>(dirvish_up)
+nmap <M-u> <Plug>(dirvish_up)
 
 augroup vimrc_ext_dirvish
     autocmd!
@@ -147,6 +156,14 @@ map <Leader><Leader>J <Plug>(easymotion-sol-j)
 map <Leader><Leader>K <Plug>(easymotion-sol-k)
 map <Leader>; <Plug>(easymotion-next)
 map <Leader>\ <Plug>(easymotion-prev)
+
+hi EasyMotionTarget ctermfg=3 cterm=bold
+hi link EasyMotionIncCursor Cursor
+hi link EasyMotionIncSearch IncSearch
+hi link EasyMotionMoveHL IncSearch
+hi link EasyMotionShade Comment
+hi link EasyMotionTarget2First EasyMotionTarget
+hi link EasyMotionTarget2Second EasyMotionTarget
 
 
 " emmet
@@ -237,6 +254,9 @@ let tagbar_width = 31
 nnoremap <silent> <F8> :Tagbar<CR>
 nnoremap <silent> <Leader>T :TagbarOpenAutoClose<CR>
 
+hi TagbarHighlight cterm=reverse
+hi link TagbarHelp String
+
 
 " tcomment
 " ----------------------------------------
@@ -256,7 +276,6 @@ xnoremap <silent> <Leader>cc :TComment<CR>
 let UltiSnipsEditSplit = 'vertical'
 let UltiSnipsExpandTrigger = '<C-J>'
 let UltiSnipsJumpBackwardTrigger = '<C-Z>'
-let UltiSnipsSnippetsDir = '~/.vim/UltiSnips'
 
 
 " undotree
@@ -269,36 +288,4 @@ nnoremap <silent> <F4> :silent UndotreeToggle<CR>
 augroup vimrc_ext_undotree
     autocmd!
     autocmd FileType undotree call utils#bufSpecial()
-augroup END
-
-
-" ----------------------------------------
-
-function! s:ColorsSet() abort
-    hi link bufExplorerActBuf Directory
-    hi link bufExplorerAltBuf Type
-    hi link bufExplorerCurBuf Statement
-    hi link bufExplorerHelp String
-    hi link bufExplorerHidBuf Normal
-    hi link bufExplorerInactBuf Normal
-    hi link bufExplorerMapping Identifier
-    hi link bufExplorerTitle PreProc
-
-    hi TagbarHighlight cterm=reverse
-    hi link TagbarHelp String
-
-    hi EasyMotionTarget ctermfg=3 cterm=bold
-    hi link EasyMotionIncCursor Cursor
-    hi link EasyMotionIncSearch IncSearch
-    hi link EasyMotionMoveHL IncSearch
-    hi link EasyMotionShade Comment
-    hi link EasyMotionTarget2First EasyMotionTarget
-    hi link EasyMotionTarget2Second EasyMotionTarget
-endfunction
-
-call s:ColorsSet()
-
-augroup vimrc_ext
-    autocmd!
-    autocmd ColorScheme * call <SID>ColorsSet()
 augroup END

@@ -1,9 +1,8 @@
-" See also: vimdiffext <http://www.vim.org/scripts/script.php?script_id=5309>
+if exists('b:did_ftplugin') | finish | endif
+let s:cpo_save = &cpo
+set cpo&vim
 
-if exists('b:did_ftplugin')
-    finish
-endif
-let b:did_ftplugin = 1
+" ----------------------------------------
 
 let b:undo_ftplugin = 'setl modeline<'
 
@@ -34,3 +33,8 @@ exec "noremap <buffer> <silent> <nowait> ] :call search('" . s:head_pattern . "'
 
 exec "noremap <buffer> <silent> { :call search('" . s:hunk_pattern . "', 'Wb')<CR>"
 exec "noremap <buffer> <silent> } :call search('" . s:hunk_pattern . "', 'W')<CR>"
+
+" ----------------------------------------
+
+let &cpo = s:cpo_save
+let b:did_ftplugin = 1

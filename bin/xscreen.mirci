@@ -39,6 +39,8 @@ layout_hook_default() {
     xrandr "${xrandr[@]}"
 }
 
+layout_hook_modesetting() { layout_hook_default "$@"; }
+
 layout_hook_zaphod() {
     local screen xrandr
     (( $# )) || return

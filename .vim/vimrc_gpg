@@ -1,6 +1,7 @@
 " vim: ft=vim fdm=marker
 
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
+let $BASEDIR = ''
 
 source ~/.vim/vimrc_base
 

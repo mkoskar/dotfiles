@@ -1,7 +1,8 @@
-if exists('b:did_ftplugin')
-    finish
-endif
-let b:did_ftplugin = 1
+if exists('b:did_ftplugin') | finish | endif
+let s:cpo_save = &cpo
+set cpo&vim
+
+" ----------------------------------------
 
 redir => s:lsout | silent filter /^\[Location List\]/ ls! % | redir END
 let b:qf_loclist = !empty(s:lsout)
@@ -45,3 +46,8 @@ nnoremap <buffer> <silent> << :call <SID>QfOlder(b:qf_prefix)<CR>
 nnoremap <buffer> <silent> >> :call <SID>QfNewer(b:qf_prefix)<CR>
 nnoremap <buffer> <silent> <Leader>< :call <SID>QfOldest(b:qf_prefix)<CR>
 nnoremap <buffer> <silent> <Leader>> :call <SID>QfNewest(b:qf_prefix)<CR>
+
+" ----------------------------------------
+
+let &cpo = s:cpo_save
+let b:did_ftplugin = 1

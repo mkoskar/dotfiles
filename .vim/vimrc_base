@@ -1,23 +1,7 @@
 " vim: ft=vim fdm=marker
 
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
-let vimdir_data = has('nvim') ? $HOME . '/.local/share/nvim' : $HOME . '/.vim'
-
-if empty($VIMDIR)
-    let $VIMDIR = vimdir_data
-else
-    if isdirectory($VIMDIR)
-        let $VIMDIR = fnamemodify($VIMDIR, ':p:h')
-        call utils#rtpPrepend($VIMDIR)
-    else
-        call utils#echoError(printf('%s: VIMDIR is not a valid directory', $VIMDIR))
-        let $VIMDIR = vimdir_data
-    endif
-endif
-
-if has('nvim')
-    call utils#rtpAdd('/usr/share/vim/vimfiles')
-endif
+let $MYVIMRC = vimrc
 
 
 " Important
@@ -25,6 +9,41 @@ endif
 
 set nocompatible
 set pastetoggle=<F6>
+
+if has('nvim')
+    set rtp =
+        \ rtp+=~/.config/nvim
+        \ rtp+=~/.vim
+        \ rtp+=/usr/share/vim/vimfiles
+        \ rtp+=$VIMRUNTIME
+        \ rtp+=/usr/share/vim/vimfiles/after
+        \ rtp+=~/.vim/after
+        \ rtp+=~/.config/nvim/after
+else
+    set rtp =
+        \ rtp+=~/.vim
+        \ rtp+=/usr/share/vim/vimfiles
+        \ rtp+=$VIMRUNTIME
+        \ rtp+=/usr/share/vim/vimfiles/after
+        \ rtp+=~/.vim/after
+endif
+
+let bin = has('nvim') ? 'nvim' : 'vim'
+let homedir = fnamemodify('~', ':p:h')
+let $VIMDIR = homedir . '/.local/share/' . bin
+
+if isdirectory($BASEDIR)
+    let basedir = fnamemodify($BASEDIR, ':p:h')
+    if basedir !=# homedir
+        let $VIMDIR = basedir . '/.' . bin
+        call utils#rtpPrepend(basedir . '/.vim')
+        if has('nvim')
+            call utils#rtpPrepend(basedir . '/.nvim')
+        endif
+    endif
+endif
+
+let &pp = &rtp
 
 let mapleader = ','
 let maplocalleader = ';'
@@ -86,7 +105,7 @@ nnoremap <Leader>lt :ltag /
 set display=lastline
 set fillchars=
 set list
-set listchars=eol:¬,tab:>-,trail:-,extends:>,precedes:<,nbsp:+
+set listchars=eol:¬,tab:>-,trail:-,extends:>,precedes:<,nbsp:+,conceal:_
 set nowrap
 set scrolloff=2
 set sidescroll=10
@@ -112,6 +131,7 @@ nnoremap <silent> <Space> :nohlsearch \| echo<CR>
 
 nnoremap <Leader>cuc :setl <C-R>=&cuc ? 'nocuc' : 'cuc'<CR><CR>
 nnoremap <Leader>cul :setl <C-R>=&cul ? 'nocul' : 'cul'<CR><CR>
+nnoremap <Leader>cux :setl <C-R>=&cuc && &cul ? 'nocuc nocul' : 'cuc cul'<CR><CR>
 nnoremap <Leader>sp :setl <C-R>=&spell ? 'nospell' : 'spell'<CR><CR>
 
 function! s:ccToggle() abort
@@ -210,8 +230,8 @@ nnoremap <silent> g<C-K> <C-W>k<C-W>_
 
 nnoremap <silent> + :resize +5<CR>
 nnoremap <silent> _ :resize -5<CR>
-nnoremap <silent> <C-W>. :vertical resize +5<CR>
-nnoremap <silent> <C-W>, :vertical resize -5<CR>
+nnoremap <silent> <M-=> :vertical resize +5<CR>
+nnoremap <silent> <M--> :vertical resize -5<CR>
 
 
 " Multiple Tab Pages
@@ -261,7 +281,7 @@ if !has('nvim')
     set t_PS=[200~
     set t_PE=[201~
 else
-    tnoremap <C-\> <C-\><C-n>
+    tnoremap <C-\> <C-\><C-N>
 endif
 
 set title
@@ -296,8 +316,10 @@ if !has('nvim')
 endif
 
 set guicursor+=a:blinkon0
-set guifont=Monaco\ 12
-set guioptions+=c
+set guifont=Terminus\ 16px
+
+set guioptions=
+    \ guioptions+=c
     \ guioptions+=e
     \ guioptions-=L
     \ guioptions-=T
@@ -507,7 +529,8 @@ set signcolumn=yes
 set virtualedit=block
 
 let &viewdir = $VIMDIR . '/.view'
-let &viminfo = "!,'100,<50,s10,h,n" . $VIMDIR . '/.viminfo'
+let &viminfo = "!,'100,<50,s10,h"
+let &viminfofile = $VIMDIR . '/.viminfo'
 
 nnoremap <Leader>V :setl <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
 
@@ -863,7 +886,7 @@ function! s:Run(system, cmd, input, ...) abort
     endif
     call setreg(reg, out)
     let mode = get(a:, 1, 1)
-    if mode is 0 || mode is '!'
+    if mode is '!'
         redraw
         echo join(getreg(reg, 1, 1,), "\n")
         return
@@ -883,6 +906,7 @@ function! s:Run(system, cmd, input, ...) abort
     catch /:E353:/
     finally
         let [&l:ma, &l:ro] = [ma_, ro_]
+        let v:statusmsg = b:run_title
     endtry
 endfunction
 
@@ -902,17 +926,14 @@ xnoremap <Leader>xs y:SystemRegister<Space>
 function! s:Reload(bang) abort
     if exists('b:run_system')
         call <SID>Run(b:run_system, b:run_cmd, b:run_input, 2)
-        let status = bufname('%')
-        let status = empty(status) ? b:run_title : status
     else
         if &l:buftype =~# '^\(nofile\|quickfix\|terminal\)$'
             throw printf("\"%s\" buffer can't be reloaded", &l:buftype)
         endif
         silent exec 'Preserve edit' . a:bang
-        let status = v:statusmsg
     endif
-    let v:statusmsg = printf('[%s] %s', strftime('%H:%M:%S'), status)
-    call utils#echoWarn(utils#shortenCmdline(v:statusmsg))
+    let v:statusmsg = printf('[%s] %s', strftime('%H:%M:%S'), v:statusmsg)
+    call utils#echo(utils#shortenCmdline(v:statusmsg))
 endfunction
 
 command! -bang -bar Reload call utils#tryCatchCall('<SID>Reload', <q-bang>)
@@ -932,7 +953,7 @@ function! s:ReloadT(bang, d) abort
             exec 'sleep' d
         endwhile
     finally
-        call utils#echoWarn(utils#shortenCmdline(v:statusmsg))
+        call utils#echo(utils#shortenCmdline(v:statusmsg))
     endtry
 endfunction
 
@@ -965,11 +986,13 @@ endfunction
 
 command! -nargs=1 Macro call s:Macro(<q-args>)
 
+command! -count=1 PackPath exec '<count>Execute set pp' | exec 'normal! df=' | Split,
+
+command! -count=1 RuntimePath exec '<count>Execute set rtp' | exec 'normal! df=' | Split,
+
+command! -count=1 ScriptNames <count>Execute scriptnames
+
 command! DelDirs Preserve g/\/$/d
-
-command! RuntimePath exec 'Execute set rtp' | exec 'normal! df=' | Split,
-
-command! ScriptNames Execute scriptnames
 
 " ----------------------------------------
 
@@ -1007,10 +1030,17 @@ augroup vimrc_base
     autocmd CmdwinEnter * call utils#bufSpecial()
     autocmd FileChangedRO * setl noro
 
-    "autocmd BufReadPost *
-    "    \  if line("'\"") >= 1 && line("'\"") <= line('$') && &ft !~# 'commit'
-    "    \|     exec 'normal! g`"'
-    "    \| endif
+    autocmd BufReadPost *
+        \  if line("'\"") >= 1 && line("'\"") <= line('$') && &ft !~# 'commit'
+        \|     exec 'normal! g`"'
+        \| endif
+
+    " tabpagecd <https://github.com/kana/vim-tabpagecd>
+    autocmd TabEnter * if exists('t:cwd') | cd `=t:cwd` | endif
+    autocmd TabLeave * let t:cwd = getcwd()
+
+    autocmd QuickFixCmdPost [^l]* cwindow
+    autocmd QuickFixCmdPost l* lwindow
 
     if !has('nvim')
         autocmd TermChanged * silent call s:MetaSetup(meta_enabled)
@@ -1018,28 +1048,63 @@ augroup vimrc_base
         autocmd TermOpen * call utils#bufSpecial()
     endif
 
-    " tabpagecd <https://github.com/kana/vim-tabpagecd>
-    autocmd TabEnter *
-        \  if exists('t:cwd')
-        \|     cd `=t:cwd`
-        \| endif
-    autocmd TabLeave *
-        \ let t:cwd = getcwd()
-
-    autocmd QuickFixCmdPost [^l]* cwindow
-    autocmd QuickFixCmdPost l* lwindow
-
-    " ----------------------------------------
-
     autocmd BufWritePost ~/.Xresources !xrdb -load ~/.Xresources
 
     autocmd FileType diff call utils#bufSpecial()
     autocmd FileType mail call utils#bufSpecial() | setl tw=72
+    autocmd FileType make setl ts=4 sw=4 noet
     autocmd FileType man call utils#bufSpecial() | setl noma ts=8
+    autocmd FileType rst setl ts=8 sw=4 fdm=manual
     autocmd FileType tar call utils#bufSpecial()
     autocmd FileType zip call utils#bufSpecial()
     autocmd FileType {c,cpp}{,.*} let &l:path = '.,,**,/usr/include'
-
-    autocmd FileType make setl ts=4 sw=4 noet
-    autocmd FileType rst setl ts=8 sw=4 fdm=manual
 augroup END
+
+" ----------------------------------------
+
+hi link Boolean                         Constant
+hi link Character                       Constant
+hi link Conditional                     Statement
+hi link Debug                           Special
+hi link Define                          PreProc
+hi link Delimiter                       Special
+hi link Exception                       Statement
+hi link Float                           Number
+hi link Function                        Identifier
+hi link HelpCommand                     Statement
+hi link HelpExample                     Statement
+hi link Include                         PreProc
+hi link Keyword                         Statement
+hi link Label                           Statement
+hi link Macro                           PreProc
+hi link Number                          Constant
+hi link Operator                        Statement
+hi link PreCondit                       PreProc
+hi link Repeat                          Statement
+hi link SpecialChar                     Special
+hi link SpecialComment                  Special
+hi link StorageClass                    Type
+hi link String                          Constant
+hi link Structure                       Type
+hi link Tag                             Special
+hi link Typedef                         Type
+hi link asciidocQuotedEmphasized        PreProc
+hi link diffBDiffer                     Statement
+hi link diffCommon                      Statement
+hi link diffDiffer                      Statement
+hi link diffIdentical                   Statement
+hi link diffIndexLine                   Type
+hi link diffIsA                         Statement
+hi link diffNoEOL                       Statement
+hi link diffOnly                        Statement
+hi link diffRemoved                     Constant
+hi link htmlBold                        Normal
+hi link htmlEndTag                      htmlTagName
+hi link htmlItalic                      Normal
+hi link htmlLink                        Function
+hi link htmlSpecialTagName              htmlTagName
+hi link htmlTag                         htmlTagName
+hi link markdownItalic                  PreProc
+hi link xmlEndTag                       Statement
+hi link xmlTag                          Statement
+hi link xmlTagName                      Statement

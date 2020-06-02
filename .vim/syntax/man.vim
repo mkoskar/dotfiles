@@ -2,13 +2,15 @@
 " Language: Man page
 " based on /usr/share/vim/vim81/syntax/man.vim
 
-if exists('b:current_syntax')
-    finish
-endif
+if exists('b:current_syntax') | finish | endif
+let s:cpo_save = &cpo
+set cpo&vim
 
-runtime! syntax/ctrlh.vim
+" ----------------------------------------
 
 syn case ignore
+
+runtime! syntax/ctrlh.vim
 
 syn match manReference "\f\+([1-9][a-z]\=)"
 syn match manTitle "^\f\+([0-9]\+[a-z]\=).*"
@@ -28,4 +30,7 @@ hi def link manSubHeading Function
 hi def link manOptionDesc Constant
 hi def link manLongOptionDesc Constant
 
+" ----------------------------------------
+
+let &cpo = s:cpo_save
 let b:current_syntax = 'man'
