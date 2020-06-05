@@ -1,4 +1,4 @@
-" vim: ft=vim fdm=marker
+" vim: fdm=marker
 
 function! utils#echoError(msg) abort
     if !empty(a:msg)
@@ -52,7 +52,7 @@ endfunction
 
 function! utils#mkdir(path) abort
     if !isdirectory(a:path)
-        call mkdir(a:path, 'p')
+        call mkdir(a:path, 'p', 0700)
     endif
 endfunction
 

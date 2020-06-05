@@ -1,3 +1,5 @@
+" vim: fdm=marker
+
 if exists('b:did_ftplugin') | finish | endif
 let s:cpo_save = &cpo
 set cpo&vim

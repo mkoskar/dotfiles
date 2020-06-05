@@ -1,3 +1,5 @@
+" vim: fdm=marker
+
 if exists('did_load_filetypes') | finish | endif
 let s:cpo_save = &cpo
 set cpo&vim

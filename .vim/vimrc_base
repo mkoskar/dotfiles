@@ -29,12 +29,11 @@ else
 endif
 
 let bin = has('nvim') ? 'nvim' : 'vim'
-let homedir = fnamemodify('~', ':p:h')
-let $VIMDIR = homedir . '/.local/share/' . bin
+let $VIMDIR = $HOME . '/.local/share/' . bin
 
 if isdirectory($BASEDIR)
     let basedir = fnamemodify($BASEDIR, ':p:h')
-    if basedir !=# homedir
+    if basedir !=# $HOME
         let $VIMDIR = basedir . '/.' . bin
         call utils#rtpPrepend(basedir . '/.vim')
         if has('nvim')
@@ -326,6 +325,8 @@ set guioptions=
     \ guioptions-=m
     \ guioptions-=r
 
+map! <S-Insert> <MiddleMouse>
+
 
 " Messages and Info
 " ----------------------------------------
@@ -341,10 +342,7 @@ set showmode
 
 set clipboard=unnamed
 
-" Yank from cursor to the line end (consistent with D, C)
 nnoremap <silent> Y y$
-
-" Select last yanked area (linewise)
 nnoremap <silent> <expr> gp '`[' . getregtype()[0] . '`]'
 
 
@@ -414,6 +412,12 @@ nnoremap <Leader>fm :setl fdm=marker \| normal! zM<CR>
 nnoremap <Leader>fs :setl fdm=syntax \| normal! zM<CR>
 
 
+" Diff Mode
+" ----------------------------------------
+
+set diffopt+=algorithm:patience
+
+
 " Mapping
 " ----------------------------------------
 
@@ -447,6 +451,7 @@ call utils#mkdir(&directory)
 " ----------------------------------------
 
 set history=1000
+set suffixes=.bak,.swp,~
 set wildcharm=<S-Tab>
 set wildmenu
 set wildmode=longest,full
@@ -524,7 +529,6 @@ set imsearch=-1
 " Various
 " ----------------------------------------
 
-set sessionoptions-=blank sessionoptions-=options
 set signcolumn=yes
 set virtualedit=block
 
@@ -532,20 +536,18 @@ let &viewdir = $VIMDIR . '/.view'
 let &viminfo = "!,'100,<50,s10,h"
 let &viminfofile = $VIMDIR . '/.viminfo'
 
-nnoremap <Leader>V :setl <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
-
-nnoremap <silent> <Leader>re :redraw!<CR>
-
-" Disable Ex mode
-nnoremap Q <Nop>
-
-" Disable Man lookup
 nnoremap K <Nop>
-
-" Delete all
+nnoremap Q <Nop>
+nnoremap <Leader>V :setl <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
+nnoremap <silent> <C-Q> :bd<CR>
+nnoremap <silent> <C-W><C-F> :vertical normal! <C-V><C-W>f<CR>
 nnoremap <silent> <Leader>D :%d<CR>
+nnoremap <silent> <Leader>ft :filetype detect<CR>
+nnoremap <silent> <Leader>q :close<CR>
+nnoremap <silent> <Leader>re :redraw!<CR>
+nnoremap <silent> <Leader>sc :new +setl\ bt=nofile\ bh=wipe\ noswf<CR>
 
-" Open files faster
+" Open
 nnoremap <Leader>ew :e<Space>
 nnoremap <Leader>es :sp<Space>
 nnoremap <Leader>ev :vsp<Space>
@@ -554,22 +556,13 @@ nnoremap <silent> <Leader>ee :e<CR>
 nnoremap <silent> <Leader>e0 :e ++binary<CR>
 nnoremap <silent> <Leader>E :e!<CR>
 
-" Read / Filter faster
+" Read / Filter
 nnoremap <Leader>% :%!
 nnoremap <Leader>ri :r!
-
-" Unload current buffer and delete if from buffer list
-nnoremap <silent> <C-Q> :bd<CR>
 
 " Readonly / Modifiable
 nnoremap <Leader>ro :setl ro noma<CR>
 nnoremap <Leader>ma :setl ma noro<CR>
-
-" Scratch buffer
-nnoremap <silent> <Leader>sc :new +setl\ bt=nofile\ bh=wipe\ noswf<CR>
-
-" Reload filetype
-nnoremap <silent> <Leader>ft :filetype detect<CR>
 
 " Sorting
 xnoremap <silent> <Leader>ss :sort<CR>
@@ -577,50 +570,26 @@ xnoremap <silent> <Leader>su :sort u<CR>
 xnoremap <silent> <Leader>sr :sort!<CR>
 xnoremap <silent> <Leader>sb :!sortb<CR>
 
-" Working with diffs
-nnoremap <silent> <Leader>d; :,diffget<CR>
-nnoremap <silent> <Leader>d: :,diffput<CR>
-nnoremap <silent> <Leader>du :diffupdate<CR>
-nnoremap <silent> <Leader>dc :only \| diffoff!<CR>
-
-" Help in new tab page
-nnoremap <Leader>h :tab help<Space>
-nnoremap <Leader>H :tab lhelpgrep<Space>
-
-" Edit / Reload 'vimrc'
-nnoremap <silent> <Leader>rc :vs <C-R>=fnameescape(vimrc)<CR><CR>
-nnoremap <silent> <Leader>so :source <C-R>=fnameescape(vimrc)<CR>
-    \ \| call utils#echoWarn('vimrc reloaded')<CR>
-
-" Format
-xnoremap <silent> <Leader>fo :Format<CR>
-nnoremap <silent> <Leader>fo :%Format<CR>
-
-" XML prettify
-xnoremap <silent> <Leader>px :Format xml<CR>
-nnoremap <silent> <Leader>px :%Format xml<CR>
-
 " Strip / Squash lines
 xnoremap <silent> <Leader>ps :!striplns<CR>
 nnoremap <silent> <Leader>ps :%!striplns<CR>
 xnoremap <silent> <Leader>pS :!squashlns<CR>
 nnoremap <silent> <Leader>pS :%!squashlns<CR>
 
-" URLs
-xnoremap <silent> <Leader>uo :SystemRange! urls -o<CR>
-nnoremap <silent> <Leader>uo :.SystemRange! urls -o<CR>
-nnoremap <silent> <Leader>uO :%SystemRange! urls -o<CR>
+" Help
+nnoremap <Leader>h :tab help<Space>
+nnoremap <Leader>H :tab lhelpgrep<Space>
 
-xnoremap <silent> <Leader>uy :SystemRange! urls -y<CR>
-nnoremap <silent> <Leader>uy :.SystemRange! urls -y<CR>
-nnoremap <silent> <Leader>uY :%SystemRange! urls -y<CR>
+" Diffs
+nnoremap <silent> <Leader>d; :,diffget<CR>
+nnoremap <silent> <Leader>d: :,diffput<CR>
+nnoremap <silent> <Leader>du :diffupdate<CR>
+nnoremap <silent> <Leader>dc :only \| diffoff!<CR>
 
-" Git
-nnoremap <Leader>gg :vertical System git show HEAD:./
-
-" Other
-nnoremap <silent> <Leader>q :close<CR>
-nnoremap <silent> <C-W><C-F> :vertical normal! <C-V><C-W>f<CR>
+" Edit / Reload 'vimrc'
+nnoremap <silent> <Leader>rc :vs <C-R>=fnameescape(vimrc)<CR><CR>
+nnoremap <silent> <Leader>so :source <C-R>=fnameescape(vimrc)<CR>
+    \ \| call utils#echoWarn('vimrc reloaded')<CR>
 
 " ----------------------------------------
 
@@ -641,6 +610,11 @@ function! s:Format(...) range abort
 endfunction
 
 command! -nargs=? -range -bar Format silent Preserve <line1>,<line2> call <SID>Format(<f-args>)
+nnoremap <silent> <Leader>fo :%Format<CR>
+xnoremap <silent> <Leader>fo :Format<CR>
+
+xnoremap <silent> <Leader>px :Format xml<CR>
+nnoremap <silent> <Leader>px :%Format xml<CR>
 
 " }}}
 
@@ -678,6 +652,17 @@ endfunction
 
 command! -nargs=1 -complete=file DiffTo call s:DiffTo(<q-args>)
 nnoremap <Leader>df :DiffTo <C-R>=expand('%')<CR>
+
+" }}}
+
+" Macros {{{
+
+function! s:Macro(macro) abort
+    call setreg('m', a:macro)
+    normal! @m
+endfunction
+
+command! -nargs=1 Macro call s:Macro(<q-args>)
 
 " }}}
 
@@ -965,34 +950,35 @@ nnoremap <silent> <Leader>F :ReloadT!<CR>
 
 " ----------------------------------------
 
-nnoremap <silent> <Leader>== :Preserve normal! gg=G<CR>
-nnoremap <silent> <Leader>gq :Preserve normal! gggqG<CR>
-
-command! -range -bar Sanitize silent Preserve <line1>,<line2> s/\s\+$//e
-nnoremap <silent> <Leader>pp :%Sanitize<CR>
-xnoremap <silent> <Leader>pp :Sanitize<CR>
+command! -nargs=? -range Split call utils#tryCatch('Preserve <line1>,<line2>s/'
+    \. (!empty(<q-args>) ? escape(<q-args>, '/') : '\s\+') . '/\r/ge')
 
 command! -nargs=? -range Join call utils#tryCatch('Preserve <line1>,'
     \. (<line2> > <line1> ? <line2>-1 : <line2>) . 's/\n/'
     \. (!empty(<q-args>) ? escape(<q-args>, '/&') : ' ') . '/ge')
 
-command! -nargs=? -range Split call utils#tryCatch('Preserve <line1>,<line2>s/'
-    \. (!empty(<q-args>) ? escape(<q-args>, '/') : '\s\+') . '/\r/ge')
-
-function! s:Macro(macro) abort
-    call setreg('m', a:macro)
-    normal! @m
-endfunction
-
-command! -nargs=1 Macro call s:Macro(<q-args>)
-
 command! -count=1 PackPath exec '<count>Execute set pp' | exec 'normal! df=' | Split,
-
 command! -count=1 RuntimePath exec '<count>Execute set rtp' | exec 'normal! df=' | Split,
-
 command! -count=1 ScriptNames <count>Execute scriptnames
 
 command! DelDirs Preserve g/\/$/d
+
+command! -range -bar Sanitize silent Preserve <line1>,<line2> s/\s\+$//e
+nnoremap <silent> <Leader>pp :%Sanitize<CR>
+xnoremap <silent> <Leader>pp :Sanitize<CR>
+
+nnoremap <silent> <Leader>== :Preserve normal! gg=G<CR>
+nnoremap <silent> <Leader>gq :Preserve normal! gggqG<CR>
+
+xnoremap <silent> <Leader>uo :SystemRange! urls -o<CR>
+nnoremap <silent> <Leader>uo :.SystemRange! urls -o<CR>
+nnoremap <silent> <Leader>uO :%SystemRange! urls -o<CR>
+
+xnoremap <silent> <Leader>uy :SystemRange! urls -y<CR>
+nnoremap <silent> <Leader>uy :.SystemRange! urls -y<CR>
+nnoremap <silent> <Leader>uY :%SystemRange! urls -y<CR>
+
+nnoremap <Leader>gg :vertical System git show HEAD:./
 
 " ----------------------------------------
 
@@ -1014,8 +1000,6 @@ if has('nvim')
     let loaded_remote_plugins = 1
     let loaded_tutor_mode_plugin = 1
 endif
-
-packadd enhanced-diff | PatienceDiff
 
 packadd! ansiesc
 packadd! colorschemes
@@ -1042,10 +1026,10 @@ augroup vimrc_base
     autocmd QuickFixCmdPost [^l]* cwindow
     autocmd QuickFixCmdPost l* lwindow
 
-    if !has('nvim')
-        autocmd TermChanged * silent call s:MetaSetup(meta_enabled)
-    else
+    if has('nvim')
         autocmd TermOpen * call utils#bufSpecial()
+    else
+        autocmd TermChanged * silent call s:MetaSetup(meta_enabled)
     endif
 
     autocmd BufWritePost ~/.Xresources !xrdb -load ~/.Xresources

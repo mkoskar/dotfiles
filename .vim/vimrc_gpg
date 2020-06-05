@@ -1,14 +1,14 @@
 " vim: ft=vim fdm=marker
 
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
+let &rtp = expand('<sfile>:p:h')
 let $BASEDIR = ''
 
-source ~/.vim/vimrc_base
+runtime vimrc_base
 
 set nobackup
 set noswapfile
 set noundofile
-set undolevels=-1
 set viminfo=
 
 " ----------------------------------------

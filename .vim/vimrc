@@ -1,0 +1,20 @@
+" vim: ft=vim fdm=marker
+
+set nocompatible
+
+set nobackup
+set noswapfile
+set noundofile
+set viminfo=
+
+let s:vimrc = '~/.vim/vimrc_ext'
+
+if isdirectory($BASEDIR)
+    let basedir = fnamemodify($BASEDIR, ':p:h')
+    if basedir !=# $HOME
+        let s:_ = basedir . '/.vim/vimrc'
+        if filereadable(s:_) | let s:vimrc = s:_ | endif
+    endif
+endif
+
+exec 'source' fnameescape(s:vimrc)

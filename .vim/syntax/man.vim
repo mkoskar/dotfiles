@@ -1,6 +1,4 @@
-" Vim syntax file
-" Language: Man page
-" based on /usr/share/vim/vim81/syntax/man.vim
+" vim: fdm=marker
 
 if exists('b:current_syntax') | finish | endif
 let s:cpo_save = &cpo

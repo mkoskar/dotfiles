@@ -1,5 +1,4 @@
-" Vim syntax file
-" Language: DICT protocol
+" vim: fdm=marker
 
 if exists('b:current_syntax') | finish | endif
 let s:cpo_save = &cpo

@@ -194,7 +194,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     lcd-test                b http://www.lagom.nl/lcd-test/all_tests.php
     learnyouahaskell        b http://learnyouahaskell.com/chapters
     license                 b https://choosealicense.com/licenses/
-    limnoria-subst          b https://github.com/ProgVal/Limnoria/blob/master/src/ircutils.py#L797
+    limnoria                b https://docs.limnoria.net/use/
     linux-docs              b https://www.kernel.org/doc/Documentation
     linux-docs!             b /lib/modules/"$kernel_release"/build/Documentation
     linux-docs-html         b https://www.kernel.org/doc/html/latest/index.html

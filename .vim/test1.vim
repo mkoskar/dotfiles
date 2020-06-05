@@ -1,4 +1,4 @@
-" vim: ft=vim fdm=marker
+" vim: fdm=marker
 
 set nocompatible
 set noloadplugins

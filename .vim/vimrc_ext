@@ -1,291 +1,50 @@
 " vim: ft=vim fdm=marker
 
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
+let &rtp = expand('<sfile>:p:h')
 
-source ~/.vim/vimrc_base
-
-"packadd! deoplete
-"packadd! deoplete-ternjs
-"packadd! easymotion
-"packadd! jspc.vim
-"packadd! neomake
-"packadd! tern_for_vim
-packadd! ale
-packadd! bufexplorer
-packadd! dirvish
-packadd! easy-align
-packadd! emmet
-packadd! fugitive
-packadd! fzf-ext
-packadd! goyo
-packadd! limelight
-packadd! nerdtree
-packadd! repeat
-packadd! speeddating
-packadd! surround
-packadd! tagbar
-packadd! tcomment
-packadd! ultisnips
-packadd! undotree
-packadd! unimpaired
-packadd! vim-snippets
-packadd! visualrepeat
-
-augroup vimrc_ext_lazy_plugins
-    autocmd!
-augroup END
+runtime vimrc_base
 
 
-" ale
+" File/Buffer Explorer
 " ----------------------------------------
 
-function! AleStatus() abort
-    try
-        let total = ale#statusline#Count(bufnr('%')).total
-        return total == 0 ? '' : printf('[%d]', total)
-    finally
-        return ''
-    endtry
-endfunction
-
-set statusline+=%(\ %#ErrorMsg#%{AleStatus()}%*%)
-
-let ale_echo_cursor = 1
-let ale_echo_msg_format = '[%linter%] %code%: %s'
-let ale_lint_on_enter = 1
-let ale_lint_on_insert_leave = 1
-let ale_lint_on_text_changed = 'normal'
-let ale_sign_error = '>'
-let ale_sign_warning = '>'
-
-let ale_python_flake8_options = '--ignore=E265,E266'
-let ale_sh_shellcheck_exclusions = 'SC1003,SC1007,SC1083,SC2088,SC2191'
-
-nnoremap <silent> <C-Space> :ALEDetail<CR>
-nmap <Leader>aa <Plug>(ale_toggle)
-nmap <Leader>ag <Plug>(ale_first)
-nmap <Leader>aj <Plug>(ale_next)
-nmap <Leader>ak <Plug>(ale_previous)
-nmap <Leader>aG <Plug>(ale_last)
+"runtime conf.d/ctrlp.vim
+runtime conf.d/bufexplorer.vim
+runtime conf.d/dirvish.vim
+runtime conf.d/fzf-ext.vim
+runtime conf.d/nerdtree.vim
 
 
-" bufexplorer
+" Linting
 " ----------------------------------------
 
-let bufExplorerFindActive = 0
-let bufExplorerShowRelativePath = 1
-
-nnoremap <silent> <Leader>bb :BufExplorer<CR>
-
-augroup vimrc_ext_bufexplorer
-    autocmd!
-    autocmd FileType bufexplorer call utils#bufSpecial()
-augroup END
-
-hi link bufExplorerActBuf Directory
-hi link bufExplorerAltBuf Type
-hi link bufExplorerCurBuf Statement
-hi link bufExplorerHelp String
-hi link bufExplorerHidBuf Normal
-hi link bufExplorerInactBuf Normal
-hi link bufExplorerMapping Identifier
-hi link bufExplorerTitle PreProc
+"runtime conf.d/neomake.vim
+"runtime conf.d/syntastic.vim
+runtime conf.d/ale.vim
 
 
-" ctrlp
+" Completion
 " ----------------------------------------
 
-let ctrlp_arg_map = 1
-let ctrlp_lazy_update = 0
-let ctrlp_max_depth = 10
-let ctrlp_max_files = 2500
-let ctrlp_show_hidden = 1
-let ctrlp_working_path_mode = 'rwa'
-
-let ctrlp_prompt_mappings = {
-    \ 'PrtCurLeft()': ['<c-h>', '<left>', '<c-^>'],
-    \ 'PrtSelectMove("d")': ['<M-j>', '<PageDown>', '<kPageDown>'],
-    \ 'PrtSelectMove("u")': ['<M-k>', '<PageUp>', '<kPageUp>'],
-    \ }
-
-nnoremap <silent> <M-e> :CtrlPMRUFiles<CR>
+"runtime conf.d/deoplete.vim
+"runtime conf.d/emmet.vim
+runtime conf.d/ultisnips.vim
 
 
-" deoplete
+" Other
 " ----------------------------------------
 
-let deoplete#enable_at_startup = 1
-let deoplete#enable_smart_case = 1
-
-"inoremap <expr> <C-G> deoplete#undo_completion()
-"inoremap <expr> <C-L> deoplete#refresh()
-"inoremap <expr> <CR> deoplete#close_popup()."\<CR>"
-
-
-" dirvish
-" ----------------------------------------
-
-let dirvish_hijack_netrw = 0
-let dirvish_mode = ':sort | sort ,^.*/,'
-
-nmap <M-u> <Plug>(dirvish_up)
-
-augroup vimrc_ext_dirvish
-    autocmd!
-    autocmd FileType dirvish call utils#bufSpecial()
-        \| nmap <buffer> q <Plug>(dirvish_quit)
-augroup END
-
-
-" easy-align
-" ----------------------------------------
-
-nmap <Leader>ga <Plug>(LiveEasyAlign)
-xmap <Leader>ga <Plug>(LiveEasyAlign)
-
-
-" easymotion
-" ----------------------------------------
-
-let EasyMotion_smartcase = 1
-let EasyMotion_startofline = 0
-let EasyMotion_verbose = 0
-
-map <Leader><Leader>/ <Plug>(easymotion-sn)
-map <Leader><Leader>J <Plug>(easymotion-sol-j)
-map <Leader><Leader>K <Plug>(easymotion-sol-k)
-map <Leader>; <Plug>(easymotion-next)
-map <Leader>\ <Plug>(easymotion-prev)
-
-hi EasyMotionTarget ctermfg=3 cterm=bold
-hi link EasyMotionIncCursor Cursor
-hi link EasyMotionIncSearch IncSearch
-hi link EasyMotionMoveHL IncSearch
-hi link EasyMotionShade Comment
-hi link EasyMotionTarget2First EasyMotionTarget
-hi link EasyMotionTarget2Second EasyMotionTarget
-
-
-" emmet
-" ----------------------------------------
-
-let user_emmet_leader_key = '<C-Y>'
-let user_emmet_mode = 'i'
-
-
-" fugitive
-" ----------------------------------------
-
-nnoremap <Leader>G :G
-
-
-" fzf
-" ----------------------------------------
-
-nnoremap <silent> <C-N> :Files<CR>
-
-
-" limelight
-" ----------------------------------------
-
-let limelight_default_coefficient = 0.8
-
-
-" nerdtree
-" ----------------------------------------
-
-let NERDTreeAutoDeleteBuffer = 1
-let NERDTreeBookmarksFile = $VIMDIR . '/.NERDTreeBookmarks'
-let NERDTreeCaseSensitiveSort = 1
-let NERDTreeHijackNetrw = 0
-let NERDTreeIgnore = ['^\.svn$', '^\.git$', '\.swp$', '\~$']
-let NERDTreeMapCWD = 'cD'
-let NERDTreeMapHelp = '<F1>'
-let NERDTreeShowBookmarks = 1
-let NERDTreeShowHidden = 1
-let NERDTreeWinSize = 31
-
-nnoremap <silent> <F1> :NERDTreeFind<CR>
-nnoremap <silent> <F2> :NERDTreeToggle<CR>
-nnoremap <silent> <Leader>tf :NERDTreeFind<CR>
-nnoremap <silent> <Leader>tt :NERDTreeToggle<CR>
-
-augroup vimrc_ext_nerdtree
-    autocmd!
-    autocmd FileType nerdtree call utils#bufSpecial()
-augroup END
-
-
-" syntastic
-" ----------------------------------------
-
-"set statusline+=%(\ %#ErrorMsg#%{SyntasticStatuslineFlag()}%*%)
-
-let syntastic_aggregate_errors = 1
-let syntastic_always_populate_loc_list = 1
-let syntastic_auto_jump = 3
-let syntastic_auto_loc_list = 0
-let syntastic_check_on_open = 0
-let syntastic_error_symbol = '>'
-let syntastic_sort_aggregated_errors = 0
-let syntastic_stl_format = ' %E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w} '
-let syntastic_style_error_symbol = '>'
-let syntastic_style_warning_symbol = '>'
-let syntastic_warning_symbol = '>'
-
-let syntastic_sh_checkers = ['shellcheck']
-
-nnoremap <silent> <Leader>SS :SyntasticCheck<CR>
-nnoremap <silent> <Leader>Si :SyntasticInfo<CR>
-nnoremap <silent> <Leader>Sr :SyntasticReset<CR>
-
-
-" tagbar
-" ----------------------------------------
-
-let tagbar_autofocus = 1
-let tagbar_iconchars = ['▸', '▾']
-let tagbar_map_help = ['<F1>']
-let tagbar_map_jump = ['<CR>', 'o']
-let tagbar_map_togglefold = ['O', 'za']
-let tagbar_sort = 0
-let tagbar_width = 31
-
-nnoremap <silent> <F8> :Tagbar<CR>
-nnoremap <silent> <Leader>T :TagbarOpenAutoClose<CR>
-
-hi TagbarHighlight cterm=reverse
-hi link TagbarHelp String
-
-
-" tcomment
-" ----------------------------------------
-
-let tcomment#options = {'whitespace': 'no'}
-let tcomment_maps = 0
-
-nnoremap <silent> <Leader>C :TCommentBlock<CR>
-nnoremap <silent> <Leader>cc :TComment<CR>
-xnoremap <silent> <Leader>C :TCommentBlock<CR>
-xnoremap <silent> <Leader>cc :TComment<CR>
-
-
-" ultisnips
-" ----------------------------------------
-
-let UltiSnipsEditSplit = 'vertical'
-let UltiSnipsExpandTrigger = '<C-J>'
-let UltiSnipsJumpBackwardTrigger = '<C-Z>'
-
-
-" undotree
-" ----------------------------------------
-
-let undotree_SplitWidth = 31
-
-nnoremap <silent> <F4> :silent UndotreeToggle<CR>
-
-augroup vimrc_ext_undotree
-    autocmd!
-    autocmd FileType undotree call utils#bufSpecial()
-augroup END
+runtime conf.d/easy-align.vim
+runtime conf.d/easymotion.vim
+runtime conf.d/fugitive.vim
+runtime conf.d/goyo.vim
+runtime conf.d/limelight.vim
+runtime conf.d/repeat.vim
+runtime conf.d/speeddating.vim
+runtime conf.d/surround.vim
+runtime conf.d/tagbar.vim
+runtime conf.d/tcomment.vim
+runtime conf.d/undotree.vim
+runtime conf.d/unimpaired.vim
+runtime conf.d/visualrepeat.vim
