@@ -64,7 +64,11 @@ fi
 if (( !Nopt )); then
     # shellcheck disable=SC2125
     (( sopt )) && pattern=$name.scop[e] || pattern=$name.servic[e]
-    (( ropt )) && sdu stop "$pattern"
+    if (( ropt )); then
+        sdu stop "$pattern"
+    else
+        sdu --quiet is-active "$pattern" && exit
+    fi
     sdu reset-failed "$pattern"
 fi
 

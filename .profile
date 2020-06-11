@@ -202,3 +202,14 @@ esac
 
 source_opt ~/.profile_"$OSID"
 source_opt ~/.profile."$HOSTNAME"
+
+# ----------------------------------------
+
+case $- in *i*) ;; *) return ;; esac
+
+if [ -e ~/.hushlogin ] && [ -f /etc/motd ]; then
+    if ! cmp -s /etc/motd ~/.hushmotd; then
+        tee ~/.hushmotd </etc/motd
+        echo '((( MOTD shown only once, unless it is changed )))'
+    fi
+fi

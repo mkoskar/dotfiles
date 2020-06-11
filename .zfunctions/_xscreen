@@ -1,0 +1,5 @@
+#compdef xscreen
+
+_alternative \
+    'profiles:profiles:(dock mobile)' \
+    'outputs:outputs:(DP1 DP2 DP3 HDMI1 HDMI2 HDMI3 LVDS1 VGA1)'

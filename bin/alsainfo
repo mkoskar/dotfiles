@@ -2,29 +2,27 @@
 
 headcat() { head -v -n -0 "$@"; }
 
+info() {
+    local label=$1
+    shift
+    [[ $label = - ]] && label=$*
+    echo $'\n--------------------------------------------------'
+    printf '> %s\n\n' "$label"
+    "$@"
+}
+
 {
-    echo $'\n--------------------------------------------------'
-    echo $'> amixer info\n'
+    info - amixer info
 
-    amixer info
-    echo
-    amixer -c 0 info
+    info - amixer -c 0 info
 
-    echo $'\n--------------------------------------------------'
-    echo $'> /proc/asound \n'
+    info /proc/asound headcat /proc/asound/{cards,devices,modules,pcm,version}
 
-    headcat /proc/asound/{cards,devices,modules,pcm,version}
+    info - aplay -l
 
-    echo $'\n--------------------------------------------------'
-    echo $'> aplay -l / arecord -l\n'
+    info - arecord -l
 
-    aplay -l
-    echo
-    arecord -l
+    info - aplay -L
 
-    echo $'\n--------------------------------------------------'
-    echo $'> aplay -L\n'
-
-    aplay -L
     echo
 } |& $PAGER

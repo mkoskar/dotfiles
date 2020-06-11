@@ -13,10 +13,9 @@ let NERDTreeShowBookmarks = 1
 let NERDTreeShowHidden = 1
 let NERDTreeWinSize = 31
 
-nnoremap <silent> <F1> :NERDTreeFind<CR>
-nnoremap <silent> <F2> :NERDTreeToggle<CR>
-nnoremap <silent> <Leader>tf :NERDTreeFind<CR>
 nnoremap <silent> <Leader>tt :NERDTreeToggle<CR>
+nnoremap <silent> <Leader>to :NERDTreeFocus<CR>
+nnoremap <silent> <Leader>tf :NERDTreeFind<CR>
 
 augroup nerdtree_conf
     autocmd!

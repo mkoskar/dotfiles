@@ -17,7 +17,8 @@ case ${1-} in
 
     pre)
         sdu start xsession@:"$screen".target
-        srun -rx compton
+        set +e
+        srun -rx picom
         srun -rx osdd
         srun -rx -n polkit-agent /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
         srun -rxl -n sxhkd bash -c 'sleep 1; exec sxhkd'
@@ -60,6 +61,7 @@ case ${1-} in
         ;;
 
     startup)
+        set +e
         case $session in
             main)
                 srun -xl clementine

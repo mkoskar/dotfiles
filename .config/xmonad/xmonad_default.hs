@@ -223,7 +223,7 @@ myConfig = def
             , (f, m) <- [(W.greedyView, ""), (W.shift, "-S")]
         ]
         ++
-        [ ("M-q", spawn "xmonad --recompile && xmonad --restart")
+        [ ("M-q", spawn "xmonad --restart")
         , ("M-S-q", io (exitWith ExitSuccess))
         , ("M-S-<Return>", spawn myTerminal)
 

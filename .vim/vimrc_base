@@ -332,7 +332,7 @@ map! <S-Insert> <MiddleMouse>
 " ----------------------------------------
 
 set ruler
-set shortmess=aoOtTWI
+set shortmess=aoOtTWIc
 set showcmd
 set showmode
 
@@ -441,7 +441,7 @@ call utils#mkdir(&backupdir)
 " ----------------------------------------
 
 set swapfile
-set updatetime=1000 " also used for CursorHold
+set updatetime=300
 
 let &directory = $VIMDIR . '/.swap//'
 call utils#mkdir(&directory)
@@ -970,9 +970,9 @@ xnoremap <silent> <Leader>pp :Sanitize<CR>
 nnoremap <silent> <Leader>== :Preserve normal! gg=G<CR>
 nnoremap <silent> <Leader>gq :Preserve normal! gggqG<CR>
 
-xnoremap <silent> <Leader>uo :SystemRange! urls -o<CR>
-nnoremap <silent> <Leader>uo :.SystemRange! urls -o<CR>
-nnoremap <silent> <Leader>uO :%SystemRange! urls -o<CR>
+xnoremap <silent> <Leader>uu :SystemRange! urls -o<CR>
+nnoremap <silent> <Leader>uu :.SystemRange! urls -o<CR>
+nnoremap <silent> <Leader>uU :%SystemRange! urls -o<CR>
 
 xnoremap <silent> <Leader>uy :SystemRange! urls -y<CR>
 nnoremap <silent> <Leader>uy :.SystemRange! urls -y<CR>

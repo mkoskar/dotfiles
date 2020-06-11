@@ -73,7 +73,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     cryptocurr              b https://coinmarketcap.com/
     ctlcodes                b https://en.wikipedia.org/wiki/C0_and_C1_control_codes#C0_\(ASCII_and_derivatives\)
     ctlseqs                 b https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
-    ctlseqs1                b https://bjh21.me.uk/all-escapes/all-escapes.txt
     cups                    b https://www.cups.org/documentation.html
     cve                     b https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword={u}
     d                       b https://www.merriam-webster.com/dictionary/{u}

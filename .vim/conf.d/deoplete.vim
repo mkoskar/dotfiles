@@ -7,4 +7,4 @@ let deoplete#enable_smart_case = 1
 
 "inoremap <expr> <C-G> deoplete#undo_completion()
 "inoremap <expr> <C-L> deoplete#refresh()
-"inoremap <expr> <CR> deoplete#close_popup()."\<CR>"
+"inoremap <expr> <CR> deoplete#close_popup() . '\<CR>'

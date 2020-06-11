@@ -6,7 +6,7 @@ dall=$({ dispwin -\? || true; } |& sed -nr "s/^\s*([0-9]+ = 'Monitor [0-9]+, Out
 [[ $dall ]] || exit 1
 readarray -t dall <<<"$dall"
 
-for (( i=0; i<${#dall[@]}; i++ )); do
+for i in "${!dall[@]}"; do
     (( i > 0 )) && atom=_ICC_PROFILE_$i || atom=_ICC_PROFILE
     printf '%s\n' "${dall[$i]}"
     xprop -root -remove "$atom"

@@ -2,8 +2,14 @@
 
 set -eu
 
+prgname=${0##*/}
+
 if (( $# )); then
     ifile=$1
+    [[ -r $ifile ]] || {
+        echo "$prgname: '$ifile': File doesn't exist or isn't readable" >&2
+        exit 1
+    }
     echo
     stat -- "$ifile"
 else

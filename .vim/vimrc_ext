@@ -27,6 +27,7 @@ runtime conf.d/ale.vim
 " Completion
 " ----------------------------------------
 
+"runtime conf.d/coc.vim
 "runtime conf.d/deoplete.vim
 "runtime conf.d/emmet.vim
 runtime conf.d/ultisnips.vim

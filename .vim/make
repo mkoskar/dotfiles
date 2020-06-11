@@ -25,8 +25,9 @@ grep -vxE '\s*|(\s*#.*)' <<-EOF | parallel --colsep \\t+ --bar from_git
 	ale					https://github.com/dense-analysis/ale
 	ansiesc				https://github.com/jakar/vim-AnsiEsc
 	bufexplorer			https://github.com/jlanzarotta/bufexplorer
+	coc					https://github.com/neoclide/coc.nvim
 	colorschemes		https://github.com/flazz/vim-colorschemes
-	deoplete			https://github.com/Shougo/deoplete.nvim
+	ctrlp				https://github.com/ctrlpvim/ctrlp.vim
 	dirvish				https://github.com/justinmk/vim-dirvish
 	easy-align			https://github.com/junegunn/vim-easy-align
 	easymotion			https://github.com/easymotion/vim-easymotion
@@ -37,7 +38,7 @@ grep -vxE '\s*|(\s*#.*)' <<-EOF | parallel --colsep \\t+ --bar from_git
 	goyo				https://github.com/junegunn/goyo.vim
 	limelight			https://github.com/junegunn/limelight.vim
 	neomake				https://github.com/neomake/neomake
-	nerdtree			https://github.com/scrooloose/nerdtree
+	nerdtree			https://github.com/preservim/nerdtree
 	repeat				https://github.com/tpope/vim-repeat
 	speeddating			https://github.com/tpope/vim-speeddating
 	surround			https://github.com/tpope/vim-surround
@@ -47,7 +48,7 @@ grep -vxE '\s*|(\s*#.*)' <<-EOF | parallel --colsep \\t+ --bar from_git
 	undotree			https://github.com/mbbill/undotree
 	unimpaired			https://github.com/tpope/vim-unimpaired
 	vim-snippets		https://github.com/honza/vim-snippets
-	visualrepeat		https://github.com/vim-scripts/visualrepeat
+	visualrepeat		https://github.com/inkarkat/vim-visualrepeat
 
 EOF
 echo

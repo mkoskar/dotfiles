@@ -1,5 +1,29 @@
 # vim: ft=sh
 
+setup() {
+    local args=("$@")
+    local off=("${OUTS[@]}")
+    while (( $# )); do
+        if [[ $1 = --output ]]; then
+            shift
+            (( $# )) || continue
+            for i in "${!off[@]}"; do
+                if [[ ${off[$i]} = "$1" ]]; then
+                    unset off["$i"]
+                    break
+                fi
+            done
+        fi
+        shift
+    done
+    for i in "${off[@]}"; do
+        args+=(--output "$i" --off)
+    done
+    xrandr "${args[@]}"
+}
+
+# ----------------------------------------
+
 layout_profile() {
     case $(edidsum -o) in
         251b742672f54471057b10e77e4bb2dfaa6a9904) echo dock ;;
@@ -7,66 +31,51 @@ layout_profile() {
 }
 
 layout_hook_default() {
-    local xrandr
     (( $# )) || return
     [[ $1 = - ]] && set -- "$(layout_profile)"
-    case $1 in
-        dock)
-            xrandr=(
-                --output DP1 --off
-                --output DP2 --off
-                --output DP3 --off
-                --output HDMI1 --off
+    local -u profile=$1
+    local args=()
+    case $profile in
+        DOCK)
+            args+=(
                 --output HDMI2 --mode 1920x1200 --pos 1600x0 --rotate normal
-                --output HDMI3 --off
                 --output LVDS1 --mode 1600x900 --pos 0x0 --rotate normal --primary
-                --output VGA1 --off
             )
             ;;
+        ''|MOBILE)
+            profile=LVDS1
+            ;&
         *)
-            xrandr=(
-                --output DP1 --off
-                --output DP2 --off
-                --output DP3 --off
-                --output HDMI1 --off
-                --output HDMI2 --off
-                --output HDMI3 --off
-                --output LVDS1 --mode 1600x900 --pos 0x0 --rotate normal
-                --output VGA1 --off
-            )
+            args+=(--output "$profile" --auto --primary)
             ;;
     esac
-    xrandr "${xrandr[@]}"
+    OUTS=(DP1 DP2 DP3 HDMI1 HDMI2 HDMI3 LVDS1 VGA1)
+    setup "${args[@]}"
 }
 
 layout_hook_modesetting() { layout_hook_default "$@"; }
 
 layout_hook_zaphod() {
-    local screen xrandr
     (( $# )) || return
-    screen=$(xserverq screen)
+    local screen; screen=$(xserverq screen)
+    local args=()
     case ${screen##*.} in
         0)
-            xrandr=(
-                --output LVDS1 --mode 1600x900 --pos 0x0 --rotate normal
+            args+=(
+                --output LVDS1 --mode 1600x900 --pos 0x0 --rotate normal --primary
             )
+            OUTS=(LVDS1)
             ;;
         1)
             [[ $1 = - ]] && set -- "$(layout_profile)"
             case $1 in
                 dock)
-                    xrandr=(
-                        --output DP1 --off
-                        --output DP2 --off
-                        --output DP3 --off
-                        --output HDMI1 --off
-                        --output HDMI2 --mode 1920x1200 --pos 0x0 --rotate normal
-                        --output HDMI3 --off
-                        --output VGA1 --off
+                    args+=(
+                        --output HDMI2 --mode 1920x1200 --pos 0x0 --rotate normal --primary
                     )
                     ;;
                 *)
-                    xrandr=(
+                    args+=(
                         --output DP1 --auto
                         --output DP2 --auto
                         --output DP3 --auto
@@ -77,10 +86,11 @@ layout_hook_zaphod() {
                     )
                     ;;
             esac
+            OUTS=(DP1 DP2 DP3 HDMI1 HDMI2 HDMI3 VGA1)
             ;;
         *)
             return;
             ;;
     esac
-    xrandr "${xrandr[@]}"
+    setup "${args[@]}"
 }

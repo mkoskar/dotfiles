@@ -5,4 +5,6 @@ packadd! vim-snippets
 
 let UltiSnipsEditSplit = 'vertical'
 let UltiSnipsExpandTrigger = '<C-J>'
-let UltiSnipsJumpBackwardTrigger = '<C-Z>'
+let UltiSnipsJumpBackwardTrigger = '<C-_>'
+let UltiSnipsJumpForwardTrigger = '<C-J>'
+let UltiSnipsListSnippets  = '<C-Space>'
