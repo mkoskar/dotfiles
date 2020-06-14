@@ -55,19 +55,6 @@ $include ~/.inputrc.esc
 "\ed": kill-word
 "\ex": delete-char
 
-"\C-A": insert-completions
-"\C-D": possible-completions
-"\C-O": menu-complete-backward
-"\e[Z": menu-complete-backward
-"\C-I": menu-complete
-
-"\C-G": abort
-"\C-L": clear-screen
-"\C-P": history-search-backward
-"\C-N": history-search-forward
-"\ek": previous-screen-line
-"\ej": next-screen-line
-
 "\e0": digit-argument
 "\e1": digit-argument
 "\e2": digit-argument
@@ -78,6 +65,20 @@ $include ~/.inputrc.esc
 "\e7": digit-argument
 "\e8": digit-argument
 "\e9": digit-argument
+
+"\C-A": insert-completions
+"\C-D": possible-completions
+"\C-O": menu-complete-backward
+"\e[Z": menu-complete-backward
+"\C-I": menu-complete
+
+"\C-G": abort
+"\C-J": self-insert
+"\C-L": clear-screen
+"\C-N": history-search-forward
+"\C-P": history-search-backward
+"\ej": next-screen-line
+"\ek": previous-screen-line
 
 "\C-X\C-A": vi-movement-mode
 "\C-X\C-Xv": dump-variables
@@ -121,8 +122,8 @@ set keymap vi-command
 
 $include ~/.inputrc.esc
 
-"\ek": previous-screen-line
 "\ej": next-screen-line
+"\ek": previous-screen-line
 
 "\C-X\C-Xv": dump-variables
 "\C-X\C-Xf": dump-functions

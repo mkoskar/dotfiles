@@ -41,6 +41,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     aur-maintainer          b https://aur.archlinux.org/packages.php\?SeB=m\&K="$AUR_MAINTAINER"
     aur-name-only           b https://aur.archlinux.org/packages.php\?SeB=n\&K={u}
     austin-csrg             b https://www.opengroup.org/austin/docreg.html
+    awesome                 b https://github.com/sindresorhus/awesome
     awg                     b https://en.wikipedia.org/wiki/American_wire_gauge#Tables_of_AWG_wire_sizes
     awk                     b https://www.gnu.org/software/gawk/manual/gawk.html
     awk1                    b http://awk.freeshell.org/

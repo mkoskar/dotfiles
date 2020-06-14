@@ -46,7 +46,6 @@ setopt hist_find_no_dups
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
 setopt hist_ignore_space
-setopt hist_reduce_blanks
 setopt hist_save_no_dups
 setopt hist_verify
 setopt inc_append_history
@@ -111,16 +110,45 @@ PS1=\$__vimode$PS1
 [[ $terminfo[tsl] ]] && PS1=%{$terminfo[tsl]%n@%m:%~$terminfo[fsl]%}$PS1
 PS2='$__vimode> '
 
-expand-dot-to-parent-directory-path() {
+__expand-dot-to-parent-directory-path() {
     [[ $LBUFFER = *.. ]] && LBUFFER+=/.. || LBUFFER+=.
 }
 
-expand-word-alias() {
+__expand-word-alias() {
     zle _expand_word
     zle _expand_alias
 }
 
-noop() { }
+__noop() { }
+
+__reedit() {
+    print -Rz - $PREBUFFER$BUFFER
+    zle send-break
+}
+
+__toggle-comment-all() {
+    local buf=$PREBUFFER$BUFFER
+    if [[ $buf = \#* ]]; then
+        buf=${buf#[#]}
+        buf=${buf//$'\n'#/$'\n'}
+    else
+        buf=\#${buf//$'\n'/$'\n'#}
+    fi
+    print -Rz - $buf
+    zle send-break
+}
+
+__zle-keymap-select() {
+    __vimode=:
+    if [[ ! $KEYMAP = vicmd ]]; then
+        [[ $ZLE_STATE = *overwrite* ]] && __vimode=^ || __vimode=+
+    fi
+    zle reset-prompt
+}
+
+__zle-line-init() {
+    zle zle-keymap-select
+}
 
 precmd() {
     local pstatus=($? $pipestatus) __cmd_dur
@@ -141,60 +169,43 @@ preexec() {
     __cmd_start=$EPOCHSECONDS
 }
 
-zle-keymap-select() {
-    __vimode=:
-    if [[ ! $KEYMAP = vicmd ]]; then
-        [[ $ZLE_STATE = *overwrite* ]] && __vimode=^ || __vimode=+
-    fi
-    zle reset-prompt
-}
-
-zle-line-init() {
-    zle zle-keymap-select
-}
-
 zle -C all-matches complete-word _generic
-zle -N complete-help _complete_help
 zle -N copy-earlier-word
 zle -N edit-command-line
-zle -N expand-dot-to-parent-directory-path
-zle -N expand-word-alias
-zle -N noop
-zle -N zle-keymap-select
-zle -N zle-line-init
+zle -N {,__}expand-dot-to-parent-directory-path
+zle -N {,__}expand-word-alias
+zle -N {,__}noop
+zle -N {,__}reedit
+zle -N {,__}toggle-comment-all
+zle -N {,__}zle-keymap-select
+zle -N {,__}zle-line-init
+zle -N {,_}complete-help
+
+for i in backward-kill-line backward-kill-word kill-line kill-word; do
+    eval "__$i-with-undo() { zle split-undo; zle $i; }"
+    zle -N {,__}$i-with-undo
+done
+unset i
 
 bindkey -rR ^A-^_
 
-for k in {@.._}; do
-    bindkey \e^$k noop
-    bindkey -M vicmd \e^$k noop
-done
-
-for k in {\ ..~}; do
-    bindkey \e$k noop
-    bindkey -M vicmd \e$k noop
-done
-
-for k in kich1 kpp knp kf{1..12}; do
-    k=$terminfo[$k]
-    [[ $k ]] || continue
+for k in \\e^{@.._} \\e{\ ..~}; do
     bindkey $k noop
     bindkey -M vicmd $k noop
 done
-
-k=$terminfo[khome]
-if [[ $k ]]; then
-    bindkey $k beginning-of-line
-    bindkey -M vicmd $k beginning-of-line
-fi
-
-k=$terminfo[kend]
-if [[ $k ]]; then
-    bindkey $k end-of-line
-    bindkey -M vicmd $k end-of-line
-fi
-
-unset k
+for k in kdch1 kend kf{1..12} khome kich1 knp kpp; do
+    case $k in
+        kdch1) v=delete-char ;;
+        kend) v=end-of-line ;;
+        khome) v=beginning-of-line ;;
+        *) v=noop ;;
+    esac
+    k=$terminfo[$k]
+    [[ $k ]] || continue
+    bindkey $k $v
+    bindkey -M vicmd $k $v
+done
+unset k v
 
 bindkey ^B beginning-of-line
 bindkey ^E end-of-line
@@ -204,26 +215,13 @@ bindkey \\eb backward-word
 bindkey \\ef emacs-forward-word
 bindkey \\ew emacs-forward-word
 
-bindkey ^U backward-kill-line
-bindkey ^K kill-line
-bindkey ^W backward-kill-word
-bindkey \\ed kill-word
-bindkey \\ex delete-char
-[[ $terminfo[kdch1] ]] && bindkey $terminfo[kdch1] delete-char
+bindkey ^? backward-delete-char
 bindkey ^H backward-delete-char
-
-bindkey ^A all-matches
-bindkey ^D list-choices
-bindkey ^O reverse-menu-complete
-[[ $terminfo[kcbt] ]] && bindkey $terminfo[kcbt] reverse-menu-complete
-bindkey ^I complete-word
-
-bindkey ^G send-break
-bindkey ^L clear-screen
-bindkey ^P history-search-backward
-bindkey ^N history-search-forward
-bindkey \\ek up-line
-bindkey \\ej down-line
+bindkey ^U backward-kill-line-with-undo
+bindkey ^K kill-line-with-undo
+bindkey ^W backward-kill-word-with-undo
+bindkey \\ed kill-word-with-undo
+bindkey \\ex delete-char
 
 bindkey \\e0 digit-argument
 bindkey \\e1 digit-argument
@@ -236,40 +234,55 @@ bindkey \\e7 digit-argument
 bindkey \\e8 digit-argument
 bindkey \\e9 digit-argument
 
-bindkey ^J accept-line
+bindkey ' ' magic-space
+bindkey . expand-dot-to-parent-directory-path
+bindkey \\e. insert-last-word
+bindkey \\em copy-earlier-word
+bindkey ^A all-matches
+bindkey ^D list-choices
+bindkey ^G send-break
+bindkey ^I complete-word
+bindkey ^J self-insert
+bindkey ^L clear-screen
 bindkey ^M accept-line
 bindkey ^R history-incremental-search-backward
 bindkey ^S history-incremental-search-forward
 bindkey ^V quoted-insert
-bindkey ^\[ vi-cmd-mode
-bindkey ^X^A vi-cmd-mode
-
-bindkey ' ' magic-space
-bindkey \\ee expand-word-alias
-bindkey ^X^E edit-command-line
-
-bindkey . expand-dot-to-parent-directory-path
-bindkey \\e. insert-last-word
-bindkey \\em copy-earlier-word
-bindkey \\e^M self-insert-unmeta
 bindkey ^XH _complete_help
+bindkey ^X^A vi-cmd-mode
+bindkey ^\[ vi-cmd-mode
+bindkey ^_ split-undo
 
-bindkey -M vicmd k up-history
-bindkey -M vicmd j down-history
-bindkey -M vicmd u undo
-bindkey -M vicmd ^G send-break
-bindkey -M vicmd ^P history-search-backward
-bindkey -M vicmd ^N history-search-forward
-bindkey -M vicmd ^R redo
-bindkey -M vicmd \\ek up-line
-bindkey -M vicmd \\ej down-line
+bindkey ^O reverse-menu-complete
+[[ $terminfo[kcbt] ]] && bindkey $terminfo[kcbt] reverse-menu-complete
 
+bindkey \\e^M reedit
+bindkey \\ee expand-word-alias
+bindkey \\ej down-line
+bindkey \\ek up-line
+bindkey ^N history-search-forward
+bindkey ^P history-search-backward
+bindkey ^X^E edit-command-line
+bindkey ^Y toggle-comment-all
+
+bindkey -M vicmd \\e^M reedit
 bindkey -M vicmd \\ee expand-word-alias
+bindkey -M vicmd \\ej down-line
+bindkey -M vicmd \\ek up-line
+bindkey -M vicmd ^N history-search-forward
+bindkey -M vicmd ^P history-search-backward
 bindkey -M vicmd ^X^E edit-command-line
+bindkey -M vicmd ^Y toggle-comment-all
 
-bindkey -M isearch . self-insert
-
-bindkey -M menuselect ^U send-break
+bindkey -M vicmd G end-of-buffer-or-history
+bindkey -M vicmd \# toggle-comment-all
+bindkey -M vicmd \\- vi-first-non-blank
+bindkey -M vicmd ^G send-break
+bindkey -M vicmd ^J vi-open-line-below
+bindkey -M vicmd ^R redo
+bindkey -M vicmd j down-history
+bindkey -M vicmd k up-history
+bindkey -M vicmd u undo
 
 bindkey -s ^Xp '^X^AIpgx '
 bindkey -s ^XP '^X^AA | pg'
@@ -287,6 +300,19 @@ bindkey -M vicmd -s ^Xh "ddihistory 25 | gi ''^X^Ai"
 bindkey -M vicmd -s ^Xa 'a!!:*'
 bindkey -M vicmd -s ^Xl 'a!!:$'
 bindkey -M vicmd -s ^Xs 'a!!:gs/'
+
+bindkey -M isearch . self-insert
+bindkey -M menuselect ^U send-break
+bindkey -M visual \" quote-region
+bindkey -M visual q deactivate-region
+
+zle_highlight=(
+    isearch:bg=red,fg=231
+    region:bg=236,fg=default
+    special:fg=red,bold,standout
+    suffix:fg=red,bold
+    paste:standout
+)
 
 
 # Completion
@@ -400,8 +426,8 @@ compctl -K _xsession x xx xsession
 # Plugins
 # ----------------------------------------
 
-plugin() {
-    local name=$1
+__plugin() {
+    local name=$1 base
     for base in ~/opt /usr/share/zsh/plugins; do
         [[ -e $base/$name ]] || continue
         . $base/$name/$name.zsh
@@ -410,7 +436,7 @@ plugin() {
     return 1
 }
 
-if plugin zsh-autosuggestions; then
+if __plugin zsh-autosuggestions; then
     ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=()
     ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
     ZSH_AUTOSUGGEST_COMPLETION_IGNORE='rm *'
@@ -418,23 +444,24 @@ if plugin zsh-autosuggestions; then
     ZSH_AUTOSUGGEST_MANUAL_REBIND=1
     ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=(emacs-forward-word-autosuggest)
     ZSH_AUTOSUGGEST_USE_ASYNC=1
-    autosuggest-enable-accept() {
+    __autosuggest-enable-accept() {
         if (( $+_ZSH_AUTOSUGGEST_DISABLED )); then
             zle autosuggest-enable
         else
             zle autosuggest-accept
         fi
     }
-    emacs-forward-word-autosuggest() { zle emacs-forward-word; }
-    zle -N autosuggest-enable-accept
-    zle -N emacs-forward-word-autosuggest
+    __emacs-forward-word-autosuggest() { zle emacs-forward-word; }
+    zle -N {,__}autosuggest-enable-accept
+    zle -N {,__}emacs-forward-word-autosuggest
     add-zle-hook-widget zle-line-init autosuggest-disable
     bindkey '^ ' autosuggest-enable-accept
     bindkey '\e ' emacs-forward-word-autosuggest
     bindkey '\e^ ' autosuggest-toggle
 fi
 
-if plugin zsh-syntax-highlighting; then
+# TODO: breaks zle_highlight isearch
+if __plugin zsh-syntax-highlighting; then
     #ZSH_HIGHLIGHT_PATTERN+=(pattern style)
     #ZSH_HIGHLIGHT_REGEXP+=(pattern style)
     ZSH_HIGHLIGHT_HIGHLIGHTERS=(brackets main pattern regexp)
@@ -455,11 +482,11 @@ if plugin zsh-syntax-highlighting; then
     ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=yellow,bold,underline
 fi
 
-if plugin zsh-history-substring-search; then
+if __plugin zsh-history-substring-search; then
     HISTORY_SUBSTRING_SEARCH_FUZZY=1
     HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS=
-    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=bg=8,fg=15
-    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=bg=red,fg=15
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=bg=red,fg=231
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=
     bindkey ^P history-substring-search-up
     bindkey ^N history-substring-search-down
     bindkey -M vicmd ^P history-substring-search-up
