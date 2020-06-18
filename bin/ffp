@@ -66,18 +66,14 @@ path=~/.config/$bin_name
 mkdir -p "$path"
 cd "$path"
 
-if [[ ! -f user.js.lock ]]; then
-
-    cat >user.js.in <<-'EOF'
-		// user.js
-		// ----------------------------------------
-
-		user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
-	EOF
+file=user.js
+[[ -f $file.lock ]] || {
+    printf '// %s\n' "$file"
+    echo
+    printf %s 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);'
 
     if [[ ! $profile =~ ^plain(-|$) ]]; then
-
-        cat >>user.js.in <<-'EOF'
+        cat <<-'EOF'
 
 			user_pref("accessibility.blockautorefresh", true);
 			user_pref("app.shield.optoutstudies.enabled", false);
@@ -131,7 +127,7 @@ if [[ ! -f user.js.lock ]]; then
 			user_pref("toolkit.telemetry.unified", false);
 		EOF
 
-        [[ ! $profile =~ ^(dev|lab)(-|$) ]] && cat >>user.js.in <<-'EOF'
+        [[ ! $profile =~ ^(dev|lab)(-|$) ]] && cat <<-'EOF'
 
 			user_pref("media.peerconnection.enabled", false);
 			user_pref("media.peerconnection.ice.default_address_only", true);
@@ -143,7 +139,7 @@ if [[ ! -f user.js.lock ]]; then
 			user_pref("privacy.trackingprotection.enabled", true);
 		EOF
 
-        [[ $profile = default ]] && cat >>user.js.in <<-'EOF'
+        [[ $profile = default ]] && cat <<-'EOF'
 
 			//user_pref("network.cookie.cookieBehavior", 3);
 			//user_pref("network.cookie.lifetimePolicy", 1);
@@ -161,11 +157,8 @@ if [[ ! -f user.js.lock ]]; then
 			user_pref("layers.gpu-process.force-enabled", true);
 			user_pref("media.hardware-video-decoding.force-enabled", true);
 		EOF
-
     fi
-
-    sed -r -e '/^\s*$/d' -e '/^\s*\/\//d' user.js.in | sort -u -o user.js
-fi
+} >"$file"
 
 mkdir -p chrome
 cd chrome
@@ -177,14 +170,11 @@ case $profile in
     *)          frame_color='#ff9900' ;;
 esac
 
-if [[ ! -f userChrome.css.lock ]]; then
+file=userChrome.css
+[[ -f $file.lock ]] || {
+    printf '/* %s */\n' "$file"
 
-    cat >userChrome.css <<-'EOF'
-		/* userChrome.css */
-		/* ---------------------------------------- */
-	EOF
-
-    [[ $profile != default ]] && cat >>userChrome.css <<-EOF
+    [[ $profile != default ]] && cat <<-EOF
 
 		#TabsToolbar::before {
 		    content: "$profile";
@@ -196,6 +186,38 @@ if [[ ! -f userChrome.css.lock ]]; then
 		    padding: 10px 7px 0 5px;
 		}
 	EOF
-fi
+} >"$file"
+
+file=userContent.css
+[[ -f $file.lock ]] || {
+    printf '/* %s */\n' "$file"
+
+    [[ $profile = default ]] && cat <<-'EOF'
+
+		@-moz-document url-prefix(https://lore.kernel.org/) {
+		    .add { background: lightgreen }
+		    .del { background: lightpink }
+		    .head { background: lightgray }
+		    .hunk { background: gold }
+		    .q { background: lightgray }
+
+		    pre { background: #eee }
+		    pre#R { background: none }
+		    body > form pre { background: none }
+		    body > pre:last-of-type { background: none }
+
+		    #t { background: cyan }
+		    #u { background: yellow }
+		    a#r { background: cyan }
+		    a[id] { background: cyan }
+		    ul { list-style: none; padding-top: 0 }
+		}
+
+		@-moz-document url-prefix(https://www.youtube.com/) {
+		    #chat { display: none !important }
+		    #comments { display: none !important }
+		}
+	EOF
+} >"$file"
 
 exec "$bin" --class "Firefox ($profile)" --profile "$path" "$@"

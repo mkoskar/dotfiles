@@ -28,22 +28,29 @@
 %(end)\
 '
 
+    am-abort = am --abort
+    ami = am -i
     ba = b --all
     ci = commit
     clean-all = clean -dx
     clean-ignored = clean -dX
-    clone-shallow = clone --depth 100
+    clone-shallow = clone --depth 5 --shallow-submodules
     co = checkout
     conf = !git config -l --local | sort
+    conf-edit = config -e
     confa = !git config -l | sort | pg
+    confg = !git config -l --global | sort | pg
+    confg-edit = config --global -e
     d = difftool
     dc = difftool --cached
     df = diff
     dfc = diff --cached
     f = fetch --all
+    format-patch-with-signoff = format-patch --signoff
     forward = merge --ff-only
     k = !gitk
-    lg = !git -P lg1 -10
+    last = show --format=fuller
+    lg = !git -P lg1 -5
     lg1 = log --format=lg1 --graph --decorate-refs-exclude='*/HEAD' --color
     lga = lg1
     ls = ls-files
@@ -53,110 +60,26 @@
     push-upstream = -c push.default=upstream pushv
     pushv = push -v
     remotes = remote -v
+    send-email-msmtp = !git send-email --smtp-server="$HOME"/bin/msmtp --envelope-sender=auto
     set-email = !git-set-email
     set-upstream = !git-set-upstream
     st = status -s
     up = update
     update = !git-update
 
-[color "advise"]
-    #hint =
-
-[color "blame"]
-    #highlightrecent
-    #repeatedlines =
-
 [color "branch"]
-    #current = 110
-    #local =
-    #plain =
-    #remote = 167
-    #reset =
-    #worktree =
     upstream = 3
 
 [color "decorate"]
     HEAD = bold yellow
     branch = bold yellow
-    #grafted =
-    remoteBranch = bold yellow
-    #stash =
-    #tag =
-
-[color "diff"]
-    #commit =
-    #context =
-    #contextBold =
-    #contextDimmed =
-    #frag =
-    #func =
-    #meta =
-    #new =
-    #newBold =
-    #newDimmed =
-    #newMoved =
-    #newMovedAlternative =
-    #newMovedAlternativeDimmed =
-    #newMovedDimmed =
-    #old =
-    #oldBold =
-    #oldDimmed =
-    #oldMoved =
-    #oldMovedAlternative =
-    #oldMovedAlternativeDimmed =
-    #oldMovedDimmed =
-    #whitespace =
-
-[color "grep"]
-    #column =
-    #context =
-    #filename =
-    #function =
-    #lineNumber =
-    #matchContext =
-    #matchSelected =
-    #selected =
-    #separator =
-
-[color "interactive"]
-    #error =
-    #header =
-    #help =
-    #plain =
-    #prompt =
-    #reset =
-
-[color "push"]
-    #error =
-
-[color "remote"]
-    #error =
-    #hint =
-    #success =
-    #warning =
-
-[color "status"]
-    #branch =
-    #changed =
-    #header =
-    #localBranch =
-    #noBranch =
-    #remoteBranch =
-    #unmerged =
-    #untracked =
-    #updated =
-
-[color "transport"]
-    #rejected =
+    remotebranch = bold yellow
 
 [color]
     pager = false
 
 [commit]
     template = ~/.config/git/commit.template
-
-[core]
-    ;autocrlf = input
 
 [credential]
     helper = cache --timeout=3600
@@ -170,14 +93,10 @@
 
 [format]
     coverletter = auto
-    signoff = true
     thread = shallow
 
 [grep]
     linenumber = true
-
-[http]
-    ;sslverify = false
 
 [log]
     date = human
@@ -202,6 +121,10 @@
 
 [push]
     default = nothing
+
+[sendemail]
+    confirm = always
+    suppresscc = self
 
 [user]
     name = Miroslav Koškár

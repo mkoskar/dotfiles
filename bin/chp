@@ -61,7 +61,7 @@ path_skel=$path.skel
 [[ $profile = default ]] || path+=.$profile
 
 if [[ $profile != skel ]]; then
-    if [[ ! -e $path && -e $path_skel ]]; then
+    if [[ ! $profile =~ ^plain(-|$) && ! -e $path && -e $path_skel ]]; then
         cp -a "$path_skel" "$path"
     fi
 

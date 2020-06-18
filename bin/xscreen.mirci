@@ -26,7 +26,7 @@ setup() {
 
 layout_profile() {
     case $(edidsum -o) in
-        251b742672f54471057b10e77e4bb2dfaa6a9904) echo dock ;;
+        251b742672f54471057b10e77e4bb2dfaa6a9904) echo HDMI2 ;;
     esac
 }
 

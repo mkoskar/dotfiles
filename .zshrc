@@ -127,12 +127,12 @@ __reedit() {
 }
 
 __toggle-comment-all() {
-    local buf=$PREBUFFER$BUFFER
+    local buf=$PREBUFFER$BUFFER nl=$'\n'
     if [[ $buf = \#* ]]; then
         buf=${buf#[#]}
-        buf=${buf//$'\n'#/$'\n'}
+        buf=${buf//$nl#/$nl}
     else
-        buf=\#${buf//$'\n'/$'\n'#}
+        buf=\#${buf//$nl/$nl#}
     fi
     print -Rz - $buf
     zle send-break
@@ -302,6 +302,8 @@ bindkey -M vicmd -s ^Xl 'a!!:$'
 bindkey -M vicmd -s ^Xs 'a!!:gs/'
 
 bindkey -M isearch . self-insert
+bindkey -M menuselect \\ej down-line-or-history
+bindkey -M menuselect \\ek up-line-or-history
 bindkey -M menuselect ^U send-break
 bindkey -M visual \" quote-region
 bindkey -M visual q deactivate-region
@@ -460,7 +462,6 @@ if __plugin zsh-autosuggestions; then
     bindkey '\e^ ' autosuggest-toggle
 fi
 
-# TODO: breaks zle_highlight isearch
 if __plugin zsh-syntax-highlighting; then
     #ZSH_HIGHLIGHT_PATTERN+=(pattern style)
     #ZSH_HIGHLIGHT_REGEXP+=(pattern style)

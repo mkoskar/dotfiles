@@ -267,6 +267,8 @@ alias glxgears-novsync='vblank_mode=0 glxgears'
 alias gpg-agent-reload='gpg-connect-agent reloadagent /bye'
 alias gpg-agent-sessionenv="gpg-connect-agent 'getinfo std_session_env' /bye"
 alias gpg-agent-updatetty='gpg-connect-agent updatestartuptty /bye'
+alias gpg-connect-dirmngr='gpg-connect-agent --dirmngr'
+alias gpg-debug='gpg -vv --debug-level=9'
 alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
 alias grepcat='grep --exclude-dir=\* .'
 alias gsettingsa='gsettings list-recursively'
@@ -354,6 +356,7 @@ alias ytdl-formats='youtube-dl -F'
 alias ytdl-json='youtube-dl -J'
 alias ytdl-playlist="youtube-dl --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
 alias ytdl-stdout="youtube-dl -f 'best[height<=?1080]' -o -"
+alias zsh-bare='zsh -df'
 
 alias _gdbus-session='gdbus introspect -r --session -o /'
 alias _gdbus-system='gdbus introspect -r --system -o /'

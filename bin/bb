@@ -14,7 +14,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
 
     !                       b file:///"$HOME"/tmp
     ImageMagick             b https://www.imagemagick.org/script/command-line-tools.php
-    ImageMagick-scripts     b http://www.fmwconcepts.com/imagemagick/
     amazon                  b https://www.amazon.com/s/field-keywords={u}
     amazon-de               b https://www.amazon.de/s/field-keywords={u}
     amazon-uk               b https://www.amazon.co.uk/s/field-keywords={u}
@@ -37,21 +36,22 @@ MENUER=$prgname menuer "$@" <<-EOF |
     arch-wiki               b https://wiki.archlinux.org/index.php\?search={u}
     argyllcms!              b /usr/share/argyllcms/doc/ArgyllDoc.html
     arxiv                   b https://arxiv.org/find
+    asciidoc                b https://www.methods.co.nz/asciidoc/
     aur                     b https://aur.archlinux.org/packages.php\?SeB=nd\&K={u}
     aur-maintainer          b https://aur.archlinux.org/packages.php\?SeB=m\&K="$AUR_MAINTAINER"
     aur-name-only           b https://aur.archlinux.org/packages.php\?SeB=n\&K={u}
     austin-csrg             b https://www.opengroup.org/austin/docreg.html
     awesome                 b https://github.com/sindresorhus/awesome
     awg                     b https://en.wikipedia.org/wiki/American_wire_gauge#Tables_of_AWG_wire_sizes
-    awk                     b https://www.gnu.org/software/gawk/manual/gawk.html
-    awk1                    b http://awk.freeshell.org/
+    awk-freeshell           b http://awk.freeshell.org/
+    awk-gnu                 b https://www.gnu.org/software/gawk/manual/gawk.html
     basedir                 b https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
     bash                    b https://www.gnu.org/software/bash/manual/html_node/index.html
-    bash-abs                b http://tldp.org/LDP/abs/html/
+    bash-abs                b https://tldp.org/LDP/abs/html/
+    bash-academy            b https://guide.bash.academy/index.html
     bash-changes            b https://mywiki.wooledge.org/BashFAQ/061
     bash-faq                b https://mywiki.wooledge.org/BashFAQ
     bash-guide              b https://mywiki.wooledge.org/FullBashGuide
-    bash-guide1             b https://guide.bash.academy/index.html
     bash-hackers            b https://wiki.bash-hackers.org/start
     bash-param-expansion    b https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html#Shell-Parameter-Expansion
     bash-pitfalls           b https://mywiki.wooledge.org/BashPitfalls
@@ -106,7 +106,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     firefox-changes         b https://www.mozilla.org/en-US/firefox/releases/
     firefox-changes-dev     b https://developer.mozilla.org/en-US/Firefox/Releases/
     firefox-relnotes-bugs   b https://bugzilla.mozilla.org/buglist.cgi\?query_format=advanced\&f1=cf_tracking_firefox_relnote\&o1=isnotempty\&f2=cf_tracking_firefox_relnote\&o2=substring\&v2={u}\&limit=200\&order=changeddate\ desc
-    flp                     b http://www.feynmanlectures.caltech.edu/
+    flp                     b https://www.feynmanlectures.caltech.edu/
     fosdem                  b https://video.fosdem.org/
     freebsd                 b https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/
     freedesktop-gitlab      b https://gitlab.freedesktop.org/explore
@@ -124,7 +124,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gh-search               b https://github.com/search\?q={u}
     gi                      b https://www.google.com/search\?q={u}\&tbm=ischsr
     gimp!                   b /usr/share/gimp/2.0/help/en/index.html
+    git-book                b https://git-scm.com/book
     git-changes             b https://github.com/git/git/tree/master/Documentation/RelNotes
+    git-docs                b https://git-scm.com/docs
     gitlab                  b https://gitlab.com/explore
     glib2                   b https://developer.gnome.org/glib/stable/
     gmail-nolabel           b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:inbox+-in:draft+-in:sent+-in:spam+-in:trash/n100
@@ -145,7 +147,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gradle                  b https://gradle.org/docs/
     graphviz                b https://www.graphviz.org/doc/info/index.html
     greek-alphabet          b https://en.wikipedia.org/wiki/Greek_alphabet#Letters
-    groovy                  b http://groovy-lang.org/documentation.html
+    groovy                  b https://groovy-lang.org/documentation.html
     grub                    b https://www.gnu.org/software/grub/manual/grub.html
     gtk-running             b https://developer.gnome.org/gtk3/stable/gtk-running.html
     gutenberg               b https://www.gutenberg.org/wiki/Category:Bookshelf
@@ -164,8 +166,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     intel-core-datasheets   b https://www-ssl.intel.com/content/www/us/en/processors/core/core-technical-resources.html
     intel-sdm               b https://software.intel.com/en-us/articles/intel-sdm
     iojs                    b https://iojs.org/api/
-    irc-channels            b http://irc.netsplit.de/channels/\?net=freenode
+    irc-channels            b https://irc.netsplit.de/channels/\?net=freenode
     irc-docs                b https://ircdocs.horse/
+    irc-logs                b https://colabti.org/irclogger/irclogger_logs
     iso                     b https://standards.iso.org/ittf/PubliclyAvailableStandards/
     iss-sightings           b https://spotthestation.nasa.gov/sightings/view.cfm\?country=Slovakia\&region=None\&city=Partizanske
     iss-tracker             b http://wsn.spaceflight.esa.int/iss/
@@ -189,6 +192,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     js-keys                 b https://w3c.github.io/uievents/tools/key-event-viewer.html
     jsr!                    b ~/archive/lib/00-cs/java/08-jsr/
     jsr-all                 b https://jcp.org/en/jsr/all\?sortBy=date
+    kernel-lists            b http://vger.kernel.org/vger-lists.html
     latin-greek-roots       b https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English
     latin-phrases           b https://en.wikipedia.org/wiki/List_of_Latin_phrases
     lcd-test                b http://www.lagom.nl/lcd-test/all_tests.php
@@ -198,7 +202,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-docs              b https://www.kernel.org/doc/Documentation
     linux-docs!             b /lib/modules/"$kernel_release"/build/Documentation
     linux-docs-html         b https://www.kernel.org/doc/html/latest/index.html
-    linux-lists             b http://vger.kernel.org/vger-lists.html
+    linux-faq               b http://vger.kernel.org/lkml/
     linux-lkddb             b https://cateee.net/lkddb/web-lkddb/
     linux-params            b https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html
     linux-repos             b https://git.kernel.org/cgit/
@@ -206,12 +210,14 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-specs             b https://refspecs.linuxfoundation.org/
     linux-src               b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/\?id="$kernel_version"
     linux-sysctl            b https://www.kernel.org/doc/Documentation/sysctl
-    lists                   b https://marc.info/
+    lkml                    b https://lkml.org/
+    lore-lists              b https://lore.kernel.org/lists.html
     lua                     b https://www.lua.org/manual/
     luarocks                b https://luarocks.org/search\?q={u}
     m4-macros               b https://www.gnu.org/software/m4/manual/m4.html#Macro-index
     mailcap                 b https://tools.ietf.org/html/rfc1524
-    man-pages               b http://man7.org/linux/man-pages/index.html
+    man-pages               b https://man7.org/linux/man-pages/index.html
+    marc-lists              b https://marc.info/
     material-design         b https://material.io/design/
     maven                   b https://maven.apache.org/plugins/index.html
     maven-central           b https://search.maven.org/
@@ -260,7 +266,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     postgresql              b https://www.postgresql.org/docs/current/static/index.html
     printing                b https://wiki.linuxfoundation.org/openprinting/database/documentation
     pubchem                 b https://www.ncbi.nlm.nih.gov/pccompound\?term={u}
-    pygments                b http://pygments.org/docs/lexers/
+    pygments                b https://pygments.org/docs/lexers/
     pypa                    b https://www.pypa.io/
     pypi                    b https://pypi.org/search/\?q={u}
     python                  b https://docs.python.org/
@@ -282,7 +288,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     resolutions             b https://en.wikipedia.org/wiki/List_of_common_resolutions
     rfc                     b https://tools.ietf.org/rfc/index
     rpi                     b https://www.raspberrypi.org/documentation/hardware/raspberrypi/README.md
-    rst                     b http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
+    rst                     b https://docutils.sourceforge.io/rst.html
     rst-showcase!           b ~/projects/lab/docutils/showcase/build/html/index.html
     rst-sphinx              b https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html
     rtfm-faqs               b ftp://rtfm.mit.edu/pub/faqs/
@@ -309,6 +315,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     so                      b https://stackoverflow.com/search\?q={u}
     soundcloud              b https://soundcloud.com/search\?q={u}
     sourceware-repos        b https://sourceware.org/git/
+    spinics-lists           b https://www.spinics.net/lists/
     spring                  b https://docs.spring.io/spring/docs/current/spring-framework-reference/html/
     spring-api              b https://docs.spring.io/spring/docs/current/javadoc-api/overview-summary.html
     spring-platform         b https://docs.spring.io/platform/docs/current/reference/htmlsingle/#appendix
@@ -340,8 +347,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     unicode-emojis          b https://www.unicode.org/emoji/charts/full-emoji-list.html
     unicode-math            b https://www.unicode.org/Public/math/revision-15/MathClassEx-15.html
     unix                    b https://publications.opengroup.org/standards/unix
-    unix-history            b https://upload.wikimedia.org/wikipedia/commons/c/cd/Unix_timeline.en.svg
-    unix-history1           b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
+    unix-timeline1          b https://upload.wikimedia.org/wikipedia/commons/c/cd/Unix_timeline.en.svg
+    unix-timeline2          b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
     url                     b https://url.spec.whatwg.org/
     usb-connectors          b https://en.wikipedia.org/wiki/USB_hardware#Connectors
     util-linux              b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
@@ -352,6 +359,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     w3c-specs               b https://www.w3.org/TR/
     wayland                 b https://wayland-book.com/
     webdev-tools            b https://www.browserling.com/tools
+    webrtc-demos            b https://mozilla.github.io/webrtc-landing/
     weechat                 b https://weechat.org/files/doc/stable/weechat_user.en.html
     weechat-api             b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
     weechat-changes         b https://github.com/weechat/weechat/blob/master/ChangeLog.adoc
