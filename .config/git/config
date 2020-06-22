@@ -49,7 +49,7 @@
     format-patch-with-signoff = format-patch --signoff
     forward = merge --ff-only
     k = !gitk
-    last = show --format=fuller
+    last = cat-file -p HEAD
     lg = !git -P lg1 -5
     lg1 = log --format=lg1 --graph --decorate-refs-exclude='*/HEAD' --color
     lga = lg1
@@ -61,11 +61,10 @@
     pushv = push -v
     remotes = remote -v
     send-email-msmtp = !git send-email --smtp-server="$HOME"/bin/msmtp --envelope-sender=auto
-    set-email = !git-set-email
-    set-upstream = !git-set-upstream
+    show-fuller = show --format=fuller
+    show-raw = show --format=raw
     st = status -s
     up = update
-    update = !git-update
 
 [color "branch"]
     upstream = 3

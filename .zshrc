@@ -375,6 +375,8 @@ zstyle ':completion:*:*:kill:*:*' force-list always
 zstyle ':completion:*:*:kill:*:*' insert-ids single
 zstyle ':completion:*:*:kill:*:*' menu true select
 
+zstyle ':completion:*:*:git:*' user-commands set-email set-upstream update
+
 zstyle ':completion:*:*:*:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:*:*:*:default' list-prompt '%S%m%s'
 zstyle ':completion:*:*:*:*:descriptions' format ' %F{yellow}-- %d --%f'
