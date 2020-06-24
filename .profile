@@ -89,23 +89,33 @@ export TERMINAL=term
 
 [ "$SYSPATH" ] || export SYSPATH=$PATH
 
-PATH=~/bin
-PATH=$PATH:~/projects/pub/tcolors/bin
-PATH=$PATH:~/projects/pub/pkgbuilds
-PATH=$PATH:~/projects/pub/dockerfiles/bin
-PATH=$PATH:~/opt/bin
-PATH=$PATH:~/.local/bin
-PATH=$PATH:~/.local/pipx/bin
-PATH=$PATH:~/.luarocks/bin
-PATH=$PATH:~/.cargo/bin
+addpath() {
+    for i in "$@"; do
+        [ -d "$1" ] && PATH=$i${PATH:+:$PATH}
+    done
+    unset i
+}
 
-set -- ~/.gem/ruby/*
-[ -d "$1" ] && PATH=$PATH:$1/bin
+# shellcheck disable=SC2123
+PATH=
 
-PATH=$PATH:~/bin/system
-PATH=$PATH:$SYSPATH
-PATH=$PATH:~/bin/busybox
-PATH=$PATH:/usr/local/bin/busybox
+addpath /usr/local/bin/busybox
+addpath ~/bin/busybox
+
+PATH=$SYSPATH:$PATH
+
+addpath ~/bin/system
+addpath ~/.gem/ruby/*
+addpath ~/.cargo/bin
+addpath ~/.luarocks/bin
+addpath ~/.local/pipx/bin
+addpath ~/.local/bin
+addpath ~/opt/bin
+addpath ~/projects/pub/dockerfiles/bin
+addpath ~/projects/pub/pkgbuilds
+addpath ~/projects/pub/tcolors/bin
+addpath ~/bin
+
 export PATH
 
 # ----------------------------------------
@@ -176,7 +186,7 @@ if hash fuzz 2>/dev/null; then
 fi
 
 if hash luarocks 2>/dev/null; then
-    eval "$(luarocks path)"
+    eval "$(luarocks path --no-bin)"
 fi
 
 if hash nvim 2>/dev/null; then

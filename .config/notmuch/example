@@ -1,17 +1,11 @@
 # vim: ft=dosini
 
 [database]
-path=<path>
-
-[maildir]
-synchronize_flags=true
+path=<path relative to $HOME>
 
 [new]
 tags=new
 ignore=/(^|.*/)[.].*/
-
-[search]
-exclude_tags=
 
 [user]
 name=<name>

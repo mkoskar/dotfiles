@@ -2,9 +2,19 @@
 
 set -eu
 
+prgname=${0##*/}
+
+if (( ! $# )); then
+    echo "usage: $prgname account [arg]..." >&2
+    exit 2
+fi
+
 acct=$1
 conf=~/.config/notmuch/$acct
-[[ -e $conf ]] || exit 1
+[[ -r $conf ]] || {
+    echo "$prgname: '$conf': File doesn't exist or isn't readable" >&2
+    exit 1
+}
 shift
 
 export AFEW_CONFIG=~/.config/afew/$acct
@@ -18,7 +28,7 @@ lock() {
     flock 8 || exit 3
 }
 
-case $1 in
+case ${1-} in
     +new)
         lock
         notmuch new --quiet

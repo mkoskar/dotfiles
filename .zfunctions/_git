@@ -8084,7 +8084,6 @@ __git_color_attributes () {
 _git() {
   integer ret=1
   local -a allwords=("${words[@]}")
-  local endopt='!(-)--end-of-options'
 
   if [[ $service == git ]]; then
     local curcontext=$curcontext state line
@@ -8117,32 +8116,32 @@ _git() {
         _git_commands && ret=0
         ;;
       (option-or-argument)
-        local -a aliases
         local -A git_aliases
-        local a k v
-        aliases=(${(0)"$(_call_program aliases git config -z --get-regexp '\^alias\.')"})
-        for a in $aliases; do
-          k=${${a/$'\n'*}/alias.}
-          v=${a#*$'\n'}
-          git_aliases[$k]=$v
+        local a
+        local endopt='!(-)--end-of-options'
+        for a in ${(0)"$(_call_program aliases git config -z --get-regexp '\^alias\\.')"}; do
+          git_aliases[${${a/$'\n'*}/alias.}]=${a#*$'\n'}
         done
         local git_alias=git_aliases[\$words[1]]
         if (( ${(P)+git_alias} && !$+commands[git-$words[1]] && !$+functions[_git-$words[1]] )); then
           git_alias=${(P)git_alias}
           local len=$#words
           if [[ $git_alias = \!* ]]; then
+            #words=("${(Z+C+)git_alias##\!}" "${words[@]:1}")
+
             local i
-            local -a git_alias_exp
-            for i in "${(z)git_alias##\!}"; do
-              git_alias_exp+=("$i")
-              [[ $i = \| ]] && git_alias_exp=()
+            local -a git_alias_tail
+            for i in "${(Z+C+)git_alias##\!}"; do
+              git_alias_tail+=("$i")
+              case $i in ';' | $'\n' | '||' | '&&' | '|' | '|&' | '&' | '&!' | '&|') git_alias_tail=() ;; esac
             done
-            words=("$git_alias_exp[@]" "${words[@]:1}")
+            words=("$git_alias_tail[@]" "${words[@]:1}")
+
           else
-            words=("${allwords[@]:0:-$#words}" "${(z)git_alias}" "${words[@]:1}")
+            words=("${allwords[@]:0:-$#words}" "${(Z+C+)git_alias}" "${words[@]:1}")
           fi
           (( CURRENT += $#words - len ))
-          _normal -P && ret=0
+          _normal && ret=0
         else
           curcontext=${curcontext%:*:*}:git-$words[1]:
           (( $+opt_args[--git-dir] )) && local -x GIT_DIR=${(Q)${~opt_args[--git-dir]}}

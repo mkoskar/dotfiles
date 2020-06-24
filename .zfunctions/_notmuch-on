@@ -1,0 +1,23 @@
+#compdef notmuch-on
+
+declare -A opt_args
+local curcontext=$curcontext state line
+
+_arguments -C \
+    ': :->account' \
+    '*:: :->argument' \
+    && return
+
+case $state in
+    account)
+        local -a accounts
+        accounts=(~/.config/notmuch/*(N))
+        accounts=(${${accounts##*/}:#example})
+        _describe -t account account accounts
+        ;;
+    argument)
+        words=(notmuch --config="$HOME/.config/notmuch/$words[1]" "${words[@]:1}")
+        (( CURRENT += 1 ))
+        _normal
+        ;;
+esac

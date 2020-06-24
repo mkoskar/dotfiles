@@ -33,20 +33,20 @@ layout_profile() {
 layout_hook_default() {
     (( $# )) || return
     [[ $1 = - ]] && set -- "$(layout_profile)"
-    local -u profile=$1
+    local profile=$1
     local args=()
     case $profile in
-        DOCK)
+        dock)
             args+=(
                 --output HDMI2 --mode 1920x1200 --pos 1600x0 --rotate normal
                 --output LVDS1 --mode 1600x900 --pos 0x0 --rotate normal --primary
             )
             ;;
-        ''|MOBILE)
+        ''|mobile)
             profile=LVDS1
             ;&
         *)
-            args+=(--output "$profile" --auto --primary)
+            args+=(--output "${profile^^}" --auto --primary)
             ;;
     esac
     OUTS=(DP1 DP2 DP3 HDMI1 HDMI2 HDMI3 LVDS1 VGA1)

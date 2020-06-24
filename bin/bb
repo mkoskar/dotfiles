@@ -127,6 +127,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     git-book                b https://git-scm.com/book
     git-changes             b https://github.com/git/git/tree/master/Documentation/RelNotes
     git-docs                b https://git-scm.com/docs
+    git-rebase              b https://git-rebase.io/
     gitlab                  b https://gitlab.com/explore
     glib2                   b https://developer.gnome.org/glib/stable/
     gmail-nolabel           b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:inbox+-in:draft+-in:sent+-in:spam+-in:trash/n100
@@ -211,6 +212,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-src               b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/\?id="$kernel_version"
     linux-sysctl            b https://www.kernel.org/doc/Documentation/sysctl
     lkml                    b https://lkml.org/
+    lore-git                b https://lore.kernel.org/git/
     lore-lists              b https://lore.kernel.org/lists.html
     lua                     b https://www.lua.org/manual/
     luarocks                b https://luarocks.org/search\?q={u}
@@ -368,6 +370,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     x11-translations        b https://www.x.org/releases/current/doc/libXt/intrinsics.html#Translation_Table_Syntax
     x11-xkbguide            b https://www.charvolant.org/doug/xkb/html/index.html
     x11-xkbproto            b https://www.x.org/releases/current/doc/kbproto/xkbproto.html
+    xapian-query            b https://xapian.org/docs/queryparser.html
     xcb-modules             b https://xcb.freedesktop.org/manual/modules.html
     xlib                    b https://tronche.com/gui/x/xlib/
     xmonad                  b https://hackage.haskell.org/package/xmonad
@@ -383,6 +386,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     zsh                     b http://zsh.sourceforge.net/Doc/Release/index.html
     zsh-changes             b https://github.com/zsh-users/zsh/blob/master/NEWS
     zsh-guide               b http://zsh.sourceforge.net/Guide/zshguide.html
+    zsh-lists               b https://www.zsh.org/mla/
     zsh-param-expansion     b http://zsh.sourceforge.net/Doc/Release/Expansion.html#Parameter-Expansion
 
     zz                      b https://www.slov-lex.sk/vyhladavanie-pravnych-predpisov

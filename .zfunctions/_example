@@ -31,13 +31,24 @@
 # _arguments [ -nswWCRS ] [ -A pat ] [ -O name ] [ -M matchspec ]
 #            [ : ] spec ...
 
-#_arguments \
+#declare -A opt_args
+#local curcontext=$curcontext state line
+#
+#_arguments -C \
 #    '-a[a opt]' \
 #    '-f[file]:filename:_files' \
 #    ':1st arg:_files' \
 #    ':2nd arg:_files' \
 #    '::opt arg:_files' \
-#    ':3rd arg:(a b c)'
+#    ':3rd arg:(a b c)' \
+#    '(-)*:: :->argument' \
+#    && return
+#
+#case $state in
+#    argument)
+#        _message -r "[$CURRENT/$#words] $words"
+#        ;;
+#esac
 
 # ----------------------------------------
 
