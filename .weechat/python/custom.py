@@ -647,7 +647,7 @@ if bar:
 w.bar_new(
     'fn', 'on', '200', 'root', '',
     'right', 'columns_horizontal', 'vertical',
-    '0', '0', 'default', 'default', 'default', 'on',
+    '0', '0', 'default', 'default', 'default', 'default', 'on',
     ', ,'.join([
         'btn_connect_relay',
         'btn_disconnect',
@@ -675,7 +675,7 @@ if bar:
 w.bar_new(
     'win_fn', 'on', '0', 'window', '',
     'top', 'columns_horizontal', 'vertical',
-    '0', '0', 'default', 'default', '233', 'off',
+    '0', '0', 'default', 'default', '233', '233', 'off',
     ','.join([
         'btn_win_close',
         'btn_win_zoom',

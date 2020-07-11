@@ -32,9 +32,10 @@
     ami = am -i
     ba = b --all
     ci = commit
+    cia = commit --amend
     clean-all = clean -dx
     clean-ignored = clean -dX
-    clone-shallow = clone --depth 5 --shallow-submodules
+    clone-shallow = clone --depth 5 --shallow-submodules --no-tags
     co = checkout
     conf = !git config -l --local | sort
     conf-edit = config -e

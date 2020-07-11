@@ -77,8 +77,8 @@ myStatusBar conf = statusBar "statusbar" myPP myToggleStrutsKey conf
   where
     color = xmobarColor
     myPP = def
-        { ppCurrent = color "#55ff55" "" . wrap "[" "]"
-        , ppVisible = color "#feed6a" "" . wrap "(" ")"
+        { ppCurrent = color "#55ff55" ""
+        , ppVisible = color "#feed6a" ""
         , ppUrgent = color "#bb4455" "#f6e972" . pad
         , ppSep = " "
         , ppTitle = color "#efefef" "" . shorten 100 . xmobarStrip
@@ -113,7 +113,6 @@ myConfig = def
         ewmhDesktopsStartup
         adjustEventInput
         setWMName "LG3D"
-        spawn "wmname LG3D || true"
         n <- screenCount
         case n of
             1 -> do
@@ -150,20 +149,13 @@ myConfig = def
                        , appName =? "s_aux" -?> doShift "2"
                        , appName =? "s_tmp" -?> doShift "2"
                        , appName =? "s_wrk" -?> doShift "1"
-                       , appName =? "skype" -?> doShiftView "9"
-                       , appName =? "skypeforlinux" -?> doShiftView "9"
-                       , appName =? "smplayer" -?> doShiftView "9"
                        , appName =? "spacefm" -?> doShiftView "5"
                        , appName =? "sxiv" -?> doShiftView "9"
-                       , appName =? "vlc" -?> doShiftView "9"
                        , appName =? "vmpk" -?> doFloat
                        , appName =? "workrave" <&&> title =? "Workrave" -?> doHideIgnore
                        , appName =? "zathura" -?> doShiftView "8"
                        , className =? "Firefox (default)" -?> doShiftView "3"
                        , className =? "Gxmessage" -?> doFloat
-                       , className =? "MPlayer" -?> doShiftView "9"
-                       , className =? "Tor Browser" -?> doShiftView "3"
-                       , className =? "jetbrains-idea" -?> doShiftView "1"
                        , className =? "mpv" -?> doShiftView "9"
                        , className =? "qutebrowser" -?> doShiftView "3"
                        , title =? "qiv" -?> doShiftView "9"
@@ -236,15 +228,15 @@ myConfig = def
         , ("M-z", onPrevNeighbour def W.greedyView)
         , ("M-d", moveTo Next HiddenNonEmptyWS)
         , ("M-s", moveTo Prev HiddenNonEmptyWS)
-
-        --, ("M-u", viewScreen def 0)
-        , ("M-i", viewScreen def 0)
-        , ("M-o", viewScreen def 1)
-
-        --, ("M-S-u", sendToScreen def 0)
-        , ("M-S-i", sendToScreen def 0)
-        , ("M-S-o", sendToScreen def 1)
         , ("M-a", toggleWS)
+
+        , ("M-u", viewScreen def 0)
+        , ("M-i", viewScreen def 1)
+        , ("M-o", viewScreen def 2)
+
+        , ("M-S-u", sendToScreen def 0)
+        , ("M-S-i", sendToScreen def 1)
+        , ("M-S-o", sendToScreen def 2)
 
           -- Stack navigation
         , ("M-j", focusDown)

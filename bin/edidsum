@@ -76,11 +76,11 @@ main() {
             if (( exoff )); then
                 bus_num=${bus_map[$out]-}
                 if [[ $bus_num ]]; then
-                    ddcargs=(--nodetect -b "$bus_num")
+                    ddcargs=(-b "$bus_num")
                 else
                     ddcargs=(-e "$edid")
                 fi
-                if power=$(ddcutil -t "${ddcargs[@]}" getvcp d6); then
+                if power=$(ddcutil -t --async "${ddcargs[@]}" getvcp d6); then
                     read -r _ _ _ power <<<"$power"
                     [[ $power = x05 ]] && continue
                 fi

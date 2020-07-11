@@ -14,6 +14,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
 
     !                       b file:///"$HOME"/tmp
     ImageMagick             b https://www.imagemagick.org/script/command-line-tools.php
+    alsa-doc                b https://www.alsa-project.org/alsa-doc/alsa-lib/
     amazon                  b https://www.amazon.com/s/field-keywords={u}
     amazon-de               b https://www.amazon.de/s/field-keywords={u}
     amazon-uk               b https://www.amazon.co.uk/s/field-keywords={u}
@@ -31,6 +32,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     arch                    b https://www.archlinux.org/
     arch-bugs               b https://bugs.archlinux.org/index.php\?string={u}
     arch-forums             b https://bbs.archlinux.org/search.php\?action=show_new
+    arch-gitlab             b https://gitlab.archlinux.org/explore
     arch-lists              b https://lists.archlinux.org/
     arch-repos              b https://git.archlinux.org/
     arch-wiki               b https://wiki.archlinux.org/index.php\?search={u}
@@ -63,20 +65,20 @@ MENUER=$prgname menuer "$@" <<-EOF |
     c-faq                   b http://c-faq.com/
     charref                 b https://dev.w3.org/html5/html-author/charref
     chemspider              b https://www.chemspider.com/Search.aspx\?q={u}
-    chrome-ext              b https://developer.chrome.com/extensions/devguide
+    chrome-ext              b https://developer.chrome.com/extensions/overview
     chrome-flags            b https://peter.sh/experiments/chromium-command-line-switches/
-    chrome-manifest-ext     b https://developer.chrome.com/extensions/manifest
-    chrome-searchcode       b https://cs.chromium.org/
-    chrome-theming          b https://cs.chromium.org/chromium/src/chrome/browser/themes/browser_theme_pack.cc
+    chromium-code-search    b https://source.chromium.org/
     cite                    b https://citeseerx.ist.psu.edu/search\?q={u}
     constellations          b https://en.wikipedia.org/wiki/88_modern_constellations#List
     country-codes           b https://en.wikipedia.org/wiki/ISO_3166-1#Current_codes
     cryptocurr              b https://coinmarketcap.com/
+    css-reference           b https://developer.mozilla.org/en-US/docs/Web/CSS/Reference
     ctlcodes                b https://en.wikipedia.org/wiki/C0_and_C1_control_codes#C0_\(ASCII_and_derivatives\)
     ctlseqs                 b https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
     cups                    b https://www.cups.org/documentation.html
     cve                     b https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword={u}
     d                       b https://www.merriam-webster.com/dictionary/{u}
+    dart                    b https://dart.dev/guides
     dbus                    b https://dbus.freedesktop.org/doc/dbus-specification.html
     dd                      b https://duckduckgo.com/lite/\?q={u}
     dd-bang                 b https://duckduckgo.com/bang_lite.html
@@ -110,7 +112,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     fosdem                  b https://video.fosdem.org/
     freebsd                 b https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/
     freedesktop-gitlab      b https://gitlab.freedesktop.org/explore
-    freedesktop-lists       b https://lists.freedesktop.org/
+    freedesktop-lists       b https://lists.freedesktop.org/mailman/listinfo/
     freedesktop-repos       b https://cgit.freedesktop.org/
     freedesktop-specs       b https://standards.freedesktop.org/
     freetype                b https://www.freetype.org/freetype2/docs/documentation.html
@@ -145,6 +147,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     google-projects         b https://opensource.google.com/projects/list/featured
     google-scholar          b https://scholar.google.com/citations\?view_op=top_venues
     google-search           b https://www.google.com/advanced_search
+    google-web              b https://developers.google.com/web
     gradle                  b https://gradle.org/docs/
     graphviz                b https://www.graphviz.org/doc/info/index.html
     greek-alphabet          b https://en.wikipedia.org/wiki/Greek_alphabet#Letters
@@ -157,9 +160,11 @@ MENUER=$prgname menuer "$@" <<-EOF |
     haskell-search          b https://www.haskell.org/hoogle/\?hoogle={u}
     hibernate-orm           b https://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
     hn                      b https://news.ycombinator.com/
+    html-reference          b https://developer.mozilla.org/en-US/docs/Web/HTML/Reference
     html-spec               b https://html.spec.whatwg.org/multipage/
     http                    b https://tools.ietf.org/html/rfc2616
     i                       b https://www.ixquick.com/do/metasearch.pl\?query={u}
+    i3                      b https://i3wm.org/docs/userguide.html
     iban                    b https://en.wikipedia.org/wiki/International_Bank_Account_Number#IBAN_formats_by_country
     ii                      b https://www.ixquick.com/do/metasearch.pl\?cat=pics\&query={u}
     imdb                    b https://www.imdb.com/find\?q={u}
@@ -191,6 +196,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     js-es6-compat           b https://kangax.github.io/compat-table/es6/
     js-es6-overview         b https://github.com/lukehoban/es6features
     js-keys                 b https://w3c.github.io/uievents/tools/key-event-viewer.html
+    js-reference            b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
     jsr!                    b ~/archive/lib/00-cs/java/08-jsr/
     jsr-all                 b https://jcp.org/en/jsr/all\?sortBy=date
     kernel-lists            b http://vger.kernel.org/vger-lists.html
@@ -220,17 +226,19 @@ MENUER=$prgname menuer "$@" <<-EOF |
     mailcap                 b https://tools.ietf.org/html/rfc1524
     man-pages               b https://man7.org/linux/man-pages/index.html
     marc-lists              b https://marc.info/
+    markdown                b https://www.markdownguide.org/cheat-sheet/
     material-design         b https://material.io/design/
     maven                   b https://maven.apache.org/plugins/index.html
     maven-central           b https://search.maven.org/
     maven-jcenter           b https://bintray.com/bintray/jcenter
     maven-popular           b https://mvnrepository.com/popular
     mdev                    b https://git.busybox.net/busybox/plain/docs/mdev.txt
-    mdn                     b https://developer.mozilla.org/en-US/search\?q={u}
+    mdn                     b https://developer.mozilla.org/en-US/
     memory-cards            b https://en.wikipedia.org/wiki/Comparison_of_memory_cards
     mime                    b https://www.iana.org/assignments/media-types/media-types.xhtml
     mongodb                 b https://docs.mongodb.org/manual/reference/
     morse-nato              b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
+    mozilla-lists           b https://mail.mozilla.org/listinfo
     mozilla-repos           b https://hg.mozilla.org/
     music                   b https://musicbrainz.org/search\?query={u}
     mutt                    b http://mutt.org/doc/manual/
@@ -360,26 +368,37 @@ MENUER=$prgname menuer "$@" <<-EOF |
     w-sk                    b https://sk.wikipedia.org/w/index.php\?search={u}
     w3c-specs               b https://www.w3.org/TR/
     wayland                 b https://wayland-book.com/
+    web.dev                 b https://web.dev/
+    webassembly             b https://webassembly.org/docs/high-level-goals/
+    webcomponents           b https://www.webcomponents.org/
     webdev-tools            b https://www.browserling.com/tools
+    webext-firefox-js-apis  b https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API
+    webext-manifest         b https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json
     webrtc-demos            b https://mozilla.github.io/webrtc-landing/
     weechat                 b https://weechat.org/files/doc/stable/weechat_user.en.html
     weechat-api             b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
     weechat-changes         b https://github.com/weechat/weechat/blob/master/ChangeLog.adoc
+    whatwg-specs            b https://spec.whatwg.org/
     x11                     b https://www.x.org/releases/current/doc/
+    x11-guide               b https://www.x.org/wiki/guide/
     x11-resdb               b https://www.x.org/releases/current/doc/libXt/intrinsics.html#Loading_the_Resource_Database
     x11-translations        b https://www.x.org/releases/current/doc/libXt/intrinsics.html#Translation_Table_Syntax
+    x11-xkb-config          b https://www.x.org/releases/current/doc/xorg-docs/input/XKB-Config.html
+    x11-xkb-enhancing       b https://www.x.org/releases/current/doc/xorg-docs/input/XKB-Enhancing.html
     x11-xkbguide            b https://www.charvolant.org/doug/xkb/html/index.html
+    x11-xkblib              b https://www.x.org/releases/current/doc/libX11/XKB/xkblib.html
     x11-xkbproto            b https://www.x.org/releases/current/doc/kbproto/xkbproto.html
     xapian-query            b https://xapian.org/docs/queryparser.html
     xcb-modules             b https://xcb.freedesktop.org/manual/modules.html
     xlib                    b https://tronche.com/gui/x/xlib/
     xmonad                  b https://hackage.haskell.org/package/xmonad
     xmonad-contrib          b https://hackage.haskell.org/package/xmonad-contrib
-    xorg-lists              b https://lists.x.org/
+    xorg-lists              b https://lists.x.org/mailman/listinfo/
     xorg-repos              b https://cgit.freedesktop.org/xorg
     xterm-changes           b https://invisible-island.net/xterm/xterm.log.html
-    yaml                    b https://yaml.org/spec/1.2/spec.html
     yaml-refcard            b https://yaml.org/refcard.html
+    yaml-spec               b https://yaml.org/spec/1.2/spec.html
+    yaml-syntax             b https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html
     yt                      b https://www.youtube.com/results\?q={u}
     yt-channel              b https://www.youtube.com/results\?sp=EgIQAlAU\&q={u}
     yt-playlist             b https://www.youtube.com/results\?sp=EgIQA1AU\&q={u}

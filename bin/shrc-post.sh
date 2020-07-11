@@ -21,4 +21,26 @@ esac
 
 case $- in *l*) ;; *) return ;; esac
 
-up
+case $OSID in
+    termux)
+        ~/.termux/runsvdir &>/dev/null
+        ssh-agent-preset
+        ;;
+    *)
+        [[ $(tty) = /dev/tty1 ]] || { return 0; }
+
+        echo $'\n--------------------------------------------------'
+        echo $'> Setup backup:\n'
+        sudo backup-setup
+
+        echo $'\n--------------------------------------------------'
+        echo $'> Presets:\n'
+        #gpg-agent-preset
+        ssh-agent-preset
+
+        echo $'\n--------------------------------------------------'
+        echo $'> Start X session:\n'
+        confirm 'Continue?' y || { echo; return; }
+        exec x
+        ;;
+esac

@@ -58,7 +58,7 @@ xkb_default() {
 	        include "complete"
 
 	        interpret Shift_R+AnyOfOrNone(all) {
-	            action= SetMods(modifiers=Shift,clearLocks);
+	            action= SetMods(modifiers=Shift, clearLocks);
 	        };
 	    };
 
@@ -86,22 +86,22 @@ xkb_default() {
 	        replace key <FK11> {
 	            type= "CTRL+ALT",
 	            symbols= [ F11,        F11,        F11,        F11,        NoSymbol ],
-	            actions= [ NoAction(), NoAction(), NoAction(), NoAction(), SwitchScreen(screen=-1,!same) ]
+	            actions= [ NoAction(), NoAction(), NoAction(), NoAction(), SwitchScreen(screen=-1, !same) ]
 	        };
 
 	        replace key <FK12> {
 	            type= "CTRL+ALT",
 	            symbols= [ F12,        F12,        F12,        F12,        NoSymbol ],
-	            actions= [ NoAction(), NoAction(), NoAction(), NoAction(), SwitchScreen(screen=+1,!same) ]
+	            actions= [ NoAction(), NoAction(), NoAction(), NoAction(), SwitchScreen(screen=+1, !same) ]
 	        };
 
 	        key <LatU> { [ PtrBtn(button=1) ] };
 	        key <LatI> { [ PtrBtn(button=2) ] };
 	        key <LatO> { [ PtrBtn(button=3) ] };
-	        key <LatK> { [ MovePtr(y=-25,!accel), MovePtr(y=-1) ] };
-	        key <LatJ> { [ MovePtr(y=+25,!accel), MovePtr(y=+1) ] };
-	        key <LatH> { [ MovePtr(x=-25,!accel), MovePtr(x=-1) ] };
-	        key <LatL> { [ MovePtr(x=+25,!accel), MovePtr(x=+1) ] };
+	        key <LatK> { [ MovePtr(y=-25, !accel), MovePtr(y=-1) ] };
+	        key <LatJ> { [ MovePtr(y=+25, !accel), MovePtr(y=+1) ] };
+	        key <LatH> { [ MovePtr(x=-25, !accel), MovePtr(x=-1) ] };
+	        key <LatL> { [ MovePtr(x=+25, !accel), MovePtr(x=+1) ] };
 
 	        // overlay1: arrow keys
 	        key <LatY> { overlay1= <END> };

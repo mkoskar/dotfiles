@@ -120,6 +120,7 @@ export PATH
 
 # ----------------------------------------
 
+export AWT_TOOLKIT=MToolkit
 export JAVA_HOME=$SYSPREFIX/lib/jvm/default-runtime
 export JDK_HOME=$SYSPREFIX/lib/jvm/default
 export _JAVA_AWT_WM_NONREPARENTING=1
@@ -177,7 +178,6 @@ export TMUX_TMPDIR=$TMPDIR
 export UAGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'
 export VDPAU_DRIVER=va_gl
 export VIMINIT='source ~/.vim/vimrc'
-export XAUTHORITY=$XDG_DATA_HOME/xorg/Xauthority
 export XMOBAR_DATA_DIR=$XDG_DATA_HOME/xmobar
 export XMONAD_DATA_DIR=$XDG_DATA_HOME/xmonad
 

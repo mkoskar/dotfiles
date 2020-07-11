@@ -34,11 +34,16 @@ case ${1-} in
 
     post)
         sdu stop xsession@:"$screen".target
-        srun -NX xterm
+        spid=$(xserverq pid)
+        dispno=$(xserverq dispno)
+        sdu --quiet is-active xsession@:"$dispno".[0-9].target || kill "$spid"
         ;;
 
     exec)
         case $session in
+            i3)
+                exec i3 -V
+                ;;
             kodi)
                 exec kodi -fs --debug
                 ;;

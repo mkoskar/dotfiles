@@ -1,0 +1,8 @@
+# vim: ft=conf
+
+separator=true
+separator_block_width=15
+
+[time]
+command=date '+%a❘%d.%m❘%H:%M'
+interval=1

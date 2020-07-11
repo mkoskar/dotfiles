@@ -1,0 +1,23 @@
+# vim: ft=conf
+
+general {
+    colors = true
+    interval = 5
+    output_format = "i3bar"
+}
+
+order += "load"
+order += "memory"
+order += "tztime local"
+
+load {
+    format = "%1min"
+}
+
+memory {
+    format = "%percentage_used"
+}
+
+tztime local {
+    format = "%a❘%d.%m❘%H:%M"
+}

@@ -14,13 +14,13 @@ super + {_,ctrl + ,shift + }y
     xdotool click --clearmodifiers {1,2,3}
 
 super + minus
-    wmutil warp_to_screen 1n
+    wmutil warp_to_scr 1n
 
-super + {i,o,u}
-    wmutil warp_to_primary{_, 1r, 1l}
+super + {u,i,o}
+    wmutil warp_to_mon --index 0 {_, 1n, 2n}
 
 super + alt + ctrl + {k,j,i,u,o,comma,m,period,l}
-    wmutil warp_in_window {c,e,n,ne,nw,s,se,sw,w}
+    wmutil warp_in_win {c,e,n,ne,nw,s,se,sw,w}
 
 super + c
     xdo close

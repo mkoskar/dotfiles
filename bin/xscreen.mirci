@@ -1,29 +1,5 @@
 # vim: ft=sh
 
-setup() {
-    local args=("$@")
-    local off=("${OUTS[@]}")
-    while (( $# )); do
-        if [[ $1 = --output ]]; then
-            shift
-            (( $# )) || continue
-            for i in "${!off[@]}"; do
-                if [[ ${off[$i]} = "$1" ]]; then
-                    unset off["$i"]
-                    break
-                fi
-            done
-        fi
-        shift
-    done
-    for i in "${off[@]}"; do
-        args+=(--output "$i" --off)
-    done
-    xrandr "${args[@]}"
-}
-
-# ----------------------------------------
-
 layout_profile() {
     case $(edidsum -o) in
         251b742672f54471057b10e77e4bb2dfaa6a9904) echo HDMI2 ;;
@@ -49,8 +25,7 @@ layout_hook_default() {
             args+=(--output "${profile^^}" --auto --primary)
             ;;
     esac
-    OUTS=(DP1 DP2 DP3 HDMI1 HDMI2 HDMI3 LVDS1 VGA1)
-    setup "${args[@]}"
+    xrandr_layout DP1 DP2 DP3 HDMI1 HDMI2 HDMI3 LVDS1 VGA1 -- "${args[@]}"
 }
 
 layout_hook_modesetting() { layout_hook_default "$@"; }
@@ -64,7 +39,7 @@ layout_hook_zaphod() {
             args+=(
                 --output LVDS1 --mode 1600x900 --pos 0x0 --rotate normal --primary
             )
-            OUTS=(LVDS1)
+            xrandr_layout LVDS1 -- "${args[@]}"
             ;;
         1)
             [[ $1 = - ]] && set -- "$(layout_profile)"
@@ -86,11 +61,7 @@ layout_hook_zaphod() {
                     )
                     ;;
             esac
-            OUTS=(DP1 DP2 DP3 HDMI1 HDMI2 HDMI3 VGA1)
-            ;;
-        *)
-            return;
+            xrandr_layout DP1 DP2 DP3 HDMI1 HDMI2 HDMI3 VGA1 -- "${args[@]}"
             ;;
     esac
-    setup "${args[@]}"
 }

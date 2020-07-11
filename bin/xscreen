@@ -4,7 +4,39 @@ set -eu
 
 export NOOSD=1
 
+xrandr_layout() {
+    local off=()
+    while (( $# )); do
+        if [[ $1 = -- ]]; then
+            shift
+            break
+        fi
+        off+=("$1")
+        shift
+    done
+    local args=("$@")
+    while (( $# )); do
+        if [[ $1 = --output ]]; then
+            shift
+            (( $# )) || continue
+            for i in "${!off[@]}"; do
+                if [[ ${off[$i]} = "$1" ]]; then
+                    unset off["$i"]
+                    break
+                fi
+            done
+        fi
+        shift
+    done
+    for i in "${off[@]}"; do
+        args+=(--output "$i" --off)
+    done
+    xrandr "${args[@]}"
+}
+
 post_hook() { apod set & }
+
+# ----------------------------------------
 
 src=~/bin/xscreen.$HOSTNAME
 # shellcheck disable=SC1090
