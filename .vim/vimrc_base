@@ -1040,6 +1040,7 @@ augroup vimrc_base
     autocmd FileType man call utils#bufSpecial() | setl noma ts=8
     autocmd FileType rst setl ts=8 sw=4 fdm=manual
     autocmd FileType tar call utils#bufSpecial()
+    autocmd FileType yaml setl ts=2 sw=2
     autocmd FileType zip call utils#bufSpecial()
     autocmd FileType {c,cpp}{,.*} let &l:path = '.,,**,/usr/include'
 augroup END

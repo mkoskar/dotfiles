@@ -1,0 +1,34 @@
+configuration {
+	modi: "window,run,ssh";
+	font: "local_dmenu 16px";
+	bw: 0;
+	terminal: "term";
+	matching: "fuzzy";
+	line-margin: 0;
+	line-padding: 2;
+	separator-style: "none";
+	scroll-method: 0;
+	color-normal: "#3a3a3a,#e4e4e4,#3a3a3a,#000000,#87cefa";
+	color-urgent: "#3a3a3a,#e4e4e4,#3a3a3a,#000000,#87cefa";
+	color-active: "#3a3a3a,#e4e4e4,#3a3a3a,#000000,#87cefa";
+	color-window: "#3a3a3a,#3a3a3a,#000000";
+	kb-primary-paste: "Control+V,Shift+Insert,Control+y";
+	kb-secondary-paste: "Control+v,Insert,Control+Y";
+	kb-clear-line: "Control+c";
+	kb-move-front: "Control+a,Control+b";
+	kb-move-word-forward: "Alt+f,Alt+w";
+	kb-move-char-back: "Left,Alt+h";
+	kb-move-char-forward: "Right,Control+f,Alt+l";
+	kb-remove-word-back: "Control+w";
+	kb-remove-word-forward: "Alt+d";
+	kb-accept-custom: "Shift+Return";
+	kb-accept-alt: "Control+Return";
+	kb-row-left: "Control+Page_Up,Alt+less";
+	kb-row-right: "Control+Page_Down,Alt+greater";
+	kb-row-up: "Up,Control+p,Shift+Tab,ISO_Left_Tab,Alt+k";
+	kb-row-down: "Down,Control+n,Alt+j";
+	kb-page-prev: "Page_Up,Alt+p";
+	kb-page-next: "Page_Down,Alt+n";
+	kb-row-first: "Home,KP_Home,Alt+g";
+	kb-row-last: "End,KP_End,Alt+G";
+}

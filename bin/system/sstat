@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-ss -s
-
 stat() {
     netstat -apeW --numeric-host --numeric-ports "$@" 2>/dev/null |
         awk '

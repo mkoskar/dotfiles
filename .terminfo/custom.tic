@@ -6,7 +6,8 @@ linux|linux console,
 # \E[?25h   - Show cursor (DECTCEM).
 # \E[?8c    - Full block hardware cursor.
 # \E[?1000l - Don't send mouse X & Y on button press and release.
-# (See also: /etc/issue)
+#
+# See also: /etc/issue
 
 # ----------------------------------------
 

@@ -2,6 +2,7 @@
 # ----------------------------------------
 #
 # See also:
+#
 #   /usr/share/doc/alsa-plugins/README-pulse
 
 pcm.!pulse {
@@ -23,6 +24,7 @@ ctl.!pulse {
 # ----------------------------------------
 #
 # See also:
+#
 #   /usr/share/doc/alsa-plugins/README-jack
 
 pcm.!jack {

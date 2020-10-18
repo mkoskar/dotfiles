@@ -2,7 +2,13 @@
 
 _curl() {
     local stat scode surl
-    stat=$(curl -sSLG -w '%{http_code}\t%{url_effective}' -o _curl "$@")
+    stat=$(
+        curl -sSLG \
+            -o _curl \
+            -d key="$key" \
+            -w '%{http_code}\t%{url_effective}' \
+            "$@"
+    )
     read -r scode surl <<<"$stat"
     if [[ $scode != 200 ]]; then
         echo "HTTP $scode : $surl" >&2
@@ -14,14 +20,12 @@ _curl() {
 yt_video() {
     _curl https://www.googleapis.com/youtube/v3/videos \
         -d id="$1" \
-        -d key="$key" \
         -d part=id,snippet
     jq -r '.items[] | "#EXTINF:0," + .snippet.title + "\nytdl://" + .id' <_curl
 }
 
 yt_playlist() {
     _curl https://www.googleapis.com/youtube/v3/playlistItems \
-        -d key="$key" \
         -d pageToken="${2-}" \
         -d playlistId="$1" \
         -d maxResults=50 \
@@ -39,7 +43,6 @@ yt_playlist() {
 yt_channel() {
     _curl https://www.googleapis.com/youtube/v3/search \
         -d channelId="$1" \
-        -d key="$key" \
         -d pageToken="${2-}" \
         -d maxResults=50 \
         -d order=date \
@@ -58,7 +61,6 @@ yt_channel() {
 yt_user() {
     _curl https://www.googleapis.com/youtube/v3/channels \
         -d forUsername="$1" \
-        -d key="$key" \
         -d part=id
     local id
     if id=$(jq -re .items[].id <_curl); then
@@ -66,7 +68,7 @@ yt_user() {
     fi
 }
 
-handle() {
+handle_api() {
     set -eu
     key=$(<~/.yt)
 
@@ -75,20 +77,22 @@ handle() {
     trap cleanup EXIT
 
     cd "$tmpdir"
-    if [[ $1 =~ ^https?://www\.youtube\.com/watch\?v=(.*) ]]; then
+    if [[ $1 =~ ^https?://www\.youtube\.com/watch\?v=([^/]*)$ ]]; then
         yt_video "${BASH_REMATCH[1]}"
-    elif [[ $1 =~ ^https?://www\.youtube\.com/playlist\?list=(.*) ]]; then
+    elif [[ $1 =~ ^https?://www\.youtube\.com/playlist\?list=([^/]*)$ ]]; then
         yt_playlist "${BASH_REMATCH[1]}"
-    elif [[ $1 =~ ^https?://www\.youtube\.com/channel/(.*)/videos$ ]]; then
+    elif [[ $1 =~ ^https?://www\.youtube\.com/channel/([^/]*)(/|/videos)?$ ]]; then
         yt_channel "${BASH_REMATCH[1]}"
-    elif [[ $1 =~ ^https?://www\.youtube\.com/user/(.*)/videos$ ]]; then
+    elif [[ $1 =~ ^https?://www\.youtube\.com/user/([^/]*)(/|/videos)?$ ]]; then
+        yt_user "${BASH_REMATCH[1]}"
+    elif [[ $1 =~ ^https?://www\.youtube\.com/c/([^/]*)(/|/videos)?$ ]]; then
         yt_user "${BASH_REMATCH[1]}"
     else
         printf '%s\n' "$1"
     fi
 }
 
-handle1() {
+handle_ytdl() {
     set -eu -o pipefail
     [[ $1 =~ ^https?://www\.youtube\.com/ ]] || {
         printf '%s\n' "$1"
@@ -103,5 +107,5 @@ handle1() {
     '
 }
 
-export -f _curl yt_video yt_playlist yt_channel yt_user handle handle1
-parallel -rk -j 10 handle {}
+export -f _curl yt_video yt_playlist yt_channel yt_user handle_api handle_ytdl
+parallel -rk -j 10 handle_api {}

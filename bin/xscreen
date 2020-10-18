@@ -21,7 +21,7 @@ xrandr_layout() {
             (( $# )) || continue
             for i in "${!off[@]}"; do
                 if [[ ${off[$i]} = "$1" ]]; then
-                    unset off["$i"]
+                    unset "off[$i]"
                     break
                 fi
             done

@@ -102,7 +102,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     emoticons               b https://en.wikipedia.org/wiki/List_of_emoticons
     etsi                    b https://www.etsi.org/standards-search#\&sort=3
     etymology               b https://www.etymonline.com/word/{u}
+    ffp                     b https://en.wikipedia.org/wiki/FFP_standards#Types
     filenames               b https://www.dwheeler.com/essays/filenames-in-shell.html
+    filter-classification   b https://en.wikipedia.org/wiki/Gas_mask#Filter_classification
     firefox-about:*         b https://developer.mozilla.org/en-US/Firefox/The_about_protocol
     firefox-about:config    b http://kb.mozillazine.org/Category:Preferences
     firefox-changes         b https://www.mozilla.org/en-US/firefox/releases/
@@ -275,6 +277,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     posix-utils-index       b https://shellhaters.org/
     postgresql              b https://www.postgresql.org/docs/current/static/index.html
     printing                b https://wiki.linuxfoundation.org/openprinting/database/documentation
+    prometheus              b https://prometheus.io/docs/introduction/overview/
     pubchem                 b https://www.ncbi.nlm.nih.gov/pccompound\?term={u}
     pygments                b https://pygments.org/docs/lexers/
     pypa                    b https://www.pypa.io/
@@ -284,6 +287,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     python2                 b https://docs.python.org/2/
     qemu                    b https://qemu.weilnetz.de/doc/qemu-doc.html
     qt                      b https://doc.qt.io/
+    qt-flags                b https://doc.qt.io/qt-5/qguiapplication.html#supported-command-line-options
     quotes                  b https://www.cl.cam.ac.uk/~mgk25/ucs/quotes.html
     qutebrowser             b https://qutebrowser.org/img/cheatsheet-big.png
     realworldhaskell        b http://book.realworldhaskell.org/read/
@@ -312,6 +316,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     salt-modules            b https://docs.saltstack.com/en/latest/ref/index.html
     salt-states             b https://docs.saltstack.com/en/latest/ref/states/
     scala                   b https://www.scala-lang.org/api/current/
+    screw-drives            b https://en.wikipedia.org/wiki/List_of_screw_drives
     se                      b https://stackexchange.com/search\?q={u}
     se-unix                 b https://unix.stackexchange.com/search\?q={u}
     sed                     b https://www.gnu.org/software/sed/manual/sed.html
@@ -339,9 +344,11 @@ MENUER=$prgname menuer "$@" <<-EOF |
     systemd-troubleshooting b https://freedesktop.org/wiki/Software/systemd/Debugging/
     terminfo.src            b https://invisible-island.net/ncurses/terminfo.src.html
     tex                     b https://ctan.org/
+    thinkpads               b https://en.wikipedia.org/wiki/ThinkPad#Current_model_lines
     timezones               b https://upload.wikimedia.org/wikipedia/commons/e/e8/Standard_World_Time_Zones.png
     tlds                    b https://www.iana.org/domains/root/db
     tmux-changes            b https://github.com/tmux/tmux/blob/master/CHANGES
+    toml                    b https://toml.io/en/latest
     tor-specs               b https://gitweb.torproject.org/torspec.git/tree/
     toybox                  b https://github.com/landley/toybox
     tr                      b https://translate.google.com/\?sl=en\&tl=sk\&q={u}

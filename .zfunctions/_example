@@ -2,9 +2,9 @@
 
 # See also:
 #
-#   * http://zsh.sourceforge.net/Doc/Release/Completion-System.html#Completion-System
-#   * http://zsh.sourceforge.net/Doc/Release/Completion-Widgets.html#Completion-Special-Parameters
-#   * https://github.com/zsh-users/zsh-completions/blob/master/zsh-completions-howto.org
+#   http://zsh.sourceforge.net/Doc/Release/Completion-System.html#Completion-System
+#   http://zsh.sourceforge.net/Doc/Release/Completion-Widgets.html#Completion-Special-Parameters
+#   https://github.com/zsh-users/zsh-completions/blob/master/zsh-completions-howto.org
 #
 #   ^X? _complete_debug
 #   ^XH _complete_help

@@ -154,7 +154,8 @@ myConfig = def
                        , appName =? "vmpk" -?> doFloat
                        , appName =? "workrave" <&&> title =? "Workrave" -?> doHideIgnore
                        , appName =? "zathura" -?> doShiftView "8"
-                       , className =? "Firefox (default)" -?> doShiftView "3"
+                       , className <? "Firefox" <&&> appName =? "Toolkit" -?> doFloat
+                       , className =? "Firefox (default)" <&&> appName =? "Navigator" -?> doShiftView "3"
                        , className =? "Gxmessage" -?> doFloat
                        , className =? "mpv" -?> doShiftView "9"
                        , className =? "qutebrowser" -?> doShiftView "3"

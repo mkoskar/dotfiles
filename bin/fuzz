@@ -4,33 +4,33 @@
 #
 #   Terminal:
 #
-#       Heatseeker
-#       Icepick
-#       PathPicker
-#       Selecta
-#       fzf
-#       fzy
-#       gof
-#       happyfinder
-#       hmenu
-#       peco
-#       percol
-#       pick
-#       pmenu
-#       selector
-#       skim
-#       slmenu
-#       smenu
-#       tmenu
-#       tpick
-#       vis-menu
+#     Heatseeker
+#     Icepick
+#     PathPicker
+#     Selecta
+#     fzf
+#     fzy
+#     gof
+#     happyfinder
+#     hmenu
+#     peco
+#     percol
+#     pick
+#     pmenu
+#     selector
+#     skim
+#     slmenu
+#     smenu
+#     tmenu
+#     tpick
+#     vis-menu
 #
 #   GUI:
 #
-#       dmenu
-#       dmenu2
-#       gpicker
-#       rofi
+#     dmenu
+#     dmenu2
+#     gpicker
+#     rofi
 
 set -eu
 
@@ -98,9 +98,6 @@ case ${1-} in -)
 esac
 
 # ----------------------------------------
-
-#--execute
-#--history
 
 opts=()
 if [[ -t 0 ]]; then

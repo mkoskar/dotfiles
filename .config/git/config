@@ -98,6 +98,11 @@
 [grep]
     linenumber = true
 
+[instaweb]
+    browser = xdg-open
+    httpd = python
+    local = true
+
 [log]
     date = human
     decorate = short
