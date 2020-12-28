@@ -3,13 +3,10 @@
 include "%L"
 include "%H/.XCompose.rfc1345"
 
-<Multi_key> <S> <S>                     : "ẞ" # U1e9e : LATIN CAPITAL LETTER SHARP S
-<Multi_key> <colon> <parenleft>         : "☹" # U2639 : WHITE FROWNING FACE
-<Multi_key> <colon> <parenright>        : "☺" # U263a : WHITE SMILING FACE
-<Multi_key> <less> <3>                  : "♥" # U2665 : BLACK HEART SUIT
-<Multi_key> <period> <equal>            : "•" # U2022 : BULLET
-<Multi_key> <space> <period>            : "…" # U2026 : HORIZONTAL ELLIPSIS
+<Multi_key> <H> <E>                     : "…" # U2026 : HORIZONTAL ELLIPSIS
 
+<Multi_key> <x> <1>                     : "¯п¯"
+<Multi_key> <x> <2>                     : "¯Ѫ¯"
 <Multi_key> <x> <s>                     : "┐(ツ)┌"
 <Multi_key> <x> <w>                     : "┐o︠_o︡┌"
 <Multi_key> <x> <z>                     : "(-_-) zzz"

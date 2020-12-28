@@ -14,6 +14,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
 
     !                       b file:///"$HOME"/tmp
     ImageMagick             b https://www.imagemagick.org/script/command-line-tools.php
+    R                       b https://cran.r-project.org/manuals.html
     alsa-doc                b https://www.alsa-project.org/alsa-doc/alsa-lib/
     amazon                  b https://www.amazon.com/s/field-keywords={u}
     amazon-de               b https://www.amazon.de/s/field-keywords={u}
@@ -43,6 +44,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     aur-maintainer          b https://aur.archlinux.org/packages.php\?SeB=m\&K="$AUR_MAINTAINER"
     aur-name-only           b https://aur.archlinux.org/packages.php\?SeB=n\&K={u}
     austin-csrg             b https://www.opengroup.org/austin/docreg.html
+    autobook                b https://sourceware.org/autobook/autobook/autobook.html
     awesome                 b https://github.com/sindresorhus/awesome
     awg                     b https://en.wikipedia.org/wiki/American_wire_gauge#Tables_of_AWG_wire_sizes
     awk-freeshell           b http://awk.freeshell.org/
@@ -59,6 +61,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     bash-pitfalls           b https://mywiki.wooledge.org/BashPitfalls
     bash-sheet              b https://mywiki.wooledge.org/BashSheet
     batteries               b https://en.wikipedia.org/wiki/List_of_battery_sizes#Cylindrical_batteries
+    binutils                b https://sourceware.org/binutils/docs/
     bluetooth-profiles      b https://en.wikipedia.org/wiki/List_of_Bluetooth_profiles
     browserbench            b https://browserbench.org/
     busybox                 b https://busybox.net/downloads/BusyBox.html
@@ -97,6 +100,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ebay                    b https://www.ebay.com/sch/i.html\?_nkw={u}
     ecma                    b https://www.ecma-international.org/publications/standards/Standard.htm
     electronegativity       b https://en.wikipedia.org/wiki/Electronegativity#Electronegativities_of_the_elements
+    em-spectrum             b https://en.wikipedia.org/wiki/Electromagnetic_spectrum
     emojis                  b https://emojipedia.org/
     emojis-codes            b https://www.webpagefx.com/tools/emoji-cheat-sheet/
     emoticons               b https://en.wikipedia.org/wiki/List_of_emoticons
@@ -121,6 +125,13 @@ MENUER=$prgname menuer "$@" <<-EOF |
     g                       b https://www.google.com/search\?q={u}
     g-operators             b https://ahrefs.com/blog/google-advanced-search-operators/
     gcc                     b https://gcc.gnu.org/onlinedocs/
+    gcc-lists               b https://gcc.gnu.org/lists.html
+    gcc-wiki                b https://gcc.gnu.org/wiki
+    gdb                     b https://sourceware.org/gdb/current/onlinedocs/gdb/index.html
+    gdb-changes             b https://sourceware.org/git/?p=binutils-gdb.git\;a=blob\;f=gdb/NEWS\;hb=HEAD
+    gdb-lists               b https://www.gnu.org/software/gdb/mailing-lists/
+    gdb-refcard             b https://sourceware.org/gdb/current/onlinedocs/refcard.pdf
+    gdb-wiki                b https://sourceware.org/gdb/wiki/
     gg                      b https://groups.google.com/forum/#!search/{u}
     gh                      b https://github.com/
     gh-dotfiles             b https://github.com/mkoskar/dotfiles/tree/master/bin
@@ -134,12 +145,14 @@ MENUER=$prgname menuer "$@" <<-EOF |
     git-rebase              b https://git-rebase.io/
     gitlab                  b https://gitlab.com/explore
     glib2                   b https://developer.gnome.org/glib/stable/
+    glibc                   b https://www.gnu.org/software/libc/manual/html_mono/libc.html
+    glibc-changes           b https://sourceware.org/git/?p=glibc.git\;a=blob\;f=NEWS\;hb=HEAD
+    glibc-wiki              b https://sourceware.org/glibc/wiki/
     gmail-nolabel           b https://mail.google.com/mail/u/0/#apps/has:nouserlabels+-in:inbox+-in:draft+-in:sent+-in:spam+-in:trash/n100
     gmail-search            b https://support.google.com/mail/answer/7190
     gnome-api               b https://developer.gnome.org/references
     gnu-coding              b https://www.gnu.org/prep/standards/standards.html
     gnu-lists               b https://lists.gnu.org/archive/html/
-    gnu-make                b https://www.gnu.org/software/make/manual/make.html#Quick-Reference
     gnu-manuals             b https://www.gnu.org/manual/manual.html
     gnu-repos               b https://git.savannah.gnu.org/cgit/
     go                      b https://golang.org/ref/spec
@@ -165,15 +178,19 @@ MENUER=$prgname menuer "$@" <<-EOF |
     html-reference          b https://developer.mozilla.org/en-US/docs/Web/HTML/Reference
     html-spec               b https://html.spec.whatwg.org/multipage/
     http                    b https://tools.ietf.org/html/rfc2616
+    http/2                  b https://tools.ietf.org/html/rfc7540
     i                       b https://www.ixquick.com/do/metasearch.pl\?query={u}
     i3                      b https://i3wm.org/docs/userguide.html
     iban                    b https://en.wikipedia.org/wiki/International_Bank_Account_Number#IBAN_formats_by_country
+    ieee-802                b https://www.ieee802.org/
     ii                      b https://www.ixquick.com/do/metasearch.pl\?cat=pics\&query={u}
     imdb                    b https://www.imdb.com/find\?q={u}
     imperial                b https://en.wikipedia.org/wiki/Imperial_units
     intel-core-datasheets   b https://www-ssl.intel.com/content/www/us/en/processors/core/core-technical-resources.html
     intel-sdm               b https://software.intel.com/en-us/articles/intel-sdm
     iojs                    b https://iojs.org/api/
+    ipv4                    b https://tools.ietf.org/html/rfc791
+    ipv6                    b https://tools.ietf.org/html/rfc8200
     irc-channels            b https://irc.netsplit.de/channels/\?net=freenode
     irc-docs                b https://ircdocs.horse/
     irc-logs                b https://colabti.org/irclogger/irclogger_logs
@@ -226,6 +243,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     luarocks                b https://luarocks.org/search\?q={u}
     m4-macros               b https://www.gnu.org/software/m4/manual/m4.html#Macro-index
     mailcap                 b https://tools.ietf.org/html/rfc1524
+    make                    b https://www.gnu.org/software/make/manual/make.html#Quick-Reference
     man-pages               b https://man7.org/linux/man-pages/index.html
     marc-lists              b https://marc.info/
     markdown                b https://www.markdownguide.org/cheat-sheet/
@@ -240,7 +258,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     mime                    b https://www.iana.org/assignments/media-types/media-types.xhtml
     mongodb                 b https://docs.mongodb.org/manual/reference/
     morse-nato              b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
-    mozilla-lists           b https://mail.mozilla.org/listinfo
+    mozilla-lists           b https://mail.mozilla.org/listinfo/
     mozilla-repos           b https://hg.mozilla.org/
     music                   b https://musicbrainz.org/search\?query={u}
     mutt                    b http://mutt.org/doc/manual/
@@ -253,6 +271,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     nodejs                  b https://nodejs.org/api/
     notes!                  b ~/projects/notes/_build/html/index.html
     ntrs                    b https://ntrs.nasa.gov/search.jsp\?Ntk=All\&Ntt={u}
+    octave                  b https://www.gnu.org/software/octave/doc/latest
     opentype                b https://docs.microsoft.com/en-us/typography/opentype/spec/
     oracle-plsql            b https://docs.oracle.com/database/121/LNPLS/toc.htm
     oracle-sql              b https://docs.oracle.com/database/121/SQLRF/toc.htm
@@ -268,7 +287,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     pgp-search              b https://pgp.key-server.io/
     phrik                   b https://wiki.archlinux.org/index.php/Phrik
     pkg                     b https://www.archlinux.org/packages/\?q={u}
-    posix                   b "$posix_base"/index.html
+    posix                   b "$posix_base"/
     posix-defs              b "$posix_base"/basedefs/contents.html
     posix-env               b "$posix_base"/basedefs/V1_chap08.html
     posix-ifaces            b "$posix_base"/functions/contents.html
@@ -290,6 +309,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     qt-flags                b https://doc.qt.io/qt-5/qguiapplication.html#supported-command-line-options
     quotes                  b https://www.cl.cam.ac.uk/~mgk25/ucs/quotes.html
     qutebrowser             b https://qutebrowser.org/img/cheatsheet-big.png
+    radio-spectrum          b https://en.wikipedia.org/wiki/Radio_spectrum
     realworldhaskell        b http://book.realworldhaskell.org/read/
     regex-gnulib            b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html
     regex-java              b https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/util/regex/Pattern.html
@@ -329,7 +349,10 @@ MENUER=$prgname menuer "$@" <<-EOF |
     slovniky                b https://slovnik.juls.savba.sk/
     so                      b https://stackoverflow.com/search\?q={u}
     soundcloud              b https://soundcloud.com/search\?q={u}
+    sourceware-bugs         b https://sourceware.org/bugzilla/describecomponents.cgi
+    sourceware-lists        b https://sourceware.org/mailman/listinfo/
     sourceware-repos        b https://sourceware.org/git/
+    spaces                  b https://en.wikipedia.org/wiki/Whitespace_character#Overview
     spinics-lists           b https://www.spinics.net/lists/
     spring                  b https://docs.spring.io/spring/docs/current/spring-framework-reference/html/
     spring-api              b https://docs.spring.io/spring/docs/current/javadoc-api/overview-summary.html
@@ -342,6 +365,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     systemd                 b https://systemd.io/
     systemd-changes         b https://github.com/systemd/systemd/blob/master/NEWS
     systemd-troubleshooting b https://freedesktop.org/wiki/Software/systemd/Debugging/
+    tcp                     b https://tools.ietf.org/html/rfc793
     terminfo.src            b https://invisible-island.net/ncurses/terminfo.src.html
     tex                     b https://ctan.org/
     thinkpads               b https://en.wikipedia.org/wiki/ThinkPad#Current_model_lines
@@ -363,7 +387,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     unicode-charts          b https://unicode.org/charts/
     unicode-emojis          b https://www.unicode.org/emoji/charts/full-emoji-list.html
     unicode-math            b https://www.unicode.org/Public/math/revision-15/MathClassEx-15.html
-    unix                    b https://publications.opengroup.org/standards/unix
+    unix                    b https://en.wikipedia.org/wiki/Single_UNIX_Specification#Marks_for_compliant_systems
     unix-timeline1          b https://upload.wikimedia.org/wikipedia/commons/c/cd/Unix_timeline.en.svg
     unix-timeline2          b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
     url                     b https://url.spec.whatwg.org/

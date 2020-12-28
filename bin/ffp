@@ -72,7 +72,6 @@ file=user.js
     if [[ ! $profile =~ ^plain(-|$) ]]; then
         cat <<-'EOF'
 
-			user_pref("accessibility.blockautorefresh", true);
 			user_pref("accessibility.typeaheadfind.flashBar", 0);
 			user_pref("app.shield.optoutstudies.enabled", false);
 			user_pref("browser.ctrlTab.previews", true);

@@ -490,9 +490,9 @@ set grepformat=%f:%l:%m
 set grepprg=grep\ -nH\ --exclude-dir=.svn\ --exclude-dir=.git\ --exclude=\*.swp\ --exclude=\*~\ $*
 
 " ag / rg
-set grepformat=%f:%l:%c:%m
-set grepprg=ag\ --vimgrep\ $*
-set grepprg=rg\ --vimgrep\ $*
+"set grepformat=%f:%l:%c:%m
+"set grepprg=ag\ --vimgrep\ $*
+"set grepprg=rg\ --vimgrep\ $*
 
 set shellpipe=\|&\ tee
 
@@ -1038,7 +1038,7 @@ augroup vimrc_base
     autocmd FileType mail call utils#bufSpecial() | setl tw=72
     autocmd FileType make setl ts=4 sw=4 noet
     autocmd FileType man call utils#bufSpecial() | setl noma ts=8
-    autocmd FileType rst setl ts=8 sw=4 fdm=manual
+    autocmd FileType rst setl ts=8 sw=4 fdm=manual foldtext&
     autocmd FileType tar call utils#bufSpecial()
     autocmd FileType yaml setl ts=2 sw=2
     autocmd FileType zip call utils#bufSpecial()

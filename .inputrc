@@ -73,7 +73,6 @@ $include ~/.inputrc.esc
 "\C-I": menu-complete
 
 "\C-G": abort
-"\C-J": self-insert
 "\C-L": clear-screen
 "\C-N": history-search-forward
 "\C-P": history-search-backward
@@ -86,6 +85,8 @@ $include ~/.inputrc.esc
 "\C-X\C-Xm": dump-macros
 
 $if bash
+    "\C-J": self-insert
+
     " ": magic-space
     "\ee": shell-expand-line
     "\C-X\C-E": edit-and-execute-command

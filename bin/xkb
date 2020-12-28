@@ -95,6 +95,13 @@ xkb_default() {
 	            actions= [ NoAction(), NoAction(), NoAction(), NoAction(), SwitchScreen(screen=+1, !same) ]
 	        };
 
+	        replace key <AD03> {
+	            type= "FOUR_LEVEL_SEMIALPHABETIC",
+	            symbols[Group1]= [ e, E, dead_currency, Eacute ],
+	            symbols[Group2]= [ e, E, dead_currency, E ],
+	            symbols[Group3]= [ e, E, dead_currency, E ]
+	        };
+
 	        key <LatU> { [ PtrBtn(button=1) ] };
 	        key <LatI> { [ PtrBtn(button=2) ] };
 	        key <LatO> { [ PtrBtn(button=3) ] };

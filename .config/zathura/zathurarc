@@ -5,13 +5,19 @@ set statusbar-home-tilde true
 set window-title-home-tilde true
 set window-title-page true
 
+map <BackSpace> scroll full-up
 map <A-j> scroll down
 map <A-k> scroll up
 map A adjust_window width
+
 map i toggle_index
+map [index] i toggle_index
+map [index] q toggle_index
+
+map f toggle_fullscreen
+map [fullscreen] f toggle_fullscreen
+map [fullscreen] q toggle_fullscreen
 
 map p toggle_presentation
 map [presentation] p toggle_presentation
-
-map [index] i toggle_index
-map [index] q toggle_index
+map [presentation] q toggle_presentation
