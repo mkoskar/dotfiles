@@ -15,10 +15,12 @@ MENUER=$prgname menuer "$@" <<-EOF |
     !                       b file:///"$HOME"/tmp
     ImageMagick             b https://www.imagemagick.org/script/command-line-tools.php
     R                       b https://cran.r-project.org/manuals.html
+    acpi                    b https://uefi.org/specifications
     alsa-doc                b https://www.alsa-project.org/alsa-doc/alsa-lib/
     amazon                  b https://www.amazon.com/s/field-keywords={u}
     amazon-de               b https://www.amazon.de/s/field-keywords={u}
     amazon-uk               b https://www.amazon.co.uk/s/field-keywords={u}
+    amd-manuals             b https://developer.amd.com/resources/developer-guides-manuals/
     angularjs               b https://docs.angularjs.org/api
     animals                 b https://en.wikipedia.org/wiki/List_of_animal_names
     ansible                 b https://docs.ansible.com/ansible/latest/index.html
@@ -65,8 +67,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     bluetooth-profiles      b https://en.wikipedia.org/wiki/List_of_Bluetooth_profiles
     browserbench            b https://browserbench.org/
     busybox                 b https://busybox.net/downloads/BusyBox.html
+    c                       b http://www.open-std.org/jtc1/sc22/wg14/www/projects
     c-faq                   b http://c-faq.com/
-    charref                 b https://dev.w3.org/html5/html-author/charref
     chemspider              b https://www.chemspider.com/Search.aspx\?q={u}
     chrome-ext              b https://developer.chrome.com/extensions/overview
     chrome-flags            b https://peter.sh/experiments/chromium-command-line-switches/
@@ -74,6 +76,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     cite                    b https://citeseerx.ist.psu.edu/search\?q={u}
     constellations          b https://en.wikipedia.org/wiki/88_modern_constellations#List
     country-codes           b https://en.wikipedia.org/wiki/ISO_3166-1#Current_codes
+    cpp                     b https://isocpp.org/std/the-standard
     cryptocurr              b https://coinmarketcap.com/
     css-reference           b https://developer.mozilla.org/en-US/docs/Web/CSS/Reference
     ctlcodes                b https://en.wikipedia.org/wiki/C0_and_C1_control_codes#C0_\(ASCII_and_derivatives\)
@@ -121,6 +124,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     freedesktop-lists       b https://lists.freedesktop.org/mailman/listinfo/
     freedesktop-repos       b https://cgit.freedesktop.org/
     freedesktop-specs       b https://standards.freedesktop.org/
+    freenode                b https://freenode.net/
     freetype                b https://www.freetype.org/freetype2/docs/documentation.html
     g                       b https://www.google.com/search\?q={u}
     g-operators             b https://ahrefs.com/blog/google-advanced-search-operators/
@@ -139,9 +143,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gh-search               b https://github.com/search\?q={u}
     gi                      b https://www.google.com/search\?q={u}\&tbm=ischsr
     gimp!                   b /usr/share/gimp/2.0/help/en/index.html
-    git-book                b https://git-scm.com/book
+    git                     b https://git-scm.com/docs
     git-changes             b https://github.com/git/git/tree/master/Documentation/RelNotes
-    git-docs                b https://git-scm.com/docs
     git-rebase              b https://git-rebase.io/
     gitlab                  b https://gitlab.com/explore
     glib2                   b https://developer.gnome.org/glib/stable/
@@ -175,6 +178,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     haskell-search          b https://www.haskell.org/hoogle/\?hoogle={u}
     hibernate-orm           b https://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
     hn                      b https://news.ycombinator.com/
+    html-charref            b https://dev.w3.org/html5/html-author/charref
     html-reference          b https://developer.mozilla.org/en-US/docs/Web/HTML/Reference
     html-spec               b https://html.spec.whatwg.org/multipage/
     http                    b https://tools.ietf.org/html/rfc2616
@@ -186,8 +190,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ii                      b https://www.ixquick.com/do/metasearch.pl\?cat=pics\&query={u}
     imdb                    b https://www.imdb.com/find\?q={u}
     imperial                b https://en.wikipedia.org/wiki/Imperial_units
-    intel-core-datasheets   b https://www-ssl.intel.com/content/www/us/en/processors/core/core-technical-resources.html
-    intel-sdm               b https://software.intel.com/en-us/articles/intel-sdm
+    intel-core-datasheets   b https://www.intel.com/content/www/us/en/products/docs/processors/core/core-technical-resources.html
+    intel-cpus              b https://en.wikipedia.org/wiki/List_of_Intel_processors#Latest
+    intel-manuals           b https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html
     iojs                    b https://iojs.org/api/
     ipv4                    b https://tools.ietf.org/html/rfc791
     ipv6                    b https://tools.ietf.org/html/rfc8200
@@ -270,6 +275,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     netfilter-flow          b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
     nodejs                  b https://nodejs.org/api/
     notes!                  b ~/projects/notes/_build/html/index.html
+    notes-for-professionals b https://goalkicker.com/
     ntrs                    b https://ntrs.nasa.gov/search.jsp\?Ntk=All\&Ntt={u}
     octave                  b https://www.gnu.org/software/octave/doc/latest
     opentype                b https://docs.microsoft.com/en-us/typography/opentype/spec/
@@ -287,6 +293,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     pgp-search              b https://pgp.key-server.io/
     phrik                   b https://wiki.archlinux.org/index.php/Phrik
     pkg                     b https://www.archlinux.org/packages/\?q={u}
+    plan9                   b https://9p.io/plan9/
     posix                   b "$posix_base"/
     posix-defs              b "$posix_base"/basedefs/contents.html
     posix-env               b "$posix_base"/basedefs/V1_chap08.html
@@ -360,16 +367,19 @@ MENUER=$prgname menuer "$@" <<-EOF |
     sql-bnf!                b ~/archive/lib/00-cs/dbms/sql-bnf/index.html
     sqlite                  b https://sqlite.org/docs.html
     sqlite-lang             b https://sqlite.org/lang.html
+    stn                     b https://normy.unms.sk/eshop/public/search.aspx
     suckless-repos          b https://git.suckless.org/
     sysrq                   b https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
     systemd                 b https://systemd.io/
     systemd-changes         b https://github.com/systemd/systemd/blob/master/NEWS
+    systemd-directives      b https://www.freedesktop.org/software/systemd/man/systemd.directives.html
     systemd-troubleshooting b https://freedesktop.org/wiki/Software/systemd/Debugging/
     tcp                     b https://tools.ietf.org/html/rfc793
     terminfo.src            b https://invisible-island.net/ncurses/terminfo.src.html
     tex                     b https://ctan.org/
     thinkpads               b https://en.wikipedia.org/wiki/ThinkPad#Current_model_lines
     timezones               b https://upload.wikimedia.org/wikipedia/commons/e/e8/Standard_World_Time_Zones.png
+    tiobe-index             b https://www.tiobe.com/tiobe-index/
     tlds                    b https://www.iana.org/domains/root/db
     tmux-changes            b https://github.com/tmux/tmux/blob/master/CHANGES
     toml                    b https://toml.io/en/latest

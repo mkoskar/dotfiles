@@ -47,7 +47,7 @@ $include ~/.inputrc.esc
 "\el": forward-char
 "\eb": backward-word
 "\ef": forward-word
-"\ew": forward-word
+"\ew": vi-next-word
 
 "\C-U": backward-kill-line
 "\C-K": kill-line

@@ -1,0 +1,221 @@
+# General
+# ----------------------------------------
+
+AutoOccupy
+AutoRelativeResize
+BorderBottom 5
+BorderLeft 110
+BorderRight 5
+BorderTop 5
+ConstrainedMoveTime 0
+DontShowWelcomeWindow
+IgnoreModifier { mod2 }
+MoveDelta 3
+NoDefaults
+NoStackMode
+ShortAllWindowsMenus
+SloppyFocus
+UsePPosition "on"
+WarpCursor
+WarpOnDeIconify { }
+WarpRingOnScreen
+XMoveGrid 5
+YMoveGrid 5
+
+
+# Fonts
+# ----------------------------------------
+
+IconFont "-*-terminus-bold-r-normal--12-*"
+IconManagerFont "-*-terminus-bold-r-normal--12-*"
+MenuFont "-*-terminus-bold-r-normal--12-*"
+ResizeFont "-*-terminus-bold-r-normal--12-*"
+TitleFont "-*-terminus-bold-r-normal--12-*"
+WorkSpaceFont "-*-terminus-bold-r-normal--12-*"
+
+
+# Titlebar
+# ----------------------------------------
+
+ButtonIndent 0
+FramePadding 0
+NoTitleHighlight
+SunkFocusWindowTitle
+TitleButtonBorderWidth 0
+TitleButtonShadowDepth 0
+TitlePadding 0
+TitleShadowDepth 0
+UseThreeDTitles
+
+LeftTitleButton ":xpm:dot" = f.iconify
+RightTitleButton ":xpm:cross" = f.delete
+
+Color {
+    TitleBackground "deepskyblue1"
+}
+
+
+# Borders
+# ----------------------------------------
+
+BorderResizeCursors
+BorderShadowDepth 1
+BorderWidth 1
+ThreeDBorderWidth 2
+UseThreeDBorders
+
+Color {
+    BorderColor "red"
+    BorderTileBackground "deepskyblue1"
+    BorderTileForeground "deepskyblue1"
+}
+
+
+# Workspaces
+# ----------------------------------------
+
+DontPaintRootWindow
+DontWarpCursorInWMap
+MapWindowCurrentWorkSpace { "black" "gray70" }
+MapWindowDefaultWorkSpace { "black" "gray30" }
+NoImagesInWorkSpaceManager
+NoShowOccupyAll
+ShowWorkSpaceManager
+UseThreeDWMap
+WMgrButtonShadowDepth 1
+WMgrHorizButtonIndent 0
+WMgrVertButtonIndent 0
+WorkSpaceManagerGeometry "100x240+5+5" 1
+
+WorkSpaces { "1" "2" "3" "4" }
+
+
+# Icons
+# ----------------------------------------
+
+ForceIcons
+IconBorderWidth 0
+IconManagerGeometry "100x50+5+250" 1
+IconManagerShadowDepth 1
+IconifyByUnmapping
+NoIconManagerFocus
+ShowIconManager
+ShrinkIconTitles
+UseThreeDIconManagers
+
+Color {
+    IconBackground "lightslateblue"
+    IconBorderColor "gray85"
+    IconForeground "white"
+    IconManagerBackground "gray70"
+    IconManagerHighlight "red"
+}
+
+
+# Menus
+# ----------------------------------------
+
+MenuShadowDepth 1
+UseThreeDMenus
+
+Color {
+    MenuBackground "#686B9F"
+    MenuForeground "white"
+    MenuTitleBackground "gray70"
+    MenuTitleForeground "white"
+}
+
+menu "Main" {
+    "CTWM"          f.title
+    "term"          !"term&"
+    ""              f.separator
+    "Restart"       f.restart
+    "Exit"          f.quit
+}
+
+menu "Window" {
+    "Window"        f.title
+    "Pin/Unpin"     f.pin
+    ""              f.separator
+    "Iconify"       f.iconify
+    "Move"          f.move
+    "RaiseLower"    f.raiselower
+    "Resize"        f.resize
+    ""              f.separator
+    "Delete"        f.delete
+    "Kill"          f.destroy
+    ""              f.separator
+    "Adopt"         f.adoptwindow
+    "Info"          f.identify
+    "Occupy"        f.occupy
+    "Occupy All"    f.occupyall
+    "Refresh All"   f.refresh
+    "Vanish"        f.vanish
+    ""              f.separator
+    "Full"          f.fullzoom
+    "Horizontal"    f.horizoom
+    "Vertical"      f.zoom
+    "Left"          f.leftzoom
+    "Top"           f.topzoom
+    "Right"         f.rightzoom
+    "Bottom"        f.bottomzoom
+}
+
+
+# Bindings
+# ----------------------------------------
+
+Function "raise-move" { f.raise f.forcemove }
+Function "raise-resize" { f.raise f.resize }
+
+Button1 = : root : f.menu "Main"
+Button3 = : root | frame | title : f.menu "Window"
+
+Button1 = : frame : f.function "raise-resize"
+Button1 = : title : f.function "raise-move"
+Button2 = : frame | title : f.raiselower
+
+Button1 = : icon : f.iconify
+Button2 = : icon : f.forcemove
+
+Button1 = : iconmgr : f.iconify
+Button2 = : iconmgr : f.raiselower
+
+Button1 = mod4 : frame | title | window : f.function "raise-move"
+Button2 = mod4 : frame | title | window : f.raiselower
+Button3 = mod4 : frame | title | window : f.function "raise-resize"
+
+"Tab" = mod4 : all : f.warpring "next"
+"Tab" = shift | mod4 : all : f.warpring "prev"
+
+"d" = mod4 : all : f.nextworkspace
+"s" = mod4 : all : f.prevworkspace
+
+"1" = mod4 : all : f.gotoworkspace "1"
+"2" = mod4 : all : f.gotoworkspace "2"
+"3" = mod4 : all : f.gotoworkspace "3"
+"4" = mod4 : all : f.gotoworkspace "4"
+
+
+# Other
+# ----------------------------------------
+
+NoBorder {
+    "TWM Icon Manager"
+    "WorkSpaceManager"
+}
+
+NoHighlight {
+    "TWM Icon Manager"
+    "WorkSpaceManager"
+}
+
+NoTitle {
+    "TWM Icon Manager"
+    "WorkSpaceManager"
+}
+
+WindowRingExclude {
+    "TWM Icon Manager"
+    "WorkSpaceManager"
+}

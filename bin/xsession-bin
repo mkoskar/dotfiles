@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# vim: fdm=marker
 
 set -eu
 
@@ -6,14 +7,17 @@ prgname=${0##*/}
 
 sessions=(
 
-    # Official repos (10/2019)
+    # Arch (01/2020) {{{
     # ----------------------------------------
+    #
     # awesome
     # blackbox
     # bspwm
+    # ctwm
     # enlightenment
     # fluxbox
     # fvwm
+    # gala
     # herbstluftwm
     # i3            # (i3-gaps, i3-wm)
     # icewm
@@ -32,15 +36,18 @@ sessions=(
     # rio           # (plan9)
     # spectrwm      # formerly scrotwm
     # twm           # (xorg-twm)
+    # ukwm
     # xfwm4
     # xmonad
+    #
+    # }}}
 
-    # AUR (10/2019)
+    # AUR (01/2020) {{{
     # ----------------------------------------
+    #
     # 2bwm
     # 9wm
     # adwm
-    # aewm
     # aewm++
     # afterstep
     # alopex
@@ -48,9 +55,7 @@ sessions=(
     # antiwm
     # berry
     # bubbles
-    # catwm
     # chamfer
-    # ctwm
     # cwm
     # dwin
     # dwm
@@ -62,33 +67,38 @@ sessions=(
     # flwm
     # foo-wm
     # frankenwm
-    # gala
     # glass-wm
     # goomwwm
     # heliwm
     # howm
-    # ion3
     # jbwm
     # karmen
     # katriawm
     # larswm
+    # lcarswm
     # leftwm
     # mantis-wm
+    # matchbox
     # matwm2
     # mcwm
     # mlvwm
+    # mmwm
     # moksha
+    # nimdow
     # olvwm
     # pawm
     # qvwm
     # sawfish
+    # sowm
     # stumpwm
     # subtle
     # tinywm
     # tritium
+    # twobwm
     # ude
     # unagi
     # uwm
+    # velox
     # vtwm
     # waimea
     # windowchef
@@ -97,48 +107,43 @@ sessions=(
     # windwm
     # wingo
     # wm2
+    # wmderland
     # wmfs
     # wmii
     # wmx
     # wtftw
     # wumwum
     # xdwm
+    # xwm
     # yeahwm
+    #
+    # }}}
+
+    # Other {{{
+    # ----------------------------------------
+    #
+    # aewm
+    # catwm
+    # dminiwm
+    # ion3
+    # monsterwm
+    # possum-wm
+    # smallwm
+    # swm
+    #
+    # }}}
 
     # ----------------------------------------
 
-    # berry
-    # bubbles
-    # chamfer
-    # dwm
-    # echinus
-    # i3
-    # katriawm
-    # leftwm
-    # mcwm
-    # sawfish
-    # stumpwm
-    # windowchef
-    # wmii
-    2bwm
-    adwm
-    alopex
-    cwm
-    fvwm
-    marco           # fork of Metacity
-    notion
-
-    # ----------------------------------------
-
+    ctwm
     i3
     jwm
     kodi
+    main
     openbox
     rio
     xfwm4
     xmonad
-
-    main
 )
 
 if (( ! $# )); then

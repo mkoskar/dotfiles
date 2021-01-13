@@ -65,6 +65,8 @@ wlan() {
 
 exec >/dev/null
 
+echo active >/sys/devices/system/cpu/intel_pstate/status
+
 case $1 in
     1)
         cpupower frequency-set -g powersave

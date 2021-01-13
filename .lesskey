@@ -1,11 +1,11 @@
 #command
 
-?       help
 h       left-scroll
 l       right-scroll
 \eh     no-scroll
 \el     end-scroll
 \40     undo-hilite
+\e?     help
 
 #line-edit
 

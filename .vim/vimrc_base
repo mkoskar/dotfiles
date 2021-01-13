@@ -332,7 +332,7 @@ map! <S-Insert> <MiddleMouse>
 " ----------------------------------------
 
 set ruler
-set shortmess=aoOtTWIc
+set shortmess=aoOtTWIcF
 set showcmd
 set showmode
 

@@ -213,7 +213,7 @@ bindkey \\eh backward-char
 bindkey \\el forward-char
 bindkey \\eb backward-word
 bindkey \\ef emacs-forward-word
-bindkey \\ew emacs-forward-word
+bindkey \\ew forward-word
 
 bindkey ^? backward-delete-char
 bindkey ^H backward-delete-char
