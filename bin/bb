@@ -42,6 +42,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     argyllcms!              b /usr/share/argyllcms/doc/ArgyllDoc.html
     arxiv                   b https://arxiv.org/find
     asciidoc                b https://www.methods.co.nz/asciidoc/
+    audio-codecs            b https://en.wikipedia.org/wiki/List_of_codecs#Audio_compression_formats
     aur                     b https://aur.archlinux.org/packages.php\?SeB=nd\&K={u}
     aur-maintainer          b https://aur.archlinux.org/packages.php\?SeB=m\&K="$AUR_MAINTAINER"
     aur-name-only           b https://aur.archlinux.org/packages.php\?SeB=n\&K={u}
@@ -70,8 +71,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     c                       b http://www.open-std.org/jtc1/sc22/wg14/www/projects
     c-faq                   b http://c-faq.com/
     chemspider              b https://www.chemspider.com/Search.aspx\?q={u}
-    chrome-ext              b https://developer.chrome.com/extensions/overview
+    chrome-ext              b https://developer.chrome.com/docs/extensions/
     chrome-flags            b https://peter.sh/experiments/chromium-command-line-switches/
+    chromium-changes        b https://chromiumdash.appspot.com/releases?platform=Linux
     chromium-code-search    b https://source.chromium.org/
     cite                    b https://citeseerx.ist.psu.edu/search\?q={u}
     constellations          b https://en.wikipedia.org/wiki/88_modern_constellations#List
@@ -112,10 +114,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ffp                     b https://en.wikipedia.org/wiki/FFP_standards#Types
     filenames               b https://www.dwheeler.com/essays/filenames-in-shell.html
     filter-classification   b https://en.wikipedia.org/wiki/Gas_mask#Filter_classification
-    firefox-about:*         b https://developer.mozilla.org/en-US/Firefox/The_about_protocol
-    firefox-about:config    b http://kb.mozillazine.org/Category:Preferences
     firefox-changes         b https://www.mozilla.org/en-US/firefox/releases/
     firefox-changes-dev     b https://developer.mozilla.org/en-US/Firefox/Releases/
+    firefox-prefs           b http://kb.mozillazine.org/Category:Preferences
     firefox-relnotes-bugs   b https://bugzilla.mozilla.org/buglist.cgi\?query_format=advanced\&f1=cf_tracking_firefox_relnote\&o1=isnotempty\&f2=cf_tracking_firefox_relnote\&o2=substring\&v2={u}\&limit=200\&order=changeddate\ desc
     flp                     b https://www.feynmanlectures.caltech.edu/
     fosdem                  b https://video.fosdem.org/
@@ -165,6 +166,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     google-projects         b https://opensource.google.com/projects/list/featured
     google-scholar          b https://scholar.google.com/citations\?view_op=top_venues
     google-search           b https://www.google.com/advanced_search
+    google-styleguide       b https://google.github.io/styleguide/
     google-web              b https://developers.google.com/web
     gradle                  b https://gradle.org/docs/
     graphviz                b https://www.graphviz.org/doc/info/index.html
@@ -403,6 +405,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     url                     b https://url.spec.whatwg.org/
     usb-connectors          b https://en.wikipedia.org/wiki/USB_hardware#Connectors
     util-linux              b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
+    video-codecs            b https://en.wikipedia.org/wiki/List_of_codecs#Video_compression_formats
     video-standards         b https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Vector_Video_Standards2.svg/1024px-Vector_Video_Standards2.svg.png
     w                       b https://en.wikipedia.org/w/index.php\?search={u}
     w-cz                    b https://cz.wikipedia.org/w/index.php\?search={u}
@@ -432,10 +435,13 @@ MENUER=$prgname menuer "$@" <<-EOF |
     xapian-query            b https://xapian.org/docs/queryparser.html
     xcb-modules             b https://xcb.freedesktop.org/manual/modules.html
     xlib                    b https://tronche.com/gui/x/xlib/
+    xml                     b https://www.w3.org/TR/xml/
     xmonad                  b https://hackage.haskell.org/package/xmonad
     xmonad-contrib          b https://hackage.haskell.org/package/xmonad-contrib
     xorg-lists              b https://lists.x.org/mailman/listinfo/
     xorg-repos              b https://cgit.freedesktop.org/xorg
+    xpath                   b https://www.w3.org/TR/xpath/
+    xstl                    b https://www.w3.org/TR/xslt/
     xterm-changes           b https://invisible-island.net/xterm/xterm.log.html
     yaml-refcard            b https://yaml.org/refcard.html
     yaml-spec               b https://yaml.org/spec/1.2/spec.html

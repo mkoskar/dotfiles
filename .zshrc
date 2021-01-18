@@ -104,7 +104,7 @@ PS1=\$__statstr:$PS1
 if [[ $PIPENV_ACTIVE && $VIRTUAL_ENV ]]; then
     __venv=${VIRTUAL_ENV%/*}
     __venv=${__venv##*/}
-    PS1=($__venv)\ $PS1
+    PS1="($__venv) $PS1"
 fi
 PS1=\$__vimode$PS1
 [[ $terminfo[tsl] ]] && PS1=%{$terminfo[tsl]%n@%m:%~$terminfo[fsl]%}$PS1
@@ -211,7 +211,7 @@ bindkey ^B beginning-of-line
 bindkey ^E end-of-line
 bindkey \\eh backward-char
 bindkey \\el forward-char
-bindkey \\eb backward-word
+bindkey \\eb backward-word # emacs-backward-word
 bindkey \\ef emacs-forward-word
 bindkey \\ew forward-word
 

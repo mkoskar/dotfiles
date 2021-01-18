@@ -26,14 +26,10 @@ endfunction
 
 " ----------------------------------------
 
-function! utils#bufSpecial() abort
-    setl nonu nornu nowrap nolist nobl cc= fdc=0 signcolumn=no
-endfunction
-
-function! utils#cmdlineKillWord(forward) abort
+function! utils#cmdlineKillWord(forward, ...) abort
     let buf = getcmdline()
     let pos = getcmdpos() - 1
-    let idx = utils#moveWord(buf, pos, a:forward)
+    let idx = utils#cmdlineMatchWord(a:forward, get(a:, 1, 0))
     if a:forward
         return strpart(buf, 0, pos) . (idx < 0 ? '' : strpart(buf, idx))
     else
@@ -42,25 +38,47 @@ function! utils#cmdlineKillWord(forward) abort
     endif
 endfunction
 
-function! utils#cmdlineMoveWord(forward) abort
+function! utils#cmdlineMatchWord(forward, emacs) abort
     let buf = getcmdline()
     let pos = getcmdpos() - 1
-    let idx = utils#moveWord(buf, pos, a:forward)
+    if a:forward
+        if a:emacs
+            return match(buf, '\v>|$', pos)
+        else
+            return match(buf, '\v^@<!<|$', pos)
+        endif
+    else
+        return match(strpart(buf, 0, pos), '\v(.*\zs<|^)')
+    endif
+endfunction
+
+function! utils#cmdlineMoveWord(forward, ...) abort
+    let idx = utils#cmdlineMatchWord(a:forward, get(a:, 1, 0))
     call setcmdpos(idx + 1)
-    return buf
+    return getcmdline()
+endfunction
+
+function! utils#moveWord(forward, ...) abort
+    if a:forward
+        if get(a:, 1, 0)
+            call search('\v(.{-1,}\zs>)|(%#@<!$)', 'cWz')
+        else
+            call search('\v(.{-1,}\zs<)|(%#@<!$)', 'cWz')
+        endif
+    else
+        call search('\v<|^', 'bW')
+    endif
+endfunction
+
+" ----------------------------------------
+
+function! utils#bufSpecial() abort
+    setl nonu nornu nowrap nolist nobl cc= fdc=0 signcolumn=no
 endfunction
 
 function! utils#mkdir(path) abort
     if !isdirectory(a:path)
         call mkdir(a:path, 'p', 0700)
-    endif
-endfunction
-
-function! utils#moveWord(buf, pos, forward) abort
-    if a:forward
-        return match(a:buf, '^\@<!\(\<\|$\)', a:pos)
-    else
-        return match(strpart(a:buf, 0, a:pos), '\(.*\zs\<\|^\)')
     endif
 endfunction
 

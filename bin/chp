@@ -117,15 +117,27 @@ if [[ -e $path/theme ]]; then
 fi
 
 args+=(
+
+    # HW acceleration
+    # ----------------------------------------
+
+    #--disable-gpu-driver-bug-workarounds
+    #--enable-native-gpu-memory-buffers
+    --enable-accelerated-video-decode
+    --enable-gpu-rasterization
+    --enable-zero-copy
+    --ignore-gpu-blacklist
+
+    # Other
+    # ----------------------------------------
+
     #--extensions-on-chrome-urls
     #--force-device-scale-factor=1
     #--restore-last-session
     --enable-devtools-experiments
-    --enable-gpu-rasterization
     --enable-media-internals-devtools
-    --enable-zero-copy
-    --ignore-gpu-blacklist
     --show-component-extension-options
+
 )
 
 if [[ ${CH_DEBUG-} ]]; then

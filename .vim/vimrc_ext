@@ -43,6 +43,7 @@ runtime conf.d/goyo.vim
 runtime conf.d/limelight.vim
 runtime conf.d/repeat.vim
 runtime conf.d/speeddating.vim
+runtime conf.d/stabs.vim
 runtime conf.d/surround.vim
 runtime conf.d/tagbar.vim
 runtime conf.d/tcomment.vim

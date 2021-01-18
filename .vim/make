@@ -2,6 +2,9 @@
 
 set -eu -o pipefail
 
+vim_batch() { vim -NXn -i NONE -u NONE -V1 -es "$@"; }
+export -f vim_batch
+
 from_git() {
     set -eu
     local name=$1
@@ -15,40 +18,82 @@ from_git() {
 }
 export -f from_git
 
+from_vba() {
+    set -eu
+    local name=$1 url=$2 oname stat scode surl mime
+    printf '\n> %s\n' "$name"
+    oname=$name.download
+    stat=$(
+        curl -sSL -C - -z "$oname" \
+            -w '%{http_code}\t%{url_effective}' \
+            -o "$oname" "$url"
+    )
+    read -r scode surl <<<"$stat"
+    case $scode in
+        200 | 304)
+            ;;
+        *)
+            exec >&2
+            echo "HTTP $scode : $surl"
+            cat "$oname"
+            return 1
+            ;;
+    esac
+    mime=$(file -b --mime "$oname")
+    if [[ $mime != text/* ]]; then
+        aunpack -qf -X "$name.vba" "$oname"
+    fi
+    rm -rf .vbaout "$name"
+    vim_batch \
+        -c "try | call vimball#Vimball(1, '.vbaout') | finally | qa! | endtry" \
+        "$name.vba"
+    mv .vbaout "$name"
+    echo
+}
+export -f from_vba
+
 cd ~/.vim
 
 mkdir -p pack/custom/opt
 cd pack/custom/opt
 
-grep -vxE '\s*|(\s*#.*)' <<-EOF | parallel --colsep \\t+ --bar from_git
+echo
+grep -vxE '\s*|(\s*#.*)' <<-EOF | parallel --colsep \\s+ --bar from_git
 
-	ale					https://github.com/dense-analysis/ale
-	ansiesc				https://github.com/jakar/vim-AnsiEsc
-	bufexplorer			https://github.com/jlanzarotta/bufexplorer
-	coc					https://github.com/neoclide/coc.nvim
-	colorschemes		https://github.com/flazz/vim-colorschemes
-	ctrlp				https://github.com/ctrlpvim/ctrlp.vim
-	dirvish				https://github.com/justinmk/vim-dirvish
-	easy-align			https://github.com/junegunn/vim-easy-align
-	easymotion			https://github.com/easymotion/vim-easymotion
-	emmet				https://github.com/mattn/emmet-vim
-	fugitive			https://github.com/tpope/vim-fugitive
-	fzf-ext				https://github.com/junegunn/fzf.vim
-	gnupg				https://github.com/jamessan/vim-gnupg
-	goyo				https://github.com/junegunn/goyo.vim
-	limelight			https://github.com/junegunn/limelight.vim
-	neomake				https://github.com/neomake/neomake
-	nerdtree			https://github.com/preservim/nerdtree
-	repeat				https://github.com/tpope/vim-repeat
-	speeddating			https://github.com/tpope/vim-speeddating
-	surround			https://github.com/tpope/vim-surround
-	tagbar				https://github.com/majutsushi/tagbar
-	tcomment			https://github.com/tomtom/tcomment_vim
-	ultisnips			https://github.com/SirVer/ultisnips
-	undotree			https://github.com/mbbill/undotree
-	unimpaired			https://github.com/tpope/vim-unimpaired
-	vim-snippets		https://github.com/honza/vim-snippets
-	visualrepeat		https://github.com/inkarkat/vim-visualrepeat
+	ale                 https://github.com/dense-analysis/ale
+	ansiesc:jakar       https://github.com/jakar/vim-AnsiEsc
+	bufexplorer         https://github.com/jlanzarotta/bufexplorer
+	coc                 https://github.com/neoclide/coc.nvim
+	colorschemes        https://github.com/flazz/vim-colorschemes
+	ctrlp               https://github.com/ctrlpvim/ctrlp.vim
+	dirvish             https://github.com/justinmk/vim-dirvish
+	easy-align          https://github.com/junegunn/vim-easy-align
+	easymotion          https://github.com/easymotion/vim-easymotion
+	emmet               https://github.com/mattn/emmet-vim
+	fugitive            https://github.com/tpope/vim-fugitive
+	fzf-ext             https://github.com/junegunn/fzf.vim
+	gnupg               https://github.com/jamessan/vim-gnupg
+	goyo                https://github.com/junegunn/goyo.vim
+	limelight           https://github.com/junegunn/limelight.vim
+	neomake             https://github.com/neomake/neomake
+	nerdtree            https://github.com/preservim/nerdtree
+	repeat              https://github.com/tpope/vim-repeat
+	speeddating         https://github.com/tpope/vim-speeddating
+	stabs               https://github.com/Thyrum/vim-stabs
+	surround            https://github.com/tpope/vim-surround
+	tagbar              https://github.com/majutsushi/tagbar
+	tcomment            https://github.com/tomtom/tcomment_vim
+	ultisnips           https://github.com/SirVer/ultisnips
+	undotree            https://github.com/mbbill/undotree
+	unimpaired          https://github.com/tpope/vim-unimpaired
+	vim-snippets        https://github.com/honza/vim-snippets
+	visualrepeat        https://github.com/inkarkat/vim-visualrepeat
 
 EOF
+
+from_vba ansiesc:drchip \
+    http://www.drchip.org/astronaut/vim/vbafiles/AnsiEsc.vba.gz
+
 echo
+echo $'> helptags ALL\n'
+vim_batch -c 'try | helptags ALL | finally | qa! | endtry'

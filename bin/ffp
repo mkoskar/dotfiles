@@ -140,8 +140,6 @@ file=user.js
 
 			//user_pref("network.cookie.cookieBehavior", 3);
 			//user_pref("network.cookie.lifetimePolicy", 1);
-			//user_pref("signon.rememberSignons", false);
-			//user_pref("webgl.disabled", true);
 
 			user_pref("beacon.enabled", false);
 			user_pref("browser.safebrowsing.enabled", false);
@@ -150,11 +148,14 @@ file=user.js
 			user_pref("dom.event.clipboardevents.enabled", false);
 			user_pref("geo.enabled", false);
 
-			//user_pref("layers.acceleration.force-enabled", true);
-			//user_pref("layers.gpu-process.force-enabled", true);
-			//user_pref("media.ffmpeg.vaapi-drm-display.enabled", true);
-			//user_pref("media.ffmpeg.vaapi.enabled", true);
-			//user_pref("media.hardware-video-decoding.force-enabled", true);
+			// OpenGL compositing
+			user_pref("layers.acceleration.force-enabled", true);
+
+			// WebRender compositing
+			user_pref("gfx.webrender.all", true);
+
+			// HW video acceleration
+			user_pref("media.ffmpeg.vaapi.enabled", true);
 		EOF
     fi
 } >"$file"
@@ -219,4 +220,5 @@ file=userContent.css
 	EOF
 } >"$file"
 
+export MOZ_X11_EGL=1
 exec "$bin" --class "Firefox ($profile)" --profile "$path" "$@"

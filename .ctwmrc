@@ -82,12 +82,17 @@ NoImagesInWorkSpaceManager
 NoShowOccupyAll
 ShowWorkSpaceManager
 UseThreeDWMap
-WMgrButtonShadowDepth 1
-WMgrHorizButtonIndent 0
-WMgrVertButtonIndent 0
+WMgrButtonShadowDepth 2
+WMgrHorizButtonIndent 1
+WMgrVertButtonIndent 1
 WorkSpaceManagerGeometry "100x240+5+5" 1
 
-WorkSpaces { "1" "2" "3" "4" }
+WorkSpaces { 
+    "1" { "gray70" }
+    "2" { "gray60" }
+    "3" { "gray50" }
+    "4" { "gray40" }
+}
 
 
 # Icons
@@ -105,7 +110,6 @@ UseThreeDIconManagers
 
 Color {
     IconBackground "lightslateblue"
-    IconBorderColor "gray85"
     IconForeground "white"
     IconManagerBackground "gray70"
     IconManagerHighlight "red"

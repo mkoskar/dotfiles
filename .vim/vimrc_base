@@ -368,14 +368,14 @@ inoremap <C-B> <Home>
 inoremap <C-E> <End>
 inoremap <M-h> <Left>
 inoremap <M-l> <Right>
-inoremap <M-b> <C-Left>
-inoremap <M-f> <C-Right>
-inoremap <M-w> <C-Right>
+inoremap <M-b> <C-\><C-O>:call utils#moveWord(0)<CR>
+inoremap <M-f> <C-\><C-O>:call utils#moveWord(1, 1)<CR>
+inoremap <M-w> <C-\><C-O>:call utils#moveWord(1)<CR>
 
 inoremap <C-U> <C-G>u<C-U>
-inoremap <C-K> <C-G>u<C-O>d$
+inoremap <C-K> <C-G>u<C-\><C-O>d$
 inoremap <C-W> <C-G>u<C-W>
-inoremap <M-d> <C-G>u<C-O>dw
+inoremap <M-d> <C-G>u<C-\><C-O>dv:call utils#moveWord(1, 1)<CR>
 inoremap <M-x> <Delete>
 
 inoremap <M-j> <C-G>j
@@ -461,13 +461,13 @@ set wildmode=longest,full
 cnoremap <M-h> <Left>
 cnoremap <M-l> <Right>
 cnoremap <M-b> <C-\>e utils#cmdlineMoveWord(0)<CR>
-cnoremap <M-f> <C-\>e utils#cmdlineMoveWord(1)<CR>
+cnoremap <M-f> <C-\>e utils#cmdlineMoveWord(1, 1)<CR>
 cnoremap <M-w> <C-\>e utils#cmdlineMoveWord(1)<CR>
 
 " <C-U> - backward kill line
 cnoremap <C-K> <C-\>e strpart(getcmdline(), 0, getcmdpos() - 1)<CR>
 cnoremap <C-W> <C-\>e utils#cmdlineKillWord(0)<CR>
-cnoremap <M-d> <C-\>e utils#cmdlineKillWord(1)<CR>
+cnoremap <M-d> <C-\>e utils#cmdlineKillWord(1, 1)<CR>
 cnoremap <M-x> <Delete>
 
 cnoremap <C-L> <C-K>
@@ -1001,7 +1001,7 @@ if has('nvim')
     let loaded_tutor_mode_plugin = 1
 endif
 
-packadd! ansiesc
+packadd! ansiesc:drchip
 packadd! colorschemes
 
 ColorsReset
