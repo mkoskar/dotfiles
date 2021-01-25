@@ -100,6 +100,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     dnssec                  b https://dnssec-debugger.verisignlabs.com/
     docker                  b https://github.com/wsargent/docker-cheat-sheet
     docker-compose          b https://docs.docker.com/compose/compose-file/
+    docker-reference        b https://docs.docker.com/reference/
     dockerfile              b https://docs.docker.com/engine/reference/builder/
     dom-spec                b https://dom.spec.whatwg.org/
     ebay                    b https://www.ebay.com/sch/i.html\?_nkw={u}
@@ -330,6 +331,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     regex101                b https://regex101.com/
     resolutions             b https://en.wikipedia.org/wiki/List_of_common_resolutions
     rfc                     b https://tools.ietf.org/rfc/index
+    risks                   b http://catless.ncl.ac.uk/Risks/
     rpi                     b https://www.raspberrypi.org/documentation/hardware/raspberrypi/README.md
     rst                     b https://docutils.sourceforge.io/rst.html
     rst-showcase!           b ~/projects/lab/docutils/showcase/build/html/index.html
@@ -382,6 +384,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     thinkpads               b https://en.wikipedia.org/wiki/ThinkPad#Current_model_lines
     timezones               b https://upload.wikimedia.org/wikipedia/commons/e/e8/Standard_World_Time_Zones.png
     tiobe-index             b https://www.tiobe.com/tiobe-index/
+    tldp                    b https://tldp.org/
     tlds                    b https://www.iana.org/domains/root/db
     tmux-changes            b https://github.com/tmux/tmux/blob/master/CHANGES
     toml                    b https://toml.io/en/latest

@@ -297,6 +297,7 @@ alias mpv-verbose='mpv --terminal=yes --msg-level=all=v'
 alias mpv-ytdl-reverse='mpv --ytdl-raw-options=playlist-reverse='
 alias mpv='mpv --player-operation-mode=pseudo-gui'
 alias mv='mv -i'
+alias ncdu='ncdu -x'
 alias neomutt-debug='neomutt -d 5 -l ~/tmp/neomutt.log'
 alias nmap-all='nmap -p 1-65535'
 alias npmg='npm -g'
@@ -414,7 +415,7 @@ alias terminfo-src=_terminfo_src
 
 _xserver_log() {
     local dispno; dispno=$(env ${1+DISPLAY=:"$1"} xserverq dispno) || return 1
-    local logfile=~/.local/share/xorg/Xorg:"$dispno".log
+    local logfile=~/.local/share/xorg/Xorg:$dispno.log
     [ -e "$logfile" ] || return 1
     $PAGER "$logfile"
 }
@@ -422,25 +423,35 @@ alias xserver-log=_xserver_log
 
 _xserver_reset() {
     confirm 'Careful! Continue?' n || return 0
-    local pid; pid=$(env ${1+DISPLAY=:"$1"} xserverq pid) || return 1
-    kill -s HUP "$pid"
+    local dispno; dispno=$(env ${1+DISPLAY=:"$1"} xserverq dispno) || return 1
+    local spid; spid=$(env ${1+DISPLAY=:"$1"} xserverq pid) || return 1
+    touch "$XDG_RUNTIME_DIR/xorg/keepserver:$dispno"
+    kill -s HUP "$spid"
 }
 alias xserver-reset=_xserver_reset
 
 _xserver_terminate() {
     confirm 'Careful! Continue?' n || return 0
-    local pid; pid=$(env ${1+DISPLAY=:"$1"} xserverq pid) || return 1
-    kill "$pid"
+    local spid; spid=$(env ${1+DISPLAY=:"$1"} xserverq pid) || return 1
+    kill "$spid"
 }
 alias xserver-terminate=_xserver_terminate
 
 _xsession_out() {
     local screen; screen=$(env ${1+DISPLAY=:"$1"} xserverq screen) || return 1
-    local outfile=~/.local/share/xorg/xsession:"$screen".out
+    local outfile=~/.local/share/xorg/xsession:$screen.out
     [ -e "$outfile" ] || return 1
     $PAGER "$outfile"
 }
 alias xsession-out=_xsession_out
+
+_xsession_reset() {
+    confirm 'Careful! Continue?' n || return 0
+    local screen; screen=$(env ${1+DISPLAY=:"$1"} xserverq screen) || return 1
+    touch "$XDG_RUNTIME_DIR/xorg/xsession:$screen.keepserver"
+    sdu restart xsession@:"$screen".service
+}
+alias xsession-reset=_xsession_reset
 
 a() {
     local d=${1:-5m} ts; ts=$(command date -R)

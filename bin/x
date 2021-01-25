@@ -151,6 +151,7 @@ aargs=("$@")
 while true; do
     [[ ${ready-} ]] || exit 1
     unset ready
+    rm -rf "$XDG_RUNTIME_DIR/xorg/keepserver:$dispno"
 
     sdu stop xdisplay@:"$dispno".target
     sdu start xdisplay@:"$dispno".target
@@ -158,17 +159,16 @@ while true; do
     set -- "${aargs[@]}"
     scrno=0 args=()
     while true; do
-        if (( ! $# )) || [[ $1 = -- ]]; then
+        if (( $# )) && [[ $1 != -- ]]; then
+            args+=("$1")
+        else
             if (( ${#args[@]} )); then
                 DISPLAY=:$dispno.$scrno xsession "${args[@]}"
             fi
             (( $# )) || break
             scrno=$((scrno+1))
             args=()
-            shift
-            continue
         fi
-        args+=("$1")
         shift
     done
 

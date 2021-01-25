@@ -34,9 +34,13 @@ case ${1-} in
 
     post)
         sdu stop xsession@:"$screen".target
-        spid=$(xserverq pid)
         dispno=$(xserverq dispno)
-        sdu --quiet is-active xsession@:"$dispno".[0-9].target || kill "$spid"
+        if [[ ! -e $sfile.keepserver ]] &&
+            [[ ! -e $XDG_RUNTIME_DIR/xorg/keepserver:$dispno ]]; then
+            spid=$(xserverq pid)
+            sdu --quiet is-active xsession@:"$dispno".[0-9].target || kill "$spid"
+        fi
+        rm -rf "$sfile".keepserver
         ;;
 
     exec)

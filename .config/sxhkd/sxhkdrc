@@ -54,7 +54,7 @@ super + Print
     sshot
 
 super + p
-    dmenu_run -
+    srun -Nsxl dmenu_run
 
 super + semicolon ; T
     touchpad toggle

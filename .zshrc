@@ -421,6 +421,11 @@ _pacpkgs() {
 compctl -K _pacpkgs \
     paccheck pacd paci pacl pacp pacr pacscripts pactree pacw
 
+_way() {
+    reply=(${(f)"$(way)"})
+}
+compctl -K _way way
+
 _xsession() {
     reply=(${(f)"$(xsession)"})
 }

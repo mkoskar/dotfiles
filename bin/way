@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+sessions=(
+    sway
+    weston
+)
+
+if (( ! $# )); then
+    printf '%s\n' "${sessions[@]}"
+    exit
+fi
+
+#exec &>~/.local/share/xorg/xsession:"$screen".out
+echo $'\n--------------------------------------------------'
+printf '> way: %s\n\n' "$*" >&2
+
+session=unknown
+for i in "${sessions[@]}"; do
+    [[ $1 = "$i" ]] && { session=$i; break; }
+done
+#printf '%s\n' "$session" >"$sfile"
+printf 'session: %s\n' "$session" >&2
+
+exec "$@"

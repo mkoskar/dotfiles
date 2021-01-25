@@ -3,8 +3,4 @@
 set -eu -o pipefail
 
 cmd=$(dmenu_path | dmenu1)
-
-if [[ ${1-} = - ]]; then
-    eval exec srun -Nsxl "$cmd"
-fi
 eval exec "$cmd"
