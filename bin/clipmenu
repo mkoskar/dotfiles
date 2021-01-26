@@ -8,7 +8,7 @@ out() {
     local id=$1 tmpfile=$2 tmp lines bytes
     tmp=$(wc -cl <"$tmpfile")
     read -r lines bytes <<<"$tmp"
-    if (( bytes > 0 )); then
+    if (( bytes )); then
         tmp=$(head -c 50 <"$tmpfile" | squash | asciionly)
         printf '%s%d:%d%s%s\n' "$id" "$lines" "$bytes" "$sep" "$tmp"
     fi

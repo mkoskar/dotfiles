@@ -49,13 +49,15 @@ shift $((OPTIND-1))
 
 sdu() { systemctl --user "$@"; }
 
-name=${name:-${1##*/}}
-[[ $name =~ [][?*.] ]] && exit 2
 if (( Nopt )); then
     name=$(openssl rand -hex 4)
     name=srun-$name
+else
+    name=${name:-${1##*/}}
+    [[ $name =~ [][?*.] ]] && exit 2
 fi
 [[ $name ]] || exit 2
+
 if (( xopt )); then
     screen=$(xserverq screen)
     (( sopt )) && name=$name:$screen || name=$name@:$screen
@@ -101,6 +103,10 @@ if (( Nopt )); then
 fi
 
 if (( xopt )); then
+    args+=(
+        -E DISPLAY="$DISPLAY"
+        -E GDK_BACKEND=x11
+    )
     if (( Xopt )); then
         dispno=${screen%%.*}
         args+=(
@@ -109,11 +115,11 @@ if (( xopt )); then
         )
     else
         args+=(
+            -E XSESSION="$XSESSION"
             -p Requisite=xsession@:"$screen".target
             -p After=xsession@:"$screen".target
         )
     fi
-    args+=(-E DISPLAY="$DISPLAY")
 fi
 
 exec systemd-run "${args[@]}" "$@"

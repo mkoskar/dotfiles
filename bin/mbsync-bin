@@ -20,6 +20,5 @@ cleanup() {
 }
 trap cleanup EXIT
 
-bin=$(pth -s mbsync)
-"$bin" -q -c ~/.config/mbsyncrc "$1"
+cmd -0 mbsync -q -c ~/.config/mbsyncrc "$1"
 notmuch-on main +new

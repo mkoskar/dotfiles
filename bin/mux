@@ -146,25 +146,26 @@ else
     session=${session%/}
 fi
 
-(exec 8>"$XDG_RUNTIME_DIR"/mux.lock
-flock -w 30 8 || exit 3
-(exec 8<&-
-
-    if ! exists; then
-        case $session in
-            adm | aux | mon | tmp | wrk)
-                $session
-                ;;
-            *)
-                case $prgname in
-                    muxx) ext ;;
-                    *) new ;;
-                esac
-                ;;
-        esac
-        sleep 0.3
-    fi
-))
+if ! exists; then
+    (exec 8>"$XDG_RUNTIME_DIR"/mux.lock
+    flock -w 30 8 || exit 3
+    (exec 8<&-
+        if ! exists; then
+            case $session in
+                adm | aux | mon | tmp | wrk)
+                    $session
+                    ;;
+                *)
+                    case $prgname in
+                        muxx) ext ;;
+                        *) new ;;
+                    esac
+                    ;;
+            esac
+            sleep 0.3
+        fi
+    ))
+fi
 
 if (( attach )); then
     exec tmux -L "$socket" attach -t "=$session"

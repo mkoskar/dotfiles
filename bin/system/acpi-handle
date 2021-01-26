@@ -28,7 +28,9 @@ set -eu
 #   Fn+F12  cd/next
 
 vt=$(</sys/class/tty/tty0/active)
-export DISPLAY=:${vt##tty}
+declare -i vtno=${vt##tty}
+declare -i dispno=$((50+vtno))
+export DISPLAY=:$dispno
 
 if (( EUID )); then
     case $1 in

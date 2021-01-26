@@ -4,11 +4,11 @@ set -eu
 
 infile=$1
 
-tac -- "$infile" | sed -r 's/^/  /' >"$infile".tmp
+tac -- "$infile" | sed -E 's/^/  /' >"$infile".tmp
 mv -- "$infile".tmp "$infile"
 
 cleanup() {
-    sed -ri '/^(\s+|$)/d' "$infile"
+    sed -Ei '/^(\s+|$)/d' "$infile"
     [[ -s $infile ]] || exit 1
 }
 trap cleanup EXIT

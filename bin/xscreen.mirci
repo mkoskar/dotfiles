@@ -1,67 +1,102 @@
 # vim: ft=sh
+# shellcheck disable=SC2154
+
+LVDS=65d1e95be0ef2fcf17e72b4a45bcb2b95bb127e8
+HOME1=55434c5c4eda9883d77f4afa64ab814f36a68aed
+
+declare -A mon
+mon[LVDS]=$LVDS
+mon[HOME1]=$HOME1
 
 layout_profile() {
-    case $(edidsum -o) in
-        251b742672f54471057b10e77e4bb2dfaa6a9904) echo HDMI2 ;;
-    esac
+    local profile=
+    [[ ${out[$LVDS]+set} && ${out[$HOME1]+set} ]] && profile=home
+    [[ $profile ]] || profile=mobile
+    echo "$profile"
 }
 
-layout_hook_default() {
-    (( $# )) || return
-    [[ $1 = - ]] && set -- "$(layout_profile)"
-    local profile=$1
-    local args=()
-    case $profile in
-        dock)
-            args+=(
-                --output HDMI2 --mode 1920x1200 --pos 1600x0 --rotate normal
-                --output LVDS1 --mode 1600x900 --pos 0x0 --rotate normal --primary
-            )
+handle_profile() {
+    case $1 in
+        all)
+            xrandr_all
             ;;
-        ''|mobile)
-            profile=LVDS1
+        l2r)
+            shift
+            xrandr_l2r "$@"
+            ;;
+        mobile)
+            set -- LVDS
             ;&
         *)
-            args+=(--output "${profile^^}" --auto --primary)
+            xrandr_l2r "${out[${mon[$1]}]}"
             ;;
     esac
-    xrandr_layout DP1 DP2 DP3 HDMI1 HDMI2 HDMI3 LVDS1 VGA1 -- "${args[@]}"
 }
 
-layout_hook_modesetting() { layout_hook_default "$@"; }
+_layout_hook_default() {
+    (( $# )) || return 0
+    outputs
+    [[ $1 = - ]] && set -- "$(layout_profile)"
+    case $1 in
+        home | LVDS_HOME1)
+            xrandr_l2r "${out[$LVDS]}" "${out[$HOME1]}"
+            ;;
+        *)
+            handle_profile "$@"
+            ;;
+    esac
+}
+
+# ----------------------------------------
+
+layout_hook_default() {
+    _layout_hook_default "$@"
+}
+
+layout_hook_modesetting() {
+    _layout_hook_default "$@"
+}
 
 layout_hook_zaphod() {
-    (( $# )) || return
-    local screen; screen=$(xserverq screen)
-    local args=()
-    case ${screen##*.} in
-        0)
-            args+=(
-                --output LVDS1 --mode 1600x900 --pos 0x0 --rotate normal --primary
-            )
-            xrandr_layout LVDS1 -- "${args[@]}"
-            ;;
-        1)
-            [[ $1 = - ]] && set -- "$(layout_profile)"
-            case $1 in
-                dock)
-                    args+=(
-                        --output HDMI2 --mode 1920x1200 --pos 0x0 --rotate normal --primary
-                    )
-                    ;;
-                *)
-                    args+=(
-                        --output DP1 --auto
-                        --output DP2 --auto
-                        --output DP3 --auto
-                        --output HDMI1 --auto
-                        --output HDMI2 --auto
-                        --output HDMI3 --auto
-                        --output VGA1 --auto
-                    )
-                    ;;
-            esac
-            xrandr_layout DP1 DP2 DP3 HDMI1 HDMI2 HDMI3 VGA1 -- "${args[@]}"
+    (( $# )) || return 0
+    outputs
+    [[ $1 = - ]] && set -- "$(layout_profile)"
+    case $1 in
+        home)
+            set -- HOME1
+            ;&
+        *)
+            handle_profile "$@"
             ;;
     esac
 }
+
+# ----------------------------------------
+
+if [[ ${1-} = --zsh-compdef ]]; then
+    cat <<-'EOF'
+	_xscreen () {
+	    declare -A opt_args
+	    local curcontext=$curcontext state line
+	    _arguments -C '(-)*:: :->optarg' && return
+	    case $state in optarg)
+	        if (( CURRENT == 1 )); then
+	            _alternative \
+	                'profiles:profiles:(LVDS_HOME1 all home mobile)' \
+	                'monitors:monitors:(HOME1 LVDS)' \
+	                'functions:functions:(l2r)'
+	            return
+	        fi
+	        if [[ ${words[1]} = l2r ]]; then
+	            local xrandr_out=(${(f)"$(_call_program outputs xrandr)"})
+	            _alternative \
+	                'connected:connected outputs:('${(j: :)${(uo)${(M)xrandr_out:#* connected*}%% *}}')' \
+	                'disconnected:disconnected outputs:('${(j: :)${(uo)${(M)xrandr_out:#* disconnected*}%% *}}')'
+	        fi
+	        ;;
+	    esac
+	}
+	_xscreen
+	EOF
+    exit
+fi

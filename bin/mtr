@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
 
-set -eu
-
 (( $# )) || set -- -n --displaymode 1 8.8.8.8
-
-bin=$(pth -s mtr)
-exec "$bin" "$@"
+exec cmd -0 mtr "$@"

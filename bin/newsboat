@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
 
-set -eu
-
 hstatus "${0##*/}"
-bin=$(pth -s newsboat)
-exec "$bin" -q
+exec cmd -0 newsboat -q

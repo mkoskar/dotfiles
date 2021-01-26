@@ -18,15 +18,15 @@ echo "$path"
 
 if manp=$(man -w "$path") && \
     [[ $manp != "$path" ]]; then
-    man "$path" | sed -nr '/^NAME/{n; s/^\s*//p}'
+    man "$path" | sed -En '/^NAME/{n; s/^\s*//p}'
 else
     if manp=$(man -w "$basename") && \
         [[ $manp != "$basename" ]]; then
-        man "$basename" | sed -nr '/^NAME/{n; s/^\s*//p}'
+        man "$basename" | sed -En '/^NAME/{n; s/^\s*//p}'
     fi
 fi
 
 pacman -Qoq "$path" |
     while read -r pkg; do
-        pkgmark "$pkg" | sed -nr '1s/^/pkg: /p'
+        pkgmark "$pkg" | sed -En '1s/^/pkg: /p'
     done

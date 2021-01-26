@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 shopt -s inherit_errexit
 
 prgname=${0##*/}
@@ -35,7 +35,7 @@ xserver_pid() {
     local dispno; dispno=$(xserver_dispno)
     local lockfile=/tmp/.X$dispno-lock
     [[ -e $lockfile ]] || exit 1
-    sed -r 's/\s+//g' "$lockfile"
+    sed -E 's/\s+//g' "$lockfile" | tr -d '\0'
 }
 
 xserver_cmd() {

@@ -27,7 +27,7 @@ case $OSID in
         ssh-agent-preset
         ;;
     *)
-        [[ $(tty) = /dev/tty1 ]] || { return 0; }
+        [ "$(tty)" = /dev/tty1 ] || { return 0; }
 
         echo $'\n--------------------------------------------------'
         echo $'> Setup backup:\n'

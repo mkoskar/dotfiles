@@ -231,8 +231,10 @@ MENUER=$prgname menuer "$@" <<-EOF |
     latin-phrases           b https://en.wikipedia.org/wiki/List_of_Latin_phrases
     lcd-test                b http://www.lagom.nl/lcd-test/all_tests.php
     learnyouahaskell        b http://learnyouahaskell.com/chapters
+    libretexts              b https://libretexts.org/
     license                 b https://choosealicense.com/licenses/
     limnoria                b https://docs.limnoria.net/use/
+    linux-cgroup            b https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html
     linux-docs              b https://www.kernel.org/doc/Documentation
     linux-docs!             b /lib/modules/"$kernel_release"/build/Documentation
     linux-docs-html         b https://www.kernel.org/doc/html/latest/index.html
@@ -355,6 +357,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     setuptools              b https://setuptools.readthedocs.io/en/latest/
     shakespeare             b http://shakespeare.mit.edu/
     shell-startup           b https://blog.flowblok.id.au/static/images/shell-startup-actual.png
+    shellcheck              b https://github.com/koalaman/shellcheck/wiki
     si-quantities           b https://en.wikipedia.org/wiki/International_System_of_Quantities#Base_quantities
     si-units                b https://en.wikipedia.org/wiki/International_System_of_Units#Base_units
     slovniky                b https://slovnik.juls.savba.sk/

@@ -18,7 +18,7 @@ while getopts h opt; do
 done
 shift $((OPTIND-1))
 
-(( $# > 0 )) || usage_err
+(( $# )) || usage_err
 
 # ----------------------------------------
 

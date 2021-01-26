@@ -63,7 +63,7 @@ yt_user() {
         -d forUsername="$1" \
         -d part=id
     local id
-    if id=$(jq -re .items[].id <_curl); then
+    if id=$(jq -re '.items[].id' <_curl); then
         yt_channel "$id"
     fi
 }

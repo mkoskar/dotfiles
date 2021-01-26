@@ -36,6 +36,7 @@ runtime conf.d/ultisnips.vim
 " Other
 " ----------------------------------------
 
+"runtime conf.d/stabs.vim
 runtime conf.d/easy-align.vim
 runtime conf.d/easymotion.vim
 runtime conf.d/fugitive.vim
@@ -43,7 +44,6 @@ runtime conf.d/goyo.vim
 runtime conf.d/limelight.vim
 runtime conf.d/repeat.vim
 runtime conf.d/speeddating.vim
-runtime conf.d/stabs.vim
 runtime conf.d/surround.vim
 runtime conf.d/tagbar.vim
 runtime conf.d/tcomment.vim

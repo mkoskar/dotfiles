@@ -1,34 +1,8 @@
 # Common utilities.
 
-# set -Eu -o pipefail
-# shopt -s extglob
-#
-# PS4='+ ${BASH_SOURCE[0]}:$LINENO:${FUNCNAME[0]:+${FUNCNAME[0]}:}$?(${PIPESTATUS[*]}): '
-#
-# trap_err() {
-#     local pstatus=($? "${PIPESTATUS[@]}")
-#     local cmd=$BASH_COMMAND
-#     local stat=${pstatus[0]}
-#     if (( ${#pstatus[@]} > 2 )); then
-#         cmd='<pipeline>'
-#         stat+=:${pstatus[1]}$(printf '|%d' "${pstatus[@]:2}")
-#     fi
-#     printf '%s: line %d: %s: (%s)\n' "${BASH_SOURCE[1]}" \
-#         "${BASH_LINENO[0]}" "$cmd" "$stat"
-#     kill 0
-# } >&2
-# trap trap_err ERR
-
-if [[ -o xtrace ]]; then
-    set +x
-    xtrace=1
-    echo -------------------------------------------------- >&2
-fi
-
-set -Eu -o pipefail
-shopt -s extglob
-
 PS4='+ ${BASH_SOURCE[0]}:$LINENO:${FUNCNAME[0]:+${FUNCNAME[0]}:}$?(${PIPESTATUS[*]}): '
+
+set -E -o pipefail
 
 style_cmd=
 style_error=
@@ -69,7 +43,7 @@ stacktrace() {
     declare -i len=${#FUNCNAME[@]}
     for (( i=0, argvo=0; i<len; i++, argvo+=argc )); do
         argc=${BASH_ARGC[$i]:-0}
-        (( i > 0 )) || continue
+        (( i )) || continue
         if (( i == len-1 )); then
             (( ! BASH_SUBSHELL )) || continue
             printf "${style_path}%s${style_none}" "${BASH_SOURCE[$i]}"
@@ -84,5 +58,3 @@ stacktrace() {
         echo
     done
 }
-
-[[ ! ${xtrace-} ]] || set -x

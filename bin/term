@@ -29,6 +29,9 @@ name=${name:-term}
 unset SHLVL
 
 case $bin in
+    alacritty)
+        exec "$bin" --class "$name" -e "$@"
+        ;;
     kitty)
         exec "$bin" --name "$name" "$@"
         ;;

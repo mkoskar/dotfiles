@@ -74,7 +74,7 @@ fi
 tc=$(stty -g)
 stty -icanon -echo
 
-if (( delay > 0 )); then
+if (( delay )); then
     delay_s=$(bc -l <<<"scale=2; $delay/1000")
     read_opts=(-t "$delay_s")
 fi
@@ -104,7 +104,7 @@ while true; do
 
     printf -v cmd '%q "$@"' "$1"
     bashx -c "$cmd" "$@" |& tee ${append+-a} "$output" |
-        sed -r "s/\$/$ti_clr_eol/" |
+        sed -E "s/\$/$ti_clr_eol/" |
         pr -T -W "$cols" -l $((lines-2)) +1:1
 
     ts_end=$(date +%s.%N)
@@ -115,7 +115,7 @@ while true; do
         (( should_term == 1 )) && break
     fi
 
-    if (( notty && delay > 0 )); then
+    if (( notty && delay )); then
         (( inline )) || printf %s "$ti_clr_eos"
         sleep "$delay_s"
         continue
@@ -123,7 +123,7 @@ while true; do
 
     if (( delay != 0 )); then
         if (( ! quiet )); then
-            (( delay > 0 )) && h="waiting for ${delay}ms, " || h=
+            (( delay )) && h="waiting for ${delay}ms, " || h=
             h="${h}press any key to start or q|Q to quit"
             printf "> finished: %s (%s)$ti_clr_eol" "$ts_end_" "$h" >&2
             (( inline )) && echo || printf %s "$ti_clr_eos"

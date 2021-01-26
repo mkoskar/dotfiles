@@ -7,12 +7,12 @@ prgname=${0##*/}
 echo $'\n--------------------------------------------------'
 echo $'> _ICC_PROFILE atoms:\n'
 
-dall=$({ dispwin -\? || true; } |& sed -nr "s/^\s*([0-9]+ = 'Monitor [0-9]+, Output .*)/\1/p")
+dall=$({ dispwin -\? || true; } |& sed -En "s/^\s*([0-9]+ = 'Monitor [0-9]+, Output .*)/\1/p")
 [[ $dall ]] || exit 1
 readarray -t dall <<<"$dall"
 
 for i in "${!dall[@]}"; do
-    (( i > 0 )) && atom=_ICC_PROFILE_$i || atom=_ICC_PROFILE
+    (( i )) && atom=_ICC_PROFILE_$i || atom=_ICC_PROFILE
     xprop -root -len 8 "$atom"
 done
 

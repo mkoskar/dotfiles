@@ -6,12 +6,11 @@ shopt -s extglob
 prgname=${0##*/}
 
 cleanup() {
-    local retstat=$? tmp tmp_
+    local retstat=$? tmp
     if (( retstat )); then
         tmp=$(squash <<<"$src" | asciionly)
-        tmp_=${tmp:0:40}
-        (( ${#tmp} > ${#tmp_} )) && tmp_+='…'
-        notify -u critical "$prgname $tmp_"
+        (( ${#tmp} > 40 )) && tmp=${tmp:0:40}…
+        notify -u critical "$prgname $tmp"
     fi
 }
 trap cleanup EXIT

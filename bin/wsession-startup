@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+case $WSESSION in
+    sway)
+        xrdb -screen -load ~/.Xresources
+        swayutil layout -
+        ;;
+esac

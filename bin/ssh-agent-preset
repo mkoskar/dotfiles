@@ -10,9 +10,9 @@ declare -i retry=10
 while true; do
     declare -i retstat=0
     ssh-add -l &>/dev/null || retstat=$?
-    (( retstat == 0 )) && exit  # >0 identities loaded
-    (( retstat == 1 )) && break # no identities loaded
-    (( retry > 0 )) || exit 2   # can't connect
+    (( retstat )) || exit 0
+    (( retstat == 2 )) || break
+    (( retry )) || exit 2
     retry=$((retry-1))
     sleep 0.2
 done

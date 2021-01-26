@@ -23,8 +23,8 @@ let ale_sign_warning = '>'
 
 let ale_linters_ignore = {'sh': ['shell']}
 
-let ale_python_flake8_options = '--ignore=E265,E266'
-let ale_sh_shellcheck_exclusions = 'SC1003,SC1007,SC1083,SC2088,SC2191'
+"let ale_python_flake8_options = '--ignore=E265,E266'
+"let ale_sh_shellcheck_exclusions = 'SC1003,SC1007,SC1083,SC2088,SC2191'
 
 nnoremap <silent> <C-Space> :ALEDetail<CR>
 nmap <Leader>aa <Plug>(ale_toggle)

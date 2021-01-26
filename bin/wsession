@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+sessions=(
+    sway
+    weston
+)
+
+if (( ! $# )); then
+    printf '%s\n' "${sessions[@]}"
+    exit
+fi
+
+# ----------------------------------------
+
+datadir=~/.local/share/$prgname
+rundir=$XDG_RUNTIME_DIR/$prgname
+mkdir -p "$datadir" "$rundir"
+
+declare -i vtno=0 x11=0 wayland=0
+vtno=$(fgconsole -C /dev/tty 2>/dev/null) || true
+has-x11 && x11=1
+has-wayland && wayland=1
+
+if (( vtno )); then
+    sids=(vt"$vtno")
+elif (( wayland )); then
+    sids=("${WAYLAND_DISPLAY##wayland-}"-{1..9})
+elif (( x11 )); then
+    screen=$(xserverq screen)
+    sids=("$screen"-{1..9})
+else
+    exit 1
+fi
+
+sid=
+for _sid in "${sids[@]}"; do
+    exec 8>"$rundir/$_sid".lock
+    flock -n 8 && { sid=$_sid; break; }
+done
+[[ $sid ]] || exit 3
+
+exec &>"$datadir/$sid".out
+echo $'\n--------------------------------------------------'
+printf '> %s: %s\n\n' "$prgname" "$*"
+
+cleanup() {
+    local retstat=$?
+    set +e
+    # shellcheck disable=SC2046
+    kill $(jobs -p) &>/dev/null
+    printf '\n> %s: exit %s\n' "$prgname" "$retstat"
+}
+trap cleanup EXIT
+
+session=unknown
+if [[ $1 = - ]]; then
+    shift
+else
+    for i in "${sessions[@]}"; do
+        [[ $1 = "$i" ]] && { session=$i; shift; break; }
+    done
+fi
+printf 'session: %s\n' "$session"
+
+export WSESSION=$session
+export WSESSIONID=$sid
+
+#XKB_DEFAULT_RULES
+#XKB_DEFAULT_MODEL
+#XKB_DEFAULT_LAYOUT
+#XKB_DEFAULT_VARIANT
+#XKB_DEFAULT_OPTIONS
+
+# ----------------------------------------
+
+case $session in
+    weston)
+        weston --socket="wayland-$sid"
+        ;;
+    sway)
+        sway -V
+        ;;
+    *)
+        "$@"
+        ;;
+esac

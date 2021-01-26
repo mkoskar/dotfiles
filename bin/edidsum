@@ -1,30 +1,34 @@
 #!/usr/bin/env bash
 
 set -eu -o pipefail
-shopt -s nullglob
+shopt -s nullglob inherit_errexit
 
 prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [-o] [-r] [-v]
+	usage: $prgname [option]...
 
 	Compute SHA1 digest of EDIDs of all connected monitors.
 
+	  -l    - list (default)
+	  -r    - raw
+	  -s    - digest
+	  -x    - interrogate X RandR outputs
 	  -o    - exclude turned off monitors
-	  -r    - output raw data instead
-	  -v    - verbose output
 	EOF
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-declare -i exoff=0 raw=0 verbose=0
-while getopts orvh opt; do
+declare -i mode=0 xrandr=0 exoff=0
+while getopts lrsxoh opt; do
     case $opt in
+        l) mode=0 ;;
+        r) mode=1 ;;
+        s) mode=2 ;;
+        x) xrandr=1 ;;
         o) exoff=1 ;;
-        r) raw=1 ;;
-        v) verbose=1 ;;
         h) usage ;;
         *) usage_err ;;
     esac
@@ -35,70 +39,91 @@ shift $((OPTIND-1))
 
 drm=/sys/class/drm
 
-if (( exoff )); then
-    declare -A bus2out bus_map
-
-    bus2out[i915 gmbus dpb]=HDMI-A-1
-    bus2out[i915 gmbus dpc]=HDMI-A-2
-    bus2out[i915 gmbus dpd]=HDMI-A-3
-    bus2out[i915 gmbus panel]=LVDS-1
-    bus2out[i915 gmbus vga]=VGA-1
-
-    cd "$drm"
-    for card in card[0-9]; do
-        cd "$drm/$card"
-        for bus in device/i2c-*; do
-            bus_num=${bus##*-}
-            bus_name=$(<"$bus"/name)
-            out_name=${bus2out[$bus_name]-}
-            [[ $out_name ]] && bus_map[$card-$out_name]=$bus_num
-        done
-        for out in "$card"-*; do
-            for bus in i2c-*; do
-                bus_num=${bus##*-}
-                bus_name=$(<"$bus"/name)
-                bus_map[$out]=$bus_num
-                break
-            done
-        done
-    done
-fi
-
-main() {
-    local status edid bus_num ddcargs power
-    cd "$drm"
-    for card in card[0-9]; do
-        cd "$drm/$card"
-        for out in "$card"-*; do
-            status=$(<"$out"/status)
-            [[ $status = connected ]] || continue
-            edid=$(hexdump -e '16/1 "%02x"' <"$out"/edid)
-            if (( exoff )); then
-                bus_num=${bus_map[$out]-}
-                if [[ $bus_num ]]; then
-                    ddcargs=(-b "$bus_num")
-                else
-                    ddcargs=(-e "$edid")
-                fi
-                if power=$(ddcutil -t --async "${ddcargs[@]}" getvcp d6); then
-                    read -r _ _ _ power <<<"$power"
-                    [[ $power = x05 ]] && continue
-                fi
-            fi
-            if (( verbose )); then
-                echo $'\n--------------------------------------------------'
-                printf '> %s:\n\n' "$out"
-                edid-decode "$out"/edid || true
-                echo
-            fi
-            printf '%s %s\n' "$out" "$edid"
-        done
-    done
-    (( ! verbose )) || echo
+exclude() {
+    (( exoff )) || return 0
+    local out=$1
+    local ddc=$drm/$out/ddc
+    local bus_num power
+    if [[ -L $ddc ]]; then
+        bus_num=$(readlink -f "$ddc")
+        bus_num=${bus_num##*/}
+        bus_num=${bus_num#i2c-}
+        if power=$(ddcutil -t --async -b "$bus_num" getvcp d6); then
+            read -r _ _ _ power <<<"$power"
+            [[ $power = x05 ]] && return 1
+        fi
+    fi
+    return 0
 }
 
-if (( raw || verbose )); then
-    main
+sha1sum() {
+    command sha1sum | awk '{ print $1 }'
+}
+
+main() {
+    local out status edid edidsum
+    declare -A omap
+    cd "$drm"
+    for out in card[0-9]-*; do
+        status=$(<"$out"/status)
+        [[ $status = connected ]] || continue
+        edid=$(hexdump -e '16/1 "%02x"' <"$out"/edid)
+        edidsum=$(printf %s "$edid" | sha1sum)
+        if (( xrandr )); then
+            omap[$edidsum]=$out
+            continue
+        fi
+        exclude "$out" || continue
+        if (( mode )); then
+            printf '%s %s\n' "$out" "$edid"
+        else
+            printf '%s %s\n' "$out" "$edidsum"
+        fi
+    done
+    (( xrandr )) || return 0
+    local sysout
+    while read -r out edid; do
+        if [[ $edid = - ]]; then
+            printf '%s - -\n' "$out"
+            continue
+        fi
+        edidsum=$(printf %s "$edid" | sha1sum)
+        sysout=${omap[$edidsum]}
+        exclude "$sysout" || continue
+        if (( mode )); then
+            printf '%s %s %s\n' "$out" "$sysout" "$edid"
+        else
+            printf '%s %s %s\n' "$out" "$sysout" "$edidsum"
+        fi
+    done < <(
+        xrandr --verbose | awk '
+            function fin() {
+                if (out) printf "%s %s\n", out, buf
+                edid = 0; buf = "-"
+            }
+            /^\w+ (dis)?connected/ {
+                fin()
+                if ($2 ~ /^connected/) out = $1
+                else out = ""
+                next
+            }
+            out && /\tEDID:/ {
+                edid = 1; buf = ""
+                next
+            }
+            edid && /\t\t/ {
+                sub(/\t\t/, "")
+                buf = buf $0
+                next
+            }
+            { edid = 0 }
+            END { fin() }
+        '
+    )
+}
+
+if (( mode > 1 )); then
+    main | sha1sum
 else
-    main | sha1sum | awk '{ print $1 }'
+    main
 fi

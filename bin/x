@@ -1,36 +1,22 @@
 #!/usr/bin/env bash
 
 set -eu
+exec >&2
 
 prgname=${0##*/}
 
 if (( EUID == 0 )); then
-    echo 'This script must NOT be run as root.' >&2
+    echo 'This script must NOT be run as root.'
     exit 1
 fi
 
 # ----------------------------------------
 
 datadir=~/.local/share/xorg
-mkdir -p "$datadir"
+rundir=$XDG_RUNTIME_DIR/xorg
+mkdir -p "$datadir" "$rundir"
 
-redir() {
-    local dispno=$1
-    exec &>"$datadir/$prgname:$dispno.out"
-    echo $'\n--------------------------------------------------'
-    printf '> %s: %s\n\n' "$prgname" "${*:2}" >&2
-}
-
-xauthset() {
-    local dispno=$1
-    local cookie; cookie=$(mcookie)
-    xauth -q add ":$dispno" . "$cookie" &>/dev/null
-}
-
-sdu() { systemctl --user "$@"; }
-
-# ----------------------------------------
-
+declare -i vtno dispno
 case $prgname in
     xx)
         for (( dispno=91; 1; dispno++ )); do
@@ -49,9 +35,11 @@ case $prgname in
         ;;
 
     *)
-        vt=$(</sys/class/tty/tty0/active)
-        vtno=${vt##tty}
-        dispno=$vtno
+        vtno=$(fgconsole -C /dev/tty 2>/dev/null) || {
+            echo 'This script must be run from a console.'
+            exit 1
+        }
+        dispno=$((50+vtno))
         lockfile=/tmp/.X$dispno-lock
 
         if [[ -e $lockfile ]]; then
@@ -70,17 +58,15 @@ case $prgname in
         xconfig=${XCONFIG-}
         if [[ ! $xconfig ]]; then
             case $HOSTNAME in
-                mirci)
-                    ;;
+                *) xconfig=default ;;
             esac
-            [[ $xconfig ]] || xconfig=default
         fi
 
         fqxconfig=xorg.conf.$HOSTNAME
         [[ $xconfig = default ]] || fqxconfig+=.$xconfig
+        [[ -r /etc/X11/$fqxconfig ]] || exit 2
 
-        xcfile=$XDG_RUNTIME_DIR/xorg/xconfig:$dispno
-        mkdir -p "${xcfile%/*}"
+        xcfile=$rundir/xconfig:$dispno
         printf '%s\n' "$xconfig" >"$xcfile"
 
         # shellcheck disable=SC2015
@@ -89,12 +75,12 @@ case $prgname in
                 mirci)
                     case $xconfig in
                         default)
-                            (( dispno == 1 )) &&
+                            (( vtno == 1 )) &&
                                 set -- main ||
                                 set -- openbox
                             ;;
                         zaphod)
-                            (( dispno == 1 )) &&
+                            (( vtno == 1 )) &&
                                 set -- main -- openbox ||
                                 set -- openbox -- openbox
                             ;;
@@ -110,7 +96,6 @@ case $prgname in
             -config "$fqxconfig"
             -keeptty
             -logfile "$datadir/Xorg:$dispno.log"
-            -logverbose 10
             -noreset
             -novtswitch
             -quiet
@@ -120,16 +105,19 @@ esac
 
 # ----------------------------------------
 
-redir "$dispno" "$@"
-xauthset "$dispno"
+xdisplay_target() { systemctl --user "$1" xdisplay@:"$dispno".target; }
 
+unset DISPLAY
 stty=$(stty -g) || true
+
+cookie=$(mcookie)
+xauth -q add ":$dispno" . "$cookie" &>/dev/null
 
 cleanup() {
     local retstat=$?
-    printf '\n> %s: exit %s\n' "$prgname" "$retstat" >&2
+    printf '\n> %s: exit %s\n' "$prgname" "$retstat"
     set +e
-    sdu stop xdisplay@:"$dispno".target
+    xdisplay_target stop
     if [[ $spid ]] && ps --pid "$spid" &>/dev/null; then
         kill "$spid"
         trap : HUP; (sleep 15; kill -s HUP $$) &
@@ -142,6 +130,10 @@ cleanup() {
 }
 trap cleanup EXIT
 
+exec &>"$datadir/$prgname:$dispno.out"
+echo $'\n--------------------------------------------------'
+printf '> %s: %s\n\n' "$prgname" "$*"
+
 trap ready=1 USR1; (trap '' USR1; exec "${sargs[@]}") & spid=$!
 trap : HUP; (sleep 15; kill -s HUP $$) &
 wait "$spid" || true
@@ -151,11 +143,9 @@ aargs=("$@")
 while true; do
     [[ ${ready-} ]] || exit 1
     unset ready
-    rm -rf "$XDG_RUNTIME_DIR/xorg/keepserver:$dispno"
-
-    sdu stop xdisplay@:"$dispno".target
-    sdu start xdisplay@:"$dispno".target
-
+    rm -f "$rundir/keepserver:$dispno"
+    xdisplay_target stop
+    xdisplay_target start
     set -- "${aargs[@]}"
     scrno=0 args=()
     while true; do
@@ -163,7 +153,8 @@ while true; do
             args+=("$1")
         else
             if (( ${#args[@]} )); then
-                DISPLAY=:$dispno.$scrno xsession "${args[@]}"
+                #DISPLAY=:$dispno.$scrno xsession "${args[@]}" &
+                DISPLAY=:$dispno.$scrno srun -X xsession "${args[@]}"
             fi
             (( $# )) || break
             scrno=$((scrno+1))
@@ -171,7 +162,6 @@ while true; do
         fi
         shift
     done
-
     retstat=0
     wait "$spid" || retstat=$?
     (( retstat > 128 )) || break

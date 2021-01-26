@@ -27,7 +27,7 @@ ti_clr_eol=$(tput el)
 
 declare -i len=${#items[@]} i=0
 while true; do
-    (( len > 0 )) || break
+    (( len )) || break
     item=${items[i]}
 
     printf "${ti_col0}%s${ti_clr_eol}" "$((i+1)) : $item" >&2

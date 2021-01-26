@@ -12,7 +12,7 @@ Config { font = "xft:local_statusbar"
        , borderColor = "#000000"
        , borderWidth = 4
        , commands = [ Run UnsafeStdinReader
-                    , Run CommandReader "statusbar-mail" "mail"
+                    , Run CommandReader "xmobar-mail" "mail"
                     , Run Cpu
                         [ "-t", "<total>"
                         , "-L", "10"

@@ -8,7 +8,7 @@ declare -i prevnew=0
 out() {
     declare -i new delta
     new=$(find "${newdirs[@]}" -type f | wc -l)
-    if (( new > 0 )); then
+    if (( new )); then
         printf '<fc=#55ff55>%d</fc>' "$new"
         delta=$((new-prevnew))
         (( delta > 0 )) && printf '<fc=#feed6a>(+%d)</fc>' "$delta"

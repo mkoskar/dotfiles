@@ -176,7 +176,7 @@ paco() {
 
 pacoc() {
     [ $# -eq 0 ] && return 2
-    pth -a "$@" | xargs -r -L 1 pacman -Qo
+    cmd -v -- "$@" | xargs -r -L 1 pacman -Qo
 }
 
 pacp() {
@@ -231,11 +231,11 @@ alias ansible-inventory-graph='ansible-inventory --graph'
 alias ansible-modules='ansible-doc -l'
 alias ansible-playbook-tasks='ansible-playbook --list-tasks'
 alias aunpack='aunpack -q'
+alias avahi-browse='avahi-browse -at'
 alias c=calc
 alias cal='cal -3mw'
 alias callgrind='valgrind --tool=callgrind'
 alias caps='filecap -d'
-alias cmd=command
 alias cp='cp -ai --reflink=auto'
 alias curl-as='curl -A "$UAGENT"'
 alias curl-head='curl -I'
@@ -324,9 +324,11 @@ alias sd-tmpfiles='systemd-tmpfiles --cat-config'
 alias sd=systemctl
 alias sdu='systemctl --user'
 alias se=sudoedit
-alias sed-all="sed -r -e 'H;1h;\$!d;x'"
+alias sed-all="sed -E -e 'H;1h;\$!d;x'"
 alias socat='socat readline,history=/dev/null'
 alias speaker-test='speaker-test -t wav -c 2'
+alias srunX='srun -NsXl'
+alias srunx='srun -Nsxl'
 alias ss='ss -napstu'
 alias ssh0='ssh -S none'
 alias sslcon='openssl s_client -showcerts -connect'
@@ -413,14 +415,6 @@ _terminfo_src() {
 }
 alias terminfo-src=_terminfo_src
 
-_xserver_log() {
-    local dispno; dispno=$(env ${1+DISPLAY=:"$1"} xserverq dispno) || return 1
-    local logfile=~/.local/share/xorg/Xorg:$dispno.log
-    [ -e "$logfile" ] || return 1
-    $PAGER "$logfile"
-}
-alias xserver-log=_xserver_log
-
 _xserver_reset() {
     confirm 'Careful! Continue?' n || return 0
     local dispno; dispno=$(env ${1+DISPLAY=:"$1"} xserverq dispno) || return 1
@@ -437,21 +431,20 @@ _xserver_terminate() {
 }
 alias xserver-terminate=_xserver_terminate
 
-_xsession_out() {
-    local screen; screen=$(env ${1+DISPLAY=:"$1"} xserverq screen) || return 1
-    local outfile=~/.local/share/xorg/xsession:$screen.out
-    [ -e "$outfile" ] || return 1
-    $PAGER "$outfile"
-}
-alias xsession-out=_xsession_out
-
 _xsession_reset() {
     confirm 'Careful! Continue?' n || return 0
     local screen; screen=$(env ${1+DISPLAY=:"$1"} xserverq screen) || return 1
-    touch "$XDG_RUNTIME_DIR/xorg/xsession:$screen.keepserver"
-    sdu restart xsession@:"$screen".service
+    sdu restart xsession@:"$screen".target
 }
 alias xsession-reset=_xsession_reset
+
+_xsession_restart() {
+    confirm 'Careful! Continue?' n || return 0
+    local screen; screen=$(env ${1+DISPLAY=:"$1"} xserverq screen) || return 1
+    touch "$XDG_RUNTIME_DIR/xorg/keepserver:$screen"
+    sdu restart xsession@:"$screen".service
+}
+alias xsession-restart=_xsession_restart
 
 a() {
     local d=${1:-5m} ts; ts=$(command date -R)
@@ -552,9 +545,8 @@ optset() {
     fi
 }
 
-path() {
-    printf '%s\n' "$PATH" | tr : \\n
-}
+path() { printf '%s\n' "$PATH" | tr : \\n; }
+syspath() { printf '%s\n' "$SYSPATH" | tr : \\n; }
 
 pstree() {
     pgx command pstree -ahglnpsSuU "$@"

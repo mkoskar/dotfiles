@@ -1,0 +1,53 @@
+# vim: ft=sh
+# shellcheck disable=SC2034,SC2154
+
+LVDS='Lenovo Group Limited 0x40B1 0x00000000'
+HOME1='Dell Inc. DELL U2412M 0FFXD31H54DL'
+
+declare -A mon
+mon[LVDS]=$LVDS mon[65d1e95be0ef2fcf17e72b4a45bcb2b95bb127e8]=$LVDS
+mon[HOME1]=$HOME1 mon[55434c5c4eda9883d77f4afa64ab814f36a68aed]=$HOME1
+
+layout_profile() {
+    local profile=
+    [[ ${out[$LVDS]+set} && ${out[$HOME1]+set} ]] && profile=home
+    [[ $profile ]] || profile=mobile
+    echo "$profile"
+}
+
+layout_home() {
+    local o args=()
+    for o in "${outputs[@]}"; do
+        args+=(output "$o")
+        case $o in
+            "${out[$LVDS]}") args+=(mode 1600x900 pos 0 0 enable) ;;
+            "${out[$HOME1]}") args+=(mode 1920x1200 pos 1600 0 enable) ;;
+            *) args+=(disable) ;;
+        esac
+        args+=(transform normal dpms on \;)
+    done
+    swaymsg "${args[@]}"
+}
+
+layout_mobile() {
+    local o args=()
+    for o in "${outputs[@]}"; do
+        args+=(output "$o")
+        case $o in
+            "${out[$LVDS]}") args+=(mode 1600x900 pos 0 0 enable) ;;
+            *) args+=(disable) ;;
+        esac
+        args+=(transform normal dpms on \;)
+    done
+    swaymsg "${args[@]}"
+}
+
+layout_hook() {
+    (( $# )) || return 0
+    outputs
+    [[ $1 = - ]] && set -- "$(layout_profile)"
+    case $1 in
+        home) layout_home ;;
+        mobile) layout_mobile ;;
+    esac
+}

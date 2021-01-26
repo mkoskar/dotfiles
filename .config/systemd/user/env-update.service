@@ -7,5 +7,5 @@ Before=sockets.target timers.target paths.target basic.target
 Type=oneshot
 SyslogIdentifier=%N
 RemainAfterExit=yes
-Environment=DISPLAY=:1
+Environment=DISPLAY=:51
 ExecStart=/bin/sh -lc 'unset SHLVL; systemctl --user import-environment'

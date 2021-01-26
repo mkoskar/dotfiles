@@ -6,10 +6,10 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [list [PATTERN]
-	       $prgname clear [PATTERN]
-	       $prgname mute [PATTERN]
-	       $prgname {at | in} SPEC [NAME | -] [ARGS...]
+	usage: $prgname [list [pattern]
+	       $prgname clear [pattern]
+	       $prgname mute [pattern]
+	       $prgname {at | in} spec [name | -] [args...]
 	EOF
 }
 usage() { _usage; exit 0; }

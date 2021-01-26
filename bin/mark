@@ -35,7 +35,7 @@ esac
 
 [[ $buf ]] || exit 1
 
-if (( ${#outs[@]} > 1 )); then
+if (( ${#outs[@]} )); then
     out=$(printf '%s\n' "${outs[@]}" | dmenu1 -p "$prgname")
 fi
 
@@ -44,5 +44,5 @@ fi
 (
     flock 1
     echo
-    sed -r 's/^/    /' <<<"$buf"
+    sed -E 's/^/    /' <<<"$buf"
 ) >>"$out"

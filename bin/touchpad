@@ -12,7 +12,7 @@ prop='Device Enabled'
 state() {
     declare -i val=0
     # prop is hardcoded above and ERE safe, hence no need to escape it
-    val=$(xinput list-props "$name" | awk -F : -v prop="$prop" \
+    val=$(xinput list-props "$name" 2>/dev/null | awk -F : -v prop="$prop" \
         '$0 ~ "^\\s*" prop " \\([0-9]+\\):" { print $2 }')
     echo $((val > 0))
 }
@@ -40,5 +40,5 @@ case $1 in
         ;;
 esac
 
-xinput set-prop "$name" "$prop" "$valset"
+xinput set-prop "$name" "$prop" "$valset" &>/dev/null
 status-osd touchpad

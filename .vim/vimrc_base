@@ -121,6 +121,7 @@ nnoremap <Leader>W :setl <C-R>=&wrap ? 'nowrap' : 'wrap'<CR><CR>
 set colorcolumn=80
 set hlsearch
 set spelllang=en_us
+set synmaxcol=200
 
 let c_comment_strings = 1
 let load_doxygen_syntax = 1
@@ -487,7 +488,7 @@ set shellredir=&>%s
 
 " grep
 set grepformat=%f:%l:%m
-set grepprg=grep\ -nH\ --exclude-dir=.svn\ --exclude-dir=.git\ --exclude=\*.swp\ --exclude=\*~\ $*
+set grepprg=grep\ -nH\ --exclude-dir=.git\ --exclude=\*.swp\ --exclude=\*~\ $*
 
 " ag / rg
 "set grepformat=%f:%l:%c:%m
@@ -1039,7 +1040,7 @@ augroup vimrc_base
     autocmd FileType mail call utils#bufSpecial() | setl tw=72
     autocmd FileType make setl ts=4 sw=4 noet
     autocmd FileType man call utils#bufSpecial() | setl noma ts=8
-    autocmd FileType rst setl ts=8 sw=4 fdm=manual foldtext&
+    autocmd FileType rst setl ts=8 sw=3 fdm=manual foldtext&
     autocmd FileType tar call utils#bufSpecial()
     autocmd FileType yaml setl ts=2 sw=2
     autocmd FileType zip call utils#bufSpecial()

@@ -94,8 +94,8 @@ else
         fi
         state=$(<"$dev"/state)
         if (( aggregate )); then
-            state_=${state_:-$state}
-            if (( state != state_ )); then
+            astate=${astate:-$state}
+            if (( state != astate )); then
                 state=-1
                 break
             fi

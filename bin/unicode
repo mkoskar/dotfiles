@@ -73,7 +73,7 @@ ver() {
                 read -r scode surl <<<"$stat"
                 case $scode in
                     200)
-                        sed -nr 's/for Version ([0-9]+\.[0-9]+\.[0-9]+) of the Unicode Standard./\1/p' \
+                        sed -En 's/for Version ([0-9]+\.[0-9]+\.[0-9]+) of the Unicode Standard./\1/p' \
                             <"$tmpfile" >latest
                         ;;
                     *)

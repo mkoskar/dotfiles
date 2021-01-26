@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+_usage() {
+    cat <<-EOF
+	usage: $prgname [-0] [-s] cmd [args...]
+	       $prgname [-0] [-s] {-v | -V} name [name...]
+
+	  -0    - use \$PATH removing first entry
+	  -s    - use \$SYSPATH
+	  -v    - print first found path
+	  -V    - print all paths
+	EOF
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+declare -i path=0 print=0
+while getopts 0svVh opt; do
+    case $opt in
+        0) path=1 ;;
+        s) path=2 ;;
+        v) print=1 ;;
+        V) print=2 ;;
+        h) usage ;;
+        *) usage_err ;;
+    esac
+done
+shift $((OPTIND-1))
+
+(( $# )) || usage_err
+
+# ----------------------------------------
+
+_PATH=$PATH
+case $path in
+    1) PATH=${PATH#*:} ;;
+    2) PATH=$SYSPATH ;;
+esac
+
+case $print in
+    0)
+        bin=$(type -P -- "$1")
+        PATH=$_PATH exec "$bin" "${@:2}"
+        ;;
+    1) type -P -- "$@" ;;
+    2) type -Pa -- "$@" ;;
+esac

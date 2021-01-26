@@ -2,12 +2,12 @@
 
 set -eu -o pipefail
 
-dall=$({ dispwin -\? || true; } |& sed -nr "s/^\s*([0-9]+ = 'Monitor [0-9]+, Output .*)/\1/p")
+dall=$({ dispwin -\? || true; } |& sed -En "s/^\s*([0-9]+ = 'Monitor [0-9]+, Output .*)/\1/p")
 [[ $dall ]] || exit 1
 readarray -t dall <<<"$dall"
 
 for i in "${!dall[@]}"; do
-    (( i > 0 )) && atom=_ICC_PROFILE_$i || atom=_ICC_PROFILE
+    (( i )) && atom=_ICC_PROFILE_$i || atom=_ICC_PROFILE
     printf '%s\n' "${dall[$i]}"
     xprop -root -remove "$atom"
     dispwin -c -d $((i+1))

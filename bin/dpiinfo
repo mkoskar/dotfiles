@@ -3,7 +3,7 @@
 echo $'\n--------------------------------------------------'
 echo $'> Xrandr:\n'
 
-xrandr | grep -E '^.* (dis)?connected ' | while read -r line; do
+xrandr | grep -E '^\w+ (dis)?connected' | while read -r line; do
     [[ $line =~ ^.*\ ([0-9]+)x([0-9]+)\+.*\ ([0-9]+)mm\ x\ ([0-9]+)mm$ ]] || continue
     printf '%s\n' "$line"
     hdpi=$(calc -qp -- <<<"round(${BASH_REMATCH[1]} / (${BASH_REMATCH[3]} / 25.4), 2)")
@@ -17,7 +17,7 @@ done
 echo $'--------------------------------------------------'
 echo $'> X server:\n'
 
-xdpyinfo | grep -PA2 '^screen #\d'
+xdpyinfo | grep -P -A2 '^screen #\d'
 
 echo $'\n--------------------------------------------------'
 echo $'> Xft:\n'

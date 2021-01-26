@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+# See also: https://github.com/jaor/xmobar/issues/328
+
+cleanup() { trap : TERM; kill 0; }
+trap cleanup EXIT
+cmd -0 xmobar

@@ -1,42 +1,48 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 
 export NOOSD=1
 
-xrandr_layout() {
-    local off=()
-    while (( $# )); do
-        if [[ $1 = -- ]]; then
-            shift
-            break
-        fi
-        off+=("$1")
-        shift
-    done
-    local args=("$@")
-    while (( $# )); do
-        if [[ $1 = --output ]]; then
-            shift
-            (( $# )) || continue
-            for i in "${!off[@]}"; do
-                if [[ ${off[$i]} = "$1" ]]; then
-                    unset "off[$i]"
-                    break
-                fi
-            done
-        fi
-        shift
-    done
-    for i in "${off[@]}"; do
-        args+=(--output "$i" --off)
+xrandr_all() {
+    local o args=()
+    for o in "${outputs[@]}"; do
+        args+=(--output "$o" --auto --pos 0x0 --rotate normal)
     done
     xrandr "${args[@]}"
 }
 
-post_hook() { apod set & }
+xrandr_l2r() {
+    (( $# )) || return 1
+    local arg o first prev primary args=()
+    declare -A omap
+    for arg in "$@"; do
+        o=${arg#+}
+        [[ ${prev+set} ]] && omap[$o]=$prev || first=$o
+        [[ ! ${primary+set} || $arg = +* ]] && primary=$o
+        prev=$o
+    done
+    for o in "${outputs[@]}"; do
+        if [[ $o = "$first" ]]; then
+            args+=(--output "$o" --auto --pos 0x0 --rotate normal)
+        elif [[ ${omap[$o]+set} ]]; then
+            args+=(--output "$o" --auto --right-of "${omap[$o]}" --rotate normal)
+        else
+            args+=(--output "$o" --off)
+        fi
+        [[ $o = "$primary" ]] && args+=(--primary)
+    done
+    xrandr "${args[@]}"
+}
 
-# ----------------------------------------
+outputs() {
+    local o edid
+    declare -ga outputs=(); declare -gA out=()
+    while read -r o _ edid; do out[$edid]=$o; done < <(edidsum -xo)
+    readarray -t outputs < <(xrandr | awk '/^\w+ (dis)?connected/ { print $1 }')
+}
+
+post_hook() { apod set & }
 
 src=~/bin/xscreen.$HOSTNAME
 # shellcheck disable=SC1090
@@ -48,7 +54,7 @@ dispno=$(xserverq dispno)
 set +e
 
 xset b off s off r rate 500 35
-xrdb -load ~/.Xresources
+xrdb -screen -load ~/.Xresources
 
 case $xserver in
     Xorg)
@@ -58,7 +64,11 @@ case $xserver in
         xset dpms 0 0 300
         touchpad off
         trackpoint-wheel on
-        (sleep 1; exec backlight-auto) &
+        (
+            for (( i=3; i>0; i-- )); do
+                backlight-auto && break
+            done
+        ) &
         ;;
     Xephyr)
         xrdb -merge - <<<'Xft.dpi: 96'

@@ -35,9 +35,16 @@ try:
         print('VT: {}'.format(active_vt))
 
     with open('/dev/' + active_vt, 'w') as f:
+
+        # See also: /usr/include/linux/kd.h
+
         v = ioctl(f, 0x4B3B, 'I')[0]
         d = {0: 'KD_TEXT', 1: 'KD_GRAPHICS'}
         print('KDGETMODE: {} ({})'.format(v, d.get(v) or '?'))
+
+        v = ioctl(f, 0x4B33, 'L')[0]
+        d = {1: 'KB_84', 2: 'KB_101', 3: 'KB_OTHER'}
+        print('KDGKBTYPE: {} ({})'.format(v, d.get(v) or '?'))
 
         v = ioctl(f, 0x4B44, 'L')[0]
         d = {0: 'K_RAW', 1: 'K_XLATE', 2: 'K_MEDIUMRAW',
@@ -48,15 +55,17 @@ try:
         d = {3: 'K_METABIT', 4: 'K_ESCPREFIX'}
         print('KDGKBMETA: {} ({})'.format(v, d.get(v) or '?'))
 
-        v = ioctl(f, 0x4B31, 'B')[0]
+        v = ioctl(f, 0x4B64, 'B')[0]
         leds = []
         if v & 1:
-            leds.append('LED_SCR')
+            leds.append('K_SCROLLLOCK')
         if v & 2:
-            leds.append('LED_NUM')
+            leds.append('K_NUMLOCK')
         if v & 4:
-            leds.append('LED_CAP')
-        print('KDGETLED: {} ({})'.format(v, ' '.join(leds)))
+            leds.append('K_CAPSLOCK')
+        print('KDGKBLED: {} ({})'.format(v, ' '.join(leds)))
+
+        # See also: /usr/include/linux/vt.h
 
         v = ioctl(f, 0x5601, 'BBHHH')
         d = {0: 'VT_AUTO', 1: 'VT_PROCESS', 2: 'VT_ACKACQ'}

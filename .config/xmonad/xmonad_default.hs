@@ -73,7 +73,7 @@ xmobarActionWrap a m  = wrap ("<action=`" ++ a ++ "`>") "</action>" m
 matchAppOrClassName :: String -> Query Bool
 matchAppOrClassName n = (appName =? n) <||> (className =? n)
 
-myStatusBar conf = statusBar "statusbar" myPP myToggleStrutsKey conf
+myStatusBar conf = statusBar "xmobar" myPP myToggleStrutsKey conf
   where
     color = xmobarColor
     myPP = def
@@ -126,7 +126,7 @@ myConfig = def
                 workspaceOnScreen 1 "3"
                 workspaceOnScreen 2 "2"
                 viewScreen def 1
-        spawn "xsession-hook startup"
+        spawn "xsession --startup"
 
     myLogHook = ewmhDesktopsLogHook
                 <+> updatePointer (0.5, 0.5) (0, 0)
@@ -216,7 +216,7 @@ myConfig = def
             , (f, m) <- [(W.greedyView, ""), (W.shift, "-S")]
         ]
         ++
-        [ ("M-q", spawn "xmonad --restart")
+        [ ("M-q", spawn "xmonad-restart")
         , ("M-S-q", io (exitWith ExitSuccess))
         , ("M-S-<Return>", spawn myTerminal)
 

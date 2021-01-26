@@ -1,0 +1,68 @@
+# vim: ft=sh
+# shellcheck disable=SC2154
+
+sdu() { systemctl --user "$@"; }
+
+pre_hook() {
+    xscreen -
+    sdu start xsession@:"$screen".target
+    srun -rxl picom
+    srun -rxl osdd
+    srun -rxl -n polkit-agent /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
+    srun -rxl -n sxhkd bash -c 'sleep 1; exec sxhkd'
+    case $session in
+        openbox | xfwm4)
+            srun -rxl tint2
+            ;;
+        xmonad | main)
+            srun -rxl tray
+            ;;
+    esac
+}
+
+post_hook() {
+    local dispno spid
+    sdu stop xsession@:"$screen".target
+    dispno=$(xserverq dispno)
+    if [[ ! -e $rundir/keepserver:$screen &&
+          ! -e $rundir/keepserver:$dispno ]]; then
+        spid=$(xserverq pid)
+        sdu --quiet is-active xsession@:"$dispno".[0-9].target || kill "$spid"
+    fi
+    rm -f "$rundir/keepserver:$screen"
+}
+
+exec_hook() {
+    case $session in
+        i3)
+            exec i3 -V
+            ;;
+        kodi)
+            exec kodi -fs --debug
+            ;;
+        main)
+            exec xmonad
+            ;;
+        openbox)
+            exec openbox --startup 'xsession --startup'
+            ;;
+        rio)
+            exec rio -term term -virtuals 4
+            ;;
+        xfwm4)
+            exec xfwm4 --compositor=off
+            ;;
+        *)
+            exec "$@"
+            ;;
+    esac
+}
+
+startup_hook() {
+    case $session in
+        main)
+            srun -xl clementine
+            srun -xl workrave
+            ;;
+    esac
+}

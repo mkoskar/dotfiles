@@ -202,13 +202,16 @@ end
 
 function yank_property(name)
     local val = mp.get_property(name)
+    if not val then
+        return
+    end
     if name == 'path' then
         val = val:gsub('^ytdl://', 'https://www.youtube.com/watch?v=')
     end
     local proc = io.popen('clip -i', 'w')
     pcall(proc:write(val))
     proc:close()
-    mp.osd_message(val)
+    mp.osd_message(val .. ' (yanked)')
 end
 
 function reload()
@@ -240,12 +243,12 @@ mp.register_event('file-loaded',
 
 mp.observe_property('chapter', 'number',
     function(name, value)
+        local chapter = format_chapter()
         if not chapter then
             return
         end
         set_info()
         show_info()
-        local chapter = format_chapter()
         os.execute(string.format("notify '%s'", chapter:gsub("'", "'\\''")))
     end
 )

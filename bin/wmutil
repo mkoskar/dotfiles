@@ -31,15 +31,15 @@ warp_in_win() {
     attrs=$(wattr xywh "$wid")
     read -r x y w h <<<"$attrs"
     case $1 in
-        c) x=$((x+w/2)); y=$((y+h/2)) ;;
+        c) x=$((x+w/2)) y=$((y+h/2)) ;;
         e) y=$((y+h/2)) ;;
         n) x=$((x+w/2)) ;;
         ne) ;;
         nw) x=$((x+w)) ;;
-        s) x=$((x+w/2)); y=$((y+h)) ;;
+        s) x=$((x+w/2)) y=$((y+h)) ;;
         se) y=$((y+h)) ;;
-        sw) x=$((x+w)); y=$((y+h)) ;;
-        w) x=$((x+w)); y=$((y+h/2)) ;;
+        sw) x=$((x+w)) y=$((y+h)) ;;
+        w) x=$((x+w)) y=$((y+h/2)) ;;
     esac
     warp_mouse "$x" "$y"
 }

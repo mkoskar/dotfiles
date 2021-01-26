@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+# shellcheck disable=SC2034
+outputs() {
+    local o m edid; local -A _out
+    declare -ga outputs=(); declare -gA mon out=()
+    while IFS=$'\t' read -r o m; do
+        _out[$m]=$o outputs+=("$o")
+    done < <(swaymsg -t get_outputs | jq -r '.[] | .name + "\t" + .make + " " + .model + " " + .serial')
+    while read -r _ edid; do
+        [[ ${mon[$edid]+set} ]] && out[${mon[$edid]}]=${_out[${mon[$edid]}]}
+    done < <(edidsum -o)
+}
+
+src=~/bin/swayutil.$HOSTNAME
+# shellcheck disable=SC1090
+[[ -e $src ]] && . "$src"
+
+case ${1-} in
+    layout)
+        shift
+        layout_hook "$@"
+        ;;
+    *)
+        exit 2
+        ;;
+esac

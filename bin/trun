@@ -9,6 +9,7 @@ if (( ! $# )); then
     exit 2
 fi
 
+# shellcheck disable=SC1090
 . ~/bin/term.sh
 
 exec "$@"

@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
 
-set -eu
-
-bin=$(pth -s slop)
-#exec "$bin" -t 1 -b 2 -c 1,0,0 "$@"
-exec "$bin" -l -t 1 -b 0 -c 0.3,0.4,0.6,0.6 "$@"
+#exec cmd -0 slop -t 1 -b 2 -c 1,0,0 "$@"
+exec cmd -0 slop -l -t 1 -b 0 -c 0.3,0.4,0.6,0.6 "$@"

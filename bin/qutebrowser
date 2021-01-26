@@ -4,18 +4,16 @@
 
 set -eu -o pipefail
 
-bin=$(pth -s qutebrowser)
-
 case ${1-} in
     --) shift ;;
-    -*) exec "$bin" "$@" ;;
+    -*) exec cmd -0 qutebrowser "$@" ;;
 esac
 
 uhash=$(printf %s "$USER" | sha1sum)
 read -r uhash _ <<<"$uhash"
 socket=$XDG_RUNTIME_DIR/qutebrowser/ipc-$uhash
 
-[[ -S $socket ]] || exec "$bin" -- "$@"
+[[ -S $socket ]] || exec cmd -0 qutebrowser -- "$@"
 
 (( $# )) || set -- about:blank
 

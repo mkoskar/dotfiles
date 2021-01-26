@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+info() {
+    local label=$1
+    shift
+    [[ $label = - ]] && label=$*
+    echo $'\n--------------------------------------------------'
+    printf '> %s\n\n' "$label"
+    "$@"
+}
+
+{
+    info - lpstat -t
+
+    info 'lpoptions -l (default destination)' lpoptions -l
+
+    #info - lpinfo -l -m
+
+    #info - lpinfo -l -v
+
+    #info - ippfind
+
+    info - driverless list
+
+    echo
+} |& $PAGER

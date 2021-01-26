@@ -19,5 +19,5 @@ set -eu -o pipefail
     echo $'\n--------------------------------------------------'
     printf '> %s\n\n' "$ifile"
 
-    sed -nr '/^\s*</{s/\s+/ /g; p}' "$ifile" | sort
+    sed -En '/^\s*</{s/\s+/ /g; p}' "$ifile" | sort
 } |& $PAGER

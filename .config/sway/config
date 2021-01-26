@@ -1,23 +1,19 @@
-# i3 config file
+# sway config file
 
 set $mod Mod4
 
-#smart_borders on
-#smart_gaps on
 default_border pixel 1
 default_floating_border pixel 1
 floating_modifier $mod
 focus_wrapping force
 font pango:monospace bold 8
+smart_borders off
+smart_gaps on
 title_align center
+titlebar_border_thickness 0
+titlebar_padding 5 1
 workspace_layout tabbed
-
-#client.focused          #4c7899 #285577 #ffffff #2e9ef4 #285577
-#client.focused_inactive #333333 #5f676a #ffffff #484e50 #5f676a
-#client.unfocused        #333333 #222222 #888888 #292d2e #222222
-#client.urgent           #2f343a #900000 #ffffff #900000 #900000
-#client.placeholder      #000000 #0c0c0c #ffffff #000000 #0c0c0c
-#client.background       #ffffff
+xwayland force
 
 # class                 border  backgr. text    indic.  child_border
 client.focused          #000000 #000000 #87cefa #ff3333 #ff3333
@@ -51,7 +47,7 @@ for_window [title="qiv"] move container to workspace 9
 
 bindsym $mod+q reload
 bindsym $mod+Shift+q exit
-bindsym $mod+Shift+Return exec xterm
+bindsym $mod+Shift+Return exec alacritty
 
 bindsym $mod+0 workspace number 0
 bindsym $mod+1 workspace number 1
@@ -156,4 +152,4 @@ bar {
     }
 }
 
-exec_always xsession --startup
+exec_always wsession-startup
