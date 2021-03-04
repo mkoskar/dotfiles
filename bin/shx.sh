@@ -256,11 +256,13 @@ alias drill-nocheck='drill -o CD'
 alias drill-trace='drill -T'
 alias dstat='dstat -tlycgm --vm -rdn'
 alias du='du -hx'
-alias ed='ed -p :'
+alias ed='ed -v -p :'
 alias fc-debug='FC_DEBUG=8191'
+alias fc-recache='fc-cache -rv'
 alias feh='feh -F'
 alias fortune='fortune -c'
 alias free='free -h'
+alias fuser='fuser -v'
 alias fzy='fzy -l $LINES'
 alias gconfa='gconftool-2 -R /'
 alias getfattr='getfattr --absolute-names -d -m -'
@@ -285,6 +287,10 @@ alias last='last -x'
 alias llib='tree ~/.local/lib'
 alias lsblk='lsblk -o NAME,KNAME,MAJ:MIN,ROTA,RM,RO,TYPE,SIZE,FSTYPE,MOUNTPOINT,MODEL'
 alias lsdiff='lsdiff -s'
+alias lsof-net-pid='lsof-net -a -p'
+alias lsof-net='lsof -i'
+alias lsof-pid='lsof -p'
+alias lsof='lsof -nP +c 0'
 alias ltime='date +%T'
 alias makepkg-build='makepkg -srf'
 alias makepkg-rebuild='makepkg -Ccsrf'
@@ -338,6 +344,7 @@ alias sudo-on='sudo -v'
 alias sys='systool -av'
 alias tcpdump='tcpdump -ne -vvv'
 alias tmux-killall='tmux-all kill-server'
+alias tmux0='tmux -f /dev/null'
 alias top='top -d 1'
 alias topdf='lowriter --convert-to pdf'
 alias tshark-prefs='\tshark -G currentprefs'
@@ -355,14 +362,16 @@ alias whois='whois -H'
 alias wi='curl -sSLf http://wttr.in/?Fqn'
 alias xargs1='xargs -r -L 1'
 alias xinput-test='xinput test-xi2 --root'
+alias xwininfo='xwininfo -all'
 alias yaml='yq .'
-alias ytdl-audio-album="ytdl-audio --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
-alias ytdl-audio-all='ytdl-audio --yes-playlist'
+alias ytdl-audio-playlist="ytdl-audio --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
 alias ytdl-audio='youtube-dl -f bestaudio/best -x'
+alias ytdl-best='youtube-dl -f bestvideo+bestaudio/best'
 alias ytdl-formats='youtube-dl -F'
 alias ytdl-json='youtube-dl -J'
 alias ytdl-playlist="youtube-dl --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
-alias ytdl-stdout="youtube-dl -f 'best[height<=?1080]' -o -"
+alias ytdl-stdout='youtube-dl -o -'
+alias ytdl=youtube-dl
 alias zsh-bare='zsh -df'
 
 alias _gdbus-session='gdbus introspect -r --session -o /'
@@ -399,11 +408,6 @@ __() {
 }
 alias ,,=__
 
-_lsof_pid() {
-    lsof -p "${1:-$$}"
-}
-alias lsof-pid=_lsof_pid
-
 _systemd_dot() {
     systemd-analyze dot "$@" | dot -T svg | stdiner -bt b
 }
@@ -420,7 +424,7 @@ _xserver_reset() {
     local dispno; dispno=$(env ${1+DISPLAY=:"$1"} xserverq dispno) || return 1
     local spid; spid=$(env ${1+DISPLAY=:"$1"} xserverq pid) || return 1
     touch "$XDG_RUNTIME_DIR/xorg/keepserver:$dispno"
-    kill -s HUP "$spid"
+    kill -HUP "$spid"
 }
 alias xserver-reset=_xserver_reset
 

@@ -47,7 +47,7 @@ fi
 
 (( reverse )) && filter=(tac) || filter=(cat)
 xurls | "${filter[@]}" >"$tmpfile"
-[[ -s $tmpfile ]] || exit 1
+[[ -s $tmpfile ]] || exit 0
 
 case $mode in
     o)

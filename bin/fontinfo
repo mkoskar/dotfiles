@@ -11,21 +11,30 @@ fi
 
 file=$1
 if [[ ! -e $file ]]; then
-    file=$(fc-match -f %{file} "$file")
+    file=$(fc-match -f '%{file}' "$file")
 fi
 
-ftdump -C -n "$file" |
-    awk -v file="$file" '
-        BEGIN {
-            cmaps = 0
-            printf "%s\n\n", file
-        }
-        /^charmaps/ {
-            cmaps = 1
-        }
-        cmaps && /\s+0x[0-9abcdef]+ =>/ {
-            printf "%-60s : %c\n", $0, strtonum($1)
-            next
-        }
-        { print }
-    ' |& $PAGER
+{
+    echo $'\n--------------------------------------------------'
+    echo $'> fc-query\n'
+
+    fc-query "$file"
+
+    echo '--------------------------------------------------'
+    echo $'> ftdump\n'
+
+    ftdump -C -n "$file" |
+        awk -v file="$file" '
+            BEGIN {
+                cmaps = 0
+            }
+            /^charmaps/ {
+                cmaps = 1
+            }
+            cmaps && /\s+0x[0-9abcdef]+ =>/ {
+                printf "%-60s : %c\n", $0, strtonum($1)
+                next
+            }
+            { print }
+        '
+} |& $PAGER

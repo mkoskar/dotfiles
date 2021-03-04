@@ -3,7 +3,7 @@
 set -eu -o pipefail
 shopt -s extglob
 
-src=${1:-$(xclip -o | head -c 255)}
+src=${1:-$(xclip -o | head -c 512)}
 case $src in
     http?(s)://*)
         curl -sSLI -w '%{url_effective}\n' -o /dev/null "$src"

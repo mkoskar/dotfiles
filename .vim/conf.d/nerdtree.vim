@@ -20,4 +20,5 @@ nnoremap <silent> <Leader>tf :NERDTreeFind<CR>
 augroup nerdtree_conf
     autocmd!
     autocmd FileType nerdtree call utils#bufSpecial()
+    autocmd FileType nerdtree nmap <buffer> <silent> <nowait> s :call nerdtree#ui_glue#invokeKeyMap('s')<CR>
 augroup END

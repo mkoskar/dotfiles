@@ -35,6 +35,7 @@ xrandr_l2r() {
     xrandr "${args[@]}"
 }
 
+# shellcheck disable=SC2034
 outputs() {
     local o edid
     declare -ga outputs=(); declare -gA out=()

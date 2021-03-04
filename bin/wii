@@ -9,7 +9,7 @@ ti_hi2=$(tput -S <<<$'bold\nsetaf 1')
 ti_hi3=$(tput -S <<<$'bold\nsetaf 3')
 
 format="%I, %j (%l, %L) at %a
-----------------------------------------
+--------------------------------------------------
 Condition:              ${ti_hi0}%c${ti_reset}
 Clouds:                 ${ti_hi0}%d%%${ti_reset}
 Barometric pressure:    %bhPa

@@ -150,7 +150,7 @@ if (( ! $# )); then
 fi
 
 if [[ $1 = --startup ]]; then
-    kill -s USR1 -- "$XSESSIONPID"
+    kill -USR1 -- "$XSESSIONPID"
     exit
 fi
 
@@ -190,7 +190,7 @@ if [[ $1 = - ]]; then
     shift
 else
     for i in "${sessions[@]}"; do
-        [[ $1 = "$i" ]] && { session=$i; shift; break; }
+        [[ $1 = "$i" ]] && { session=$i; break; }
     done
 fi
 printf 'session: %s\n' "$session"

@@ -12,7 +12,7 @@ https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml
 class: (in, hs, ch, ...) [default: in]
 type:  (a, any, mx, ns, soa, hinfo, axfr, txt, ...) [default: a]
 
-----------------------------------------
+--------------------------------------------------
 
 /etc/gai.conf
 /etc/host.conf

@@ -43,13 +43,8 @@ URxvt.scrollstyle:              plain
 URxvt.thickness:                5
 URxvt.urgentOnBell:             true
 
-! 1) BackSpace = ^H (BS)
-!URxvt.backspacekey:             \010
-!URxvt.keysym.C-BackSpace:       \177
-!URxvt.keysym.C-H:               \177
-
-! 2) BackSpace = ^? (DEL)
 URxvt.keysym.C-h:               \177
+URxvt.keysym.M-C-h:             \033\010
 
 URxvt.keysym.Shift-Up:          command:\033]720;1\007
 URxvt.keysym.Shift-Down:        command:\033]721;1\007
@@ -111,6 +106,7 @@ XTerm.vt100.utf8Fonts.font3:        -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
 XTerm.vt100.utf8Fonts.font4:        -*-terminus-medium-*-*-*-16-*-*-*-*-*-*-*
 XTerm.vt100.utf8Fonts.font5:        -*-terminus-medium-*-*-*-20-*-*-*-*-*-*-*
 XTerm.vt100.utf8Fonts.font6:        -*-terminus-medium-*-*-*-24-*-*-*-*-*-*-*
+XTerm.vt100.utf8Fonts.font7:        -*-terminus-medium-*-*-*-28-*-*-*-*-*-*-*
 XTerm.vt100.utf8Fonts.font:         -*-terminus-medium-*-*-*-16-*-*-*-*-*-*-*
 
 XTerm.vt100.scrollBarBorder:        0

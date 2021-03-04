@@ -34,7 +34,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         self.send_header('Content-Type', 'text/plain; charset=UTF-8')
         self.end_headers()
 
-        print('----------------------------------------')
+        print('--------------------------------------------------')
 
     def do_POST(self):
         self.do_GET()

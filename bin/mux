@@ -1,22 +1,17 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
+set -eu
 
 prgname=${0##*/}
 
 # ----------------------------------------
 
 cmd() {
-    tmux -L "$socket" "$@"
-}
-
-exists () {
-    cmd has -t "=$session" &>/dev/null
+    "${tmux[@]}" "$@"
 }
 
 new() {
-    cmd new -d -s "$session" sleep 1 \; set remain-on-exit on
-    cmd setenv -t "=$session" SHOME "$PWD" \; neww -k -t "=$session:0" "$@"
+    cmd new -d -s "$session" -e SHOME="$PWD" "$@"
 }
 
 neww() {
@@ -27,7 +22,6 @@ neww() {
 
 base() {
     new
-    neww -d
 }
 
 ext() {
@@ -76,7 +70,7 @@ mon() {
 
     new -n top trun conky -q \
         \; set remain-on-exit on \
-        \; set main-pane-width 43 \
+        \; set main-pane-width 45 \
         \; selectl main-vertical \
         \; splitw -h trun htop
 
@@ -95,7 +89,7 @@ mon() {
 
     neww -n logs -c /var/log
 
-    cmd selectw -t "=$session:0"
+    cmd selectw -t "=$session:1"
 }
 
 tmp() {
@@ -130,13 +124,7 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-if [[ ${TMUX-} ]]; then
-    IFS=, read -r -a tmux <<<"$TMUX"
-    if [[ $socket = "${tmux[0]##*/}" ]]; then
-        echo "$prgname: cannot operate from within session of the same target socket" >&2
-        exit 1
-    fi
-fi
+tmux=(tmux -L "$socket")
 
 if (( $# )); then
     session=$1
@@ -146,27 +134,25 @@ else
     session=${session%/}
 fi
 
-if ! exists; then
-    (exec 8>"$XDG_RUNTIME_DIR"/mux.lock
-    flock -w 30 8 || exit 3
-    (exec 8<&-
-        if ! exists; then
-            case $session in
-                adm | aux | mon | tmp | wrk)
-                    $session
-                    ;;
-                *)
-                    case $prgname in
-                        muxx) ext ;;
-                        *) new ;;
-                    esac
-                    ;;
-            esac
-            sleep 0.3
-        fi
-    ))
+set +e
+if ! cmd has -t "=$session" &>/dev/null; then
+    (
+        set -e
+        case $session in
+            adm | aux | mon | tmp | wrk)
+                $session
+                ;;
+            *)
+                case $prgname in
+                    muxx) ext ;;
+                    *) base ;;
+                esac
+                ;;
+        esac
+        sleep 0.3
+    )
 fi
 
 if (( attach )); then
-    exec tmux -L "$socket" attach -t "=$session"
+    exec "${tmux[@]}" attach -t "=$session"
 fi

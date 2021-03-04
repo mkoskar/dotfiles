@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-(( $# )) && set -- -p "$1" -a
-
-exec lsof -nP "$@" -itcp -o -iudp

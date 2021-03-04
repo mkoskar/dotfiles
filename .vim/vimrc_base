@@ -67,25 +67,28 @@ noremap <silent> - ^
 noremap <silent> <M-j> 5j
 noremap <silent> <M-k> 5k
 
-noremap <silent> <M-C-L> 10l
-noremap <silent> <M-C-H> 10h
+noremap <silent> <M-C-L> 5l
+noremap <silent> <M-C-H> 5h
 nmap <silent> <M-BS> <M-C-H>
 
 noremap <silent> <C-E> 5<C-E>
 noremap <silent> <C-Y> 5<C-Y>
 
-noremap <silent> zl 10zl
-noremap <silent> zh 10zh
+noremap <silent> zl 5zl
+noremap <silent> zh 5zh
+
+nnoremap <silent> J :move +1<CR>
+nnoremap <silent> K :move -2<CR>
 
 " Move visual block <http://vimrcfu.com/snippet/77>
-xnoremap J :move '>+1<CR>gv
-xnoremap K :move '<-2<CR>gv
+xnoremap <silent> J :move '>+1<CR>gv
+xnoremap <silent> K :move '<-2<CR>gv
 
 nnoremap <silent> * :let @/ = '\V\<' . escape(expand('<cword>'), '\/') . '\>' \| set hls<CR>
 nnoremap <silent> g* :let @/ = '\V' . escape(expand('<cword>'), '\/') \| set hls<CR>
 nnoremap <silent> # :let @/ = '\V\S\@<!' . escape(expand('<cWORD>'), '\/') . '\S\@!' \| set hls<CR>
 nnoremap <silent> g# :let @/ = '\V' . escape(expand('<cWORD>'), '\/') \| set hls<CR>
-vnoremap <silent> g/ y:let @/ = '\V' . escape(@", '\/') \| call histadd('search', @/) \| set hls<CR>
+xnoremap <silent> g/ y:let @/ = '\V' . escape(@", '\/') \| call histadd('search', @/) \| set hls<CR>
 
 
 " Tags
@@ -212,11 +215,20 @@ nnoremap <silent> <C-L> <C-W>l
 nnoremap <silent> <C-H> <C-W>h
 nmap <silent> <BS> <C-H>
 
-nnoremap <silent> c<C-J> :below sp<CR>
-nnoremap <silent> c<C-K> :above sp<CR>
-nnoremap <silent> c<C-L> :rightb vsp<CR>
-nnoremap <silent> c<C-H> :lefta vsp<CR>
+nnoremap <silent> s<C-J> :below sp<CR>
+nnoremap <silent> s<C-K> :above sp<CR>
+nnoremap <silent> s<C-L> :rightb vsp<CR>
+nnoremap <silent> s<C-H> :lefta vsp<CR>
+nmap <silent> s<BS> s<C-H>
+
+nnoremap <silent> c<C-J> :below new<CR>
+nnoremap <silent> c<C-K> :above new<CR>
+nnoremap <silent> c<C-L> :rightb vnew<CR>
+nnoremap <silent> c<C-H> :lefta vnew<CR>
 nmap <silent> c<BS> c<C-H>
+
+nnoremap <silent> <C-W>N :vnew<CR>
+nnoremap <silent> <C-W><C-N> :vnew<CR>
 
 nnoremap <silent> d<C-J> <C-W>j<C-W>c<C-W>p
 nnoremap <silent> d<C-K> <C-W>k<C-W>c<C-W>p
@@ -239,8 +251,6 @@ nnoremap <silent> <M--> :vertical resize -5<CR>
 
 set tabpagemax=50
 
-nnoremap <silent> <M-h> gT
-nnoremap <silent> <M-l> gt
 nnoremap <silent> <M-1> 1gt
 nnoremap <silent> <M-2> 2gt
 nnoremap <silent> <M-3> 3gt
@@ -250,11 +260,20 @@ nnoremap <silent> <M-6> 6gt
 nnoremap <silent> <M-7> 7gt
 nnoremap <silent> <M-8> 8gt
 nnoremap <silent> <M-9> 9gt
-nnoremap <silent> <M-0> :tablast<CR>
+
+nnoremap <silent> <M-0> :tabfirst<CR>
+nnoremap <silent> <M-^> :tabfirst<CR>
+nnoremap <silent> <M-$> :tablast<CR>
+nnoremap <silent> <M-(> :tabfirst<CR>
+nnoremap <silent> <M-)> :tablast<CR>
+
+nnoremap <silent> <M-h> gT
+nnoremap <silent> <M-l> gt
+nnoremap <silent> <M-H> :silent! tabmove -1<CR>
+nnoremap <silent> <M-L> :silent! tabmove +1<CR>
+
 nnoremap <silent> <M-n> :tabnew<CR>
 nnoremap <silent> <M-N> :tab split<CR>
-nnoremap <silent> <M-L> :tabmove +1<CR>
-nnoremap <silent> <M-H> :tabmove -1<CR>
 
 function! s:QuitTab(bang) abort
     try
@@ -355,7 +374,7 @@ set complete-=i
 set completeopt=longest,menuone
 set formatoptions=tcroqln21j
 set matchpairs+=<:>
-set nojs
+set nojoinspaces
 set nrformats-=octal
 set showmatch
 set textwidth=80
@@ -364,6 +383,8 @@ set undofile
 
 let &undodir = $VIMDIR . '/.undo'
 call utils#mkdir(&undodir)
+
+noremap <silent> <Leader><C-J> J
 
 inoremap <C-B> <Home>
 inoremap <C-E> <End>
@@ -537,7 +558,6 @@ let &viewdir = $VIMDIR . '/.view'
 let &viminfo = "!,'100,<50,s10,h"
 let &viminfofile = $VIMDIR . '/.viminfo'
 
-nnoremap K <Nop>
 nnoremap Q <Nop>
 nnoremap <Leader>V :setl <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
 nnoremap <silent> <C-Q> :bd<CR>
@@ -1034,7 +1054,8 @@ augroup vimrc_base
         autocmd TermChanged * silent call s:MetaSetup(meta_enabled)
     endif
 
-    autocmd BufWritePost ~/.Xresources !xrdb -load ~/.Xresources
+    autocmd BufWritePost ~/.Xresources !xrdb -screen -load ~/.Xresources
+    autocmd BufWritePost conky.conf !killall -USR1 conky
 
     autocmd FileType diff call utils#bufSpecial()
     autocmd FileType mail call utils#bufSpecial() | setl tw=72

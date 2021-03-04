@@ -23,6 +23,6 @@ SubFolders Verbatim
 Flatten .
 
 Channel example
-Master :example-remote:
-Slave :example-local:
+Far :example-remote:
+Near :example-local:
 Pattern *

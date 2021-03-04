@@ -24,5 +24,7 @@ info() {
 
     info - aplay -L
 
+    info - lsof +c 0 +D /dev/snd
+
     echo
 } |& $PAGER

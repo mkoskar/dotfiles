@@ -9,7 +9,7 @@ tmpfile=$(mktemp)
 cleanup() { rm -f "$tmpfile"; }
 trap cleanup EXIT
 
-src=${1:-$(xclip -o | head -c 255)}
+src=${1:-$(xclip -o | head -c 512)}
 case $src in
     http?(s)://*)
         curl -sSLf --form-string shorten="$src" -o "$tmpfile" https://0x0.st/

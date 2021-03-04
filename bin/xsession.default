@@ -15,7 +15,7 @@ pre_hook() {
             srun -rxl tint2
             ;;
         xmonad | main)
-            srun -rxl tray
+            srun -rxl trayer
             ;;
     esac
 }

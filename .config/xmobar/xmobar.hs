@@ -2,17 +2,14 @@
 
 Config { font = "xft:local_statusbar"
        , additionalFonts = ["xft:Symbola"]
-       , bgColor = "#000000"
        , fgColor = "#c0c0c0"
-       , alpha = 255
-       , position = TopP 0 100
        , textOffset = 13
-       , allDesktops = True
        , border = BottomB
        , borderColor = "#000000"
-       , borderWidth = 4
-       , commands = [ Run UnsafeStdinReader
+       , borderWidth = 3
+       , commands = [ Run StdinReader
                     , Run CommandReader "xmobar-mail" "mail"
+                    , Run CommandReader "xmobar-tray" "tray"
                     , Run Cpu
                         [ "-t", "<total>"
                         , "-L", "10"
@@ -51,6 +48,12 @@ Config { font = "xft:local_statusbar"
                         ] 50
                     , Run Date "%a❘%d.%m❘%H:%M" "date" 600
                     ]
-       , alignSep = "}{"
-       , template = "%UnsafeStdinReader% }{ %mail%  %cpu%❘%memory%  %wlan0wi%❘%kbd%  %battery%  %date%"
+       , template = "%StdinReader%\
+                    \}{\
+                    \  %mail%\
+                    \  %cpu%❘%memory%\
+                    \  %wlan0wi%❘%kbd%\
+                    \  %battery%\
+                    \  %date%\
+                    \%tray%"
        }

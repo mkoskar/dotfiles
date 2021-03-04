@@ -1,0 +1,9 @@
+completionPromptLimit: Just 300
+editMode: Vi
+historyDuplicates: IgnoreConsecutive
+maxHistorySize: Just 1000
+
+bind: ctrl-p meta-k
+bind: ctrl-n meta-j
+bind: meta-h left
+bind: meta-l right

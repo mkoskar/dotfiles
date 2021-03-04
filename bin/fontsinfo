@@ -13,7 +13,7 @@ glyph_count() {
 export -f glyph_count
 
 if [[ ${1-} = - ]]; then
-    fc-list --format='%{file}\n' |
+    fc-list --format '%{file}\n' |
         parallel --pipe --block 1K --round glyph_count |
         sort -r
     exit

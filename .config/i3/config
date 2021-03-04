@@ -49,9 +49,9 @@ for_window [title="qiv"] move container to workspace 9
 
 # ----------------------------------------
 
-bindsym $mod+q reload
+bindsym $mod+q restart
 bindsym $mod+Shift+q exit
-bindsym $mod+Shift+Return exec xterm
+#bindsym $mod+Shift+Return exec term
 
 bindsym $mod+0 workspace number 0
 bindsym $mod+1 workspace number 1
@@ -145,15 +145,24 @@ bar {
     status_command i3status-rs
     tray_output primary
 
+    #colors {
+    #    background #000000
+    #    statusline #ffffff
+    #    separator #666666
+    #    focused_workspace  #4c7899 #285577 #ffffff
+    #    active_workspace   #333333 #5f676a #ffffff
+    #    inactive_workspace #333333 #222222 #888888
+    #    urgent_workspace   #2f343a #900000 #ffffff
+    #    binding_mode       #2f343a #900000 #ffffff
+    #}
+
     colors {
-        background #000000
         statusline #c0c0c0
-        focused_workspace  #000000 #000000 #55ff55
-        active_workspace   #000000 #000000 #feed6a
-        inactive_workspace #000000 #000000 #c0c0c0
-        urgent_workspace   #f6e972 #f6e972 #bb4455
-        binding_mode       #2f343a #900000 #ffffff
+        #focused_workspace  #000000 #000000 #55ff55
+        #active_workspace   #000000 #000000 #feed6a
+        #inactive_workspace #000000 #000000 #c0c0c0
+        #urgent_workspace   #f6e972 #f6e972 #bb4455
     }
 }
 
-exec_always xsession --startup
+exec_always --no-startup-id xsession --startup

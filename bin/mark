@@ -6,7 +6,7 @@ shopt -s nullglob
 prgname=${0##*/}
 
 input=$*
-(( $# )) || input=$(head -c 255)
+(( $# )) || input=$(head -c 512)
 [[ $input ]] || exit 1
 
 cd ~/projects/notes/src/02-marks

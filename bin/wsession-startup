@@ -4,5 +4,10 @@ case $WSESSION in
     sway)
         xrdb -screen -load ~/.Xresources
         swayutil layout -
+        (
+            for (( i=3; i>0; i-- )); do
+                backlight-auto && break
+            done
+        ) &
         ;;
 esac
