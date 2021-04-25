@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
+exec 2>&1
+
 srv=${PWD##*/}
 host=${srv##*@}
 
+ssh-add -l &>/dev/null || { sleep 3; exit 1; }
 exec autossh -M 0 -F ~/.ssh/config.tunnels -N "$host"

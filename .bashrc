@@ -21,9 +21,7 @@ __ti_tsl=$(tput tsl)
 __ti_fsl=$(tput fsl)
 [[ $__ti_tsl ]] && __title="\\[$__ti_tsl\u@\h:\w$__ti_fsl\\]"
 
-PS1="\${BASEDIR:+(\${BASEDIR##*/}):}\\W\$ "
-[[ $HOSTNAME = mirci ]] || PS1=$HOSTNAME:$PS1
-PS1=\$__statstr:$PS1
+PS1='$__statstr:$HOSTNAME:${BASEDIR:+(${BASEDIR##*/}):}\W$ '
 if [[ $PIPENV_ACTIVE && $VIRTUAL_ENV ]]; then
     __venv=${VIRTUAL_ENV%/*}
     __venv=${__venv##*/}

@@ -43,10 +43,12 @@ export OSID
 case $OSID in
     termux)
         export SYSPREFIX=$PREFIX
+        export SYSETC=$PREFIX/etc
         export TMPDIR=$HOME/tmp
         ;;
     *)
         export SYSPREFIX=/usr
+        export SYSETC=/etc
         export TMPDIR=/tmp/$USER
         ;;
 esac
@@ -99,7 +101,7 @@ addpath() {
 # shellcheck disable=SC2123
 PATH=
 
-addpath /usr/local/bin/busybox
+addpath "$SYSPREFIX"/local/bin/busybox
 addpath ~/bin/busybox
 
 PATH=$SYSPATH:$PATH
@@ -152,7 +154,6 @@ export MANSECT=0:9:2:3:7:8:6:1:4:5
 export MANWIDTH=80
 export MPLAYER_HOME=$XDG_CONFIG_HOME/mplayer
 export NO_AT_BRIDGE=1
-export ORACLE_HOME=/opt/instantclient
 export PARALLEL_SHELL=$SYSPREFIX/bin/bash
 export PARINIT='T4 w78 prbgqR B=.,?_A_a Q=_s>|'
 export PERL_RL=o=0
@@ -174,7 +175,7 @@ export SYSTEMD_PAGERSECURE=0
 export S_COLORS=auto
 export S_TIME_DEF_TIME=UTC
 export S_TIME_FORMAT=ISO
-export TERMINFO_DIRS=/etc/terminfo:$SYSPREFIX/share/terminfo
+export TERMINFO_DIRS=$SYSETC/terminfo:$SYSPREFIX/share/terminfo
 export TMUX_TMPDIR=$TMPDIR
 export UAGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'
 export VDPAU_DRIVER=va_gl
@@ -211,6 +212,7 @@ case $OSID in termux)
     HOSTNAME=${TERMUX_HOST:-$HOSTNAME}
     ;;
 esac
+export HOSTNAME
 
 source_opt ~/.profile_"$OSID"
 source_opt ~/.profile."$HOSTNAME"
@@ -219,9 +221,9 @@ source_opt ~/.profile."$HOSTNAME"
 
 case $- in *i*) ;; *) return ;; esac
 
-if [ -e ~/.hushlogin ] && [ -f /etc/motd ]; then
-    if ! cmp -s /etc/motd ~/.hushmotd; then
-        tee ~/.hushmotd </etc/motd
+if [ -e ~/.hushlogin ] && [ -e "$SYSETC"/motd ]; then
+    if ! cmp -s "$SYSETC"/motd ~/.hushmotd; then
+        tee ~/.hushmotd <"$SYSETC"/motd
         echo '((( MOTD shown only once, unless it is changed )))'
     fi
 fi

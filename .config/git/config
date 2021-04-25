@@ -55,6 +55,7 @@
     lg1 = log --format=lg1 --graph --decorate-refs-exclude='*/HEAD' --color
     lga = lg1
     ls = ls-files
+    lso = ls-files -o --directory --exclude-standard
     lsu = ls-files -o --directory
     push-current = -c push.default=current pushv
     push-matching = -c push.default=matching pushv

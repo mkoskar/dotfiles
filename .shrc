@@ -11,8 +11,7 @@ case $- in *i*) ;; *) return ;; esac
 . ~/bin/shx.sh
 . ~/bin/shrc-pre.sh
 
-PS1="\${BASEDIR:+(\${BASEDIR##*/}):}\${PWD##*/}$ "
-[ "$HOSTNAME" = mirci ] || PS1=$HOSTNAME:$PS1
+PS1='$HOSTNAME:${BASEDIR:+(${BASEDIR##*/}):}${PWD##*/}$ '
 
 set -o vi
 

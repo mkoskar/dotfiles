@@ -6,7 +6,7 @@ else
     dest := $(HOME)/bin
 endif
 
-busybox := $(shell which busybox)
+busybox := $(shell command -v busybox)
 
 # ----------------------------------------
 

@@ -279,7 +279,7 @@ alias gtk-debug='GTK_DEBUG=interactive'
 alias headcat='head -v -n -0'
 alias host='host -a -T'
 alias info='info --vi-keys'
-alias infocmp0='infocmp -A /usr/share/terminfo'
+alias infocmp0='infocmp -A "$SYSPREFIX"/share/terminfo'
 alias infocmp='infocmp -1a'
 alias ip='ip -color=auto'
 alias journal='journalctl -o short-precise -b'
@@ -563,10 +563,7 @@ reexec() {
 
 # shellcheck disable=SC1090
 reload() {
-    case $OSID in
-        termux) . "$SYSPREFIX"/etc/profile ;;
-        *) . /etc/profile ;;
-    esac
+    . "$SYSETC"/profile
     . ~/.profile
     case $(shmode) in
         bash) . ~/.bashrc ;;

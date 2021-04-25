@@ -5,6 +5,7 @@ Description=%N service
 SyslogIdentifier=%N
 Environment=AUTOSSH_GATETIME=0
 Environment=AUTOSSH_POLL=60
+ExecStartPre=/bin/bash -c 'ssh-add -l &>/dev/null || { sleep 3; exit 1; }'
 ExecStart=/usr/bin/autossh -M 0 -F %h/.ssh/config.tunnels -N %i
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure

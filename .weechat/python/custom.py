@@ -233,30 +233,29 @@ def layout_current():
 
 
 def layout_current_name():
-    layout_cur = layout_current()
-    if layout_cur:
-        return w.hdata_string(hd_layout, layout_cur, 'name')
-    return None
+    cur = layout_current()
+    return w.hdata_string(hd_layout, cur, 'name') if cur else None
 
 
 def cb_command_layout_reset(data, buffer, args):
     cmd('layout del _zoom')
+    cur = layout_current_name()
     if not args:
-        if tab_cur is not None:
+        if cur is not None:
             preset = w.buffer_get_string(
-                core, f'localvar_tab{tab_cur}_preset'
+                core, f'localvar_{cur}_preset'
             )
             if preset:
                 cmd(f'layout_reset {preset}')
             else:
-                cmd(f'layout apply tab{tab_cur}_saved windows')
-                cmd(f'layout store tab{tab_cur} windows')
+                cmd(f'layout apply {cur}_saved windows')
+                cmd(f'layout store {cur} windows')
         return w.WEECHAT_RC_OK
 
     if args == '-':
-        if tab_cur is not None:
-            cmd(f'layout del tab{tab_cur}_saved')
-            w.buffer_set(core, f'localvar_del_tab{tab_cur}_preset', '')
+        if cur is not None:
+            cmd(f'layout del {cur}_saved')
+            w.buffer_set(core, f'localvar_del_{cur}_preset', '')
         return w.WEECHAT_RC_OK
 
     cmd('window merge all')
@@ -273,17 +272,18 @@ def cb_command_layout_reset(data, buffer, args):
     elif args:
         cmd(f'buffer {args}')
 
-    if tab_cur is not None:
-        cmd(f'layout store tab{tab_cur} windows')
-        w.buffer_set(core, f'localvar_set_tab{tab_cur}_preset', args)
+    if cur is not None:
+        cmd(f'layout store {cur} windows')
+        w.buffer_set(core, f'localvar_set_{cur}_preset', args)
     return w.WEECHAT_RC_OK
 
 
 def cb_command_layout_save(data, buffer, args):
-    if tab_cur is not None:
-        cmd(f'layout store tab{tab_cur}_saved windows')
-        cmd(f'layout store tab{tab_cur} windows')
-        w.buffer_set(core, f'localvar_del_tab{tab_cur}_preset', '')
+    cur = layout_current_name()
+    if cur is not None:
+        cmd(f'layout store {cur}_saved windows')
+        cmd(f'layout store {cur} windows')
+        w.buffer_set(core, f'localvar_del_{cur}_preset', '')
     return w.WEECHAT_RC_OK
 
 
@@ -304,12 +304,10 @@ key_bind('default', 'meta-;meta-3', '/layout_reset twitter')
 # Tabs {{{
 # ----------------------------------------
 
-tab_cur = None
 
-
-def maybe_tab(src):
+def str2tab(str):
     try:
-        tab = int(src)
+        tab = int(str)
     except (TypeError, ValueError):
         return None
     if not 0 < tab < 10:
@@ -317,94 +315,86 @@ def maybe_tab(src):
     return tab
 
 
-def tabs_all():
-    tabs = []
-    for name in layouts_name_iter():
-        match = re.match(r'^tab(\d+)$', name)
+def layout_tab(layout_name):
+    if layout_name:
+        match = re.match(r'^tab(\d)$', layout_name)
         if match:
-            tab = maybe_tab(match.group(1))
-            if tab is not None:
-                tabs.append(tab)
-    tabs.sort()
-    return tabs
+            return str2tab(match.group(1))
+    return None
+
+
+def tabs_all():
+    tabs = set()
+    for layout_name in layouts_name_iter():
+        tab = layout_tab(layout_name)
+        if tab is not None:
+            tabs.add(tab)
+    return sorted(tabs)
 
 
 def cb_command_tab_del(data, buffer, args):
-    global tab_cur
-    if args:
-        target = maybe_tab(args)
-    else:
-        target = tab_cur
-    if target is None:
+    tab_cur = layout_tab(layout_current_name())
+    if tab_cur is None:
         return w.WEECHAT_RC_ERROR
-    cmd(f'layout del tab{target}')
-    cmd('tab_prev -norewind')
+    tabs = tabs_all()
+    if len(tabs) > 1:
+        if tab_cur == tabs[-1]:
+            cmd('tab_go prev')
+        else:
+            cmd('tab_go next')
+    cmd(f'layout del tab{tab_cur}')
+    bar_item_update_tabs()
     return w.WEECHAT_RC_OK
 
 
 def cb_command_tab_go(data, buffer, args):
-    global tab_cur
-    tab_dst = maybe_tab(args)
+    tab_cur = layout_tab(layout_current_name())
+    tabs = tabs_all()
+    if args == 'first':
+        tab_dst = tabs[0] if len(tabs) > 0 else None
+    elif args == 'last':
+        tab_dst = tabs[-1] if len(tabs) > 0 else None
+    elif args == 'prev':
+        if tab_cur is None:
+            tab_dst = tabs[0] if len(tabs) > 0 else None
+        else:
+            idx = tabs.index(tab_cur)
+            tab_dst = tabs[(idx - 1) % len(tabs)]
+    elif args == 'next':
+        if tab_cur is None:
+            tab_dst = tabs[-1] if len(tabs) > 0 else None
+        else:
+            idx = tabs.index(tab_cur)
+            tab_dst = tabs[(idx + 1) % len(tabs)]
+    elif args == 'last_visited':
+        last_visited = w.buffer_get_string(core, 'localvar_tab_last_visited')
+        cmd(f'tab_go {last_visited}')
+        return w.WEECHAT_RC_OK
+    else:
+        tab_dst = str2tab(args)
     if tab_dst is None:
         return w.WEECHAT_RC_ERROR
     cmd('layout apply _zoom windows')
     cmd('layout del _zoom')
-    if tab_cur is not None and layout_find(f'tab{tab_cur}'):
+    if tab_cur is not None:
         cmd(f'layout store tab{tab_cur} windows')
-    tab_cur = tab_dst
-    if layout_find(f'tab{tab_cur}'):
-        cmd(f'layout apply tab{tab_cur} windows')
+        w.buffer_set(core, 'localvar_set_tab_last_visited', str(tab_cur))
+    if layout_find(f'tab{tab_dst}'):
+        cmd(f'layout apply tab{tab_dst} windows')
     else:
+        cmd(f'layout store tab{tab_dst} windows')
         cmd('layout_reset')
     bar_item_update_tabs()
     return w.WEECHAT_RC_OK
 
 
-def cb_command_tab_next(data, buffer, args):
-    global tab_cur
-    norewind = args == '-norewind'
-    tabs = tabs_all()
-    if not len(tabs):
-        tab_cur = None
-        bar_item_update_tabs()
-        return w.WEECHAT_RC_OK
-    if tab_cur is None or len(tabs) == 1:
-        tab_dst = tabs[0]
-    else:
-        tab_dst = next(
-            (tab for tab in tabs if tab > tab_cur), tabs[-1 if norewind else 0]
-        )
-    cmd(f'tab_go {tab_dst}')
-    return w.WEECHAT_RC_OK
-
-
-def cb_command_tab_prev(data, buffer, args):
-    global tab_cur
-    norewind = args == '-norewind'
-    tabs = tabs_all()
-    if not len(tabs):
-        tab_cur = None
-        bar_item_update_tabs()
-        return w.WEECHAT_RC_OK
-    if tab_cur is None or len(tabs) == 1:
-        tab_dst = tabs[0]
-    else:
-        tab_dst = next(
-            (tab for tab in reversed(tabs)
-             if tab < tab_cur), tabs[0 if norewind else -1]
-        )
-    cmd(f'tab_go {tab_dst}')
-    return w.WEECHAT_RC_OK
-
-
 w.hook_command('tab_del', '', '', '', '', 'cb_command_tab_del', '')
 w.hook_command('tab_go', '', '', '', '', 'cb_command_tab_go', '')
-w.hook_command('tab_next', '', '', '', '', 'cb_command_tab_next', '')
-w.hook_command('tab_prev', '', '', '', '', 'cb_command_tab_prev', '')
 
 
 def cb_bar_item_tab(data, item, window):
-    tab = maybe_tab(data)
+    tab = str2tab(data)
+    tab_cur = layout_tab(layout_current_name())
     if tab not in tabs_all():
         return ''
     return w.string_eval_expression(
@@ -416,7 +406,7 @@ def cb_hsignal_tab_click(data, signal, hashtable):
     col = int(hashtable['_bar_item_col'])
     if col > 2:
         return w.WEECHAT_RC_OK
-    tab = maybe_tab(data)
+    tab = str2tab(data)
     if tab not in tabs_all():
         return w.WEECHAT_RC_OK
     cmd(f'tab_go {tab}')
@@ -436,12 +426,17 @@ for i in range(1, 10):
     cmd(f'alias add {i} tab_go {i}')
 
 bar_item_cmd_btn('btn_tab_del', 'TAB×', '/tab_del')
-bar_item_cmd_btn('btn_tab_next', 'TAB+', '/tab_next')
-bar_item_cmd_btn('btn_tab_prev', 'TAB-', '/tab_prev')
+bar_item_cmd_btn('btn_tab_prev', 'TAB-', '/tab_go prev')
+bar_item_cmd_btn('btn_tab_next', 'TAB+', '/tab_go next')
 
-key_bind('default', 'meta-0', '/tab_del')
-key_bind('default', 'meta-l', '/tab_next')
-key_bind('default', 'meta-h', '/tab_prev')
+key_bind('default', 'meta-a', '/tab_go last_visited')
+key_bind('default', 'meta-0', '/tab_go first')
+key_bind('default', 'meta-^', '/tab_go first')
+key_bind('default', 'meta-$', '/tab_go last')
+key_bind('default', 'meta-(', '/tab_go first')
+key_bind('default', 'meta-)', '/tab_go last')
+key_bind('default', 'meta-h', '/tab_go prev')
+key_bind('default', 'meta-l', '/tab_go next')
 
 # }}}
 
@@ -717,10 +712,16 @@ def adjust_for_width():
         cmd('bar show fn')
         cmd('bar hide buflist')
         cmd('set weechat.look.prefix_align none')
+        cmd('set weechat.look.align_end_of_lines prefix')
+        cmd('set weechat.look.prefix_align_max 6')
+        cmd('set weechat.look.prefix_align_min 4')
     else:
         cmd('bar hide fn')
         cmd('bar show buflist')
         cmd('set weechat.look.prefix_align right')
+        cmd('set weechat.look.align_end_of_lines message')
+        cmd('set weechat.look.prefix_align_max 10')
+        cmd('set weechat.look.prefix_align_min 8')
 
 
 def cb_signal_sigwinch(data, signal, buffer):

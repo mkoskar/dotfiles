@@ -98,9 +98,7 @@ WORDCHARS=
 #WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>' (default)
 ZLE_SPACE_SUFFIX_CHARS='&|'
 
-PS1='${BASEDIR:+(${${BASEDIR##*/}//\%/%%}):}%1~%(!.#.$) '
-[[ $HOSTNAME = mirci ]] || PS1=$HOSTNAME:$PS1
-PS1=\$__statstr:$PS1
+PS1='$__statstr:$HOSTNAME:${BASEDIR:+(${${BASEDIR##*/}//\%/%%}):}%1~%(!.#.$) '
 if [[ $PIPENV_ACTIVE && $VIRTUAL_ENV ]]; then
     __venv=${VIRTUAL_ENV%/*}
     __venv=${__venv##*/}
@@ -439,7 +437,11 @@ __plugin() {
     local name=$1 base
     for base in ~/opt /usr/share/zsh/plugins; do
         [[ -e $base/$name ]] || continue
-        . $base/$name/$name.zsh
+        if [[ -e $base/$name/$name.plugin.zsh ]]; then
+            . $base/$name/$name.plugin.zsh
+        else
+            . $base/$name/$name.zsh
+        fi
         return $?
     done
     return 1
@@ -469,6 +471,19 @@ if __plugin zsh-autosuggestions; then
     bindkey '\e^ ' autosuggest-toggle
 fi
 
+__plugin zsh-completionss
+
+if __plugin zsh-history-substring-search; then
+    HISTORY_SUBSTRING_SEARCH_FUZZY=1
+    HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS=
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=bg=red,fg=231
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=
+    bindkey ^P history-substring-search-up
+    bindkey ^N history-substring-search-down
+    bindkey -M vicmd ^P history-substring-search-up
+    bindkey -M vicmd ^N history-substring-search-down
+fi
+
 if __plugin zsh-syntax-highlighting; then
     #ZSH_HIGHLIGHT_PATTERN+=(pattern style)
     #ZSH_HIGHLIGHT_REGEXP+=(pattern style)
@@ -488,17 +503,6 @@ if __plugin zsh-syntax-highlighting; then
     ZSH_HIGHLIGHT_STYLES[path]=fg=15
     ZSH_HIGHLIGHT_STYLES[precommand]=fg=yellow,bold,underline
     ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=yellow,bold,underline
-fi
-
-if __plugin zsh-history-substring-search; then
-    HISTORY_SUBSTRING_SEARCH_FUZZY=1
-    HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS=
-    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=bg=red,fg=231
-    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=
-    bindkey ^P history-substring-search-up
-    bindkey ^N history-substring-search-down
-    bindkey -M vicmd ^P history-substring-search-up
-    bindkey -M vicmd ^N history-substring-search-down
 fi
 
 

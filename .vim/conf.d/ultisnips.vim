@@ -1,5 +1,7 @@
 " vim: fdm=marker
 
+if !has('python3') | finish | endif
+
 packadd! ultisnips
 packadd! vim-snippets
 

@@ -3,15 +3,14 @@
 
 ::
 
-    $ apt update
-    $ apt full-upgrade
-    $ apt install openssh
+    $ pkg upgrade
 
+    $ pkg install openssh
     $ passwd
     $ sshd
-    $ truncate -s 0 $PREFIX/etc/motd
 
-    $ apt install \
+    $ pkg install \
+        aspell-en \
         autossh \
         bash-completion \
         bsdtar \
@@ -22,7 +21,9 @@
         linux-man-pages \
         make \
         man \
+        mpv \
         ncurses-utils \
+        neovim \
         netcat \
         openssl-tool \
         parallel \
@@ -40,4 +41,4 @@
         zsh
 
     $ rm -rf .* *
-    $ git clone --recurse-submodules <dotfiles> .
+    $ git clone --recursive <dotfiles> .

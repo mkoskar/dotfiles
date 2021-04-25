@@ -70,6 +70,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     bluetooth-profiles      b https://en.wikipedia.org/wiki/List_of_Bluetooth_profiles
     browserbench            b https://browserbench.org/
     busybox                 b https://busybox.net/downloads/BusyBox.html
+    busybox-git             b https://git.busybox.net/busybox/tree
     c                       b http://www.open-std.org/jtc1/sc22/wg14/www/projects
     c-faq                   b http://c-faq.com/
     chebi                   b https://www.ebi.ac.uk/chebi/advancedSearchFT.do\?searchString={u}
@@ -295,6 +296,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     notes-for-professionals b https://goalkicker.com/
     ntrs                    b https://ntrs.nasa.gov/search.jsp\?Ntk=All\&Ntt={u}
     octave                  b https://www.gnu.org/software/octave/doc/latest
+    openrc                  b https://github.com/OpenRC/openrc
     opentype                b https://docs.microsoft.com/en-us/typography/opentype/spec/
     oracle-plsql            b https://docs.oracle.com/database/121/LNPLS/toc.htm
     oracle-sql              b https://docs.oracle.com/database/121/SQLRF/toc.htm

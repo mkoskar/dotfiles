@@ -6,14 +6,12 @@ vim_batch() { vim -NXn -i NONE -u NONE -V1 -es "$@"; }
 export -f vim_batch
 
 from_git() {
-    set -eu
-    local name=$1
-    shift
-    printf '\n> %s\n' "$name"
-    if cd "$name" &>/dev/null; then
+    set -u
+    printf '\n> %s\n' "$1"
+    if cd "$1" &>/dev/null; then
         git update
     else
-        git clone --recursive --single-branch "$@" "$name"
+        git clone-shallow "$@" "$1"
     fi
 }
 export -f from_git
@@ -41,7 +39,7 @@ from_vba() {
     esac
     mime=$(file -b --mime "$oname")
     if [[ $mime != text/* ]]; then
-        aunpack -qf -X "$name.vba" "$oname"
+        gunzip -ck "$oname" >"$name.vba"
     fi
     rm -rf .vbaout "$name"
     vim_batch \
