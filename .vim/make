@@ -11,7 +11,7 @@ from_git() {
     if cd "$1" &>/dev/null; then
         git update
     else
-        git clone-shallow "$@" "$1"
+        git clone-shallow "${@:2}" "$1"
     fi
 }
 export -f from_git

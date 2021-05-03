@@ -428,7 +428,7 @@ set tabstop=4
 
 set foldopen-=block
 
-nnoremap <Leader>ff :setl fdm=manual \| normal! zM<CR>
+nnoremap <Leader>ff :setl fdm=manual \| normal! zE<CR>
 nnoremap <Leader>fi :setl fdm=indent fdn=2 \| normal! zM<CR>
 nnoremap <Leader>fm :setl fdm=marker \| normal! zM<CR>
 nnoremap <Leader>fs :setl fdm=syntax \| normal! zM<CR>

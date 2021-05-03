@@ -28,8 +28,8 @@ w.register(
 )
 
 hd_bar = w.hdata_get('bar')
-hd_bar_win = w.hdata_get('bar_window')
 hd_bar_item = w.hdata_get('bar_item')
+hd_bar_win = w.hdata_get('bar_window')
 hd_buf = w.hdata_get('buffer')
 hd_layout = w.hdata_get('layout')
 hd_line = w.hdata_get('line')
@@ -159,33 +159,28 @@ def cb_timer_sort_merge(data, remaining_calls):
 def buffer_init(buffer):
     bname = w.buffer_get_string(buffer, 'full_name')
     bname_ = bname.split('.')
-
-    match = re.match(r'^irc\.freenode[^.]*\.#archlinux($|-.*)$', bname)
-    if match:
-        name = '#arch' + match.group(1)
-        if name == '#arch-offtopic':
-            name = '#arch-ot'
-        w.buffer_set(buffer, 'short_name', name)
-
-    if re.match(r'^irc\.bitlbee[^.]*\.#twitter_mkoskar$', bname):
-        w.buffer_set(buffer, 'short_name', '#twitter')
-        w.buffer_set(buffer, 'highlight_words', '@mkoskar')
-    elif re.match(r'^irc\.gitter[^.]*\.#neovim/neovim$', bname):
-        w.buffer_set(buffer, 'short_name', '#neovim')
-
-    w.buffer_set(buffer, 'time_for_each_line', '0')
-    if bname == 'perl.highmon':
-        w.buffer_set(buffer, 'time_for_each_line', '1')
-
     btype = w.buffer_get_string(buffer, 'localvar_type')
     if btype == 'server':
         w.buffer_set(buffer, 'short_name', '@' + bname_[2])
     elif btype == 'private':
         w.buffer_set(buffer, 'short_name', '+' + bname_[2])
     elif btype == 'channel':
-        nicklist = int(re.match(r'^irc\.bitlbee[^.]*\.&', bname) is not None)
-        w.buffer_set(buffer, 'nicklist', str(nicklist))
-
+        w.buffer_set(buffer, 'nicklist', '0')
+        if m := re.match(r'^irc\.freenode[^.]*\.#archlinux($|-.*)$', bname):
+            name = '#arch' + m.group(1)
+            if name == '#arch-offtopic':
+                name = '#arch-ot'
+            w.buffer_set(buffer, 'short_name', name)
+        elif re.match(r'^irc\.bitlbee[^.]*\.#twitter_mkoskar$', bname):
+            w.buffer_set(buffer, 'short_name', '#twitter')
+            w.buffer_set(buffer, 'highlight_words', '@mkoskar')
+        elif re.match(r'^irc\.bitlbee[^.]*\.&', bname):
+            w.buffer_set(buffer, 'nicklist', '1')
+        elif re.match(r'^irc\.gitter[^.]*\.#neovim/neovim$', bname):
+            w.buffer_set(buffer, 'short_name', '#neovim')
+    w.buffer_set(buffer, 'time_for_each_line', '0')
+    if bname == 'perl.highmon':
+        w.buffer_set(buffer, 'time_for_each_line', '1')
     merge(buffer)
     global timer_sort_merge
     if not timer_sort_merge:
@@ -202,8 +197,7 @@ w.hook_signal('irc_channel_opened', 'cb_signal_buffer_opened', '')
 w.hook_signal('irc_pv_opened', 'cb_signal_buffer_opened', '')
 w.hook_signal('irc_server_opened', 'cb_signal_buffer_opened', '')
 
-buffers = list(buffers_iter())
-for buffer in buffers:
+for buffer in buffers_iter():
     buffer_init(buffer)
 
 # }}}
@@ -237,6 +231,20 @@ def layout_current_name():
     return w.hdata_string(hd_layout, cur, 'name') if cur else None
 
 
+def layout_move(src, dst):
+    cmd(f'layout rename {src} {dst}')
+    cmd(f'layout rename {src}_saved {dst}_saved')
+    preset = w.buffer_get_string(core, f'localvar_{src}_preset')
+    w.buffer_set(core, f'localvar_set_{dst}_preset', preset)
+    w.buffer_set(core, f'localvar_del_{src}_preset', '')
+
+
+def layout_del(src):
+    cmd(f'layout del {src}')
+    cmd(f'layout del {src}_saved')
+    w.buffer_set(core, f'localvar_del_{src}_preset', '')
+
+
 def cb_command_layout_reset(data, buffer, args):
     cmd('layout del _zoom')
     cur = layout_current_name()
@@ -251,18 +259,15 @@ def cb_command_layout_reset(data, buffer, args):
                 cmd(f'layout apply {cur}_saved windows')
                 cmd(f'layout store {cur} windows')
         return w.WEECHAT_RC_OK
-
     if args == '-':
         if cur is not None:
             cmd(f'layout del {cur}_saved')
             w.buffer_set(core, f'localvar_del_{cur}_preset', '')
         return w.WEECHAT_RC_OK
-
     cmd('window merge all')
     cmd('window splith 20')
     cmd('buffer perl.highmon')
     cmd('window down')
-
     if args == 'core':
         cmd('buffer core.weechat')
     elif args == 'bitlbee':
@@ -271,7 +276,6 @@ def cb_command_layout_reset(data, buffer, args):
         cmd('buffer #twitter')
     elif args:
         cmd(f'buffer {args}')
-
     if cur is not None:
         cmd(f'layout store {cur} windows')
         w.buffer_set(core, f'localvar_set_{cur}_preset', args)
@@ -317,9 +321,8 @@ def str2tab(str):
 
 def layout_tab(layout_name):
     if layout_name:
-        match = re.match(r'^tab(\d)$', layout_name)
-        if match:
-            return str2tab(match.group(1))
+        if m := re.match(r'^tab(\d)$', layout_name):
+            return str2tab(m.group(1))
     return None
 
 
@@ -342,7 +345,7 @@ def cb_command_tab_del(data, buffer, args):
             cmd('tab_go prev')
         else:
             cmd('tab_go next')
-    cmd(f'layout del tab{tab_cur}')
+    layout_del(f'tab{tab_cur}')
     bar_item_update_tabs()
     return w.WEECHAT_RC_OK
 
@@ -350,11 +353,7 @@ def cb_command_tab_del(data, buffer, args):
 def cb_command_tab_go(data, buffer, args):
     tab_cur = layout_tab(layout_current_name())
     tabs = tabs_all()
-    if args == 'first':
-        tab_dst = tabs[0] if len(tabs) > 0 else None
-    elif args == 'last':
-        tab_dst = tabs[-1] if len(tabs) > 0 else None
-    elif args == 'prev':
+    if args == 'prev':
         if tab_cur is None:
             tab_dst = tabs[0] if len(tabs) > 0 else None
         else:
@@ -388,8 +387,29 @@ def cb_command_tab_go(data, buffer, args):
     return w.WEECHAT_RC_OK
 
 
+def cb_command_tab_move(data, buffer, args):
+    tab_dst = str2tab(args)
+    if tab_dst is None:
+        return w.WEECHAT_RC_ERROR
+    tab_cur = layout_tab(layout_current_name())
+    cmd('layout apply _zoom windows')
+    cmd('layout del _zoom')
+    if tab_cur is None:
+        layout_del(tab_dst)
+        cmd(f'layout store tab{tab_dst} windows')
+    else:
+        layout_move(tab_dst, 'tmp')
+        cmd(f'layout store tab{tab_cur} windows')
+        layout_move(f'tab{tab_cur}', f'tab{tab_dst}')
+        layout_move('tmp', tab_cur)
+        cmd(f'layout apply tab{tab_dst} windows')
+    bar_item_update_tabs()
+    return w.WEECHAT_RC_OK
+
+
 w.hook_command('tab_del', '', '', '', '', 'cb_command_tab_del', '')
 w.hook_command('tab_go', '', '', '', '', 'cb_command_tab_go', '')
+w.hook_command('tab_move', '', '', '', '', 'cb_command_tab_move', '')
 
 
 def cb_bar_item_tab(data, item, window):
@@ -425,18 +445,24 @@ for i in range(1, 10):
     key_bind('default', f'meta-{i}', f'/tab_go {i}')
     cmd(f'alias add {i} tab_go {i}')
 
+key_bind('default', 'meta-!', '/tab_move 1')
+key_bind('default', 'meta-@', '/tab_move 2')
+key_bind('default', 'meta-#', '/tab_move 3')
+key_bind('default', 'meta-$', '/tab_move 4')
+key_bind('default', 'meta-%', '/tab_move 5')
+key_bind('default', 'meta-^', '/tab_move 6')
+key_bind('default', 'meta-&', '/tab_move 7')
+key_bind('default', 'meta-*', '/tab_move 8')
+key_bind('default', 'meta-(', '/tab_move 9')
+
 bar_item_cmd_btn('btn_tab_del', 'TAB×', '/tab_del')
 bar_item_cmd_btn('btn_tab_prev', 'TAB-', '/tab_go prev')
 bar_item_cmd_btn('btn_tab_next', 'TAB+', '/tab_go next')
 
-key_bind('default', 'meta-a', '/tab_go last_visited')
-key_bind('default', 'meta-0', '/tab_go first')
-key_bind('default', 'meta-^', '/tab_go first')
-key_bind('default', 'meta-$', '/tab_go last')
-key_bind('default', 'meta-(', '/tab_go first')
-key_bind('default', 'meta-)', '/tab_go last')
+key_bind('default', 'meta-0', '/tab_del')
 key_bind('default', 'meta-h', '/tab_go prev')
 key_bind('default', 'meta-l', '/tab_go next')
+key_bind('default', 'meta-a', '/tab_go last_visited')
 
 # }}}
 
@@ -744,7 +770,6 @@ w.hook_signal('buffer_switch', 'cb_signal_post_switch', '')
 w.hook_signal('window_switch', 'cb_signal_post_switch', '')
 
 # }}}
-
 
 # TODO
 # ----------------------------------------
