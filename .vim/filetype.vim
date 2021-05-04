@@ -9,6 +9,8 @@ set cpo&vim
 augroup filetypedetect
     autocmd BufNewFile,BufRead *.gradle setf groovy
 
+    autocmd BufNewFile,BufRead *.sls setf yaml
+
     autocmd BufNewFile,BufRead *.yaml,*.yml
         \  if !empty(findfile('ansible.cfg', '.;'))
         \|    setf yaml.ansible

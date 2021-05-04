@@ -26,18 +26,18 @@ capture_toggle() {
 
 pa_sink_toggle() {
     local all current tmp
-    pacmd stat &>/dev/null || return 0
-    tmp=$(pacmd list-sinks | sed -En 's/^\tname: <(.*)>$/\1/p')
+    pactl stat &>/dev/null || return 0
+    tmp=$(painfo sinks)
     [[ $tmp ]] || return 1
     readarray -t all <<<"$tmp"
-    current=$(pacmd dump | sed -En 's/^set-default-sink (.*)$/\1/p')
+    current=$(painfo default-sink)
     local i len=${#all[@]}
     for (( i=0; i<len; i++ )); do
         [[ ${all[i]} = "$current" ]] && break
     done
     i=$((i+1))
     (( i >= len )) && i=0
-    pacmd set-default-sink "${all[i]}"
+    pactl set-default-sink "${all[i]}"
 }
 
 if (( ! $# )); then

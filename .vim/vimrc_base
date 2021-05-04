@@ -605,7 +605,8 @@ nnoremap <Leader>H :tab lhelpgrep<Space>
 nnoremap <silent> <Leader>d; :,diffget<CR>
 nnoremap <silent> <Leader>d: :,diffput<CR>
 nnoremap <silent> <Leader>du :diffupdate<CR>
-nnoremap <silent> <Leader>dc :only \| diffoff!<CR>
+nnoremap <silent> <Leader>dc :diffoff!<CR>
+nnoremap <silent> <Leader>dd :exec &diff ? 'diffoff' : 'diffthis'<CR>
 
 " Edit / Reload 'vimrc'
 nnoremap <silent> <Leader>rc :vs <C-R>=fnameescape(vimrc)<CR><CR>
@@ -636,17 +637,6 @@ xnoremap <silent> <Leader>fo :Format<CR>
 
 xnoremap <silent> <Leader>px :Format xml<CR>
 nnoremap <silent> <Leader>px :%Format xml<CR>
-
-" }}}
-
-" Toggles diff mode of current buffer {{{
-
-function! s:DiffToggle() abort
-    exec &diff ? 'diffoff' : 'diffthis'
-endfunction
-
-command! -bar DiffToggle call s:DiffToggle()
-nnoremap <silent> <Leader>dd :DiffToggle<CR>
 
 " }}}
 

@@ -79,7 +79,7 @@ process() {
     fi
     git cat-file --batch='%(rest)' <"$1" |
         gawk -v RS="$delim" -v maildir="$maildir" -v hostname="$HOSTNAME" '
-            BEGIN { FS = "\n"; ORS = ""; }
+            BEGIN { FS = "\n"; ORS = "" }
             NR == 1 { next }
             {
                 match($0, /^(\S+) (\S+)\n/, m)

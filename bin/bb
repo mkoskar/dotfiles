@@ -26,7 +26,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ansible                 b https://docs.ansible.com/ansible/latest/index.html
     ansible-config          b https://docs.ansible.com/ansible/latest/reference_appendices/config.html
     ansible-filters         b https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html
-    ansible-modules         b https://docs.ansible.com/ansible/latest/modules/modules_by_category.html
+    ansible-modules         b https://docs.ansible.com/ansible/latest/collections/all_plugins.html
     ansible-playbook        b https://docs.ansible.com/ansible/latest/reference_appendices/playbooks_keywords.html
     ansible-special-vars    b https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html
     ant                     b https://ant.apache.org/manual/
@@ -294,6 +294,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     nodejs                  b https://nodejs.org/api/
     notes!                  b ~/projects/notes/_build/html/index.html
     notes-for-professionals b https://goalkicker.com/
+    notmuch                 b https://git.notmuchmail.org/git/notmuch
     ntrs                    b https://ntrs.nasa.gov/search.jsp\?Ntk=All\&Ntt={u}
     octave                  b https://www.gnu.org/software/octave/doc/latest
     openrc                  b https://github.com/OpenRC/openrc

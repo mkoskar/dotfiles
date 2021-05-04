@@ -19,11 +19,9 @@ echo $'--------------------------------------------------'
 echo $'> Node packages:\n'
 
 pkgs=(
-    grunt-cli
     js-beautify
     jshint
     learnyounode
-    semver
     stream-adventure
 )
 npm -g install "${pkgs[@]}"
@@ -53,7 +51,7 @@ pkgs=(
 gem install "${pkgs[@]}"
 
 echo $'\n> gem list --local'
-gem list
+gem list --local
 
 echo $'\n--------------------------------------------------'
 echo $'> Rust packages:\n'

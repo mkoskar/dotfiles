@@ -24,13 +24,9 @@ fi
     echo $'> ftdump\n'
 
     ftdump -C -n "$file" |
-        awk -v file="$file" '
-            BEGIN {
-                cmaps = 0
-            }
-            /^charmaps/ {
-                cmaps = 1
-            }
+        awk '
+            BEGIN { cmaps = 0 }
+            /^charmaps/ { cmaps = 1 }
             cmaps && /\s+0x[0-9abcdef]+ =>/ {
                 printf "%-60s : %c\n", $0, strtonum($1)
                 next

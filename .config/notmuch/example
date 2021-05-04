@@ -1,7 +1,7 @@
 # vim: ft=dosini
 
 [database]
-path=<path relative to $HOME>
+path=<absolute path>
 
 [new]
 tags=new

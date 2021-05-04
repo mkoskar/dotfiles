@@ -40,6 +40,18 @@ case $SHMODE in bash | zsh | ksh) set -o pipefail ;; esac
 [ "$OSID" = termux ] && HOSTNAME=${TERMUX_HOST:-$HOSTNAME}
 
 
+# ansible
+# ----------------------------------------
+
+alias ansible-config-changed='ansible-config dump --only-changed'
+alias ansible-config-help='ansible-config list'
+alias ansible-facts='ansible -m setup'
+alias ansible-hostvars='ansible -m debug -a var=hostvars'
+alias ansible-inventory-graph='ansible-inventory --graph'
+alias ansible-modules='ansible-doc -l'
+alias ansible-playbook-tasks='ansible-playbook --list-tasks'
+
+
 # docker
 # ----------------------------------------
 
@@ -69,6 +81,17 @@ dkrm() {
 dkstop() {
     docker ps -aq | xargs -rx docker stop
 }
+
+
+# gpg
+# ----------------------------------------
+
+alias gpg-agent-reload='gpg-connect-agent reloadagent /bye'
+alias gpg-agent-sessionenv="gpg-connect-agent 'getinfo std_session_env' /bye"
+alias gpg-agent-updatetty='gpg-connect-agent updatestartuptty /bye'
+alias gpg-connect-dirmngr='gpg-connect-agent --dirmngr'
+alias gpg-debug='gpg -vv --debug-level=9'
+alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
 
 
 # grep
@@ -212,6 +235,19 @@ alias py=python
 alias ipy=ipython
 
 
+# youtube-dl
+# ----------------------------------------
+
+alias ytdl-audio-playlist="ytdl-audio --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
+alias ytdl-audio='youtube-dl -f bestaudio/best -x'
+alias ytdl-best='youtube-dl -f bestvideo+bestaudio/best'
+alias ytdl-formats='youtube-dl -F'
+alias ytdl-json='youtube-dl -J'
+alias ytdl-playlist="youtube-dl --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
+alias ytdl-stdout='youtube-dl -o -'
+alias ytdl=youtube-dl
+
+
 # Other
 # ----------------------------------------
 
@@ -223,13 +259,6 @@ alias aa=auracle
 alias acpi='acpi -V'
 alias alarm-hourly='alarm at \*:0'
 alias an=asciinema
-alias ansible-config-changed='ansible-config dump --only-changed'
-alias ansible-config-help='ansible-config list'
-alias ansible-facts='ansible -m setup'
-alias ansible-hostvars='ansible -m debug -a var=hostvars'
-alias ansible-inventory-graph='ansible-inventory --graph'
-alias ansible-modules='ansible-doc -l'
-alias ansible-playbook-tasks='ansible-playbook --list-tasks'
 alias aunpack='aunpack -q'
 alias avahi-browse='avahi-browse -at'
 alias c=calc
@@ -239,7 +268,7 @@ alias caps='filecap -d'
 alias cp='cp -ai --reflink=auto'
 alias curl-as='curl -A "$UAGENT"'
 alias curl-head='curl -I'
-alias curl='curl -sSL'
+alias curl='curl -sSLJ'
 alias date0='date -Ins'
 alias dconfa='dconf dump /'
 alias dd='dd status=progress'
@@ -267,12 +296,6 @@ alias fzy='fzy -l $LINES'
 alias gconfa='gconftool-2 -R /'
 alias getfattr='getfattr --absolute-names -d -m -'
 alias glxgears-novsync='vblank_mode=0 glxgears'
-alias gpg-agent-reload='gpg-connect-agent reloadagent /bye'
-alias gpg-agent-sessionenv="gpg-connect-agent 'getinfo std_session_env' /bye"
-alias gpg-agent-updatetty='gpg-connect-agent updatestartuptty /bye'
-alias gpg-connect-dirmngr='gpg-connect-agent --dirmngr'
-alias gpg-debug='gpg -vv --debug-level=9'
-alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
 alias grepcat='grep --exclude-dir=\* .'
 alias gsettingsa='gsettings list-recursively'
 alias gtk-debug='GTK_DEBUG=interactive'
@@ -364,14 +387,6 @@ alias xargs1='xargs -r -L 1'
 alias xinput-test='xinput test-xi2 --root'
 alias xwininfo='xwininfo -all'
 alias yaml='yq .'
-alias ytdl-audio-playlist="ytdl-audio --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
-alias ytdl-audio='youtube-dl -f bestaudio/best -x'
-alias ytdl-best='youtube-dl -f bestvideo+bestaudio/best'
-alias ytdl-formats='youtube-dl -F'
-alias ytdl-json='youtube-dl -J'
-alias ytdl-playlist="youtube-dl --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
-alias ytdl-stdout='youtube-dl -o -'
-alias ytdl=youtube-dl
 alias zsh-bare='zsh -df'
 
 alias _gdbus-session='gdbus introspect -r --session -o /'
@@ -476,6 +491,7 @@ anrec() {
 base() { export BASEDIR=${1:-$PWD}; }
 unbase() { unset BASEDIR; }
 
+# shellcheck disable=SC2164
 cd() {
     if [ $# -eq 0 ]; then
         command cd -- "${BASEDIR:-${SHOME:-$HOME}}"
@@ -494,19 +510,29 @@ date() {
     command date "$@"
 }
 
+fc() {
+    case $SHMODE in zsh) setopt local_options posix_builtins ;; esac
+    if [ $# -eq 0 ]; then
+        fc 1 -1
+    else
+        command fc "$@"
+    fi
+}
+
 fn() {
     if [ $# -eq 0 ]; then
         typeset -f | $PAGER
     else
         typeset -f -- "$@" || return 1
-        case $SHNAME in bash)
-            (shopt -s extdebug; typeset -F -- "$@")
-        esac
+        case $SHNAME in bash) (shopt -s extdebug; typeset -F -- "$@") ;; esac
     fi
 }
 
 h() {
-    fc -- "${1:-1}" -1
+    case $SHNAME in
+        zsh) fc -liD ;;
+        *) fc -l ;;
+    esac
 }
 
 i() {
@@ -561,7 +587,7 @@ reexec() {
     eval exec "$cmdline"
 }
 
-# shellcheck disable=SC1090
+# shellcheck disable=SC1090,SC1091
 reload() {
     . "$SYSETC"/profile
     . ~/.profile

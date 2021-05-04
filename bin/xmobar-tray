@@ -11,7 +11,7 @@ mkdir -p "$cachedir"
 
 xprop -name panel -notype -spy 32c '\t$5\n' WM_NORMAL_HINTS |
     while read -r _ w; do
-        (( w+=10 ))
+        (( w > 2 )) && (( w+=10 ))
         i=$cachedir/$w.xpm
         [[ -e $i ]] ||
             printf '! XPM2\n%d 1 1 1\n  c None\n%*s\n' "$w" "$w" '' >"$i"

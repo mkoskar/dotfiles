@@ -1,14 +1,44 @@
 #!/usr/bin/env bash
 
-{
-    echo $'\n--------------------------------------------------'
-    echo $'> pactl info\n'
+if (( ! $# )); then
+    {
+        echo $'\n--------------------------------------------------'
+        echo $'> pactl info\n'
 
-    pactl info
+        pactl info
 
-    echo $'\n--------------------------------------------------'
-    echo $'> pactl list\n'
+        echo $'\n--------------------------------------------------'
+        echo $'> pactl list\n'
 
-    pactl list
-    echo
-} |& $PAGER
+        pactl list
+        echo
+    } |& $PAGER
+    exit
+fi
+
+set -eu -o pipefail
+
+prgname=${0##*/}
+
+case $1 in
+    default-sink)
+        pactl info | awk '/Default Sink:/{ print $3 }'
+        ;;
+    default-sink-description)
+        name=$(painfo default-sink)
+        pactl list sinks |
+            gawk -v name="$name" '
+                match($0, /Name: (.*)/, a) {
+                    if (a[1] == name) { found = 1; next }
+                }
+                found && match($0, /Description: (.*)/, a) { print a[1]; exit }
+            '
+        ;;
+    sinks)
+        pactl list short sinks | awk '{ print $2 }'
+        ;;
+    *)
+        echo "usage: $prgname [default-sink | default-sink-description | sinks]" >&2
+        exit 2
+        ;;
+esac

@@ -13,25 +13,25 @@ prgname=${0##*/}
 
 mute() { "$@" &>/dev/null || true; }
 
-if (( ! $# )); then
-    mute mv off/10-* .
-else
-    case $1 in
-        antiad)
-            mute mv 10-* off
-            mute mv off/10-hostsblock .
-            ;;
-        off)
-            mute mv 10-* off
-            ;;
-        fetch)
-            systemctl start hostsblock-fetch.service
-            exit
-            ;;
-        *)
-            echo "usage: $prgname [antiad | off | fetch]" >&2
-            exit 2
-            ;;
-    esac
-fi
+case ${1-on} in
+    on)
+        mute mv off/10-* .
+        ;;
+    off)
+        mute mv 10-* off
+        ;;
+    antiad)
+        mute mv 10-* off
+        mute mv off/10-hostsblock .
+        ;;
+    fetch)
+        systemctl start hostsblock-fetch.service
+        exit
+        ;;
+    *)
+        echo "usage: $prgname [on | off | antiad | fetch]" >&2
+        exit 2
+        ;;
+esac
+
 systemctl try-reload-or-restart dnsmasq

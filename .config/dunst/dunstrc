@@ -29,7 +29,6 @@
     # the top and down respectively.
     # The width can be negative.  In this case the actual width is the
     # screen width minus the width defined in within the geometry option.
-    geometry = "300x5-30+20"
     geometry = "800x0-416"
 
     # Turn on the progess bar
@@ -236,7 +235,7 @@
     #  mesg: Important Messages
     #  info: all unimportant stuff
     # debug: all less than unimportant stuff
-    verbosity = mesg
+    verbosity = crit
 
     # Define the corner radius of the notification window
     # in pixel size. If the radius is 0, you have no rounded
@@ -316,14 +315,15 @@
     # Close all notifications. Equivalent dunstctl command:
     # dunstctl close-all
     # close_all = ctrl+shift+space
+    close_all = ctrl+space
 
     # Redisplay last message(s). Equivalent dunstctl command:
     # dunstctl history-pop
-    # history = ctrl+grave
+    history = ctrl+grave
 
     # Context menu. Equivalent dunstctl command:
     # dunstctl context
-    # context = ctrl+shift+period
+    context = ctrl+shift+period
 
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.

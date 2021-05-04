@@ -99,6 +99,9 @@
 [grep]
     linenumber = true
 
+[init]
+    defaultbranch = master
+
 [instaweb]
     browser = xdg-open
     httpd = python

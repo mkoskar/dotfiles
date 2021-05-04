@@ -21,7 +21,8 @@ status_audio() {
     pval=$(
         unset DISPLAY; amixer get Master | gawk '
             match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {
-                print a[2] " " a[1]; exit
+                print a[2] " " a[1]
+                exit
             }
         '
     )
@@ -29,7 +30,8 @@ status_audio() {
     rval=$(
         unset DISPLAY; amixer get Capture | gawk '
             match($0, /\[([0-9]*%)\].*\[(on|off)\]/, a) {
-                print a[2] " " a[1]; exit
+                print a[2] " " a[1]
+                exit
             }
         '
     )
@@ -56,8 +58,8 @@ status_dpms() {
 
 status_pa_sink() {
     local val=-
-    if pacmd stat &>/dev/null; then
-        val=$(ponymix defaults | sed -En '/^sink /{n;s/^\s*//;p}')
+    if pactl stat &>/dev/null; then
+        val=$(painfo default-sink-description)
     fi
     printf 'PA sink: %s\n' "$val"
 }
