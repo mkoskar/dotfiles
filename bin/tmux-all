@@ -8,6 +8,8 @@ echo
 for socket in "${TMUX_TMPDIR:-/tmp}/tmux-$UID"/*; do
     [[ -S $socket ]] || continue
     echo "> $socket"
-    tmux -S "$socket" -- "$@" || true
+    tmux -S "$socket" \
+        display-message -p '[pid: #{pid} | version: #{version} | started: #{t:start_time}]' \
+        \; "$@" || true
     echo
 done

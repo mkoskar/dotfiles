@@ -3,8 +3,8 @@
 set -eu
 
 if (( EUID )); then
-    echo 'This script must be run with root privileges.' >&2
-    exit 1
+    sudo bay "$@"
+    exit
 fi
 
 prgname=${0##*/}
@@ -12,15 +12,11 @@ prgname=${0##*/}
 dock=$(grep -l ata_bay /sys/devices/platform/dock.?/type)
 dock=${dock%%/type}
 
-if [[ ! -e $dock || ! -e $dock/docked ]]; then
-    exit 1
-fi
-
-declare -i undock=0 standby=0
+declare -i standby=0 undock=0
 if (( $# )); then
     case $1 in
-        undock) undock=1 ;;
         standby) standby=1 ;;
+        undock) undock=1 ;;
         *)
             echo "usage: $prgname [standby | undock]" >&2
             exit 2
@@ -34,45 +30,46 @@ if (( ! docked )); then
 else
     echo docked >&2
     sysdev=/sys/devices/pci0000:00/0000:00:1f.2/ata2/host1/target1:0:0/1:0:0:0
-    devnames=("$sysdev"/block/*)
-    devname=${devnames[0]}
+    blkdevs=("$sysdev"/block/*)
+    blkdev=${blkdevs[0]}
 
-    if [[ -e $devname ]]; then
-        devname=${devname##*/}
-        dev=/dev/$devname
+    if [[ -e $blkdev ]]; then
+        devname=${blkdev##*/}
     else
         echo 'no block device' >&2
-        (( undock )) || exit 1
     fi
 
-    if (( standby )); then
+    standby() {
         echo standby... >&2
-        if ! smartctl -i -n standby -- "$dev" &>/dev/null; then
+        if ! smartctl -i -n standby /dev/"$devname" &>/dev/null; then
             echo 'already in standby' >&2
         else
-            hdparm -y -- "$dev" &>/dev/null
+            hdparm -y /dev/"$devname" &>/dev/null
         fi
+    }
+
+    if (( standby )); then
+        [[ $devname ]] || exit 1
+        standby
     fi
 
     if (( undock )); then
         echo sync... >&2
         sync
 
-        echo "umountall $devname..." >&2
-        umountall "$devname"
+        if [[ $devname ]]; then
+            echo "umountall $devname..." >&2
+            umountall "$devname"
+            standby
+        fi
 
-        echo standby... >&2
-        hdparm -y -- "$dev" &>/dev/null
-
-        if [[ -e $sysdev ]]; then
+        if [[ -e $sysdev/delete ]]; then
             echo detach... >&2
             echo 1 >>"$sysdev"/delete
         fi
 
         echo undock... >&2
-        if [[ ! -w $dock/undock ]]; then
-            exit 1
-        fi
+        [[ -e $dock/undock ]] || exit 1
         echo 1 >>"$dock"/undock
     fi
 fi

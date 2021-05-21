@@ -259,6 +259,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-src               b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/\?id="$kernel_version"
     linux-sysctl            b https://www.kernel.org/doc/Documentation/sysctl
     lkml                    b https://lkml.org/
+    lobste.rs               b https://lobste.rs/newest
     lore-git                b https://lore.kernel.org/git/
     lore-lists              b https://lore.kernel.org/lists.html
     lpsn                    b https://lpsn.dsmz.de/

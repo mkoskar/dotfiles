@@ -512,9 +512,9 @@ set grepformat=%f:%l:%m
 set grepprg=grep\ -nH\ --exclude-dir=.git\ --exclude=\*.swp\ --exclude=\*~\ $*
 
 " ag / rg
-"set grepformat=%f:%l:%c:%m
-"set grepprg=ag\ --vimgrep\ $*
-"set grepprg=rg\ --vimgrep\ $*
+set grepformat=%f:%l:%c:%m
+set grepprg=ag\ --vimgrep\ $*
+set grepprg=rg\ --vimgrep\ $*
 
 set shellpipe=\|&\ tee
 

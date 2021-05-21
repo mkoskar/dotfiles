@@ -82,18 +82,25 @@ def bar_item_cmd_btn(name, label, cmd, update_on=[]):
 # ----------------------------------------
 
 MERGE_RULES = [
-    r'^irc\.freenode[^.]*\.#(bash|zsh)$',
-    r'^irc\.freenode[^.]*\.#archlinux(-offtopic)?$',
+    r'^irc\.[^.]*\.#(bash|zsh)$',
+    r'^irc\.[^.]*\.#archlinux(-offtopic)?$',
+    r'^irc\.[^.]*\.#libera(-offtopic)?$',
 ]
 
 timer_sort_merge = None
 
 
-def buffers_iter():
-    item = w.hdata_get_list(hd_buf, 'gui_buffers')
+def buffers_iter(start=None, forward=True, wrap=True):
+    ref_start = 'gui_buffers' if forward else 'last_gui_buffer'
+    ref_next = 'next_buffer' if forward else 'prev_buffer'
+    item = start if start else w.hdata_get_list(hd_buf, ref_start)
     while item:
         yield item
-        item = w.hdata_pointer(hd_buf, item, 'next_buffer')
+        item = w.hdata_pointer(hd_buf, item, ref_next)
+        if start and wrap and not item:
+            item = w.hdata_get_list(hd_buf, ref_start)
+        if start == item:
+            break
 
 
 def merge(buffer):
@@ -160,24 +167,30 @@ def buffer_init(buffer):
     bname = w.buffer_get_string(buffer, 'full_name')
     bname_ = bname.split('.')
     btype = w.buffer_get_string(buffer, 'localvar_type')
+
     if btype == 'server':
         w.buffer_set(buffer, 'short_name', '@' + bname_[2])
     elif btype == 'private':
         w.buffer_set(buffer, 'short_name', '+' + bname_[2])
     elif btype == 'channel':
+        name = bname_[2]
         w.buffer_set(buffer, 'nicklist', '0')
-        if m := re.match(r'^irc\.freenode[^.]*\.#archlinux($|-.*)$', bname):
-            name = '#arch' + m.group(1)
-            if name == '#arch-offtopic':
-                name = '#arch-ot'
-            w.buffer_set(buffer, 'short_name', name)
-        elif re.match(r'^irc\.bitlbee[^.]*\.#twitter_mkoskar$', bname):
-            w.buffer_set(buffer, 'short_name', '#twitter')
+
+        if re.match(r'^irc\.bitlbee[^.]*\.#twitter_mkoskar$', bname):
+            name = '#twitter'
             w.buffer_set(buffer, 'highlight_words', '@mkoskar')
+
         elif re.match(r'^irc\.bitlbee[^.]*\.&', bname):
             w.buffer_set(buffer, 'nicklist', '1')
-        elif re.match(r'^irc\.gitter[^.]*\.#neovim/neovim$', bname):
-            w.buffer_set(buffer, 'short_name', '#neovim')
+
+        if m := re.match(r'^#archlinux(|-.*)$', name):
+            name = '#arch' + m.group(1)
+
+        if m := re.match(r'^(.*)-offtopic$', name):
+            name = m.group(1) + '-ot'
+
+        w.buffer_set(buffer, 'short_name', name)
+
     w.buffer_set(buffer, 'time_for_each_line', '0')
     if bname == 'perl.highmon':
         w.buffer_set(buffer, 'time_for_each_line', '1')
@@ -199,6 +212,29 @@ w.hook_signal('irc_server_opened', 'cb_signal_buffer_opened', '')
 
 for buffer in buffers_iter():
     buffer_init(buffer)
+
+
+def buffer_hot_next(buffer, forward=True):
+    iter = buffers_iter(buffer, forward)
+    next(iter)
+    for buf in iter:
+        if w.hdata_pointer(hd_buf, buf, 'hotlist'):
+            w.buffer_set(buf, 'display', '1')
+            break
+
+
+def cb_command_buffer_hot_next(data, buffer, args):
+    buffer_hot_next(buffer, True)
+    return w.WEECHAT_RC_OK
+
+
+def cb_command_buffer_hot_prev(data, buffer, args):
+    buffer_hot_next(buffer, False)
+    return w.WEECHAT_RC_OK
+
+
+w.hook_command('buffer_hot_next', '', '', '', '', 'cb_command_buffer_hot_next', '')
+w.hook_command('buffer_hot_prev', '', '', '', '', 'cb_command_buffer_hot_prev', '')
 
 # }}}
 
@@ -466,8 +502,15 @@ key_bind('default', 'meta-a', '/tab_go last_visited')
 
 # }}}
 
-# Windows {{{
+# Other {{{
 # ----------------------------------------
+
+
+def servers_iter():
+    item = w.hdata_get_list(hd_server, 'irc_servers')
+    while item:
+        yield item
+        item = w.hdata_pointer(hd_server, item, 'next_server')
 
 
 def windows_iter():
@@ -482,30 +525,6 @@ def windows_buffer_iter():
         yield window, w.hdata_pointer(hd_win, window, 'buffer')
 
 
-def cb_command_allwin_set_unread(data, buffer, args):
-    for window, buffer in windows_buffer_iter():
-        window_number = w.hdata_integer(hd_win, window, 'number')
-        cmd('input set_unread_current_buffer', buffer)
-        cmd(f'window scroll_bottom -window {window_number}')
-    return w.WEECHAT_RC_OK
-
-
-w.hook_command('allwin_set_unread', '', '', '', '',
-               'cb_command_allwin_set_unread', '')
-
-# }}}
-
-# Other {{{
-# ----------------------------------------
-
-
-def servers_iter():
-    item = w.hdata_get_list(hd_server, 'irc_servers')
-    while item:
-        yield item
-        item = w.hdata_pointer(hd_server, item, 'next_server')
-
-
 def server_opt(server_name, opt_name):
     opt = w.config_get(f'irc.server.{server_name}.{opt_name}')
     if w.config_option_is_null(opt):
@@ -517,6 +536,12 @@ def connect_relay(server_name):
     cmd(f'server add {server_name}~ localhost/9000 -temp -ssl -nossl_verify '
         f'-password={server_name}:${{sec.data.relay}}')
     cmd(f'connect {server_name}~')
+
+
+def cb_command_allbuf(data, buffer, args):
+    for buf in buffers_iter():
+        cmd(args, buffer=buf)
+    return w.WEECHAT_RC_OK
 
 
 def cb_command_connect_relay(data, buffer, args):
@@ -554,8 +579,36 @@ def cb_command_renick(data, buffer, args):
     return w.WEECHAT_RC_OK
 
 
+def set_read(buffer):
+    w.buffer_set(buffer, 'hotlist', '-1')
+    w.buffer_set(buffer, 'unread', '-')
+    if w.buffer_get_integer(buffer, 'num_displayed'):
+        for win, buf in windows_buffer_iter():
+            if buffer == buf:
+                wnum = w.window_get_integer(win, 'number')
+                cmd(f'window scroll_bottom -window {wnum}')
+
+
+def cb_command_set_read(data, buffer, args):
+    if not w.hdata_pointer(hd_buf, buffer, 'mixed_lines') \
+       or w.buffer_get_integer(buffer, 'zoomed'):
+        set_read(buffer)
+    else:
+        bnum = w.buffer_get_integer(buffer, 'number')
+        for buf in buffers_iter():
+            if bnum == w.buffer_get_integer(buf, 'number'):
+                set_read(buf)
+    return w.WEECHAT_RC_OK
+
+
+def cb_command_set_read_all(data, buffer, args):
+    for buf in buffers_iter():
+        set_read(buf)
+    return w.WEECHAT_RC_OK
+
+
 def cb_command_urls(data, buffer, args):
-    win = w.hdata_get_list(hd_win, 'gui_current_window')
+    win = w.current_window()
     scroll = w.hdata_pointer(hd_win, win, 'scroll')
     lines = w.hdata_pointer(hd_buf, buffer, 'lines')
     line = w.hdata_pointer(hd_lines, lines, 'last_line')
@@ -590,12 +643,20 @@ def cb_command_urls(data, buffer, args):
     return w.WEECHAT_RC_OK
 
 
-w.hook_command('connect_relay', '', '', '', '%(irc_servers)',
-               'cb_command_connect_relay', '')
+w.hook_command('allbuf', '', '', '', '', 'cb_command_allbuf', '')
+w.hook_command('connect_relay', '', '', '', '%(irc_servers)', 'cb_command_connect_relay', '')
 w.hook_command('grep_nick', '', '', '', '', 'cb_command_grep_nick', '')
 w.hook_command('renick', '', '', '', '', 'cb_command_renick', '')
+w.hook_command('set_read', '', '', '', '', 'cb_command_set_read', '')
+w.hook_command('set_read_all', '', '', '', '', 'cb_command_set_read_all', '')
 w.hook_command('urls_open', '', '', '', '', 'cb_command_urls', 'open')
 w.hook_command('urls_yank', '', '', '', '', 'cb_command_urls', 'yank')
+
+cmd('alias add GNICK grep_nick')
+cmd('alias add R set_read')
+cmd('alias add RA set_read_all')
+
+key_bind('default', 'meta-ctrl-M', '/set_read')
 
 
 def cb_completion_irc_servers(data, name, buffer, completion):
@@ -619,8 +680,15 @@ bar_item_cmd_btn(
 )
 
 bar_item_cmd_btn(
+    'btn_nicklist_count',
+    '${if:${type}==channel?${color:default}${buffer.nicklist_nicks_count}${color:reset}}',
+    '/TOGGLE_NICKLIST',
+    ['buffer_switch']
+)
+
+bar_item_cmd_btn(
     'btn_server',
-    '${if:${type}==channel?@ ${server}}',
+    '${if:${type}==private||${type}==channel?@ ${server}}',
     '/server jump',
     ['buffer_switch', 'window_switch']
 )
@@ -632,11 +700,11 @@ bar_item_cmd_btn(
     ['buffer_switch', 'window_switch', 'buffer_zoomed', 'buffer_unzoomed']
 )
 
-bar_item_cmd_btn('btn_scroll_unread', '[u]', '/window scroll_unread')
-bar_item_cmd_btn('btn_set_unread', '[U]', '/input set_unread_current_buffer')
+bar_item_cmd_btn('btn_scroll_unread', '[U]', '/window scroll_unread')
+bar_item_cmd_btn('btn_set_read', '[R]', '/R')
+bar_item_cmd_btn('btn_set_read_all', '/RA', '/RA')
 
 bar_item_cmd_btn('btn_clear', '/CL', '/CL')
-bar_item_cmd_btn('btn_clearhot', '/CLH', '/CLH')
 bar_item_cmd_btn('btn_close', '/C', '/C')
 bar_item_cmd_btn('btn_quit', '/BYE', '/BYE')
 
@@ -644,18 +712,18 @@ bar_item_cmd_btn('btn_bare', 'BARE', '/window bare')
 bar_item_cmd_btn('btn_connect_relay', 'CON~', '/connect_relay')
 bar_item_cmd_btn('btn_disconnect', 'CON×', '/disconnect -all')
 
-bar_item_cmd_btn('btn_win_close', '[×]', '/window close -window ${if:"${_window_number}"=="*"?${window.number}:${_window_number}}')
+bar_item_cmd_btn('btn_win_close', '[×]', '/window close -window ${if:${_window_number}==*?${window.number}:${_window_number}}')
 bar_item_cmd_btn(
     'btn_win_zoom',
     '${if:${zoom}?${color:white,red}[¬]${color:reset}:[¬]}',
-    '/window zoom -window ${if:"${_window_number}"=="*"?${window.number}:${_window_number}}',
+    '/window zoom -window ${if:${_window_number}==*?${window.number}:${_window_number}}',
     ['window_switch', 'window_zoomed', 'window_unzoomed']
 )
-bar_item_cmd_btn('btn_win_only', '[*]', '/window merge -window ${if:"${_window_number}"=="*"?${window.number}:${_window_number}} all')
-bar_item_cmd_btn('btn_win_split', '[s]', '/window splith -window ${if:"${_window_number}"=="*"?${window.number}:${_window_number}}')
-bar_item_cmd_btn('btn_win_vsplit', '[v]', '/window splitv -window ${if:"${_window_number}"=="*"?${window.number}:${_window_number}}')
-bar_item_cmd_btn('btn_win_grow', '[+]', '/window resize -window ${if:"${_window_number}"=="*"?${window.number}:${_window_number}} +5')
-bar_item_cmd_btn('btn_win_shrink', '[-]', '/window resize -window ${if:"${_window_number}"=="*"?${window.number}:${_window_number}} -5')
+bar_item_cmd_btn('btn_win_only', '[*]', '/window merge -window ${if:${_window_number}==*?${window.number}:${_window_number}} all')
+bar_item_cmd_btn('btn_win_split', '[s]', '/window splith -window ${if:${_window_number}==*?${window.number}:${_window_number}}')
+bar_item_cmd_btn('btn_win_vsplit', '[v]', '/window splitv -window ${if:${_window_number}==*?${window.number}:${_window_number}}')
+bar_item_cmd_btn('btn_win_grow', '[+]', '/window resize -window ${if:${_window_number}==*?${window.number}:${_window_number}} +5')
+bar_item_cmd_btn('btn_win_shrink', '[-]', '/window resize -window ${if:${_window_number}==*?${window.number}:${_window_number}} -5')
 
 bar_item_cmd_btn('btn_toggle_buflist', 'BUFL', '/TOGGLE_BUFLIST')
 bar_item_cmd_btn('btn_toggle_nicklist', 'NICKL', '/TOGGLE_NICKLIST')
@@ -685,7 +753,7 @@ w.bar_new(
         'btn_quit',
         'btn_close',
         'btn_clear',
-        'btn_clearhot',
+        'btn_set_read_all',
     ])
 )
 bar_item_cmd_btn('btn_fn', '>>', '/bar toggle fn')
