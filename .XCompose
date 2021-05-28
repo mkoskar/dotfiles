@@ -1,9 +1,7 @@
 # See also: Compose(5)
 
 include "%L"
-include "%H/.XCompose.rfc1345"
-
-<Multi_key> <H> <E>                     : "…" # U2026 : HORIZONTAL ELLIPSIS
+include "%H/.XCompose.digraphs"
 
 <Multi_key> <x> <1>                     : "¯п¯"
 <Multi_key> <x> <2>                     : "¯Ѫ¯"

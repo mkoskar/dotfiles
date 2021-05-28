@@ -27,7 +27,6 @@ pargs=()
 fetch() {
     set -eu -o pipefail
     local url=$1 oname stat scode surl
-    [[ $url ]] || return
     oname=$(printf %s "$url" | sha1sum)
     read -r oname _ <<<"$oname"
     stat=$(

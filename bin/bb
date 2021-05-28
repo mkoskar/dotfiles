@@ -418,7 +418,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     types-ports!            b /etc/services
     ud                      b https://www.urbandictionary.com/define.php\?term={u}
     uefi-specs              b https://uefi.org/specifications
-    unicode                 b https://en.wikipedia.org/wiki/Plane_\(Unicode\)
+    unicode                 b https://www.unicode.org/versions/latest/
     unicode-charts          b https://unicode.org/charts/
     unicode-emojis          b https://www.unicode.org/emoji/charts/full-emoji-list.html
     unicode-math            b https://www.unicode.org/Public/math/revision-15/MathClassEx-15.html
