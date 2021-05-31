@@ -211,7 +211,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     iojs                    b https://iojs.org/api/
     ipv4                    b https://tools.ietf.org/html/rfc791
     ipv6                    b https://tools.ietf.org/html/rfc8200
-    irc-channels            b https://irc.netsplit.de/channels/\?net=freenode
+    irc-channels            b https://netsplit.de/channels/
     irc-docs                b https://ircdocs.horse/
     irc-logs                b https://colabti.org/irclogger/irclogger_logs
     iso                     b https://standards.iso.org/ittf/PubliclyAvailableStandards/
@@ -349,7 +349,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     regex-python-test       b https://pythex.org/
     regex101                b https://regex101.com/
     resolutions             b https://en.wikipedia.org/wiki/List_of_common_resolutions
-    rfc                     b https://tools.ietf.org/rfc/index
+    rfc                     b https://www.rfc-editor.org/rfc-index.html
     risks                   b http://catless.ncl.ac.uk/Risks/
     rpi                     b https://www.raspberrypi.org/documentation/hardware/raspberrypi/README.md
     rst                     b https://docutils.sourceforge.io/rst.html

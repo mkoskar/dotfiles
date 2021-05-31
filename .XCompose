@@ -1,7 +1,7 @@
 # See also: Compose(5)
 
 include "%L"
-include "%H/.XCompose.digraphs"
+include "%H/.XCompose-vim"
 
 <Multi_key> <x> <1>                     : "¯п¯"
 <Multi_key> <x> <2>                     : "¯Ѫ¯"

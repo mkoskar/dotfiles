@@ -80,6 +80,7 @@ file=user.js
 			user_pref("browser.newtabpage.directory.source", "");
 			user_pref("browser.newtabpage.enabled", false);
 			user_pref("browser.newtabpage.enhanced", false);
+			user_pref("browser.proton.enabled", false);
 			user_pref("browser.search.geoSpecificDefaults", false);
 			user_pref("browser.shell.checkDefaultBrowser", false);
 			user_pref("browser.startup.homepage", "about:blank");
@@ -173,6 +174,20 @@ esac
 file=userChrome.css
 [[ -f $file.lock ]] || {
     printf '/* %s */\n' "$file"
+
+    cat <<-EOF
+
+		@media (-moz-proton) {
+		    .tab-background {
+		        border-radius: 0 !important;
+		        margin-block: 0 !important;
+		    }
+		}
+		@media not (-moz-proton) {
+		    .tab-close-button { padding: 4px !important }
+		    .tab-icon-sound { padding: 2px !important }
+		}
+	EOF
 
     [[ $profile != default ]] && cat <<-EOF
 

@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
 
-set -e
-
 export SUDO_PROMPT="[sudo %p as %U] ${*//%/%%}: "
 exec /usr/bin/sudo "$@"

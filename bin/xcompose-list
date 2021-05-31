@@ -9,7 +9,7 @@ set -eu -o pipefail
 
     cat "$ifile"
 
-    ifile=~/.XCompose.rfc1345
+    ifile=~/.XCompose-vim
     echo $'\n--------------------------------------------------'
     printf '> %s\n\n' "$ifile"
 
@@ -20,4 +20,4 @@ set -eu -o pipefail
     printf '> %s\n\n' "$ifile"
 
     sed -En '/^\s*</{s/\s+/ /g; p}' "$ifile" | sort
-} |& $PAGER
+} |& PAGER_EX='set ft=conf' pg0
