@@ -6,8 +6,10 @@ set cpo&vim
 
 " ----------------------------------------
 
-redir => s:lsout | silent filter /^\[Location List\]/ ls! % | redir END
-let b:qf_loclist = !empty(s:lsout)
+"redir => s:lsout | silent filter /^\[Location List\]/ ls! % | redir END
+"let b:qf_loclist = !empty(s:lsout)
+let b:qf_loclist = get(getwininfo(win_getid())[0], 'loclist', 0)
+
 let b:qf_prefix = b:qf_loclist ? 'l' : 'c'
 
 function! s:QfOldest(prefix) abort
@@ -38,12 +40,11 @@ noremap <buffer> <Leader>tf <Nop>
 noremap <buffer> <Leader>tt <Nop>
 noremap <buffer> <Leader>bb <Nop>
 noremap <buffer> <Leader>gg <Nop>
-noremap <buffer> <Leader>G <Nop>
 
 nmap <buffer> <silent> o <CR>
 nnoremap <buffer> <silent> q :close<CR>
-nnoremap <buffer> <silent> go :exec "normal \<lt>cr>"
-    \ \| match IncSearch /\k*\%#\k*/ \| wincmd p<CR>
+nnoremap <buffer> <silent> go
+    \ :exec "normal \<lt>CR>" \| match IncSearch /\k*\%#\k*/ \| wincmd p<CR>
 nnoremap <buffer> <silent> << :call <SID>QfOlder(b:qf_prefix)<CR>
 nnoremap <buffer> <silent> >> :call <SID>QfNewer(b:qf_prefix)<CR>
 nnoremap <buffer> <silent> <Leader>< :call <SID>QfOldest(b:qf_prefix)<CR>

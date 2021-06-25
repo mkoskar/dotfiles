@@ -2,7 +2,7 @@
 
 let vimrc = get(g:, 'vimrc', expand('<sfile>:p'))
 let &rtp = expand('<sfile>:p:h')
-let $BASEDIR = ''
+unlet $BASEDIR
 
 runtime vimrc_base
 

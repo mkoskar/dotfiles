@@ -3,10 +3,10 @@
 packadd! nerdtree
 
 let NERDTreeAutoDeleteBuffer = 1
-let NERDTreeBookmarksFile = $VIMDIR . '/.NERDTreeBookmarks'
+let NERDTreeBookmarksFile = $VIMDIR . '/NERDTreeBookmarks'
 let NERDTreeCaseSensitiveSort = 1
 let NERDTreeHijackNetrw = 0
-let NERDTreeIgnore = ['^\.svn$', '^\.git$', '\.swp$', '\~$']
+let NERDTreeIgnore = []
 let NERDTreeMapCWD = 'cD'
 let NERDTreeMapHelp = '<F1>'
 let NERDTreeShowBookmarks = 1
@@ -19,6 +19,7 @@ nnoremap <silent> <Leader>tf :NERDTreeFind<CR>
 
 augroup nerdtree_conf
     autocmd!
-    autocmd FileType nerdtree call utils#bufSpecial()
-    autocmd FileType nerdtree nmap <buffer> <silent> <nowait> s :call nerdtree#ui_glue#invokeKeyMap('s')<CR>
+    autocmd FileType nerdtree
+        \  call utils#bufSpecial()
+        \| nmap <buffer> <silent> <nowait> s :call nerdtree#ui_glue#invokeKeyMap('s')<CR>
 augroup END

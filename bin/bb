@@ -209,6 +209,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     intel-cpus              b https://en.wikipedia.org/wiki/List_of_Intel_processors#Latest
     intel-manuals           b https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html
     iojs                    b https://iojs.org/api/
+    ipa                     b https://en.wikipedia.org/wiki/International_Phonetic_Alphabet
     ipv4                    b https://tools.ietf.org/html/rfc791
     ipv6                    b https://tools.ietf.org/html/rfc8200
     irc-channels            b https://netsplit.de/channels/
@@ -264,6 +265,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     lore-lists              b https://lore.kernel.org/lists.html
     lpsn                    b https://lpsn.dsmz.de/
     lua                     b https://www.lua.org/manual/
+    lua!                    b /usr/share/doc/lua/manual.html
     luarocks                b https://luarocks.org/search\?q={u}
     m4-macros               b https://www.gnu.org/software/m4/manual/m4.html#Macro-index
     mailcap                 b https://tools.ietf.org/html/rfc1524
@@ -427,6 +429,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     unix-timeline2          b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
     url                     b https://url.spec.whatwg.org/
     usb-connectors          b https://en.wikipedia.org/wiki/USB_hardware#Connectors
+    utf8                    b https://en.wikipedia.org/wiki/UTF-8#Encoding
     util-linux              b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
     video-codecs            b https://en.wikipedia.org/wiki/List_of_codecs#Video_compression_formats
     video-standards         b https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Vector_Video_Standards2.svg/1024px-Vector_Video_Standards2.svg.png

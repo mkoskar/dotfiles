@@ -10,11 +10,8 @@ set viminfo=
 let s:vimrc = expand('<sfile>:p:h') . '/vimrc_ext'
 
 if isdirectory($BASEDIR)
-    let basedir = fnamemodify($BASEDIR, ':p:h')
-    if basedir !=# $HOME
-        let s:_ = basedir . '/.vim/vimrc'
-        if filereadable(s:_) | let s:vimrc = s:_ | endif
-    endif
+    let s:_ = $BASEDIR . '/.vim/vimrc'
+    if filereadable(s:_) | let s:vimrc = s:_ | endif
 endif
 
 exec 'source' fnameescape(s:vimrc)

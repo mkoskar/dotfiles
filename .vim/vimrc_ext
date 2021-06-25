@@ -9,27 +9,29 @@ runtime vimrc_base
 " File/Buffer Explorer
 " ----------------------------------------
 
-"runtime conf.d/ctrlp.vim
 runtime conf.d/bufexplorer.vim
 runtime conf.d/dirvish.vim
-runtime conf.d/fzf-ext.vim
 runtime conf.d/nerdtree.vim
 
 
-" Linting
+" Fuzzy Finder
 " ----------------------------------------
 
-"runtime conf.d/neomake.vim
-"runtime conf.d/syntastic.vim
-runtime conf.d/ale.vim
+"runtime conf.d/ctrlp.vim
+"runtime conf.d/fzf-ext.vim
+runtime conf.d/nvim-telescope.vim
 
 
-" Completion
+" Linting / Completion / LSP
 " ----------------------------------------
 
+"runtime conf.d/ale.vim
 "runtime conf.d/coc.vim
 "runtime conf.d/deoplete.vim
 "runtime conf.d/emmet.vim
+"runtime conf.d/neomake.vim
+"runtime conf.d/syntastic.vim
+runtime conf.d/nvim-lspconfig.vim
 runtime conf.d/ultisnips.vim
 
 

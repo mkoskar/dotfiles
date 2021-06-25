@@ -8,7 +8,7 @@ endif
 let colors_name = 'luciusblack'
 
 if &t_Co >= 256 || has('gui_running')
-    hi Normal           ctermfg=7           ctermbg=16          cterm=NONE
+    hi Normal           ctermfg=7           ctermbg=NONE        cterm=NONE
     hi Normal           guifg=#aeaeae       guibg=#000000       gui=NONE
 
     hi ColorColumn      ctermfg=NONE        ctermbg=236         cterm=NONE
@@ -19,11 +19,11 @@ if &t_Co >= 256 || has('gui_running')
     hi Conceal          guifg=#444444       guibg=NONE          gui=NONE
     hi Constant         ctermfg=174         ctermbg=NONE        cterm=NONE
     hi Constant         guifg=#d78787       guibg=NONE          gui=NONE
-    hi Cursor           ctermfg=bg          ctermbg=153         cterm=NONE
+    hi Cursor           ctermfg=16          ctermbg=153         cterm=NONE
     hi Cursor           guifg=bg            guibg=#afd7ff       gui=NONE
     hi CursorColumn     ctermfg=NONE        ctermbg=236         cterm=NONE
     hi CursorColumn     guifg=NONE          guibg=#303030       gui=NONE
-    hi CursorIM         ctermfg=bg          ctermbg=116         cterm=NONE
+    hi CursorIM         ctermfg=16          ctermbg=116         cterm=NONE
     hi CursorIM         guifg=bg            guibg=#87d7d7       gui=NONE
     hi CursorLine       ctermfg=NONE        ctermbg=236         cterm=NONE
     hi CursorLine       guifg=NONE          guibg=#303030       gui=NONE
@@ -33,7 +33,7 @@ if &t_Co >= 256 || has('gui_running')
     hi DiffAdd          guifg=#dddddd       guibg=#626262       gui=NONE
     hi DiffChange       ctermfg=15          ctermbg=241         cterm=NONE
     hi DiffChange       guifg=#dddddd       guibg=#626262       gui=NONE
-    hi DiffDelete       ctermfg=bg          ctermbg=241         cterm=NONE
+    hi DiffDelete       ctermfg=16          ctermbg=241         cterm=NONE
     hi DiffDelete       guifg=bg            guibg=#626262       gui=NONE
     hi DiffText         ctermfg=231         ctermbg=1           cterm=NONE
     hi DiffText         guifg=#ffffff       guibg=#9d2d2d       gui=NONE
@@ -51,9 +51,9 @@ if &t_Co >= 256 || has('gui_running')
     hi Folded           guifg=#808080       guibg=#121212       gui=NONE
     hi Identifier       ctermfg=156         ctermbg=NONE        cterm=NONE
     hi Identifier       guifg=#afff87       guibg=NONE          gui=NONE
-    hi Ignore           ctermfg=bg          ctermbg=NONE        cterm=NONE
+    hi Ignore           ctermfg=16          ctermbg=NONE        cterm=NONE
     hi Ignore           guifg=bg            guibg=NONE          gui=NONE
-    hi IncSearch        ctermfg=bg          ctermbg=231         cterm=NONE
+    hi IncSearch        ctermfg=16          ctermbg=231         cterm=NONE
     hi IncSearch        guifg=bg            guibg=#ffffff       gui=NONE
     hi LineNr           ctermfg=244         ctermbg=233         cterm=NONE
     hi LineNr           guifg=#808080       guibg=#121212       gui=NONE
@@ -65,21 +65,21 @@ if &t_Co >= 256 || has('gui_running')
     hi MoreMsg          guifg=#ffff87       guibg=NONE          gui=NONE
     hi NonText          ctermfg=238         ctermbg=NONE        cterm=NONE
     hi NonText          guifg=#444444       guibg=NONE          gui=NONE
-    hi Pmenu            ctermfg=243         ctermbg=232         cterm=NONE
-    hi Pmenu            guifg=#767676       guibg=#080808       gui=NONE
-    hi PmenuSbar        ctermfg=NONE        ctermbg=59          cterm=NONE
-    hi PmenuSbar        guifg=NONE          guibg=#5f5f5f       gui=NONE
-    hi PmenuSel         ctermfg=185         ctermbg=234         cterm=NONE
-    hi PmenuSel         guifg=#d7d75f       guibg=#1c1c1c       gui=NONE
-    hi PmenuThumb       ctermfg=NONE        ctermbg=102         cterm=NONE
-    hi PmenuThumb       guifg=NONE          guibg=#878787       gui=NONE
+    hi Pmenu            ctermfg=fg          ctermbg=235         cterm=NONE
+    hi Pmenu            guifg=fg            guibg=#262626       gui=NONE
+    hi PmenuSbar        ctermfg=NONE        ctermbg=236         cterm=NONE
+    hi PmenuSbar        guifg=NONE          guibg=#303030       gui=NONE
+    hi PmenuSel         ctermfg=185         ctermbg=233         cterm=NONE
+    hi PmenuSel         guifg=#d7d75f       guibg=#121212       gui=NONE
+    hi PmenuThumb       ctermfg=NONE        ctermbg=241         cterm=NONE
+    hi PmenuThumb       guifg=NONE          guibg=#626262       gui=NONE
     hi PreProc          ctermfg=167         ctermbg=NONE        cterm=NONE
     hi PreProc          guifg=#d75f5f       guibg=NONE          gui=NONE
     hi Question         ctermfg=fg          ctermbg=NONE        cterm=NONE
     hi Question         guifg=fg            guibg=NONE          gui=NONE
     hi QuickFixLine     ctermfg=NONE        ctermbg=236         cterm=bold
     hi QuickFixLine     guifg=NONE          guibg=#303030       gui=bold
-    hi Search           ctermfg=bg          ctermbg=214         cterm=NONE
+    hi Search           ctermfg=16          ctermbg=214         cterm=NONE
     hi Search           guifg=bg            guibg=#ffaf00       gui=NONE
     hi SignColumn       ctermfg=145         ctermbg=233         cterm=NONE
     hi SignColumn       guifg=#afafaf       guibg=#121212       gui=NONE
@@ -89,7 +89,7 @@ if &t_Co >= 256 || has('gui_running')
     hi SpecialKey       guifg=#444444       guibg=NONE          gui=NONE
     hi SpellBad         ctermfg=231         ctermbg=1           cterm=NONE
     hi SpellBad         guifg=#ffffff       guibg=#9d2d2d       gui=NONE
-    hi SpellCap         ctermfg=bg          ctermbg=228         cterm=NONE
+    hi SpellCap         ctermfg=16          ctermbg=228         cterm=NONE
     hi SpellCap         guifg=bg            guibg=#ffff87       gui=NONE
     hi SpellLocal       ctermfg=231         ctermbg=5           cterm=NONE
     hi SpellLocal       guifg=#ffffff       guibg=#a43fa4       gui=NONE
@@ -115,7 +115,7 @@ if &t_Co >= 256 || has('gui_running')
     hi Title            guifg=#5fafd7       guibg=NONE          gui=NONE
     hi Todo             ctermfg=185         ctermbg=234         cterm=NONE
     hi Todo             guifg=#d7d75f       guibg=#1c1c1c       gui=NONE
-    hi ToolbarButton    ctermfg=bg          ctermbg=185         cterm=bold
+    hi ToolbarButton    ctermfg=16          ctermbg=185         cterm=bold
     hi ToolbarButton    guifg=bg            guibg=#d7d75f       gui=bold
     hi ToolbarLine      ctermfg=NONE        ctermbg=236         cterm=NONE
     hi ToolbarLine      guifg=NONE          guibg=#303030       gui=NONE
@@ -131,6 +131,30 @@ if &t_Co >= 256 || has('gui_running')
     hi VisualNOS        guifg=fg            guibg=NONE          gui=underline
     hi WarningMsg       ctermfg=228         ctermbg=NONE        cterm=NONE
     hi WarningMsg       guifg=#ffff87       guibg=NONE          gui=NONE
-    hi WildMenu         ctermfg=bg          ctermbg=185         cterm=bold
+    hi WildMenu         ctermfg=16          ctermbg=185         cterm=bold
     hi WildMenu         guifg=bg            guibg=#d7d75f       gui=bold
+
+    hi LspReferenceText ctermfg=16 ctermbg=80 cterm=underline,italic
+    hi LspReferenceRead ctermfg=16 ctermbg=114 cterm=underline,italic
+    hi LspReferenceWrite ctermfg=16 ctermbg=254 cterm=underline,italic
+
+    hi LspDiagnosticsDefaultError ctermfg=167 ctermbg=233 cterm=italic
+    hi LspDiagnosticsDefaultWarning ctermfg=228 ctermbg=233 cterm=italic
+    hi LspDiagnosticsDefaultInformation ctermfg=117 ctermbg=233 cterm=italic
+    hi link LspDiagnosticsDefaultHint LspDiagnosticsDefaultInformation
+
+    hi LspDiagnosticsUnderlineError ctermfg=16 ctermbg=167 cterm=italic
+    hi LspDiagnosticsUnderlineWarning ctermfg=16 ctermbg=228 cterm=italic
+    hi LspDiagnosticsUnderlineInformation ctermfg=16 ctermbg=117 cterm=italic
+    hi link LspDiagnosticsUnderlineHint LspDiagnosticsUnderlineInformation
+
+    hi LspDiagnosticsFloatingError ctermfg=167 cterm=italic
+    hi LspDiagnosticsFloatingWarning ctermfg=228 cterm=italic
+    hi LspDiagnosticsFloatingInformation ctermfg=117 cterm=italic
+    hi link LspDiagnosticsFloatingHint LspDiagnosticsFloatingInformation
+
+    hi LspCodeLens ctermfg=167 cterm=italic
+    hi LspCodeLensSeparator ctermfg=167 cterm=italic
+
+    hi LspSignatureActiveParameter ctermfg=167 cterm=italic
 endif
