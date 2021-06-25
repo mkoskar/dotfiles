@@ -1,5 +1,3 @@
-require('vis')
-
 local modes = vis.modes
 
 vis.events.subscribe(vis.events.INIT, function()

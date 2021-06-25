@@ -4,14 +4,29 @@ set -eu -o pipefail
 
 prgname=${0##*/}
 
-if (( ! $# )); then
-    echo "usage: $prgname file/name" >&2
-    exit 2
-fi
+_usage() {
+    echo "usage: $prgname [file/name]"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
 
-file=$1
-if [[ ! -e $file ]]; then
-    file=$(fc-match -f '%{file}' "$file")
+while getopts h opt; do
+    case $opt in
+        h) usage ;;
+        *) usage_err ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# ----------------------------------------
+
+if (( ! $# )); then
+    file=$(fc-list -f '%{file}\n' | fuzz)
+else
+    file=$1
+    if [[ ! -e $file ]]; then
+        file=$(fc-match -f '%{file}' "$*")
+    fi
 fi
 
 {

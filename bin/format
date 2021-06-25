@@ -7,16 +7,16 @@ set -eu
 prgname=${0##*/}
 
 _usage() {
-    echo "usage: $prgname TODO"
+    echo "usage: $prgname [-s shiftwidth] [-t textwidth] [filetype]"
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-declare -i shiftwidth=4 textwidth=78
+declare -i sw=4 tw=78
 while getopts s:t:h opt; do
     case $opt in
-        s) shiftwidth=$OPTARG ;;
-        t) textwidth=$OPTARG ;;
+        s) sw=$OPTARG ;;
+        t) tw=$OPTARG ;;
         h) usage ;;
         *) usage_err ;;
     esac
@@ -34,16 +34,16 @@ try() {
 case $ft in
     cs)
         #try uncrustify
-        try astyle --mode=cs --style=break --indent-namespaces -pcH -s "$shiftwidth"
+        try astyle --mode=cs --style=break --indent-namespaces -pcH -s "$sw"
         ;;
     css)
-        try css-beautify -s "$shiftwidth"
-        try sass-convert --from css --to css --indent "$shiftwidth"
+        try css-beautify -s "$sw"
+        try sass-convert --from css --to css --indent "$sw"
         ;;
     c | cpp | objc)
         #try clang-format
         #try uncrustify
-        try astyle --mode=c --style=break -pcH -s "$shiftwidth"
+        try astyle --mode=c --style=break -pcH -s "$sw"
         ;;
     dart)
         try dartfmt
@@ -55,20 +55,20 @@ case $ft in
         try stylish-haskell
         ;;
     html)
-        try html-beautify -s "$shiftwidth"
-        try tidy -config ~/.tidyrc --indent-spaces "$shiftwidth" -wrap "$textwidth"
+        try html-beautify -s "$sw"
+        try tidy -config ~/.tidyrc --indent-spaces "$sw" -wrap "$tw"
         ;;
     java)
         #try clang-format
         #try uncrustify
-        try astyle --mode=java --style=attach -pcH -s "$shiftwidth"
+        try astyle --mode=java --style=attach -pcH -s "$sw"
         ;;
     javascript)
         #try clang-format
-        try js-beautify -s "$shiftwidth" -w "$textwidth"
+        try js-beautify -s "$sw" -w "$tw"
         ;;
     json)
-        try js-beautify -s "$shiftwidth"
+        try js-beautify -s "$sw"
         ;;
     markdown)
         try remark --silent --no-color
@@ -77,37 +77,37 @@ case $ft in
         try perltidy --perl-best-practices --format-skipping -q
         ;;
     python)
-        #try yapf "--style={based_on_style:pep8, indent_width:$shiftwidth, column_limit=$textwidth, blank_line_before_nested_class_or_def:true, dedent_closing_brackets:true}"
-        try autopep8 --indent-size="$shiftwidth" --max-line-length="$textwidth" -
-        try yapf "--style={based_on_style:pep8, indent_width:$shiftwidth, blank_line_before_nested_class_or_def:true, dedent_closing_brackets:true}"
+        #try yapf "--style={based_on_style:pep8, indent_width:$sw, column_limit=$tw, blank_line_before_nested_class_or_def:true, dedent_closing_brackets:true}"
+        try autopep8 --indent-size="$sw" --max-line-length="$tw" -
+        try yapf "--style={based_on_style:pep8, indent_width:$sw, blank_line_before_nested_class_or_def:true, dedent_closing_brackets:true}"
         ;;
     ruby)
-        try rbeautify -s -c "$shiftwidth"
+        try rbeautify -s -c "$sw"
         ;;
     rust)
         try rustfmt
         ;;
     sass)
-        try sass-convert --from sass --to sass --indent "$shiftwidth"
+        try sass-convert --from sass --to sass --indent "$sw"
         ;;
     scss)
-        try sass-convert --from scss --to scss --indent "$shiftwidth"
+        try sass-convert --from scss --to scss --indent "$sw"
         ;;
     xhtml)
-        try tidy -config ~/.tidyrc --output-xhtml yes --indent-spaces "$shiftwidth" -wrap "$textwidth"
+        try tidy -config ~/.tidyrc --output-xhtml yes --indent-spaces "$sw" -wrap "$tw"
         ;;
     xml)
-        #try tidy -config ~/.tidyrc -xml --output-xml yes --indent-spaces "$shiftwidth" -wrap "$textwidth"
         #try xmlstarlet format --indent-tab
+        #try tidy -config ~/.tidyrc -xml --output-xml yes --indent-spaces "$sw" -wrap "$tw"
         export XMLLINT_INDENT='    '
-        tidy -config ~/.tidyrc -xml --output-xml yes --indent-spaces "$shiftwidth" | xmllint --format -
+        tidy -config ~/.tidyrc -xml --output-xml yes --indent-spaces "$sw" | xmllint --format -
         exit 0
         ;;
     *)
-        try par -T "$shiftwidth" -w "$textwidth"
-        try fmt -u -w "$textwidth"
-        try fold -s -w "$textwidth"
-        try wrap -w "$textwidth"
+        try par -T "$sw" -w "$tw"
+        try fmt -u -w "$tw"
+        try fold -s -w "$tw"
+        try wrap -w "$tw"
         ;;
 esac
 

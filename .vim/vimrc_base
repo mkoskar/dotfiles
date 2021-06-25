@@ -10,42 +10,28 @@ let $MYVIMRC = vimrc
 set nocompatible
 set pastetoggle=<F6>
 
+set rtp =
+    \ rtp+=~/.vim
+    \ rtp+=/usr/share/vim/vimfiles
+    \ rtp+=$VIMRUNTIME
+    \ rtp+=~/.vim/after
+
 if has('nvim')
-    set rtp =
-        \ rtp+=~/.config/nvim
-        \ rtp+=~/.vim
-        \ rtp+=/usr/share/vim/vimfiles
-        \ rtp+=$VIMRUNTIME
-        \ rtp+=/usr/share/vim/vimfiles/after
-        \ rtp+=~/.vim/after
-        \ rtp+=~/.config/nvim/after
-else
-    set rtp =
-        \ rtp+=~/.vim
-        \ rtp+=/usr/share/vim/vimfiles
-        \ rtp+=$VIMRUNTIME
-        \ rtp+=/usr/share/vim/vimfiles/after
-        \ rtp+=~/.vim/after
+    call utils#rtpPrepend('~/.config/nvim')
 endif
 
 let bin = has('nvim') ? 'nvim' : 'vim'
 let $VIMDIR = $HOME . '/.local/share/' . bin
 
 if isdirectory($BASEDIR)
-    let basedir = fnamemodify($BASEDIR, ':p:h')
-    if basedir !=# $HOME
-        let $VIMDIR = basedir . '/.' . bin
-        call utils#rtpPrepend(basedir . '/.vim')
-        if has('nvim')
-            call utils#rtpPrepend(basedir . '/.nvim')
-        endif
+    call utils#rtpPrepend($BASEDIR . '/.vim')
+    if has('nvim')
+        call utils#rtpPrepend($BASEDIR . '/.nvim')
     endif
+    let $VIMDIR = $BASEDIR . '/.' . bin
 endif
 
 let &pp = &rtp
-
-let mapleader = ','
-let maplocalleader = ';'
 
 
 " Moving Around, Searching and Patterns
@@ -57,38 +43,41 @@ set path=.,,**
 set smartcase
 set whichwrap=b,s,<,>,[,]
 
-if empty(maparg('\', 'n'))
-    noremap <silent> \ ,
-    sunmap \
-endif
+let mapleader = ','
+let maplocalleader = ';'
 
-noremap <silent> - ^
+noremap <M-,> ,
+noremap <M-;> ;
 
-noremap <silent> <M-j> 5j
-noremap <silent> <M-k> 5k
+noremap - ^
 
-noremap <silent> <M-C-L> 5l
-noremap <silent> <M-C-H> 5h
-nmap <silent> <M-BS> <M-C-H>
+" à la /_CTRL-L
+vnoremap <C-L> l
 
-noremap <silent> <C-E> 5<C-E>
-noremap <silent> <C-Y> 5<C-Y>
+noremap <M-j> 5j
+noremap <M-k> 5k
 
-noremap <silent> zl 5zl
-noremap <silent> zh 5zh
+noremap <M-C-L> 5l
+noremap <M-C-H> 5h
+nmap <M-BS> <M-C-H>
 
-nnoremap <silent> J :move +1<CR>
-nnoremap <silent> K :move -2<CR>
+noremap <C-E> 5<C-E>
+noremap <C-Y> 5<C-Y>
 
-" Move visual block <http://vimrcfu.com/snippet/77>
-xnoremap <silent> J :move '>+1<CR>gv
-xnoremap <silent> K :move '<-2<CR>gv
+noremap zl 5zl
+noremap zh 5zh
 
-nnoremap <silent> * :let @/ = '\V\<' . escape(expand('<cword>'), '\/') . '\>' \| set hls<CR>
-nnoremap <silent> g* :let @/ = '\V' . escape(expand('<cword>'), '\/') \| set hls<CR>
-nnoremap <silent> # :let @/ = '\V\S\@<!' . escape(expand('<cWORD>'), '\/') . '\S\@!' \| set hls<CR>
-nnoremap <silent> g# :let @/ = '\V' . escape(expand('<cWORD>'), '\/') \| set hls<CR>
-xnoremap <silent> g/ y:let @/ = '\V' . escape(@", '\/') \| call histadd('search', @/) \| set hls<CR>
+nnoremap J <Cmd>exec 'move +' . v:count1<CR>
+nnoremap K <Cmd>exec 'move -1-' . v:count1<CR>
+
+xnoremap <silent> J :move '>+<C-R>=v:count1<CR><CR>gv
+xnoremap <silent> K :move '<-1-<C-R>=v:count1<CR><CR>gv
+
+nnoremap * <Cmd>let @/ = '\V\<' . escape(expand('<cword>'), '\/') . '\>' \| set hls<CR>
+nnoremap g* <Cmd>let @/ = '\V' . escape(expand('<cword>'), '\/') \| set hls<CR>
+nnoremap # <Cmd>let @/ = '\V\S\@<!' . escape(expand('<cWORD>'), '\/') . '\S\@!' \| set hls<CR>
+nnoremap g# <Cmd>let @/ = '\V' . escape(expand('<cWORD>'), '\/') \| set hls<CR>
+xnoremap g/ y<Cmd>let @/ = '\V' . escape(@", '\/') \| call histadd('search', @/) \| set hls<CR>
 
 
 " Tags
@@ -96,8 +85,7 @@ xnoremap <silent> g/ y:let @/ = '\V' . escape(@", '\/') \| call histadd('search'
 
 set tags-=./tags tags-=./tags; tags^=./tags;
 
-nnoremap <silent> <F12> :call system('mktags')
-    \ \| call utils#echoWarn('mktags finished')<CR>
+nnoremap <F12> <Cmd>call system('mktags') \| call utils#echoWarn('mktags finished')<CR>
 nnoremap <Leader>lt :ltag /
 
 
@@ -124,13 +112,15 @@ nnoremap <Leader>W :setl <C-R>=&wrap ? 'nowrap' : 'wrap'<CR><CR>
 set colorcolumn=80
 set hlsearch
 set spelllang=en_us
+set spelloptions=camel
 set synmaxcol=200
 
 let c_comment_strings = 1
 let load_doxygen_syntax = 1
 let python_highlight_all = 1
 
-nnoremap <silent> <Space> :nohlsearch \| echo<CR>
+nnoremap <Space> <Cmd>nohls \| diffup!<CR><C-L>
+nnoremap <Leader>ft <Cmd>filetype detect \| syn sync fromstart<CR>
 
 nnoremap <Leader>cuc :setl <C-R>=&cuc ? 'nocuc' : 'cuc'<CR><CR>
 nnoremap <Leader>cul :setl <C-R>=&cul ? 'nocul' : 'cul'<CR><CR>
@@ -166,9 +156,9 @@ function! s:ccCycle() abort
     call utils#echo(printf(':setl cc=%s', &l:cc))
 endfunction
 
-nnoremap <silent> <Leader>col :call <SID>ccToggle()<CR>
-nnoremap <silent> <Leader>coL :call <SID>ccToggleColumn(virtcol('.'))<CR>
-nnoremap <silent> <Leader>co< :call <SID>ccCycle()<CR>
+nnoremap <Leader>col <Cmd>call <SID>ccToggle()<CR>
+nnoremap <Leader>coL <Cmd>call <SID>ccToggleColumn(virtcol('.'))<CR>
+nnoremap <Leader>co< <Cmd>call <SID>ccCycle()<CR>
 
 function! s:ColorsReset() abort
     if has('gui_running')
@@ -207,43 +197,49 @@ set statusline=
     \ statusline+=%=
     \ statusline+=\ %6(%l:%v%)
     \ statusline+=\ %P
-    \ statusline+=%a
+    \ statusline+=\%(\ %{%
+            \argc()>0
+                \?(arglistid()==0?'':'L')
+                \.(argv(argidx())==bufname()?'*':'-')
+                \.(argidx()+1).'/'.argc()
+                \:''
+        \%}%)
 
-nnoremap <silent> <C-J> <C-W>j
-nnoremap <silent> <C-K> <C-W>k
-nnoremap <silent> <C-L> <C-W>l
-nnoremap <silent> <C-H> <C-W>h
-nmap <silent> <BS> <C-H>
+nnoremap <C-J> <C-W>j
+nnoremap <C-K> <C-W>k
+nnoremap <C-L> <C-W>l
+nnoremap <C-H> <C-W>h
+nmap <BS> <C-H>
 
-nnoremap <silent> s<C-J> :below sp<CR>
-nnoremap <silent> s<C-K> :above sp<CR>
-nnoremap <silent> s<C-L> :rightb vsp<CR>
-nnoremap <silent> s<C-H> :lefta vsp<CR>
-nmap <silent> s<BS> s<C-H>
+nnoremap s<C-J> <Cmd>below split<CR>
+nnoremap s<C-K> <Cmd>above split<CR>
+nnoremap s<C-L> <Cmd>rightb vsplit<CR>
+nnoremap s<C-H> <Cmd>lefta vsplit<CR>
+nmap s<BS> s<C-H>
 
-nnoremap <silent> c<C-J> :below new<CR>
-nnoremap <silent> c<C-K> :above new<CR>
-nnoremap <silent> c<C-L> :rightb vnew<CR>
-nnoremap <silent> c<C-H> :lefta vnew<CR>
-nmap <silent> c<BS> c<C-H>
+nnoremap c<C-J> <Cmd>below new<CR>
+nnoremap c<C-K> <Cmd>above new<CR>
+nnoremap c<C-L> <Cmd>rightb vnew<CR>
+nnoremap c<C-H> <Cmd>lefta vnew<CR>
+nmap c<BS> c<C-H>
 
-nnoremap <silent> <C-W>N :vnew<CR>
-nnoremap <silent> <C-W><C-N> :vnew<CR>
+nnoremap <C-W>N <Cmd>vnew<CR>
+nnoremap <C-W><C-N> <Cmd>vnew<CR>
 
-nnoremap <silent> d<C-J> <C-W>j<C-W>c<C-W>p
-nnoremap <silent> d<C-K> <C-W>k<C-W>c<C-W>p
-nnoremap <silent> d<C-L> <C-W>l<C-W>c<C-W>p
-nnoremap <silent> d<C-H> <C-W>h<C-W>c<C-W>p
-nmap <silent> d<BS> d<C-H>
+nnoremap d<C-J> <C-W>j<C-W>c<C-W>p
+nnoremap d<C-K> <C-W>k<C-W>c<C-W>p
+nnoremap d<C-L> <C-W>l<C-W>c<C-W>p
+nnoremap d<C-H> <C-W>h<C-W>c<C-W>p
+nmap d<BS> d<C-H>
 
-nnoremap <silent> <C-_> <C-W>_
-nnoremap <silent> g<C-J> <C-W>j<C-W>_
-nnoremap <silent> g<C-K> <C-W>k<C-W>_
+nnoremap <C-_> <C-W>_
+nnoremap g<C-J> <C-W>j<C-W>_
+nnoremap g<C-K> <C-W>k<C-W>_
 
-nnoremap <silent> + :resize +5<CR>
-nnoremap <silent> _ :resize -5<CR>
-nnoremap <silent> <M-=> :vertical resize +5<CR>
-nnoremap <silent> <M--> :vertical resize -5<CR>
+nnoremap _ <Cmd>resize -5<CR>
+nnoremap + <Cmd>resize +5<CR>
+nnoremap <M--> <Cmd>vert resize -5<CR>
+nnoremap <M-=> <Cmd>vert resize +5<CR>
 
 
 " Multiple Tab Pages
@@ -251,29 +247,30 @@ nnoremap <silent> <M--> :vertical resize -5<CR>
 
 set tabpagemax=50
 
-nnoremap <silent> <M-1> 1gt
-nnoremap <silent> <M-2> 2gt
-nnoremap <silent> <M-3> 3gt
-nnoremap <silent> <M-4> 4gt
-nnoremap <silent> <M-5> 5gt
-nnoremap <silent> <M-6> 6gt
-nnoremap <silent> <M-7> 7gt
-nnoremap <silent> <M-8> 8gt
-nnoremap <silent> <M-9> 9gt
+nnoremap <M-1> 1gt
+nnoremap <M-2> 2gt
+nnoremap <M-3> 3gt
+nnoremap <M-4> 4gt
+nnoremap <M-5> 5gt
+nnoremap <M-6> 6gt
+nnoremap <M-7> 7gt
+nnoremap <M-8> 8gt
+nnoremap <M-9> 9gt
 
-nnoremap <silent> <M-0> :tabfirst<CR>
-nnoremap <silent> <M-^> :tabfirst<CR>
-nnoremap <silent> <M-$> :tablast<CR>
-nnoremap <silent> <M-(> :tabfirst<CR>
-nnoremap <silent> <M-)> :tablast<CR>
+nnoremap <M-a> g<Tab>
+nnoremap <M-0> <Cmd>tabfirst<CR>
+nnoremap <M-^> <Cmd>tabfirst<CR>
+nnoremap <M-$> <Cmd>tablast<CR>
+nnoremap <M-(> <Cmd>tabfirst<CR>
+nnoremap <M-)> <Cmd>tablast<CR>
 
-nnoremap <silent> <M-h> gT
-nnoremap <silent> <M-l> gt
-nnoremap <silent> <M-H> :silent! tabmove -1<CR>
-nnoremap <silent> <M-L> :silent! tabmove +1<CR>
+nnoremap <M-h> gT
+nnoremap <M-l> gt
+nnoremap <M-H> <Cmd>silent! tabmove -1<CR>
+nnoremap <M-L> <Cmd>silent! tabmove +1<CR>
 
-nnoremap <silent> <M-n> :tabnew<CR>
-nnoremap <silent> <M-N> :tab split<CR>
+nnoremap <M-n> <Cmd>tabnew<CR>
+nnoremap <M-N> <Cmd>tab split<CR>
 
 function! s:QuitTab(bang) abort
     try
@@ -284,37 +281,18 @@ function! s:QuitTab(bang) abort
 endfunction
 
 command! -bang -bar QuitTab call utils#tryCatchCall('<SID>QuitTab', <q-bang>)
-nnoremap <silent> QQ :QuitTab<CR>
-nnoremap <silent> QA :QuitTab!<CR>
+nnoremap QQ <Cmd>QuitTab<CR>
+nnoremap QA <Cmd>QuitTab!<CR>
 
 
 " Terminal
 " ----------------------------------------
 
 if !has('nvim')
-    set nottybuiltin
-    set ttyfast
-    set t_ut=
-    set t_BE=[?2004h
-    set t_BD=[?2004l
-    set t_PS=[200~
-    set t_PE=[201~
-else
-    tnoremap <C-\> <C-\><C-N>
+    set termwinkey=<C-\\>
 endif
 
-set title
-
-set titlestring=
-    \ titlestring+=%{v:progname}:
-    \ titlestring+=\ %n
-    \ titlestring+=\ %<%f
-    \ titlestring+=%(\ [%M%W%R]%)
-    \ titlestring+=%(\ %y%)
-    \ titlestring+=%(\ [%{&l:fenc!='utf-8'?&l:fenc:''}]%)
-    \ titlestring+=%(\ [%{&l:ff!='unix'?&l:ff:''}]%)
-    \ titlestring+=%(\ %{get(b:,'run_title','')}%)
-    \ titlestring+=%(\ %{get(w:,'quickfix_title','')}%)
+tnoremap <C-\> <C-\><C-N>
 
 
 " Using the Mouse
@@ -328,12 +306,7 @@ nnoremap <Leader>M :set <C-R>=!empty(&mouse) ? 'mouse=' : 'mouse=a'<CR><CR>
 " TUI/GUI
 " ----------------------------------------
 
-if !has('nvim')
-    let &t_EI = "\e[2 q"
-    let &t_SR = "\e[4 q"
-    let &t_SI = "\e[6 q"
-endif
-
+set title
 set guicursor+=a:blinkon0
 set guifont=Terminus\ 16px
 
@@ -345,14 +318,39 @@ set guioptions=
     \ guioptions-=m
     \ guioptions-=r
 
+set titlestring=
+    \ titlestring+=%{v:progname}:
+    \ titlestring+=\ %n
+    \ titlestring+=\ %<%f
+    \ titlestring+=%(\ [%M%W%R]%)
+    \ titlestring+=%(\ %y%)
+    \ titlestring+=%(\ [%{&l:fenc!='utf-8'?&l:fenc:''}]%)
+    \ titlestring+=%(\ [%{&l:ff!='unix'?&l:ff:''}]%)
+    \ titlestring+=%(\ %{get(b:,'run_title','')}%)
+    \ titlestring+=%(\ %{get(w:,'quickfix_title','')}%)
+
+if !has('nvim')
+    set nottybuiltin
+    set ttyfast
+    let &t_ut = ''
+    let &t_EI = "\e[2 q"
+    let &t_SR = "\e[4 q"
+    let &t_SI = "\e[6 q"
+    let &t_BE = "\e[?2004h"
+    let &t_BD = "\e[?2004l"
+    let &t_PS = "\e[200~"
+    let &t_PE = "\e[201~"
+endif
+
 map! <S-Insert> <MiddleMouse>
 
 
 " Messages and Info
 " ----------------------------------------
 
+set belloff=all
 set ruler
-set shortmess=aoOtTWIcF
+set shortmess=aoOtTWIF
 set showcmd
 set showmode
 
@@ -362,8 +360,23 @@ set showmode
 
 set clipboard=unnamed
 
-nnoremap <silent> Y y$
-nnoremap <silent> <expr> gp '`[' . getregtype()[0] . '`]'
+if has('nvim')
+    let g:clipboard = {
+        \   'name': 'xsel',
+        \   'copy': {
+        \     '+': ['xsel', '--nodetach', '-i', '-b'],
+        \     '*': ['xsel', '--nodetach', '-i', '-p'],
+        \   },
+        \   'paste': {
+        \     '+': ['xsel', '-o', '-b'],
+        \     '*': ['xsel', '-o', '-p'],
+        \   },
+        \   'cache_enabled': 1,
+        \ }
+endif
+
+nnoremap Y y$
+nnoremap <expr> gp printf('`[%s`]', getregtype()[0])
 
 
 " Editing Text
@@ -371,43 +384,51 @@ nnoremap <silent> <expr> gp '`[' . getregtype()[0] . '`]'
 
 set backspace=indent,eol,start
 set complete-=i
-set completeopt=longest,menuone
+set completeopt=menuone,longest
 set formatoptions=tcroqln21j
 set matchpairs+=<:>
 set nojoinspaces
-set nrformats-=octal
+set nrformats=alpha,hex,bin,unsigned
 set showmatch
 set textwidth=80
 set tildeop
 set undofile
 
-let &undodir = $VIMDIR . '/.undo'
+let &undodir = $VIMDIR . '/undo//'
 call utils#mkdir(&undodir)
 
-noremap <silent> <Leader><C-J> J
+noremap <Leader><C-J> J
 
 inoremap <C-B> <Home>
-inoremap <C-E> <End>
+inoremap <expr> <C-E> pumvisible() ? "\<C-E>" : "\<End>"
 inoremap <M-h> <Left>
 inoremap <M-l> <Right>
-inoremap <M-b> <C-\><C-O>:call utils#moveWord(0)<CR>
-inoremap <M-f> <C-\><C-O>:call utils#moveWord(1, 1)<CR>
-inoremap <M-w> <C-\><C-O>:call utils#moveWord(1)<CR>
+inoremap <M-b> <Cmd>call utils#moveWord(0)<CR>
+inoremap <M-f> <Cmd>call utils#moveWord(1, 1)<CR>
+inoremap <M-w> <Cmd>call utils#moveWord(1)<CR>
 
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-K> <C-G>u<C-\><C-O>d$
 inoremap <C-W> <C-G>u<C-W>
-inoremap <M-d> <C-G>u<C-\><C-O>dv:call utils#moveWord(1, 1)<CR>
+inoremap <M-d> <C-G>u<C-\><C-O>d<Cmd>call utils#moveWord(1, 1)<CR>
 inoremap <M-x> <Delete>
 
 inoremap <M-j> <C-G>j
 inoremap <M-k> <C-G>k
 
-inoremap <C-L> <C-K>
-inoremap <C-F>f <C-R>=expand('%:t')<CR>
-inoremap <C-F>n <C-R>=expand('%:t:r')<CR>
-inoremap <C-F>p <C-R>=expand('%:p')<CR>
-inoremap <C-F>d <C-R>=expand('%:r')<CR>
+inoremap <C-_> <C-K>
+inoremap <M-e> <C-E>
+inoremap <M-y> <C-Y>
+
+inoremap <expr> <C-G><C-F> expand('%:t')
+inoremap <expr> <C-G><C-P> expand('%:p')
+inoremap <expr> <C-G><C-d> strftime('%c')
+imap <C-G>f <C-G><C-F>
+imap <C-G>p <C-G><C-P>
+imap <C-G>d <C-G><C-D>
+
+inoremap <C-F> <C-X><C-F>
+inoremap <expr> <C-L> pumvisible() ? "\<lt>C-L>" : "\<lt>C-X>\<lt>C-L>"
 
 
 " Tabs and Indenting
@@ -455,7 +476,7 @@ set backup
 set fileformats+=mac
 set modeline
 
-let &backupdir = $VIMDIR . '/.backup'
+let &backupdir = $VIMDIR . '/backup//'
 call utils#mkdir(&backupdir)
 
 
@@ -465,7 +486,7 @@ call utils#mkdir(&backupdir)
 set swapfile
 set updatetime=300
 
-let &directory = $VIMDIR . '/.swap//'
+let &directory = $VIMDIR . '/swap//'
 call utils#mkdir(&directory)
 
 
@@ -476,25 +497,32 @@ set history=1000
 set suffixes=.bak,.swp,~
 set wildcharm=<S-Tab>
 set wildmenu
-set wildmode=longest,full
+set wildmode=lastused:longest:full,full
+
+cnoremap <Left> <Space><BS><Left>
+cnoremap <Right> <Space><BS><Right>
+cnoremap <expr> <C-N> wildmenumode() ? "\<C-N>" : "\<Down>"
+cnoremap <expr> <C-P> wildmenumode() ? "\<C-P>" : "\<Up>"
+cnoremap <M-n> <C-G>
+cnoremap <M-p> <C-T>
 
 " <C-B> <Home>
 " <C-E> <End>
-cnoremap <M-h> <Left>
-cnoremap <M-l> <Right>
+cmap <M-h> <Left>
+cmap <M-l> <Right>
 cnoremap <M-b> <C-\>e utils#cmdlineMoveWord(0)<CR>
 cnoremap <M-f> <C-\>e utils#cmdlineMoveWord(1, 1)<CR>
 cnoremap <M-w> <C-\>e utils#cmdlineMoveWord(1)<CR>
 
 " <C-U> - backward kill line
-cnoremap <C-K> <C-\>e strpart(getcmdline(), 0, getcmdpos() - 1)<CR>
+cnoremap <C-K> <C-\>e strpart(getcmdline(), 0, getcmdpos()-1)<CR>
 cnoremap <C-W> <C-\>e utils#cmdlineKillWord(0)<CR>
 cnoremap <M-d> <C-\>e utils#cmdlineKillWord(1, 1)<CR>
 cnoremap <M-x> <Delete>
 
-cnoremap <C-L> <C-K>
+cnoremap <C-_> <C-K>
 cnoremap <C-O> <S-Tab>
-cnoremap %% <C-R>=expand('%:h') . '/'<CR>
+cnoremap <expr> %% expand('%:h') . '/'
 
 
 " Executing External Commands
@@ -520,11 +548,11 @@ set shellpipe=\|&\ tee
 
 nnoremap <F9> :make!<CR>
 
-nnoremap <silent> <Leader>cl :copen<CR>
-nnoremap <silent> <Leader>ll :lopen<CR>
+nnoremap <Leader>cl <Cmd>copen<CR>
+nnoremap <Leader>ll <Cmd>lopen<CR>
 
-nnoremap <silent> <Leader>J :cnext<CR>
-nnoremap <silent> <Leader>K :cNext<CR>
+nnoremap <Leader>J <Cmd>cnext<CR>
+nnoremap <Leader>K <Cmd>cNext<CR>
 
 function! s:LocOrQfMove(dir) abort
     try
@@ -535,8 +563,8 @@ function! s:LocOrQfMove(dir) abort
     endtry
 endfunction
 
-nnoremap <silent> <Leader>j :call utils#tryCatchCall('<SID>LocOrQfMove', 'next')<CR>
-nnoremap <silent> <Leader>k :call utils#tryCatchCall('<SID>LocOrQfMove', 'prev')<CR>
+nnoremap <Leader>j <Cmd>call utils#tryCatchCall('<SID>LocOrQfMove', 'next')<CR>
+nnoremap <Leader>k <Cmd>call utils#tryCatchCall('<SID>LocOrQfMove', 'prev')<CR>
 
 
 " Language Specific
@@ -554,28 +582,32 @@ set imsearch=-1
 set signcolumn=yes
 set virtualedit=block
 
-let &viewdir = $VIMDIR . '/.view'
+let &viewdir = $VIMDIR . '/view'
 let &viminfo = "!,'100,<50,s10,h"
-let &viminfofile = $VIMDIR . '/.viminfo'
+let &viminfofile = $VIMDIR . '/viminfo'
 
 nnoremap Q <Nop>
 nnoremap <Leader>V :setl <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
-nnoremap <silent> <C-Q> :bd<CR>
-nnoremap <silent> <C-W><C-F> :vertical normal! <C-V><C-W>f<CR>
-nnoremap <silent> <Leader>D :%d<CR>
-nnoremap <silent> <Leader>ft :filetype detect<CR>
-nnoremap <silent> <Leader>q :close<CR>
-nnoremap <silent> <Leader>re :redraw!<CR>
-nnoremap <silent> <Leader>sc :new +setl\ bt=nofile\ bh=wipe\ noswf<CR>
+nnoremap <C-Q> <Cmd>bd<CR>
+nnoremap <silent> <C-W><C-F> :vsplit <C-R><C-P><CR>
+nnoremap <Leader>D <Cmd>%d<CR>
+nnoremap <Leader>q <Cmd>close<CR>
+nnoremap <Leader>sc <Cmd>new +setl\ bt=nofile\ bh=wipe\ noswf\ nobl<CR>
+nnoremap <Leader>ls :ls<CR>
+nnoremap <Leader>la :ls!<CR>
+
+nnoremap [<Space> O<Esc>'[
+nnoremap ]<Space> o<Esc>
 
 " Open
 nnoremap <Leader>ew :e<Space>
 nnoremap <Leader>es :sp<Space>
-nnoremap <Leader>ev :vsp<Space>
+nnoremap <Leader>ev :vs<Space>
 nnoremap <Leader>et :tabe<Space>
-nnoremap <silent> <Leader>ee :e<CR>
-nnoremap <silent> <Leader>e0 :e ++binary<CR>
-nnoremap <silent> <Leader>E :e!<CR>
+nnoremap <Leader>ee <Cmd>e \| f<CR>
+nnoremap <Leader>e0 <Cmd>e ++bin \| f<CR>
+nnoremap <Leader>e1 <Cmd>e ++nobin \| f<CR>
+nnoremap <Leader>E <Cmd>e! \| f<CR>
 
 " Read / Filter
 nnoremap <Leader>% :%!
@@ -602,41 +634,331 @@ nnoremap <Leader>h :tab help<Space>
 nnoremap <Leader>H :tab lhelpgrep<Space>
 
 " Diffs
-nnoremap <silent> <Leader>d; :,diffget<CR>
-nnoremap <silent> <Leader>d: :,diffput<CR>
-nnoremap <silent> <Leader>du :diffupdate<CR>
-nnoremap <silent> <Leader>dc :diffoff!<CR>
-nnoremap <silent> <Leader>dd :exec &diff ? 'diffoff' : 'diffthis'<CR>
-
-" Edit / Reload 'vimrc'
-nnoremap <silent> <Leader>rc :vs <C-R>=fnameescape(vimrc)<CR><CR>
-nnoremap <silent> <Leader>so :source <C-R>=fnameescape(vimrc)<CR>
-    \ \| call utils#echoWarn('vimrc reloaded')<CR>
+xnoremap <silent> <Leader>do :diffget<CR>
+nnoremap <silent> <Leader>do :.diffget<CR>
+xnoremap <silent> <Leader>dp :diffput<CR>
+nnoremap <silent> <Leader>dp :.diffput<CR>
+nnoremap <Leader>du <Cmd>diffup!<CR>
+nnoremap <Leader>dc <Cmd>diffoff!<CR>
+nnoremap <Leader>dd <Cmd>exec &diff ? 'diffoff' : 'diffthis'<CR>
 
 " ----------------------------------------
+
+" Better :bdelete {{{
+
+function! s:Bdelete(bang, rbeg, rend, ...) abort
+    let newbuf = -1
+    for bufref in empty(a:000) ? range(a:rbeg, a:rend) : a:000
+        if type(bufref) == v:t_string && match(bufref, '^\d\+$') >= 0
+            let bufref = str2nr(bufref)
+        endif
+        let target_buf = bufnr(bufref)
+        if target_buf < 0
+            call utils#echoError(printf('E94: No matching buffer for %s', bufref))
+            continue
+        endif
+        if !bufloaded(target_buf)
+            continue
+        endif
+        if empty(a:bang) && getbufvar(target_buf, '&mod')
+            call utils#echoError(printf('E89: No write since last change for buffer %s (add ! to override)', target_buf))
+            continue
+        endif
+        let srcwin = win_getid()
+        for win in win_findbuf(target_buf)
+            let [tab, winnr] = win_id2tabwin(win)
+            let [jumps, jumpi] = getjumplist(winnr, tab)
+            let [i, dstbuf] = [jumpi-1, -1]
+            while i >= 0
+                let buf = jumps[i].bufnr
+                if buf > 0 && buf != target_buf && bufloaded(buf)
+                    let dstbuf = buf
+                    break
+                endif
+                let i -= 1
+            endwhile
+            if dstbuf < 0
+                if newbuf < 0 | let newbuf = bufadd('') | endif
+                let &l:buflisted = 1
+                let dstbuf = newbuf
+            endif
+            call win_gotoid(win)
+            exec 'buffer' dstbuf
+        endfor
+        exec 'bdelete' . a:bang target_buf
+        call win_gotoid(srcwin)
+    endfor
+endfunction
+
+command! -nargs=* -range -addr=loaded_buffers -bang -complete=buffer
+    \ Bdelete call s:Bdelete(<q-bang>, <line1>, <line2>, <f-args>)
+nnoremap <C-Q> <Cmd>Bdelete<CR>
+
+" }}}
+
+" Capture command's output {{{
+
+function! s:Run(system, cmd, input, ...) abort
+    if a:system
+        let out = systemlist(a:cmd, a:input)
+        let reg = 's'
+    else
+        try
+            let list = &l:list
+            let &l:list = 0
+            let out = execute(a:cmd)[1:]
+        finally
+            let &l:list = list
+        endtry
+        let reg = 'e'
+    endif
+    call setreg(reg, out)
+    let mode = get(a:, 1, 1)
+    if mode < 0
+        redraw
+        echo join(getreg(reg, 1, 1,), "\n")
+        return
+    endif
+    if mode > 0
+        exec get(a:, 2, '') 'new'
+    endif
+    setl bt=nofile bh=hide noswf nobl
+    let b:run_system = a:system
+    let b:run_cmd = a:cmd
+    let b:run_input = a:input
+    let b:run_title = (a:system ? '!' : ':') . a:cmd
+    let [ma_, ro_] = [&l:ma, &l:ro]
+    try
+        setl ma noro
+        silent exec 'Preserve %d_ | put' reg '| 1d_'
+        if !a:system | %Sanitize | endif
+    catch /:E353:/
+    finally
+        let [&l:ma, &l:ro] = [ma_, ro_]
+        let v:statusmsg = b:run_title
+    endtry
+endfunction
+
+command! -nargs=1 -count=1 -bang -complete=command Execute
+    \ call utils#tryCatchCall('<SID>Run', 0, <q-args>, [], empty(<q-bang>) ? <count> > 0 : -1, <q-mods>)
+nnoremap <Leader>xe :Execute<Space>
+nnoremap <Leader>xE :Execute verb<Space>
+
+command! -nargs=1 -count=1 -bang -complete=shellcmd System
+    \ call utils#tryCatchCall('<SID>Run', 1, <q-args>, [], empty(<q-bang>) ? <count> > 0 : -1, <q-mods>)
+command! -nargs=1 -bang -complete=shellcmd SystemRegister
+    \ call utils#tryCatchCall('<SID>Run', 1, <q-args>, getreg(v:register, 1, 1), empty(<q-bang>) ? 1 : -1, <q-mods>)
+command! -nargs=1 -range -bang -complete=shellcmd SystemRange
+    \ call utils#tryCatchCall('<SID>Run', 1, <q-args>, getline(<line1>, <line2>), empty(<q-bang>) ? 1 : -1, <q-mods>)
+nnoremap <Leader>xs :System<Space>
+xnoremap <Leader>xs y:SystemRegister<Space>
+
+function! s:Reload(bang) abort
+    if exists('b:run_system')
+        call s:Run(b:run_system, b:run_cmd, b:run_input, 0)
+    else
+        if &l:buftype =~# '^\(nofile\|quickfix\|terminal\)$'
+            throw printf("\"%s\" buffer can't be reloaded", &l:buftype)
+        endif
+        silent exec 'Preserve edit' . a:bang
+    endif
+    let v:statusmsg = printf('[%s] %s', strftime('%H:%M:%S'), v:statusmsg)
+    call utils#echo(utils#shortenCmdline(v:statusmsg))
+endfunction
+
+command! -bang -bar Reload call utils#tryCatchCall('<SID>Reload', <q-bang>)
+nnoremap <Leader>rr <Cmd>Reload<CR>
+
+function! s:ReloadT(bang, d) abort
+    let d = str2nr(a:d)
+    let d = d == 0 ? 1 : d
+    try
+        let v:statusmsg = ''
+        while 1
+            call s:Reload('')
+            echon printf(' (every %ds)', d)
+            if !empty(a:bang)
+                normal! G
+            endif
+            exec 'sleep' d
+        endwhile
+    finally
+        call utils#echo(utils#shortenCmdline(v:statusmsg))
+    endtry
+endfunction
+
+command! -nargs=? -bang -bar ReloadT call utils#tryCatchCall('<SID>ReloadT', <q-bang>, <q-args>)
+nnoremap <Leader>R <Cmd>ReloadT<CR>
+nnoremap <Leader>F <Cmd>ReloadT!<CR>
+
+" }}}
+
+" Displaying options {{{
+
+function! s:Option(opt) abort
+    if exists('&' . a:opt)
+        echo printf('&g:%s=%s', a:opt, eval('&g:' . a:opt))
+        echo printf('&l:%s=%s', a:opt, eval('&l:' . a:opt))
+    else
+        call utils#echoError(printf('"%s" is not an option', a:opt))
+    endif
+endfunction
+
+command! -nargs=1 -complete=option Option call s:Option(<q-args>)
+nnoremap <Leader>oo :Option<Space>
+
+function! s:BufOrWinOptions(getvar) abort
+    for opt in sort(keys(a:getvar('&')))
+        let g = a:getvar('&g:' . opt)
+        let l = a:getvar('&l:' . opt)
+        if type(g) == v:t_number
+            echo printf('%-15s%10s%10s', opt, g, l)
+        else
+            echo printf("%-15s\n  =%s\n  =%s", opt, g, l)
+        endif
+    endfor
+endfunction
+
+function! s:BufAndWinOptions() abort
+    echo 'Buffer options:'
+    echo '----------------------------------------'
+    call s:BufOrWinOptions(function('getbufvar', ['']))
+    echon "\n"
+    echo 'Window options:'
+    echo '----------------------------------------'
+    call s:BufOrWinOptions(function('getwinvar', [0]))
+endfunction
+
+command! -count=1 BufWinOptions <count>Execute call s:BufAndWinOptions()
+
+" }}}
+
+" Edit / Reload 'vimrc' {{{
+
+nnoremap <silent> <Leader>rc :vsplit <C-R>=fnameescape(vimrc)<CR><CR>
+
+try
+function! s:VimrcReload() abort
+    let winrestcmd = winrestcmd()
+
+    new +setl\ bt=nofile\ bh=wipe\ noswf\ nobl
+    exec 'source' fnameescape(g:vimrc)
+    close
+
+    "let winid = popup_create('VimrcReload', {'hidden': 1})
+    "call win_execute(winid, 'source ' . fnameescape(g:vimrc))
+    "call popup_close(winid)
+
+    "let winids = map(getwininfo(), 'v:val.winid')
+    "for opt in keys(getwinvar(0, '&'))
+    "   let val = getwinvar(0, '&g:' . opt)
+    "   for winid in winids
+    "       call win_execute(winid, printf('let &g:%s = %s', opt, string(val)))
+    "   endfor
+    "endfor
+
+    exec winrestcmd
+    redraw
+    call utils#echoWarn('vimrc reloaded')
+endfunction
+catch /:E127:/
+endtry
+
+command! -bar VimrcReload call s:VimrcReload()
+nnoremap <Leader>so <Cmd>VimrcReload<CR>
+
+" }}}
+
+" Edit registers {{{
+
+function! s:Register(regname, value) abort
+    let regname = a:regname
+    if empty(regname)
+        let regname = '"'
+        if &clipboard =~# 'unnamed' | let regname = '*' | endif
+        if &clipboard =~# 'unnamedplus' | let regname = '+' | endif
+    endif
+    let value = substitute(a:value, '^=', '', '')
+    call setreg(regname, value)
+endfunction
+
+command! -nargs=? -register Register call s:Register(<q-reg>, <q-args>)
+nnoremap <Leader>re :Register <C-R>=v:register<CR> =<C-R>=getreg(v:register)<CR>
+
+" }}}
 
 " Formatting {{{
 
 function! s:Format(...) range abort
     let ft = get(a:, 1, &ft)
-
-    "let filename = shellescape(expand('%'), 1)
-    "if a:firstline != 1 || a:lastline != v:lnum
-    "    let firstline = a:firstline
-    "    let lastline = a:lastline
-    "endif
-    "let shiftwidth = &shiftwidth
-    "let textwidth = &textwidth
-
-    exec join([a:firstline . ',' . a:lastline, '!format', ft])
+    exec join([a:firstline . ',' . a:lastline, '!format', '-s', &sw, '-t', &tw, ft])
 endfunction
 
-command! -nargs=? -range -bar Format silent Preserve <line1>,<line2> call <SID>Format(<f-args>)
-nnoremap <silent> <Leader>fo :%Format<CR>
+command! -nargs=? -range -bar Format silent Preserve <line1>,<line2> call s:Format(<f-args>)
 xnoremap <silent> <Leader>fo :Format<CR>
+nnoremap <silent> <Leader>fo :%Format<CR>
 
 xnoremap <silent> <Leader>px :Format xml<CR>
 nnoremap <silent> <Leader>px :%Format xml<CR>
+
+" }}}
+
+" MoveToTab {{{
+
+function! s:MoveToTab(next) abort
+    if tabpagenr('$') == 1 && winnr('$') == 1 | return | endif
+    let [tab, srcwin] = [tabpagenr(), win_getid()]
+    if a:next ? tab < tabpagenr('$') : tab > 1
+        exec a:next ? 'tabnext' : 'tabprev'
+        botright vsplit
+    else
+        if winnr('$') == 1 | return | endif
+        exec a:next ? 'tabnew' : '0tabnew'
+    endif
+    exec 'buffer' winbufnr(srcwin)
+    let dstwin = win_getid()
+    call win_gotoid(srcwin)
+    close!
+    call win_gotoid(dstwin)
+endfunction
+
+command! -bar MoveToNextTab call s:MoveToTab(1)
+command! -bar MoveToPrevTab call s:MoveToTab(0)
+nnoremap <C-W><M-l> <Cmd>MoveToNextTab<CR>
+nnoremap <C-W><M-h> <Cmd>MoveToPrevTab<CR>
+
+" }}}
+
+" Next/PrevClosedFold <https://stackoverflow.com/questions/9403098/is-it-possible-to-jump-to-closed-folds-in-vim> {{{
+
+function! s:MoveToClosedFold(next) abort
+    let cmd = 'normal! z' . (a:next ? 'j' : 'k')
+    let view = winsaveview()
+    let [lnum0, lnum, isopen] = [0, view.lnum, 1]
+    while lnum != lnum0 && isopen
+        exec cmd
+        let [lnum0, lnum] = [lnum, line('.')]
+        let isopen = foldclosed(lnum) < 0
+    endwhile
+    if isopen | call winrestview(view) | endif
+endfunction
+
+command! -bar NextClosedFold call s:MoveToClosedFold(1)
+command! -bar PrevClosedFold call s:MoveToClosedFold(0)
+nnoremap <Leader>zj <Cmd>NextClosedFold<CR>
+nnoremap <Leader>zk <Cmd>PrevClosedFold<CR>
+
+" }}}
+
+" Preserve cursor / window position, last search pattern, and the others {{{
+
+function! s:Preserve(cmd) abort
+    let view = winsaveview()
+    exec 'keepa keepj keepm keepp' a:cmd
+    call winrestview(view)
+endfunction
+
+command! -nargs=1 Preserve call s:Preserve(<q-args>)
 
 " }}}
 
@@ -666,17 +988,6 @@ nnoremap <Leader>df :DiffTo <C-R>=expand('%')<CR>
 
 " }}}
 
-" Macros {{{
-
-function! s:Macro(macro) abort
-    call setreg('m', a:macro)
-    normal! @m
-endfunction
-
-command! -nargs=1 Macro call s:Macro(<q-args>)
-
-" }}}
-
 " Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding {{{
 
 function! s:MetaLess(cmd) abort
@@ -686,27 +997,17 @@ endfunction
 if !has('nvim')
 
 function! s:MetaSetup(enable) abort
-    " Meta + [0-z]
-    " don't include O and P because of conflicts in xterm
-    let chars = '0123456789ABCDEFGHIJKLMNQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-    let [i, n] = [0, len(chars)]
-    while i < n
-        let c = chars[i]
-        if a:enable
-            exec 'set <M-' . c . ">=\e" . c
-        else
-            exec 'set <M-' . c . '>='
+    for c in map(range(1, 126), 'nr2char(v:val)')
+        if stridx('|"', c) >= 0
+            let c = '\' . c
+        elseif stridx("\x09\x0a\x16 >[]", c) >= 0
+            continue
         endif
-        let i += 1
-    endwhile
-    " Meta + C-L, C-H
-    if a:enable
-        exec "set <M-C-L>=\e\x0c"
-        exec "set <M-C-H>=\e\x08"
-    else
-        set <M-C-L>=
-        set <M-C-H>=
-    endif
+        let kc = printf('<M-%s>', c)
+        exec printf('set %s=%s', kc, a:enable ? "\e" . c : '')
+        if empty(maparg(kc, 'i')) | exec printf('inoremap %s <Nop>', kc) | endif
+        if empty(maparg(kc, 'c')) | exec printf('cnoremap %s <Nop>', kc) | endif
+    endfor
     let g:meta_enabled = a:enable
     if !has('vim_starting')
         call utils#echoWarn('meta ' . (g:meta_enabled ? 'on' : 'off'))
@@ -723,23 +1024,11 @@ function! s:MetaLess(cmd) abort
     endif
 endfunction
 
-command! -bar MetaToggle call s:MetaSetup(!meta_enabled)
-nnoremap <silent> <Leader>mm :MetaToggle<CR>
+command! -bar MetaToggle call s:MetaSetup(!get(g:, 'meta_enabled', 0))
+nnoremap <Leader>mm <Cmd>MetaToggle<CR>
 silent call s:MetaSetup(1)
 
 endif
-
-" }}}
-
-" Preserve cursor / window position, last search pattern, and the others {{{
-
-function! s:Preserve(cmd) abort
-    let view = winsaveview()
-    exec 'keepa keepj keepm keepp' a:cmd
-    call winrestview(view)
-endfunction
-
-command! -nargs=1 Preserve call s:Preserve(<q-args>)
 
 " }}}
 
@@ -747,19 +1036,17 @@ command! -nargs=1 Preserve call s:Preserve(<q-args>)
 
 function! s:Themes() abort
     let themes = ['luciusblack', 'hybrid', 'bclear']
-    let l = len(themes)
-    let i = get(s:, 'themes_last_index', 0)
+    let [i, lasti] = [get(s:, 'themes_last_index'), len(themes)-1]
     while 1
-        let theme = themes[i]
-        exec 'colorscheme' theme
-        redraw | echo theme
+        exec 'colorscheme' themes[i]
+        redraw | echo themes[i]
         let c = getchar()
         if c == 3 || c == 113
             break
         elseif c == 107
-            let i = i > 0 ? i - 1 : l - 1
+            let i = i > 0 ? i-1 : lasti
         else
-            let i = i < l - 1 ? i + 1 : 0
+            let i = i < lasti ? i+1 : 0
         endif
     endwhile
     let s:themes_last_index = i
@@ -767,7 +1054,7 @@ function! s:Themes() abort
 endfunction
 
 command! Themes call s:Themes()
-nnoremap <silent> <Leader>th :Themes<CR>
+nnoremap <Leader>th <Cmd>Themes<CR>
 
 " }}}
 
@@ -786,187 +1073,39 @@ command! -nargs=? -bar W call s:Write(<f-args>)
 " Zoom / Restore window {{{
 
 function! s:ZoomToggle() abort
-    if get(t:, 'zoomed', 0)
+    if get(t:, 'zoomed')
         exec t:zoom_winrestcmd
         let t:zoomed = 0
     else
         let t:zoom_winrestcmd = winrestcmd()
         resize
-        vertical resize
+        vert resize
         let t:zoomed = 1
     endif
 endfunction
 
 command! -bar ZoomToggle call s:ZoomToggle()
-nnoremap <silent> <M-m> :ZoomToggle<CR>
-nnoremap <silent> <M-z> :ZoomToggle<CR>
-
-" }}}
-
-" MoveToTab <http://vim.wikia.com/wiki/Move_current_window_between_tabs> {{{
-
-function! s:MoveToTab(next) abort
-    if tabpagenr('$') == 1 && winnr('$') == 1
-        return
-    endif
-    let tab_nr = tabpagenr('$')
-    let cur_buf = bufnr('%')
-    if a:next ? tabpagenr() < tab_nr : tabpagenr() != 1
-        close!
-        if tab_nr == tabpagenr('$')
-            exec a:next ? 'tabnext' : 'tabprev'
-        endif
-        botright vsplit
-    else
-        close!
-        exec a:next ? 'tabnew' : '0tabnew'
-    endif
-    exec 'buffer' cur_buf
-endfunction
-
-command! -bar MoveToNextTab call s:MoveToTab(1)
-command! -bar MoveToPrevTab call s:MoveToTab(0)
-nnoremap <silent> <C-W><M-l> :MoveToNextTab<CR>
-nnoremap <silent> <C-W><M-h> :MoveToPrevTab<CR>
-
-" }}}
-
-" Next/PrevClosedFold <https://stackoverflow.com/questions/9403098/is-it-possible-to-jump-to-closed-folds-in-vim> {{{
-
-function! s:MoveToClosedFold(next) abort
-    let cmd = 'normal! z' . (a:next ? 'j' : 'k')
-    let view = winsaveview()
-    let [lnum0, lnum, isopen] = [0, view . lnum, 1]
-    while lnum != lnum0 && isopen
-        exec cmd
-        let [lnum0, lnum] = [lnum, line('.')]
-        let isopen = foldclosed(lnum) < 0
-    endwhile
-    if isopen
-        call winrestview(view)
-    endif
-endfunction
-
-command! -bar NextClosedFold call s:MoveToClosedFold(1)
-command! -bar PrevClosedFold call s:MoveToClosedFold(0)
-nnoremap <silent> <Leader>zj :NextClosedFold<CR>
-nnoremap <silent> <Leader>zk :PrevClosedFold<CR>
-
-" }}}
-
-" Displaying options {{{
-
-function! s:Option(optname) abort
-    if exists('&' . a:optname)
-        exec 'echo printf("&g:%s=%s", a:optname, &g:' . a:optname ')'
-        exec 'echo printf("&l:%s=%s", a:optname, &l:' . a:optname ')'
-    else
-        call utils#echoError(printf('"%s" is not an option', a:optname))
-    endif
-endfunction
-
-command! -nargs=1 -complete=option Option call s:Option(<q-args>)
-nnoremap <Leader>oo :Option<Space>
-
-" }}}
-
-" Capture command's output {{{
-
-function! s:Run(system, cmd, input, ...) abort
-    if a:system
-        let out = systemlist(a:cmd, a:input)
-        let reg = 's'
-    else
-        let out = execute(a:cmd)[1:]
-        let reg = 'e'
-    endif
-    call setreg(reg, out)
-    let mode = get(a:, 1, 1)
-    if mode is '!'
-        redraw
-        echo join(getreg(reg, 1, 1,), "\n")
-        return
-    endif
-    if mode is 1 || mode is ''
-        exec get(a:, 2, '') 'new'
-    endif
-    setl bt=nofile bh=wipe noswf
-    let b:run_system = a:system
-    let b:run_cmd = a:cmd
-    let b:run_input = a:input
-    let b:run_title = (a:system ? '!' : ':') . a:cmd
-    let [ma_, ro_] = [&l:ma, &l:ro]
-    try
-        setl ma noro
-        silent exec 'Preserve %d_ | put' reg '| 1d_'
-    catch /:E353:/
-    finally
-        let [&l:ma, &l:ro] = [ma_, ro_]
-        let v:statusmsg = b:run_title
-    endtry
-endfunction
-
-command! -nargs=1 -count=1 -bang -complete=command Execute
-    \ call utils#tryCatchCall('<SID>Run', 0, <q-args>, [], <count> ? <q-bang> : 2, <q-mods>)
-nnoremap <Leader>xe :Execute<Space>
-
-command! -nargs=1 -count=1 -bang -complete=shellcmd System
-    \ call utils#tryCatchCall('<SID>Run', 1, <q-args>, [], <count> ? <q-bang> : 2, <q-mods>)
-command! -nargs=1 -bang -complete=shellcmd SystemRegister
-    \ call utils#tryCatchCall('<SID>Run', 1, <q-args>, getreg(v:register, 1, 1), <q-bang>, <q-mods>)
-command! -nargs=1 -range -bang -complete=shellcmd SystemRange
-    \ call utils#tryCatchCall('<SID>Run', 1, <q-args>, getline(<line1>, <line2>), <q-bang>, <q-mods>)
-nnoremap <Leader>xs :System<Space>
-xnoremap <Leader>xs y:SystemRegister<Space>
-
-function! s:Reload(bang) abort
-    if exists('b:run_system')
-        call <SID>Run(b:run_system, b:run_cmd, b:run_input, 2)
-    else
-        if &l:buftype =~# '^\(nofile\|quickfix\|terminal\)$'
-            throw printf("\"%s\" buffer can't be reloaded", &l:buftype)
-        endif
-        silent exec 'Preserve edit' . a:bang
-    endif
-    let v:statusmsg = printf('[%s] %s', strftime('%H:%M:%S'), v:statusmsg)
-    call utils#echo(utils#shortenCmdline(v:statusmsg))
-endfunction
-
-command! -bang -bar Reload call utils#tryCatchCall('<SID>Reload', <q-bang>)
-nnoremap <silent> <Leader>rr :Reload<CR>
-
-function! s:ReloadT(bang, d) abort
-    let d = str2nr(a:d)
-    let d = d == 0 ? 1 : d
-    try
-        let v:statusmsg = ''
-        while 1
-            call s:Reload('')
-            echon printf(' (every %ds)', d)
-            if !empty(a:bang)
-                normal! G
-            endif
-            exec 'sleep' d
-        endwhile
-    finally
-        call utils#echo(utils#shortenCmdline(v:statusmsg))
-    endtry
-endfunction
-
-command! -nargs=? -bang -bar ReloadT call utils#tryCatchCall('<SID>ReloadT', <q-bang>, <q-args>)
-nnoremap <silent> <Leader>R :ReloadT<CR>
-nnoremap <silent> <Leader>F :ReloadT!<CR>
+nnoremap <M-m> <Cmd>ZoomToggle<CR>
+nnoremap <M-z> <Cmd>ZoomToggle<CR>
 
 " }}}
 
 " ----------------------------------------
 
-command! -nargs=? -range Split call utils#tryCatch('Preserve <line1>,<line2>s/'
-    \. (!empty(<q-args>) ? escape(<q-args>, '/') : '\s\+') . '/\r/ge')
+command! -nargs=? -range Split
+    \ call utils#tryCatch(
+    \     printf('Preserve <line1>,<line2>s/%s/\r/ge',
+    \         !empty(<q-args>) ? escape(<q-args>, '/') : '\s\+'
+    \     )
+    \ )
 
-command! -nargs=? -range Join call utils#tryCatch('Preserve <line1>,'
-    \. (<line2> > <line1> ? <line2>-1 : <line2>) . 's/\n/'
-    \. (!empty(<q-args>) ? escape(<q-args>, '/&') : ' ') . '/ge')
+command! -nargs=? -range Join
+    \ call utils#tryCatch(
+    \     printf('Preserve <line1>,%ds/\n/%s/ge',
+    \         <line2> > <line1> ? <line2>-1 : <line2>,
+    \         !empty(<q-args>) ? escape(<q-args>, '/&') : ' '
+    \     )
+    \ )
 
 command! -count=1 PackPath exec '<count>Execute set pp' | exec 'normal! df=' | Split,
 command! -count=1 RuntimePath exec '<count>Execute set rtp' | exec 'normal! df=' | Split,
@@ -975,11 +1114,11 @@ command! -count=1 ScriptNames <count>Execute scriptnames
 command! DelDirs Preserve g/\/$/d
 
 command! -range -bar Sanitize silent Preserve <line1>,<line2> s/\s\+$//e
-nnoremap <silent> <Leader>pp :%Sanitize<CR>
 xnoremap <silent> <Leader>pp :Sanitize<CR>
+nnoremap <silent> <Leader>pp :%Sanitize<CR>
 
-nnoremap <silent> <Leader>== :Preserve normal! gg=G<CR>
-nnoremap <silent> <Leader>gq :Preserve normal! gggqG<CR>
+nnoremap <Leader>== <Cmd>Preserve normal! gg=G<CR>
+nnoremap <Leader>gq <Cmd>Preserve normal! gggqG<CR>
 
 xnoremap <silent> <Leader>uu :SystemRange! urls -o<CR>
 nnoremap <silent> <Leader>uu :.SystemRange! urls -o<CR>
@@ -989,14 +1128,9 @@ xnoremap <silent> <Leader>uy :SystemRange! urls -y<CR>
 nnoremap <silent> <Leader>uy :.SystemRange! urls -y<CR>
 nnoremap <silent> <Leader>uY :%SystemRange! urls -y<CR>
 
-nnoremap <Leader>gg :vertical System git show HEAD:./
+nnoremap <Leader>gg :vert System git show HEAD:./
 
 " ----------------------------------------
-
-filetype plugin indent on
-if !exists('g:syntax_on')
-    syntax enable
-endif
 
 let loaded_2html_plugin = 1
 let loaded_getscriptPlugin = 1
@@ -1013,8 +1147,14 @@ if has('nvim')
 endif
 
 packadd! ansiesc:drchip
+packadd! cfilter
 packadd! colorschemes
 packadd! matchit
+
+filetype plugin indent on
+if !exists('g:syntax_on')
+    syntax enable
+endif
 
 ColorsReset
 
@@ -1022,30 +1162,53 @@ augroup vimrc_base
     autocmd!
 
     autocmd BufEnter,BufWinEnter * match none
-    autocmd BufWritePre * let &backupext = substitute(expand('%:p:h'), '/', '%', 'g')
-    autocmd CmdwinEnter * call utils#bufSpecial()
     autocmd FileChangedRO * setl noro
+    autocmd QuickFixCmdPost [^l]* cwindow
+
+    autocmd CmdwinEnter *
+        \  call utils#bufSpecial()
+        \| noremap <buffer> <C-J> <C-C><C-E>
 
     autocmd BufReadPost *
         \  if line("'\"") >= 1 && line("'\"") <= line('$') && &ft !~# 'commit'
         \|     exec 'normal! g`"'
         \| endif
 
-    " tabpagecd <https://github.com/kana/vim-tabpagecd>
-    autocmd TabEnter * if exists('t:cwd') | cd `=t:cwd` | endif
-    autocmd TabLeave * let t:cwd = getcwd()
+    function! s:TerminalSetup() abort
+        call utils#bufSpecial()
+        setl list
+        let &l:stl = printf('%%{%%%sTerminalStatusline()%%}', expand('<SID>'))
+    endfunction
 
-    autocmd QuickFixCmdPost [^l]* cwindow
-    autocmd QuickFixCmdPost l* lwindow
+    function! s:TerminalStatusline() abort
+        let stl = '%n'
+        let bin = matchstr(expand('%'), '\C^term://\%(.\{-}//\%(\d\+:\)\?\)\?\zs.*')
+        if empty(bin)
+            let stl .= ' %<%f'
+        else
+            if bin == exepath(&shell) | let bin = &shell | endif
+            let stl .= printf(' !%s', bin)
+        endif
+        if exists('b:term_title') && match(b:term_title, '\C^term://') < 0
+            let stl .= printf(' [%s]', b:term_title)
+        endif
+        if mode() == 'n'
+            let stl .= '%= %6(%l:%v%) %P'
+        endif
+        return stl
+    endfunction
 
     if has('nvim')
-        autocmd TermOpen * call utils#bufSpecial()
+        autocmd TermOpen,TermLeave * call s:TerminalSetup()
+        autocmd TermOpen * startinsert
+        autocmd TermEnter * setl nolist
     else
+        autocmd TerminalWinOpen * call s:TerminalSetup()
         autocmd TermChanged * silent call s:MetaSetup(meta_enabled)
     endif
 
-    autocmd BufWritePost ~/.Xresources !xrdb -screen -load ~/.Xresources
     autocmd BufWritePost conky.conf !killall -USR1 conky
+    autocmd BufWritePost ~/.Xresources !xrdb -screen -load ~/.Xresources
 
     autocmd FileType diff call utils#bufSpecial()
     autocmd FileType mail call utils#bufSpecial() | setl tw=72

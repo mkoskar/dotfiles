@@ -5,7 +5,13 @@ set -eu -o pipefail
 prgname=${0##*/}
 
 _usage() {
-    echo "usage: $prgname TODO"
+    cat <<-EOF
+	usage: $prgname cat {dsa | ec | rsa | x509 | req} input
+	       $prgname modulus {dsa | ec | rsa | x509 | req} input
+	       $prgname gen-rsa
+	       $prgname gen-rsa-csr
+	       $prgname check
+	EOF
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2

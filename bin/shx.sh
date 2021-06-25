@@ -488,7 +488,10 @@ anrec() {
     asciinema rec -w 2 "$outfile"
 }
 
-base() { export BASEDIR=${1:-$PWD}; }
+base() {
+    [ "$PWD" != "$HOME" ] || return
+    export BASEDIR=${1:-$PWD}
+}
 unbase() { unset BASEDIR; }
 
 # shellcheck disable=SC2164
@@ -534,6 +537,9 @@ h() {
         *) fc -l ;;
     esac
 }
+
+hread() { fc -RI; }
+hwrite() { fc -W; }
 
 i() {
     [ $# -gt 0 ] || { shi; return; }

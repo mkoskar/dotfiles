@@ -27,8 +27,8 @@ URxvt.font:                     xft:Terminus:pixelsize=16, \
 URxvt.boldItalicFont:           xft:Dejavu Sans Mono:bold:italic
 URxvt.italicFont:               xft:Dejavu Sans Mono:italic
 
-!URxvt.depth:                    32
 URxvt.cutchars:                 '"()*,<>[]{}|\''
+URxvt.depth:                    32
 URxvt.iso14755:                 true
 URxvt.iso14755_52:              false
 URxvt.jumpScroll:               true
@@ -64,6 +64,7 @@ URxvt.keysym.M-C-o:             perl:url-picker
 #undef TCOLOR_PREFIX
 #define TCOLOR_PREFIX URxvt.
 #include ".xcolors/resources"
+P()background: [90]TCOLOR_BG
 
 
 ! XTerm
@@ -130,7 +131,11 @@ XTerm.vt100.translations:           #override \n\
                                     :Shift <Key>Home    : scroll-to(begin) \n\
                                     :Shift <Key>End     : scroll-to(end) \n\
                                     :Shift <Key>Return  : scroll-to(end) \n\
-                                    :Ctrl Alt <Key>[    : keymap(visual)
+                                    :Ctrl Alt <Key>[    : keymap(visual) \n\
+                                    :Ctrl Alt <Key>1 : popup-menu(mainMenu) \n\
+                                    :Ctrl Alt <Key>2 : popup-menu(vtMenu) \n\
+                                    :Ctrl Alt <Key>3 : popup-menu(fontMenu) \n\
+                                    :Ctrl Alt <Key>4 : popup-menu(tekMenu)
 
 XTerm.vt100.visualKeymap.translations: \
                                     #override \n\

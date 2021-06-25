@@ -55,6 +55,15 @@ cd ~/.vim
 mkdir -p pack/custom/opt
 cd pack/custom/opt
 
+# ----------------------------------------
+
+# TODO:
+#
+# https://github.com/Konfekt/FastFold
+# https://github.com/matze/vim-move
+# https://github.com/mg979/vim-visual-multi
+# https://github.com/norcalli/nvim-terminal.lua
+
 echo
 grep -vxE '\s*|(\s*#.*)' <<-EOF | parallel --colsep \\s+ --bar from_git
 
@@ -75,6 +84,11 @@ grep -vxE '\s*|(\s*#.*)' <<-EOF | parallel --colsep \\s+ --bar from_git
 	limelight           https://github.com/junegunn/limelight.vim
 	neomake             https://github.com/neomake/neomake
 	nerdtree            https://github.com/preservim/nerdtree
+	nvim-lspconfig      https://github.com/neovim/nvim-lspconfig
+	nvim-plenary        https://github.com/nvim-lua/plenary.nvim
+	nvim-popup          https://github.com/nvim-lua/popup.nvim
+	nvim-telescope      https://github.com/nvim-telescope/telescope.nvim
+	nvim-treesitter     https://github.com/nvim-treesitter/nvim-treesitter
 	repeat              https://github.com/tpope/vim-repeat
 	speeddating         https://github.com/tpope/vim-speeddating
 	stabs               https://github.com/Thyrum/vim-stabs
@@ -93,5 +107,11 @@ from_vba ansiesc:drchip \
     http://www.drchip.org/astronaut/vim/vbafiles/AnsiEsc.vba.gz
 
 echo
-echo $'> helptags ALL\n'
-vim_batch -c 'try | helptags ALL | finally | qa! | endtry'
+echo '> helptags'
+vim_batch -c '
+    for dir in glob("*/doc", 1, 1)
+        try | exec "helptags" dir | catch | endtry
+    endfor
+    qa!
+'
+echo

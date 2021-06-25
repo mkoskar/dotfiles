@@ -14,9 +14,6 @@ SCRIPT_VERSION = '0.1'
 SCRIPT_LICENSE = 'Apache 2.0'
 SCRIPT_DESC = 'Personal customizations'
 
-# Global {{{
-# ----------------------------------------
-
 w.register(
     SCRIPT_NAME,
     SCRIPT_AUTHOR,
@@ -26,6 +23,10 @@ w.register(
     '',
     ''
 )
+
+
+# General {{{
+# ----------------------------------------
 
 hd_bar = w.hdata_get('bar')
 hd_bar_item = w.hdata_get('bar_item')
@@ -39,6 +40,53 @@ hd_server = w.hdata_get('irc_server')
 hd_win = w.hdata_get('window')
 hd_win_scroll = w.hdata_get('window_scroll')
 
+
+def buffers_iter(start=None, forward=True, wrap=True):
+    ref_start = 'gui_buffers' if forward else 'last_gui_buffer'
+    ref_next = 'next_buffer' if forward else 'prev_buffer'
+    item = start if start else w.hdata_get_list(hd_buf, ref_start)
+    while item:
+        yield item
+        item = w.hdata_pointer(hd_buf, item, ref_next)
+        if start and wrap and not item:
+            item = w.hdata_get_list(hd_buf, ref_start)
+        if start == item:
+            break
+
+
+def layouts_iter():
+    item = w.hdata_get_list(hd_layout, 'gui_layouts')
+    while item:
+        yield item
+        item = w.hdata_pointer(hd_layout, item, 'next_layout')
+
+
+def layouts_name_iter():
+    for layout in layouts_iter():
+        yield w.hdata_string(hd_layout, layout, 'name')
+
+
+def servers_iter():
+    item = w.hdata_get_list(hd_server, 'irc_servers')
+    while item:
+        yield item
+        item = w.hdata_pointer(hd_server, item, 'next_server')
+
+
+def windows_buffer_iter():
+    for window in windows_iter():
+        yield window, w.hdata_pointer(hd_win, window, 'buffer')
+
+
+def windows_iter():
+    item = w.hdata_get_list(hd_win, 'gui_windows')
+    while item:
+        yield item
+        item = w.hdata_pointer(hd_win, item, 'next_window')
+
+
+# ----------------------------------------
+
 core = w.buffer_search_main()
 
 
@@ -46,13 +94,22 @@ def cmd(command, buffer=core, mute=True):
     w.command(buffer, ('/mute ' if mute else '/') + command)
 
 
+def key_bind(ctxt, key, val):
+    cmd(f'key bindctxt {ctxt} {key} {val}')
+
+
 def msg(message, buffer):
     w.command(buffer, message)
 
 
-def key_bind(ctxt, key, val):
-    cmd(f'key bindctxt {ctxt} {key} {val}')
+def server_opt(server_name, opt_name):
+    opt = w.config_get(f'irc.server.{server_name}.{opt_name}')
+    if w.config_option_is_null(opt):
+        opt = w.config_get(f'irc.server_default.{opt_name}')
+    return w.config_string(opt)
 
+
+# ----------------------------------------
 
 def cb_bar_item_cmd_btn(data, item, window, buffer, extra_info):
     item_name = w.hdata_string(hd_bar_item, item, 'name')
@@ -75,39 +132,31 @@ def bar_item_cmd_btn(name, label, cmd, update_on=[]):
     for signal in update_on:
         w.hook_signal(signal, 'cb_bar_item_cmd_btn_update', name)
 
-
 # }}}
+
 
 # Buffers {{{
 # ----------------------------------------
 
-MERGE_RULES = [
-    r'^irc\.[^.]*\.#(bash|zsh)$',
-    r'^irc\.[^.]*\.#archlinux(-offtopic)?$',
-    r'^irc\.[^.]*\.#libera(-offtopic)?$',
+BUFFER_MERGE_RULES = [
+    re.compile(r'^irc\.[^.]*\.#(bash|zsh)$'),
+    re.compile(r'^irc\.[^.]*\.#archlinux(-offtopic)?$'),
+    re.compile(r'^irc\.[^.]*\.#libera(-offtopic)?$'),
 ]
 
-timer_sort_merge = None
+re_archlinux = re.compile(r'^#archlinux(|-.*)$')
+re_bitlbee_control = re.compile(r'^irc\.bitlbee[^.]*\.&')
+re_offtopic = re.compile(r'^(.*)-offtopic$')
+re_twitter = re.compile(r'^irc\.bitlbee[^.]*\.#twitter_mkoskar$')
+
+timer_buffer_sort_merge = None
 
 
-def buffers_iter(start=None, forward=True, wrap=True):
-    ref_start = 'gui_buffers' if forward else 'last_gui_buffer'
-    ref_next = 'next_buffer' if forward else 'prev_buffer'
-    item = start if start else w.hdata_get_list(hd_buf, ref_start)
-    while item:
-        yield item
-        item = w.hdata_pointer(hd_buf, item, ref_next)
-        if start and wrap and not item:
-            item = w.hdata_get_list(hd_buf, ref_start)
-        if start == item:
-            break
-
-
-def merge(buffer):
+def buffer_merge(buffer):
     merge_group = None
     bname = w.buffer_get_string(buffer, 'full_name')
-    for idx, rule in enumerate(MERGE_RULES):
-        if re.match(rule, bname):
+    for idx, rule in enumerate(BUFFER_MERGE_RULES):
+        if rule.match(bname):
             w.buffer_set(buffer, 'localvar_set_merge_group', str(idx))
             merge_group = str(idx)
             break
@@ -125,7 +174,7 @@ def merge(buffer):
             break
 
 
-def sort_merged():
+def buffer_sort_merged():
     buffers_by_number = {}
 
     for buffer in buffers_iter():
@@ -156,10 +205,10 @@ def sort_merged():
             cmd('input switch_active_buffer', buffers[active - 1])
 
 
-def cb_timer_sort_merge(data, remaining_calls):
-    global timer_sort_merge
-    sort_merged()
-    timer_sort_merge = None
+def cb_timer_buffer_sort_merge(data, remaining_calls):
+    global timer_buffer_sort_merge
+    buffer_sort_merged()
+    timer_buffer_sort_merge = None
     return w.WEECHAT_RC_OK
 
 
@@ -176,17 +225,17 @@ def buffer_init(buffer):
         name = bname_[2]
         w.buffer_set(buffer, 'nicklist', '0')
 
-        if re.match(r'^irc\.bitlbee[^.]*\.#twitter_mkoskar$', bname):
+        if re_twitter.match(bname):
             name = '#twitter'
             w.buffer_set(buffer, 'highlight_words', '@mkoskar')
 
-        elif re.match(r'^irc\.bitlbee[^.]*\.&', bname):
+        elif re_bitlbee_control.match(bname):
             w.buffer_set(buffer, 'nicklist', '1')
 
-        if m := re.match(r'^#archlinux(|-.*)$', name):
+        if m := re_archlinux.match(name):
             name = '#arch' + m.group(1)
 
-        if m := re.match(r'^(.*)-offtopic$', name):
+        if m := re_offtopic.match(name):
             name = m.group(1) + '-ot'
 
         w.buffer_set(buffer, 'short_name', name)
@@ -194,10 +243,10 @@ def buffer_init(buffer):
     w.buffer_set(buffer, 'time_for_each_line', '0')
     if bname == 'perl.highmon':
         w.buffer_set(buffer, 'time_for_each_line', '1')
-    merge(buffer)
-    global timer_sort_merge
-    if not timer_sort_merge:
-        timer_sort_merge = w.hook_timer(5, 0, 1, 'cb_timer_sort_merge', '')
+    buffer_merge(buffer)
+    global timer_buffer_sort_merge
+    if not timer_buffer_sort_merge:
+        timer_buffer_sort_merge = w.hook_timer(5, 0, 1, 'cb_timer_buffer_sort_merge', '')
 
 
 def cb_signal_buffer_opened(data, signal, buffer):
@@ -238,21 +287,9 @@ w.hook_command('buffer_hot_prev', '', '', '', '', 'cb_command_buffer_hot_prev', 
 
 # }}}
 
+
 # Layouts {{{
 # ----------------------------------------
-
-
-def layouts_iter():
-    item = w.hdata_get_list(hd_layout, 'gui_layouts')
-    while item:
-        yield item
-        item = w.hdata_pointer(hd_layout, item, 'next_layout')
-
-
-def layouts_name_iter():
-    for layout in layouts_iter():
-        yield w.hdata_string(hd_layout, layout, 'name')
-
 
 def layout_find(name):
     return next((n for n in layouts_name_iter() if n == name), None)
@@ -341,8 +378,11 @@ key_bind('default', 'meta-;meta-3', '/layout_reset twitter')
 
 # }}}
 
+
 # Tabs {{{
 # ----------------------------------------
+
+re_tab = re.compile(r'^tab(\d)$')
 
 
 def str2tab(str):
@@ -357,7 +397,7 @@ def str2tab(str):
 
 def layout_tab(layout_name):
     if layout_name:
-        if m := re.match(r'^tab(\d)$', layout_name):
+        if m := re_tab.match(layout_name):
             return str2tab(m.group(1))
     return None
 
@@ -481,6 +521,10 @@ for i in range(1, 10):
     key_bind('default', f'meta-{i}', f'/tab_go {i}')
     cmd(f'alias add {i} tab_go {i}')
 
+bar_item_cmd_btn('btn_tab_del', 'TAB×', '/tab_del')
+bar_item_cmd_btn('btn_tab_next', 'TAB+', '/tab_go next')
+bar_item_cmd_btn('btn_tab_prev', 'TAB-', '/tab_go prev')
+
 key_bind('default', 'meta-!', '/tab_move 1')
 key_bind('default', 'meta-@', '/tab_move 2')
 key_bind('default', 'meta-#', '/tab_move 3')
@@ -491,10 +535,6 @@ key_bind('default', 'meta-&', '/tab_move 7')
 key_bind('default', 'meta-*', '/tab_move 8')
 key_bind('default', 'meta-(', '/tab_move 9')
 
-bar_item_cmd_btn('btn_tab_del', 'TAB×', '/tab_del')
-bar_item_cmd_btn('btn_tab_prev', 'TAB-', '/tab_go prev')
-bar_item_cmd_btn('btn_tab_next', 'TAB+', '/tab_go next')
-
 key_bind('default', 'meta-0', '/tab_del')
 key_bind('default', 'meta-h', '/tab_go prev')
 key_bind('default', 'meta-l', '/tab_go next')
@@ -502,46 +542,14 @@ key_bind('default', 'meta-a', '/tab_go last_visited')
 
 # }}}
 
-# Other {{{
+
+# Relay servers
 # ----------------------------------------
-
-
-def servers_iter():
-    item = w.hdata_get_list(hd_server, 'irc_servers')
-    while item:
-        yield item
-        item = w.hdata_pointer(hd_server, item, 'next_server')
-
-
-def windows_iter():
-    item = w.hdata_get_list(hd_win, 'gui_windows')
-    while item:
-        yield item
-        item = w.hdata_pointer(hd_win, item, 'next_window')
-
-
-def windows_buffer_iter():
-    for window in windows_iter():
-        yield window, w.hdata_pointer(hd_win, window, 'buffer')
-
-
-def server_opt(server_name, opt_name):
-    opt = w.config_get(f'irc.server.{server_name}.{opt_name}')
-    if w.config_option_is_null(opt):
-        opt = w.config_get(f'irc.server_default.{opt_name}')
-    return w.config_string(opt)
-
 
 def connect_relay(server_name):
     cmd(f'server add {server_name}~ localhost/9000 -temp -ssl -nossl_verify '
         f'-password={server_name}:${{sec.data.relay}}')
     cmd(f'connect {server_name}~')
-
-
-def cb_command_allbuf(data, buffer, args):
-    for buf in buffers_iter():
-        cmd(args, buffer=buf)
-    return w.WEECHAT_RC_OK
 
 
 def cb_command_connect_relay(data, buffer, args):
@@ -558,6 +566,34 @@ def cb_command_connect_relay(data, buffer, args):
     return w.WEECHAT_RC_OK
 
 
+def cb_completion_irc_servers(data, name, buffer, completion):
+    for server in servers_iter():
+        name = w.hdata_string(hd_server, server, 'name')
+        if name.endswith('~'):
+            continue
+        w.hook_completion_list_add(completion, name, 0, w.WEECHAT_LIST_POS_END)
+    return w.WEECHAT_RC_OK
+
+
+w.hook_command('connect_relay', '', '', '', '%(irc_servers)', 'cb_command_connect_relay', '')
+w.hook_completion('irc_servers', '', 'cb_completion_irc_servers', '')
+
+
+# Execute a command on all buffers
+# ----------------------------------------
+
+def cb_command_allbuf(data, buffer, args):
+    for buf in buffers_iter():
+        cmd(args, buffer=buf)
+    return w.WEECHAT_RC_OK
+
+
+w.hook_command('allbuf', '', '', '', '', 'cb_command_allbuf', '')
+
+
+# Add/Delete a filter for a nick
+# ----------------------------------------
+
 def cb_command_grep_nick(data, buffer, args):
     bname = w.buffer_get_string(buffer, 'full_name')
     cmd(f'filter del grep_{bname}')
@@ -565,6 +601,14 @@ def cb_command_grep_nick(data, buffer, args):
         cmd(f'filter add grep_{bname} {bname} !nick_{args} *')
     return w.WEECHAT_RC_OK
 
+
+w.hook_command('grep_nick', '', '', '', '', 'cb_command_grep_nick', '')
+
+cmd('alias add GNICK grep_nick')
+
+
+# Regain "nick" from "nick_"
+# ----------------------------------------
 
 def cb_command_renick(data, buffer, args):
     nick_old = w.buffer_get_string(buffer, 'localvar_nick')
@@ -578,6 +622,12 @@ def cb_command_renick(data, buffer, args):
     cmd(f'nick {nick_new}', buffer)
     return w.WEECHAT_RC_OK
 
+
+w.hook_command('renick', '', '', '', '', 'cb_command_renick', '')
+
+
+# Mark a buffer as read
+# ----------------------------------------
 
 def set_read(buffer):
     w.buffer_set(buffer, 'hotlist', '-1')
@@ -606,6 +656,18 @@ def cb_command_set_read_all(data, buffer, args):
         set_read(buf)
     return w.WEECHAT_RC_OK
 
+
+w.hook_command('set_read', '', '', '', '', 'cb_command_set_read', '')
+w.hook_command('set_read_all', '', '', '', '', 'cb_command_set_read_all', '')
+
+cmd('alias add R set_read')
+cmd('alias add RA set_read_all')
+
+key_bind('default', 'meta-ctrl-M', '/set_read')
+
+
+# Open/Yank urls
+# ----------------------------------------
 
 def cb_command_urls(data, buffer, args):
     win = w.current_window()
@@ -643,32 +705,51 @@ def cb_command_urls(data, buffer, args):
     return w.WEECHAT_RC_OK
 
 
-w.hook_command('allbuf', '', '', '', '', 'cb_command_allbuf', '')
-w.hook_command('connect_relay', '', '', '', '%(irc_servers)', 'cb_command_connect_relay', '')
-w.hook_command('grep_nick', '', '', '', '', 'cb_command_grep_nick', '')
-w.hook_command('renick', '', '', '', '', 'cb_command_renick', '')
-w.hook_command('set_read', '', '', '', '', 'cb_command_set_read', '')
-w.hook_command('set_read_all', '', '', '', '', 'cb_command_set_read_all', '')
 w.hook_command('urls_open', '', '', '', '', 'cb_command_urls', 'open')
 w.hook_command('urls_yank', '', '', '', '', 'cb_command_urls', 'yank')
 
-cmd('alias add GNICK grep_nick')
-cmd('alias add R set_read')
-cmd('alias add RA set_read_all')
 
-key_bind('default', 'meta-ctrl-M', '/set_read')
+# Strip commands for whitespace
+# ----------------------------------------
 
-
-def cb_completion_irc_servers(data, name, buffer, completion):
-    for server in servers_iter():
-        name = w.hdata_string(hd_server, server, 'name')
-        if name.endswith('~'):
-            continue
-        w.hook_completion_list_add(completion, name, 0, w.WEECHAT_LIST_POS_END)
+def cb_command_run_input_return(data, buffer, command):
+    input_line = w.buffer_get_string(buffer, 'input')
+    w.buffer_set(buffer, 'input', input_line.strip())
     return w.WEECHAT_RC_OK
 
 
-w.hook_completion('irc_servers', '', 'cb_completion_irc_servers', '')
+w.hook_command_run('/input return', 'cb_command_run_input_return', '')
+
+
+# Autoresponder
+# ----------------------------------------
+
+def tag_by_prefix(tags, prefix):
+    tag = next(filter(lambda i: i.startswith(prefix), tags), None)
+    return tag.lstrip(prefix) if tag else None
+
+
+def handle_privmsg(ctx):
+    pass
+
+
+def cb_print_privmsg(data, buffer, date, tags, displayed, highlight,
+                     prefix, message):
+    bname = w.buffer_get_string(buffer, 'full_name')
+    bnick = w.buffer_get_string(buffer, 'localvar_nick')
+    tags = tags.split(',')
+    self_msg = 'self_msg' in tags
+    host = tag_by_prefix(tags, 'host_')
+    nick = tag_by_prefix(tags, 'nick_')
+    ctx = SimpleNamespace(**locals())
+    handle_privmsg(ctx)
+    return w.WEECHAT_RC_OK
+
+
+w.hook_print('', 'irc_privmsg', '', 1, 'cb_print_privmsg', '')
+
+
+# ----------------------------------------
 
 bar_item_cmd_btn(
     'btn_filter',
@@ -777,27 +858,13 @@ w.bar_new(
 )
 bar_item_cmd_btn('btn_win_fn', '>>', '/bar toggle win_fn')
 
-
-def cb_timer_startup(data, remaining_calls):
-    cmd('tab_go 1')
-    cmd('layout_reset core')
-    cmd('tab_go 2')
-    cmd('layout_reset bitlbee')
-    cmd('tab_go 3')
-    cmd('layout_reset twitter')
-    cmd('tab_go 4')
-    cmd('layout_reset #archlinux')
-    cmd('tab_go 1')
-    return w.WEECHAT_RC_OK
-
-
-w.hook_timer(1, 0, 1, 'cb_timer_startup', '')
-
 key_bind('mouse', '@item(buffer_name):button1', '/input switch_active_buffer')
 key_bind('mouse', '@item(buffer_short_name):button1', '/input switch_active_buffer')
 key_bind('mouse', '@item(mode_indicator):button1', '/vimode_go_to_normal')
 key_bind('mouse', '@item(scroll):button1', '/window scroll_bottom')
 
+
+# ----------------------------------------
 
 def adjust_for_width():
     term_width = int(w.info_get('term_width', ''))
@@ -823,10 +890,6 @@ def cb_signal_sigwinch(data, signal, buffer):
     return w.WEECHAT_RC_OK
 
 
-w.hook_signal('signal_sigwinch', 'cb_signal_sigwinch', '')
-adjust_for_width()
-
-
 def cb_signal_post_switch(data, signal, buffer):
     term_width = int(w.info_get('term_width', ''))
     if term_width < 80:
@@ -834,46 +897,26 @@ def cb_signal_post_switch(data, signal, buffer):
     return w.WEECHAT_RC_OK
 
 
+w.hook_signal('signal_sigwinch', 'cb_signal_sigwinch', '')
 w.hook_signal('buffer_switch', 'cb_signal_post_switch', '')
 w.hook_signal('window_switch', 'cb_signal_post_switch', '')
 
-# }}}
+adjust_for_width()
 
-# TODO
+
 # ----------------------------------------
 
-
-def tag_by_prefix(tags, prefix):
-    tag = next(filter(lambda i: i.startswith(prefix), tags), None)
-    return tag.lstrip(prefix) if tag else None
-
-
-def auto_hi(ctx):
-    if not ctx.highlight:
-        return
-    match = re.match(r'^\s*(hi|ohai|hello)(\s+|$)', ctx.message)
-    if not match:
-        return
-    msg(f'hi {ctx.nick}', ctx.buffer)
-
-
-def handle_privmsg(ctx):
-    if ctx.bnick == 'miro':
-        auto_hi(ctx)
-
-
-def cb_print_privmsg(data, buffer, date, tags, displayed, highlight,
-                     prefix, message):
-    bname = w.buffer_get_string(buffer, 'full_name')
-    bnick = w.buffer_get_string(buffer, 'localvar_nick')
-    tags = tags.split(',')
-    self_msg = 'self_msg' in tags
-    #addressed = re.match(rf'^\s*{re.escape(bnick)}(\s|[:,])+(.*)$', message)
-    host = tag_by_prefix(tags, 'host_')
-    nick = tag_by_prefix(tags, 'nick_')
-    ctx = SimpleNamespace(**locals())
-    handle_privmsg(ctx)
+def cb_timer_startup(data, remaining_calls):
+    cmd('tab_go 1')
+    cmd('layout_reset core')
+    cmd('tab_go 2')
+    cmd('layout_reset bitlbee')
+    cmd('tab_go 3')
+    cmd('layout_reset twitter')
+    cmd('tab_go 4')
+    cmd('layout_reset #archlinux')
+    cmd('tab_go 1')
     return w.WEECHAT_RC_OK
 
 
-#w.hook_print('', 'irc_privmsg', '', 1, 'cb_print_privmsg', '')
+w.hook_timer(1, 0, 1, 'cb_timer_startup', '')

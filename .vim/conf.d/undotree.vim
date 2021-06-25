@@ -11,5 +11,7 @@ nnoremap <silent> <Leader>uo :UndotreeShow<CR>
 
 augroup undotree_conf
     autocmd!
-    autocmd FileType undotree call utils#bufSpecial()
+    autocmd FileType undotree
+        \  call utils#bufSpecial()
+        \| nmap <buffer> <silent> o <CR>
 augroup END
