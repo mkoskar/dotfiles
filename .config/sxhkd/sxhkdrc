@@ -1,8 +1,8 @@
 super + colon
-    wmutil spawn sp:adm srun -Nsxl term -n \{\} -g 180x48 trun mux adm
+    wmutil spawn sp:adm srun -Nsxl term -n \{\} -g 180x48 trun tmux-session adm
 
 super + semicolon ; super + semicolon
-    wmutil spawn sp:mon srun -Nsxl term -n \{\} -g 180x48 trun mux mon
+    wmutil spawn sp:mon srun -Nsxl term -n \{\} -g 180x48 trun tmux-session mon
 
 super + alt + {J,L,K,H}
     xdo resize {-h ,-w }{+,-}50
@@ -111,6 +111,15 @@ super + {_,shift + }apostrophe
     srun -Nsxl bb{_, dd}
 
 # ----------------------------------------
+
+ctrl + grave
+    dunstctl history-pop
+
+ctrl + shift + space
+    dunstctl close-all
+
+ctrl + shift + period
+    dunstctl context
 
 XF86Display
     xscreen

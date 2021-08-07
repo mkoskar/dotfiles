@@ -45,12 +45,12 @@ group.add_argument('--preferred', action='store_true', help='select preferred')
 group.add_argument('--pointed', action='store_true', help='select pointed')
 group.add_argument('--focused', action='store_true', help='select focused')
 parser.add_argument(
+    '--nowrap', action='store_false', dest='wrap', help="don't wrap moves"
+)
+parser.add_argument(
     'move', nargs='*',
     help='"{repeat}{direction}" is repeated move in direction relative to'
     'selected screen (preferred by default); n/N - next, p/P - previous'
-)
-parser.add_argument(
-    '--nowrap', action='store_false', dest='wrap', help="don't wrap moves"
 )
 args = parser.parse_args()
 

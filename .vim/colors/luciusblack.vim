@@ -8,6 +8,7 @@ endif
 let colors_name = 'luciusblack'
 
 if &t_Co >= 256 || has('gui_running')
+
     hi Normal           ctermfg=7           ctermbg=NONE        cterm=NONE
     hi Normal           guifg=#aeaeae       guibg=#000000       gui=NONE
 
@@ -134,6 +135,8 @@ if &t_Co >= 256 || has('gui_running')
     hi WildMenu         ctermfg=16          ctermbg=185         cterm=bold
     hi WildMenu         guifg=bg            guibg=#d7d75f       gui=bold
 
+    " ----------------------------------------
+
     hi LspReferenceText ctermfg=16 ctermbg=80 cterm=underline,italic
     hi LspReferenceRead ctermfg=16 ctermbg=114 cterm=underline,italic
     hi LspReferenceWrite ctermfg=16 ctermbg=254 cterm=underline,italic
@@ -141,20 +144,18 @@ if &t_Co >= 256 || has('gui_running')
     hi LspDiagnosticsDefaultError ctermfg=167 ctermbg=233 cterm=italic
     hi LspDiagnosticsDefaultWarning ctermfg=228 ctermbg=233 cterm=italic
     hi LspDiagnosticsDefaultInformation ctermfg=117 ctermbg=233 cterm=italic
-    hi link LspDiagnosticsDefaultHint LspDiagnosticsDefaultInformation
-
-    hi LspDiagnosticsUnderlineError ctermfg=16 ctermbg=167 cterm=italic
-    hi LspDiagnosticsUnderlineWarning ctermfg=16 ctermbg=228 cterm=italic
-    hi LspDiagnosticsUnderlineInformation ctermfg=16 ctermbg=117 cterm=italic
-    hi link LspDiagnosticsUnderlineHint LspDiagnosticsUnderlineInformation
 
     hi LspDiagnosticsFloatingError ctermfg=167 cterm=italic
     hi LspDiagnosticsFloatingWarning ctermfg=228 cterm=italic
     hi LspDiagnosticsFloatingInformation ctermfg=117 cterm=italic
-    hi link LspDiagnosticsFloatingHint LspDiagnosticsFloatingInformation
+
+    hi LspDiagnosticsUnderlineError ctermfg=16 ctermbg=167 cterm=italic
+    hi LspDiagnosticsUnderlineWarning ctermfg=16 ctermbg=228 cterm=italic
+    hi LspDiagnosticsUnderlineInformation ctermfg=16 ctermbg=117 cterm=italic
 
     hi LspCodeLens ctermfg=167 cterm=italic
     hi LspCodeLensSeparator ctermfg=167 cterm=italic
 
     hi LspSignatureActiveParameter ctermfg=167 cterm=italic
+
 endif

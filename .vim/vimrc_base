@@ -52,7 +52,7 @@ noremap <M-;> ;
 noremap - ^
 
 " à la /_CTRL-L
-vnoremap <C-L> l
+xnoremap <C-L> l
 
 noremap <M-j> 5j
 noremap <M-k> 5k
@@ -119,7 +119,7 @@ let c_comment_strings = 1
 let load_doxygen_syntax = 1
 let python_highlight_all = 1
 
-nnoremap <Space> <Cmd>nohls \| diffup!<CR><C-L>
+nnoremap <Space> <Cmd>diffup! \| nohls \| echo<CR>
 nnoremap <Leader>ft <Cmd>filetype detect \| syn sync fromstart<CR>
 
 nnoremap <Leader>cuc :setl <C-R>=&cuc ? 'nocuc' : 'cuc'<CR><CR>
@@ -185,25 +185,23 @@ set splitbelow
 set splitright
 set winheight=5
 
-set statusline=
-    \ statusline+=%n
-    \ statusline+=\ %<%f
-    \ statusline+=%(\ [%M%W%R]%)
-    \ statusline+=%(\ %y%)
-    \ statusline+=%(\ [%{&l:fenc!='utf-8'?&l:fenc:''}]%)
-    \ statusline+=%(\ [%{&l:ff!='unix'?&l:ff:''}]%)
-    \ statusline+=%(\ %{get(b:,'run_title','')}%)
-    \ statusline+=%(\ %{get(w:,'quickfix_title','')}%)
-    \ statusline+=%=
-    \ statusline+=\ %6(%l:%v%)
-    \ statusline+=\ %P
-    \ statusline+=\%(\ %{%
-            \argc()>0
-                \?(arglistid()==0?'':'L')
-                \.(argv(argidx())==bufname()?'*':'-')
-                \.(argidx()+1).'/'.argc()
-                \:''
-        \%}%)
+let stlTail = '%6(%l:%v%) %P'
+let stlTail .= "%( %{%
+    \ argc() > 0
+    \ ? (arglistid() == 0 ? '' : 'L')
+        \ . (argv(argidx()) == bufname() ? '*' : '-')
+        \ . (argidx() + 1) . '/' . argc()
+        \ : ''
+    \ %}%)"
+
+let &g:stl = '%n %<%f'
+let &g:stl .= '%( [%M%W%R]%)'
+let &g:stl .= '%( %y%)'
+let &g:stl .= "%( [%{&l:fenc != 'utf-8' ? &l:fenc : ''}]%)"
+let &g:stl .= "%( [%{&l:ff != 'unix' ? &l:ff : ''}]%)"
+let &g:stl .= "%( %{get(b:, 'run_title', '')}%)"
+let &g:stl .= "%( %{get(w:, 'quickfix_title', '')}%)"
+let &g:stl .= '%=' . stlTail
 
 nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
@@ -246,6 +244,75 @@ nnoremap <M-=> <Cmd>vert resize +5<CR>
 " ----------------------------------------
 
 set tabpagemax=50
+
+let &g:tabline = '%!' . expand('<SID>') . 'TabLine()'
+
+function! s:TabLine() abort
+    let [cur, last] = [tabpagenr(), tabpagenr('$')]
+    let [beg, end] = [1, last]
+    let [line, llen, curline] = ['', 0, 0]
+    for i in range(beg, end)
+        let winnr = tabpagewinnr(i)
+        let winid = win_getid(winnr, i)
+        let buf = tabpagebuflist(i)[winnr - 1]
+        let bt = getbufvar(buf, '&bt')
+        let prefer_bufname = 1
+        if empty(bt)
+            let name = '[No Name]'
+        elseif bt == 'quickfix'
+            let loclist = get(getwininfo(winid)[0], 'loclist', 0)
+            let name = loclist ? '[LocList]' : '[QfList]'
+            let prefer_bufname = 0
+        elseif bt == 'terminal'
+            let name = '[Term]'
+            let prefer_bufname = 0
+        elseif bt == 'prompt'
+            let name = '[Prompt]'
+        elseif bt == 'popup'
+            let name = '[Popup]'
+        else
+            let name = '[Scratch]'
+        endif
+        let bufname = bufname(buf)
+        if !empty(bufname) && prefer_bufname
+            if empty(bt) || bt == 'nowrite'
+                let name = fnamemodify(bufname, ':~:.')
+                if len(name) > 20
+                    let name = substitute(name, '\v/\zs(.).{-}\ze/', '\1', 'g')
+                endif
+            elseif bt == 'help'
+                let name = fnamemodify(bufname, ':t')
+            else
+                let name = bufname
+            endif
+        endif
+        if getbufvar(buf, 'ft_tabline', 0)
+            let name = printf('·%s·', getbufvar(buf, '&ft'))
+        endif
+        let len = len(name) + 2
+        if llen + len > &co
+                \ - (beg > 1) * 2
+                \ - (i < last) * 3
+                \ - len(i) - len(last) - 1
+                \ - 4
+            if curline | break | endif
+            let beg = i
+            let [line, llen] = ['', 0]
+        endif
+        let end = i
+        let llen += len
+        let line .= (i == cur) ? '%#TabLineSel#' : '%#TabLine#'
+        let line .= printf(' %%%dT%s%%T ', i, substitute(name, '%', '%%', 'g'))
+        if !curline | let curline = i == cur | endif
+    endfor
+    let tl = '%#TabLine#'
+    if beg > 1 | let tl .= '<<' | endif
+    let tl .= line . '%#TabLine#'
+    if end < last | let tl .= '>> ' | endif
+    let tl .= printf('%%=%d/%d', cur, last)
+    let tl .= ' %999X[×]%X'
+    return tl
+endfunction
 
 nnoremap <M-1> 1gt
 nnoremap <M-2> 2gt
@@ -306,28 +373,20 @@ nnoremap <Leader>M :set <C-R>=!empty(&mouse) ? 'mouse=' : 'mouse=a'<CR><CR>
 " TUI/GUI
 " ----------------------------------------
 
-set title
 set guicursor+=a:blinkon0
 set guifont=Terminus\ 16px
-
-set guioptions=
-    \ guioptions+=c
-    \ guioptions+=e
-    \ guioptions-=L
-    \ guioptions-=T
-    \ guioptions-=m
-    \ guioptions-=r
+set guioptions=ce
+set title
 
 set titlestring=
-    \ titlestring+=%{v:progname}:
-    \ titlestring+=\ %n
-    \ titlestring+=\ %<%f
-    \ titlestring+=%(\ [%M%W%R]%)
-    \ titlestring+=%(\ %y%)
-    \ titlestring+=%(\ [%{&l:fenc!='utf-8'?&l:fenc:''}]%)
-    \ titlestring+=%(\ [%{&l:ff!='unix'?&l:ff:''}]%)
-    \ titlestring+=%(\ %{get(b:,'run_title','')}%)
-    \ titlestring+=%(\ %{get(w:,'quickfix_title','')}%)
+    \%{v:progname}:
+    \\ %n\ %<%f
+    \%(\ [%M%W%R]%)
+    \%(\ %y%)
+    \%(\ [%{&l:fenc!='utf-8'?&l:fenc:''}]%)
+    \%(\ [%{&l:ff!='unix'?&l:ff:''}]%)
+    \%(\ %{get(b:,'run_title','')}%)
+    \%(\ %{get(w:,'quickfix_title','')}%)
 
 if !has('nvim')
     set nottybuiltin
@@ -361,18 +420,18 @@ set showmode
 set clipboard=unnamed
 
 if has('nvim')
-    let g:clipboard = {
-        \   'name': 'xsel',
-        \   'copy': {
-        \     '+': ['xsel', '--nodetach', '-i', '-b'],
-        \     '*': ['xsel', '--nodetach', '-i', '-p'],
-        \   },
-        \   'paste': {
-        \     '+': ['xsel', '-o', '-b'],
-        \     '*': ['xsel', '-o', '-p'],
-        \   },
-        \   'cache_enabled': 1,
-        \ }
+    let clipboard = #{
+    \     name: 'xsel',
+    \     copy: {
+    \         '+': ['xsel', '--nodetach', '-i', '-b'],
+    \         '*': ['xsel', '--nodetach', '-i', '-p'],
+    \     },
+    \     paste: {
+    \         '+': ['xsel', '-o', '-b'],
+    \         '*': ['xsel', '-o', '-p'],
+    \     },
+    \     cache_enabled: 1,
+    \ }
 endif
 
 nnoremap Y y$
@@ -396,6 +455,9 @@ set undofile
 
 let &undodir = $VIMDIR . '/undo//'
 call utils#mkdir(&undodir)
+
+noremap cw dwi
+noremap cW dWi
 
 noremap <Leader><C-J> J
 
@@ -422,13 +484,13 @@ inoremap <M-y> <C-Y>
 
 inoremap <expr> <C-G><C-F> expand('%:t')
 inoremap <expr> <C-G><C-P> expand('%:p')
-inoremap <expr> <C-G><C-d> strftime('%c')
+inoremap <expr> <C-G><C-D> strftime('%c')
 imap <C-G>f <C-G><C-F>
 imap <C-G>p <C-G><C-P>
 imap <C-G>d <C-G><C-D>
 
 inoremap <C-F> <C-X><C-F>
-inoremap <expr> <C-L> pumvisible() ? "\<lt>C-L>" : "\<lt>C-X>\<lt>C-L>"
+inoremap <expr> <C-L> pumvisible() ? "\<C-L>" : "\<C-X>\<C-L>"
 
 
 " Tabs and Indenting
@@ -438,9 +500,10 @@ set autoindent
 set copyindent
 set expandtab
 set preserveindent
-set shiftwidth=4
+set shiftwidth=0
 set smartindent
 set smarttab
+set softtabstop=-1
 set tabstop=4
 
 
@@ -489,22 +552,43 @@ set updatetime=300
 let &directory = $VIMDIR . '/swap//'
 call utils#mkdir(&directory)
 
+function! s:Swap() abort
+    let this = swapname('%')
+    if empty(this) | return | endif
+    let base = fnamemodify(this, ':r')
+    for f in glob(base . '.*', 1, 1)
+        if f == this | continue | endif
+        let i = swapinfo(f)
+        echo 'swap: ' . fnamemodify(f, ':~')
+        echo printf('created by: %s %s@%s (pid: %s)', i.version, i.user, i.host, i.pid)
+        echo 'mtime: ' . strftime('%c', i.mtime)
+        echo 'dirty: ' . i.dirty
+        echo ''
+        if confirm('Delete?', "&Yes\n&No", 2) == 1 | call delete(f) | endif
+    endfor
+endfunction
+
+command! -bar Swap call s:Swap()
+
 
 " Command Line Editing
 " ----------------------------------------
 
 set history=1000
 set suffixes=.bak,.swp,~
-set wildcharm=<S-Tab>
+set wildcharm=<C-Z>
 set wildmenu
 set wildmode=lastused:longest:full,full
 
 cnoremap <Left> <Space><BS><Left>
 cnoremap <Right> <Space><BS><Right>
-cnoremap <expr> <C-N> wildmenumode() ? "\<C-N>" : "\<Down>"
-cnoremap <expr> <C-P> wildmenumode() ? "\<C-P>" : "\<Up>"
-cnoremap <M-n> <C-G>
-cnoremap <M-p> <C-T>
+cnoremap <expr> <C-N> wildmenumode() ? "<C-N>" : "<Down>"
+cnoremap <expr> <C-P> wildmenumode() ? "<C-P>" : "<Up>"
+
+cnoremap <expr> <Tab> getcmdtype() =~ "[/?]" ? "<C-G>" : "<C-Z>"
+cnoremap <expr> <S-Tab> getcmdtype() =~ "[/?]" ? "<C-T>" : (wildmenumode() ? "<S-Tab>" : "<C-Z>")
+cmap <M-n> <Tab>
+cmap <M-p> <S-Tab>
 
 " <C-B> <Home>
 " <C-E> <End>
@@ -515,14 +599,15 @@ cnoremap <M-f> <C-\>e utils#cmdlineMoveWord(1, 1)<CR>
 cnoremap <M-w> <C-\>e utils#cmdlineMoveWord(1)<CR>
 
 " <C-U> - backward kill line
-cnoremap <C-K> <C-\>e strpart(getcmdline(), 0, getcmdpos()-1)<CR>
+cnoremap <C-K> <C-\>e strpart(getcmdline(), 0, getcmdpos() - 1)<CR>
 cnoremap <C-W> <C-\>e utils#cmdlineKillWord(0)<CR>
 cnoremap <M-d> <C-\>e utils#cmdlineKillWord(1, 1)<CR>
 cnoremap <M-x> <Delete>
 
 cnoremap <C-_> <C-K>
 cnoremap <C-O> <S-Tab>
-cnoremap <expr> %% expand('%:h') . '/'
+cnoremap <expr> %% fnamemodify(expand('%:h'), ':~') . '/'
+cnoremap <expr> %<Space> '%'
 
 
 " Executing External Commands
@@ -531,19 +616,14 @@ cnoremap <expr> %% expand('%:h') . '/'
 set shell=bashx
 set shellredir=&>%s
 
+noremap <Leader><C-K> K
+
 
 " Running 'make' and Jumping To Errors
 " ----------------------------------------
 
-" grep
-set grepformat=%f:%l:%m
-set grepprg=grep\ -nH\ --exclude-dir=.git\ --exclude=\*.swp\ --exclude=\*~\ $*
-
-" ag / rg
-set grepformat=%f:%l:%c:%m
-set grepprg=ag\ --vimgrep\ $*
-set grepprg=rg\ --vimgrep\ $*
-
+set grepformat=%f:%l:%c:%m,%f:%l:%m
+set grepprg=internal
 set shellpipe=\|&\ tee
 
 nnoremap <F9> :make!<CR>
@@ -552,19 +632,95 @@ nnoremap <Leader>cl <Cmd>copen<CR>
 nnoremap <Leader>ll <Cmd>lopen<CR>
 
 nnoremap <Leader>J <Cmd>cnext<CR>
-nnoremap <Leader>K <Cmd>cNext<CR>
+nnoremap <Leader>K <Cmd>cprev<CR>
 
-function! s:LocOrQfMove(dir) abort
+function! s:LocOrQfCmd(cmd) abort
     try
         echo
-        exec 'l' . a:dir
+        exec 'l' . a:cmd
     catch /:E\(42\|776\):/
-        exec 'c' . a:dir
+        exec 'c' . a:cmd
     endtry
 endfunction
 
-nnoremap <Leader>j <Cmd>call utils#tryCatchCall('<SID>LocOrQfMove', 'next')<CR>
-nnoremap <Leader>k <Cmd>call utils#tryCatchCall('<SID>LocOrQfMove', 'prev')<CR>
+nnoremap <Leader>j <Cmd>call utils#tryCatchCall('<SID>LocOrQfCmd', 'next')<CR>
+nnoremap <Leader>k <Cmd>call utils#tryCatchCall('<SID>LocOrQfCmd', 'prev')<CR>
+
+function! s:QfText(item2line) abort
+    function! s:QfText_(ctx) closure abort
+        let items = a:ctx.quickfix
+            \ ? getqflist(#{id: a:ctx.id, items: 0}).items
+            \ : getloclist(a:ctx.winid, #{id: a:ctx.id, items: 0}).items
+        let lines = []
+        for idx in range(a:ctx.start_idx - 1, a:ctx.end_idx - 1)
+            call add(lines, a:item2line(items[idx]))
+        endfor
+        return lines
+    endfunction
+    return function('s:QfText_')
+endfunction
+
+function! s:QfFiles(loclist, action, files_func, title) abort
+    let SetList = a:loclist ? function('setloclist', [0]) : function('setqflist')
+    call SetList([], a:action, #{
+        \ nr: a:action == ' ' ? '$' : 0,
+        \ efm: '%f',
+        \ lines: a:files_func(),
+        \ title: a:title,
+        \ quickfixtextfunc: s:QfText({i -> fnamemodify(bufname(i.bufnr), ':p:~')}),
+        \ context: #{reload_func: function('s:QfFiles', [a:loclist, 'r', a:files_func, a:title])},
+        \ })
+    exec a:loclist ? 'lwindow' : 'cwindow'
+endfunction
+
+command! -bang -bar Cargs call s:QfFiles(0, empty(<q-bang>) ? ' ' : 'r', {-> argv(-1, -1)}, ':Cargs')
+command! -bang -bar Largs call s:QfFiles(1, empty(<q-bang>) ? ' ' : 'r', {-> argv()}, ':Largs')
+command! -bang -bar OldFiles call s:QfFiles(0, empty(<q-bang>) ? ' ' : 'r', {-> v:oldfiles}, ':OldFiles')
+
+function! s:QfSystem(loclist, action, cmd, title = '!' . a:cmd) abort
+    let SetList = a:loclist ? function('setloclist', [0]) : function('setqflist')
+    call SetList([], a:action, #{
+        \ nr: a:action == ' ' ? '$' : 0,
+        \ lines: systemlist(a:cmd),
+        \ title: a:title,
+        \ quickfixtextfunc: 0,
+        \ context: #{reload_func: function('s:QfSystem', [a:loclist, 'r', a:cmd, a:title])},
+        \ })
+    exec a:loclist ? 'lwindow' : 'cwindow'
+endfunction
+
+function! s:QfGrep(loclist, action, args) abort
+    call s:QfSystem(a:loclist, a:action,
+                    \ 'grep -rnH --exclude-dir=.git ' . a:args,
+                    \ printf(':%sgrep %s', a:loclist ? 'L' : 'C', a:args))
+endfunction
+
+command! -nargs=* -bang Cgrep call s:QfGrep(0, empty(<q-bang>) ? ' ' : 'r', <q-args>)
+command! -nargs=* CgrepAdd call s:QfGrep(0, 'a', <q-args>)
+command! -nargs=* -bang Lgrep call s:QfGrep(1, empty(<q-bang>) ? ' ' : 'r', <q-args>)
+command! -nargs=* LgrepAdd call s:QfGrep(1, 'a', <q-args>)
+
+function! s:QfRg(loclist, add, args) abort
+    call s:QfSystem(a:loclist, a:action,
+                    \ 'rg --vimgrep --no-ignore ' . a:args,
+                    \ printf(':%srg %s', a:loclist ? 'L' : 'C', a:args))
+endfunction
+
+command! -nargs=* -bang Crg call s:QfRg(0, empty(<q-bang>) ? ' ' : 'r', <q-args>)
+command! -nargs=* CrgAdd call s:QfRg(0, 'a', <q-args>)
+command! -nargs=* -bang Lrg call s:QfRg(1, empty(<q-bang>) ? ' ' : 'r', <q-args>)
+command! -nargs=* LrgAdd call s:QfRg(1, 'a', <q-args>)
+
+function! s:QfAg(loclist, add, args) abort
+    call s:QfSystem(a:loclist, a:action,
+                    \ 'ag --vimgrep ' . a:args,
+                    \ printf(':%srg %s', a:loclist ? 'L' : 'C', a:args))
+endfunction
+
+command! -nargs=* -bang Cag call s:QfAg(0, empty(<q-bang>) ? ' ' : 'r', <q-args>)
+command! -nargs=* CagAdd call s:QfAg(0, 'a', <q-args>)
+command! -nargs=* -bang Lag call s:QfAg(1, empty(<q-bang>) ? ' ' : 'r', <q-args>)
+command! -nargs=* LagAdd call s:QfAg(1, 'a', <q-args>)
 
 
 " Language Specific
@@ -586,16 +742,20 @@ let &viewdir = $VIMDIR . '/view'
 let &viminfo = "!,'100,<50,s10,h"
 let &viminfofile = $VIMDIR . '/viminfo'
 
-nnoremap Q <Nop>
-nnoremap <Leader>V :setl <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
-nnoremap <C-Q> <Cmd>bd<CR>
-nnoremap <silent> <C-W><C-F> :vsplit <C-R><C-P><CR>
+nnoremap <C-W><C-F> :vsplit <C-R><C-P><CR>
+nnoremap <Leader><C-L> <C-L>
 nnoremap <Leader>D <Cmd>%d<CR>
+nnoremap <Leader>V :setl <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
+nnoremap <Leader>la :ls!<CR>
+nnoremap <Leader>lb :ls! %<CR>
+nnoremap <Leader>lc :ls! +<CR>
+nnoremap <Leader>ls :ls<CR>
+nnoremap <Leader>lt :ls t<CR>
 nnoremap <Leader>q <Cmd>close<CR>
 nnoremap <Leader>sc <Cmd>new +setl\ bt=nofile\ bh=wipe\ noswf\ nobl<CR>
-nnoremap <Leader>ls :ls<CR>
-nnoremap <Leader>la :ls!<CR>
+nnoremap Q <Nop>
 
+" New lines
 nnoremap [<Space> O<Esc>'[
 nnoremap ]<Space> o<Esc>
 
@@ -668,7 +828,7 @@ function! s:Bdelete(bang, rbeg, rend, ...) abort
         for win in win_findbuf(target_buf)
             let [tab, winnr] = win_id2tabwin(win)
             let [jumps, jumpi] = getjumplist(winnr, tab)
-            let [i, dstbuf] = [jumpi-1, -1]
+            let [i, dstbuf] = [jumpi - 1, -1]
             while i >= 0
                 let buf = jumps[i].bufnr
                 if buf > 0 && buf != target_buf && bufloaded(buf)
@@ -698,9 +858,9 @@ nnoremap <C-Q> <Cmd>Bdelete<CR>
 
 " Capture command's output {{{
 
-function! s:Run(system, cmd, input, ...) abort
+function! s:Run(system, cmd, input, mode = 1, mods = '') abort
     if a:system
-        let out = systemlist(a:cmd, a:input)
+        let out = system(a:cmd, a:input)
         let reg = 's'
     else
         try
@@ -713,28 +873,26 @@ function! s:Run(system, cmd, input, ...) abort
         let reg = 'e'
     endif
     call setreg(reg, out)
-    let mode = get(a:, 1, 1)
-    if mode < 0
+    if a:mode < 0
         redraw
         echo join(getreg(reg, 1, 1,), "\n")
         return
     endif
-    if mode > 0
-        exec get(a:, 2, '') 'new'
+    if a:mode > 0
+        exec a:mods 'new'
     endif
     setl bt=nofile bh=hide noswf nobl
     let b:run_system = a:system
     let b:run_cmd = a:cmd
     let b:run_input = a:input
     let b:run_title = (a:system ? '!' : ':') . a:cmd
-    let [ma_, ro_] = [&l:ma, &l:ro]
     try
-        setl ma noro
+        setl ma noro ul=-1
         silent exec 'Preserve %d_ | put' reg '| 1d_'
         if !a:system | %Sanitize | endif
     catch /:E353:/
     finally
-        let [&l:ma, &l:ro] = [ma_, ro_]
+        set ul<
         let v:statusmsg = b:run_title
     endtry
 endfunction
@@ -751,7 +909,9 @@ command! -nargs=1 -bang -complete=shellcmd SystemRegister
 command! -nargs=1 -range -bang -complete=shellcmd SystemRange
     \ call utils#tryCatchCall('<SID>Run', 1, <q-args>, getline(<line1>, <line2>), empty(<q-bang>) ? 1 : -1, <q-mods>)
 nnoremap <Leader>xs :System<Space>
+nnoremap <Leader>xS :System!<Space>
 xnoremap <Leader>xs y:SystemRegister<Space>
+xnoremap <Leader>xS y:SystemRegister!<Space>
 
 function! s:Reload(bang) abort
     if exists('b:run_system')
@@ -760,7 +920,7 @@ function! s:Reload(bang) abort
         if &l:buftype =~# '^\(nofile\|quickfix\|terminal\)$'
             throw printf("\"%s\" buffer can't be reloaded", &l:buftype)
         endif
-        silent exec 'Preserve edit' . a:bang
+        silent exec 'Preserve edit' . a:bang . '| file'
     endif
     let v:statusmsg = printf('[%s] %s', strftime('%H:%M:%S'), v:statusmsg)
     call utils#echo(utils#shortenCmdline(v:statusmsg))
@@ -777,9 +937,7 @@ function! s:ReloadT(bang, d) abort
         while 1
             call s:Reload('')
             echon printf(' (every %ds)', d)
-            if !empty(a:bang)
-                normal! G
-            endif
+            if !empty(a:bang) | $ | endif
             exec 'sleep' d
         endwhile
     finally
@@ -804,7 +962,7 @@ function! s:Option(opt) abort
     endif
 endfunction
 
-command! -nargs=1 -complete=option Option call s:Option(<q-args>)
+command! -nargs=1 -bar -complete=option Option call s:Option(<q-args>)
 nnoremap <Leader>oo :Option<Space>
 
 function! s:BufOrWinOptions(getvar) abort
@@ -829,7 +987,7 @@ function! s:BufAndWinOptions() abort
     call s:BufOrWinOptions(function('getwinvar', [0]))
 endfunction
 
-command! -count=1 BufWinOptions <count>Execute call s:BufAndWinOptions()
+command! -count=1 -bar BufWinOptions <count>Execute call s:BufAndWinOptions()
 
 " }}}
 
@@ -845,7 +1003,7 @@ function! s:VimrcReload() abort
     exec 'source' fnameescape(g:vimrc)
     close
 
-    "let winid = popup_create('VimrcReload', {'hidden': 1})
+    "let winid = popup_create('VimrcReload', #{hidden: 1})
     "call win_execute(winid, 'source ' . fnameescape(g:vimrc))
     "call popup_close(winid)
 
@@ -887,11 +1045,29 @@ nnoremap <Leader>re :Register <C-R>=v:register<CR> =<C-R>=getreg(v:register)<CR>
 
 " }}}
 
+" Execute the contents of register in visual mode {{{
+
+function! s:VisualAt() range abort
+    echo '@'
+    let c = getchar()
+    if type(c) == 0 | let c = nr2char(c) | endif
+    let cmd = a:firstline . ',' . a:lastline . 'norm!@' . c
+    exec cmd
+    redraw
+    echo ':' . cmd
+endfunction
+
+xnoremap @ :norm!@
+xnoremap <silent> @ :call utils#tryCatchCall('<SID>VisualAt')<CR>
+
+" }}}
+
 " Formatting {{{
 
-function! s:Format(...) range abort
-    let ft = get(a:, 1, &ft)
-    exec join([a:firstline . ',' . a:lastline, '!format', '-s', &sw, '-t', &tw, ft])
+function! s:Format(ft = &ft) range abort
+    let args = [a:firstline . ',' . a:lastline, '!format', '-s', &sw, '-t', &tw]
+    if !empty(a:ft) | call extend(args, ['-f', a:ft]) | endif
+    exec join(args)
 endfunction
 
 command! -nargs=? -range -bar Format silent Preserve <line1>,<line2> call s:Format(<f-args>)
@@ -900,6 +1076,9 @@ nnoremap <silent> <Leader>fo :%Format<CR>
 
 xnoremap <silent> <Leader>px :Format xml<CR>
 nnoremap <silent> <Leader>px :%Format xml<CR>
+
+xnoremap <silent> <Leader>pj :Format json<CR>
+nnoremap <silent> <Leader>pj :%Format json<CR>
 
 " }}}
 
@@ -988,6 +1167,18 @@ nnoremap <Leader>df :DiffTo <C-R>=expand('%')<CR>
 
 " }}}
 
+" ToText {{{
+
+function! s:ToText(ft = &ft) range abort
+    let args = [a:firstline . ',' . a:lastline, '!totext', '-s', &sw, '-t', &tw]
+    if !empty(a:ft) | call extend(args, ['-f', a:ft]) | endif
+    exec join(args)
+endfunction
+
+command! -nargs=? -range=% -bar ToText silent <line1>,<line2> call s:ToText(<f-args>)
+
+" }}}
+
 " Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding {{{
 
 function! s:MetaLess(cmd) abort
@@ -1036,7 +1227,7 @@ endif
 
 function! s:Themes() abort
     let themes = ['luciusblack', 'hybrid', 'bclear']
-    let [i, lasti] = [get(s:, 'themes_last_index'), len(themes)-1]
+    let [i, lasti] = [get(s:, 'themes_last_index'), len(themes) - 1]
     while 1
         exec 'colorscheme' themes[i]
         redraw | echo themes[i]
@@ -1044,25 +1235,28 @@ function! s:Themes() abort
         if c == 3 || c == 113
             break
         elseif c == 107
-            let i = i > 0 ? i-1 : lasti
+            let i = i > 0 ? i - 1 : lasti
         else
-            let i = i < lasti ? i+1 : 0
+            let i = i < lasti ? i + 1 : 0
         endif
     endwhile
     let s:themes_last_index = i
     redraw | echo
 endfunction
 
-command! Themes call s:Themes()
+command! -bar Themes call s:Themes()
 nnoremap <Leader>th <Cmd>Themes<CR>
 
 " }}}
 
 " Write with elevated privileges {{{
 
-function! s:Write(...) abort
-    let filename = get(a:, 1, expand('%'))
-    exec 'silent write !sudo tee >/dev/null' shellescape(filename, 1)
+function! s:Write(filename = expand('%')) abort
+    if empty(a:filename)
+        call utils#echoError('E32: No file name')
+        return
+    endif
+    exec 'silent write !sudo tee >/dev/null' shellescape(a:filename, 1)
     edit!
 endfunction
 
@@ -1102,16 +1296,16 @@ command! -nargs=? -range Split
 command! -nargs=? -range Join
     \ call utils#tryCatch(
     \     printf('Preserve <line1>,%ds/\n/%s/ge',
-    \         <line2> > <line1> ? <line2>-1 : <line2>,
+    \         <line2> > <line1> ? <line2> - 1 : <line2>,
     \         !empty(<q-args>) ? escape(<q-args>, '/&') : ' '
     \     )
     \ )
 
-command! -count=1 PackPath exec '<count>Execute set pp' | exec 'normal! df=' | Split,
-command! -count=1 RuntimePath exec '<count>Execute set rtp' | exec 'normal! df=' | Split,
-command! -count=1 ScriptNames <count>Execute scriptnames
+command! -count=1 -bar PackPath exec '<count>Execute set pp' | exec 'normal! df=' | Split,
+command! -count=1 -bar RuntimePath exec '<count>Execute set rtp' | exec 'normal! df=' | Split,
+command! -count=1 -bar ScriptNames <count>Execute scriptnames
 
-command! DelDirs Preserve g/\/$/d
+command! -bar DelDirs Preserve g/\/$/d
 
 command! -range -bar Sanitize silent Preserve <line1>,<line2> s/\s\+$//e
 xnoremap <silent> <Leader>pp :Sanitize<CR>
@@ -1128,7 +1322,7 @@ xnoremap <silent> <Leader>uy :SystemRange! urls -y<CR>
 nnoremap <silent> <Leader>uy :.SystemRange! urls -y<CR>
 nnoremap <silent> <Leader>uY :%SystemRange! urls -y<CR>
 
-nnoremap <Leader>gg :vert System git show HEAD:./
+nnoremap <Leader>gs :vert System git show HEAD:./
 
 " ----------------------------------------
 
@@ -1146,13 +1340,16 @@ if has('nvim')
     let loaded_tutor_mode_plugin = 1
 endif
 
-packadd! ansiesc:drchip
+let qf_disable_statusline = 1
+
+packadd! ansiesc
 packadd! cfilter
 packadd! colorschemes
 packadd! matchit
+packadd! termdebug
 
 filetype plugin indent on
-if !exists('g:syntax_on')
+if !exists('syntax_on')
     syntax enable
 endif
 
@@ -1163,6 +1360,7 @@ augroup vimrc_base
 
     autocmd BufEnter,BufWinEnter * match none
     autocmd FileChangedRO * setl noro
+    autocmd QuickFixCmdPost l* lwindow
     autocmd QuickFixCmdPost [^l]* cwindow
 
     autocmd CmdwinEnter *
@@ -1174,22 +1372,24 @@ augroup vimrc_base
         \|     exec 'normal! g`"'
         \| endif
 
+    autocmd SwapExists * let v:swapchoice = 'o' | setl noma
+
     function! s:TerminalSetup() abort
         call utils#bufSpecial()
         setl list
-        let &l:stl = printf('%%{%%%sTerminalStatusline()%%}', expand('<SID>'))
+        let &l:stl = '%{%' . expand('<SID>') . 'TerminalStatusline()%}'
     endfunction
 
     function! s:TerminalStatusline() abort
         let stl = '%n'
-        let bin = matchstr(expand('%'), '\C^term://\%(.\{-}//\%(\d\+:\)\?\)\?\zs.*')
+        let bin = matchstr(expand('%'), '\v^term://%(.{-}//%(\d+:)?)?\zs.*')
         if empty(bin)
             let stl .= ' %<%f'
         else
             if bin == exepath(&shell) | let bin = &shell | endif
             let stl .= printf(' !%s', bin)
         endif
-        if exists('b:term_title') && match(b:term_title, '\C^term://') < 0
+        if exists('b:term_title') && match(b:term_title, '^term://') < 0
             let stl .= printf(' [%s]', b:term_title)
         endif
         if mode() == 'n'
@@ -1212,60 +1412,67 @@ augroup vimrc_base
 
     autocmd FileType diff call utils#bufSpecial()
     autocmd FileType mail call utils#bufSpecial() | setl tw=72
-    autocmd FileType make setl ts=4 sw=4 noet
+    autocmd FileType make setl ts=4 noet
     autocmd FileType man call utils#bufSpecial() | setl noma ts=8
     autocmd FileType rst setl ts=8 sw=3 fdm=manual foldtext&
     autocmd FileType tar call utils#bufSpecial()
-    autocmd FileType yaml setl ts=2 sw=2
+    autocmd FileType yaml setl ts=2
     autocmd FileType zip call utils#bufSpecial()
     autocmd FileType {c,cpp}{,.*} let &l:path = '.,,**,/usr/include'
 augroup END
 
 " ----------------------------------------
 
-hi link Boolean                         Constant
-hi link Character                       Constant
-hi link Conditional                     Statement
-hi link Debug                           Special
-hi link Define                          PreProc
-hi link Delimiter                       Special
-hi link Exception                       Statement
-hi link Float                           Number
-hi link Function                        Identifier
-hi link HelpCommand                     Statement
-hi link HelpExample                     Statement
-hi link Include                         PreProc
-hi link Keyword                         Statement
-hi link Label                           Statement
-hi link Macro                           PreProc
-hi link Number                          Constant
-hi link Operator                        Statement
-hi link PreCondit                       PreProc
-hi link Repeat                          Statement
-hi link SpecialChar                     Special
-hi link SpecialComment                  Special
-hi link StorageClass                    Type
-hi link String                          Constant
-hi link Structure                       Type
-hi link Tag                             Special
-hi link Typedef                         Type
-hi link asciidocQuotedEmphasized        PreProc
-hi link diffBDiffer                     Statement
-hi link diffCommon                      Statement
-hi link diffDiffer                      Statement
-hi link diffIdentical                   Statement
-hi link diffIndexLine                   Type
-hi link diffIsA                         Statement
-hi link diffNoEOL                       Statement
-hi link diffOnly                        Statement
-hi link diffRemoved                     Constant
-hi link htmlBold                        Normal
-hi link htmlEndTag                      htmlTagName
-hi link htmlItalic                      Normal
-hi link htmlLink                        Function
-hi link htmlSpecialTagName              htmlTagName
-hi link htmlTag                         htmlTagName
-hi link markdownItalic                  PreProc
-hi link xmlEndTag                       Statement
-hi link xmlTag                          Statement
-hi link xmlTagName                      Statement
+hi def link Boolean                     Constant
+hi def link Character                   Constant
+hi def link Conditional                 Statement
+hi def link Debug                       Special
+hi def link Define                      PreProc
+hi def link Delimiter                   Special
+hi def link Exception                   Statement
+hi def link Float                       Number
+hi def link Function                    Identifier
+hi def link HelpCommand                 Statement
+hi def link HelpExample                 Statement
+hi def link Include                     PreProc
+hi def link Keyword                     Statement
+hi def link Label                       Statement
+hi def link Macro                       PreProc
+hi def link Number                      Constant
+hi def link Operator                    Statement
+hi def link PreCondit                   PreProc
+hi def link Repeat                      Statement
+hi def link SpecialChar                 Special
+hi def link SpecialComment              Special
+hi def link StorageClass                Type
+hi def link String                      Constant
+hi def link Structure                   Type
+hi def link Tag                         Special
+hi def link Typedef                     Type
+hi def link asciidocQuotedEmphasized    PreProc
+hi def link diffBDiffer                 Statement
+hi def link diffCommon                  Statement
+hi def link diffDiffer                  Statement
+hi def link diffIdentical               Statement
+hi def link diffIndexLine               Type
+hi def link diffIsA                     Statement
+hi def link diffNoEOL                   Statement
+hi def link diffOnly                    Statement
+hi def link diffRemoved                 Constant
+hi def link htmlBold                    Normal
+hi def link htmlEndTag                  htmlTagName
+hi def link htmlItalic                  Normal
+hi def link htmlLink                    Function
+hi def link htmlSpecialTagName          htmlTagName
+hi def link htmlTag                     htmlTagName
+hi def link markdownItalic              PreProc
+hi def link xmlEndTag                   Statement
+hi def link xmlTag                      Statement
+hi def link xmlTagName                  Statement
+
+" Nvim LSP
+hi def link LspDiagnosticsDefaultHint LspDiagnosticsDefaultInformation
+hi def link LspDiagnosticsFloatingHint LspDiagnosticsFloatingInformation
+hi def link LspDiagnosticsSignHint LspDiagnosticsSignInformation
+hi def link LspDiagnosticsUnderlineHint LspDiagnosticsUnderlineInformation
+hi def link LspDiagnosticsVirtualTextHint LspDiagnosticsVirtualTextInformation

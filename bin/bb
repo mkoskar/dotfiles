@@ -54,6 +54,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     awk-freeshell           b http://awk.freeshell.org/
     awk-gnu                 b https://www.gnu.org/software/gawk/manual/gawk.html
     bacdive                 b https://bacdive.dsmz.de/advsearch
+    bacteria                b https://upload.wikimedia.org/wikipedia/commons/6/69/Bacterial_morphology_diagram.svg
     basedir                 b https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
     bash                    b https://www.gnu.org/software/bash/manual/html_node/index.html
     bash-abs                b https://tldp.org/LDP/abs/html/
@@ -117,6 +118,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     emojis                  b https://emojipedia.org/
     emojis-codes            b https://www.webpagefx.com/tools/emoji-cheat-sheet/
     emoticons               b https://en.wikipedia.org/wiki/List_of_emoticons
+    enum                    b https://en.wikipedia.org/wiki/E_number#Full_list
     etsi                    b https://www.etsi.org/standards-search#\&sort=3
     etymology               b https://www.etymonline.com/word/{u}
     ffp                     b https://en.wikipedia.org/wiki/FFP_standards#Types

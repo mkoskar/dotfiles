@@ -39,6 +39,7 @@ setopt auto_resume
 setopt brace_ccl
 setopt combining_chars
 setopt complete_in_word
+setopt extended_glob
 setopt extended_history
 setopt glob_dots
 setopt hist_expire_dups_first
@@ -139,7 +140,7 @@ __toggle-comment-all() {
 __zle-keymap-select() {
     __vimode=:
     if [[ ! $KEYMAP = vicmd ]]; then
-        [[ $ZLE_STATE = *overwrite* ]] && __vimode=^ || __vimode=+
+        [[ $ZLE_STATE = *overwrite* ]] && __vimode=\^ || __vimode=+
     fi
     zle reset-prompt
 }
@@ -185,9 +186,9 @@ for i in backward-kill-line backward-kill-word kill-line kill-word; do
 done
 unset i
 
-bindkey -rR ^A-^_
+bindkey -rR \^A-\^_
 
-for k in \\e^{@.._} \\e{\ ..~}; do
+for k in \\e\^{@.._} \\e{\ ..~}; do
     bindkey $k noop
     bindkey -M vicmd $k noop
 done
@@ -205,19 +206,19 @@ for k in kdch1 kend kf{1..12} khome kich1 knp kpp; do
 done
 unset k v
 
-bindkey ^B beginning-of-line
-bindkey ^E end-of-line
+bindkey \^B beginning-of-line
+bindkey \^E end-of-line
 bindkey \\eh backward-char
 bindkey \\el forward-char
 bindkey \\eb backward-word # emacs-backward-word
 bindkey \\ef emacs-forward-word
 bindkey \\ew forward-word
 
-bindkey ^? backward-delete-char
-bindkey ^H backward-delete-char
-bindkey ^U backward-kill-line-with-undo
-bindkey ^K kill-line-with-undo
-bindkey ^W backward-kill-word-with-undo
+bindkey \^? backward-delete-char
+bindkey \^H backward-delete-char
+bindkey \^U backward-kill-line-with-undo
+bindkey \^K kill-line-with-undo
+bindkey \^W backward-kill-word-with-undo
 bindkey \\ed kill-word-with-undo
 bindkey \\ex delete-char
 
@@ -232,77 +233,79 @@ bindkey \\e7 digit-argument
 bindkey \\e8 digit-argument
 bindkey \\e9 digit-argument
 
-bindkey ' ' magic-space
-bindkey . expand-dot-to-parent-directory-path
-bindkey \\e. insert-last-word
-bindkey \\em copy-earlier-word
-bindkey ^A all-matches
-bindkey ^D list-choices
-bindkey ^G send-break
-bindkey ^I complete-word
-bindkey ^J self-insert
-bindkey ^L clear-screen
-bindkey ^M accept-line
-bindkey ^R history-incremental-search-backward
-bindkey ^S history-incremental-search-forward
-bindkey ^V quoted-insert
-bindkey ^XH _complete_help
-bindkey ^X^A vi-cmd-mode
-bindkey ^\[ vi-cmd-mode
-bindkey ^_ split-undo
-
-bindkey ^O reverse-menu-complete
+bindkey \^A all-matches
+bindkey \^D list-choices
+bindkey \^I complete-word
+bindkey \^O reverse-menu-complete
 [[ $terminfo[kcbt] ]] && bindkey $terminfo[kcbt] reverse-menu-complete
 
-bindkey \\e^M reedit
+bindkey \\e. insert-last-word
+bindkey \^J self-insert
+bindkey \^R history-incremental-search-backward
+bindkey \^S history-incremental-search-forward
+bindkey \^V quoted-insert
+bindkey \^X\^A vi-cmd-mode
+bindkey \^\[ vi-cmd-mode
+
+bindkey ' ' magic-space
+bindkey . expand-dot-to-parent-directory-path
 bindkey \\ee expand-word-alias
-bindkey \\ej down-line
+bindkey \\em copy-earlier-word
+bindkey \^XH _complete_help
+bindkey \^Y toggle-comment-all
+bindkey \^_ split-undo
+
+bindkey \^G send-break
+bindkey \^L clear-screen
+bindkey \^M accept-line
+bindkey \^P history-search-backward
+bindkey \^N history-search-forward
+bindkey \\e\< beginning-of-buffer-or-history
+bindkey \\e\> end-of-buffer-or-history
 bindkey \\ek up-line
-bindkey ^N history-search-forward
-bindkey ^P history-search-backward
-bindkey ^X^E edit-command-line
-bindkey ^Y toggle-comment-all
+bindkey \\ej down-line
+bindkey \\e\^M reedit
+bindkey \^X\^E edit-command-line
 
-bindkey -M vicmd \\e^M reedit
-bindkey -M vicmd \\ee expand-word-alias
-bindkey -M vicmd \\ej down-line
+bindkey -M vicmd \^G send-break
+bindkey -M vicmd \^L clear-screen
+bindkey -M vicmd \^M accept-line
+bindkey -M vicmd \^P history-search-backward
+bindkey -M vicmd \^N history-search-forward
+bindkey -M vicmd \\e\< beginning-of-buffer-or-history
+bindkey -M vicmd \\e\> end-of-buffer-or-history
 bindkey -M vicmd \\ek up-line
-bindkey -M vicmd ^N history-search-forward
-bindkey -M vicmd ^P history-search-backward
-bindkey -M vicmd ^X^E edit-command-line
-bindkey -M vicmd ^Y toggle-comment-all
+bindkey -M vicmd \\ej down-line
+bindkey -M vicmd \\e\^M reedit
+bindkey -M vicmd \^X\^E edit-command-line
 
-bindkey -M vicmd G end-of-buffer-or-history
 bindkey -M vicmd \# toggle-comment-all
 bindkey -M vicmd \\- vi-first-non-blank
-bindkey -M vicmd ^G send-break
-bindkey -M vicmd ^J vi-open-line-below
-bindkey -M vicmd ^R redo
-bindkey -M vicmd j down-history
-bindkey -M vicmd k up-history
-bindkey -M vicmd u undo
+bindkey -M vicmd \^J vi-open-line-below
+bindkey -M vicmd \^R redo
 
-bindkey -s ^Xp '^X^AIpgx '
-bindkey -s ^XP '^X^AA | pg'
-bindkey -s ^Xx '^X^A0isudo '
-bindkey -s ^Xh "^X^Addihistory 25 | gi ''^X^Ai"
-bindkey -s ^Xa '^X^Aa!!:*'
-bindkey -s ^Xl '^X^Aa!!:$'
-bindkey -s ^Xs '^X^Aa!!:gs/'
-bindkey -s ^Xc '--color=auto '
+bindkey -s \^Xp '^X^AIpgx '
+bindkey -s \^XP '^X^AA | pg'
+bindkey -s \^Xx '^X^A0isudo '
+bindkey -s \^Xh "^X^Addihistory 25 | gi ''^X^Ai"
+bindkey -s \^Xa '^X^Aa!!:*'
+bindkey -s \^Xl '^X^Aa!!:$'
+bindkey -s \^Xs '^X^Aa!!:gs/'
+bindkey -s \^Xc '--color=auto '
 
-bindkey -M vicmd -s ^Xp 'Ipgx '
-bindkey -M vicmd -s ^XP 'A | pg'
-bindkey -M vicmd -s ^Xx 'Isudo '
-bindkey -M vicmd -s ^Xh "ddihistory 25 | gi ''^X^Ai"
-bindkey -M vicmd -s ^Xa 'a!!:*'
-bindkey -M vicmd -s ^Xl 'a!!:$'
-bindkey -M vicmd -s ^Xs 'a!!:gs/'
+bindkey -M vicmd -s \| 'A | '
+bindkey -M vicmd -s \^Xp 'Ipgx '
+bindkey -M vicmd -s \^XP 'A | pg'
+bindkey -M vicmd -s \^Xx 'Isudo '
+bindkey -M vicmd -s \^Xh "ddihistory 25 | gi ''^X^Ai"
+bindkey -M vicmd -s \^Xa 'a!!:*'
+bindkey -M vicmd -s \^Xl 'a!!:$'
+bindkey -M vicmd -s \^Xs 'a!!:gs/'
 
 bindkey -M isearch . self-insert
 bindkey -M menuselect \\ej down-line-or-history
 bindkey -M menuselect \\ek up-line-or-history
-bindkey -M menuselect ^U send-break
+bindkey -M menuselect \^U send-break
 bindkey -M visual \" quote-region
 bindkey -M visual q deactivate-region
 
@@ -448,7 +451,7 @@ __plugin() {
 }
 
 if __plugin zsh-autosuggestions; then
-    ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=()
+    ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(autosuggest-enable-accept)
     ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
     ZSH_AUTOSUGGEST_COMPLETION_IGNORE='rm *'
     ZSH_AUTOSUGGEST_HISTORY_IGNORE='rm *'
@@ -471,17 +474,17 @@ if __plugin zsh-autosuggestions; then
     bindkey '\e^ ' autosuggest-toggle
 fi
 
-__plugin zsh-completionss
+__plugin zsh-completions
 
 if __plugin zsh-history-substring-search; then
     HISTORY_SUBSTRING_SEARCH_FUZZY=1
     HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS=
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=bg=red,fg=231
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=
-    bindkey ^P history-substring-search-up
-    bindkey ^N history-substring-search-down
-    bindkey -M vicmd ^P history-substring-search-up
-    bindkey -M vicmd ^N history-substring-search-down
+    bindkey \^P history-substring-search-up
+    bindkey \^N history-substring-search-down
+    bindkey -M vicmd \^P history-substring-search-up
+    bindkey -M vicmd \^N history-substring-search-down
 fi
 
 if __plugin zsh-syntax-highlighting; then

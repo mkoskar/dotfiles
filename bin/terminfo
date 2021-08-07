@@ -7,6 +7,7 @@ ti_reset=$(tput sgr0)
 cat <<-EOF
 
 	${ti_reset}normal
+	$(tput dim)dim${ti_reset}
 	$(tput bold)bold${ti_reset}
 	$(tput smso)standout${ti_reset}
 	$(tput smul)underline${ti_reset}

@@ -1,0 +1,10 @@
+#compdef tmux-session
+
+sockets=(${TMUX_TMPDIR:-/tmp}/tmux-$UID/*(:t))
+
+_arguments -C \
+    '-d[do not attach]' \
+    '-h[help]' \
+    '-s[socket]:socket:($sockets)' \
+    '(-):template:(${(f)"$(tmux-session -)"})' \
+    '(-):session:(-)'

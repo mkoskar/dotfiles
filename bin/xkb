@@ -40,9 +40,17 @@ xkb_default() {
 	    };
 
 	    xkb_types {
+	        // With xorg-server 21.1.1-3 unless following is present, the keymap will fail to load with:
+	        //   X Error of failed request:  BadValue (integer parameter out of range for operation)
+	        //     Major opcode of failed request:  135 (XKEYBOARD)
+	        //     Minor opcode of failed request:  9 (XkbSetMap)
+	        type "FOUR_LEVEL_SHIFT_ALT_CTRL" {
+	            modifiers= None;
+	        };
+
 	        include "complete"
 
-	        type "CUSTOM" {
+	        type "FOUR_LEVEL_SHIFT_ALT_CTRL" {
 	            modifiers= Shift+Alt+Control;
 	            map[Shift]= Level2;
 	            map[Alt]= Level3;
@@ -54,7 +62,7 @@ xkb_default() {
 	        };
 	    };
 
-	    xkb_compat {
+	    xkb_compatibility {
 	        include "complete"
 
 	        interpret Shift_R+AnyOfOrNone(all) {
@@ -69,7 +77,7 @@ xkb_default() {
 	        include "terminate(ctrl_alt_bksp)"
 
 	        replace key <RTSH> {
-	            type= "CUSTOM",
+	            type= "FOUR_LEVEL_SHIFT_ALT_CTRL",
 	            [ Shift_R, Caps_Lock, ISO_Next_Group, MouseKeys_Enable ]
 	        };
 

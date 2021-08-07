@@ -11,28 +11,11 @@ cmd() {
 }
 
 new() {
-    cmd new -d -s "$session" -e SHOME="$PWD" "$@"
+    cmd new -d -x - -y - -s "$session" -e SHOME="$PWD" "$@"
 }
 
 neww() {
     cmd neww -t "=$session" "$@"
-}
-
-# ----------------------------------------
-
-base() {
-    new
-}
-
-ext() {
-    new trun ranger \
-        \; set remain-on-exit on
-
-    neww trun ee \
-        \; set remain-on-exit on \
-        \; set main-pane-width 84 \
-        \; selectl main-vertical \
-        \; splitw -h
 }
 
 # ----------------------------------------
@@ -63,6 +46,21 @@ aux() {
         \; set remain-on-exit on
 
     cmd selectw -t "=$session:1"
+}
+
+base() {
+    new
+}
+
+ext() {
+    new trun ranger \
+        \; set remain-on-exit on
+
+    neww trun ee \
+        \; set remain-on-exit on \
+        \; set main-pane-width 84 \
+        \; selectl main-vertical \
+        \; splitw -h
 }
 
 mon() {
@@ -105,7 +103,7 @@ wrk() {
 # ----------------------------------------
 
 _usage() {
-    echo "usage: $prgname [-d] [-s socket] [session]"
+    echo "usage: $prgname [-d] [-s socket] [template] [session]"
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
@@ -126,9 +124,36 @@ shift $((OPTIND-1))
 
 tmux=(tmux -L "$socket")
 
+templates=(
+    adm
+    aux
+    base
+    ext
+    mon
+    tmp
+    wrk
+)
+
 if (( $# )); then
-    session=$1
+    template=$1
+    session=${2:-$template}
 else
+    template=ext
+    session=-
+fi
+
+if [[ $template = - ]]; then
+    printf '%s\n' "${templates[@]}"
+    exit
+fi
+
+for i in "${templates[@]}"; do [[ $template = "$i" ]] && break; done
+if [[ $template != "$i" ]]; then
+    echo "$prgname: $template: No such template" >&2
+    exit 2
+fi
+
+if [[ $session = - ]]; then
     session=$PWD/
     session=${session/#$HOME\//\~/}
     session=${session%/}
@@ -136,21 +161,7 @@ fi
 
 set +e
 if ! cmd has -t "=$session" &>/dev/null; then
-    (
-        set -e
-        case $session in
-            adm | aux | mon | tmp | wrk)
-                $session
-                ;;
-            *)
-                case $prgname in
-                    muxx) ext ;;
-                    *) base ;;
-                esac
-                ;;
-        esac
-        sleep 0.3
-    )
+    (set -e; $template)
 fi
 
 if (( attach )); then

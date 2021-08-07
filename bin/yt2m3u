@@ -108,4 +108,4 @@ handle_ytdl() {
 }
 
 export -f _curl yt_video yt_playlist yt_channel yt_user handle_api handle_ytdl
-parallel -rk -j 10 handle_api {}
+parallel -rk -j 10 handle_api

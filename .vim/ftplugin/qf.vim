@@ -9,23 +9,28 @@ set cpo&vim
 "redir => s:lsout | silent filter /^\[Location List\]/ ls! % | redir END
 "let b:qf_loclist = !empty(s:lsout)
 let b:qf_loclist = get(getwininfo(win_getid())[0], 'loclist', 0)
-
 let b:qf_prefix = b:qf_loclist ? 'l' : 'c'
 
-function! s:QfOldest(prefix) abort
-    try | exec a:prefix . 'older 999' | catch | endtry
+let b:GetList = b:qf_loclist ? function('getloclist', [0]) : function('getqflist')
+let b:SetList = b:qf_loclist ? function('setloclist', [0]) : function('setqflist')
+
+let s:sid = expand('<SID>')
+let &l:stl = "[%{b:qf_loclist ? 'LocList' : 'QfList'}"
+let &l:stl .= '%( %{%' . s:sid . 'Nr()%}]%)'
+let &l:stl .= '%( (%{%' . s:sid . 'Idx()%})%)'
+let &l:stl .= '%( %<%{%' . s:sid . 'Title()%}%)'
+let &l:stl .= '%=' . stlTail
+
+function! s:Nr() abort
+    return printf('%d/%d', b:GetList(#{nr: 0}).nr, b:GetList(#{nr: '$'}).nr)
 endfunction
 
-function! s:QfNewest(prefix) abort
-    try | exec a:prefix . 'newer 999' | catch | endtry
+function! s:Idx() abort
+    return printf('%d/%d', b:GetList(#{idx: 0}).idx, b:GetList(#{size: 0}).size)
 endfunction
 
-function! s:QfOlder(prefix) abort
-    try | exec a:prefix . 'older' | catch | endtry
-endfunction
-
-function! s:QfNewer(prefix) abort
-    try | exec a:prefix . 'newer' | catch | endtry
+function! s:Title() abort
+    return b:GetList(#{title: 0}).title
 endfunction
 
 call utils#bufSpecial()
@@ -45,10 +50,48 @@ nmap <buffer> <silent> o <CR>
 nnoremap <buffer> <silent> q :close<CR>
 nnoremap <buffer> <silent> go
     \ :exec "normal \<lt>CR>" \| match IncSearch /\k*\%#\k*/ \| wincmd p<CR>
-nnoremap <buffer> <silent> << :call <SID>QfOlder(b:qf_prefix)<CR>
-nnoremap <buffer> <silent> >> :call <SID>QfNewer(b:qf_prefix)<CR>
-nnoremap <buffer> <silent> <Leader>< :call <SID>QfOldest(b:qf_prefix)<CR>
-nnoremap <buffer> <silent> <Leader>> :call <SID>QfNewest(b:qf_prefix)<CR>
+
+function! s:QfPrefixCmd(cmd) abort
+    try | exec b:qf_prefix . a:cmd | catch | endtry
+endfunction
+
+command! -buffer -bar QfOlder call s:QfPrefixCmd('older')
+command! -buffer -bar QfNewer call s:QfPrefixCmd('newer')
+command! -buffer -bar QfOldest call s:QfPrefixCmd('older 999')
+command! -buffer -bar QfNewest call s:QfPrefixCmd('newer 999')
+
+nnoremap <buffer> <silent> << :QfOlder<CR>
+nnoremap <buffer> <silent> >> :QfNewer<CR>
+nnoremap <buffer> <silent> <Leader>< :QfOldest<CR>
+nnoremap <buffer> <silent> <Leader>> :QfNewest<CR>
+
+command! -buffer -bar QfClear call b:SetList([], 'r', #{title: '', items: []})
+command! -buffer -bar QfFree call b:SetList([], 'f')
+command! -buffer -bar QfNew call b:SetList([], ' ', #{title: ''})
+
+function! s:QfReload() abort
+    let ctx = b:GetList(#{context: 0}).context
+    if empty(ctx) || !has_key(ctx, 'reload_func')
+        call utils#echoError("Can't be reloaded")
+        return
+    endif
+    if b:qf_loclist
+        let winid = b:GetList(#{filewinid: 0}).filewinid
+        if winid == 0
+            call utils#echoError('Parent window missing')
+            return
+        endif
+        call win_execute(winid, 'call ctx.reload_func()')
+    else
+        call ctx.reload_func()
+    endif
+    let title = b:GetList(#{title: 0}).title
+    let statusmsg = printf('[%s] %s', strftime('%H:%M:%S'), title)
+    call utils#echo(utils#shortenCmdline(statusmsg))
+endfunction
+
+command! -buffer -bar QfReload call s:QfReload()
+nnoremap <buffer> <Leader>rr <Cmd>QfReload<CR>
 
 " ----------------------------------------
 

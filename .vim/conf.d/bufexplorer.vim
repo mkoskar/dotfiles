@@ -2,9 +2,7 @@
 
 packadd! bufexplorer
 
-" TODO:
-"
-" * seems to mess up alternate buffer
+" TODO: breaks alternate buffer
 
 let bufExplorerFindActive = 0
 let bufExplorerShowNoName = 1
@@ -14,14 +12,16 @@ nnoremap <silent> <Leader>bb :BufExplorer<CR>
 
 augroup bufexplorer_conf
     autocmd!
-    autocmd FileType bufexplorer call utils#bufSpecial()
+    autocmd FileType bufexplorer
+        \  call utils#bufSpecial()
+        \| let b:ft_tabline = 1
 augroup END
 
-hi link bufExplorerActBuf Directory
-hi link bufExplorerAltBuf Type
-hi link bufExplorerCurBuf Statement
-hi link bufExplorerHelp String
-hi link bufExplorerHidBuf Normal
-hi link bufExplorerInactBuf Normal
-hi link bufExplorerMapping Identifier
-hi link bufExplorerTitle PreProc
+hi def link bufExplorerActBuf Directory
+hi def link bufExplorerAltBuf Type
+hi def link bufExplorerCurBuf Statement
+hi def link bufExplorerHelp String
+hi def link bufExplorerHidBuf Normal
+hi def link bufExplorerInactBuf Normal
+hi def link bufExplorerMapping Identifier
+hi def link bufExplorerTitle PreProc

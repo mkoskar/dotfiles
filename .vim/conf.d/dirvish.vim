@@ -2,6 +2,8 @@
 
 packadd! dirvish
 
+" TODO: buffer name could be shortened with ~/
+
 let dirvish_hijack_netrw = 0
 let dirvish_mode = ':sort | sort ,^.*/,'
 

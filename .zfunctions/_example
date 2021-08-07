@@ -41,12 +41,12 @@
 #    ':2nd arg:_files' \
 #    '::opt arg:_files' \
 #    ':3rd arg:(a b c)' \
-#    '(-)*:: :->argument' \
+#    '(-)*: :->argument' \
 #    && return
 #
 #case $state in
 #    argument)
-#        _message -r "[$CURRENT/$#words] $words"
+#        _message -r "[$CURRENT/$#words] $(declare -p words)"
 #        ;;
 #esac
 

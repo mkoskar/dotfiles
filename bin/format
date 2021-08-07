@@ -7,14 +7,18 @@ set -eu
 prgname=${0##*/}
 
 _usage() {
-    echo "usage: $prgname [-s shiftwidth] [-t textwidth] [filetype]"
+    echo "usage: $prgname [-f filetype] [-s shiftwidth] [-t textwidth] [file]"
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
+args "$@"
+
+ft=
 declare -i sw=4 tw=78
-while getopts s:t:h opt; do
+while getopts f:s:t:h opt; do
     case $opt in
+        f) ft=$OPTARG ;;
         s) sw=$OPTARG ;;
         t) tw=$OPTARG ;;
         h) usage ;;
@@ -25,7 +29,11 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-ft=${1-}
+if (( $# )); then
+    exec <"$1"
+    ft=$(vim -NXn -i NONE -u NONE -es \
+             --cmd 'filetype on' -c 'verb echon &ft | qa!' "$1" 2>&1)
+fi
 
 try() {
     ! hash -- "$1" &>/dev/null || exec "$@"
@@ -68,6 +76,7 @@ case $ft in
         try js-beautify -s "$sw" -w "$tw"
         ;;
     json)
+        #try python -m json.tool
         try js-beautify -s "$sw"
         ;;
     markdown)

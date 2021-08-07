@@ -1,4 +1,4 @@
 #compdef pipenv
 
-eval "$(COMMANDLINE="${words[1,$CURRENT]}" \
+eval "$(COMMANDLINE=${words[1,$CURRENT]} \
     _PIPENV_COMPLETE=complete-zsh pipenv)"
