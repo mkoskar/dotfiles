@@ -5,7 +5,7 @@ local curcontext=$curcontext state line
 
 _arguments -C \
     '--user' \
-    '(-):: :->service' \
+    '(-): :->service' \
     && return
 
 case $state in

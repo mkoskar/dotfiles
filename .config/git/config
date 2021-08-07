@@ -35,7 +35,9 @@
     cia = commit --amend
     clean-all = clean -dx
     clean-ignored = clean -dX
-    clone-shallow = clone --depth 5 --shallow-submodules --no-tags
+    clone-blobless = clone --filter=blob:none
+    clone-shallow = clone --depth 5 --shallow-submodules
+    clone-treeless = clone --filter=tree:0
     co = checkout
     conf = !git config -l --local | sort
     conf-edit = config -e
@@ -46,6 +48,7 @@
     dc = difftool --cached
     df = diff
     dfc = diff --cached
+    du = count-objects -vH
     f = fetch --all
     format-patch-with-signoff = format-patch --signoff
     forward = merge --ff-only
@@ -63,6 +66,7 @@
     pushv = push -v
     remotes = remote -v
     send-email-msmtp = !cd "\"$GIT_PREFIX\"" && git send-email --smtp-server="\"$HOME\""/bin/msmtp --envelope-sender=auto
+    show-commit = show-raw -s
     show-fuller = show --format=fuller
     show-raw = show --format=raw
     st = status -s
@@ -124,6 +128,7 @@
 [pager]
     branch = false
     lg = false
+    show-commit = false
 
 [pretty]
     lg1 = %C(bold blue)%h%Creset %C(bold white)%an%Creset %C(bold green)(%ad)%Creset%C(bold yellow)%d%Creset%n %s

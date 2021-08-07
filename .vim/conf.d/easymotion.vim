@@ -12,10 +12,9 @@ map <Leader><Leader>K <Plug>(easymotion-sol-k)
 map <Leader>; <Plug>(easymotion-next)
 map <Leader>\ <Plug>(easymotion-prev)
 
-hi EasyMotionTarget ctermfg=3 cterm=bold
-hi link EasyMotionIncCursor Cursor
-hi link EasyMotionIncSearch IncSearch
-hi link EasyMotionMoveHL IncSearch
-hi link EasyMotionShade Comment
-hi link EasyMotionTarget2First EasyMotionTarget
-hi link EasyMotionTarget2Second EasyMotionTarget
+hi def link EasyMotionIncCursor Cursor
+hi def link EasyMotionIncSearch IncSearch
+hi def link EasyMotionMoveHL IncSearch
+hi def link EasyMotionShade Comment
+hi def link EasyMotionTarget2First EasyMotionTarget
+hi def link EasyMotionTarget2Second EasyMotionTarget

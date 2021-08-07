@@ -2,7 +2,7 @@
 
 packadd! tcomment
 
-let tcomment#options = {'whitespace': 'no'}
+let tcomment#options = #{whitespace: 'no'}
 let tcomment_maps = 0
 
 nnoremap <silent> <Leader>C :TCommentBlock<CR>

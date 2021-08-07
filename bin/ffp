@@ -72,6 +72,7 @@ file=user.js
     if [[ ! $profile =~ ^plain(-|$) ]]; then
         cat <<-'EOF'
 
+			//user_pref("browser.proton.enabled", false);
 			user_pref("accessibility.typeaheadfind.flashBar", 0);
 			user_pref("app.shield.optoutstudies.enabled", false);
 			user_pref("browser.ctrlTab.previews", true);
@@ -80,7 +81,6 @@ file=user.js
 			user_pref("browser.newtabpage.directory.source", "");
 			user_pref("browser.newtabpage.enabled", false);
 			user_pref("browser.newtabpage.enhanced", false);
-			user_pref("browser.proton.enabled", false);
 			user_pref("browser.search.geoSpecificDefaults", false);
 			user_pref("browser.shell.checkDefaultBrowser", false);
 			user_pref("browser.startup.homepage", "about:blank");
@@ -177,15 +177,12 @@ file=userChrome.css
 
     cat <<-EOF
 
-		@media (-moz-proton) {
-		    .tab-background {
-		        border-radius: 0 !important;
-		        margin-block: 0 !important;
-		    }
+		.tabbrowser-tab {
+		    min-height: auto !important;
 		}
-		@media not (-moz-proton) {
-		    .tab-close-button { padding: 4px !important }
-		    .tab-icon-sound { padding: 2px !important }
+		.tab-background {
+		    border-radius: 0 !important;
+		    margin-block: 0 !important;
 		}
 	EOF
 

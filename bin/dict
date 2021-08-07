@@ -27,11 +27,12 @@ if (( ! $# )); then
     exit
 fi
 
+word=$(printf %s "$*" | jq -sRr @uri)
 if (( match )); then
-    curl -s "dict://dict.org/match * . \"${*//[\"\\]/ }\"" |
+    curl -s "dict://dict.org/match:$word:all" |
         PAGER_EX='setf dict' $PAGER
 else
-    curl -s "dict://dict.org/define * \"${*//[\"\\]/ }\"" |
+    curl -s "dict://dict.org/define:$word:all" |
         dos2unix |
         awk '
             /^\s*$/ { squashing = 1; next }
@@ -40,5 +41,5 @@ else
             /^150 [0-9]+ definitions retrieved/ { printf "\n" }
             /^151 "/ { printf "\n" }
         ' |
-        PAGER_EX='setf dict' $PAGER
+        $PAGER
 fi

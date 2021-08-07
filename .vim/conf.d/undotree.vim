@@ -13,5 +13,6 @@ augroup undotree_conf
     autocmd!
     autocmd FileType undotree
         \  call utils#bufSpecial()
+        \| let b:ft_tabline = 1
         \| nmap <buffer> <silent> o <CR>
 augroup END

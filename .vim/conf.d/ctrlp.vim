@@ -10,9 +10,9 @@ let ctrlp_show_hidden = 1
 let ctrlp_working_path_mode = 'rwa'
 
 let ctrlp_prompt_mappings = {
-    \ 'PrtCurLeft()': ['<c-h>', '<left>', '<c-^>'],
-    \ 'PrtSelectMove("d")': ['<M-j>', '<PageDown>', '<kPageDown>'],
-    \ 'PrtSelectMove("u")': ['<M-k>', '<PageUp>', '<kPageUp>'],
-    \ }
+\     'PrtCurLeft()': ['<c-h>', '<left>', '<c-^>'],
+\     'PrtSelectMove("d")': ['<M-j>', '<PageDown>', '<kPageDown>'],
+\     'PrtSelectMove("u")': ['<M-k>', '<PageUp>', '<kPageUp>'],
+\ }
 
-nnoremap <silent> <M-e> :CtrlPMRUFiles<CR>
+nnoremap <silent> <C-N> :CtrlPMRUFiles<CR>

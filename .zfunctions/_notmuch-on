@@ -16,7 +16,7 @@ case $state in
         _describe -t account account accounts
         ;;
     argument)
-        words=(notmuch --config="$HOME/.config/notmuch/$words[1]" "${words[@]:1}")
+        words=(notmuch --config=$HOME/.config/notmuch/$words[1] "${words[@]:1}")
         (( CURRENT += 1 ))
         _normal
         ;;

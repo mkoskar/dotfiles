@@ -42,9 +42,9 @@ from_vba() {
         gunzip -ck "$oname" >"$name.vba"
     fi
     rm -rf .vbaout "$name"
-    vim_batch \
+    yes '' | vim_batch \
         -c "try | call vimball#Vimball(1, '.vbaout') | finally | qa! | endtry" \
-        "$name.vba"
+        "$name.vba" 2>&1
     mv .vbaout "$name"
     echo
 }
@@ -57,54 +57,53 @@ cd pack/custom/opt
 
 # ----------------------------------------
 
-# TODO:
-#
-# https://github.com/Konfekt/FastFold
-# https://github.com/matze/vim-move
-# https://github.com/mg979/vim-visual-multi
-# https://github.com/norcalli/nvim-terminal.lua
+parallel -r <<-'EOF'
 
-echo
-grep -vxE '\s*|(\s*#.*)' <<-EOF | parallel --colsep \\s+ --bar from_git
-
-	ale                 https://github.com/dense-analysis/ale
-	ansiesc:jakar       https://github.com/jakar/vim-AnsiEsc
-	bufexplorer         https://github.com/jlanzarotta/bufexplorer
-	coc                 https://github.com/neoclide/coc.nvim
-	colorschemes        https://github.com/flazz/vim-colorschemes
-	ctrlp               https://github.com/ctrlpvim/ctrlp.vim
-	dirvish             https://github.com/justinmk/vim-dirvish
-	easy-align          https://github.com/junegunn/vim-easy-align
-	easymotion          https://github.com/easymotion/vim-easymotion
-	emmet               https://github.com/mattn/emmet-vim
-	fugitive            https://github.com/tpope/vim-fugitive
-	fzf-ext             https://github.com/junegunn/fzf.vim
-	gnupg               https://github.com/jamessan/vim-gnupg
-	goyo                https://github.com/junegunn/goyo.vim
-	limelight           https://github.com/junegunn/limelight.vim
-	neomake             https://github.com/neomake/neomake
-	nerdtree            https://github.com/preservim/nerdtree
-	nvim-lspconfig      https://github.com/neovim/nvim-lspconfig
-	nvim-plenary        https://github.com/nvim-lua/plenary.nvim
-	nvim-popup          https://github.com/nvim-lua/popup.nvim
-	nvim-telescope      https://github.com/nvim-telescope/telescope.nvim
-	nvim-treesitter     https://github.com/nvim-treesitter/nvim-treesitter
-	repeat              https://github.com/tpope/vim-repeat
-	speeddating         https://github.com/tpope/vim-speeddating
-	stabs               https://github.com/Thyrum/vim-stabs
-	surround            https://github.com/tpope/vim-surround
-	tagbar              https://github.com/majutsushi/tagbar
-	tcomment            https://github.com/tomtom/tcomment_vim
-	ultisnips           https://github.com/SirVer/ultisnips
-	undotree            https://github.com/mbbill/undotree
-	unimpaired          https://github.com/tpope/vim-unimpaired
-	vim-snippets        https://github.com/honza/vim-snippets
-	visualrepeat        https://github.com/inkarkat/vim-visualrepeat
+	from_git ale                https://github.com/dense-analysis/ale
+	from_git asyncomplete       https://github.com/prabirshrestha/asyncomplete.vim
+	from_git asyncomplete-lsp   https://github.com/prabirshrestha/asyncomplete-lsp.vim
+	from_git bufexplorer        https://github.com/jlanzarotta/bufexplorer
+	from_git clang-format       https://github.com/rhysd/vim-clang-format
+	from_git coc                https://github.com/neoclide/coc.nvim
+	from_git colorschemes       https://github.com/flazz/vim-colorschemes
+	from_git ctrlp              https://github.com/ctrlpvim/ctrlp.vim
+	from_git dirvish            https://github.com/justinmk/vim-dirvish
+	from_git easy-align         https://github.com/junegunn/vim-easy-align
+	from_git easymotion         https://github.com/easymotion/vim-easymotion
+	from_git emmet              https://github.com/mattn/emmet-vim
+	from_git fastfold           https://github.com/Konfekt/FastFold
+	from_git fugitive           https://github.com/tpope/vim-fugitive
+	from_git fzf-ext            https://github.com/junegunn/fzf.vim
+	from_git gnupg              https://github.com/jamessan/vim-gnupg
+	from_git goyo               https://github.com/junegunn/goyo.vim
+	from_git indentline         https://github.com/Yggdroot/indentLine
+	from_git limelight          https://github.com/junegunn/limelight.vim
+	from_git neomake            https://github.com/neomake/neomake
+	from_git nerdtree           https://github.com/preservim/nerdtree
+	from_git nvim-lspconfig     https://github.com/neovim/nvim-lspconfig
+	from_git nvim-plenary       https://github.com/nvim-lua/plenary.nvim
+	from_git nvim-popup         https://github.com/nvim-lua/popup.nvim
+	from_git nvim-telescope     https://github.com/nvim-telescope/telescope.nvim
+	from_git nvim-treesitter    https://github.com/nvim-treesitter/nvim-treesitter
+	from_git repeat             https://github.com/tpope/vim-repeat
+	from_git snippets           https://github.com/honza/vim-snippets
+	from_git speeddating        https://github.com/tpope/vim-speeddating
+	from_git stabs              https://github.com/Thyrum/vim-stabs
+	from_git surround           https://github.com/tpope/vim-surround
+	from_git tagbar             https://github.com/majutsushi/tagbar
+	from_git tcomment           https://github.com/tomtom/tcomment_vim
+	from_git toml               https://github.com/cespare/vim-toml
+	from_git ultisnips          https://github.com/SirVer/ultisnips
+	from_git undotree           https://github.com/mbbill/undotree
+	from_git unimpaired         https://github.com/tpope/vim-unimpaired
+	from_git vim-lsp            https://github.com/prabirshrestha/vim-lsp
+	from_git vim-lsp-ale        https://github.com/rhysd/vim-lsp-ale
+	from_git vim-lsp-settings   https://github.com/mattn/vim-lsp-settings
+	from_git vimspector         https://github.com/puremourning/vimspector
+	from_git visualrepeat       https://github.com/inkarkat/vim-visualrepeat
+	from_vba ansiesc            https://www.drchip.org/astronaut/vim/vbafiles/AnsiEsc.vba.gz
 
 EOF
-
-from_vba ansiesc:drchip \
-    http://www.drchip.org/astronaut/vim/vbafiles/AnsiEsc.vba.gz
 
 echo
 echo '> helptags'
@@ -114,4 +113,5 @@ vim_batch -c '
     endfor
     qa!
 '
+
 echo

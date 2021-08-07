@@ -3,7 +3,7 @@
 if !has('python3') | finish | endif
 
 packadd! ultisnips
-packadd! vim-snippets
+packadd! snippets
 
 let UltiSnipsEditSplit = 'vertical'
 let UltiSnipsExpandTrigger = '<C-J>'

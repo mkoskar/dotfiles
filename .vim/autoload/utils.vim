@@ -1,13 +1,10 @@
 " vim: fdm=marker
 
-function! utils#echoError(msg) abort
+function! utils#echo(msg) abort
     if !empty(a:msg)
-        echohl ErrorMsg | echomsg a:msg | echohl None
+        redraw
+        echohl None | echo a:msg
     endif
-endfunction
-
-function! utils#echoException() abort
-    call utils#echoError(substitute(v:exception, '^Vim\%((\a\+)\)\=:', '', 'g'))
 endfunction
 
 function! utils#echoWarn(msg) abort
@@ -17,11 +14,15 @@ function! utils#echoWarn(msg) abort
     endif
 endfunction
 
-function! utils#echo(msg) abort
+function! utils#echoError(msg) abort
     if !empty(a:msg)
         redraw
-        echohl None | echo a:msg
+        echohl ErrorMsg | echomsg a:msg | echohl None
     endif
+endfunction
+
+function! utils#echoException() abort
+    call utils#echoError(substitute(v:exception, '^Vim\%((\a\+)\)\=:', '', 'g'))
 endfunction
 
 " ----------------------------------------

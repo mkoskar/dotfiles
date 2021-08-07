@@ -16,12 +16,10 @@ basename=${path##*/}
 
 echo "$path"
 
-if manp=$(man -w "$path") && \
-    [[ $manp != "$path" ]]; then
+if manp=$(man -w "$path") && [[ $manp != "$path" ]]; then
     man "$path" | sed -En '/^NAME/{n; s/^\s*//p}'
 else
-    if manp=$(man -w "$basename") && \
-        [[ $manp != "$basename" ]]; then
+    if manp=$(man -w "$basename") && [[ $manp != "$basename" ]]; then
         man "$basename" | sed -En '/^NAME/{n; s/^\s*//p}'
     fi
 fi

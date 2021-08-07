@@ -10,7 +10,7 @@ ts_beg=$(date +%s)
 cleanup() {
     local retstat=$?
     local ts_end; ts_end=$(date +%s)
-    printf "exiting after %d minutes, %d seconds (%d)" \
+    printf 'exiting after %d minutes, %d seconds (%d)' \
         $(((ts_end-ts_beg)/60)) \
         $(((ts_end-ts_beg)%60)) \
         $retstat

@@ -2,6 +2,6 @@
 
 export BASH_ENV=~/bin/shx.sh
 
-# FIXME: removed exec as a workaround for when BASH_ENV is otherwise ignored
-# e.g., weird case of systemd/tmux/nvim/systemlist(cmd, input)
+# FIXME: removed exec as a workaround for a weird case of
+# systemd/tmux/nvim/system() with non-empty input
 bash "$@"

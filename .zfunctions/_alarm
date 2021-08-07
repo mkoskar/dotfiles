@@ -1,4 +1,4 @@
 #compdef alarm
 
-_arguments \
+_arguments -C \
     ':::(clear help mute -)'

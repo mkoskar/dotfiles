@@ -49,6 +49,8 @@ $include ~/.inputrc.esc
 "\ef": forward-word
 "\ew": forward-word
 
+"\C-?": backward-delete-char
+"\C-H": backward-delete-char
 "\C-U": backward-kill-line
 "\C-K": kill-line
 "\C-W": backward-kill-word
@@ -68,31 +70,36 @@ $include ~/.inputrc.esc
 
 "\C-A": insert-completions
 "\C-D": possible-completions
+"\C-I": menu-complete
 "\C-O": menu-complete-backward
 "\e[Z": menu-complete-backward
-"\C-I": menu-complete
+
+"\e.": yank-last-arg
+"\C-J": self-insert
+"\C-R": reverse-search-history
+"\C-S": forward-search-history
+"\C-V": quoted-insert
+"\C-X\C-A": vi-movement-mode
+"\C-[": vi-movement-mode
 
 "\C-G": abort
 "\C-L": clear-screen
-"\C-N": history-search-forward
+"\C-M": accept-line
 "\C-P": history-search-backward
-"\ej": next-screen-line
+"\C-N": history-search-forward
+"\e<": beginning-of-history
+"\e>": end-of-history
 "\ek": previous-screen-line
+"\ej": next-screen-line
 
-"\C-X\C-A": vi-movement-mode
 "\C-X\C-Xv": dump-variables
 "\C-X\C-Xf": dump-functions
 "\C-X\C-Xm": dump-macros
 
 $if bash
-    "\C-J": self-insert
-
     " ": magic-space
     "\ee": shell-expand-line
     "\C-X\C-E": edit-and-execute-command
-
-    "\e\C-I": dabbrev-expand
-    "\C-X\C-I": complete-into-braces
 
     "\eB": shell-backward-word
     "\eF": shell-forward-word
@@ -100,14 +107,17 @@ $if bash
     "\C-X\C-W": shell-backward-kill-word
     "\eD": shell-kill-word
 
+    "\e\C-I": dabbrev-expand
+    "\C-X\C-I": complete-into-braces
+
     "\C-X!": complete-command
-    "\C-X/": complete-filename
-    "\ei": complete-filename
-    "\C-X@": complete-hostname
-    "\C-X~": complete-username
     "\C-X$": complete-variable
     "\C-X*": glob-expand-word
+    "\C-X/": complete-filename
+    "\C-X@": complete-hostname
     "\C-Xg": glob-list-expansions
+    "\C-X~": complete-username
+    "\ei": complete-filename
 
     "\C-Xp": "\C-X\C-AIpgx "
     "\C-XP": "\C-X\C-AA | pg"
@@ -123,8 +133,19 @@ set keymap vi-command
 
 $include ~/.inputrc.esc
 
-"\ej": next-screen-line
+"\C-G": abort
+"\C-L": clear-screen
+"\C-M": accept-line
+"\C-P": history-search-backward
+"\C-N": history-search-forward
+"\e<": beginning-of-history
+"\e>": end-of-history
 "\ek": previous-screen-line
+"\ej": next-screen-line
+
+"-": vi-first-print
+"gg": beginning-of-history
+"G": end-of-history
 
 "\C-X\C-Xv": dump-variables
 "\C-X\C-Xf": dump-functions
@@ -134,6 +155,7 @@ $if bash
     "v": ""
     "\C-X\C-E": edit-and-execute-command
 
+    "|": "A | "
     "\C-Xp": "Ipgx "
     "\C-XP": "A | pg"
     "\C-Xx": "Isudo "

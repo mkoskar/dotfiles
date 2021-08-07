@@ -98,6 +98,7 @@ alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
 # ----------------------------------------
 
 alias grep='LC_ALL=C grep --color=auto'
+
 alias g='grep --color=always'
 alias gi='g -i'
 alias gr='g -rnH --exclude-dir=.git'
@@ -134,14 +135,16 @@ alias mvn-describe-plugin=_mvn_describe_plugin
 # ----------------------------------------
 
 alias ls='ls -F --group-directories-first --color=auto'
-alias l='ls -1A'
-alias la='ll -A'
-alias lc='lt -c'
-alias lk='ll -Sr'
+
+alias l='ls -1'
 alias ll='ls -lh'
+
+alias la='ll -A'
 alias lr='ll -R'
 alias lt='ll -tr'
-alias lu='lt -u'
+alias lta='lt -u'
+alias ltc='lt -c'
+alias lu='ll -Sr'
 alias lx='ll -XB'
 
 
@@ -268,6 +271,7 @@ alias caps='filecap -d'
 alias cp='cp -ai --reflink=auto'
 alias curl-as='curl -A "$UAGENT"'
 alias curl-head='curl -I'
+alias curl-trace='curl --trace-ascii - --trace-time'
 alias curl='curl -sSLJ'
 alias date0='date -Ins'
 alias dconfa='dconf dump /'
@@ -359,6 +363,7 @@ alias speaker-test='speaker-test -t wav -c 2'
 alias srunX='srun -NsXl'
 alias srunx='srun -Nsxl'
 alias ss='ss -napstu'
+alias ssh-socks='ssh -D 1080 -N'
 alias ssh0='ssh -S none'
 alias sslcon='openssl s_client -showcerts -connect'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"

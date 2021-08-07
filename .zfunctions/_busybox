@@ -1,5 +1,4 @@
 #compdef busybox
 
-_arguments \
-    ':function:($(busybox --list))' \
-    '*: :_files'
+_arguments -C \
+    ':function:(${(f)"$(busybox --list)"})'

@@ -6,12 +6,12 @@ attach() {
     local sname=$1
     local wname=s_$sname
     xdotool search --classname "$wname" >/dev/null ||
-        { term -n "$wname" trun mux "$sname" & }
+        { term -n "$wname" trun tmux-session "$sname" & }
 }
 
-mux -d aux &
-mux -d tmp &
-mux -d wrk &
+tmux-session -d aux &
+tmux-session -d tmp &
+tmux-session -d wrk &
 
 wait
 
