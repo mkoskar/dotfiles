@@ -21,7 +21,7 @@ case $src in
 esac
 
 histfile=~/.local/share/${prgname}_history
-ts=$(date +%F.%s)
+printf -v ts '%(%F.%s)T'
 
 cat >>"$histfile" <<-EOF
 

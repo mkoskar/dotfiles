@@ -39,7 +39,9 @@ let &pp = &rtp
 
 set ignorecase
 set incsearch
+set paragraphs=
 set path=.,,**
+set sections=
 set smartcase
 set whichwrap=b,s,<,>,[,]
 
@@ -50,9 +52,6 @@ noremap <M-,> ,
 noremap <M-;> ;
 
 noremap - ^
-
-" à la /_CTRL-L
-xnoremap <C-L> l
 
 noremap <M-j> 5j
 noremap <M-k> 5k
@@ -888,7 +887,7 @@ function! s:Run(system, cmd, input, mode = 1, mods = '') abort
     let b:run_title = (a:system ? '!' : ':') . a:cmd
     try
         setl ma noro ul=-1
-        silent exec 'Preserve %d_ | put' reg '| 1d_'
+        silent exec 'Keep %d_ | put' reg '| 1d_'
         if !a:system | %Sanitize | endif
     catch /:E353:/
     finally
@@ -920,7 +919,7 @@ function! s:Reload(bang) abort
         if &l:buftype =~# '^\(nofile\|quickfix\|terminal\)$'
             throw printf("\"%s\" buffer can't be reloaded", &l:buftype)
         endif
-        silent exec 'Preserve edit' . a:bang . '| file'
+        silent exec 'Keep edit' . a:bang . '| file'
     endif
     let v:statusmsg = printf('[%s] %s', strftime('%H:%M:%S'), v:statusmsg)
     call utils#echo(utils#shortenCmdline(v:statusmsg))
@@ -953,6 +952,38 @@ nnoremap <Leader>F <Cmd>ReloadT!<CR>
 
 " Displaying options {{{
 
+" global (e.g., 'cdpath')
+"   - &g:opt and &l:opt is a single value
+"
+" local to buffer (e.g., 'readonly')
+"   - &g:opt is a single value
+"   - &l:opt is assigned to a buffer
+"
+" local to window (e.g., 'list')
+"   - &g:opt is assigned to a window
+"   - &l:opt is assigned to a window-buffer pair
+"
+" global or local to buffer (e.g., 'path')
+"   - &g:opt is a single value
+"   - &l:opt is assigned to a buffer with fallback to &g:opt
+"
+" global or local to window (e.g., 'statusline')
+"   - &g:opt is a single value
+"   - &l:opt is assigned to a window, with fallback to &g:opt
+"
+" --------------------------------------------------
+"
+" :set opt
+"   - set both &g:opt and &l:opt
+"   - in case of global-local option set &g:opt and reset &l:opt
+"
+" :set opt<
+"   - let &l:opt = &g:opt
+"   - in case of global-local option reset &l:opt
+"
+" :setl opt<
+"   - let &l:opt = &g:opt
+
 function! s:Option(opt) abort
     if exists('&' . a:opt)
         echo printf('&g:%s=%s', a:opt, eval('&g:' . a:opt))
@@ -978,11 +1009,11 @@ function! s:BufOrWinOptions(getvar) abort
 endfunction
 
 function! s:BufAndWinOptions() abort
-    echo 'Buffer options:'
+    echo 'Buffer options (global/local):'
     echo '----------------------------------------'
     call s:BufOrWinOptions(function('getbufvar', ['']))
     echon "\n"
-    echo 'Window options:'
+    echo 'Window options (global/local):'
     echo '----------------------------------------'
     call s:BufOrWinOptions(function('getwinvar', [0]))
 endfunction
@@ -1070,7 +1101,7 @@ function! s:Format(ft = &ft) range abort
     exec join(args)
 endfunction
 
-command! -nargs=? -range -bar Format silent Preserve <line1>,<line2> call s:Format(<f-args>)
+command! -nargs=? -range -bar Format silent Keep <line1>,<line2> call s:Format(<f-args>)
 xnoremap <silent> <Leader>fo :Format<CR>
 nnoremap <silent> <Leader>fo :%Format<CR>
 
@@ -1129,15 +1160,15 @@ nnoremap <Leader>zk <Cmd>PrevClosedFold<CR>
 
 " }}}
 
-" Preserve cursor / window position, last search pattern, and the others {{{
+" Keep cursor / window position, last search pattern, and the others {{{
 
-function! s:Preserve(cmd) abort
+function! s:Keep(cmd) abort
     let view = winsaveview()
     exec 'keepa keepj keepm keepp' a:cmd
     call winrestview(view)
 endfunction
 
-command! -nargs=1 Preserve call s:Preserve(<q-args>)
+command! -nargs=1 -complete=command Keep call s:Keep(<q-args>)
 
 " }}}
 
@@ -1288,14 +1319,14 @@ nnoremap <M-z> <Cmd>ZoomToggle<CR>
 
 command! -nargs=? -range Split
     \ call utils#tryCatch(
-    \     printf('Preserve <line1>,<line2>s/%s/\r/ge',
+    \     printf('Keep <line1>,<line2>s/%s/\r/ge',
     \         !empty(<q-args>) ? escape(<q-args>, '/') : '\s\+'
     \     )
     \ )
 
 command! -nargs=? -range Join
     \ call utils#tryCatch(
-    \     printf('Preserve <line1>,%ds/\n/%s/ge',
+    \     printf('Keep <line1>,%ds/\n/%s/ge',
     \         <line2> > <line1> ? <line2> - 1 : <line2>,
     \         !empty(<q-args>) ? escape(<q-args>, '/&') : ' '
     \     )
@@ -1305,22 +1336,25 @@ command! -count=1 -bar PackPath exec '<count>Execute set pp' | exec 'normal! df=
 command! -count=1 -bar RuntimePath exec '<count>Execute set rtp' | exec 'normal! df=' | Split,
 command! -count=1 -bar ScriptNames <count>Execute scriptnames
 
-command! -bar DelDirs Preserve g/\/$/d
+command! -count=1 -bar Registers <count>Execute registers
+nnoremap <Leader>rg :Registers<CR>
 
-command! -range -bar Sanitize silent Preserve <line1>,<line2> s/\s\+$//e
+command! -bar DelDirs Keep g/\/$/d
+
+command! -range -bar Sanitize silent Keep <line1>,<line2> s/\s\+$//e
 xnoremap <silent> <Leader>pp :Sanitize<CR>
 nnoremap <silent> <Leader>pp :%Sanitize<CR>
 
-nnoremap <Leader>== <Cmd>Preserve normal! gg=G<CR>
-nnoremap <Leader>gq <Cmd>Preserve normal! gggqG<CR>
+nnoremap <Leader>== <Cmd>Keep normal! gg=G<CR>
+nnoremap <Leader>gq <Cmd>Keep normal! gggqG<CR>
 
 xnoremap <silent> <Leader>uu :SystemRange! urls -o<CR>
 nnoremap <silent> <Leader>uu :.SystemRange! urls -o<CR>
-nnoremap <silent> <Leader>uU :%SystemRange! urls -o<CR>
+nnoremap <silent> <Leader>uU :<C-R>=line('w0')<CR>,<C-R>=line('w$')<CR>SystemRange! urls -o<CR>
 
 xnoremap <silent> <Leader>uy :SystemRange! urls -y<CR>
 nnoremap <silent> <Leader>uy :.SystemRange! urls -y<CR>
-nnoremap <silent> <Leader>uY :%SystemRange! urls -y<CR>
+nnoremap <silent> <Leader>uY :<C-R>=line('w0')<CR>,<C-R>=line('w$')<CR>SystemRange! urls -y<CR>
 
 nnoremap <Leader>gs :vert System git show HEAD:./
 

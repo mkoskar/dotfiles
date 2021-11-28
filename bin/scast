@@ -6,7 +6,7 @@ prgname=${0##*/}
 
 cd ~/tmp
 
-ts=$(date +%F.%s)
+printf -v ts '%(%F.%s)T'
 
 screen=$(xserverq screen)
 lockfile=$XDG_RUNTIME_DIR/$prgname:$screen.lock

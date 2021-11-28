@@ -21,7 +21,7 @@ if [[ ! $dsel =~ ^[1-9]$ ]] || (( dsel > ${#dall[@]} )); then
     echo "$prgname: error: invalid choice" && exit 2
 fi
 
-ts=$(date +%F.%s)
+printf -v ts '%(%F.%s)T'
 odir=~/.local/share/icc/d$dsel.$ts
 
 mkdir -p "$odir"

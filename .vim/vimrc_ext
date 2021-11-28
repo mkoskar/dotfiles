@@ -42,7 +42,7 @@ runtime conf.d/vim-lsp.vim
 " Other
 " ----------------------------------------
 
-"runtime conf.d/clag-format.vim
+"runtime conf.d/clang-format.vim
 "runtime conf.d/fastfold.vim
 "runtime conf.d/indentline.vim
 "runtime conf.d/stabs.vim
@@ -61,3 +61,6 @@ runtime conf.d/toml.vim
 runtime conf.d/undotree.vim
 runtime conf.d/unimpaired.vim
 runtime conf.d/visualrepeat.vim
+
+packadd! editorconfig
+packadd! rust

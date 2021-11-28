@@ -241,14 +241,15 @@ alias ipy=ipython
 # youtube-dl
 # ----------------------------------------
 
+#alias ytdl=youtube-dl
 alias ytdl-audio-playlist="ytdl-audio --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
-alias ytdl-audio='youtube-dl -f bestaudio/best -x'
-alias ytdl-best='youtube-dl -f bestvideo+bestaudio/best'
-alias ytdl-formats='youtube-dl -F'
-alias ytdl-json='youtube-dl -J'
-alias ytdl-playlist="youtube-dl --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
-alias ytdl-stdout='youtube-dl -o -'
-alias ytdl=youtube-dl
+alias ytdl-audio='ytdl -f bestaudio/best -x'
+alias ytdl-best='ytdl -f bestvideo+bestaudio/best'
+alias ytdl-formats='ytdl -F'
+alias ytdl-json='ytdl -J'
+alias ytdl-playlist="ytdl --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
+alias ytdl-stdout='ytdl -o -'
+alias ytdl=yt-dlp
 
 
 # Other

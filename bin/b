@@ -5,19 +5,27 @@ set -eu
 prgname=${0##*/}
 
 if [[ $prgname = b0 ]]; then
-    BBIN=ffp
-    args=(-p quarantine -- --private-window)
+    BBIN=quarantine
 else
     BBIN=${BBIN:-ff}
-    args=(--)
 fi
 
+bgrun() {
+    exec &>>~/.local/share/"$prgname".out
+    exec "$@" &
+}
+
 case $BBIN in
+    aux)
+        bgrun chp -p aux -- "$@"
+        ;;
+    quarantine)
+        bgrun ffp -p quarantine -- --private-window "$@"
+        ;;
     w3m)
         exec "$BBIN" "$@"
         ;;
     *)
-        exec &>>~/.local/share/"$prgname".out
-        exec "$BBIN" "${args[@]}" "$@" &
+        bgrun "$BBIN" -- "$@"
         ;;
 esac

@@ -206,7 +206,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ieee-802                b https://www.ieee802.org/
     ii                      b https://www.ixquick.com/do/metasearch.pl\?cat=pics\&query={u}
     imdb                    b https://www.imdb.com/find\?q={u}
-    imperial                b https://en.wikipedia.org/wiki/Imperial_units
+    imperial                b https://en.wikipedia.org/wiki/Imperial_units#Units
     intel-core-datasheets   b https://www.intel.com/content/www/us/en/products/docs/processors/core/core-technical-resources.html
     intel-cpus              b https://en.wikipedia.org/wiki/List_of_Intel_processors#Latest
     intel-manuals           b https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html
@@ -301,6 +301,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     notes-for-professionals b https://goalkicker.com/
     notmuch                 b https://git.notmuchmail.org/git/notmuch
     ntrs                    b https://ntrs.nasa.gov/search.jsp\?Ntk=All\&Ntt={u}
+    nvim                    b https://github.com/neovim/neovim
     octave                  b https://www.gnu.org/software/octave/doc/latest
     openrc                  b https://github.com/OpenRC/openrc
     opentype                b https://docs.microsoft.com/en-us/typography/opentype/spec/
@@ -312,8 +313,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     pasta                   b https://en.wikipedia.org/wiki/List_of_pasta
     patents                 b https://patents.google.com/
     pep                     b https://www.python.org/dev/peps/
-    perf                    b http://www.brendangregg.com/perf.html
-    perf-full               b http://www.brendangregg.com/Perf/linux_perf_tools_full.png
+    perf                    b https://www.brendangregg.com/perf.html
+    perf-full               b https://www.brendangregg.com/Perf/linux_perf_tools_full.png
     periodic-table          b https://en.wikipedia.org/wiki/Periodic_table#Overview
     perl                    b https://perldoc.perl.org/
     pgp-search              b https://pgp.key-server.io/
@@ -354,7 +355,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     regex101                b https://regex101.com/
     resolutions             b https://en.wikipedia.org/wiki/List_of_common_resolutions
     rfc                     b https://www.rfc-editor.org/rfc-index.html
-    risks                   b http://catless.ncl.ac.uk/Risks/
+    risks                   b https://catless.ncl.ac.uk/Risks/
     rpi                     b https://www.raspberrypi.org/documentation/hardware/raspberrypi/README.md
     rst                     b https://docutils.sourceforge.io/rst.html
     rst-showcase!           b ~/projects/lab/docutils/showcase/build/html/index.html
@@ -435,6 +436,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     util-linux              b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
     video-codecs            b https://en.wikipedia.org/wiki/List_of_codecs#Video_compression_formats
     video-standards         b https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Vector_Video_Standards2.svg/1024px-Vector_Video_Standards2.svg.png
+    vim                     b https://github.com/vim/vim
     w                       b https://en.wikipedia.org/w/index.php\?search={u}
     w-cz                    b https://cz.wikipedia.org/w/index.php\?search={u}
     w-sk                    b https://sk.wikipedia.org/w/index.php\?search={u}
@@ -478,11 +480,11 @@ MENUER=$prgname menuer "$@" <<-EOF |
     yt                      b https://www.youtube.com/results\?q={u}
     yt-channel              b https://www.youtube.com/results\?sp=EgIQAlAU\&q={u}
     yt-playlist             b https://www.youtube.com/results\?sp=EgIQA1AU\&q={u}
-    zsh                     b http://zsh.sourceforge.net/Doc/Release/index.html
+    zsh                     b https://zsh.sourceforge.net/Doc/Release/index.html
     zsh-changes             b https://github.com/zsh-users/zsh/blob/master/NEWS
-    zsh-guide               b http://zsh.sourceforge.net/Guide/zshguide.html
+    zsh-guide               b https://zsh.sourceforge.net/Guide/zshguide.html
     zsh-lists               b https://www.zsh.org/mla/
-    zsh-param-expansion     b http://zsh.sourceforge.net/Doc/Release/Expansion.html#Parameter-Expansion
+    zsh-param-expansion     b https://zsh.sourceforge.net/Doc/Release/Expansion.html#Parameter-Expansion
 
     zz                      b https://www.slov-lex.sk/vyhladavanie-pravnych-predpisov
     zz-(new)                b https://www.zakonypreludi.sk/zz/nove-znenie
@@ -522,5 +524,5 @@ MENUER=$prgname menuer "$@" <<-EOF |
 
 EOF
     while read -r args; do
-        eval "$args" &
+        eval exec "$args" &
     done

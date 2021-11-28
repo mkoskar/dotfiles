@@ -17,8 +17,7 @@ tzprint() {
             export TZ=$tz
             ;;
     esac
-    ts=$(date -R -d "$ts")
-    printf '%-25s %s\n' "$tz" "$ts"
+    printf '%-25s %(%a, %d %b %Y %T %z)T\n' "$tz" "$ts"
 }
 
 tzs=(
@@ -63,7 +62,7 @@ tzs=(
     Pacific/Auckland
 )
 
-ts=$(date -Ins)
+printf -v ts '%(%s)T'
 for tz in "${tzs[@]}"; do
     tzprint "$tz" "$ts"
 done

@@ -116,6 +116,7 @@ if [[ -e $path/theme ]]; then
     args+=(--load-extension="$path"/theme)
 fi
 
+# shellcheck disable=SC2054
 args+=(
 
     # HW acceleration
@@ -123,10 +124,11 @@ args+=(
 
     #--disable-gpu-driver-bug-workarounds
     #--enable-native-gpu-memory-buffers
-    --enable-accelerated-video-decode
+    --enable-features=VaapiVideoDecoder,CanvasOopRasterization
     --enable-gpu-rasterization
     --enable-zero-copy
-    --ignore-gpu-blacklist
+    --ignore-gpu-blocklist
+    --use-vulkan
 
     # Other
     # ----------------------------------------
@@ -134,14 +136,11 @@ args+=(
     #--extensions-on-chrome-urls
     #--force-device-scale-factor=1
     #--restore-last-session
-    --enable-devtools-experiments
-    --enable-media-internals-devtools
     --show-component-extension-options
 
 )
 
 if [[ ${CH_DEBUG-} ]]; then
-    # shellcheck disable=SC2191
     args+=(
         --enable-extension-activity-logging
         --enable-logging=stderr

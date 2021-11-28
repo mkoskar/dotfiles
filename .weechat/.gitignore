@@ -1,6 +1,7 @@
 !*
 
 /keys
+/local.conf
 /logs
 /script
 /sec*.conf

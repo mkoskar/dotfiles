@@ -18,8 +18,7 @@ case $1 in
     iso)
         size=$(isosize "$dev")
         blocks=$((size/2048))
-        ts=$(date +%F.%s)
-        output=sr0_$ts.iso
+        printf -v output 'sr0_%(%F.%s)T.iso'
         echo "Creating $output of following size: $((blocks/512)) MB"
         dd if="$dev" of="$output" bs=2048 count="$blocks"
         ;;

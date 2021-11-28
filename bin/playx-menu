@@ -16,5 +16,5 @@ shift || true
 
 MENUER="$prgname $src" menuer "$@" <"$src" |
     while read -r args; do
-        eval playx "$args" &
+        eval exec playx "$args" &
     done

@@ -36,7 +36,7 @@ resolution=${sel[2]}
 
 [[ ! $src || ! $mode || ! $resolution ]] && exit 1
 
-ts=$(date +%F.%s)
+printf -v ts '%(%F.%s)T'
 name=${ts}_$mode-${resolution}dpi
 
 # shellcheck disable=SC2191
