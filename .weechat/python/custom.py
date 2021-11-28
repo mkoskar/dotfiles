@@ -28,10 +28,13 @@ w.register(
 # General {{{
 # ----------------------------------------
 
+cfg_local = w.config_new('local', '', '')
+
 hd_bar = w.hdata_get('bar')
 hd_bar_item = w.hdata_get('bar_item')
 hd_bar_win = w.hdata_get('bar_window')
 hd_buf = w.hdata_get('buffer')
+hd_channel = w.hdata_get('irc_channel')
 hd_layout = w.hdata_get('layout')
 hd_line = w.hdata_get('line')
 hd_line_data = w.hdata_get('line_data')
@@ -52,6 +55,13 @@ def buffers_iter(start=None, forward=True, wrap=True):
             item = w.hdata_get_list(hd_buf, ref_start)
         if start == item:
             break
+
+
+def channels_iter(server):
+    item = w.hdata_pointer(hd_server, server, 'channels')
+    while item:
+        yield item
+        item = w.hdata_pointer(hd_channel, item, 'next_channel')
 
 
 def layouts_iter():
@@ -683,19 +693,19 @@ def cb_command_urls(data, buffer, args):
                 after -= 1
     try:
         if data == 'open':
-            p = Popen('tac | urls -o -r', shell=True, stdin=PIPE)
+            p = Popen('urls -o', shell=True, stdin=PIPE)
         elif data == 'yank':
-            p = Popen('tac | urls -y -r', shell=True, stdin=PIPE)
+            p = Popen('urls -y', shell=True, stdin=PIPE)
         else:
             return w.WEECHAT_RC_ERROR
-        count = 100
+        count = 80
         while count > 0 and line:
             ldata = w.hdata_pointer(hd_line, line, 'data')
             if not w.hdata_char(hd_line_data, ldata, 'displayed'):
                 line = w.hdata_pointer(hd_line, line, 'prev_line')
                 continue
             lmsg = w.hdata_string(hd_line_data, ldata, 'message')
-            p.stdin.write(f"{w.string_remove_color(lmsg, '')}".encode())
+            p.stdin.write(f"{w.string_remove_color(lmsg, '')}\n".encode())
             line = w.hdata_pointer(hd_line, line, 'prev_line')
             count -= 1
         p.stdin.close()
@@ -747,6 +757,46 @@ def cb_print_privmsg(data, buffer, date, tags, displayed, highlight,
 
 
 w.hook_print('', 'irc_privmsg', '', 1, 'cb_print_privmsg', '')
+
+
+# Local per-server configuration
+# ----------------------------------------
+
+cfg_local_server = w.config_new_section(
+    cfg_local, 'server', 1, 1, '', '', '', '', '', '', '', '', '', ''
+)
+for server in servers_iter():
+    sname = w.hdata_string(hd_server, server, 'name')
+    if w.hdata_integer(hd_server, server, 'temp_server') > 0:
+        continue
+    opt = w.config_new_option(
+        cfg_local, cfg_local_server, f'{sname}.autojoin', 'string', '',
+        '', 0, 0, '', '', 0, '', '', '', '', '', ''
+    )
+
+
+def cb_signal_quit(data, signal, buffer):
+    for server in servers_iter():
+        sname = w.hdata_string(hd_server, server, 'name')
+        if w.hdata_integer(hd_server, server, 'temp_server') > 0:
+            continue
+        autojoin = []
+        for channel in channels_iter(server):
+            chname = w.hdata_string(hd_channel, channel, 'name')
+            chtype = w.hdata_integer(hd_channel, channel, 'type')
+            if chtype == 0:
+                autojoin.append(chname)
+            elif chtype == 1:
+                pass
+        autojoin.sort()
+        autojoin = ','.join(autojoin)
+        opt = w.config_get(f'local.server.{sname}.autojoin')
+        w.config_option_set(opt, autojoin, 1)
+    w.config_write(cfg_local)
+    return w.WEECHAT_RC_OK
+
+
+w.hook_signal('quit', 'cb_signal_quit', '')
 
 
 # ----------------------------------------
@@ -920,3 +970,8 @@ def cb_timer_startup(data, remaining_calls):
 
 
 w.hook_timer(1, 0, 1, 'cb_timer_startup', '')
+
+
+# ----------------------------------------
+
+w.config_read(cfg_local)

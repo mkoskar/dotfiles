@@ -40,7 +40,7 @@ case ${PB:-0x0} in
 esac
 
 histfile=~/.local/share/pb_history
-ts=$(date +%F.%s)
+printf -v ts '%(%F.%s)T'
 
 cat >>"$histfile" <<-EOF
 

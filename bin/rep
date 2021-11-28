@@ -96,8 +96,8 @@ if (( ! inline )); then
 fi
 
 while true; do
-    ts_beg=$(date +%s.%N)
-    ts_beg_=$(date +%T -d "@$ts_beg")
+    printf -v ts_beg '%(%s)T'
+    printf -v ts_beg_ '%(%T)T' "$ts_beg"
 
     (( inline )) || printf %s "$ti_cur_restore"
     (( quiet )) || printf "> started: %s${ti_clr_eol}\n" "$ts_beg_" >&2
@@ -107,8 +107,8 @@ while true; do
         sed -E "s/\$/$ti_clr_eol/" |
         pr -T -W "$cols" -l $((lines-2)) +1:1
 
-    ts_end=$(date +%s.%N)
-    ts_end_=$(date +%T -d "@$ts_end")
+    printf -v ts_end '%(%s)T'
+    printf -v ts_end_ '%(%T)T' "$ts_end"
 
     if (( term )); then
         should_term=$(bc -l <<<"($ts_end-$ts_beg) < $term_delta/1000")

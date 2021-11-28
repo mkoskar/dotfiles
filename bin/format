@@ -12,8 +12,6 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-args "$@"
-
 ft=
 declare -i sw=4 tw=78
 while getopts f:s:t:h opt; do

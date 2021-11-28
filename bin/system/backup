@@ -93,8 +93,9 @@ if ! findmnt -M "$target" -S "$mapper" &>/dev/null; then
     exit 12
 fi
 
-ts_beg=$(date +%s)
-ts_beg_=$(date +%F.%s -d "@$ts_beg")
+printf -v ts_beg '%(%s)T'
+printf -v ts_beg_ '%(%F.%s)T' "$ts_beg"
+
 log "-- $ts_beg_"
 
 mkdir -p "$target"/full-backup
@@ -123,5 +124,5 @@ rsync -aHAXS / "$target"/full-backup/master \
 	/var/lib/pacman/sync/*
 EOF
 
-ts_end=$(date +%s)
+printf -v ts_end '%(%s)T'
 log "total time: $(((ts_end-ts_beg)/60)) minutes, $(((ts_end-ts_beg)%60)) seconds"

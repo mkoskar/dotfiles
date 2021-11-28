@@ -4,12 +4,9 @@ packadd! ale
 packadd! vim-lsp-ale
 
 function! AleStatus() abort
-    try
-        let total = ale#statusline#Count(bufnr('%')).total
-        return total == 0 ? '' : printf('[%d]', total)
-    catch
-        return ''
-    endtry
+    if !g:ale_enabled | return '[-]' | endif
+    let total = ale#statusline#Count(bufnr('%')).total
+    return printf('[%d]', total)
 endfunction
 
 let &g:stl .= '%( %#ErrorMsg#%{AleStatus()}%*%)'

@@ -5,11 +5,11 @@ set -eu
 (( $# )) || exit 2
 
 name=$1
-ts_beg=$(date +%s)
+printf -v ts_beg '%(%s)T'
 
 cleanup() {
     local retstat=$?
-    local ts_end; ts_end=$(date +%s)
+    local ts_end; printf -v ts_end '%(%s)T'
     printf 'exiting after %d minutes, %d seconds (%d)' \
         $(((ts_end-ts_beg)/60)) \
         $(((ts_end-ts_beg)%60)) \

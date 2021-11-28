@@ -70,6 +70,7 @@ parallel -r <<-'EOF'
 	from_git dirvish            https://github.com/justinmk/vim-dirvish
 	from_git easy-align         https://github.com/junegunn/vim-easy-align
 	from_git easymotion         https://github.com/easymotion/vim-easymotion
+	from_git editorconfig       https://github.com/editorconfig/editorconfig-vim
 	from_git emmet              https://github.com/mattn/emmet-vim
 	from_git fastfold           https://github.com/Konfekt/FastFold
 	from_git fugitive           https://github.com/tpope/vim-fugitive
@@ -86,6 +87,7 @@ parallel -r <<-'EOF'
 	from_git nvim-telescope     https://github.com/nvim-telescope/telescope.nvim
 	from_git nvim-treesitter    https://github.com/nvim-treesitter/nvim-treesitter
 	from_git repeat             https://github.com/tpope/vim-repeat
+	from_git rust               https://github.com/rust-lang/rust.vim
 	from_git snippets           https://github.com/honza/vim-snippets
 	from_git speeddating        https://github.com/tpope/vim-speeddating
 	from_git stabs              https://github.com/Thyrum/vim-stabs

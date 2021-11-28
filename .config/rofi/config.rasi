@@ -6,7 +6,6 @@ configuration {
     modi: "window,run,ssh";
     scroll-method: 0;
     terminal: "term";
-    theme: "custom";
 
     // application-fallback-icon: ;
     // auto-select: false;
@@ -151,3 +150,5 @@ configuration {
         sorting-method: "name";
     }
 }
+
+@theme "custom"
