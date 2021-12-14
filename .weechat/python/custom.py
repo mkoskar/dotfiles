@@ -28,13 +28,16 @@ w.register(
 # General {{{
 # ----------------------------------------
 
-cfg_local = w.config_new('local', '', '')
+config_local = w.config_new('local', '', '')
 
 hd_bar = w.hdata_get('bar')
 hd_bar_item = w.hdata_get('bar_item')
 hd_bar_win = w.hdata_get('bar_window')
 hd_buf = w.hdata_get('buffer')
 hd_channel = w.hdata_get('irc_channel')
+hd_config_file = w.hdata_get('config_file')
+hd_config_option = w.hdata_get('config_option')
+hd_config_section = w.hdata_get('config_section')
 hd_layout = w.hdata_get('layout')
 hd_line = w.hdata_get('line')
 hd_line_data = w.hdata_get('line_data')
@@ -74,6 +77,13 @@ def layouts_iter():
 def layouts_name_iter():
     for layout in layouts_iter():
         yield w.hdata_string(hd_layout, layout, 'name')
+
+
+def options_iter(section):
+    item = w.hdata_pointer(hd_config_section, section, 'options')
+    while item:
+        yield item
+        item = w.hdata_pointer(hd_config_option, item, 'next_option')
 
 
 def servers_iter():
@@ -116,12 +126,17 @@ def server_opt(server_name, opt_name):
     opt = w.config_get(f'irc.server.{server_name}.{opt_name}')
     if w.config_option_is_null(opt):
         opt = w.config_get(f'irc.server_default.{opt_name}')
-    return w.config_string(opt)
+    return opt
+
+
+def tag_by_prefix(tags, prefix):
+    tag = next(filter(lambda i: i.startswith(prefix), tags), None)
+    return tag.lstrip(prefix) if tag else None
 
 
 # ----------------------------------------
 
-def cb_bar_item_cmd_btn(data, item, window, buffer, extra_info):
+def cb_build_bar_item_cmd_btn(data, item, window, buffer, extra_info):
     item_name = w.hdata_string(hd_bar_item, item, 'name')
     extra_vars = {}
     if item_name == 'btn_win_zoom':
@@ -130,17 +145,17 @@ def cb_bar_item_cmd_btn(data, item, window, buffer, extra_info):
         'window': window, 'buffer': buffer}, extra_vars, {})
 
 
-def cb_bar_item_cmd_btn_update(data, signal, buffer):
+def cb_signal_bar_item_cmd_btn_update(data, signal, signal_data):
     w.bar_item_update(data)
     return w.WEECHAT_RC_OK
 
 
 def bar_item_cmd_btn(name, label, cmd, update_on=[]):
-    w.bar_item_new('(extra)' + name, 'cb_bar_item_cmd_btn', label)
+    w.bar_item_new('(extra)' + name, 'cb_build_bar_item_cmd_btn', label)
     w.bar_item_update(name)
     key_bind('mouse', f'@item({name}):button1', cmd)
     for signal in update_on:
-        w.hook_signal(signal, 'cb_bar_item_cmd_btn_update', name)
+        w.hook_signal(signal, 'cb_signal_bar_item_cmd_btn_update', name)
 
 # }}}
 
@@ -351,14 +366,7 @@ def cb_command_layout_reset(data, buffer, args):
     cmd('window splith 20')
     cmd('buffer perl.highmon')
     cmd('window down')
-    if args == 'core':
-        cmd('buffer core.weechat')
-    elif args == 'bitlbee':
-        cmd('buffer &bitlbee')
-    elif args == 'twitter':
-        cmd('buffer #twitter')
-    elif args:
-        cmd(f'buffer {args}')
+    cmd(f'buffer {args}')
     if cur is not None:
         cmd(f'layout store {cur} windows')
         w.buffer_set(core, f'localvar_set_{cur}_preset', args)
@@ -374,17 +382,24 @@ def cb_command_layout_save(data, buffer, args):
     return w.WEECHAT_RC_OK
 
 
+def cb_signal_delete_all_layouts_on_quit(data, signal, args):
+    for layout_name in list(layouts_name_iter()):
+        cmd(f'layout del {layout_name}')
+    return w.WEECHAT_RC_OK
+
+
 w.hook_command('layout_reset', '', '', '', '', 'cb_command_layout_reset', '')
 w.hook_command('layout_save', '', '', '', '', 'cb_command_layout_save', '')
+w.hook_signal('quit', 'cb_signal_delete_all_layouts_on_quit', '')
 
 bar_item_cmd_btn('btn_layout_reset', 'RESET', '/layout_reset')
 bar_item_cmd_btn('btn_layout_save', 'SAVE', '/layout_save')
 
 key_bind('default', 'meta-space', '/layout_reset')
 key_bind('default', 'meta-;meta-space', '/layout_save')
-key_bind('default', 'meta-;meta-1', '/layout_reset core')
-key_bind('default', 'meta-;meta-2', '/layout_reset bitlbee')
-key_bind('default', 'meta-;meta-3', '/layout_reset twitter')
+key_bind('default', 'meta-;meta-1', '/layout_reset core.weechat')
+key_bind('default', 'meta-;meta-2', '/layout_reset &bitlbee')
+key_bind('default', 'meta-;meta-3', '/layout_reset #twitter')
 
 # }}}
 
@@ -437,8 +452,8 @@ def cb_command_tab_del(data, buffer, args):
 
 
 def cb_command_tab_go(data, buffer, args):
-    tab_cur = layout_tab(layout_current_name())
     tabs = tabs_all()
+    tab_cur = layout_tab(layout_current_name())
     if args == 'prev':
         if tab_cur is None:
             tab_dst = tabs[0] if len(tabs) > 0 else None
@@ -568,7 +583,7 @@ def cb_command_connect_relay(data, buffer, args):
             name = w.hdata_string(hd_server, server, 'name')
             if name.endswith('~'):
                 continue
-            if not w.config_string_to_boolean(server_opt(name, 'autoconnect')):
+            if not w.config_boolean(server_opt(name, 'autoconnect')):
                 continue
             connect_relay(name)
     else:
@@ -576,7 +591,7 @@ def cb_command_connect_relay(data, buffer, args):
     return w.WEECHAT_RC_OK
 
 
-def cb_completion_irc_servers(data, name, buffer, completion):
+def cb_completion_irc_servers(data, completion_item, buffer, completion):
     for server in servers_iter():
         name = w.hdata_string(hd_server, server, 'name')
         if name.endswith('~'):
@@ -722,29 +737,24 @@ w.hook_command('urls_yank', '', '', '', '', 'cb_command_urls', 'yank')
 # Strip commands for whitespace
 # ----------------------------------------
 
-def cb_command_run_input_return(data, buffer, command):
+def cb_command_run_strip_input(data, buffer, command):
     input_line = w.buffer_get_string(buffer, 'input')
     w.buffer_set(buffer, 'input', input_line.strip())
     return w.WEECHAT_RC_OK
 
 
-w.hook_command_run('/input return', 'cb_command_run_input_return', '')
+w.hook_command_run('/input return', 'cb_command_run_strip_input', '')
 
 
-# Autoresponder
+# Autorespond
 # ----------------------------------------
 
-def tag_by_prefix(tags, prefix):
-    tag = next(filter(lambda i: i.startswith(prefix), tags), None)
-    return tag.lstrip(prefix) if tag else None
-
-
-def handle_privmsg(ctx):
+def autorespond_handle_privmsg(ctx):
     pass
 
 
-def cb_print_privmsg(data, buffer, date, tags, displayed, highlight,
-                     prefix, message):
+def autorespond_cb_print_privmsg(data, buffer, date, tags,
+                                 displayed, highlight, prefix, message):
     bname = w.buffer_get_string(buffer, 'full_name')
     bnick = w.buffer_get_string(buffer, 'localvar_nick')
     tags = tags.split(',')
@@ -752,30 +762,40 @@ def cb_print_privmsg(data, buffer, date, tags, displayed, highlight,
     host = tag_by_prefix(tags, 'host_')
     nick = tag_by_prefix(tags, 'nick_')
     ctx = SimpleNamespace(**locals())
-    handle_privmsg(ctx)
+    autorespond_handle_privmsg(ctx)
     return w.WEECHAT_RC_OK
 
 
-w.hook_print('', 'irc_privmsg', '', 1, 'cb_print_privmsg', '')
+w.hook_print('', 'irc_privmsg', '', 1, 'autorespond_cb_print_privmsg', '')
 
 
 # Local per-server configuration
 # ----------------------------------------
 
-cfg_local_server = w.config_new_section(
-    cfg_local, 'server', 1, 1, '', '', '', '', '', '', '', '', '', ''
-)
-for server in servers_iter():
-    sname = w.hdata_string(hd_server, server, 'name')
-    if w.hdata_integer(hd_server, server, 'temp_server') > 0:
-        continue
-    opt = w.config_new_option(
-        cfg_local, cfg_local_server, f'{sname}.autojoin', 'string', '',
-        '', 0, 0, '', '', 0, '', '', '', '', '', ''
-    )
+def local_server_opt(server_name, opt_name):
+    opt = w.config_get(f'local.server.{server_name}.{opt_name}')
+    if not opt:
+        if opt_name == 'autojoin':
+            opt = w.config_new_option(
+                config_local, config_local_server, f'{server_name}.{opt_name}',
+                'string', '', '', 0, 0, '', '', 0, '', '', '', '', '', ''
+            )
+    return opt
 
 
-def cb_signal_quit(data, signal, buffer):
+def config_local_server_read_cb(data, config_file, section, option_name, value):
+    try:
+        server_name, server_opt_name = option_name.split('.')
+    except ValueError:
+        return w.WEECHAT_CONFIG_OPTION_SET_OPTION_NOT_FOUND
+    if not server_name or not server_opt_name:
+        return w.WEECHAT_CONFIG_OPTION_SET_OPTION_NOT_FOUND
+    opt = local_server_opt(server_name, server_opt_name)
+    w.config_option_set(opt, value, 1)
+    return w.WEECHAT_CONFIG_OPTION_SET_OK_CHANGED
+
+
+def cb_signal_save_autojoins_on_quit(data, signal, args):
     for server in servers_iter():
         sname = w.hdata_string(hd_server, server, 'name')
         if w.hdata_integer(hd_server, server, 'temp_server') > 0:
@@ -786,17 +806,25 @@ def cb_signal_quit(data, signal, buffer):
             chtype = w.hdata_integer(hd_channel, channel, 'type')
             if chtype == 0:
                 autojoin.append(chname)
-            elif chtype == 1:
-                pass
-        autojoin.sort()
-        autojoin = ','.join(autojoin)
-        opt = w.config_get(f'local.server.{sname}.autojoin')
-        w.config_option_set(opt, autojoin, 1)
-    w.config_write(cfg_local)
+        opt = local_server_opt(sname, 'autojoin')
+        if autojoin:
+            autojoin.sort()
+            w.config_option_set(opt, ','.join(autojoin), 1)
+    w.config_write(config_local)
     return w.WEECHAT_RC_OK
 
 
-w.hook_signal('quit', 'cb_signal_quit', '')
+w.hook_signal('quit', 'cb_signal_save_autojoins_on_quit', '')
+
+config_local_server = w.config_new_section(
+    config_local, 'server', 1, 1,
+    'config_local_server_read_cb', '', '', '', '', '', '', '', '', ''
+)
+for server in servers_iter():
+    sname = w.hdata_string(hd_server, server, 'name')
+    if w.hdata_integer(hd_server, server, 'temp_server') > 0:
+        continue
+    local_server_opt(sname, 'autojoin')
 
 
 # ----------------------------------------
@@ -935,12 +963,12 @@ def adjust_for_width():
         cmd('set weechat.look.prefix_align_min 8')
 
 
-def cb_signal_sigwinch(data, signal, buffer):
+def cb_signal_sigwinch(data, signal, signal_data):
     adjust_for_width()
     return w.WEECHAT_RC_OK
 
 
-def cb_signal_post_switch(data, signal, buffer):
+def cb_signal_hide_buflist_by_width(data, signal, signal_data):
     term_width = int(w.info_get('term_width', ''))
     if term_width < 80:
         cmd('bar hide buflist')
@@ -948,8 +976,8 @@ def cb_signal_post_switch(data, signal, buffer):
 
 
 w.hook_signal('signal_sigwinch', 'cb_signal_sigwinch', '')
-w.hook_signal('buffer_switch', 'cb_signal_post_switch', '')
-w.hook_signal('window_switch', 'cb_signal_post_switch', '')
+w.hook_signal('buffer_switch', 'cb_signal_hide_buflist_by_width', '')
+w.hook_signal('window_switch', 'cb_signal_hide_buflist_by_width', '')
 
 adjust_for_width()
 
@@ -958,20 +986,18 @@ adjust_for_width()
 
 def cb_timer_startup(data, remaining_calls):
     cmd('tab_go 1')
-    cmd('layout_reset core')
+    cmd('layout_reset core.weechat')
     cmd('tab_go 2')
-    cmd('layout_reset bitlbee')
+    cmd('layout_reset &bitlbee')
     cmd('tab_go 3')
-    cmd('layout_reset twitter')
+    cmd('layout_reset #twitter')
     cmd('tab_go 4')
     cmd('layout_reset #archlinux')
     cmd('tab_go 1')
+    w.buffer_set(core, 'localvar_set_tab_last_visited', '')
     return w.WEECHAT_RC_OK
 
 
 w.hook_timer(1, 0, 1, 'cb_timer_startup', '')
 
-
-# ----------------------------------------
-
-w.config_read(cfg_local)
+w.config_read(config_local)
