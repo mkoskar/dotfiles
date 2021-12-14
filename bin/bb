@@ -407,7 +407,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     terminfo.src            b https://invisible-island.net/ncurses/terminfo.src.html
     tex                     b https://ctan.org/
     thinkpads               b https://en.wikipedia.org/wiki/ThinkPad#Current_model_lines
-    timezones               b https://upload.wikimedia.org/wikipedia/commons/e/e8/Standard_World_Time_Zones.png
+    timescale               b https://en.wikipedia.org/wiki/Geologic_time_scale#Table_of_geologic_time
+    timezones               b https://upload.wikimedia.org/wikipedia/commons/8/88/World_Time_Zones_Map.png
     tiobe-index             b https://www.tiobe.com/tiobe-index/
     tldp                    b https://tldp.org/
     tlds                    b https://www.iana.org/domains/root/db

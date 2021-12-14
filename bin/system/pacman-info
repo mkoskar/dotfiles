@@ -7,34 +7,29 @@ if (( EUID )); then
     exit
 fi
 
-echo $'\n--------------------------------------------------'
-echo $'> Unofficial:\n'
-
-tmpfile=$(mktemp)
-cleanup() { rm -f "$tmpfile"; }
-trap cleanup EXIT
-
-{
+official_repos() {
     cat <<-'EOF'
 		[options]
-		HoldPkg = pacman glibc
 		Architecture = auto
 		Color
-		CheckSpace
-		VerbosePkgLists
-		SigLevel = Required DatabaseOptional
-		LocalFileSigLevel = Optional
-		CacheDir = /var/cache/pacman/pkg/
 	EOF
     for repo in core extra community multilib; do
         printf '[%s]\n' "$repo"
-        echo 'Include = /etc/pacman.d/mirrorlist'
     done
-} >"$tmpfile"
-pacman --config "$tmpfile" -Qm
+}
 
 echo $'\n--------------------------------------------------'
-echo $'> Foreign & Explicit:\n'
+echo $'> Unofficial:\n'
+
+pacman --config <(official_repos) -Qem
+
+echo $'\n--------------------------------------------------'
+echo $'> Unofficial dependencies:\n'
+
+pacman --config <(official_repos) -Qdm
+
+echo $'\n--------------------------------------------------'
+echo $'> Foreign:\n'
 
 pacman -Qem
 
