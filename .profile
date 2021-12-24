@@ -166,6 +166,7 @@ export PIPENV_VENV_IN_PROJECT=1
 export PIPX_BIN_DIR=~/.local/pipx/bin
 export PYENV_ROOT=~/.pyenv
 export PYTHONSTARTUP=~/.pythonrc
+export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 export QT_IM_MODULE=xim
 export QT_QPA_PLATFORMTHEME=qt5ct
 export QUOTING_STYLE=literal

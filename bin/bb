@@ -100,6 +100,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     dd-syntax               b https://duck.co/help/results/syntax
     deb                     b https://packages.debian.org/search\?keywords={u}
     debian-gitlab           b https://salsa.debian.org/explore
+    debian-reference        b https://www.debian.org/doc/manuals/debian-reference/
     decibel                 b https://en.wikipedia.org/wiki/Decibel
     dkim                    b https://dkimcore.org/tools/
     dns-parameters          b https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml
@@ -296,6 +297,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     neomutt-patterns        b https://neomutt.org/guide/advancedusage.html#patterns
     netfilter               b https://www.netfilter.org/documentation/index.html
     netfilter-flow          b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
+    nextcloud               b https://docs.nextcloud.com/
     nodejs                  b https://nodejs.org/api/
     notes!                  b ~/projects/notes/_build/html/index.html
     notes-for-professionals b https://goalkicker.com/
@@ -443,6 +445,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     w-sk                    b https://sk.wikipedia.org/w/index.php\?search={u}
     w3c-specs               b https://www.w3.org/TR/
     wayland                 b https://wayland-book.com/
+    wayland-protocols       b https://wayland.app/protocols/
     web.dev                 b https://web.dev/
     webassembly             b https://webassembly.org/docs/high-level-goals/
     webcomponents           b https://www.webcomponents.org/

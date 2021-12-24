@@ -21,11 +21,11 @@ if (( ! $# )); then
 		xft:Tamsyn:pixelsize=14
 		xft:Tamsyn:pixelsize=9
 
-		xft:mononoki:size=10
-		xft:mononoki:size=11
+		xft:mononoki-10
+		xft:mononoki-11
 
-		xft:Code New Roman:size=11
-		xft:Meslo LG M:size=10
+		xft:Code New Roman-11
+		xft:Meslo LG M-10
 
 	EOF
         scroller | while read -r line; do process "$line"; done

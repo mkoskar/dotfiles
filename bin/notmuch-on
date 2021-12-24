@@ -10,16 +10,16 @@ if (( ! $# )); then
 fi
 
 acct=$1
-conf=~/.config/notmuch/$acct
-[[ -r $conf ]] || {
-    echo "$prgname: '$conf': File doesn't exist or isn't readable" >&2
+
+export AFEW_CONFIG=~/.config/afew/$acct
+export NOTMUCH_CONFIG=~/.config/notmuch/$acct
+#export NOTMUCH_DEBUG_QUERY=1
+
+[[ -r $NOTMUCH_CONFIG ]] || {
+    echo "$prgname: '$NOTMUCH_CONFIG': File doesn't exist or isn't readable" >&2
     exit 1
 }
 shift
-
-export AFEW_CONFIG=~/.config/afew/$acct
-export NOTMUCH_CONFIG=$conf
-#export NOTMUCH_DEBUG_QUERY=1
 
 afew() { ~/projects/pub/afew/.venv/bin/afew "$@"; }
 

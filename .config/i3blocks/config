@@ -1,8 +1,34 @@
 # vim: ft=conf
+#
+# https://github.com/vivien/i3blocks/blob/master/docs/README.adoc
 
-separator=true
 separator_block_width=15
+
+#[example]
+#align=center
+#background=#efefef
+#border=#0000ff
+#border_bottom=0
+#border_left=5
+#border_right=0
+#border_top=0
+#color=#ff0000
+#full_text=full_text
+#instance=example1
+#markup=pango
+#min_width=100
+#name=example
+#separator=false
+#separator_block_width=0
+#short_text=short_text
+#urgent=true
+
+#[example]
+#command=
+#format=
+#interval=
+#signal=
 
 [time]
 command=date '+%a❘%d.%m❘%H:%M'
-interval=1
+interval=5

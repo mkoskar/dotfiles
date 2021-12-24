@@ -37,6 +37,9 @@ exec_hook() {
         i3)
             exec i3 -V
             ;;
+        i3-local)
+            exec ~/projects/pub/i3/build/i3 -V
+            ;;
         kodi)
             exec kodi -fs --debug
             ;;

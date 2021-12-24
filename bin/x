@@ -33,8 +33,8 @@ case $prgname in
             -verbosity 10
         )
         ;;
-
     *)
+        unset DISPLAY
         vtno=$(fgconsole -C /dev/tty 2>/dev/null) || {
             echo 'This script must be run from a console.'
             exit 1
@@ -107,9 +107,7 @@ esac
 
 xdisplay_target() { systemctl --user "$1" xdisplay@:"$dispno".target; }
 
-unset DISPLAY
 stty=$(stty -g) || true
-
 cookie=$(mcookie)
 xauth -q add ":$dispno" . "$cookie" &>/dev/null
 

@@ -222,6 +222,11 @@ pacrm() {
 pacs() {
     [ $# -eq 0 ] && return 2
     pacsearch "$1"
+}
+
+pacss() {
+    [ $# -eq 0 ] && return 2
+    pacsearch "$1"
     auracle --color=always search -- "$1"
 }
 
@@ -261,6 +266,7 @@ alias ....='cd ../../..'
 
 alias aa=auracle
 alias acpi='acpi -V'
+alias alarm-bread='alarm every 40m bread fold'
 alias alarm-hourly='alarm at \*:0'
 alias an=asciinema
 alias aunpack='aunpack -q'
