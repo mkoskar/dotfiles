@@ -6,18 +6,21 @@ general {
     output_format = "i3bar"
 }
 
-order += "load"
+order += "cpu_usage"
 order += "memory"
-order += "tztime local"
+order += "time"
 
-load {
-    format = "%1min"
+cpu_usage {
+    format = "%usage"
+    separator_block_width = 6
 }
 
 memory {
     format = "%percentage_used"
+    separator = false
+    separator_block_width = 13
 }
 
-tztime local {
+time {
     format = "%a❘%d.%m❘%H:%M"
 }

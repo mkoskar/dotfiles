@@ -2,6 +2,5 @@
 #
 # See also: https://github.com/jaor/xmobar/issues/328
 
-cleanup() { trap : TERM; kill 0; }
-trap cleanup EXIT
+trap 'trap : TERM; kill 0' EXIT
 cmd -0 xmobar "$@"

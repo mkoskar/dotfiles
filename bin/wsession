@@ -20,10 +20,10 @@ datadir=~/.local/share/$prgname
 rundir=$XDG_RUNTIME_DIR/$prgname
 mkdir -p "$datadir" "$rundir"
 
-declare -i vtno=0 x11=0 wayland=0
+declare -i vtno=0 wayland=0 x11=0
 vtno=$(fgconsole -C /dev/tty 2>/dev/null) || true
-has-x11 && x11=1
 has-wayland && wayland=1
+has-x11 && x11=1
 
 if (( vtno )); then
     sids=(vt"$vtno")
@@ -61,13 +61,14 @@ if [[ $1 = - ]]; then
     shift
 else
     for i in "${sessions[@]}"; do
-        [[ $1 = "$i" ]] && { session=$i; shift; break; }
+        [[ $1 = "$i" ]] && { session=$i; break; }
     done
 fi
 printf 'session: %s\n' "$session"
 
 export WSESSION=$session
 export WSESSIONID=$sid
+export WSESSIONPID=$$
 
 #XKB_DEFAULT_RULES
 #XKB_DEFAULT_MODEL

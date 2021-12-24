@@ -1,28 +1,60 @@
 [theme]
-name = "plain"
-
+name = "native"
 [theme.overrides]
-separator = "|"
+idle_bg = "#000000"
+idle_fg = "#c0c0c0"
+info_bg = "#000000"
+info_fg = "#c0c0c0"
+good_bg = "#000000"
+good_fg = "#efefef"
+warning_bg  = "#000000"
+warning_fg  = "#feed6a"
+critical_bg = "#000000"
+critical_fg = "#ff6666"
+separator = ""
+separator_bg = "#000000"
+separator_fg = "#c0c0c0"
+
+[icons]
+name = "material-nf"
+[icons.overrides]
+volume_muted = "\ufa80"
+
+[[block]]
+block = "focused_window"
+max_width = 100
+[block.theme_overrides]
+idle_fg = "#efefef"
 
 [[block]]
 block = "cpu"
+format = "{utilization:02*_}"
 interval = 1
-format = "{utilization}"
 
 [[block]]
 block = "memory"
 display_type = "memory"
-format_mem = "{Mup}"
-
-[[block]]
-block = "load"
-interval = 1
-format = "{1m}"
+format_mem = "{mem_used_percents:02*_}"
 
 [[block]]
 block = "sound"
+format = "{volume:02*_}"
+show_volume_when_muted = true
+
+[[block]]
+block = "battery"
+format = "{percentage:02*_}"
+[block.theme_overrides]
+good_fg = "#c0c0c0"
+
+#[[block]]
+#block = "backlight"
+#cycle = [5, 40, 70, 100]
+#device = "acpi_video0"
+#format = "{brightness:02*_}"
+#invert_icons = true
 
 [[block]]
 block = "time"
-interval = 60
 format = "%a❘%d.%m❘%H:%M"
+interval = 60

@@ -156,7 +156,7 @@ precmd() {
         __statstr+=:${(j:|:)pstatus:1}
     fi
     __cmd_dur=$((EPOCHSECONDS-__cmd_start))
-    if (( __cmd_dur > 10 )); then
+    if (( __cmd_dur > 5 )); then
         __long_cmd=$__cmd
         __long_cmd_start=$__cmd_start
         __long_cmd_dur=$__cmd_dur

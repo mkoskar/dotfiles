@@ -135,6 +135,7 @@ sessions=(
 
     ctwm
     i3
+    i3-local
     jwm
     kodi
     main

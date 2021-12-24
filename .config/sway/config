@@ -5,7 +5,7 @@ set $mod Mod4
 default_border pixel 1
 default_floating_border pixel 1
 floating_modifier $mod
-focus_wrapping force
+#focus_wrapping force
 font pango:monospace bold 8
 smart_borders off
 smart_gaps on
@@ -15,9 +15,10 @@ titlebar_padding 5 1
 workspace_layout tabbed
 xwayland force
 
-# class                 border  backgr. text    indic.  child_border
-client.focused          #000000 #000000 #87cefa #ff3333 #ff3333
+client.background       #ffffff
+client.focused          #000000 #000000 #87cefa #33ff33 #ff3333
 client.focused_inactive #000000 #2a2a2a #888888 #000000 #000000
+client.placeholder      #000000 #0c0c0c #ffffff #000000 #0c0c0c
 client.unfocused        #000000 #3a3a3a #888888 #000000 #000000
 client.urgent           #f6e972 #f6e972 #bb4455 #000000 #000000
 
@@ -45,7 +46,7 @@ for_window [title="qiv"] move container to workspace 9
 
 # ----------------------------------------
 
-bindsym $mod+q restart
+bindsym $mod+q reload
 bindsym $mod+Shift+q exit
 bindsym $mod+Shift+Return exec alacritty
 
@@ -110,45 +111,78 @@ bindsym $mod+b bar mode toggle
 bindsym $mod+Ctrl+b border toggle
 bindsym $mod+Shift+equal sticky toggle
 
+bindsym $mod+m mode "move"
+mode "move" {
+    bindsym h move left 10px
+    bindsym j move down 10px
+    bindsym k move up 10px
+    bindsym l move right 10px
+
+    bindsym Shift+h move left 50px
+    bindsym Shift+j move down 50px
+    bindsym Shift+k move up 50px
+    bindsym Shift+l move right 50px
+
+    bindsym Ctrl+h move left 5px
+    bindsym Ctrl+j move down 5px
+    bindsym Ctrl+k move up 5px
+    bindsym Ctrl+l move right 5px
+
+    bindsym c move position center
+    bindsym m move position mouse
+
+    bindsym q mode "default"
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+    bindsym $mod+m mode "default"
+    bindsym $mod+r mode "resize"
+}
+
 bindsym $mod+r mode "resize"
 mode "resize" {
     bindsym h resize shrink width 10px
-    bindsym j resize shrink height 10px
-    bindsym k resize grow height 10px
+    bindsym j resize grow height 10px
+    bindsym k resize shrink height 10px
     bindsym l resize grow width 10px
 
     bindsym Shift+h resize shrink width 50px
-    bindsym Shift+j resize shrink height 50px
-    bindsym Shift+k resize grow height 50px
+    bindsym Shift+j resize grow height 50px
+    bindsym Shift+k resize shrink height 50px
     bindsym Shift+l resize grow width 50px
 
     bindsym Ctrl+h resize shrink width 5px
-    bindsym Ctrl+j resize shrink height 5px
-    bindsym Ctrl+k resize grow height 5px
+    bindsym Ctrl+k resize shrink height 5px
+    bindsym Ctrl+j resize grow height 5px
     bindsym Ctrl+l resize grow width 5px
 
     bindsym q mode "default"
     bindsym Escape mode "default"
     bindsym Return mode "default"
     bindsym $mod+r mode "default"
+    bindsym $mod+m mode "move"
 }
 
 bar {
     font pango:monospace bold 8
-    position top
+    position bottom
+    separator_symbol "❘"
     status_command i3blocks
     status_command i3status
     status_command i3status-rs
     tray_output primary
 
     colors {
-        background #000000
-        statusline #c0c0c0
-        focused_workspace  #000000 #000000 #55ff55
-        active_workspace   #000000 #000000 #feed6a
-        inactive_workspace #000000 #000000 #c0c0c0
-        urgent_workspace   #f6e972 #f6e972 #bb4455
-        binding_mode       #2f343a #900000 #ffffff
+        background  #000000
+        statusline  #c0c0c0
+        separator   #c0c0c0
+        focused_background  #000000
+        focused_statusline  #c0c0c0
+        focused_separator   #c0c0c0
+        focused_workspace   #222222 #000000 #55ff55
+        active_workspace    #222222 #000000 #feed6a
+        inactive_workspace  #222222 #111111 #c0c0c0
+        urgent_workspace    #f6e972 #f6e972 #bb4455
+        binding_mode        #bf4343 #bf4343 #ffffff
     }
 }
 
