@@ -16,6 +16,7 @@ case $- in *i*) ;; *) return ;; esac
 HISTCONTROL=ignorespace:erasedups
 HISTFILESIZE=5000
 HISTIGNORE=exit
+HISTTIMEFORMAT='%F %T  '
 
 __ti_tsl=$(tput tsl)
 __ti_fsl=$(tput fsl)
@@ -29,26 +30,13 @@ if [[ $PIPENV_ACTIVE && $VIRTUAL_ENV ]]; then
 fi
 PS1=$__title$PS1
 
-__preexec() {
-    __cmd=$BASH_COMMAND
-    __cmd_start=$EPOCHSECONDS
-}
-
 __prompt_command() {
     local pstatus=($? "${PIPESTATUS[@]}") __cmd_dur
     __statstr=${pstatus[0]}
     if (( ${#pstatus[@]} > 2 )); then
         __statstr+=:$(IFS=\|; echo "${pstatus[*]:1}")
     fi
-    __cmd_dur=$((EPOCHSECONDS-__cmd_start))
-    # shellcheck disable=SC2034
-    if (( __cmd_dur > 5 )); then
-        __long_cmd=$__cmd
-        __long_cmd_start=$__cmd_start
-        __long_cmd_dur=$__cmd_dur
-    fi
     history -a
-    trap __preexec DEBUG
 }
 PROMPT_COMMAND=__prompt_command
 

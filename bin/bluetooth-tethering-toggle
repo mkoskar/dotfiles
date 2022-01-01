@@ -2,11 +2,11 @@
 
 set -eu
 
-bus=org.bluez
+serv=org.bluez
 iface=org.bluez.Network1
 object=/org/bluez/hci0/dev_"${1//:/_}"
 
-call() { gdbus call --system -d "$bus" -o "$object" -m "$@"; }
+call() { gdbus call --system -d "$serv" -o "$object" -m "$@"; }
 prop() { call org.freedesktop.DBus.Properties.Get "$@"; }
 
 connected=$(prop "$iface" Connected)

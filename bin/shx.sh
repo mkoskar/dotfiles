@@ -352,6 +352,7 @@ alias patch1='patch -N -p 1'
 alias ping-mtu='ping -M do -s 2000'
 alias pr='pr -T -W "$COLUMNS"'
 alias qiv='qiv -uLtiGfl --vikeys'
+alias r='fc -e -'
 alias rax=rax2
 alias reflector='reflector -p https -c sk -c cz --score 3 -f 3'
 alias rm='rm -I --one-file-system'
@@ -388,10 +389,12 @@ alias tshark='tshark -nV'
 alias udevadm-info-dev='udevadm info --name'
 alias udevadm-info-sys='udevadm info --path'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
-alias vim-batch='vim -NXn -i NONE -u NONE -V1 -es'
+alias vim-batch='vim0 -V1 -es'
+alias vim0='vim -NXn -i NONE -u NONE'
 alias w3m='w3m -v'
 alias watch='watch -n 1'
 alias weechat-tmux='tmux -L weechat attach'
+alias weechat0='weechat -t'
 alias weechat='weechat -a'
 alias whois='whois -H'
 alias wi='curl -sSLf http://wttr.in/?Fqn'
@@ -416,13 +419,6 @@ __() {
     cwd=$PWD
     case $cwd in "$HOME" | "$HOME"/*) cwd=\~${cwd##$HOME} ;; esac
     printf '\n%s @ %s in %s\n\n' "$USER" "$HOSTNAME" "$cwd"
-    # shellcheck disable=SC2154
-    if [ "$__long_cmd" ]; then
-        printf '$ %s\n%s (%d sec)\n\n' \
-            "$__long_cmd" \
-            "$(date -R -d @"$__long_cmd_start")" \
-            "$__long_cmd_dur"
-    fi
     gitdir=$(git rev-parse --git-dir 2>/dev/null) || return 0
     case $gitdir in "$HOME" | "$HOME"/*) gitdir=\~${gitdir##$HOME} ;; esac
     echo '--------------------------------------------------'
@@ -545,13 +541,19 @@ fn() {
 
 h() {
     case $SHNAME in
-        zsh) fc -liD ;;
-        *) fc -l ;;
+        ksh) fc -l "$@" ;;
+        zsh) fc -lD -t '%F %T' "$@" ;;
+        *) history | tail -n 16 ;;
     esac
 }
 
-hread() { fc -RI; }
-hwrite() { fc -W; }
+hread() {
+    case $SHNAME in
+        bash) history -r ;;
+        zsh) fc -R ;;
+        *) return 2 ;;
+    esac
+}
 
 i() {
     [ $# -gt 0 ] || { shi; return; }

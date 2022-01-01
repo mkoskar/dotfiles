@@ -1,15 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-    authinfo.py
-    ~~~~~~~~~~~
-
-    Reads ~/.authinfo.gpg to provide login credentials.
-
-    :Compatibility: 2.7 / 3.2
-    :Copyright: (c) 2013 Miroslav Koškár <http://mkoskar.com/>
-    :License: Apache 2.0
-"""
 
 from __future__ import print_function
 

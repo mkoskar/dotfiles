@@ -12,7 +12,7 @@ _usage() {
 	Compute SHA1 digest of EDIDs of all connected monitors.
 
 	  -l    - list (default)
-	  -r    - raw
+	  -r    - list raw
 	  -s    - digest
 	  -x    - interrogate X RandR outputs
 	  -o    - exclude turned off monitors

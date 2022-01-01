@@ -46,8 +46,8 @@ if &t_Co >= 256 || has('gui_running')
     hi Error            guifg=#d75f5f       guibg=#1c1c1c       gui=NONE
     hi ErrorMsg         ctermfg=231         ctermbg=1           cterm=NONE
     hi ErrorMsg         guifg=#ffffff       guibg=#9d2d2d       gui=NONE
-    hi FoldColumn       ctermfg=250         ctermbg=233         cterm=NONE
-    hi FoldColumn       guifg=#bcbcbc       guibg=#121212       gui=NONE
+    hi FoldColumn       ctermfg=240         ctermbg=233         cterm=NONE
+    hi FoldColumn       guifg=#585858       guibg=#121212       gui=NONE
     hi Folded           ctermfg=244         ctermbg=233         cterm=NONE
     hi Folded           guifg=#808080       guibg=#121212       gui=NONE
     hi Identifier       ctermfg=156         ctermbg=NONE        cterm=NONE
@@ -56,8 +56,8 @@ if &t_Co >= 256 || has('gui_running')
     hi Ignore           guifg=bg            guibg=NONE          gui=NONE
     hi IncSearch        ctermfg=16          ctermbg=231         cterm=NONE
     hi IncSearch        guifg=bg            guibg=#ffffff       gui=NONE
-    hi LineNr           ctermfg=244         ctermbg=233         cterm=NONE
-    hi LineNr           guifg=#808080       guibg=#121212       gui=NONE
+    hi LineNr           ctermfg=240         ctermbg=233         cterm=NONE
+    hi LineNr           guifg=#585858       guibg=#121212       gui=NONE
     hi MatchParen       ctermfg=46          ctermbg=NONE        cterm=bold
     hi MatchParen       guifg=#00ff00       guibg=NONE          gui=bold
     hi ModeMsg          ctermfg=117         ctermbg=NONE        cterm=NONE

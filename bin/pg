@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 # Wrapper script to use Vim as a pager.
+# A more elaborated version of ``vim -c 'silent edit /dev/fd/8' 8<&0 0<&1``.
 
 set -eu -o pipefail
 

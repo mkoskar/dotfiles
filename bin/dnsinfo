@@ -2,7 +2,7 @@
 
 headcat() {
     echo
-    head -v -n -0 "$1" | grep -vxE '\s*|(\s*#.*)'
+    head -v -n -0 "$1" | grep -Evx '\s*|(\s*#.*)'
 }
 
 cmd() {

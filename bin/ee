@@ -8,12 +8,20 @@ name=ee.${tmux[1]}.${tmux[2]}
 
 case ${VIMBIN:-vim} in
     vim)
-        exec vim --servername "$name" --remote-tab-silent "$@"
+        vim --serverlist | grep -Fixq -- "$name" ||
+            exec vim --servername "$name" -- "$@"
+        vim --servername "$name" --remote-tab-silent "$@"
         ;;
     nvim)
         addr=$XDG_RUNTIME_DIR/$name
-        [[ -e $addr ]] || exec nvim --listen "$addr" "$@"
-        exec nvr --servername "$addr" --remote-tab "$@"
+        [[ -e $addr ]] || exec nvim --listen "$addr" -- "$@"
+        exec python - "$addr" "$@" <<-EOF
+		import os, sys, pynvim
+		nvim = pynvim.attach('socket', path=sys.argv[1])
+		for arg in sys.argv[2:]:
+		    file = nvim.funcs.fnameescape(os.path.abspath(arg))
+		    nvim.command(f'tabedit {file}')
+		EOF
         ;;
     *)
         exit 2

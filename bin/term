@@ -10,10 +10,11 @@ _usage() {
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-while getopts n:g:h opt; do
+while getopts n:g:eh opt; do
     case $opt in
         n) name=$OPTARG ;;
         g) geometry=$OPTARG ;;
+        e) break ;;
         h) usage ;;
         *) usage_err ;;
     esac
