@@ -92,7 +92,6 @@ nnoremap <Leader>lt :ltag /
 " ----------------------------------------
 
 set display=lastline
-set fillchars=
 set list
 set listchars=eol:¬,tab:>-,trail:-,extends:>,precedes:<,nbsp:+,conceal:_
 set nowrap
@@ -100,8 +99,13 @@ set scrolloff=2
 set sidescroll=10
 set sidescrolloff=10
 
+"set fillchars=fold:\ ,foldsep:│,vert:│
+"set fillchars=fold:\ ,foldopen:⎡,foldclose:╾,foldsep:⎢,vert:│
+"set fillchars=fold:\ ,foldopen:▍,foldclose:▊,foldsep:▏,vert:│
+set fillchars=fold:\ ,foldopen:┑,foldclose:╾,foldsep:│,vert:│
+
 nnoremap <Leader>L :setl <C-R>=&list ? 'nolist' : 'list'<CR><CR>
-nnoremap <Leader>U :setl display<C-R>=&display =~# 'uhex' ? '-' : '+'<CR>=uhex<CR>
+nnoremap <Leader>U :setl dy<C-R>=&dy =~# 'uhex' ? '-' : '+'<CR>=uhex<CR>
 nnoremap <Leader>W :setl <C-R>=&wrap ? 'nowrap' : 'wrap'<CR><CR>
 
 
@@ -366,7 +370,7 @@ tnoremap <C-\> <C-\><C-N>
 
 set mouse=
 
-nnoremap <Leader>M :set <C-R>=!empty(&mouse) ? 'mouse=' : 'mouse=a'<CR><CR>
+nnoremap <Leader>M :set mouse=<C-R>=empty(&mouse) ? 'a' : ''<CR><CR>
 
 
 " TUI/GUI
@@ -509,8 +513,11 @@ set tabstop=4
 " Folding
 " ----------------------------------------
 
+set foldcolumn=1
+set foldminlines=0
 set foldopen-=block
 
+nnoremap <Leader>fc :setl fdc=<C-R>=&fdc != 0 ? '0' : '1'<CR><CR>
 nnoremap <Leader>ff :setl fdm=manual \| normal! zE<CR>
 nnoremap <Leader>fi :setl fdm=indent fdn=2 \| normal! zM<CR>
 nnoremap <Leader>fm :setl fdm=marker \| normal! zM<CR>
@@ -520,7 +527,7 @@ nnoremap <Leader>fs :setl fdm=syntax \| normal! zM<CR>
 " Diff Mode
 " ----------------------------------------
 
-set diffopt+=algorithm:patience
+set diffopt+=algorithm:patience,foldcolumn:1
 
 
 " Mapping
@@ -741,17 +748,18 @@ let &viewdir = $VIMDIR . '/view'
 let &viminfo = "!,'100,<50,s10,h"
 let &viminfofile = $VIMDIR . '/viminfo'
 
-nnoremap <C-W><C-F> :vsplit <C-R><C-P><CR>
+nnoremap <C-W><C-F> :vert wincmd f<CR>
 nnoremap <Leader><C-L> <C-L>
 nnoremap <Leader>D <Cmd>%d<CR>
-nnoremap <Leader>V :setl <C-R>=&virtualedit =~# 'all' ? 'virtualedit=block' : 'virtualedit=all'<CR><CR>
+nnoremap <Leader>V :setl ve=<C-R>=&ve =~# 'all' ? 'block' : 'all'<CR><CR>
 nnoremap <Leader>la :ls!<CR>
 nnoremap <Leader>lb :ls! %<CR>
 nnoremap <Leader>lc :ls! +<CR>
 nnoremap <Leader>ls :ls<CR>
 nnoremap <Leader>lt :ls t<CR>
 nnoremap <Leader>q <Cmd>close<CR>
-nnoremap <Leader>sc <Cmd>new +setl\ bt=nofile\ bh=wipe\ noswf\ nobl<CR>
+nnoremap <Leader>sc :setl scl=<C-R>=&scl != 'no' ? 'no' : 'yes'<CR><CR>
+nnoremap <Leader>ss <Cmd>new +setl\ bt=nofile\ bh=wipe\ noswf\ nobl<CR>
 nnoremap Q <Nop>
 
 " New lines
@@ -1155,8 +1163,8 @@ endfunction
 
 command! -bar NextClosedFold call s:MoveToClosedFold(1)
 command! -bar PrevClosedFold call s:MoveToClosedFold(0)
-nnoremap <Leader>zj <Cmd>NextClosedFold<CR>
-nnoremap <Leader>zk <Cmd>PrevClosedFold<CR>
+nnoremap zJ <Cmd>NextClosedFold<CR>
+nnoremap zK <Cmd>PrevClosedFold<CR>
 
 " }}}
 
@@ -1444,14 +1452,14 @@ augroup vimrc_base
     autocmd BufWritePost conky.conf !killall -USR1 conky
     autocmd BufWritePost ~/.Xresources !xrdb -screen -load ~/.Xresources
 
-    autocmd FileType diff call utils#bufSpecial()
-    autocmd FileType mail call utils#bufSpecial() | setl tw=72
+    autocmd FileType diff call utils#bufPlain()
+    autocmd FileType mail call utils#bufPlain() | setl tw=72
     autocmd FileType make setl ts=4 noet
-    autocmd FileType man call utils#bufSpecial() | setl noma ts=8
+    autocmd FileType man call utils#bufPlain() | setl noma ts=8
     autocmd FileType rst setl ts=8 sw=3 fdm=manual foldtext&
-    autocmd FileType tar call utils#bufSpecial()
+    autocmd FileType tar call utils#bufPlain()
     autocmd FileType yaml setl ts=2
-    autocmd FileType zip call utils#bufSpecial()
+    autocmd FileType zip call utils#bufPlain()
     autocmd FileType {c,cpp}{,.*} let &l:path = '.,,**,/usr/include'
 augroup END
 

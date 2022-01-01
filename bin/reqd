@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-    reqd
-    ~~~~
-
-    Simple HTTP server for debugging purposes.
-
-    :Compatibility: Python 3.x
-    :Copyright: (c) 2014 Miroslav Koškár <http://mkoskar.com/>
-    :License: Apache 2.0
-"""
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
 

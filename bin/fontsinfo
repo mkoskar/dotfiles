@@ -22,7 +22,7 @@ fi
 find_glyph() {
     local file
     while read -r file; do
-        if ftdump -C -n "$file" | grep -qF "$1"; then
+        if ftdump -C -n "$file" | grep -Fq -- "$1"; then
             printf '%s\n' "$file"
         fi
     done
@@ -51,7 +51,7 @@ match() {
 }
 export -f match
 
-grep -vxE '\s*|(\s*#.*)' <<-'EOF' | parallel -k match
+grep -Evx '\s*|(\s*#.*)' <<-'EOF' | parallel -k match
 
 	> Generic:
 	cursive

@@ -29,6 +29,8 @@ autoload -Uz compinit
 autoload -Uz copy-earlier-word
 autoload -Uz edit-command-line
 autoload -Uz run-help
+autoload -Uz select-bracketed
+autoload -Uz select-quoted
 autoload -Uz zargs
 autoload -Uz zmv
 
@@ -109,6 +111,14 @@ PS1=\$__vimode$PS1
 [[ $terminfo[tsl] ]] && PS1=%{$terminfo[tsl]%n@%m:%~$terminfo[fsl]%}$PS1
 PS2='$__vimode> '
 
+zle_highlight=(
+    isearch:bg=red,fg=231
+    region:bg=236,fg=default
+    special:fg=red,bold,standout
+    suffix:fg=red,bold
+    paste:standout
+)
+
 __expand-dot-to-parent-directory-path() {
     [[ $LBUFFER = *.. ]] && LBUFFER+=/.. || LBUFFER+=.
 }
@@ -155,17 +165,6 @@ precmd() {
     if (( $#pstatus > 2 )); then
         __statstr+=:${(j:|:)pstatus:1}
     fi
-    __cmd_dur=$((EPOCHSECONDS-__cmd_start))
-    if (( __cmd_dur > 5 )); then
-        __long_cmd=$__cmd
-        __long_cmd_start=$__cmd_start
-        __long_cmd_dur=$__cmd_dur
-    fi
-}
-
-preexec() {
-    __cmd=$3
-    __cmd_start=$EPOCHSECONDS
 }
 
 zle -C all-matches complete-word _generic
@@ -309,13 +308,19 @@ bindkey -M menuselect \^U send-break
 bindkey -M visual \" quote-region
 bindkey -M visual q deactivate-region
 
-zle_highlight=(
-    isearch:bg=red,fg=231
-    region:bg=236,fg=default
-    special:fg=red,bold,standout
-    suffix:fg=red,bold
-    paste:standout
-)
+zle -N select-bracketed
+for m in visual viopp; do
+    for c in {a,i}${(s..)^:-'()[]{}<>bB'}; do
+        bindkey -M $m $c select-bracketed
+    done
+done
+
+zle -N select-quoted
+for m in visual viopp; do
+    for c in {a,i}{\',\",\`}; do
+        bindkey -M $m $c select-quoted
+    done
+done
 
 
 # Completion

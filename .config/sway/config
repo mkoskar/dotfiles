@@ -2,13 +2,16 @@
 
 set $mod Mod4
 
+#smart_borders on
+#smart_gaps on
+gaps inner 15
+gaps outer 5
+
 default_border pixel 1
 default_floating_border pixel 1
 floating_modifier $mod
 #focus_wrapping force
 font pango:monospace bold 8
-smart_borders off
-smart_gaps on
 title_align center
 titlebar_border_thickness 0
 titlebar_padding 5 1
@@ -72,14 +75,19 @@ bindsym $mod+Shift+7 move container to workspace number 7
 bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 
-bindsym $mod+e focus output right
-bindsym $mod+w focus output left
+bindsym $mod+u focus output left
+bindsym $mod+i focus output primary
+bindsym $mod+o focus output right
 
-bindsym $mod+Shift+e move container to output right
-bindsym $mod+Shift+w move container to output left
+bindsym $mod+Shift+u move container to output left
+bindsym $mod+Shift+i move container to output primary
+bindsym $mod+Shift+o move container to output right
 
-bindsym $mod+d workspace next_on_output
+bindsym $mod+z move workspace to output left
+bindsym $mod+x move workspace to output right
+
 bindsym $mod+s workspace prev_on_output
+bindsym $mod+d workspace next_on_output
 bindsym $mod+a workspace back_and_forth
 
 bindsym $mod+h focus left
@@ -87,18 +95,18 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+bindsym $mod+Shift+h move left 25px
+bindsym $mod+Shift+j move down 25px
+bindsym $mod+Shift+k move up 25px
+bindsym $mod+Shift+l move right 25px
 
-bindsym $mod+Tab focus next
-bindsym $mod+Shift+Tab focus prev
+bindsym $mod+Tab focus next sibling
+bindsym $mod+Shift+Tab focus prev sibling
 bindsym $mod+comma focus parent
 bindsym $mod+period focus child
 
-bindsym $mod+backslash split h
-bindsym $mod+minus split v
+bindsym $mod+backslash split horizontal
+bindsym $mod+minus split vertical
 bindsym $mod+t layout toggle split
 bindsym $mod+Shift+t layout toggle tabbed stacking
 
@@ -185,5 +193,7 @@ bar {
         binding_mode        #bf4343 #bf4343 #ffffff
     }
 }
+
+# ----------------------------------------
 
 exec_always wsession-startup

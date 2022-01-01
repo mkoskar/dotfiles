@@ -4,40 +4,32 @@
 
 -- {{{ Imports
 
-import Data.List (elemIndex, isPrefixOf)
+import Data.List (isPrefixOf)
 import Data.Maybe (fromMaybe)
-import Data.Monoid (mempty, All(..), appEndo)
 import Graphics.X11.Xinerama (getScreenInfo)
 import System.Exit
 import qualified Data.Map as M
 
 import XMonad hiding ((|||), screenCount)
-import XMonad.StackSet (screenDetail, current)
 import qualified XMonad.StackSet as W
 
 import XMonad.Actions.CycleWS
-import XMonad.Actions.FloatKeys
-import XMonad.Actions.Minimize
 import XMonad.Actions.OnScreen
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.UpdateFocus
 import XMonad.Actions.UpdatePointer
-import XMonad.Actions.Warp
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.Minimize
 import XMonad.Hooks.PositionStoreHooks
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 
-import XMonad.Layout.BoringWindows
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.Maximize
-import XMonad.Layout.Minimize
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.NoBorders
@@ -133,7 +125,6 @@ myConfig = def
 
     myHandleEventHook = ewmhDesktopsEventHook
                         <+> docksEventHook
-                        <+> minimizeEventHook
                         <+> fullscreenEventHook
                         <+> positionStoreEventHook
                         <+> hintsEventHook
@@ -165,10 +156,7 @@ myConfig = def
                    <+> positionStoreManageHook Nothing
 
     myLayoutHook = avoidStruts
-                   -- $ layoutHints
                    $ trackFloating
-                   $ boringWindows
-                   $ minimize
                    $ maximize
                    $ smartBorders
                    $ configurableNavigation noNavigateBorders
@@ -221,32 +209,28 @@ myConfig = def
         , ("M-S-<Return>", spawn myTerminal)
 
           -- Screens & Workspaces
-        , ("M-e", onNextNeighbour def W.view)
-        , ("M-w", onPrevNeighbour def W.view)
-        , ("M-S-e", onNextNeighbour def W.shift)
-        , ("M-S-w", onPrevNeighbour def W.shift)
-        , ("M-x", onNextNeighbour def W.greedyView)
+        , ("M-u", onPrevNeighbour def W.view)
+        , ("M-i", screenWorkspace 0 >>= flip whenJust (windows . W.view))
+        , ("M-o", onNextNeighbour def W.view)
+
+        , ("M-S-u", onPrevNeighbour def W.shift)
+        , ("M-S-i", screenWorkspace 0 >>= flip whenJust (windows . W.shift))
+        , ("M-S-o", onNextNeighbour def W.shift)
+
         , ("M-z", onPrevNeighbour def W.greedyView)
-        , ("M-d", moveTo Next HiddenNonEmptyWS)
+        , ("M-x", onNextNeighbour def W.greedyView)
         , ("M-s", moveTo Prev HiddenNonEmptyWS)
+        , ("M-d", moveTo Next HiddenNonEmptyWS)
         , ("M-a", toggleWS)
 
-        , ("M-u", viewScreen def 0)
-        , ("M-i", viewScreen def 1)
-        , ("M-o", viewScreen def 2)
-
-        , ("M-S-u", sendToScreen def 0)
-        , ("M-S-i", sendToScreen def 1)
-        , ("M-S-o", sendToScreen def 2)
-
           -- Stack navigation
-        , ("M-j", focusDown)
-        , ("M-k", focusUp)
-        , ("M-<Tab>", focusDown)
-        , ("M-S-<Tab>", focusUp)
-        , ("M-m", focusMaster)
-        , ("M-S-j", windows W.swapDown) -- ! breaks BoringWindows
-        , ("M-S-k", windows W.swapUp)   -- ! breaks BoringWindows
+        , ("M-j", windows W.focusDown)
+        , ("M-k", windows W.focusUp)
+        , ("M-<Tab>", windows W.focusDown)
+        , ("M-S-<Tab>", windows W.focusUp)
+        , ("M-m", windows W.focusMaster)
+        , ("M-S-j", windows W.swapDown)
+        , ("M-S-k", windows W.swapUp)
         , ("M-<Return>", windows W.swapMaster)
 
           -- Spatial navigation
@@ -276,8 +260,6 @@ myConfig = def
         , ("M-f M-b", sendMessage $ Toggle NOBORDERS)
         , ("M-f M-f", sendMessage $ Toggle FULL)
         , ("M-f M-r", sendMessage $ Toggle MIRROR)
-        , ("M-f M--", withFocused minimizeWindow)
-        , ("M-f M-=", withLastMinimized maximizeWindowAndFocus)
         , ("M-[", withFocused $ sendMessage . maximizeRestore)
         ]
 

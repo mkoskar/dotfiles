@@ -73,8 +73,13 @@ endfunction
 
 " ----------------------------------------
 
+function! utils#bufPlain() abort
+    setl nonu nornu nowrap nolist cc= scl=no
+endfunction
+
 function! utils#bufSpecial() abort
-    setl nonu nornu nowrap nolist nobl cc= fdc=0 signcolumn=no
+    call utils#bufPlain()
+    setl fdc=0
 endfunction
 
 function! utils#mkdir(path) abort

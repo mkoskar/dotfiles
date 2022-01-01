@@ -53,7 +53,7 @@ export -f process
 pargs=()
 [[ -t 1 ]] && pargs+=(--bar) || pargs+=(--silent)
 
-grep -vxE '\s*|(\s*#.*)' <<-'EOF' | parallel "${pargs[@]}" process
+grep -Evx '\s*|(\s*#.*)' <<-'EOF' | parallel "${pargs[@]}" process
 
 	# Borg Sans Mono
 	https://github.com/marnen/borg-sans-mono/files/107663/BorgSansMono.ttf.zip

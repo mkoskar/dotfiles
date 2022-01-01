@@ -17,7 +17,7 @@ super + minus
     wmutil warp_to_scr 1n
 
 super + {u,i,o}
-    wmutil warp_to_mon --index 0 {_, 1n, 2n}
+    wmutil warp_to_mon {--focused 1p, --primary, --focused 1n}
 
 super + alt + ctrl + {k,j,i,u,o,comma,m,period,l}
     wmutil warp_in_win {c,e,n,ne,nw,s,se,sw,w}

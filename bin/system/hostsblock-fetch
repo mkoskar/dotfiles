@@ -53,7 +53,7 @@ fetch() {
 }
 export -f fetch
 
-grep -vxE '\s*|(\s*#.*)' "$CONFDIR"/sources |
+grep -Evx '\s*|(\s*#.*)' "$CONFDIR"/sources |
     parallel "${pargs[@]}" -j 10 fetch >queue
 
 [[ ! -e $CONFDIR/whitelist ]] || export whitelist=1
@@ -114,7 +114,7 @@ post_process() {
             print target
         }
     ' <"$1" |
-        grep -vE -e '[^[:alnum:]._-]' -e '^[^[:alnum:]]' -e '[^[:alnum:]]$' \
+        grep -Ev -e '[^[:alnum:]._-]' -e '^[^[:alnum:]]' -e '[^[:alnum:]]$' \
             ${whitelist:+-f "$CONFDIR"/whitelist} |
         awk '{ print "0.0.0.0 " $0 }' >"$1".done
 }
