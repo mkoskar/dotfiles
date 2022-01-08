@@ -200,6 +200,14 @@ function playlist_go(target)
     show_playlist()
 end
 
+function playlist_reverse()
+    local count = mp.get_property_number('playlist-count', 0)
+    for i=count, 1, -1 do
+        mp.commandv('playlist-move', 0, i)
+    end
+    show_playlist()
+end
+
 function yank_property(name)
     local val = mp.get_property(name)
     if not val then
@@ -226,8 +234,9 @@ mp.add_key_binding('i', 'show-info', show_info)
 mp.add_key_binding('I', 'toggle-info', toggle_info)
 mp.add_key_binding('p', 'show-playlist', show_playlist)
 mp.add_key_binding('P', 'show-chapters', show_chapters)
-mp.add_key_binding(nil, 'playlist-go', playlist_go)
 mp.add_key_binding(nil, 'chapter-go', chapter_go)
+mp.add_key_binding(nil, 'playlist-go', playlist_go)
+mp.add_key_binding(nil, 'playlist-reverse', playlist_reverse)
 mp.add_key_binding('y', 'yank-path', function() yank_property('path') end)
 mp.add_key_binding('Y', 'yank-title', function() yank_property('media-title') end)
 mp.add_key_binding('Ctrl+r', 'reload', reload)

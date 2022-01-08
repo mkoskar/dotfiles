@@ -23,6 +23,7 @@ zmodload zsh/parameter
 zmodload zsh/system
 
 autoload -Uz add-zle-hook-widget
+autoload -Uz add-zsh-hook
 autoload -Uz bashcompinit
 autoload -Uz colors
 autoload -Uz compinit
@@ -46,11 +47,10 @@ setopt extended_history
 setopt glob_dots
 setopt hist_expire_dups_first
 setopt hist_find_no_dups
-setopt hist_ignore_all_dups
+setopt hist_ignore_dups
 setopt hist_ignore_space
 setopt hist_lex_words # might be slow
-setopt hist_no_store
-setopt hist_save_no_dups
+setopt hist_reduce_blanks
 setopt hist_verify
 setopt inc_append_history_time
 setopt interactive_comments
@@ -66,6 +66,8 @@ setopt rc_quotes
 setopt rm_star_silent
 setopt vi
 
+setopt share_history && unsetopt inc_append_history_time
+
 unsetopt beep
 unsetopt bg_nice
 unsetopt check_jobs
@@ -75,31 +77,6 @@ unsetopt hup
 unsetopt list_beep
 unsetopt multios
 unsetopt nomatch
-
-
-# Aliases / Named directories
-# ----------------------------------------
-
-unalias run-help &>/dev/null
-alias help=run-help
-
-hash -d fonts=~/.local/share/fonts
-hash -d journal=/var/log/journal
-hash -d logs=/var/log
-hash -d run=$XDG_RUNTIME_DIR
-hash -d systemd-system=/etc/systemd/system
-hash -d systemd-user=~/.config/systemd/user
-hash -d udev.rules.d=/etc/udev/rules.d
-hash -d xorg.conf.d=/etc/X11/xorg.conf.d
-
-
-# ZLE
-# ----------------------------------------
-
-KEYTIMEOUT=1
-WORDCHARS=
-#WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>' (default)
-ZLE_SPACE_SUFFIX_CHARS='&|'
 
 PS1='$__statstr:$HOSTNAME:${BASEDIR:+(${${BASEDIR##*/}//\%/%%}):}%1~%(!.#.$) '
 if [[ $PIPENV_ACTIVE && $VIRTUAL_ENV ]]; then
@@ -111,6 +88,45 @@ PS1=\$__vimode$PS1
 [[ $terminfo[tsl] ]] && PS1=%{$terminfo[tsl]%n@%m:%~$terminfo[fsl]%}$PS1
 PS2='$__vimode> '
 
+__precmd() {
+    local pstatus=($? $pipestatus) __cmd_dur
+    __statstr=$pstatus[1]
+    if (( $#pstatus > 2 )); then
+        __statstr+=:${(j:|:)pstatus:1}
+    fi
+    setopt hist_ignore_dups
+    [[ $__cmd_start ]] || return 0
+    __cmd_dur=$((EPOCHSECONDS-__cmd_start))
+    if (( __cmd_dur > 10 )); then
+        printf '>>> %s (%ss): %s\n' \
+           $(strftime %T $__cmd_start) $__cmd_dur $__cmd[1]
+    fi
+    unset __cmd __cmd_start
+}
+add-zsh-hook {,__}precmd
+
+__preexec() {
+    __cmd=("$@")
+    __cmd_start=$EPOCHSECONDS
+}
+add-zsh-hook {,__}preexec
+
+__zshaddhistory() {
+    setopt no_hist_ignore_dups
+    local line=${1%%$'\n'}
+    [[ $line != (exit) ]]
+}
+add-zsh-hook {,__}zshaddhistory
+
+
+# ZLE
+# ----------------------------------------
+
+KEYTIMEOUT=1
+WORDCHARS=
+#WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>' (default)
+ZLE_SPACE_SUFFIX_CHARS='&|'
+
 zle_highlight=(
     isearch:bg=red,fg=231
     region:bg=236,fg=default
@@ -119,21 +135,30 @@ zle_highlight=(
     paste:standout
 )
 
+zle -C all-matches complete-word _generic
+zle -N copy-earlier-word
+zle -N edit-command-line
+zle -N {,_}complete-help
+
 __expand-dot-to-parent-directory-path() {
     [[ $LBUFFER = *.. ]] && LBUFFER+=/.. || LBUFFER+=.
 }
+zle -N {,__}expand-dot-to-parent-directory-path
 
 __expand-word-alias() {
     zle _expand_word
     zle _expand_alias
 }
+zle -N {,__}expand-word-alias
 
 __noop() { }
+zle -N {,__}noop
 
 __reedit() {
     print -Rz - $PREBUFFER$BUFFER
     zle send-break
 }
+zle -N {,__}reedit
 
 __toggle-comment-all() {
     local buf=$PREBUFFER$BUFFER nl=$'\n'
@@ -146,6 +171,7 @@ __toggle-comment-all() {
     print -Rz - $buf
     zle send-break
 }
+zle -N {,__}toggle-comment-all
 
 __zle-keymap-select() {
     __vimode=:
@@ -154,30 +180,13 @@ __zle-keymap-select() {
     fi
     zle reset-prompt
 }
+zle -N {,__}zle-keymap-select
 
 __zle-line-init() {
     zle zle-keymap-select
+    zle set-local-history -n 1
 }
-
-precmd() {
-    local pstatus=($? $pipestatus) __cmd_dur
-    __statstr=$pstatus[1]
-    if (( $#pstatus > 2 )); then
-        __statstr+=:${(j:|:)pstatus:1}
-    fi
-}
-
-zle -C all-matches complete-word _generic
-zle -N copy-earlier-word
-zle -N edit-command-line
-zle -N {,__}expand-dot-to-parent-directory-path
-zle -N {,__}expand-word-alias
-zle -N {,__}noop
-zle -N {,__}reedit
-zle -N {,__}toggle-comment-all
-zle -N {,__}zle-keymap-select
 zle -N {,__}zle-line-init
-zle -N {,_}complete-help
 
 for i in backward-kill-line backward-kill-word kill-line kill-word; do
     eval "__$i-with-undo() { zle split-undo; zle $i; }"
@@ -326,14 +335,16 @@ done
 # Completion
 # ----------------------------------------
 
-zcompdump=~/.cache/zcompdump
-compinit -d $zcompdump
-{
-    if [[ ! -e $zcompdump.zwc || $zcompdump -nt $zcompdump.zwc ]]; then
-        zcompile $zcompdump
-    fi
-} &!
-bashcompinit
+if [[ ! $_comps ]]; then
+    zcompdump=~/.cache/zcompdump
+    compinit -d $zcompdump
+    {
+        if [[ ! -e $zcompdump.zwc || $zcompdump -nt $zcompdump.zwc ]]; then
+            zcompile $zcompdump
+        fi
+    } &!
+    bashcompinit
+fi
 
 # zshcompsys(1)
 #
@@ -438,11 +449,29 @@ _xsession() {
 compctl -K _xsession x xx xsession
 
 
+# Aliases / Named directories
+# ----------------------------------------
+
+unalias run-help &>/dev/null
+alias help=run-help
+
+hash -d fonts=~/.local/share/fonts
+hash -d journal=/var/log/journal
+hash -d logs=/var/log
+hash -d run=$XDG_RUNTIME_DIR
+hash -d systemd-system=/etc/systemd/system
+hash -d systemd-user=~/.config/systemd/user
+hash -d udev.rules.d=/etc/udev/rules.d
+hash -d xorg.conf.d=/etc/X11/xorg.conf.d
+
+
 # Plugins
 # ----------------------------------------
 
 __plugin() {
     local name=$1 base
+    declare -gA __plugin_loaded
+    [[ $__plugin_loaded[$name] ]] && return
     for base in ~/opt /usr/share/zsh/plugins; do
         [[ -e $base/$name ]] || continue
         if [[ -e $base/$name/$name.plugin.zsh ]]; then
@@ -450,6 +479,7 @@ __plugin() {
         else
             . $base/$name/$name.zsh
         fi
+        __plugin_loaded[$name]=1
         return $?
     done
     return 1
@@ -482,6 +512,7 @@ fi
 __plugin zsh-completions
 
 if __plugin zsh-history-substring-search; then
+    HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
     HISTORY_SUBSTRING_SEARCH_FUZZY=1
     HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS=
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=bg=red,fg=231

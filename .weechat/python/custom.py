@@ -4,6 +4,7 @@
 from subprocess import Popen, PIPE
 from types import SimpleNamespace
 import functools
+import os.path
 import re
 
 import weechat as w
@@ -28,6 +29,8 @@ w.register(
 # General {{{
 # ----------------------------------------
 
+data_dir = w.info_get('weechat_data_dir', '')
+
 config_local = w.config_new('local', '', '')
 
 hd_bar = w.hdata_get('bar')
@@ -38,6 +41,7 @@ hd_channel = w.hdata_get('irc_channel')
 hd_config_file = w.hdata_get('config_file')
 hd_config_option = w.hdata_get('config_option')
 hd_config_section = w.hdata_get('config_section')
+hd_ignore = w.hdata_get('irc_ignore')
 hd_layout = w.hdata_get('layout')
 hd_line = w.hdata_get('line')
 hd_line_data = w.hdata_get('line_data')
@@ -65,6 +69,13 @@ def channels_iter(server):
     while item:
         yield item
         item = w.hdata_pointer(hd_channel, item, 'next_channel')
+
+
+def ignores_iter():
+    item = w.hdata_get_list(hd_ignore, 'irc_ignore_list')
+    while item:
+        yield item
+        item = w.hdata_pointer(hd_ignore, item, 'next_ignore')
 
 
 def layouts_iter():
@@ -825,6 +836,32 @@ for server in servers_iter():
     if w.hdata_integer(hd_server, server, 'temp_server') > 0:
         continue
     local_server_opt(sname, 'autojoin')
+
+
+# Local ignores
+# ----------------------------------------
+
+def cb_signal_save_ignores_on_quit(data, signal, args):
+    with open(ignores_path, 'w') as f:
+        for ignore in ignores_iter():
+            mask = w.hdata_string(hd_ignore, ignore, 'mask')
+            server = w.hdata_string(hd_ignore, ignore, 'server')
+            channel = w.hdata_string(hd_ignore, ignore, 'channel')
+            f.write(f'{mask}\t{server}\t{channel}\n')
+    cmd('ignore del -all')
+    return w.WEECHAT_RC_OK
+
+
+w.hook_signal('quit', 'cb_signal_save_ignores_on_quit', '')
+
+ignores_path = os.path.join(data_dir, 'ignores')
+with open(ignores_path, 'r') as f:
+    for line in f:
+        try:
+            [mask, server, channel] = line.strip().split('\t')
+        except ValueError:
+            continue
+        cmd(f'ignore add re:{mask[1:-1]} {server} {channel}')
 
 
 # ----------------------------------------

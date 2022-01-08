@@ -20,12 +20,12 @@
     echo $'\n--------------------------------------------------'
     echo $'> Routing:\n'
 
-    ip rule
+    ip -d rule
     echo
 
-    ip route
+    ip -d route
     echo
 
-    ip -6 route
+    ip -d -6 route
     echo
 } |& $PAGER

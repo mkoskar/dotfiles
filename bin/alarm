@@ -26,10 +26,10 @@ case $sub in
         sdu list-timers --all alarm-"${1:-*}"
         ;;
     mute)
-        sdu stop alarm-"${1:-*}".service
+        sdu stop [a]larm-"${1:-*}".service
         ;;
     clear)
-        sdu stop alarm-"${1:-*}"
+        sdu stop [a]larm-"${1:-*}".{service,timer}
         ;;
     run-every)
         sdu restart alarm-"$1".timer
@@ -38,7 +38,9 @@ case $sub in
         name=$1
         shift
         notify -u critical "Alarm \"$name\"${*:+ : $*}"
-        mpv --load-scripts=no --loop-file=1 \
+        mpv --no-config \
+            --msg-level=all=error \
+            --loop-file=5 \
             /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
         ;;
     at | in | every)
@@ -46,7 +48,7 @@ case $sub in
         name=${2:--}
         [[ $name = - ]] && name=$(openssl rand -hex 4)
         [[ $name =~ [][?*.-] ]] && usage_err
-        sdu stop alarm-"$name".time[r]
+        sdu stop [a]larm-"$name".timer
         args=(--timer-property=AccuracySec=1s)
         [[ $sub = at ]] &&
             args+=(--on-calendar="$1") ||

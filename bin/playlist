@@ -28,4 +28,4 @@ cat -- "${playlists[@]}" | yt2m3u >"$tmpfile"
 [[ -t 1 ]] || exec >/dev/null
 [[ -t 2 ]] || exec 2>/dev/null
 
-mpv --player-operation-mode=pseudo-gui "$tmpfile"
+mpv "$tmpfile"

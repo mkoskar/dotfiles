@@ -140,6 +140,7 @@ export BZR_LOG=$XDG_DATA_HOME/bzr.log
 export CALCHISTFILE=$XDG_DATA_HOME/calc_history
 export CCACHE_DIR=$XDG_CACHE_HOME/ccache
 export CCACHE_PATH=$SYSPREFIX/bin
+export COLORFGBG=15\;0
 export DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
 export ENV=~/.shrc
 export GRADLE_HOME=$SYSPREFIX/share/java/gradle

@@ -55,7 +55,7 @@ dispno=$(xserverq dispno)
 set +e
 
 xset b off s off r rate 500 35
-xrdb -screen -load ~/.Xresources
+xrdb -quiet -screen -load ~/.Xresources
 
 case $xserver in
     Xorg)

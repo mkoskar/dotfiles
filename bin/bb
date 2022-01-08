@@ -21,6 +21,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     amazon-de               b https://www.amazon.de/s/field-keywords={u}
     amazon-uk               b https://www.amazon.co.uk/s/field-keywords={u}
     amd-manuals             b https://developer.amd.com/resources/developer-guides-manuals/
+    android                 b https://developer.android.com/docs
     angularjs               b https://docs.angularjs.org/api
     animals                 b https://en.wikipedia.org/wiki/List_of_animal_names
     ansible                 b https://docs.ansible.com/ansible/latest/index.html
@@ -95,9 +96,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     d                       b https://www.merriam-webster.com/dictionary/{u}
     dart                    b https://dart.dev/guides
     dbus                    b https://dbus.freedesktop.org/doc/dbus-specification.html
-    dd                      b https://duckduckgo.com/lite/\?q={u}
-    dd-bang                 b https://duckduckgo.com/bang_lite.html
-    dd-syntax               b https://duck.co/help/results/syntax
+    dd                      b https://duckduckgo.com/\?q={u}
+    dd-bang                 b https://duckduckgo.com/bang
+    dd-syntax               b https://help.duckduckgo.com/duckduckgo-help-pages/results/syntax/
     deb                     b https://packages.debian.org/search\?keywords={u}
     debian-gitlab           b https://salsa.debian.org/explore
     debian-reference        b https://www.debian.org/doc/manuals/debian-reference/
@@ -119,6 +120,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     emojis                  b https://emojipedia.org/
     emojis-codes            b https://www.webpagefx.com/tools/emoji-cheat-sheet/
     emoticons               b https://en.wikipedia.org/wiki/List_of_emoticons
+    english-determiners     b https://dictionary.cambridge.org/grammar/british-grammar/determiners
+    english-grammar         b https://dictionary.cambridge.org/grammar/british-grammar/
     enum                    b https://en.wikipedia.org/wiki/E_number#Full_list
     etsi                    b https://www.etsi.org/standards-search#\&sort=3
     etymology               b https://www.etymonline.com/word/{u}
@@ -204,6 +207,12 @@ MENUER=$prgname menuer "$@" <<-EOF |
     http/2                  b https://tools.ietf.org/html/rfc7540
     i                       b https://www.ixquick.com/do/metasearch.pl\?query={u}
     i3                      b https://i3wm.org/docs/userguide.html
+    iana-dns                b https://www.iana.org/domains
+    iana-ipv4-special       b https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xhtml
+    iana-ipv6-special       b https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml
+    iana-multicast          b https://www.iana.org/assignments/multicast-addresses/multicast-addresses.xhtml
+    iana-numbers            b https://www.iana.org/numbers
+    iana-protocols          b https://www.iana.org/protocols
     iban                    b https://en.wikipedia.org/wiki/International_Bank_Account_Number#IBAN_formats_by_country
     ieee-802                b https://www.ieee802.org/
     ii                      b https://www.ixquick.com/do/metasearch.pl\?cat=pics\&query={u}
@@ -286,7 +295,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     memory-cards            b https://en.wikipedia.org/wiki/Comparison_of_memory_cards
     mime                    b https://www.iana.org/assignments/media-types/media-types.xhtml
     mongodb                 b https://docs.mongodb.org/manual/reference/
-    morse-nato              b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
+    morse-nato-alphabet     b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
     mozilla-lists           b https://mail.mozilla.org/listinfo/
     mozilla-repos           b https://hg.mozilla.org/
     music                   b https://musicbrainz.org/search\?query={u}
@@ -324,14 +333,17 @@ MENUER=$prgname menuer "$@" <<-EOF |
     pkg                     b https://www.archlinux.org/packages/\?q={u}
     plan9                   b https://9p.io/plan9/
     posix                   b "$posix_base"/
-    posix-defs              b "$posix_base"/basedefs/contents.html
     posix-env               b "$posix_base"/basedefs/V1_chap08.html
-    posix-ifaces            b "$posix_base"/functions/contents.html
     posix-param-expansion   b "$posix_base"/utilities/V3_chap02.html#tag_18_06_02
-    posix-utils             b "$posix_base"/utilities/contents.html
+    posix-shell             b "$posix_base"/utilities/V3_chap02.html
     posix-utils-index       b https://shellhaters.org/
+    posix-vol1-xbd          b "$posix_base"/basedefs/contents.html
+    posix-vol2-xsh          b "$posix_base"/functions/contents.html
+    posix-vol3-xcu          b "$posix_base"/utilities/contents.html
+    posix-vol4-xrat         b "$posix_base"/xrat/contents.html
     postgresql              b https://www.postgresql.org/docs/current/static/index.html
     printing                b https://wiki.linuxfoundation.org/openprinting/database/documentation
+    procedure-words         b https://en.wikipedia.org/wiki/Procedure_word
     prometheus              b https://prometheus.io/docs/introduction/overview/
     pubchem                 b https://www.ncbi.nlm.nih.gov/pccompound\?term={u}
     pygments                b https://pygments.org/docs/lexers/
@@ -478,18 +490,19 @@ MENUER=$prgname menuer "$@" <<-EOF |
     xpath                   b https://www.w3.org/TR/xpath/
     xstl                    b https://www.w3.org/TR/xslt/
     xterm-changes           b https://invisible-island.net/xterm/xterm.log.html
+    ya                      b yandex.com/search\?text={u}
     yaml-refcard            b https://yaml.org/refcard.html
     yaml-spec               b https://yaml.org/spec/1.2/spec.html
     yaml-syntax             b https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html
     yt                      b https://www.youtube.com/results\?q={u}
     yt-channel              b https://www.youtube.com/results\?sp=EgIQAlAU\&q={u}
     yt-playlist             b https://www.youtube.com/results\?sp=EgIQA1AU\&q={u}
-    zsh                     b https://zsh.sourceforge.net/Doc/Release/index.html
+    zsh                     b https://zsh.sourceforge.io/Doc/Release/index.html
     zsh-changes             b https://github.com/zsh-users/zsh/blob/master/NEWS
-    zsh-guide               b https://zsh.sourceforge.net/Guide/zshguide.html
+    zsh-guide               b https://zsh.sourceforge.io/Guide/zshguide.html
     zsh-lists               b https://www.zsh.org/mla/
     zsh-lovers              b https://grml.org/zsh/zsh-lovers.html
-    zsh-param-expansion     b https://zsh.sourceforge.net/Doc/Release/Expansion.html#Parameter-Expansion
+    zsh-param-expansion     b https://zsh.sourceforge.io/Doc/Release/Expansion.html#Parameter-Expansion
 
     zz                      b https://www.slov-lex.sk/vyhladavanie-pravnych-predpisov
     zz-(new)                b https://www.zakonypreludi.sk/zz/nove-znenie

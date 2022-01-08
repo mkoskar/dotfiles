@@ -40,12 +40,12 @@ xserver_pid() {
 
 xserver_cmd() {
     local pid; pid=$(xserver_pid)
-    ps --pid "$pid" -o cmd=
+    ps -q "$pid" -o cmd=
 }
 
 xserver_name() {
     local pid; pid=$(xserver_pid)
-    ps --pid "$pid" -o comm=
+    ps -q "$pid" -o comm=
 }
 
 xserver_dispno() {
