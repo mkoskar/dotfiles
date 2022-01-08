@@ -52,6 +52,8 @@ noremap <M-,> ,
 noremap <M-;> ;
 
 noremap - ^
+noremap <Tab> W
+noremap <S-Tab> B
 
 noremap <M-j> 5j
 noremap <M-k> 5k
@@ -96,6 +98,7 @@ set list
 set listchars=eol:¬,tab:>-,trail:-,extends:>,precedes:<,nbsp:+,conceal:_
 set nowrap
 set scrolloff=2
+set showbreak=>
 set sidescroll=10
 set sidescrolloff=10
 
@@ -113,16 +116,18 @@ nnoremap <Leader>W :setl <C-R>=&wrap ? 'nowrap' : 'wrap'<CR><CR>
 " ----------------------------------------
 
 set colorcolumn=80
-set hlsearch
 set spelllang=en_us
 set spelloptions=camel
 set synmaxcol=200
+
+if !&hlsearch | set hlsearch | endif
 
 let c_comment_strings = 1
 let load_doxygen_syntax = 1
 let python_highlight_all = 1
 
 nnoremap <Space> <Cmd>diffup! \| nohls \| echo<CR>
+nnoremap <M-Space> <Cmd>let v:hlsearch = !v:hlsearch<CR>
 nnoremap <Leader>ft <Cmd>filetype detect \| syn sync fromstart<CR>
 
 nnoremap <Leader>cuc :setl <C-R>=&cuc ? 'nocuc' : 'cuc'<CR><CR>
@@ -192,7 +197,7 @@ let stlTail = '%6(%l:%v%) %P'
 let stlTail .= "%( %{%
     \ argc() > 0
     \ ? (arglistid() == 0 ? '' : 'L')
-        \ . (argv(argidx()) == bufname() ? '*' : '-')
+        \ . (argv(argidx()) ==# bufname() ? '*' : '-')
         \ . (argidx() + 1) . '/' . argc()
         \ : ''
     \ %}%)"
@@ -200,8 +205,8 @@ let stlTail .= "%( %{%
 let &g:stl = '%n %<%f'
 let &g:stl .= '%( [%M%W%R]%)'
 let &g:stl .= '%( %y%)'
-let &g:stl .= "%( [%{&l:fenc != 'utf-8' ? &l:fenc : ''}]%)"
-let &g:stl .= "%( [%{&l:ff != 'unix' ? &l:ff : ''}]%)"
+let &g:stl .= "%( [%{&l:fenc !=# 'utf-8' ? &l:fenc : ''}]%)"
+let &g:stl .= "%( [%{&l:ff !=# 'unix' ? &l:ff : ''}]%)"
 let &g:stl .= "%( %{get(b:, 'run_title', '')}%)"
 let &g:stl .= "%( %{get(w:, 'quickfix_title', '')}%)"
 let &g:stl .= '%=' . stlTail
@@ -262,28 +267,28 @@ function! s:TabLine() abort
         let prefer_bufname = 1
         if empty(bt)
             let name = '[No Name]'
-        elseif bt == 'quickfix'
+        elseif bt ==# 'quickfix'
             let loclist = get(getwininfo(winid)[0], 'loclist', 0)
             let name = loclist ? '[LocList]' : '[QfList]'
             let prefer_bufname = 0
-        elseif bt == 'terminal'
+        elseif bt ==# 'terminal'
             let name = '[Term]'
             let prefer_bufname = 0
-        elseif bt == 'prompt'
+        elseif bt ==# 'prompt'
             let name = '[Prompt]'
-        elseif bt == 'popup'
+        elseif bt ==# 'popup'
             let name = '[Popup]'
         else
             let name = '[Scratch]'
         endif
         let bufname = bufname(buf)
         if !empty(bufname) && prefer_bufname
-            if empty(bt) || bt == 'nowrite'
+            if empty(bt) || bt ==# 'nowrite'
                 let name = fnamemodify(bufname, ':~:.')
                 if len(name) > 20
                     let name = substitute(name, '\v/\zs(.).{-}\ze/', '\1', 'g')
                 endif
-            elseif bt == 'help'
+            elseif bt ==# 'help'
                 let name = fnamemodify(bufname, ':t')
             else
                 let name = bufname
@@ -386,8 +391,8 @@ set titlestring=
     \\ %n\ %<%f
     \%(\ [%M%W%R]%)
     \%(\ %y%)
-    \%(\ [%{&l:fenc!='utf-8'?&l:fenc:''}]%)
-    \%(\ [%{&l:ff!='unix'?&l:ff:''}]%)
+    \%(\ [%{&l:fenc!=#'utf-8'?&l:fenc:''}]%)
+    \%(\ [%{&l:ff!=#'unix'?&l:ff:''}]%)
     \%(\ %{get(b:,'run_title','')}%)
     \%(\ %{get(w:,'quickfix_title','')}%)
 
@@ -559,18 +564,35 @@ let &directory = $VIMDIR . '/swap//'
 call utils#mkdir(&directory)
 
 function! s:Swap() abort
-    let this = swapname('%')
-    if empty(this) | return | endif
-    let base = fnamemodify(this, ':r')
+    let cur = swapname('%')
+    if empty(cur) | return | endif
+    let base = fnamemodify(cur, ':r')
+    echo printf('%s.*', fnamemodify(base, ':~'))
+    echo ' '
+    let swpi = swapinfo(cur)
+    echo printf('> %s%s (current)', fnamemodify(cur, ':e'), swpi.dirty ? ' [+]' : '')
+    echo strftime('%c', swpi.mtime)
+    echo ' '
     for f in glob(base . '.*', 1, 1)
-        if f == this | continue | endif
-        let i = swapinfo(f)
-        echo 'swap: ' . fnamemodify(f, ':~')
-        echo printf('created by: %s %s@%s (pid: %s)', i.version, i.user, i.host, i.pid)
-        echo 'mtime: ' . strftime('%c', i.mtime)
-        echo 'dirty: ' . i.dirty
-        echo ''
-        if confirm('Delete?', "&Yes\n&No", 2) == 1 | call delete(f) | endif
+        try
+            if f ==# cur | continue | endif
+            let swpi = swapinfo(f)
+            echo printf('> %s%s', fnamemodify(f, ':e'), swpi.dirty ? ' [+]' : '')
+            echo strftime('%c', swpi.mtime)
+            echo printf('%s %s@%s (pid: %s)', swpi.version, swpi.user, swpi.host, swpi.pid)
+            echo ' '
+            let c = confirm('What to do?', "&Delete\n&Recover\n&Skip", 3)
+            if c == 1
+                call delete(f)
+            elseif c == 2
+                exec 'silent recover' fnameescape(f)
+                echo ' '
+                break
+            endif
+        catch /^\(Vim:Interrupt\)\@!.*/
+            call utils#echoException()
+        endtry
+        echo ' '
     endfor
 endfunction
 
@@ -748,7 +770,7 @@ let &viewdir = $VIMDIR . '/view'
 let &viminfo = "!,'100,<50,s10,h"
 let &viminfofile = $VIMDIR . '/viminfo'
 
-nnoremap <C-W><C-F> :vert wincmd f<CR>
+nnoremap <C-W><C-F> <Cmd>vert wincmd f<CR>
 nnoremap <Leader><C-L> <C-L>
 nnoremap <Leader>D <Cmd>%d<CR>
 nnoremap <Leader>V :setl ve=<C-R>=&ve =~# 'all' ? 'block' : 'all'<CR><CR>
@@ -758,9 +780,18 @@ nnoremap <Leader>lc :ls! +<CR>
 nnoremap <Leader>ls :ls<CR>
 nnoremap <Leader>lt :ls t<CR>
 nnoremap <Leader>q <Cmd>close<CR>
-nnoremap <Leader>sc :setl scl=<C-R>=&scl != 'no' ? 'no' : 'yes'<CR><CR>
+nnoremap <Leader>sc :setl scl=<C-R>=&scl !=# 'no' ? 'no' : 'yes'<CR><CR>
 nnoremap <Leader>ss <Cmd>new +setl\ bt=nofile\ bh=wipe\ noswf\ nobl<CR>
-nnoremap Q <Nop>
+
+" Switch to Ex mode with gQ instead
+nnoremap Q <NOP>
+
+" Select mode is annoying
+nnoremap g<BS> <NOP>
+nnoremap g<C-H> <NOP>
+nnoremap gH <NOP>
+nnoremap gh <NOP>
+xnoremap <C-G> <NOP>
 
 " New lines
 nnoremap [<Space> O<Esc>'[
@@ -808,6 +839,12 @@ nnoremap <silent> <Leader>dp :.diffput<CR>
 nnoremap <Leader>du <Cmd>diffup!<CR>
 nnoremap <Leader>dc <Cmd>diffoff!<CR>
 nnoremap <Leader>dd <Cmd>exec &diff ? 'diffoff' : 'diffthis'<CR>
+
+cabbrev gg g/<C-R>//
+cabbrev vg vg/<C-R>//
+
+command! -range -bar Vis normal! <line1>GV<line2>G
+command! -range=% -bar Rev keepp <line1>,<line2>g/^/m<line1>-1
 
 " ----------------------------------------
 
@@ -881,8 +918,7 @@ function! s:Run(system, cmd, input, mode = 1, mods = '') abort
     endif
     call setreg(reg, out)
     if a:mode < 0
-        redraw
-        echo join(getreg(reg, 1, 1,), "\n")
+        call append(line('.'), getreg(reg, 1, 1,))
         return
     endif
     if a:mode > 0
@@ -907,7 +943,7 @@ endfunction
 command! -nargs=1 -count=1 -bang -complete=command Execute
     \ call utils#tryCatchCall('<SID>Run', 0, <q-args>, [], empty(<q-bang>) ? <count> > 0 : -1, <q-mods>)
 nnoremap <Leader>xe :Execute<Space>
-nnoremap <Leader>xE :Execute verb<Space>
+nnoremap <Leader>xE :Execute!<Space>
 
 command! -nargs=1 -count=1 -bang -complete=shellcmd System
     \ call utils#tryCatchCall('<SID>Run', 1, <q-args>, [], empty(<q-bang>) ? <count> > 0 : -1, <q-mods>)
@@ -929,6 +965,7 @@ function! s:Reload(bang) abort
         endif
         silent exec 'Keep edit' . a:bang . '| file'
     endif
+    redraw
     let v:statusmsg = printf('[%s] %s', strftime('%H:%M:%S'), v:statusmsg)
     call utils#echo(utils#shortenCmdline(v:statusmsg))
 endfunction
@@ -944,10 +981,11 @@ function! s:ReloadT(bang, d) abort
         while 1
             call s:Reload('')
             echon printf(' (every %ds)', d)
-            if !empty(a:bang) | $ | endif
+            if !empty(a:bang) | silent $ | endif
             exec 'sleep' d
         endwhile
     finally
+        redraw
         call utils#echo(utils#shortenCmdline(v:statusmsg))
     endtry
 endfunction
@@ -958,7 +996,88 @@ nnoremap <Leader>F <Cmd>ReloadT!<CR>
 
 " }}}
 
-" Displaying options {{{
+" Carve search pattern quickly {{{
+
+function! s:SearchCarve(mode = '') abort
+    let d = '/'
+    let all = expand('<cWORD>')
+    let old = get(b:, 'SearchCarve', '')
+    let cur = ''
+    while 1
+        let len = len(cur)
+        let t1 = all[len:stridx(all, d, len)]
+        let t2 = old[len:stridx(old, d, len)]
+        if t1 !=# t2 || empty(t1) | break | endif
+        let cur .= t1
+    endwhile
+    let cur = empty(cur) ? all : cur
+    if a:mode == '0'
+        let cur = all[:stridx(all, d)]
+    elseif a:mode ==# 'h'
+        let tmp = strridx(cur, d) == len(cur) - 1 ? cur[:-2] : cur
+        let idx = strridx(tmp, d)
+        if idx >= 0 | let cur = cur[:idx] | endif
+    elseif a:mode ==# 'l'
+        let cur = all[:stridx(all, d, len(cur))]
+    elseif a:mode == '$'
+        let cur = all
+    endif
+    let b:SearchCarve = cur
+    let @/ = '\V\(\^\|\s\)\zs' . escape(cur, '\/')
+endfunction
+
+function! s:SearchCarveI() abort
+    let v:hlsearch = 1
+    match Cursor /\%#/
+    call s:SearchCarve()
+    try
+        while 1
+            redraw | echo printf('%s', @/)
+            let c = getcharstr()
+            if stridx("\<C-C>\<C-J>\<CR>\<Esc>\<Space>q", c) >= 0
+                break
+            elseif stridx('0H', c) >= 0
+                call s:SearchCarve('0')
+            elseif stridx('/$L', c) >= 0
+                call s:SearchCarve('$')
+            elseif c ==# 'h'
+                call s:SearchCarve(c)
+            elseif c ==# 'l'
+                call s:SearchCarve(c)
+            elseif c ==? 'v'
+                call s:SearchSelect()
+                break
+            elseif c ==? 'f'
+                call s:SearchSelect('fold')
+                break
+            elseif c ==? 'd'
+                call s:SearchSelect('delete')
+                break
+            endif
+        endwhile
+    finally
+        match
+        redraw | echo
+    endtry
+endfunction
+
+nnoremap <Leader>/ <Cmd>call utils#tryCatchCall('<SID>SearchCarveI')<CR>
+
+" }}}
+
+" Convert to text with :!totext {{{
+
+function! s:ToText(ft = &ft) range abort
+    let args = [a:firstline . ',' . a:lastline, '!totext', '-s', &sw, '-t', &tw]
+    if !empty(a:ft) | call extend(args, ['-f', a:ft]) | endif
+    exec join(args)
+endfunction
+
+command! -nargs=? -range=% -bar ToText silent <line1>,<line2> call s:ToText(<f-args>)
+
+" }}}
+
+" Display options {{{
 
 " global (e.g., 'cdpath')
 "   - &g:opt and &l:opt is a single value
@@ -1030,7 +1149,25 @@ command! -count=1 -bar BufWinOptions <count>Execute call s:BufAndWinOptions()
 
 " }}}
 
-" Edit / Reload 'vimrc' {{{
+" Edit registers {{{
+
+function! s:Register(regname, value) abort
+    let regname = a:regname
+    if empty(regname)
+        let regname = '"'
+        if &clipboard =~# 'unnamed' | let regname = '*' | endif
+        if &clipboard =~# 'unnamedplus' | let regname = '+' | endif
+    endif
+    let value = substitute(a:value, '^=', '', '')
+    call setreg(regname, value)
+endfunction
+
+command! -nargs=? -register Register call s:Register(<q-reg>, <q-args>)
+nnoremap <Leader>re :Register <C-R>=v:register<CR> =<C-R>=getreg(v:register)<CR>
+
+" }}}
+
+" Edit/Reload vimrc {{{
 
 nnoremap <silent> <Leader>rc :vsplit <C-R>=fnameescape(vimrc)<CR><CR>
 
@@ -1055,8 +1192,7 @@ function! s:VimrcReload() abort
     "endfor
 
     exec winrestcmd
-    redraw
-    call utils#echoWarn('vimrc reloaded')
+    redraw | call utils#echoWarn('vimrc reloaded')
 endfunction
 catch /:E127:/
 endtry
@@ -1066,34 +1202,15 @@ nnoremap <Leader>so <Cmd>VimrcReload<CR>
 
 " }}}
 
-" Edit registers {{{
-
-function! s:Register(regname, value) abort
-    let regname = a:regname
-    if empty(regname)
-        let regname = '"'
-        if &clipboard =~# 'unnamed' | let regname = '*' | endif
-        if &clipboard =~# 'unnamedplus' | let regname = '+' | endif
-    endif
-    let value = substitute(a:value, '^=', '', '')
-    call setreg(regname, value)
-endfunction
-
-command! -nargs=? -register Register call s:Register(<q-reg>, <q-args>)
-nnoremap <Leader>re :Register <C-R>=v:register<CR> =<C-R>=getreg(v:register)<CR>
-
-" }}}
-
-" Execute the contents of register in visual mode {{{
+" Execute register in visual mode {{{
 
 function! s:VisualAt() range abort
-    echo '@'
-    let c = getchar()
-    if type(c) == 0 | let c = nr2char(c) | endif
-    let cmd = a:firstline . ',' . a:lastline . 'norm!@' . c
-    exec cmd
-    redraw
-    echo ':' . cmd
+    redraw | echo '@'
+    try
+        exec a:firstline ',' a:lastline 'normal! @' . getcharstr()
+    finally
+        redraw | echo
+    endtry
 endfunction
 
 xnoremap @ :norm!@
@@ -1101,7 +1218,7 @@ xnoremap <silent> @ :call utils#tryCatchCall('<SID>VisualAt')<CR>
 
 " }}}
 
-" Formatting {{{
+" Format with :!format {{{
 
 function! s:Format(ft = &ft) range abort
     let args = [a:firstline . ',' . a:lastline, '!format', '-s', &sw, '-t', &tw]
@@ -1121,7 +1238,44 @@ nnoremap <silent> <Leader>pj :%Format json<CR>
 
 " }}}
 
-" MoveToTab {{{
+" Keep cursor/window position, last search pattern, and others {{{
+
+function! s:Keep(cmd) abort
+    let view = winsaveview()
+    try
+        exec 'keepa keepj keepm keepp' a:cmd
+    finally
+        call winrestview(view)
+    endtry
+endfunction
+
+command! -nargs=1 -complete=command Keep call utils#tryCatchCall('<SID>Keep', <q-args>)
+
+" }}}
+
+" Move to next/prev closed fold {{{
+" See also: https://stackoverflow.com/questions/9403098/is-it-possible-to-jump-to-closed-folds-in-vim
+
+function! s:MoveToClosedFold(next) abort
+    let cmd = 'normal! z' . (a:next ? 'j' : 'k')
+    let view = winsaveview()
+    let [lnum0, lnum, isopen] = [0, view.lnum, 1]
+    while lnum != lnum0 && isopen
+        exec cmd
+        let [lnum0, lnum] = [lnum, line('.')]
+        let isopen = foldclosed(lnum) < 0
+    endwhile
+    if isopen | call winrestview(view) | endif
+endfunction
+
+command! -bar NextClosedFold call s:MoveToClosedFold(1)
+command! -bar PrevClosedFold call s:MoveToClosedFold(0)
+nnoremap zJ <Cmd>NextClosedFold<CR>
+nnoremap zK <Cmd>PrevClosedFold<CR>
+
+" }}}
+
+" Move window to next/prev tab {{{
 
 function! s:MoveToTab(next) abort
     if tabpagenr('$') == 1 && winnr('$') == 1 | return | endif
@@ -1147,40 +1301,27 @@ nnoremap <C-W><M-h> <Cmd>MoveToPrevTab<CR>
 
 " }}}
 
-" Next/PrevClosedFold <https://stackoverflow.com/questions/9403098/is-it-possible-to-jump-to-closed-folds-in-vim> {{{
+" Select lines that match the last search pattern {{{
 
-function! s:MoveToClosedFold(next) abort
-    let cmd = 'normal! z' . (a:next ? 'j' : 'k')
-    let view = winsaveview()
-    let [lnum0, lnum, isopen] = [0, view.lnum, 1]
-    while lnum != lnum0 && isopen
-        exec cmd
-        let [lnum0, lnum] = [lnum, line('.')]
-        let isopen = foldclosed(lnum) < 0
-    endwhile
-    if isopen | call winrestview(view) | endif
+function! s:SearchSelect(cmd = '') abort
+    let cur = line('.')
+    if getline(cur) !~# @/ | return | endif
+    let idx = cur
+    while getline(idx - 1) =~# @/ | let idx -= 1 | endwhile
+    let [beg, idx] = [idx, cur]
+    while getline(idx + 1) =~# @/ | let idx += 1 | endwhile
+    if empty(a:cmd)
+        exec printf('normal! %dGV%dG', beg, idx)
+    else
+        exec beg ',' idx a:cmd
+    endif
 endfunction
 
-command! -bar NextClosedFold call s:MoveToClosedFold(1)
-command! -bar PrevClosedFold call s:MoveToClosedFold(0)
-nnoremap zJ <Cmd>NextClosedFold<CR>
-nnoremap zK <Cmd>PrevClosedFold<CR>
+nnoremap gV <Cmd>call <SID>SearchSelect()<CR>
 
 " }}}
 
-" Keep cursor / window position, last search pattern, and the others {{{
-
-function! s:Keep(cmd) abort
-    let view = winsaveview()
-    exec 'keepa keepj keepm keepp' a:cmd
-    call winrestview(view)
-endfunction
-
-command! -nargs=1 -complete=command Keep call s:Keep(<q-args>)
-
-" }}}
-
-" Starts diff of current buffer with another file {{{
+" Start diff of current buffer with another file {{{
 
 function! s:DiffTo(file) abort
     let file = fnamemodify(a:file, ':p')
@@ -1206,19 +1347,7 @@ nnoremap <Leader>df :DiffTo <C-R>=expand('%')<CR>
 
 " }}}
 
-" ToText {{{
-
-function! s:ToText(ft = &ft) range abort
-    let args = [a:firstline . ',' . a:lastline, '!totext', '-s', &sw, '-t', &tw]
-    if !empty(a:ft) | call extend(args, ['-f', a:ft]) | endif
-    exec join(args)
-endfunction
-
-command! -nargs=? -range=% -bar ToText silent <line1>,<line2> call s:ToText(<f-args>)
-
-" }}}
-
-" Toggles translation of ASCII meta escape prefix encoding to 8 bit meta encoding {{{
+" Toggle translation of ASCII meta escape prefix encoding to 8 bit meta encoding {{{
 
 function! s:MetaLess(cmd) abort
     exec a:cmd
@@ -1235,8 +1364,8 @@ function! s:MetaSetup(enable) abort
         endif
         let kc = printf('<M-%s>', c)
         exec printf('set %s=%s', kc, a:enable ? "\e" . c : '')
-        if empty(maparg(kc, 'i')) | exec printf('inoremap %s <Nop>', kc) | endif
-        if empty(maparg(kc, 'c')) | exec printf('cnoremap %s <Nop>', kc) | endif
+        if empty(maparg(kc, 'i')) | exec printf('inoremap %s <NOP>', kc) | endif
+        if empty(maparg(kc, 'c')) | exec printf('cnoremap %s <NOP>', kc) | endif
     endfor
     let g:meta_enabled = a:enable
     if !has('vim_starting')
@@ -1262,25 +1391,28 @@ endif
 
 " }}}
 
-" Walks through list of colorschemes (q/C-C=quit, k=prev, default=next) {{{
+" Walk through list of colorschemes {{{
 
 function! s:Themes() abort
     let themes = ['luciusblack', 'hybrid', 'bclear']
     let [i, lasti] = [get(s:, 'themes_last_index'), len(themes) - 1]
-    while 1
-        exec 'colorscheme' themes[i]
-        redraw | echo themes[i]
-        let c = getchar()
-        if c == 3 || c == 113
-            break
-        elseif c == 107
-            let i = i > 0 ? i - 1 : lasti
-        else
-            let i = i < lasti ? i + 1 : 0
-        endif
-    endwhile
-    let s:themes_last_index = i
-    redraw | echo
+    try
+        while 1
+            exec 'colorscheme' themes[i]
+            redraw | echo themes[i]
+            let c = getcharstr()
+            if stridx("\<C-C>\<Esc>q", c) >= 0
+                break
+            elseif c ==# 'k'
+                let i = i > 0 ? i - 1 : lasti
+            else
+                let i = i < lasti ? i + 1 : 0
+            endif
+        endwhile
+        let s:themes_last_index = i
+    finally
+        redraw | echo
+    endtry
 endfunction
 
 command! -bar Themes call s:Themes()
@@ -1303,7 +1435,7 @@ command! -nargs=? -bar W call s:Write(<f-args>)
 
 " }}}
 
-" Zoom / Restore window {{{
+" Zoom/Restore window {{{
 
 function! s:ZoomToggle() abort
     if get(t:, 'zoomed')
@@ -1428,13 +1560,13 @@ augroup vimrc_base
         if empty(bin)
             let stl .= ' %<%f'
         else
-            if bin == exepath(&shell) | let bin = &shell | endif
+            if bin ==# exepath(&shell) | let bin = &shell | endif
             let stl .= printf(' !%s', bin)
         endif
         if exists('b:term_title') && match(b:term_title, '^term://') < 0
             let stl .= printf(' [%s]', b:term_title)
         endif
-        if mode() == 'n'
+        if mode() ==# 'n'
             let stl .= '%= %6(%l:%v%) %P'
         endif
         return stl

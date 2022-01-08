@@ -1,4 +1,4 @@
 default-stream=best
 player-no-close
 #player-passthrough=hls,http,rtmp
-player=mpv --player-operation-mode=pseudo-gui --no-ytdl --force-seekable --hr-seek
+player=mpv --no-ytdl --force-seekable --hr-seek

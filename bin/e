@@ -4,17 +4,12 @@ set -eu
 
 prgname=${0##*/}
 
-if [[ ! -t 0 ]]; then
-    set -- "$@" -
-fi
+[[ -t 0 ]] || set -- "$@" -
 
 case $prgname in
-    e0)
-        set -- -u ~/.vim/vimrc_base "$@"
-        ;;
-    egpg)
-        set -- -u ~/.vim/vimrc_gpg "$@"
-        ;;
+    ebase) set -- -u ~/.vim/vimrc_base "$@" ;;
+    ediff) set -- -u ~/.vim/vimrc_base -dOR "$@" ;;
+    egpg) set -- -u ~/.vim/vimrc_gpg "$@" ;;
 esac
 
 exec "${VIMBIN:-vim}" -Np "$@"

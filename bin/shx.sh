@@ -27,8 +27,6 @@ shmode() {
 }
 SHMODE=$(shmode)
 
-# ----------------------------------------
-
 set -o noclobber
 if [ "$SHMODE" = bash ]; then
     shopt -s expand_aliases
@@ -38,6 +36,8 @@ case $SHMODE in bash | zsh | ksh) set -o pipefail ;; esac
 
 [ "$HOSTNAME" ] || HOSTNAME=${HOST:-$(uname -n)}
 [ "$OSID" = termux ] && HOSTNAME=${TERMUX_HOST:-$HOSTNAME}
+
+has() { command -v -- "$1"; } >/dev/null
 
 
 # ansible
@@ -173,6 +173,7 @@ alias man-all-posix='man-all -s 0p,9p,2p,3p,7p,8p,6p,1p,4p,5p'
 alias pac=pacman
 alias paccheck='paccheck --quiet --depends --opt-depends --files --file-properties --sha256sum --require-mtree --db-files --backup --noextract --noupgrade'
 alias pacman-log='pg /var/log/pacman.log'
+alias pacq='pacman -Q'
 alias pactree='pactree --color'
 
 _paclog_recent() {
@@ -280,7 +281,6 @@ alias curl-as='curl -A "$UAGENT"'
 alias curl-head='curl -I'
 alias curl-trace='curl --trace-ascii - --trace-time'
 alias curl='curl -sSLJ'
-alias date0='date -Ins'
 alias dconfa='dconf dump /'
 alias dd='dd status=progress'
 alias delv-trace='delv +cd +mt +rt +vt -t any'
@@ -296,6 +296,8 @@ alias drill-nocheck='drill -o CD'
 alias drill-trace='drill -T'
 alias dstat='dstat -tlycgm --vm -rdn'
 alias du='du -hx'
+alias e0='e -Xn -i NONE -u NONE'
+alias ebatch='e0 -V1 -es'
 alias ed='ed -v -p :'
 alias fc-debug='FC_DEBUG=8191'
 alias fc-recache='fc-cache -rv'
@@ -315,7 +317,7 @@ alias host='host -a -T'
 alias info='info --vi-keys'
 alias infocmp0='infocmp -A "$SYSPREFIX"/share/terminfo'
 alias infocmp='infocmp -1a'
-alias ip='ip -color=auto'
+alias ip='ip -h -c=auto'
 alias journal='journalctl -o short-precise -b'
 alias last='last -x'
 alias llib='tree ~/.local/lib'
@@ -335,7 +337,6 @@ alias mount-loop='mount -o loop'
 alias mpv-debug='mpv --terminal=yes --msg-level=all=debug'
 alias mpv-verbose='mpv --terminal=yes --msg-level=all=v'
 alias mpv-ytdl-reverse='mpv --ytdl-raw-options=playlist-reverse='
-alias mpv='mpv --player-operation-mode=pseudo-gui'
 alias mv='mv -i'
 alias ncdu='ncdu -x'
 alias neomutt-debug='neomutt -d 5 -l ~/tmp/neomutt.log'
@@ -352,7 +353,6 @@ alias patch1='patch -N -p 1'
 alias ping-mtu='ping -M do -s 2000'
 alias pr='pr -T -W "$COLUMNS"'
 alias qiv='qiv -uLtiGfl --vikeys'
-alias r='fc -e -'
 alias rax=rax2
 alias reflector='reflector -p https -c sk -c cz --score 3 -f 3'
 alias rm='rm -I --one-file-system'
@@ -389,8 +389,6 @@ alias tshark='tshark -nV'
 alias udevadm-info-dev='udevadm info --name'
 alias udevadm-info-sys='udevadm info --path'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
-alias vim-batch='vim0 -V1 -es'
-alias vim0='vim -NXn -i NONE -u NONE'
 alias w3m='w3m -v'
 alias watch='watch -n 1'
 alias weechat-tmux='tmux -L weechat attach'
@@ -402,7 +400,7 @@ alias xargs1='xargs -r -L 1'
 alias xinput-test='xinput test-xi2 --root'
 alias xwininfo='xwininfo -all'
 alias yaml='yq .'
-alias zsh-bare='zsh -df'
+alias zsh0='zsh -df'
 
 alias _gdbus-session='gdbus introspect -r --session -o /'
 alias _gdbus-system='gdbus introspect -r --system -o /'
@@ -421,11 +419,13 @@ __() {
     printf '\n%s @ %s in %s\n\n' "$USER" "$HOSTNAME" "$cwd"
     gitdir=$(git rev-parse --git-dir 2>/dev/null) || return 0
     case $gitdir in "$HOME" | "$HOME"/*) gitdir=\~${gitdir##$HOME} ;; esac
-    echo '--------------------------------------------------'
+    echo --------------------------------------------------
     printf '> %s\n\n' "$gitdir"
     git conf
-    echo $'\n--------------------------------------------------'
-    echo $'> git-stash:\n'
+    echo
+    echo --------------------------------------------------
+    echo '> git-stash:'
+    echo
     git -P stash list
     echo
 }
@@ -479,7 +479,10 @@ a() {
     sleep "${1:-5m}"
     echo Beep...
     notify -u critical "Beep... Time's up!"
-    command mpv --load-scripts=no --loop-file=5 \
+    command mpv \
+        --no-config \
+        --msg-level=all=error \
+        --loop-file=5 \
         /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
 }
 
@@ -504,11 +507,8 @@ unbase() { unset BASEDIR; }
 
 # shellcheck disable=SC2164
 cd() {
-    if [ $# -eq 0 ]; then
-        command cd -- "${BASEDIR:-${SHOME:-$HOME}}"
-    else
-        command cd -- "$@"
-    fi
+    [ $# -gt 0 ] || set -- "${BASEDIR:-${SHOME:-$HOME}}"
+    command cd -- "$@"
 }
 
 ctlseqs() {
@@ -517,18 +517,17 @@ ctlseqs() {
 }
 
 date() {
-    [ $# -eq 0 ] && set -- -R
+    [ $# -gt 0 ] || set -- -R
     command date "$@"
 }
 
-fc() {
-    case $SHMODE in zsh) setopt local_options posix_builtins ;; esac
-    if [ $# -eq 0 ]; then
-        fc 1 -1
-    else
+if has fc; then
+    fc() {
+        case $SHNAME in zsh) setopt local_options posix_builtins ;; esac
+        [ $# -gt 0 ] || set -- -- 1 "${HISTCMD:--1}"
         command fc "$@"
-    fi
-}
+    }
+fi
 
 fn() {
     if [ $# -eq 0 ]; then
@@ -541,9 +540,14 @@ fn() {
 
 h() {
     case $SHNAME in
-        ksh) fc -l "$@" ;;
         zsh) fc -lD -t '%F %T' "$@" ;;
-        *) history | tail -n 16 ;;
+        *)
+            if has fc; then
+                fc -l "$@"
+            else
+                history | tail -n 16
+            fi
+            ;;
     esac
 }
 
@@ -581,7 +585,7 @@ lsmod() {
 on() {
     [ $# -eq 0 ] && return 2
     local p; p=$(command -v -- "$1") || return 1
-    [ -e "$p" ] || { i "$1"; return; }
+    [ "${p##/*}" ] && { i "$1"; return; }
     shift
     eval "${*:-ls -la}" "$p"
 }
@@ -600,6 +604,14 @@ syspath() { printf '%s\n' "$SYSPATH" | tr : \\n; }
 
 pstree() {
     pgx command pstree -ahglnpsSuU "$@"
+}
+
+r() {
+    [ $# -gt 0 ] || set -- -1
+    case $SHNAME in
+        zsh) fc -L -e - "$@" ;;
+        *) fc -e - "$@" ;;
+    esac
 }
 
 reexec() {
@@ -656,7 +668,7 @@ source_opt() {
 }
 
 tree() {
-    set -- -axF -I .git --dirsfirst --noreport "$@"
+    set -- -aF -I .git --dirsfirst --noreport "$@"
     if [ -t 1 ]; then
         pgx command tree -C "$@"
     else

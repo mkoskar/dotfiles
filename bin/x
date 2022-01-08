@@ -46,7 +46,7 @@ case $prgname in
             read -r pid <"$lockfile"
             printf '\nDisplay %s is currently in use (pid=%s).\n\n' \
                 "$dispno" "$pid"
-            if ps --pid "$pid"; then
+            if ps -q "$pid"; then
                 echo
                 exit 1
             else

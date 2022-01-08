@@ -31,7 +31,7 @@ fi
 PS1=$__title$PS1
 
 __prompt_command() {
-    local pstatus=($? "${PIPESTATUS[@]}") __cmd_dur
+    local pstatus=($? "${PIPESTATUS[@]}")
     __statstr=${pstatus[0]}
     if (( ${#pstatus[@]} > 2 )); then
         __statstr+=:$(IFS=\|; echo "${pstatus[*]:1}")

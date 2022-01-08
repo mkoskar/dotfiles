@@ -318,7 +318,7 @@ macro index,pager w <tag-prefix><set-flag> 'set a status flag on all tagged mess
 macro index,pager Z '<shell-escape>mbsync &<enter>' 'trigger mailboxes synchronization'
 macro index,pager \ea <change-folder>!!<enter> 'go to previous mailbox'
 macro index,pager <tab> <change-folder>? 'browse mailboxes'
-macro index,pager,attach O '<pipe-entry>e0 -c set\ bt=nofile<enter>' 'view in $PAGER'
+macro index,pager,attach O '<pipe-entry>ebase -c set\ bt=nofile<enter>' 'view in $PAGER'
 
 macro pager \c_ <save-message> 'save message'
 macro pager j >>>>>

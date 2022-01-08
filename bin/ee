@@ -8,9 +8,12 @@ name=ee.${tmux[1]}.${tmux[2]}
 
 case ${VIMBIN:-vim} in
     vim)
-        vim --serverlist | grep -Fixq -- "$name" ||
-            exec vim --servername "$name" -- "$@"
-        vim --servername "$name" --remote-tab-silent "$@"
+        if slist=$(vim --serverlist 2>/dev/null); then
+            grep -Fixq -- "$name" <<<"$slist" ||
+                exec vim --servername "$name" -- "$@"
+            exec vim --servername "$name" --remote-tab-silent "$@"
+        fi
+        exec vim -- "$@"
         ;;
     nvim)
         addr=$XDG_RUNTIME_DIR/$name

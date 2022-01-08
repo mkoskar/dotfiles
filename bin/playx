@@ -27,12 +27,11 @@ case $src in
         streamlink \
             --loglevel=error \
             --player-args="--title=$title --force-media-title=$title -- {filename}" \
-            -- "$src"
+            "$src"
         exit
         ;;
     http?(s)://*)
-        mpv --player-operation-mode=pseudo-gui \
-            --force-media-title="${2-}" -- "$src"
+        mpv --force-media-title="${2-}" "$src"
         ;;
     *)
         exit 2

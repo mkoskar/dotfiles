@@ -2,21 +2,18 @@
 
 function! utils#echo(msg) abort
     if !empty(a:msg)
-        redraw
         echohl None | echo a:msg
     endif
 endfunction
 
 function! utils#echoWarn(msg) abort
     if !empty(a:msg)
-        redraw
         echohl WarningMsg | echo a:msg | echohl None
     endif
 endfunction
 
 function! utils#echoError(msg) abort
     if !empty(a:msg)
-        redraw
         echohl ErrorMsg | echomsg a:msg | echohl None
     endif
 endfunction

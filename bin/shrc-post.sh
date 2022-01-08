@@ -30,17 +30,23 @@ case $OSID in
     *)
         [ "$(tty)" = /dev/tty1 ] || { return 0; }
 
-        echo $'\n--------------------------------------------------'
-        echo $'> Setup backup:\n'
+        echo
+        echo --------------------------------------------------
+        echo '> Setup backup:'
+        echo
         sudo backup-setup
 
-        echo $'\n--------------------------------------------------'
-        echo $'> Presets:\n'
+        echo
+        echo --------------------------------------------------
+        echo '> Presets:'
+        echo
         #gpg-agent-preset
         ssh-agent-preset
 
-        echo $'\n--------------------------------------------------'
-        echo $'> Start X session:\n'
+        echo
+        echo --------------------------------------------------
+        echo '> Start X session:'
+        echo
         confirm 'Continue?' y || { echo; return; }
         exec x
         ;;

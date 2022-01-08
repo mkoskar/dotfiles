@@ -1,6 +1,6 @@
 text/html;      stdiner -bt b0
 text/html;      w3m -I %{charset} -T text/html; copiousoutput
-text/*;         e0 %s
+text/*;         ebase %s
 
 application/*;  stdiner -b xdg-open
 audio/*;        stdiner -b xdg-open
