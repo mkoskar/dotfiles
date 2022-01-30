@@ -119,10 +119,19 @@ function! utils#tryCatch(cmd) abort
     endtry
 endfunction
 
-function! utils#tryCatchCall(func, ...) range abort
+function! utils#tryCatchCall(func, ...) abort
     try
         let Fn = function(a:func, a:000)
-        exec printf('%d,%d call Fn()', a:firstline, a:lastline)
+        call Fn()
+    catch /^\(Vim:Interrupt\)\@!.*/
+        call utils#echoException()
+    endtry
+endfunction
+
+function! utils#tryCatchCallRange(func, ...) range abort
+    try
+        let Fn = function(a:func, a:000)
+        exec a:firstline ',' a:lastline 'call Fn()'
     catch /^\(Vim:Interrupt\)\@!.*/
         call utils#echoException()
     endtry

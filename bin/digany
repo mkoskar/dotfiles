@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+if (( ! $# )); then
+    echo "usage: $prgname name [server]" >&2
+    exit 2
+fi
+
+server=${2:-}
+
+# ----------------------------------------
+
+dig() {
+    command dig \
+        ${server:+@"$server"} \
+        -r +multiline +nocrypto +ttlunits +noall +answer "$@"
+}
+
+nsec=$(dig -t nsec -q "$1")
+read -ra nsec <<<"$nsec"
+(( ${#nsec[@]} )) &&
+    t=("${nsec[@]:5}") ||
+    t=(A NS CNAME SOA PTR MX TXT AAAA)
+
+echo
+for i in "${t[@]}"; do
+    echo $'--------------------------------------------------'
+    printf '> %s\n\n' "$i"
+    dig -t "$i" -q "$1"
+    echo
+done

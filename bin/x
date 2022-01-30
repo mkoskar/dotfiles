@@ -109,7 +109,11 @@ xdisplay_target() { systemctl --user "$1" xdisplay@:"$dispno".target; }
 
 stty=$(stty -g) || true
 cookie=$(mcookie)
+authfile=$rundir/auth:$dispno
+sargs+=(-auth "$rundir/auth:$dispno")
+
 xauth -q add ":$dispno" . "$cookie" &>/dev/null
+xauth -q -f "$authfile" add ":$dispno" . "$cookie" &>/dev/null
 
 cleanup() {
     local retstat=$?

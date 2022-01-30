@@ -71,6 +71,13 @@ def channels_iter(server):
         item = w.hdata_pointer(hd_channel, item, 'next_channel')
 
 
+def config_files_iter():
+    item = w.hdata_get_list(hd_config_file, 'config_files')
+    while item:
+        yield item
+        item = w.hdata_pointer(hd_config_file, item, 'next_config')
+
+
 def ignores_iter():
     item = w.hdata_get_list(hd_ignore, 'irc_ignore_list')
     while item:
@@ -122,6 +129,7 @@ core = w.buffer_search_main()
 
 
 def cmd(command, buffer=core, mute=True):
+    command = re.sub(r'\s*\n\s*', ' ', command)
     w.command(buffer, ('/mute ' if mute else '/') + command)
 
 
@@ -855,13 +863,16 @@ def cb_signal_save_ignores_on_quit(data, signal, args):
 w.hook_signal('quit', 'cb_signal_save_ignores_on_quit', '')
 
 ignores_path = os.path.join(data_dir, 'ignores')
-with open(ignores_path, 'r') as f:
-    for line in f:
-        try:
-            [mask, server, channel] = line.strip().split('\t')
-        except ValueError:
-            continue
-        cmd(f'ignore add re:{mask[1:-1]} {server} {channel}')
+try:
+    with open(ignores_path, 'r') as f:
+        for line in f:
+            try:
+                [mask, server, channel] = line.strip().split('\t')
+            except ValueError:
+                continue
+            cmd(f'ignore add re:{mask[1:-1]} {server} {channel}')
+except FileNotFoundError:
+    pass
 
 
 # ----------------------------------------
@@ -1038,3 +1049,70 @@ def cb_timer_startup(data, remaining_calls):
 w.hook_timer(1, 0, 1, 'cb_timer_startup', '')
 
 w.config_read(config_local)
+
+# ----------------------------------------
+
+def cb_command_reconfigure(data, buffer, args):
+
+    # TODO
+    return w.WEECHAT_RC_OK
+
+    for config_file in config_files_iter():
+        config_name = w.hdata_string(hd_config_file, config_file, 'name')
+        cmd(f'unset -mask {config_name}.*')
+
+    # /fset d -> w-:dump_fset.txt
+    # /set diff -> /bufsave dump_set_diff.txt
+
+    # /key listdiff -> /bufsave dump_key_listdiff.txt
+
+    cmd('bar del -all')
+    cmd('bar default')
+
+    cmd('filter del -all')
+    cmd('filter addreplace irc_smart * irc_smart_filter *')
+    cmd('filter addreplace longlists *,!irc.server.* irc_367,irc_728 *')
+    cmd('filter addreplace nick_root irc.bitlbee.* nick_root *')
+
+    cmd('trigger default -yes')
+    cmd(
+        """
+        trigger addreplace ~last_nick print
+            irc.*;notify_message
+            "${tg_displayed} && ${type} == channel && ${tg_tag_nick} != ${nick}"
+            ""
+            "/buffer set localvar_set_last_nick ${tg_tag_nick}"
+        """
+    )
+    cmd(
+        """
+        trigger addreplace ~last_nick_complete command_run
+            "/input complete_next"
+            "${type} == channel && ${buffer.input_buffer_length} == 0 && ${last_nick}"
+            ""
+            "/input insert ${last_nick}"
+        """
+    )
+    cmd(
+        """
+        trigger addreplace ~quote modifier
+            weechat_print
+            "${tg_message_nocolor} =~ ^>[^:._]"
+            "/.*/${tg_prefix}\t${color:10}${tg_message}"
+        """
+    )
+    cmd(
+        """
+        trigger addreplace ~url_color modifier
+            weechat_print
+            "${tg_tags} !~ irc_quit"
+            ";[[:alpha:]]+://[^[:blank:]]+;${color:yellow}${re:0}${color:reset}"
+        """
+    )
+
+    cmd('key resetall -yes')
+
+    return w.WEECHAT_RC_OK
+
+
+w.hook_command('reconfigure', '', '', '', '', 'cb_command_reconfigure', '')
