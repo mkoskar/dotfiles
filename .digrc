@@ -1,3 +1,4 @@
 +multiline
++nocmd
++nocrypto
 +ttlunits
--t any

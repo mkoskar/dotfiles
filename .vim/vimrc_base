@@ -80,6 +80,30 @@ nnoremap # <Cmd>let @/ = '\V\S\@<!' . escape(expand('<cWORD>'), '\/') . '\S\@!' 
 nnoremap g# <Cmd>let @/ = '\V' . escape(expand('<cWORD>'), '\/') \| set hls<CR>
 xnoremap g/ y<Cmd>let @/ = '\V' . escape(@", '\/') \| call histadd('search', @/) \| set hls<CR>
 
+function! s:SearchParagraph(mode, backward) abort
+    for i in range(v:count1)
+        let fold = a:backward ? foldclosed('.') : foldclosedend('.')
+        if fold > 0
+            call cursor(fold, a:backward ? 1 : col([fold, '$']))
+        endif
+        if a:mode == 0
+            let pat = '\v(\n@1<=\n\_^\zs.)|%'
+        elseif a:mode == 1
+            let pat = '\v(\n@1<=\n\_^\zs.)|(^.+\n\n)|%'
+        elseif a:mode == 2
+            let pat = '\v(\n@1<=\n\_^\s*\zs.)|(.\n\n)|%'
+        endif
+        let pat .= a:backward ? '^' : '$'
+        call search(pat, a:backward ? 'Wb' : 'W')
+    endfor
+endfunction
+
+noremap <M-{> <Cmd>call <SID>SearchParagraph(0, 1)<CR>
+noremap <M-}> <Cmd>call <SID>SearchParagraph(0, 0)<CR>
+
+noremap <M-[> <Cmd>call <SID>SearchParagraph(2, 1)<CR>
+noremap <M-]> <Cmd>call <SID>SearchParagraph(2, 0)<CR>
+
 
 " Tags
 " ----------------------------------------
@@ -118,7 +142,7 @@ nnoremap <Leader>W :setl <C-R>=&wrap ? 'nowrap' : 'wrap'<CR><CR>
 set colorcolumn=80
 set spelllang=en_us
 set spelloptions=camel
-set synmaxcol=200
+set synmaxcol=500
 
 if !&hlsearch | set hlsearch | endif
 
@@ -464,10 +488,11 @@ set undofile
 let &undodir = $VIMDIR . '/undo//'
 call utils#mkdir(&undodir)
 
-noremap cw dwi
-noremap cW dWi
+nnoremap cw dwi
+nnoremap cW dWi
 
 noremap <Leader><C-J> J
+nnoremap <Leader>w :setl fo<C-R>=&fo =~# 't' ? '-' : '+'<CR>=t<CR>
 
 inoremap <C-B> <Home>
 inoremap <expr> <C-E> pumvisible() ? "\<C-E>" : "\<End>"
@@ -523,7 +548,7 @@ set foldminlines=0
 set foldopen-=block
 
 nnoremap <Leader>fc :setl fdc=<C-R>=&fdc != 0 ? '0' : '1'<CR><CR>
-nnoremap <Leader>ff :setl fdm=manual \| normal! zE<CR>
+nnoremap <Leader>ff :setl fdm=manual<CR>
 nnoremap <Leader>fi :setl fdm=indent fdn=2 \| normal! zM<CR>
 nnoremap <Leader>fm :setl fdm=marker \| normal! zM<CR>
 nnoremap <Leader>fs :setl fdm=syntax \| normal! zM<CR>
@@ -841,7 +866,7 @@ nnoremap <Leader>dc <Cmd>diffoff!<CR>
 nnoremap <Leader>dd <Cmd>exec &diff ? 'diffoff' : 'diffthis'<CR>
 
 cabbrev gg g/<C-R>//
-cabbrev vg vg/<C-R>//
+cabbrev vh vert h
 
 command! -range -bar Vis normal! <line1>GV<line2>G
 command! -range=% -bar Rev keepp <line1>,<line2>g/^/m<line1>-1
@@ -916,9 +941,11 @@ function! s:Run(system, cmd, input, mode = 1, mods = '') abort
         endtry
         let reg = 'e'
     endif
-    call setreg(reg, out)
+    call setreg(reg, out, 'l')
     if a:mode < 0
-        call append(line('.'), getreg(reg, 1, 1,))
+        if !empty(out)
+            call append(line('.'), getreg(reg, 1, 1))
+        endif
         return
     endif
     if a:mode > 0
@@ -1159,7 +1186,7 @@ function! s:Register(regname, value) abort
         if &clipboard =~# 'unnamedplus' | let regname = '+' | endif
     endif
     let value = substitute(a:value, '^=', '', '')
-    call setreg(regname, value)
+    call setreg(regname, value, 'c')
 endfunction
 
 command! -nargs=? -register Register call s:Register(<q-reg>, <q-args>)
@@ -1214,7 +1241,7 @@ function! s:VisualAt() range abort
 endfunction
 
 xnoremap @ :norm!@
-xnoremap <silent> @ :call utils#tryCatchCall('<SID>VisualAt')<CR>
+xnoremap <silent> @ :call utils#tryCatchCallRange('<SID>VisualAt')<CR>
 
 " }}}
 

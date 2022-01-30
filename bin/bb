@@ -15,6 +15,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     !                       b file:///"$HOME"/tmp
     ImageMagick             b https://www.imagemagick.org/script/command-line-tools.php
     R                       b https://cran.r-project.org/manuals.html
+    abnf                    b https://www.rfc-editor.org/rfc/rfc5234.html
     acpi                    b https://uefi.org/specifications
     alsa-doc                b https://www.alsa-project.org/alsa-doc/alsa-lib/
     amazon                  b https://www.amazon.com/s/field-keywords={u}
@@ -44,6 +45,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     articles                b https://www.grammarly.com/blog/articles/
     arxiv                   b https://arxiv.org/find
     asciidoc                b https://asciidoc.org/
+    asn1                    b https://www.oss.com/asn1/resources/books-whitepapers-pubs/asn1-books.html
     audio-codecs            b https://en.wikipedia.org/wiki/List_of_codecs#Audio_compression_formats
     aur                     b https://aur.archlinux.org/packages.php\?SeB=nd\&K={u}
     aur-maintainer          b https://aur.archlinux.org/packages.php\?SeB=m\&K="$AUR_MAINTAINER"
@@ -103,15 +105,15 @@ MENUER=$prgname menuer "$@" <<-EOF |
     debian-gitlab           b https://salsa.debian.org/explore
     debian-reference        b https://www.debian.org/doc/manuals/debian-reference/
     decibel                 b https://en.wikipedia.org/wiki/Decibel
+    deepl                   b https://www.deepl.com/translator
     dkim                    b https://dkimcore.org/tools/
-    dns-parameters          b https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml
-    dns-reserved            b https://tools.ietf.org/html/rfc2606
-    dns-terminology         b https://tools.ietf.org/html/rfc8499
-    dnssec                  b https://dnssec-debugger.verisignlabs.com/
+    dns-terminology         b https://www.rfc-editor.org/rfc/rfc8499.html
+    dnssec-analyzer         b https://dnssec-debugger.verisignlabs.com/
     docker                  b https://github.com/wsargent/docker-cheat-sheet
     docker-compose          b https://docs.docker.com/compose/compose-file/
     docker-reference        b https://docs.docker.com/reference/
     dockerfile              b https://docs.docker.com/engine/reference/builder/
+    doi                     b https://www.doi.org/hb.html
     dom-spec                b https://dom.spec.whatwg.org/
     ebay                    b https://www.ebay.com/sch/i.html\?_nkw={u}
     ecma                    b https://www.ecma-international.org/publications/standards/Standard.htm
@@ -123,6 +125,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     english-determiners     b https://dictionary.cambridge.org/grammar/british-grammar/determiners
     english-grammar         b https://dictionary.cambridge.org/grammar/british-grammar/
     enum                    b https://en.wikipedia.org/wiki/E_number#Full_list
+    erlang                  b https://www.erlang.org/doc/index.html
+    ethertype               b https://en.wikipedia.org/wiki/EtherType
     etsi                    b https://www.etsi.org/standards-search#\&sort=3
     etymology               b https://www.etymonline.com/word/{u}
     ffp                     b https://en.wikipedia.org/wiki/FFP_standards#Types
@@ -203,18 +207,27 @@ MENUER=$prgname menuer "$@" <<-EOF |
     html-charref            b https://dev.w3.org/html5/html-author/charref
     html-reference          b https://developer.mozilla.org/en-US/docs/Web/HTML/Reference
     html-spec               b https://html.spec.whatwg.org/multipage/
-    http                    b https://tools.ietf.org/html/rfc2616
-    http/2                  b https://tools.ietf.org/html/rfc7540
+    http                    b https://httpwg.org/specs/
     i                       b https://www.ixquick.com/do/metasearch.pl\?query={u}
     i3                      b https://i3wm.org/docs/userguide.html
-    iana-dns                b https://www.iana.org/domains
+    iana                    b https://www.iana.org/
+    iana-charsets           b https://www.iana.org/assignments/character-sets/character-sets.xhtml
+    iana-dns-parameters     b https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml
+    iana-http-methods       b https://www.iana.org/assignments/http-methods/http-methods.xhtml
+    iana-http-status-codes  b https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+    iana-ipv4-multicast     b https://www.iana.org/assignments/multicast-addresses/multicast-addresses.xhtml
     iana-ipv4-special       b https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xhtml
+    iana-ipv6-multicast     b https://www.iana.org/assignments/ipv6-multicast-addresses/ipv6-multicast-addresses.xhtml
     iana-ipv6-special       b https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml
-    iana-multicast          b https://www.iana.org/assignments/multicast-addresses/multicast-addresses.xhtml
-    iana-numbers            b https://www.iana.org/numbers
-    iana-protocols          b https://www.iana.org/protocols
+    iana-protocol-numbers   b https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml
+    iana-root-zone          b https://www.iana.org/domains/root/db
+    iana-service-names      b https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml
+    iana-special-domains    b https://www.iana.org/assignments/special-use-domain-names/special-use-domain-names.xhtml
+    iana-uri-schemes        b https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml
+    iana-well-known-uris    b https://www.iana.org/assignments/well-known-uris/well-known-uris.xhtml
     iban                    b https://en.wikipedia.org/wiki/International_Bank_Account_Number#IBAN_formats_by_country
     ieee-802                b https://www.ieee802.org/
+    ieee-ra-assignments     b https://regauth.standards.ieee.org/standards-ra-web/pub/view.html#registries
     ii                      b https://www.ixquick.com/do/metasearch.pl\?cat=pics\&query={u}
     imdb                    b https://www.imdb.com/find\?q={u}
     imperial                b https://en.wikipedia.org/wiki/Imperial_units#Units
@@ -223,14 +236,18 @@ MENUER=$prgname menuer "$@" <<-EOF |
     intel-manuals           b https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html
     iojs                    b https://iojs.org/api/
     ipa                     b https://en.wikipedia.org/wiki/International_Phonetic_Alphabet
-    ipv4                    b https://tools.ietf.org/html/rfc791
-    ipv6                    b https://tools.ietf.org/html/rfc8200
+    ipv4                    b https://www.rfc-editor.org/rfc/rfc791.html
+    ipv6                    b https://www.rfc-editor.org/rfc/rfc8200.html
     irc-channels            b https://netsplit.de/channels/
     irc-docs                b https://ircdocs.horse/
     irc-logs                b https://colabti.org/irclogger/irclogger_logs
     iso                     b https://standards.iso.org/ittf/PubliclyAvailableStandards/
     iss-sightings           b https://spotthestation.nasa.gov/sightings/view.cfm\?country=Slovakia\&region=None\&city=Partizanske
     iss-tracker             b http://wsn.spaceflight.esa.int/iss/
+    itu                     b https://www.itu.int/itu-t/recommendations/index.aspx
+    itu-search              b https://www.itu.int/search#\?q={u}\&sector=t\&group=Recommendations\&collection=ITU-T\ Recommendations
+    itu-structure           b https://www.itu.int/en/ITU-T/publications/Pages/structure.aspx
+    itu2                    b https://www.itu.int/rec/T-REC/en
     java                    b https://docs.oracle.com/javase
     java-specs              b https://docs.oracle.com/javase/specs/index.html
     java-tutorials          b https://docs.oracle.com/javase/tutorial/reallybigindex.html
@@ -280,7 +297,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     lua!                    b /usr/share/doc/lua/manual.html
     luarocks                b https://luarocks.org/search\?q={u}
     m4-macros               b https://www.gnu.org/software/m4/manual/m4.html#Macro-index
-    mailcap                 b https://tools.ietf.org/html/rfc1524
+    mailcap                 b https://www.rfc-editor.org/rfc/rfc1524.html
     make                    b https://www.gnu.org/software/make/manual/make.html#Quick-Reference
     man-pages               b https://man7.org/linux/man-pages/index.html
     marc-lists              b https://marc.info/
@@ -308,22 +325,27 @@ MENUER=$prgname menuer "$@" <<-EOF |
     netfilter-flow          b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
     nextcloud               b https://docs.nextcloud.com/
     nodejs                  b https://nodejs.org/api/
+    noise                   b https://noiseprotocol.org/noise.html
     notes!                  b ~/projects/notes/_build/html/index.html
     notes-for-professionals b https://goalkicker.com/
     notmuch                 b https://git.notmuchmail.org/git/notmuch
     ntrs                    b https://ntrs.nasa.gov/search.jsp\?Ntk=All\&Ntt={u}
     nvim                    b https://github.com/neovim/neovim
     octave                  b https://www.gnu.org/software/octave/doc/latest
+    oid                     b https://oidref.com/
+    oid-pen                 b https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers
     openrc                  b https://github.com/OpenRC/openrc
     opentype                b https://docs.microsoft.com/en-us/typography/opentype/spec/
     oracle-plsql            b https://docs.oracle.com/database/121/LNPLS/toc.htm
     oracle-sql              b https://docs.oracle.com/database/121/SQLRF/toc.htm
     osdev                   b https://wiki.osdev.org/Main_Page
+    oui                     b https://www.wireshark.org/tools/oui-lookup.html
     owl                     b https://owl.purdue.edu/owl/purdue_owl.html
     pango-markup            b https://developer.gnome.org/pango/stable/PangoMarkupFormat.html
     pasta                   b https://en.wikipedia.org/wiki/List_of_pasta
     patents                 b https://patents.google.com/
     pep                     b https://www.python.org/dev/peps/
+    pep8                    b https://www.python.org/dev/peps/pep-0008/
     perf                    b https://www.brendangregg.com/perf.html
     perf-full               b https://www.brendangregg.com/Perf/linux_perf_tools_full.png
     periodic-table          b https://en.wikipedia.org/wiki/Periodic_table#Overview
@@ -368,7 +390,11 @@ MENUER=$prgname menuer "$@" <<-EOF |
     regex-python-test       b https://pythex.org/
     regex101                b https://regex101.com/
     resolutions             b https://en.wikipedia.org/wiki/List_of_common_resolutions
-    rfc                     b https://www.rfc-editor.org/rfc-index.html
+    rfc                     b https://www.rfc-editor.org/
+    rfc-howto               b https://www.ietf.org/blog/how-read-rfc/
+    rfc-index               b https://www.rfc-editor.org/rfc-index.html
+    rfc-search              b https://rfc.fyi/
+    ripestat                b https://stat.ripe.net/app/launchpad
     risks                   b https://catless.ncl.ac.uk/Risks/
     rpi                     b https://www.raspberrypi.org/documentation/hardware/raspberrypi/README.md
     rst                     b https://docutils.sourceforge.io/rst.html
@@ -417,15 +443,13 @@ MENUER=$prgname menuer "$@" <<-EOF |
     systemd-changes         b https://github.com/systemd/systemd/blob/master/NEWS
     systemd-directives      b https://www.freedesktop.org/software/systemd/man/systemd.directives.html
     systemd-troubleshooting b https://freedesktop.org/wiki/Software/systemd/Debugging/
-    tcp                     b https://tools.ietf.org/html/rfc793
+    tcp                     b https://www.rfc-editor.org/rfc/rfc793.html
     terminfo.src            b https://invisible-island.net/ncurses/terminfo.src.html
     tex                     b https://ctan.org/
     thinkpads               b https://en.wikipedia.org/wiki/ThinkPad#Current_model_lines
     timescale               b https://en.wikipedia.org/wiki/Geologic_time_scale#Table_of_geologic_time
     timezones               b https://upload.wikimedia.org/wikipedia/commons/8/88/World_Time_Zones_Map.png
     tiobe-index             b https://www.tiobe.com/tiobe-index/
-    tldp                    b https://tldp.org/
-    tlds                    b https://www.iana.org/domains/root/db
     tmux-changes            b https://github.com/tmux/tmux/blob/master/CHANGES
     toml                    b https://toml.io/en/latest
     tor-specs               b https://gitweb.torproject.org/torspec.git/tree/
@@ -433,9 +457,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     tr                      b https://translate.google.com/\?sl=en\&tl=sk\&q={u}
     tr-de                   b https://translate.google.com/\?sl=de\&tl=sk\&q={u}
     tweets                  b https://tweetdeck.twitter.com/
-    types-eth!              b /etc/ethertypes
-    types-ip!               b /etc/protocols
-    types-ports!            b /etc/services
     ud                      b https://www.urbandictionary.com/define.php\?term={u}
     uefi-specs              b https://uefi.org/specifications
     unicode                 b https://www.unicode.org/versions/latest/
@@ -443,7 +464,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     unicode-emojis          b https://www.unicode.org/emoji/charts/full-emoji-list.html
     unicode-math            b https://www.unicode.org/Public/math/revision-15/MathClassEx-15.html
     unix                    b https://en.wikipedia.org/wiki/Single_UNIX_Specification#Marks_for_compliant_systems
-    unix-timeline1          b https://upload.wikimedia.org/wikipedia/commons/c/cd/Unix_timeline.en.svg
+    unix-timeline           b https://upload.wikimedia.org/wikipedia/commons/c/cd/Unix_timeline.en.svg
     unix-timeline2          b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
     url                     b https://url.spec.whatwg.org/
     usb-connectors          b https://en.wikipedia.org/wiki/USB_hardware#Connectors

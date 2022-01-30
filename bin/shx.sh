@@ -203,7 +203,7 @@ paco() {
 
 pacoc() {
     [ $# -eq 0 ] && return 2
-    cmd -v -- "$@" | xargs -r -L 1 pacman -Qo
+    cmd -V -- "$@" | xargs -r -L 1 pacman -Qo
 }
 
 pacp() {
@@ -267,7 +267,7 @@ alias ....='cd ../../..'
 
 alias aa=auracle
 alias acpi='acpi -V'
-alias alarm-bread='alarm every 40m bread fold'
+alias alarm-bread='alarm every 1h bread fold'
 alias alarm-hourly='alarm at \*:0'
 alias an=asciinema
 alias aunpack='aunpack -q'
@@ -283,17 +283,18 @@ alias curl-trace='curl --trace-ascii - --trace-time'
 alias curl='curl -sSLJ'
 alias dconfa='dconf dump /'
 alias dd='dd status=progress'
-alias delv-trace='delv +cd +mt +rt +vt -t any'
-alias delv='delv +cd -t any'
+alias delv-nocheck='delv +cd'
+alias delv-trace='delv +cd +tcp +mt +rt +vt'
+alias delv='delv +multiline +nocrypto'
 alias df='df -h -x devtmpfs -x tmpfs'
 alias dig-nocheck='dig +cd'
-alias dig-nssearch='dig +tcp +cd +nssearch'
-alias dig-trace='dig +tcp +trace'
+alias dig-nssearch='dig +cd +tcp +nssearch'
+alias dig-trace='dig +cd +tcp +trace'
 alias dirs='dirs -v'
 alias dmesg='dmesg -HTx'
 alias dpms-off='xset dpms force off'
 alias drill-nocheck='drill -o CD'
-alias drill-trace='drill -T'
+alias drill-trace='drill -o CD -tT'
 alias dstat='dstat -tlycgm --vm -rdn'
 alias du='du -hx'
 alias e0='e -Xn -i NONE -u NONE'
@@ -313,7 +314,7 @@ alias grepcat='grep --exclude-dir=\* .'
 alias gsettingsa='gsettings list-recursively'
 alias gtk-debug='GTK_DEBUG=interactive'
 alias headcat='head -v -n -0'
-alias host='host -a -T'
+alias host='host -Tv'
 alias info='info --vi-keys'
 alias infocmp0='infocmp -A "$SYSPREFIX"/share/terminfo'
 alias infocmp='infocmp -1a'
@@ -342,7 +343,7 @@ alias ncdu='ncdu -x'
 alias neomutt-debug='neomutt -d 5 -l ~/tmp/neomutt.log'
 alias nmap-all='nmap -p 1-65535'
 alias npmg='npm -g'
-alias nslookup='nslookup -vc -fail -type=any'
+alias nslookup='nslookup -vc -fail'
 alias od='od -A x -t c'
 alias odd='od -t d1'
 alias odo='od -t o1'
@@ -587,7 +588,7 @@ on() {
     local p; p=$(command -v -- "$1") || return 1
     [ "${p##/*}" ] && { i "$1"; return; }
     shift
-    eval "${*:-ls -la}" "$p"
+    eval "${*:-ls -la}" "$(shell-escape "$p")"
 }
 
 optset() {
@@ -615,8 +616,7 @@ r() {
 }
 
 reexec() {
-    local cmdline; cmdline=$(cmdline)
-    eval exec "$cmdline"
+    eval exec "$(cmdline)"
 }
 
 # shellcheck disable=SC1090,SC1091
