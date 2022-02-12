@@ -14,7 +14,6 @@ set nolist
 set noswapfile
 set noundofile
 set signcolumn=no
-set synmaxcol=400
 set tabstop=8
 set virtualedit=all
 
@@ -22,7 +21,10 @@ let &viminfofile = $VIMDIR . '/.viminfo_pg'
 
 " ----------------------------------------
 
-filetype indent off
+filetype plugin indent off
+if $PRGNAME ==# 'pg0'
+    filetype off
+endif
 
 noremap <silent> r :Reload<CR>
 noremap <silent> R :ReloadT<CR>
@@ -37,9 +39,7 @@ function! InitStdin() abort
     if !empty($PAGER_TITLE)
         file $PAGER_TITLE
     endif
-    if $PRGNAME ==# 'manpg'
-        setl ma noro
-    elseif $PRGNAME !=# 'pg0'
+    if $PRGNAME !=# 'pg0' && empty(&l:ft)
         AnsiEsc
     endif
 endfunction
@@ -47,7 +47,10 @@ endfunction
 function! InitPgx() abort
     setl ro noma
     exec '0System' $CMD
-    AnsiEsc
+    filetype detect
+    if empty(&l:ft)
+        AnsiEsc
+    endif
     call utils#echo(utils#shortenCmdline(v:statusmsg))
 endfunction
 

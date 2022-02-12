@@ -80,7 +80,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     chebi                   b https://www.ebi.ac.uk/chebi/advancedSearchFT.do\?searchString={u}
     chemspider              b https://www.chemspider.com/Search.aspx\?q={u}
     chrome-ext              b https://developer.chrome.com/docs/extensions/
-    chrome-flags            b https://peter.sh/experiments/chromium-command-line-switches/
     chromium-changes        b https://chromiumdash.appspot.com/releases?platform=Linux
     chromium-code-search    b https://source.chromium.org/
     cite                    b https://citeseerx.ist.psu.edu/search\?q={u}
@@ -129,12 +128,12 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ethertype               b https://en.wikipedia.org/wiki/EtherType
     etsi                    b https://www.etsi.org/standards-search#\&sort=3
     etymology               b https://www.etymonline.com/word/{u}
+    fdroid                  b https://f-droid.org/en/packages/
     ffp                     b https://en.wikipedia.org/wiki/FFP_standards#Types
     filenames               b https://www.dwheeler.com/essays/filenames-in-shell.html
     filter-classification   b https://en.wikipedia.org/wiki/Gas_mask#Filter_classification
     firefox-changes         b https://www.mozilla.org/en-US/firefox/releases/
     firefox-changes-dev     b https://developer.mozilla.org/en-US/Firefox/Releases/
-    firefox-prefs           b https://kb.mozillazine.org/Category:Preferences
     firefox-relnotes-bugs   b https://bugzilla.mozilla.org/buglist.cgi\?query_format=advanced\&f1=cf_tracking_firefox_relnote\&o1=isnotempty\&f2=cf_tracking_firefox_relnote\&o2=substring\&v2={u}\&limit=200\&order=changeddate\ desc
     flac                    b https://xiph.org/flac/documentation.html
     flp                     b https://www.feynmanlectures.caltech.edu/
@@ -157,6 +156,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gdb-lists               b https://www.gnu.org/software/gdb/mailing-lists/
     gdb-refcard             b https://sourceware.org/gdb/current/onlinedocs/refcard.pdf
     gdb-wiki                b https://sourceware.org/gdb/wiki/
+    gems                    b https://rubygems.org/
     gg                      b https://groups.google.com/forum/#!search/{u}
     gh                      b https://github.com/
     gh-dotfiles             b https://github.com/mkoskar/dotfiles/tree/master/bin
@@ -238,6 +238,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ipa                     b https://en.wikipedia.org/wiki/International_Phonetic_Alphabet
     ipv4                    b https://www.rfc-editor.org/rfc/rfc791.html
     ipv6                    b https://www.rfc-editor.org/rfc/rfc8200.html
+    ipv6-addressing         b https://www.rfc-editor.org/rfc/rfc4291.html
     irc-channels            b https://netsplit.de/channels/
     irc-docs                b https://ircdocs.horse/
     irc-logs                b https://colabti.org/irclogger/irclogger_logs
@@ -281,6 +282,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-docs!             b /lib/modules/"$kernel_release"/build/Documentation
     linux-docs-html         b https://www.kernel.org/doc/html/latest/index.html
     linux-faq               b http://vger.kernel.org/lkml/
+    linux-ip-guide          b http://linux-ip.net/linux-ip/linux-ip-single.html
     linux-lkddb             b https://cateee.net/lkddb/web-lkddb/
     linux-params            b https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html
     linux-repos             b https://git.kernel.org/cgit/
@@ -313,7 +315,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     mime                    b https://www.iana.org/assignments/media-types/media-types.xhtml
     mongodb                 b https://docs.mongodb.org/manual/reference/
     morse-nato-alphabet     b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
-    mozilla-lists           b https://mail.mozilla.org/listinfo/
     mozilla-repos           b https://hg.mozilla.org/
     music                   b https://musicbrainz.org/search\?query={u}
     mutt                    b http://mutt.org/doc/manual/
@@ -370,6 +371,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     pubchem                 b https://www.ncbi.nlm.nih.gov/pccompound\?term={u}
     pygments                b https://pygments.org/docs/lexers/
     pypa                    b https://www.pypa.io/
+    pypa-projects           b https://packaging.python.org/en/latest/key_projects/
     pypi                    b https://pypi.org/search/\?q={u}
     python                  b https://docs.python.org/
     python-dist             b https://docs.python.org/3/library/distribution.html
@@ -394,6 +396,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     rfc-howto               b https://www.ietf.org/blog/how-read-rfc/
     rfc-index               b https://www.rfc-editor.org/rfc-index.html
     rfc-search              b https://rfc.fyi/
+    rh-docs                 b https://access.redhat.com/products
+    rhel-docs               b https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux
     ripestat                b https://stat.ripe.net/app/launchpad
     risks                   b https://catless.ncl.ac.uk/Risks/
     rpi                     b https://www.raspberrypi.org/documentation/hardware/raspberrypi/README.md
@@ -403,7 +407,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     rtfm-faqs               b ftp://rtfm.mit.edu/pub/faqs/
     rtfm-usenet             b ftp://rtfm.mit.edu/pub/usenet/
     runit                   b http://smarden.org/runit/
-    russian-alphabet        b https://en.wikipedia.org/wiki/Russian_alphabet#Table
+    russian-alphabet        b https://en.wikipedia.org/wiki/Russian_alphabet#Letters
     rust                    b https://doc.rust-lang.org/reference/
     rust-api                b https://doc.rust-lang.org/std/
     rust-book               b https://doc.rust-lang.org/book/
@@ -420,6 +424,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     shakespeare             b http://shakespeare.mit.edu/
     shell-startup           b https://blog.flowblok.id.au/static/images/shell-startup-actual.png
     shellcheck              b https://github.com/koalaman/shellcheck/wiki
+    si-prefixes             b https://en.wikipedia.org/wiki/International_System_of_Units#Prefixes
     si-quantities           b https://en.wikipedia.org/wiki/International_System_of_Quantities#Base_quantities
     si-units                b https://en.wikipedia.org/wiki/International_System_of_Units#Base_units
     slovniky                b https://slovnik.juls.savba.sk/
@@ -440,7 +445,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     suckless-repos          b https://git.suckless.org/
     sysrq                   b https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
     systemd                 b https://systemd.io/
-    systemd-changes         b https://github.com/systemd/systemd/blob/master/NEWS
+    systemd-changes         b https://github.com/systemd/systemd/blob/main/NEWS
     systemd-directives      b https://www.freedesktop.org/software/systemd/man/systemd.directives.html
     systemd-troubleshooting b https://freedesktop.org/wiki/Software/systemd/Debugging/
     tcp                     b https://www.rfc-editor.org/rfc/rfc793.html

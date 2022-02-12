@@ -46,7 +46,7 @@ if [[ ! $profile ]]; then
     )
     for p in ~/.config/"$bin_name".*; do
         [[ -d $p ]] || continue
-        profiles+=("${p#*$bin_name.}")
+        profiles+=("${p#*"$bin_name".}")
     done
     profile=$(
         printf '%s\n' "${profiles[@]}" |
@@ -233,4 +233,5 @@ file=userContent.css
 } >"$file"
 
 export MOZ_X11_EGL=1
+export MOZ_DISABLE_RDD_SANDBOX=1
 exec "$bin" --class "Firefox ($profile)" --profile "$path" "$@"

@@ -6,10 +6,10 @@ set cpo&vim
 
 " ----------------------------------------
 
-syn case ignore
+setl fdm=syntax
 
+syn case ignore
 syn sync fromstart
-set foldmethod=syntax
 
 syn match dictResponse /^\d\+ .*$/
 syn region dictDefinitionBody matchgroup=dictDefinitionHeader start=+^151 .*$+

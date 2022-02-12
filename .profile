@@ -92,9 +92,7 @@ export TERMINAL=term
 [ "$SYSPATH" ] || export SYSPATH=$PATH
 
 addpath() {
-    for i in "$@"; do
-        [ -d "$1" ] && PATH=$i${PATH:+:$PATH}
-    done
+    for i in "$@"; do PATH=$i${PATH:+:$PATH}; done
     unset i
 }
 
@@ -107,10 +105,15 @@ addpath ~/bin/busybox
 PATH=$SYSPATH:$PATH
 
 addpath ~/bin/system
-addpath ~/.gem/ruby/*
+
 addpath ~/.cargo/bin
-addpath ~/.luarocks/bin
 addpath ~/.local/pipx/bin
+addpath ~/.luarocks/bin
+
+if command -v gem >/dev/null; then
+    addpath "$(ruby -e 'puts Gem.user_dir')"/bin
+fi
+
 addpath ~/.local/bin
 addpath ~/opt/bin
 addpath ~/projects/pub/dockerfiles/bin
@@ -175,6 +178,7 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 export SAL_USE_VCLPLUGIN=gtk
 export SYSTEMD_LESS=$LESS
 export SYSTEMD_PAGERSECURE=0
+export SYSTEMD_URLIFY=0
 export S_COLORS=auto
 export S_TIME_DEF_TIME=UTC
 export S_TIME_FORMAT=ISO

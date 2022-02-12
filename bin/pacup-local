@@ -33,10 +33,12 @@ echo $'--------------------------------------------------'
 echo $'> Python packages:\n'
 
 pkgs=(
-    pip-autoremove
     when-changed
 )
-pip install --user -U "${pkgs[@]}"
+pipx install "${pkgs[@]}"
+
+echo $'\n> pipx list\n'
+pipx list
 
 echo $'\n> pip list --user\n'
 pip list --user
@@ -47,8 +49,9 @@ echo $'> Ruby packages:\n'
 pkgs=(
     ruby-beautify
     sass
+    vpsfree-client
 )
-gem install "${pkgs[@]}"
+gem install --user-install "${pkgs[@]}"
 
 echo $'\n> gem list --local'
 gem list --local

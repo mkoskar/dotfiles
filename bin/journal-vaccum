@@ -4,5 +4,5 @@ set -eu
 
 journalctl --disk-usage
 
-confirm 'Vaccum?' y || exit 0
+confirm 'Vaccum?' n || exit 0
 sudo journalctl --vacuum-size=100M --vacuum-files=1

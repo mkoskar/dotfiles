@@ -45,7 +45,7 @@ if [[ ! $profile ]]; then
     )
     for p in ~/.config/"$bin_name".*; do
         [[ -d $p ]] || continue
-        profiles+=("${p#*$bin_name.}")
+        profiles+=("${p#*"$bin_name".}")
     done
     profile=$(
         printf '%s\n' "${profiles[@]}" |
@@ -124,7 +124,8 @@ args+=(
 
     #--disable-gpu-driver-bug-workarounds
     #--enable-native-gpu-memory-buffers
-    --enable-features=VaapiVideoDecoder,CanvasOopRasterization
+    --disable-features=UseChromeOSDirectVideoDecoder
+    --enable-features=CanvasOopRasterization,RawDraw,VaapiVideoDecoder
     --enable-gpu-rasterization
     --enable-zero-copy
     --ignore-gpu-blocklist
@@ -133,6 +134,7 @@ args+=(
     # Other
     # ----------------------------------------
 
+    #--disable-remote-fonts
     #--extensions-on-chrome-urls
     #--force-device-scale-factor=1
     #--restore-last-session

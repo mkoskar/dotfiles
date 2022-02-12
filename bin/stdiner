@@ -48,7 +48,7 @@ exec </dev/null
 main() {
     unset replace_str
     [[ $* =~ \{\} ]] && replace_str=
-    xargs -r -L 1 ${replace_str+-I \{\}} "$@" <<<"$tmpfile"
+    xargs -rx -L 1 -d \\n ${replace_str+-I \{\}} "$@" <<<"$tmpfile"
     if (( timeout )); then
         (
             trap cleanup EXIT

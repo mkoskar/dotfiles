@@ -7,7 +7,7 @@ Termux
 
     $ pkg install openssh
     $ passwd
-    $ sshd
+    $ sshd -De
 
     $ pkg install \
         aspell-en \
