@@ -29,7 +29,7 @@ w.register(
 # General {{{
 # ----------------------------------------
 
-data_dir = w.info_get('weechat_data_dir', '')
+data_dir = w.info_get('weechat_data_dir', '') or w.info_get('weechat_dir', '')
 
 config_local = w.config_new('local', '', '')
 
@@ -591,7 +591,7 @@ key_bind('default', 'meta-a', '/tab_go last_visited')
 # ----------------------------------------
 
 def connect_relay(server_name):
-    cmd(f'server add {server_name}~ localhost/9000 -temp -ssl -nossl_verify '
+    cmd(f'server add {server_name}~ 172.31.1.1/9000 -temp -ssl -nossl_verify '
         f'-password={server_name}:${{sec.data.relay}}')
     cmd(f'connect {server_name}~')
 

@@ -51,11 +51,11 @@ xurls | "${filter[@]}" >"$tmpfile"
 
 case $mode in
     o)
-        consumer=(xargs -r -L 1 b)
+        consumer=(xargs -rx -d \\n b)
         prompt='url open'
         ;;
     y)
-        consumer=(xargs -r -L 1 clip -a)
+        consumer=(xargs -rx -d \\n clip -a)
         prompt='url yank'
         ;;
     s)

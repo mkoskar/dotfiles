@@ -63,7 +63,7 @@ case $xserver in
         layout_hook_"$xconfig" "$@"
         xrandr --dpi 96
         xset dpms 0 0 300
-        touchpad off
+        #touchpad off
         trackpoint-wheel on
         (
             for (( i=3; i>0; i-- )); do

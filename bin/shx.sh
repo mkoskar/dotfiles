@@ -75,11 +75,11 @@ dkip() {
 
 dkrm() {
     confirm 'Remove ALL containers (with volumes). Continue?' n || return 0
-    docker ps -aq | xargs -rx docker rm -vf
+    docker ps -aq | command xargs -rx docker rm -vf
 }
 
 dkstop() {
-    docker ps -aq | xargs -rx docker stop
+    docker ps -aq | command xargs -rx docker stop
 }
 
 
@@ -92,6 +92,7 @@ alias gpg-agent-updatetty='gpg-connect-agent updatestartuptty /bye'
 alias gpg-connect-dirmngr='gpg-connect-agent --dirmngr'
 alias gpg-debug='gpg -vv --debug-level=9'
 alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
+alias gpg0='gpg --no-options'
 
 
 # grep
@@ -203,7 +204,7 @@ paco() {
 
 pacoc() {
     [ $# -eq 0 ] && return 2
-    cmd -V -- "$@" | xargs -r -L 1 pacman -Qo
+    cmd -V -- "$@" | command xargs -rx -d \\n pacman -Qo
 }
 
 pacp() {
@@ -318,7 +319,7 @@ alias host='host -Tv'
 alias info='info --vi-keys'
 alias infocmp0='infocmp -A "$SYSPREFIX"/share/terminfo'
 alias infocmp='infocmp -1a'
-alias ip='ip -h -c=auto'
+alias ip='ip -h -p -c=auto'
 alias journal='journalctl -o short-precise -b'
 alias last='last -x'
 alias llib='tree ~/.local/lib'
@@ -333,7 +334,7 @@ alias makepkg-build='makepkg -srf'
 alias makepkg-rebuild='makepkg -Ccsrf'
 alias me='lslogins "$USER"'
 alias mnt='findmnt --real'
-alias moon='curl -sSLf http://wttr.in/moon | head -n -4'
+alias moon='curl -f http://wttr.in/moon | head -n -4'
 alias mount-loop='mount -o loop'
 alias mpv-debug='mpv --terminal=yes --msg-level=all=debug'
 alias mpv-verbose='mpv --terminal=yes --msg-level=all=v'
@@ -354,6 +355,7 @@ alias patch1='patch -N -p 1'
 alias ping-mtu='ping -M do -s 2000'
 alias pr='pr -T -W "$COLUMNS"'
 alias qiv='qiv -uLtiGfl --vikeys'
+alias qrencode-utf8='qrencode -t UTF8'
 alias rax=rax2
 alias reflector='reflector -p https -c sk -c cz --score 3 -f 3'
 alias rm='rm -I --one-file-system'
@@ -379,6 +381,7 @@ alias stat="stat -c '%A %a %h %U %G %s %y %N'"
 alias sudo-off='sudo -K'
 alias sudo-on='sudo -v'
 alias sys='systool -av'
+alias systemd-debug='SYSTEMD_LOG_LEVEL=7 SYSTEMD_LOG_COLOR=1 SYSTEMD_LOG_TIME=1 SYSTEMD_LOG_LOCATION=1'
 alias tcpdump='tcpdump -ne -vvv'
 alias tmux-killall='tmux-all kill-server'
 alias tmux0='tmux -f /dev/null'
@@ -387,21 +390,26 @@ alias topdf='lowriter --convert-to pdf'
 alias tshark-prefs='\tshark -G currentprefs'
 alias tshark-protocols='\tshark -G protocols'
 alias tshark='tshark -nV'
-alias udevadm-info-dev='udevadm info --name'
-alias udevadm-info-sys='udevadm info --path'
 alias vgfull='valgrind --leak-check=full --show-reachable=yes'
+alias vpsfreectl-baobab='vpsfreectl vps remote_console 15499'
+alias vpsfreectl-token='vpsfreectl --auth token --save --token-interval $((24*60*60)) user current'
 alias w3m='w3m -v'
 alias watch='watch -n 1'
 alias weechat-tmux='tmux -L weechat attach'
 alias weechat0='weechat -t'
 alias weechat='weechat -a'
 alias whois='whois -H'
-alias wi='curl -sSLf http://wttr.in/?Fqn'
-alias xargs1='xargs -r -L 1'
+alias wi='curl -f http://wttr.in/?Fqn'
+alias xargs-perline='xargs -L 1 -d \\n'
+alias xargs='xargs -rx'
 alias xinput-test='xinput test-xi2 --root'
 alias xwininfo='xwininfo -all'
 alias yaml='yq .'
 alias zsh0='zsh -df'
+
+# Workaround for broken `udevadm` completion
+alias udevadm-info-dev='udevadm info --name'
+alias udevadm-info-sys='udevadm info --path'
 
 alias _gdbus-session='gdbus introspect -r --session -o /'
 alias _gdbus-system='gdbus introspect -r --system -o /'
@@ -416,10 +424,10 @@ alias ,=_
 __() {
     local cwd gitdir
     cwd=$PWD
-    case $cwd in "$HOME" | "$HOME"/*) cwd=\~${cwd##$HOME} ;; esac
+    case $cwd in "$HOME" | "$HOME"/*) cwd=\~${cwd##"$HOME"} ;; esac
     printf '\n%s @ %s in %s\n\n' "$USER" "$HOSTNAME" "$cwd"
     gitdir=$(git rev-parse --git-dir 2>/dev/null) || return 0
-    case $gitdir in "$HOME" | "$HOME"/*) gitdir=\~${gitdir##$HOME} ;; esac
+    case $gitdir in "$HOME" | "$HOME"/*) gitdir=\~${gitdir##"$HOME"} ;; esac
     echo --------------------------------------------------
     printf '> %s\n\n' "$gitdir"
     git conf
@@ -480,8 +488,7 @@ a() {
     sleep "${1:-5m}"
     echo Beep...
     notify -u critical "Beep... Time's up!"
-    command mpv \
-        --no-config \
+    mpv --no-config \
         --msg-level=all=error \
         --loop-file=5 \
         /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
@@ -578,9 +585,12 @@ ifs0() {
 '
 }
 
-# shellcheck disable=SC2120
 lsmod() {
     pgx command lsmod "$@"
+}
+
+netinfo() {
+    pgx command netinfo "$@"
 }
 
 on() {
@@ -588,7 +598,7 @@ on() {
     local p; p=$(command -v -- "$1") || return 1
     [ "${p##/*}" ] && { i "$1"; return; }
     shift
-    eval "${*:-ls -la}" "$(shell-escape "$p")"
+    eval "${*:-la}" "$(shell-escape "$p")"
 }
 
 optset() {

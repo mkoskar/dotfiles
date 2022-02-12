@@ -25,7 +25,7 @@ case $- in *l*) ;; *) return ;; esac
 case $OSID in
     termux)
         ~/.termux/runsvdir &>/dev/null
-        ssh-agent-preset
+        #ssh-agent-preset
         ;;
     *)
         [ "$(tty)" = /dev/tty1 ] || { return 0; }

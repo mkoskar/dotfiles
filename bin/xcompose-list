@@ -20,4 +20,4 @@ set -eu -o pipefail
     printf '> %s\n\n' "$ifile"
 
     sed -En '/^\s*</{s/\s+/ /g; p}' "$ifile" | sort
-} |& PAGER_EX='set ft=conf' pg0
+} |& PAGER_EX='setf conf' pg0

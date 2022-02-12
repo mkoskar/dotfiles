@@ -47,7 +47,7 @@ case $mode in
     a)
         # Read arguments to PRIMARY and CLIPBOARD.
         (( ! $# )) && exit 2
-        printf '%s\n' "$@" | clip -i
+        printf %s "$*" | clip -i
         ;;
     *)
         tmpfile=$(mktemp)

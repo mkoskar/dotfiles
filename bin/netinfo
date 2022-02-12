@@ -1,18 +1,28 @@
 #!/usr/bin/env bash
 
+rt_tables() {
+    ip -j route show table all | jq -r '.[].table' | sort -u
+}
+
+routes_by_table() {
+    gawk -v family="$1" '
+        /^\s+/ { print "  " $0; next }
+        {
+            match($0, /^(.*) table (\S+)(.*)$/, m)
+            if (table != m[2]) {
+                if (table) printf "\n"
+                printf "%s table %s\n", family, m[2]
+                table = m[2]
+            }
+            print "  " m[1] m[3]
+        }
+    '
+}
+
 {
     exec 2>&1
-    echo $'\n--------------------------------------------------'
-    echo $'> ARP/NDISC cache:\n'
-
-    ip neigh
-
-    echo $'\n--------------------------------------------------'
-    echo $'> Bridges:\n'
-
-    bridge link
-
-    echo $'\n--------------------------------------------------'
+    echo '# vim: ft=netinfo'
+    echo '--------------------------------------------------'
     echo $'> Addressing:\n'
 
     ip addr
@@ -23,9 +33,20 @@
     ip -d rule
     echo
 
-    ip -d route
+    ip -d -4 route show table all | routes_by_table inet
     echo
 
-    ip -d -6 route
+    ip -d -6 route show table all | routes_by_table inet6
+
+    echo $'\n--------------------------------------------------'
+    echo $'> Bridges:\n'
+
+    bridge -d link
+
+    echo $'\n--------------------------------------------------'
+    echo $'> ARP/NDISC cache:\n'
+
+    ip neigh
     echo
+
 } |& $PAGER
