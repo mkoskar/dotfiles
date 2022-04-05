@@ -136,6 +136,9 @@
 [push]
     default = nothing
 
+[safe]
+    directory = /etc
+
 [sendemail]
     confirm = always
     suppresscc = self

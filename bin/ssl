@@ -47,6 +47,9 @@ case $sub in
         ;;
 
     gen-rsa)
+        #-addext 'subjectAltName = DNS:example.org' \
+        #-addext 'subjectAltName = IP:192.168.1.1' \
+
         openssl req \
             -newkey rsa:4096 -nodes -keyout site_key.pem \
             -x509 -days 365 -out site_cert.pem

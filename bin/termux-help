@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+$PAGER <<-'EOF'
+
+https://wiki.termux.com/wiki/Touch_Keyboard
+
+Volume Up:
+
+    E   → Escape
+    T   → Tab
+    1-9 → F1-F9
+    0   → F10
+    B   → Alt+b
+    F   → Alt+f
+    X   → Alt+x
+    W   → Up
+    A   → Left
+    S   → Down
+    D   → Right
+    L   → | (pipe)
+    H   → ~ (tilde)
+    U   → _ (underscore)
+    P   → Page Up
+    N   → Page Down
+    .   → Ctrl+\ (SIGQUIT)
+    V   → Volume control
+    Q/K → Toggle toolbar
+
+Volume Down → Ctrl
+
+--------------------------------------------------
+
+https://wiki.termux.com/wiki/Hardware_Keyboard
+
+Ctrl+Alt:
+
+    C   → Create new session
+    R   → Rename current session
+    M   → Show menu
+    U   → Select URL
+    V   → Paste
+    +/- → Adjust text size
+    1-9 → Go to numbered session
+    K   → Enable/Disable soft keyboard
+
+    Up (or P)   → Previous session
+    Down (or N) → Next session
+    Right       → Open drawer
+    Left        → Close drawer
+
+EOF

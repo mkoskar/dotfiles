@@ -232,6 +232,14 @@ file=userContent.css
 	EOF
 } >"$file"
 
+#export MOZ_DISABLE_RDD_SANDBOX=1
 export MOZ_X11_EGL=1
-export MOZ_DISABLE_RDD_SANDBOX=1
+
+# https://firefox-source-docs.mozilla.org/remote/Debugging.html
+
+#export LD_DEBUG=libs
+#export MOZ_LOG=PlatformDecoderModule:5
+#export MOZ_LOG_FILE=debug.log
+#export MOZ_SANDBOX_LOGGING=1
+
 exec "$bin" --class "Firefox ($profile)" --profile "$path" "$@"

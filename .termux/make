@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+set -eu
+
+pkg upgrade
+
+#pkg install root-repo
+pkg install x11-repo
+
+pkg install \
+    aspell-en \
+    autossh \
+    bsdtar \
+    busybox \
+    file \
+    fzf \
+    git \
+    htop-legacy \
+    iproute2 \
+    jq \
+    linux-man-pages \
+    man \
+    mpv \
+    ncurses-utils \
+    neovim \
+    nmap-ncat \
+    openssh \
+    openssl-tool \
+    parallel \
+    proot \
+    ranger \
+    ripgrep \
+    socat \
+    termux-api \
+    tigervnc \
+    tmux \
+    tree \
+    vim \
+    weechat \
+    weechat-perl-plugin \
+    weechat-python-plugin \
+    zsh
