@@ -275,7 +275,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     latin-phrases           b https://en.wikipedia.org/wiki/List_of_Latin_phrases
     lcd-test                b http://www.lagom.nl/lcd-test/all_tests.php
     libretexts              b https://libretexts.org/
-    license                 b https://choosealicense.com/licenses/
+    licenses                b https://choosealicense.com/licenses/
     limnoria                b https://docs.limnoria.net/use/
     linux-cgroup            b https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html
     linux-docs              b https://www.kernel.org/doc/Documentation

@@ -1,7 +1,7 @@
 # vim: ft=cfg
 
+#--restrict-filenames
 --format bestvideo[height<=?1080][vcodec^=?avc1]+bestaudio/best[height<=?1080][vcodec^=?avc1]/best
 --no-cache-dir
 --no-playlist
 --output %(title)s.%(ext)s
---restrict-filenames

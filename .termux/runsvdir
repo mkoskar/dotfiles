@@ -2,21 +2,25 @@
 
 set -eu
 
-lvl_new=${1:-default}
+prgname=${0##*/}
+
+(( $# )) || set -- default
+
+if [[ $1 = -* ]]; then
+    echo "usage: $prgname [runlevel]"
+    exit 0
+fi
 
 cd ~/.termux
+
+lvl_new=$1
+
 [[ -d svdir.$lvl_new ]] || {
     printf 'no such runlevel: %s\n' "$lvl_new" >&2
     exit 1
 }
 
-lvl_cur=$(readlink -f svdir)
-lvl_cur=${lvl_cur##*/svdir.}
-
-[[ $lvl_new = "$lvl_cur" ]] || {
-    ln -snf svdir."$lvl_new" svdir
-    ln -snf svdir."$lvl_cur" svdir.prev
-}
+ln -snf svdir."$lvl_new" svdir
 
 printf 'runlevel: %s\n' "$lvl_new" >&2
 

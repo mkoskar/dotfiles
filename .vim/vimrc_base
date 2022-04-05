@@ -451,20 +451,20 @@ set showmode
 
 set clipboard=unnamed
 
-if has('nvim')
-    let clipboard = #{
-    \     name: 'xsel',
-    \     copy: {
-    \         '+': ['xsel', '--nodetach', '-i', '-b'],
-    \         '*': ['xsel', '--nodetach', '-i', '-p'],
-    \     },
-    \     paste: {
-    \         '+': ['xsel', '-o', '-b'],
-    \         '*': ['xsel', '-o', '-p'],
-    \     },
-    \     cache_enabled: 1,
-    \ }
-endif
+"if has('nvim')
+"    let clipboard = #{
+"    \     name: 'xsel',
+"    \     copy: {
+"    \         '+': ['xsel', '--nodetach', '-i', '-b'],
+"    \         '*': ['xsel', '--nodetach', '-i', '-p'],
+"    \     },
+"    \     paste: {
+"    \         '+': ['xsel', '-o', '-b'],
+"    \         '*': ['xsel', '-o', '-p'],
+"    \     },
+"    \     cache_enabled: 1,
+"    \ }
+"endif
 
 nnoremap Y y$
 nnoremap <expr> gp printf('`[%s`]', getregtype()[0])
