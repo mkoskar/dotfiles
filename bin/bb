@@ -47,9 +47,9 @@ MENUER=$prgname menuer "$@" <<-EOF |
     asciidoc                b https://asciidoc.org/
     asn1                    b https://www.oss.com/asn1/resources/books-whitepapers-pubs/asn1-books.html
     audio-codecs            b https://en.wikipedia.org/wiki/List_of_codecs#Audio_compression_formats
-    aur                     b https://aur.archlinux.org/packages.php\?SeB=nd\&K={u}
-    aur-maintainer          b https://aur.archlinux.org/packages.php\?SeB=m\&K="$AUR_MAINTAINER"
-    aur-name-only           b https://aur.archlinux.org/packages.php\?SeB=n\&K={u}
+    aur                     b https://aur.archlinux.org/packages\?SeB=nd\&K={u}
+    aur-maintainer          b https://aur.archlinux.org/packages\?SeB=m\&K="$AUR_MAINTAINER"
+    aur-name-only           b https://aur.archlinux.org/packages\?SeB=n\&K={u}
     austin-csrg             b https://www.opengroup.org/austin/docreg.html
     autobook                b https://sourceware.org/autobook/autobook/autobook.html
     awesome                 b https://github.com/sindresorhus/awesome
@@ -61,7 +61,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     basedir                 b https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
     bash                    b https://www.gnu.org/software/bash/manual/html_node/index.html
     bash-abs                b https://tldp.org/LDP/abs/html/
-    bash-academy            b https://guide.bash.academy/index.html
     bash-changes            b https://mywiki.wooledge.org/BashFAQ/061
     bash-faq                b https://mywiki.wooledge.org/BashFAQ
     bash-guide              b https://mywiki.wooledge.org/FullBashGuide
@@ -104,7 +103,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     debian-gitlab           b https://salsa.debian.org/explore
     debian-reference        b https://www.debian.org/doc/manuals/debian-reference/
     decibel                 b https://en.wikipedia.org/wiki/Decibel
-    deepl                   b https://www.deepl.com/translator
+    deepl                   b https://www.deepl.com/translator#en/sk/{u}
+    deepl-de                b https://www.deepl.com/translator#de/sk/{u}
     dkim                    b https://dkimcore.org/tools/
     dns-terminology         b https://www.rfc-editor.org/rfc/rfc8499.html
     dnssec-analyzer         b https://dnssec-debugger.verisignlabs.com/
@@ -180,13 +180,15 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gnu-manuals             b https://www.gnu.org/manual/manual.html
     gnu-repos               b https://git.savannah.gnu.org/cgit/
     go                      b https://golang.org/ref/spec
+    google-cloud            b https://console.cloud.google.com/
     google-devs             b https://developers.google.com/
     google-play             b https://play.google.com/store/search\?q={u}
-    google-products         b https://developers.google.com/products/
-    google-projects         b https://opensource.google.com/projects/list/featured
-    google-scholar          b https://scholar.google.com/citations\?view_op=top_venues
+    google-products         b https://about.google/products/#all-products
+    google-products2        b https://developers.google.com/products/
+    google-projects         b https://opensource.google/projects
     google-search           b https://www.google.com/advanced_search
     google-styleguide       b https://google.github.io/styleguide/
+    google-top-citations    b https://scholar.google.com/citations\?view_op=top_venues
     google-web              b https://developers.google.com/web
     gradle                  b https://gradle.org/docs/
     graphviz                b https://www.graphviz.org/doc/info/index.html
@@ -276,6 +278,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     lcd-test                b http://www.lagom.nl/lcd-test/all_tests.php
     libretexts              b https://libretexts.org/
     licenses                b https://choosealicense.com/licenses/
+    licenses2               b https://blueoakcouncil.org/list
+    licenses3               b https://spdx.org/licenses/
     limnoria                b https://docs.limnoria.net/use/
     linux-cgroup            b https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html
     linux-docs              b https://www.kernel.org/doc/Documentation
@@ -353,6 +357,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     perl                    b https://perldoc.perl.org/
     pgp-search              b https://pgp.key-server.io/
     phrik                   b https://wiki.archlinux.org/index.php/Phrik
+    pizza                   b http://www.varasanos.com/pizzarecipe.htm
     pkg                     b https://www.archlinux.org/packages/\?q={u}
     plan9                   b https://9p.io/plan9/
     posix                   b "$posix_base"/

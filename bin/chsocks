@@ -5,7 +5,7 @@ set -eu
 prgname=${0##*/}
 
 _usage() {
-    echo "usage: $prgname [-g] [-p profile] [-P port] [arg]..."
+    echo "usage: $prgname [-g] [-p profile] [-P port] [arg...]"
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2

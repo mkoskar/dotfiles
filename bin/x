@@ -10,11 +10,42 @@ if (( EUID == 0 )); then
     exit 1
 fi
 
-# ----------------------------------------
+_usage() {
+    echo "usage: $prgname {--reset | --terminate | arg...}"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
 
 datadir=~/.local/share/xorg
 rundir=$XDG_RUNTIME_DIR/xorg
 mkdir -p "$datadir" "$rundir"
+
+# ----------------------------------------
+
+case ${1-} in
+    --reset)
+        confirm 'Careful! Continue?' n || exit 0
+        dispno=$(xserverq dispno)
+        spid=$(xserverq pid)
+        touch "$rundir/keepserver:$dispno"
+        kill -HUP "$spid"
+        exit
+        ;;
+    --terminate)
+        confirm 'Careful! Continue?' n || exit 0
+        spid=$(xserverq pid)
+        kill "$spid"
+        exit
+        ;;
+    -h|--help)
+        usage
+        ;;
+    -*)
+        usage_err
+        ;;
+esac
+
+# ----------------------------------------
 
 declare -i vtno dispno
 case $prgname in
@@ -123,9 +154,9 @@ cleanup() {
     if [[ $spid ]] && kill -0 "$spid" &>/dev/null; then
         /usr/bin/kill --timeout 15000 KILL "$spid" &>/dev/null
     fi
-    stty "$stty" || stty sane
     # shellcheck disable=SC2046
     kill $(jobs -p) &>/dev/null
+    stty "$stty" || stty sane
 }
 trap cleanup EXIT
 
@@ -142,9 +173,9 @@ aargs=("$@")
 while true; do
     [[ ${ready-} ]] || exit 1
     unset ready
-    rm -f "$rundir/keepserver:$dispno"
     xdisplay_target stop
     xdisplay_target start
+    rm -f "$rundir"/keepserver:*
     set -- "${aargs[@]}"
     scrno=0 args=()
     while true; do

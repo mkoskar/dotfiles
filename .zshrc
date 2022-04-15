@@ -292,8 +292,8 @@ bindkey -M vicmd \\- vi-first-non-blank
 bindkey -M vicmd \^J vi-open-line-below
 bindkey -M vicmd \^R redo
 
-bindkey -s \^Xp '^X^AIpgx '
-bindkey -s \^XP '^X^AA | pg'
+bindkey -s \^Xp '^X^AA | pg'
+bindkey -s \^XP '^X^AIpgx '
 bindkey -s \^Xx '^X^A0isudo '
 bindkey -s \^Xh "^X^Addihistory 25 | gi ''^X^Ai"
 bindkey -s \^Xa '^X^Aa!!:*'
@@ -302,8 +302,8 @@ bindkey -s \^Xs '^X^Aa!!:gs/'
 bindkey -s \^Xc '--color=auto '
 
 bindkey -M vicmd -s \| 'A | '
-bindkey -M vicmd -s \^Xp 'Ipgx '
-bindkey -M vicmd -s \^XP 'A | pg'
+bindkey -M vicmd -s \^Xp 'A | pg'
+bindkey -M vicmd -s \^XP 'Ipgx '
 bindkey -M vicmd -s \^Xx 'Isudo '
 bindkey -M vicmd -s \^Xh "ddihistory 25 | gi ''^X^Ai"
 bindkey -M vicmd -s \^Xa 'a!!:*'
@@ -428,6 +428,7 @@ compctl -m torsocks
 compctl -m watchx
 compctl -v v
 
+compdef f=find
 compdef gitall=git
 
 _pacpkgs() {
@@ -437,16 +438,6 @@ _pacpkgs() {
 }
 compctl -K _pacpkgs \
     paccheck pacd paci pacl pacp pacr pacscripts pactree pacw
-
-_wsession() {
-    (( $CURRENT == 2 )) && reply=(${(f)"$(wsession)"})
-}
-compctl -K _wsession wsession
-
-_xsession() {
-    (( $CURRENT == 2 )) && reply=(${(f)"$(xsession)"})
-}
-compctl -K _xsession x xx xsession
 
 
 # Aliases / Named directories

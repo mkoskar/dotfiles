@@ -33,7 +33,7 @@ find / -mindepth 1 \
         -path /var/lib/pacman -o \
         -path /var/log/local -o \
         -path /var/spool -o \
-    -false \) -prune -false -o \
+    -false \) -prune -o \
     \( -type d -printf '%p/\n' -o -print \) | sort >fs
 
 comm -23 fs db

@@ -17,30 +17,30 @@ _curl() {
     fi
 }
 
-yt_video() {
+by_video_id() {
     _curl https://www.googleapis.com/youtube/v3/videos \
         -d id="$1" \
         -d part=id,snippet
     jq -r '.items[] | "#EXTINF:0," + .snippet.title + "\nytdl://" + .id' <_curl
 }
 
-yt_playlist() {
+by_playlist_id() {
     _curl https://www.googleapis.com/youtube/v3/playlistItems \
-        -d pageToken="${2-}" \
         -d playlistId="$1" \
+        -d pageToken="${2-}" \
         -d maxResults=50 \
         -d part=id,snippet
     cat _curl >>tmp
     local np
     if np=$(jq -re .nextPageToken <_curl); then
-        yt_playlist "$1" "$np"
+        by_playlist_id "$1" "$np"
         return
     fi
     jq -r '.items[].snippet |
         "#EXTINF:0," + .title + "\nytdl://" + .resourceId.videoId' <tmp
 }
 
-yt_channel() {
+by_channel_id() {
     _curl https://www.googleapis.com/youtube/v3/search \
         -d channelId="$1" \
         -d pageToken="${2-}" \
@@ -51,20 +51,32 @@ yt_channel() {
     cat _curl >>tmp
     local np
     if np=$(jq -re .nextPageToken <_curl); then
-        yt_channel "$1" "$np"
+        by_channel_id "$1" "$np"
         return
     fi
     jq -r '.items[] |
         "#EXTINF:0," + .snippet.title + "\nytdl://" + .id.videoId' <tmp
 }
 
-yt_user() {
+by_channel_name() {
+    _curl https://www.googleapis.com/youtube/v3/search \
+        -d q="$1" \
+        -d maxResults=1 \
+        -d part=id \
+        -d type=channel
+    local id
+    if id=$(jq -re '.items[].id.channelId' <_curl); then
+        by_channel_id "$id"
+    fi
+}
+
+by_username() {
     _curl https://www.googleapis.com/youtube/v3/channels \
         -d forUsername="$1" \
         -d part=id
     local id
     if id=$(jq -re '.items[].id' <_curl); then
-        yt_channel "$id"
+        by_channel_id "$id"
     fi
 }
 
@@ -78,15 +90,15 @@ handle_api() {
 
     cd "$tmpdir"
     if [[ $1 =~ ^https?://www\.youtube\.com/watch\?v=([^/]*)$ ]]; then
-        yt_video "${BASH_REMATCH[1]}"
+        by_video_id "${BASH_REMATCH[1]}"
     elif [[ $1 =~ ^https?://www\.youtube\.com/playlist\?list=([^/]*)$ ]]; then
-        yt_playlist "${BASH_REMATCH[1]}"
+        by_playlist_id "${BASH_REMATCH[1]}"
     elif [[ $1 =~ ^https?://www\.youtube\.com/channel/([^/]*)(/|/videos)?$ ]]; then
-        yt_channel "${BASH_REMATCH[1]}"
-    elif [[ $1 =~ ^https?://www\.youtube\.com/user/([^/]*)(/|/videos)?$ ]]; then
-        yt_user "${BASH_REMATCH[1]}"
+        by_channel_id "${BASH_REMATCH[1]}"
     elif [[ $1 =~ ^https?://www\.youtube\.com/c/([^/]*)(/|/videos)?$ ]]; then
-        yt_user "${BASH_REMATCH[1]}"
+        by_channel_name "${BASH_REMATCH[1]}"
+    elif [[ $1 =~ ^https?://www\.youtube\.com/user/([^/]*)(/|/videos)?$ ]]; then
+        by_username "${BASH_REMATCH[1]}"
     else
         printf '%s\n' "$1"
     fi
@@ -107,5 +119,5 @@ handle_ytdl() {
     '
 }
 
-export -f _curl yt_video yt_playlist yt_channel yt_user handle_api handle_ytdl
+export -f _curl by_video_id by_playlist_id by_channel_id by_channel_name by_username handle_api handle_ytdl
 parallel -rk -j 10 handle_api

@@ -150,15 +150,46 @@ if (( ! $# )); then
     exit
 fi
 
-if [[ $1 = --startup ]]; then
-    kill -USR1 -- "$XSESSIONPID"
-    exit
-fi
+_usage() {
+    echo "usage: $prgname {--reset | --restart | arg...}"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
 
-# ----------------------------------------
+sdu() { systemctl --user "$@"; }
 
 datadir=~/.local/share/xorg
 rundir=$XDG_RUNTIME_DIR/xorg
+
+# ----------------------------------------
+
+case $1 in
+    --startup)
+        kill -USR1 -- "$XSESSIONPID"
+        exit
+        ;;
+    --reset)
+        confirm 'Careful! Continue?' n || exit 0
+        screen=$(xserverq screen)
+        sdu restart xsession@:"$screen".target
+        exit
+        ;;
+    --restart)
+        confirm 'Careful! Continue?' n || exit 0
+        screen=$(xserverq screen)
+        touch "$rundir/keepserver:$screen"
+        sdu restart xsession@:"$screen".service
+        exit
+        ;;
+    -h|--help)
+        usage
+        ;;
+    -*)
+        usage_err
+        ;;
+esac
+
+# ----------------------------------------
 
 declare -i x11=0
 has-x11 && x11=1
@@ -186,14 +217,10 @@ cleanup() {
 }
 trap cleanup EXIT
 
-session=unknown
-if [[ $1 = - ]]; then
-    shift
-else
-    for i in "${sessions[@]}"; do
-        [[ $1 = "$i" ]] && { session=$i; break; }
-    done
-fi
+session=-
+for i in "${sessions[@]}"; do
+    [[ $1 = "$i" ]] && { session=$i; break; }
+done
 printf 'session: %s\n' "$session"
 
 export GDK_BACKEND=x11

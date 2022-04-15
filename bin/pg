@@ -22,7 +22,7 @@ run() {
 
 if [[ $prgname = pgx ]]; then
     if (( ! $# )); then
-        echo "usage: $prgname cmd [arg]..." >&2
+        echo "usage: $prgname cmd [arg...]" >&2
         exit 2
     fi
     if [[ ! -t 1 ]]; then

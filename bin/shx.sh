@@ -278,6 +278,7 @@ alias cal='cal -3mw'
 alias callgrind='valgrind --tool=callgrind'
 alias caps='filecap -d'
 alias cp='cp -ai --reflink=auto'
+alias cpio-copy='cpio -pdmv'
 alias curl-as='curl -A "$UAGENT"'
 alias curl-head='curl -I'
 alias curl-trace='curl --trace-ascii - --trace-time'
@@ -322,6 +323,7 @@ alias infocmp='infocmp -1a'
 alias ip='ip -h -p -c=auto'
 alias journal='journalctl -o short-precise -b'
 alias last='last -x'
+alias ld-debug='LD_DEBUG=all'
 alias llib='tree ~/.local/lib'
 alias lsblk='lsblk -o NAME,KNAME,MAJ:MIN,ROTA,RM,RO,TYPE,SIZE,FSTYPE,MOUNTPOINT,MODEL'
 alias lsdiff='lsdiff -s'
@@ -340,6 +342,7 @@ alias mpv-debug='mpv --terminal=yes --msg-level=all=debug'
 alias mpv-verbose='mpv --terminal=yes --msg-level=all=v'
 alias mpv-ytdl-reverse='mpv --ytdl-raw-options=playlist-reverse='
 alias mv='mv -i'
+alias namei='namei -l'
 alias ncdu='ncdu -x'
 alias neomutt-debug='neomutt -d 5 -l ~/tmp/neomutt.log'
 alias nmap-all='nmap -p 1-65535'
@@ -352,6 +355,7 @@ alias odx='od -t x1'
 alias parallel='parallel -r'
 alias patch0='patch -N -p 0'
 alias patch1='patch -N -p 1'
+alias pax-copy='pax -rwv'
 alias ping-mtu='ping -M do -s 2000'
 alias pr='pr -T -W "$COLUMNS"'
 alias qiv='qiv -uLtiGfl --vikeys'
@@ -367,7 +371,6 @@ alias sd-sysusers='systemd-sysusers --cat-config'
 alias sd-tmpfiles='systemd-tmpfiles --cat-config'
 alias sd=systemctl
 alias sdu='systemctl --user'
-alias se=sudoedit
 alias sed-all="sed -E -e 'H;1h;\$!d;x'"
 alias socat='socat readline,history=/dev/null'
 alias speaker-test='speaker-test -t wav -c 2'
@@ -387,6 +390,8 @@ alias tmux-killall='tmux-all kill-server'
 alias tmux0='tmux -f /dev/null'
 alias top='top -d 1'
 alias topdf='lowriter --convert-to pdf'
+alias tree='tree -aF -I .git --dirsfirst --noreport'
+alias treei='tree -pugshDif'
 alias tshark-prefs='\tshark -G currentprefs'
 alias tshark-protocols='\tshark -G protocols'
 alias tshark='tshark -nV'
@@ -440,73 +445,6 @@ __() {
 }
 alias ,,=__
 
-_systemd_dot() {
-    systemd-analyze dot "$@" | dot -T svg | stdiner -bt b
-}
-alias systemd-dot=_systemd_dot
-
-_terminfo_src() {
-    set -- ~/src/ncurses-*
-    [ -d "$1" ] && pg "$1"/misc/terminfo.src
-}
-alias terminfo-src=_terminfo_src
-
-_xserver_reset() {
-    confirm 'Careful! Continue?' n || return 0
-    local dispno; dispno=$(env ${1+DISPLAY=:"$1"} xserverq dispno) || return 1
-    local spid; spid=$(env ${1+DISPLAY=:"$1"} xserverq pid) || return 1
-    touch "$XDG_RUNTIME_DIR/xorg/keepserver:$dispno"
-    kill -HUP "$spid"
-}
-alias xserver-reset=_xserver_reset
-
-_xserver_terminate() {
-    confirm 'Careful! Continue?' n || return 0
-    local spid; spid=$(env ${1+DISPLAY=:"$1"} xserverq pid) || return 1
-    kill "$spid"
-}
-alias xserver-terminate=_xserver_terminate
-
-_xsession_reset() {
-    confirm 'Careful! Continue?' n || return 0
-    local screen; screen=$(env ${1+DISPLAY=:"$1"} xserverq screen) || return 1
-    sdu restart xsession@:"$screen".target
-}
-alias xsession-reset=_xsession_reset
-
-_xsession_restart() {
-    confirm 'Careful! Continue?' n || return 0
-    local screen; screen=$(env ${1+DISPLAY=:"$1"} xserverq screen) || return 1
-    touch "$XDG_RUNTIME_DIR/xorg/keepserver:$screen"
-    sdu restart xsession@:"$screen".service
-}
-alias xsession-restart=_xsession_restart
-
-a() {
-    local d=${1:-5m} ts; ts=$(command date -R)
-    printf '%s ... alarm in %s\n' "$ts" "$d"
-    sleep "${1:-5m}"
-    echo Beep...
-    notify -u critical "Beep... Time's up!"
-    mpv --no-config \
-        --msg-level=all=error \
-        --loop-file=5 \
-        /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
-}
-
-anplay() {
-    local outfile
-    outfile=$(find ~/tmp -name asciinema-\* -print0 | sort -z | tail -z -n 1)
-    [ -e "$outfile" ] && asciinema play "$outfile"
-}
-
-anrec() {
-    local ts outfile
-    ts=$(date +%F.%s)
-    outfile=~/tmp/asciinema-"$ts".json
-    asciinema rec -w 2 "$outfile"
-}
-
 base() {
     [ "$PWD" != "$HOME" ] || return
     export BASEDIR=${1:-$PWD}
@@ -517,11 +455,6 @@ unbase() { unset BASEDIR; }
 cd() {
     [ $# -gt 0 ] || set -- "${BASEDIR:-${SHOME:-$HOME}}"
     command cd -- "$@"
-}
-
-ctlseqs() {
-    set -- ~/src/xterm-*
-    [ -d "$1" ] && squashlns <"$1"/ctlseqs.txt | $PAGER
 }
 
 date() {
@@ -677,23 +610,6 @@ source_opt() {
     [ ! -e "$1" ] || . "$1"
 }
 
-tree() {
-    set -- -aF -I .git --dirsfirst --noreport "$@"
-    if [ -t 1 ]; then
-        pgx command tree -C "$@"
-    else
-        command tree "$@"
-    fi
-}
-alias treei='tree -pugshDif'
-
-tsrec() {
-    local ts outfile
-    ts=$(date +%F.%s)
-    outfile=~/tmp/typescript-"$ts"
-    script -- "$outfile"
-}
-
 v() {
     case $SHNAME in bash | zsh | *ksh)
         if [ $# -eq 0 ]; then
@@ -709,12 +625,4 @@ v() {
 
 xkbkeymap() {
     pgx xkbcomp -a "$DISPLAY" -
-}
-
-xrandr() {
-    if [ $# -eq 0 ] && [ -t 1 ]; then
-        pgx command xrandr --verbose
-    else
-        command xrandr "$@"
-    fi
 }

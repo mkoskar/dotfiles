@@ -1,0 +1,11 @@
+#compdef x
+
+_arguments -C ': :->argument' && return
+
+case $state in
+    argument)
+        _alternative \
+            'sessions:session:(${(f)"$(xsession)"})' \
+            'commands:command:(--reset --terminate)'
+        ;;
+esac

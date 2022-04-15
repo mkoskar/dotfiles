@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 
-find . -mindepth 1 \
-    -type d \( \
+set -eu
+
+roots=()
+while (( $# )); do
+    [[ $1 = -* ]] && break
+    roots+=("$1")
+    shift
+done
+(( ${#roots[@]} )) || roots=(.)
+
+find "${roots[@]}" -mindepth 1 \
+    ! \( -type d \( \
+        -name .bzr -o \
         -name .git -o \
-    -false \) -prune -false -o -true "$@"
+        -name .hg -o \
+        -name .svn -o \
+    -false \) -prune \) "$@"

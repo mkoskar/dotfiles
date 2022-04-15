@@ -6,9 +6,9 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [option]... cmd [arg]...
+	usage: $prgname [options] cmd [arg...]
 
-	Execute 'cmd [arg]...' as transient service inside user's service manager.
+	Execute 'cmd [arg...]' as transient service inside user's service manager.
 
 	  -n name   - name of the target (default: cmd)
 	  -N        - use generated name
