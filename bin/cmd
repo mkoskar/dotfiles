@@ -6,7 +6,7 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [-0] [-s] cmd [args...]
+	usage: $prgname [-0] [-s] cmd [arg...]
 	       $prgname [-0] [-s] {-v | -V} name [name...]
 
 	  -0    - use \$PATH removing first entry

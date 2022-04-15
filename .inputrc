@@ -119,8 +119,8 @@ $if bash
     "\C-X~": complete-username
     "\ei": complete-filename
 
-    "\C-Xp": "\C-X\C-AIpgx "
-    "\C-XP": "\C-X\C-AA | pg"
+    "\C-Xp": "\C-X\C-AA | pg"
+    "\C-XP": "\C-X\C-AIpgx "
     "\C-Xx": "\C-X\C-A0isudo "
     "\C-Xh": "\C-X\C-Addihistory 25 | gi ''\C-X\C-Ai"
     "\C-Xa": "\C-X\C-Aa!!:*"
@@ -156,8 +156,8 @@ $if bash
     "\C-X\C-E": edit-and-execute-command
 
     "|": "A | "
-    "\C-Xp": "Ipgx "
-    "\C-XP": "A | pg"
+    "\C-Xp": "A | pg"
+    "\C-XP": "Ipgx "
     "\C-Xx": "Isudo "
     "\C-Xh": "ddihistory 25 | gi ''\C-X\C-Ai"
     "\C-Xa": "a!!:*"

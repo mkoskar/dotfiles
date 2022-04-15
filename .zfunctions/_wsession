@@ -1,0 +1,10 @@
+#compdef wsession
+
+_arguments -C ': :->argument' && return
+
+case $state in
+    argument)
+        _alternative \
+            'sessions:session:(${(f)"$(wsession)"})'
+        ;;
+esac

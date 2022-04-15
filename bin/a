@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eu
+
+d=${1:-5m}
+ts=$(date -R)
+
+printf '%s ... alarm in %s\n' "$ts" "$d"
+sleep "$d"
+
+echo Beep...
+notify -u critical "Beep... Time's up!"
+mpv --no-config \
+    --msg-level=all=error \
+    --loop-file=5 \
+    /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga

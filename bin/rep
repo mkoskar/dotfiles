@@ -6,9 +6,9 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [options] cmd [arg]...
+	usage: $prgname [options] cmd [arg...]
 
-	Execute 'cmd [arg]...' repeatedly.
+	Execute 'cmd [arg...]' repeatedly.
 
 	  -d delay  - wait for 'delay' milliseconds; <0 = wait forever,
 	              0 = don't wait at all (default: 1000)

@@ -5,7 +5,7 @@ set -eu -o pipefail
 prgname=${0##*/}
 
 _usage() {
-    echo "usage: $prgname [-p profile] [arg]..."
+    echo "usage: $prgname [-p profile] [arg...]"
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2

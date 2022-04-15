@@ -7,7 +7,7 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [option]...
+	usage: $prgname [option...]
 
 	Compute SHA1 digest of EDIDs of all connected monitors.
 

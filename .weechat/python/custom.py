@@ -147,7 +147,7 @@ def channel_search(server_name, channel_name):
 
 
 def cmd(command, buffer=core, mute=True):
-    command = re.sub(r'\s*\n\s*', ' ', command)
+    command = command.strip().replace('\n', ' ')
     w.command(buffer, ('/mute ' if mute else '/') + command)
 
 
@@ -1285,6 +1285,7 @@ def configure():
     cmd('set script.scripts.download_enabled on')
     cmd('set script.scripts.hold custom.py')
     cmd('set sec.crypt.passphrase_command cat ~/.secrets/weechat-passphrase')
+    cmd('set sec.crypt.passphrase_file ~/.secrets/weechat-passphrase')
     cmd('set spell.check.default_dict en')
     cmd('set spell.check.enabled on')
     cmd('set spell.check.real_time on')

@@ -1,0 +1,11 @@
+[Unit]
+Description=%N service
+
+[Service]
+SyslogIdentifier=%N
+ExecStartPre=/usr/bin/mkdir -p %t/rclone-mount/%i
+ExecStart=/usr/bin/rclone mount %i:/ %t/rclone-mount/%i
+Restart=always
+
+[Install]
+WantedBy=default.target

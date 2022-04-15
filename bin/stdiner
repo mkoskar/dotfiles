@@ -6,9 +6,9 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [-b] [-t] cmd [arg]..."
+	usage: $prgname [-b] [-t] cmd [arg...]"
 
-	Execute 'cmd [arg]...' with stdin reference replacing '{}' placehoder/s
+	Execute 'cmd [arg...]' with stdin reference replacing '{}' placehoder/s
 	or as last dynamic argument if no '{}' placeholder was specified.
 
 	  -b    - execute in background

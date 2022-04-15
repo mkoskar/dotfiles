@@ -9,7 +9,7 @@ _usage() {
 	usage: $prgname [list [pattern]
 	       $prgname clear [pattern]
 	       $prgname mute [pattern]
-	       $prgname {at | in | every} spec [name | -] [args...]
+	       $prgname {at | in | every} spec [name | -] [arg...]
 	EOF
 }
 usage() { _usage; exit 0; }
@@ -58,6 +58,9 @@ case $sub in
             args+=(alarm run "$name" "${@:3}")
         srun -r -n alarm-"$name" -- "${args[@]}"
         printf '%s\n' "$name"
+        ;;
+    -h|--help)
+        usage
         ;;
     *)
         usage_err

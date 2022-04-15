@@ -6,7 +6,7 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [options] username [key]...
+	usage: $prgname [options] username [key...]
 
 	List public repositories for the specified user. Each 'key' corresponds to
 	the column in tab-separated output with 'html_url' being default.
