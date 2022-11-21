@@ -1,13 +1,14 @@
 # vim: ft=config
 
+# See also: /usr/share/doc/newsboat/examples/config
+
 auto-reload yes
 bookmark-autopilot yes
 bookmark-cmd "mark-url"
-browser b %u
+browser "b %u"
 error-log "~/.newsboat/error.log"
 goto-next-feed no
 max-items 500
-podcast-auto-enqueue no
 reload-threads 3
 reload-time 720
 save-path "~/download"
@@ -35,8 +36,15 @@ unbind-key  p
 unbind-key  v
 unbind-key  ^V
 unbind-key  ^G
-unbind-key  g
-unbind-key  G
+
+bind-key    k   up
+bind-key    j   down
+bind-key    ^U  halfpageup
+bind-key    ^D  halfpagedown
+bind-key    ^B  pageup
+bind-key    ^F  pagedown
+bind-key    g   home
+bind-key    G   end
 
 bind-key    o   open
 bind-key    o   quit                    article
@@ -63,10 +71,6 @@ bind-key    }   next-dialog
 bind-key    {   prev-dialog
 bind-key    s   sort
 bind-key    S   rev-sort
-bind-key    k   up
-bind-key    j   down
-bind-key    ^U  pageup
-bind-key    ^D  pagedown
 bind-key    ;   macro-prefix
 
 color   background          default     default

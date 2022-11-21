@@ -57,7 +57,6 @@ setopt interactive_comments
 setopt long_list_jobs
 setopt notify
 setopt path_dirs
-setopt posix_builtins
 setopt prompt_subst
 setopt pushd_ignore_dups
 setopt pushd_silent
@@ -140,6 +139,14 @@ zle -N copy-earlier-word
 zle -N edit-command-line
 zle -N {,_}complete-help
 
+__expand-aliases() {
+    functions[___expand-aliases]=$BUFFER
+    BUFFER=${functions[___expand-aliases]#$'\t'}
+    BUFFER=\\${BUFFER##\\##}
+    CURSOR=$#BUFFER
+}
+zle -N {,__}expand-aliases
+
 __expand-dot-to-parent-directory-path() {
     [[ $LBUFFER = *.. ]] && LBUFFER+=/.. || LBUFFER+=.
 }
@@ -163,10 +170,10 @@ zle -N {,__}reedit
 __toggle-comment-all() {
     local buf=$PREBUFFER$BUFFER nl=$'\n'
     if [[ $buf = \#* ]]; then
-        buf=${buf#[#]}
-        buf=${buf//$nl#/$nl}
+        buf=${buf##\#}
+        buf=${buf//$nl\#/$nl}
     else
-        buf=\#${buf//$nl/$nl#}
+        buf=\#${buf//$nl/$nl\#}
     fi
     print -Rz - $buf
     zle send-break
@@ -272,6 +279,7 @@ bindkey \\e\< beginning-of-buffer-or-history
 bindkey \\e\> end-of-buffer-or-history
 bindkey \\ek up-line
 bindkey \\ej down-line
+bindkey \\eE expand-aliases
 bindkey \\e\^M reedit
 bindkey \^X\^E edit-command-line
 
@@ -284,6 +292,7 @@ bindkey -M vicmd \\e\< beginning-of-buffer-or-history
 bindkey -M vicmd \\e\> end-of-buffer-or-history
 bindkey -M vicmd \\ek up-line
 bindkey -M vicmd \\ej down-line
+bindkey -M vicmd \\eE expand-aliases
 bindkey -M vicmd \\e\^M reedit
 bindkey -M vicmd \^X\^E edit-command-line
 

@@ -1,6 +1,5 @@
 # vim: ft=muttrc
 
-set my_home = ~/.mutt
 set shell = /bin/bash
 
 set my_comm = "`ps --pid $PPID -o comm=`"
@@ -340,12 +339,12 @@ macro compose v <edit-from>^Ume-<tab> 'select from'
 # ----------------------------------------
 
 #set sidebar_new_mail_only
+#set sidebar_visible
 set sidebar_folder_indent
 set sidebar_format = ' %B%?F? [%F]?%* %?N?%N?%C '
 set sidebar_indent_string = ' '
 set sidebar_next_new_wrap
 set sidebar_short_path
-set sidebar_visible
 set sidebar_width = 25
 
 bind index <space> sidebar-open

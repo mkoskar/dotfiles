@@ -1459,7 +1459,7 @@ function! s:Write(filename = expand('%')) abort
     edit!
 endfunction
 
-command! -nargs=? -bar W call s:Write(<f-args>)
+command! -nargs=? -bar -complete=file W call s:Write(<f-args>)
 
 " }}}
 

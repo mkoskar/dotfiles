@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#
+
 # See also: https://github.com/qutebrowser/qutebrowser/issues/1098
 
 set -eu -o pipefail

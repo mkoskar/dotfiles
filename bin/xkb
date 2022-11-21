@@ -40,14 +40,6 @@ xkb_default() {
 	    };
 
 	    xkb_types {
-	        // With xorg-server 21.1.1-3 unless following is present, the keymap will fail to load with:
-	        //   X Error of failed request:  BadValue (integer parameter out of range for operation)
-	        //     Major opcode of failed request:  135 (XKEYBOARD)
-	        //     Minor opcode of failed request:  9 (XkbSetMap)
-	        type "FOUR_LEVEL_SHIFT_ALT_CTRL" {
-	            modifiers= None;
-	        };
-
 	        include "complete"
 
 	        type "FOUR_LEVEL_SHIFT_ALT_CTRL" {
@@ -103,12 +95,12 @@ xkb_default() {
 	            actions= [ NoAction(), NoAction(), NoAction(), NoAction(), SwitchScreen(screen=+1, !same) ]
 	        };
 
-	        replace key <AD03> {
-	            type= "FOUR_LEVEL_SEMIALPHABETIC",
-	            symbols[Group1]= [ e, E, dead_currency, Eacute ],
-	            symbols[Group2]= [ e, E, dead_currency, E ],
-	            symbols[Group3]= [ e, E, dead_currency, E ]
-	        };
+	        //replace key <AD03> {
+	        //    type= "FOUR_LEVEL_SEMIALPHABETIC",
+	        //    symbols[Group1]= [ e, E, dead_currency, Eacute ],
+	        //    symbols[Group2]= [ e, E, dead_currency, E ],
+	        //    symbols[Group3]= [ e, E, dead_currency, E ]
+	        //};
 
 	        key <LatU> { [ PtrBtn(button=1) ] };
 	        key <LatI> { [ PtrBtn(button=2) ] };

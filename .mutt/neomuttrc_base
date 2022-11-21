@@ -1,7 +1,5 @@
 # vim: ft=muttrc
 
-set my_home = ~/.mutt
-
 source $my_home/muttrc_base
 
 

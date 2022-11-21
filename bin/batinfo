@@ -9,7 +9,7 @@ for i in /sys/class/power_supply/${1:-*}; do
 
     echo $'\n--------------------------------------------------'
     printf '> %s\n\n' "$i"
-    udevadm info -q property -p "$i"
+    udevadm info --no-pager -q property -p "$i"
 
     batcap=$(batcap "${i##*/}")
     printf '\nbatcap [%%]: %s\n' "$batcap"

@@ -1,12 +1,9 @@
 -- vim: fdm=marker
 
-Config { font = "xft:local_statusbar"
+Config { position = TopH 19
+       , font = "monospace bold 8"
        , additionalFonts = ["xft:Symbola"]
        , fgColor = "#c0c0c0"
-       , textOffset = 13
-       , border = BottomB
-       , borderColor = "#000000"
-       , borderWidth = 3
        , commands = [ Run StdinReader
                     , Run CommandReader "xmobar-mail" "mail"
                     , Run CommandReader "xmobar-tray" "tray"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#
+
 # See also: https://github.com/Chiel92/vim-autoformat
 
 set -eu

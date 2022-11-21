@@ -184,6 +184,9 @@ file=userChrome.css
 		    border-radius: 0 !important;
 		    margin-block: 0 !important;
 		}
+		#unified-extensions-button {
+		    display: none;
+		}
 	EOF
 
     [[ $profile != default ]] && cat <<-EOF

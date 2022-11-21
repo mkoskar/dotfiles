@@ -10,6 +10,38 @@ local chapter_go_timer = nil
 local playlist_go_pos = -1
 local playlist_go_timer = nil
 
+local input_lock = false
+local input_keys = {
+    '!',
+    '@',
+    'E',
+    'L',
+    'r',
+    's',
+    'ENTER',
+    'Ctrl+L',
+    ',', '.',
+    'g', 'G',
+    'j', 'Alt+j', 'Ctrl+j',
+    'k', 'Alt+k', 'Ctrl+k',
+    'h', 'Alt+h', 'Ctrl+h',
+    'l', 'Alt+l', 'Ctrl+l',
+    'UP', 'Shift+UP',
+    'DOWN', 'Shift+DOWN',
+    'LEFT', 'Shift+LEFT', 'Ctrl+LEFT',
+    'RIGHT', 'Shift+RIGHT', 'Ctrl+RIGHT',
+    'WHEEL_UP', 'WHEEL_DOWN',
+    'PGUP', 'Shift+PGUP',
+    'PGDWN', 'Shift+PGDWN',
+    'Shift+BS', 'Shift+Ctrl+BS',
+    'FORWARD', 'REWIND',
+    '[', ']', '{', '}',
+    'NEXT', 'PREV', '<', '>', 'MBTN_BACK', 'MBTN_FORWARD',
+    'Alt+p', 'Alt+n', 'Alt+P', 'Alt+N', 'Alt+g', 'Alt+G',
+    'Ctrl+p', 'Ctrl+n', 'Ctrl+P', 'Ctrl+N', 'Ctrl+g', 'Ctrl+G',
+    'q', 'Q', 'Ctrl+c', 'Ctrl+w', 'CLOSE_WIN', 'STOP', 'POWER',
+}
+
 function show_info()
     if info_enabled then
         return
@@ -20,6 +52,18 @@ end
 function toggle_info()
     info_enabled = not info_enabled
     set_info()
+end
+
+function toggle_input_lock()
+    for i, k in ipairs(input_keys) do
+        if input_lock then
+            mp.remove_key_binding('input_lock' .. i)
+        else
+            mp.add_forced_key_binding(k, 'input_lock' .. i, ignore)
+        end
+    end
+    input_lock = not input_lock
+    mp.osd_message(input_lock and "Input locked" or "Input unlocked")
 end
 
 function set_info()
@@ -239,6 +283,7 @@ mp.add_key_binding(nil, 'playlist-go', playlist_go)
 mp.add_key_binding(nil, 'playlist-reverse', playlist_reverse)
 mp.add_key_binding('y', 'yank-path', function() yank_property('path') end)
 mp.add_key_binding('Y', 'yank-title', function() yank_property('media-title') end)
+mp.add_key_binding('~', 'toggle-input-lock', toggle_input_lock)
 mp.add_key_binding('Ctrl+r', 'reload', reload)
 
 mp.register_event('file-loaded',

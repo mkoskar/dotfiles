@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# See also:
+#
+#   $ mdns-scan
+#   $ drill @224.0.0.251 -p 5353 _services._dns-sd._udp.local PTR
+
+_resolvectl() {
+    resolvectl --legend=no -p mdns "$@"
+}
+
+_resolvectl query -t PTR _services._dns-sd._udp.local |
+    while read -r _ _ _ i _; do
+        echo $'\n--------------------------------------------------'
+        printf '> %s\n\n' "$i"
+        _resolvectl query -t PTR "$i" |
+            while read -r _ _ _ j _; do
+                _resolvectl service "$j"
+            done
+    done

@@ -18,6 +18,7 @@ keymap ) NULL
 keymap { NULL
 keymap } NULL
 
+keymap SPC NEXT_PAGE
 keymap C-F NEXT_PAGE
 keymap C-B PREV_PAGE
 keymap C-D NEXT_HALF_PAGE
@@ -45,7 +46,6 @@ keymap M-H TAB_LEFT
 
 keymap O GOTO
 keymap o GOTO_LINK
-keymap SPC GOTO_LINK
 keymap T TAB_GOTO
 keymap t TAB_LINK
 

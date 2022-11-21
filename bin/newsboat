@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 hstatus "${0##*/}"
-exec cmd -0 newsboat -q
+exec cmd -0 newsboat "$@"

@@ -2,33 +2,36 @@
 
 cat <<-'EOF'
 
-Address families:
-    ip (default)
-    ip6
-    inet
-    arp
-    bridge
-    netdev
+Basics:
 
-Hooks (depend on address family):
-   prerouting
-   input
-   forward
-   output
-   postrouting
-   ingress
+    nft list ruleset
+    nft flush ruleset
 
-Ruleset (whole set of tables and chains)
+What's hooked where:
 
-Tables (containers for chains, sets and stateful objects)
+    nft list hooks
 
-Chains (containers for rules)
-    * Type: filter, nat, route
-    * Policy: accept (default), drop
+Logging:
 
-# ----------------------------------------
+    log level info
+    log group 1
+    nftrace set 1
 
-nft list ruleset
-nft flush ruleset
+Expressions with bitmasks:
+
+    tcp flags syn
+    tcp flags & syn != 0
+
+    tcp flags ! syn
+    tcp flags & syn == 0
+
+    tcp flags fin,syn
+    tcp flags & (fin | syn) != 0
+
+    tcp flags ! fin,syn
+    tcp flags & (fin | syn) == 0
+
+    tcp flags != syn / fin,syn,rst,ack
+    tcp flags & (fin | syn | rst | ack) != syn
 
 EOF

@@ -1,9 +1,6 @@
 # PulseAudio
 # ----------------------------------------
-#
-# See also:
-#
-#   /usr/share/doc/alsa-plugins/README-pulse
+# /usr/share/doc/alsa-plugins/README-pulse
 
 pcm.!pulse {
     type pulse
@@ -25,10 +22,7 @@ ctl.!pulse {
 
 # JACK
 # ----------------------------------------
-#
-# See also:
-#
-#   /usr/share/doc/alsa-plugins/README-jack
+# /usr/share/doc/alsa-plugins/README-jack
 
 pcm.!jack {
     type jack

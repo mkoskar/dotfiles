@@ -41,21 +41,7 @@ bctl() {
 }
 
 lctl() {
-    local stat1 stat2
-    if [[ $1 = play-pause ]]; then
-        stat1=$(playerctl status)
-        playerctl "$1"
-        stat2=$(playerctl status)
-        if [[ $stat1 = Playing && $stat2 = Playing ]]; then
-            playerctl stop
-        fi
-        return
-    fi
-    playerctl "$1"
-}
-
-playerctl() {
-    command playerctl -p clementine "$@"
+    playerctl -p clementine "$1"
 }
 
 (( bopt )) && ctl=bctl || ctl=lctl
