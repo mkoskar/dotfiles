@@ -28,6 +28,7 @@ shmode() {
 SHMODE=$(shmode)
 
 set -o noclobber
+set -o notify
 if [ "$SHMODE" = bash ]; then
     shopt -s expand_aliases
     unset BASH_ENV
@@ -55,31 +56,28 @@ alias ansible-playbook-tasks='ansible-playbook --list-tasks'
 # docker
 # ----------------------------------------
 
+# Keep options separate in order not to break zsh completion
 alias dk=docker
-alias dkb='docker build'
-alias dkc='docker ps'
-alias dkca='docker ps -a'
-alias dkcl='docker ps -lq'
-alias dke='docker exec -it'
-alias dki='docker images'
-alias dkia='docker images -a'
+alias dkc='docker container'
+alias dke='docker exec -i -t'
+alias dki='docker image'
 alias dkr='docker run -P'
-alias dkrd='docker run -dP'
-alias dkri='docker run -itP'
+alias dkrd='docker run -d -P'
+alias dkri='docker run -i -t -P'
 
 dkip() {
-    local target; target=${1:-$(docker ps -lq)}
+    local target; target=${1:-$(docker container ls -lq)}
     [ "$target" ] || return 2
     docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$target"
 }
 
 dkrm() {
     confirm 'Remove ALL containers (with volumes). Continue?' n || return 0
-    docker ps -aq | command xargs -rx docker rm -vf
+    docker container ls -aq | command xargs -rx docker rm -vf
 }
 
 dkstop() {
-    docker ps -aq | command xargs -rx docker stop
+    docker container ls -aq | command xargs -rx docker stop
 }
 
 
@@ -272,7 +270,7 @@ alias alarm-bread='alarm every 1h bread fold'
 alias alarm-hourly='alarm at \*:0'
 alias an=asciinema
 alias aunpack='aunpack -q'
-alias avahi-browse='avahi-browse -at'
+alias avahi-browse='avahi-browse -avtr'
 alias c=calc
 alias cal='cal -3mw'
 alias callgrind='valgrind --tool=callgrind'
@@ -280,11 +278,11 @@ alias caps='filecap -d'
 alias cp='cp -ai --reflink=auto'
 alias cpio-copy='cpio -pdmv'
 alias curl-as='curl -A "$UAGENT"'
-alias curl-head='curl -I'
+alias curl-head='\curl -I'
 alias curl-trace='curl --trace-ascii - --trace-time'
 alias curl='curl -sSLJ'
 alias dconfa='dconf dump /'
-alias dd='dd status=progress'
+alias dd='dd bs=4M conv=fsync oflag=direct status=progress'
 alias delv-nocheck='delv +cd'
 alias delv-trace='delv +cd +tcp +mt +rt +vt'
 alias delv='delv +multiline +nocrypto'
@@ -315,12 +313,12 @@ alias glxgears-novsync='vblank_mode=0 glxgears'
 alias grepcat='grep --exclude-dir=\* .'
 alias gsettingsa='gsettings list-recursively'
 alias gtk-debug='GTK_DEBUG=interactive'
-alias headcat='head -v -n -0'
 alias host='host -Tv'
 alias info='info --vi-keys'
 alias infocmp0='infocmp -A "$SYSPREFIX"/share/terminfo'
 alias infocmp='infocmp -1a'
 alias ip='ip -h -p -c=auto'
+alias iwevent='iw event -T'
 alias journal='journalctl -o short-precise -b'
 alias last='last -x'
 alias ld-debug='LD_DEBUG=all'
@@ -340,11 +338,13 @@ alias moon='curl -f http://wttr.in/moon | head -n -4'
 alias mount-loop='mount -o loop'
 alias mpv-debug='mpv --terminal=yes --msg-level=all=debug'
 alias mpv-verbose='mpv --terminal=yes --msg-level=all=v'
+alias mpv-ytdl-best='mpv --ytdl-format=bestvideo+bestaudio/best'
 alias mpv-ytdl-reverse='mpv --ytdl-raw-options=playlist-reverse='
 alias mv='mv -i'
 alias namei='namei -l'
 alias ncdu='ncdu -x'
 alias neomutt-debug='neomutt -d 5 -l ~/tmp/neomutt.log'
+alias newsboat='newsboat -q'
 alias nmap-all='nmap -p 1-65535'
 alias npmg='npm -g'
 alias nslookup='nslookup -vc -fail'
@@ -372,7 +372,10 @@ alias sd-tmpfiles='systemd-tmpfiles --cat-config'
 alias sd=systemctl
 alias sdu='systemctl --user'
 alias sed-all="sed -E -e 'H;1h;\$!d;x'"
+alias smbclient='smbclient --configfile=/dev/null'
 alias socat='socat readline,history=/dev/null'
+alias soff='sudo -K'
+alias son='sudo -v'
 alias speaker-test='speaker-test -t wav -c 2'
 alias srunX='srun -NsXl'
 alias srunx='srun -Nsxl'
@@ -381,8 +384,6 @@ alias ssh-socks='ssh -D 1080 -N'
 alias ssh0='ssh -S none'
 alias sslcon='openssl s_client -showcerts -connect'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
-alias sudo-off='sudo -K'
-alias sudo-on='sudo -v'
 alias sys='systool -av'
 alias systemd-debug='SYSTEMD_LOG_LEVEL=7 SYSTEMD_LOG_COLOR=1 SYSTEMD_LOG_TIME=1 SYSTEMD_LOG_LOCATION=1'
 alias tcpdump='tcpdump -ne -vvv'
@@ -411,6 +412,12 @@ alias xinput-test='xinput test-xi2 --root'
 alias xwininfo='xwininfo -all'
 alias yaml='yq .'
 alias zsh0='zsh -df'
+
+# Add/Remove the user from supplementary group(s)
+alias usermod-addgroups='usermod -a -G'
+alias usermod-rmgroups='usermod -r -G'
+# addgroup/delgroup (busybox)
+# gpasswd -a/-d
 
 # Workaround for broken `udevadm` completion
 alias udevadm-info-dev='udevadm info --name'
@@ -453,6 +460,7 @@ unbase() { unset BASEDIR; }
 
 # shellcheck disable=SC2164
 cd() {
+    case $SHNAME in zsh) setopt local_options posix_builtins ;; esac
     [ $# -gt 0 ] || set -- "${BASEDIR:-${SHOME:-$HOME}}"
     command cd -- "$@"
 }
@@ -520,10 +528,6 @@ ifs0() {
 
 lsmod() {
     pgx command lsmod "$@"
-}
-
-netinfo() {
-    pgx command netinfo "$@"
 }
 
 on() {

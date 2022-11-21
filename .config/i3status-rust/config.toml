@@ -1,5 +1,5 @@
 [theme]
-name = "native"
+theme = "native"
 [theme.overrides]
 idle_bg = "#000000"
 idle_fg = "#c0c0c0"
@@ -16,45 +16,38 @@ separator_bg = "#000000"
 separator_fg = "#c0c0c0"
 
 [icons]
-name = "material-nf"
+icons = "material-nf"
 [icons.overrides]
 volume_muted = "\ufa80"
 
 [[block]]
 block = "focused_window"
-max_width = 100
+format = " $title.str(max_w:100) |"
 [block.theme_overrides]
 idle_fg = "#efefef"
 
 [[block]]
 block = "cpu"
-format = "{utilization:02*_}"
+format = " $icon $utilization.eng(pad_with:0) "
 interval = 1
 
 [[block]]
 block = "memory"
-display_type = "memory"
-format_mem = "{mem_used_percents:02*_}"
+format = " $icon $mem_used_percents.eng(pad_with:0) "
+
+[[block]]
+block = "backlight"
+cycle = [5, 40, 70, 100]
+device = "acpi_video0"
+format = " $icon $brightness "
+invert_icons = true
 
 [[block]]
 block = "sound"
-format = "{volume:02*_}"
+format = " $icon $volume "
 show_volume_when_muted = true
 
 [[block]]
-block = "battery"
-format = "{percentage:02*_}"
-[block.theme_overrides]
-good_fg = "#c0c0c0"
-
-#[[block]]
-#block = "backlight"
-#cycle = [5, 40, 70, 100]
-#device = "acpi_video0"
-#format = "{brightness:02*_}"
-#invert_icons = true
-
-[[block]]
 block = "time"
-format = "%a❘%d.%m❘%H:%M"
+format = "$timestamp.datetime(f:'%a❘%d.%m❘%H:%M') "
 interval = 60

@@ -25,12 +25,11 @@ read -r X Y W H <<<"$tmp"
 
     # See also:
     #
-    #   ffmpeg -h demuxer=x11grab
+    #   $ ffmpeg -h demuxer=x11grab
+    #   $ ffmpeg -h encoder=h264
+    #   $ ffmpeg -h encoder=vp9
     #
-    #   ffmpeg -h encoder=h264
     #   https://trac.ffmpeg.org/wiki/Encode/H.264
-    #
-    #   ffmpeg -h encoder=vp9
     #   https://trac.ffmpeg.org/wiki/Encode/VP9
 
     outfile=screencast-$ts.webm

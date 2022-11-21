@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-#
-# See also:
-#
-#   openssl rand -base64 12
+
+# See also: `openssl rand -base64 12`
 
 set -eu
 

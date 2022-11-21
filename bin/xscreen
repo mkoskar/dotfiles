@@ -40,7 +40,7 @@ outputs() {
     local o edid
     declare -ga outputs=(); declare -gA out=()
     while read -r o _ edid; do out[$edid]=$o; done < <(edidsum -xo)
-    readarray -t outputs < <(xrandr | awk '/^\w+ (dis)?connected/ { print $1 }')
+    readarray -t outputs < <(xrandr | awk '/^\S+ (dis)?connected/ { print $1 }')
 }
 
 post_hook() { apod set & }
@@ -63,7 +63,7 @@ case $xserver in
         layout_hook_"$xconfig" "$@"
         xrandr --dpi 96
         xset dpms 0 0 300
-        #touchpad off
+        touchpad off
         trackpoint-wheel on
         (
             for (( i=3; i>0; i-- )); do

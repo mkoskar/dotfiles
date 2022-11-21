@@ -2,14 +2,14 @@
 
 set -eu
 
-#export SANE_DEBUG_PIXMA=1
 #export SANE_DEBUG_BJNP=1
+#export SANE_DEBUG_PIXMA=1
 
 # Detection:
 #
-#   1) turn of firewall
-#   2) scanimage -L
-#
+#   1) turn off firewall
+#   2) $ scanimage -L
+
 # See also: /etc/sane.d/pixma.conf
 
 sel=$(

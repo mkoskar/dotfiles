@@ -1,6 +1,4 @@
 # vim: ft=conf
-#
-# https://github.com/vivien/i3blocks/blob/master/docs/README.adoc
 
 separator_block_width=15
 

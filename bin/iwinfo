@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+if (( ! $# )); then
+    exec pgx iwinfo -
+fi
+
+info() {
+    local label=$1
+    shift
+    [[ $label = - ]] && label=$*
+    echo $'\n--------------------------------------------------'
+    printf '> %s\n\n' "$label"
+    "$@"
+}
+
+{
+    printf '# vim: ft=info'
+    cd /sys/class/ieee80211 || exit
+    for phy in *; do
+        [[ -e $phy ]] || continue
+
+        info - iw phy "$phy" info
+
+        info - iw phy "$phy" channels
+
+        info - iw phy "$phy" reg get
+
+        info - iw phy "$phy" wowlan show
+
+        for dev in "$phy"/device/net/*; do
+            [[ -e $dev ]] || continue
+            dev=${dev##*/}
+
+            info - iw dev "$dev" info
+
+            info - iw dev "$dev" link
+
+            info - iw dev "$dev" get power_save
+
+            info - iw dev "$dev" station dump -v
+
+            info - iw dev "$dev" scan dump -u
+        done
+    done
+    echo
+} |& $PAGER

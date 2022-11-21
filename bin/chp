@@ -116,30 +116,55 @@ if [[ -e $path/theme ]]; then
     args+=(--load-extension="$path"/theme)
 fi
 
-# shellcheck disable=SC2054
+
+# GPU
+# ----------------------------------------
+# https://source.chromium.org/chromium/chromium/src/+/main:gpu/config/gpu_preferences.h
+
+features+=(
+    #PlatformHEVCDecoderSupport
+    #RawDraw
+    #VaapiIgnoreDriverChecks
+    -UseChromeOSDirectVideoDecoder
+    CanvasOopRasterization
+)
+
 args+=(
-
-    # HW acceleration
-    # ----------------------------------------
-
     #--disable-gpu-driver-bug-workarounds
     #--enable-native-gpu-memory-buffers
-    --disable-features=UseChromeOSDirectVideoDecoder
-    --enable-features=CanvasOopRasterization,RawDraw,VaapiVideoDecoder
+    #--enable-unsafe-webgpu
     --enable-gpu-rasterization
     --enable-zero-copy
     --ignore-gpu-blocklist
+    #--use-gl=egl # FATAL:gpu_init.cc(542)] Passthrough is not supported, GL is egl, ANGLE is
     --use-vulkan
+)
 
-    # Other
-    # ----------------------------------------
 
+# Other
+# ----------------------------------------
+
+args+=(
     #--disable-remote-fonts
     #--extensions-on-chrome-urls
     #--force-device-scale-factor=1
     #--restore-last-session
     --show-component-extension-options
+)
 
+
+# ----------------------------------------
+
+disable_features=
+enable_features=
+
+for f in "${features[@]}"; do
+    [[ $f = -* ]] && disable_features+=${f#-}, || enable_features+=$f,
+done
+
+args+=(
+    ${disable_features:+--disable-features="${disable_features%,}"}
+    ${enable_features:+--enable-features="${enable_features%,}"}
 )
 
 if [[ ${CH_DEBUG-} ]]; then

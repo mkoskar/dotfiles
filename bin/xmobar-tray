@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#
+
 # See also: https://github.com/jaor/xmobar/issues/239#issuecomment-233206552
 
 set -eu

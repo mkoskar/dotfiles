@@ -56,8 +56,8 @@ exclude() {
     return 0
 }
 
-sha1sum() {
-    command sha1sum | awk '{ print $1 }'
+_sha1sum() {
+    sha1sum | awk '{ print $1 }'
 }
 
 main() {
@@ -68,7 +68,7 @@ main() {
         status=$(<"$out"/status)
         [[ $status = connected ]] || continue
         edid=$(hexdump -e '16/1 "%02x"' <"$out"/edid)
-        edidsum=$(printf %s "$edid" | sha1sum)
+        edidsum=$(printf %s "$edid" | _sha1sum)
         if (( xrandr )); then
             omap[$edidsum]=$out
             continue
@@ -87,7 +87,7 @@ main() {
             printf '%s - -\n' "$out"
             continue
         fi
-        edidsum=$(printf %s "$edid" | sha1sum)
+        edidsum=$(printf %s "$edid" | _sha1sum)
         sysout=${omap[$edidsum]}
         exclude "$sysout" || continue
         if (( mode )); then
@@ -101,7 +101,7 @@ main() {
                 if (out) printf "%s %s\n", out, buf
                 edid = 0; buf = "-"
             }
-            /^\w+ (dis)?connected/ {
+            /^\S+ (dis)?connected/ {
                 fin()
                 if ($2 ~ /^connected/) out = $1
                 else out = ""
@@ -123,7 +123,7 @@ main() {
 }
 
 if (( mode > 1 )); then
-    main | sha1sum
+    main | _sha1sum
 else
     main
 fi

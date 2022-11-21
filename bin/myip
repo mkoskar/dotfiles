@@ -10,5 +10,5 @@
 # @ns1-1.akamaitech.net whoami.akamai.net a
 # @ns1.google.com o-o.myaddr.l.google.com txt
 
+#dig -6 -r +tcp +short @resolver1.opendns.com myip.opendns.com aaaa
 dig -4 -r +tcp +short @resolver1.opendns.com myip.opendns.com a
-dig -6 -r +tcp +short @resolver1.opendns.com myip.opendns.com aaaa

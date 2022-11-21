@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#
+
 # See also: http://wiki.archlinux.org/index.php/Pacman_tips
 
 if (( EUID )); then

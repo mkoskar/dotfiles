@@ -27,6 +27,9 @@ URxvt.font:                     xft:Terminus:pixelsize=16, \
 URxvt.boldItalicFont:           xft:Dejavu Sans Mono:bold:italic
 URxvt.italicFont:               xft:Dejavu Sans Mono:italic
 
+! Workaround for an odd resizing behavior introduced in 9.31
+URxvt.geometry:                 80x96
+
 URxvt.cutchars:                 '"()*,<>[]{}|\''
 URxvt.depth:                    32
 URxvt.iso14755:                 true
@@ -52,7 +55,8 @@ URxvt.keysym.Shift-Home:        command:\033]720;9999\007
 URxvt.keysym.Shift-End:         command:\033]721;9999\007
 URxvt.keysym.Shift-Return:      command:\033]721;9999\007
 
-URxvt.perl-ext-common:          confirm-paste,keyboard-select,matcher,url-picker,url-select
+URxvt.perl-ext-common:          confirm-paste,keyboard-select,matcher,option-popup,url-picker,url-select
+
 URxvt.url-picker.launcher:      b
 URxvt.url-select.launcher:      b
 URxvt.url-select.underline:     true

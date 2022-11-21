@@ -3,7 +3,7 @@
 cmd -0 trayer \
     --edge top --align right \
     --widthtype request \
-    --height 19 --heighttype pixel \
+    --heighttype pixel --height 17 \
     --SetPartialStrut true \
     --transparent true --alpha 0 --tint 0x000000 \
     --monitor primary "$@"

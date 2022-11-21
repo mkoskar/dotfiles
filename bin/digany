@@ -13,13 +13,12 @@ server=${2:-}
 
 # ----------------------------------------
 
-dig() {
-    command dig \
-        ${server:+@"$server"} \
+_dig() {
+    dig ${server:+@"$server"} \
         -r +multiline +nocrypto +ttlunits +noall +answer "$@"
 }
 
-nsec=$(dig -t nsec -q "$1")
+nsec=$(_dig -t nsec -q "$1")
 read -ra nsec <<<"$nsec"
 (( ${#nsec[@]} )) &&
     t=("${nsec[@]:5}") ||
@@ -29,6 +28,6 @@ echo
 for i in "${t[@]}"; do
     echo $'--------------------------------------------------'
     printf '> %s\n\n' "$i"
-    dig -t "$i" -q "$1"
+    _dig -t "$i" -q "$1"
     echo
 done

@@ -223,7 +223,7 @@ BUFFER_MERGE_RULES = [
     re.compile(r'^irc\.[^.]*\.#libera(-offtopic)?$'),
 ]
 
-re_archlinux = re.compile(r'^#archlinux(|-.*)$')
+re_archlinux = re.compile(r'^#+archlinux(|-.*)$')
 re_bitlbee_control = re.compile(r'^irc\.bitlbee[^.]*\.&')
 re_offtopic = re.compile(r'^(.*)-offtopic$')
 re_twitter = re.compile(r'^irc\.bitlbee[^.]*\.#twitter_mkoskar$')
@@ -464,7 +464,6 @@ key_bind('meta-space', '/layout_reset')
 key_bind('meta-;meta-space', '/layout_save')
 key_bind('meta-;meta-1', '/layout_reset core.weechat')
 key_bind('meta-;meta-2', '/layout_reset &bitlbee')
-key_bind('meta-;meta-3', '/layout_reset #twitter')
 
 if not loaded:
     opt = w.config_get('plugins.var.layout_presets')
@@ -584,8 +583,6 @@ def cb_command_wspaces_reset(data, buffer, args):
         cmd('wspace_go 2')
         cmd('layout_reset &bitlbee')
         cmd('wspace_go 3')
-        cmd('layout_reset #twitter')
-        cmd('wspace_go 4')
         cmd('layout_reset #archlinux')
         for ws in range(5, 10):
             cmd(f'wspace_go {ws}')
@@ -688,7 +685,9 @@ cmd('alias add GNICK grep_nick')
 # ----------------------------------------
 
 def autorespond_handle(ctx):
-    pass
+    if 'nick_pulec' in ctx.tags:
+        if 'redbull' in ctx.message.lower():
+            msg('redbull is bad for you pulec', ctx.buffer)
 
 
 def autorespond_cb_print(data, buffer, date, tags,
@@ -850,8 +849,10 @@ def ignore_filter_cb_line(data, line):
         host = tag_by_prefix(tags, 'host_') or ''
         for regex in itertools.chain(re_ignore_filter.get(server, []),
                                      re_ignore_filter.get(server + '.' + channel, [])):
-            if regex.match('nick_' + nick) or regex.match('host_' + host):
-                if not w.buffer_get_string(buffer, 'localvar_ignore_filter'):
+            ignoring = w.buffer_get_string(buffer, 'localvar_ignore_filter')
+            if (ignoring and host == '~phrik@phrik.archlinux.org') or \
+               regex.match('nick_' + nick) or regex.match('host_' + host):
+                if not ignoring:
                     w.prnt(buffer, '×\t')
                 w.buffer_set(buffer, 'localvar_set_ignore_filter', '1')
                 return {
@@ -868,6 +869,7 @@ w.hook_command('ignore_filter', '', '', '',
                ' || host %(nick) -channel %-'
                ' || nick %(nick) -channel %-',
                'cb_command_ignore_filter', '')
+w.hook_line('', 'irc.*', 'irc_mode', 'ignore_filter_cb_line', '')
 w.hook_line('', 'irc.*', 'irc_privmsg', 'ignore_filter_cb_line', '')
 
 cmd('alias add IFILTER ignore_filter')
@@ -1208,8 +1210,8 @@ def configure():
     cmd('set autosort.sorting.case_sensitive on')
     cmd('set autosort.v3.helpers {"core_first": "${if:${buffer.full_name}!=core.weechat}", "irc_raw_last": "${if:${buffer.full_name}==irc.irc_raw}", "irc_last": "${if:${buffer.plugin.name}==irc}", "hashless_name": "${info:autosort_replace,#,,${buffer.name}}", "irc_first": "${if:${buffer.plugin.name}!=irc}", "irc_raw_first": "${if:${buffer.full_name}!=irc.irc_raw}"}')
     cmd('set autosort.v3.rules ["${core_first}", "${irc_last}", "${buffer.plugin.name}", "${irc_raw_first}", "${if:${plugin}==irc?${if:${server}!~\\\\|*bitlbee}}", "${if:${plugin}==irc?${info:autosort_order,${type},server,private,*,channel}}", "${buffer.short_name}", "${buffer.full_name}"]')
-    cmd('set buflist.format.buffer ${format_number}${indent}${color_hotlist}${if:${type}!=channel?${color:lightgreen}${if:${type}==private?${color:lightcyan}}}${cut:13,${color:white}+,${name}}${format_hotlist}')
-    cmd('set buflist.format.buffer_current ${color:,237}${format_number}${indent}${color:white}${color:*white}${cut:13,${color:white}+,${name}}${format_hotlist}')
+    cmd('set buflist.format.buffer ${format_number}${indent}${color_hotlist}${if:${type}!=channel?${color:lightgreen}${if:${type}==private?${color:lightcyan}}}${cut:14,${color:white}+,${name}}${format_hotlist}')
+    cmd('set buflist.format.buffer_current ${color:,237}${format_number}${indent}${color:white}${color:*white}${cut:14,${color:white}+,${name}}${format_hotlist}')
     cmd('set buflist.format.hotlist " ${hotlist}"')
     cmd('set buflist.format.hotlist_highlight ${color:lightred}')
     cmd('set buflist.format.hotlist_low ${color:default}')
@@ -1285,7 +1287,6 @@ def configure():
     cmd('set script.scripts.download_enabled on')
     cmd('set script.scripts.hold custom.py')
     cmd('set sec.crypt.passphrase_command cat ~/.secrets/weechat-passphrase')
-    cmd('set sec.crypt.passphrase_file ~/.secrets/weechat-passphrase')
     cmd('set spell.check.default_dict en')
     cmd('set spell.check.enabled on')
     cmd('set spell.check.real_time on')
@@ -1429,7 +1430,7 @@ def configure():
     cmd('buflist bar')
     cmd('bar set buflist filling_top_bottom horizontal')
     cmd('bar set buflist items buflist')
-    cmd('bar set buflist size 24')
+    cmd('bar set buflist size 25')
 
     cmd('bar set vi_line_numbers color_fg 244')
     cmd('bar set vi_line_numbers items line_numbers')
@@ -1580,9 +1581,6 @@ def cb_command_reconfigure(data, buffer, args):
     cmd('set irc.server.gitter.autoconnect off')
     cmd('set irc.server.gitter.password ${sec.data.gitter}')
 
-    cmd('server add gnome irc.gnome.org/6697')
-    cmd('set irc.server.gnome.sasl_password ${sec.data.gnome}')
-
     cmd('server add libera irc.libera.chat/6697')
     cmd('set irc.server.libera.sasl_password ${sec.data.libera}')
 
@@ -1604,5 +1602,20 @@ def cb_command_reconfigure(data, buffer, args):
     return w.WEECHAT_RC_OK
 
 
+def cb_command_reconfigure_scripts(data, buffer, args):
+    cmd('set script.scripts.download_enabled on')
+    cmd('script install autosort.py', mute=False)
+    cmd('script install bufsave.py', mute=False)
+    cmd('script install colorize_nicks.py', mute=False)
+    cmd('script install cron.py', mute=False)
+    cmd('script install go.py', mute=False)
+    cmd('script install grep.py', mute=False)
+    cmd('script install highmon.pl', mute=False)
+    cmd('script install vimode.py', mute=False)
+    return w.WEECHAT_RC_OK
+
+
 w.hook_command('configure', '', '', '', 'all', 'cb_command_configure', '')
 w.hook_command('reconfigure', '', '', '', 'all', 'cb_command_reconfigure', '')
+w.hook_command('reconfigure-scripts', '', '', '', 'all',
+               'cb_command_reconfigure_scripts', '')

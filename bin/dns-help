@@ -42,6 +42,15 @@ Header flags:
 OPT pseudo-RR:
 - https://www.rfc-editor.org/rfc/rfc6891#section-6
 
+Zones:
+- https://www.rfc-editor.org/rfc/rfc8499.html#page-22
+
+Glue records:
+- https://en.wikipedia.org/wiki/Domain_Name_System#Circular_dependencies_and_glue_records
+- address records of subzone name servers (sent in ADDITIONAL SECTION)
+- not part of the authoritative data
+- maintained inside parent zone
+
 --------------------------------------------------
 
 /etc/gai.conf

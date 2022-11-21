@@ -9,7 +9,7 @@ pre_hook() {
     srun -rxl picom
     srun -rxl osdd
     srun -rxl -n polkit-agent /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
-    srun -rxl -n sxhkd bash -c 'sleep 1; exec sxhkd'
+    srun -rxl -n sxhkd bash -c 'sleep 1 && exec sxhkd'
     case $session in
         openbox | xfwm4)
             srun -rxl tint2

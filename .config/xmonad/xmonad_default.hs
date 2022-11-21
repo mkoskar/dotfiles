@@ -102,7 +102,6 @@ myConfig = def
 
     myStartupHook = do
         checkKeymap myConfig myEZKeys
-        ewmhDesktopsStartup
         adjustEventInput
         setWMName "LG3D"
         n <- screenCount
@@ -120,13 +119,9 @@ myConfig = def
                 viewScreen def 1
         spawn "xsession --startup"
 
-    myLogHook = ewmhDesktopsLogHook
-                <+> updatePointer (0.5, 0.5) (0, 0)
+    myLogHook = updatePointer (0.5, 0.5) (0, 0)
 
-    myHandleEventHook = ewmhDesktopsEventHook
-                        <+> docksEventHook
-                        <+> fullscreenEventHook
-                        <+> positionStoreEventHook
+    myHandleEventHook = positionStoreEventHook
                         <+> hintsEventHook
                         <+> focusOnMouseMove
 
@@ -204,7 +199,7 @@ myConfig = def
             , (f, m) <- [(W.greedyView, ""), (W.shift, "-S")]
         ]
         ++
-        [ ("M-q", spawn "xmonad-restart")
+        [ ("M-q", spawn "xmonad --restart")
         , ("M-S-q", io (exitWith ExitSuccess))
         , ("M-S-<Return>", spawn myTerminal)
 
@@ -219,8 +214,8 @@ myConfig = def
 
         , ("M-z", onPrevNeighbour def W.greedyView)
         , ("M-x", onNextNeighbour def W.greedyView)
-        , ("M-s", moveTo Prev HiddenNonEmptyWS)
-        , ("M-d", moveTo Next HiddenNonEmptyWS)
+        , ("M-s", moveTo Prev $ hiddenWS :&: Not emptyWS)
+        , ("M-d", moveTo Next $ hiddenWS :&: Not emptyWS)
         , ("M-a", toggleWS)
 
           -- Stack navigation
@@ -265,4 +260,4 @@ myConfig = def
 
     -- }}}
 
-main = xmonad =<< myStatusBar (withUrgencyHook NoUrgencyHook myConfig)
+main = xmonad =<< myStatusBar (withUrgencyHook NoUrgencyHook $ ewmhFullscreen . ewmh . docks $ myConfig)

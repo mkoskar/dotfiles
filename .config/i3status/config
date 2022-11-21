@@ -6,20 +6,7 @@ general {
     output_format = "i3bar"
 }
 
-order += "cpu_usage"
-order += "memory"
 order += "time"
-
-cpu_usage {
-    format = "%usage"
-    separator_block_width = 6
-}
-
-memory {
-    format = "%percentage_used"
-    separator = false
-    separator_block_width = 13
-}
 
 time {
     format = "%a❘%d.%m❘%H:%M"

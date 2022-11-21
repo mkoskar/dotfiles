@@ -13,6 +13,7 @@ posix_base=https://pubs.opengroup.org/onlinepubs/9699919799
 MENUER=$prgname menuer "$@" <<-EOF |
 
     !                       b file:///"$HOME"/tmp
+    8p8c                    b https://en.wikipedia.org/wiki/ANSI/TIA-568#Wiring
     ImageMagick             b https://www.imagemagick.org/script/command-line-tools.php
     R                       b https://cran.r-project.org/manuals.html
     abnf                    b https://www.rfc-editor.org/rfc/rfc5234.html
@@ -21,6 +22,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     amazon                  b https://www.amazon.com/s/field-keywords={u}
     amazon-de               b https://www.amazon.de/s/field-keywords={u}
     amazon-uk               b https://www.amazon.co.uk/s/field-keywords={u}
+    amd-cpus                b https://en.wikipedia.org/wiki/List_of_AMD_processors#Zen_core_architecture_\(2017%E2%80%93present\)
     amd-manuals             b https://developer.amd.com/resources/developer-guides-manuals/
     android                 b https://developer.android.com/docs
     angularjs               b https://docs.angularjs.org/api
@@ -33,6 +35,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ansible-special-vars    b https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html
     ant                     b https://ant.apache.org/manual/
     apache                  b https://httpd.apache.org/docs/
+    apache-directives       b https://httpd.apache.org/docs/current/mod/quickreference.html
     apk                     b https://pkgs.alpinelinux.org/packages\?name={u}
     arch                    b https://www.archlinux.org/
     arch-bugs               b https://bugs.archlinux.org/index.php\?string={u}
@@ -71,16 +74,21 @@ MENUER=$prgname menuer "$@" <<-EOF |
     batteries               b https://en.wikipedia.org/wiki/List_of_battery_sizes#Cylindrical_batteries
     binutils                b https://sourceware.org/binutils/docs/
     bluetooth-profiles      b https://en.wikipedia.org/wiki/List_of_Bluetooth_profiles
+    bpf                     b https://www.kernel.org/doc/html/latest/bpf/index.html
     browserbench            b https://browserbench.org/
     busybox                 b https://busybox.net/downloads/BusyBox.html
     busybox-git             b https://git.busybox.net/busybox/tree
     c                       b http://www.open-std.org/jtc1/sc22/wg14/www/projects
     c-faq                   b http://c-faq.com/
+    certbot                 b https://eff-certbot.readthedocs.io/en/stable/
+    cgi                     b https://www.rfc-editor.org/rfc/rfc3875.html
     chebi                   b https://www.ebi.ac.uk/chebi/advancedSearchFT.do\?searchString={u}
     chemspider              b https://www.chemspider.com/Search.aspx\?q={u}
     chrome-ext              b https://developer.chrome.com/docs/extensions/
     chromium-changes        b https://chromiumdash.appspot.com/releases?platform=Linux
     chromium-code-search    b https://source.chromium.org/
+    chromium-flags          b https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/flag_descriptions.cc
+    chromium-switches       b https://source.chromium.org/chromium/chromium/src/+/main:chrome/common/chrome_switches.cc
     cite                    b https://citeseerx.ist.psu.edu/search\?q={u}
     constellations          b https://en.wikipedia.org/wiki/88_modern_constellations#List
     country-codes           b https://en.wikipedia.org/wiki/ISO_3166-1#Current_codes
@@ -109,9 +117,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     dns-terminology         b https://www.rfc-editor.org/rfc/rfc8499.html
     dnssec-analyzer         b https://dnssec-debugger.verisignlabs.com/
     docker                  b https://github.com/wsargent/docker-cheat-sheet
-    docker-compose          b https://docs.docker.com/compose/compose-file/
+    docker-hub              b https://hub.docker.com/search\?q={u}
     docker-reference        b https://docs.docker.com/reference/
-    dockerfile              b https://docs.docker.com/engine/reference/builder/
     doi                     b https://www.doi.org/hb.html
     dom-spec                b https://dom.spec.whatwg.org/
     ebay                    b https://www.ebay.com/sch/i.html\?_nkw={u}
@@ -146,6 +153,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     freedesktop-specs       b https://standards.freedesktop.org/
     freenode                b https://freenode.net/
     freetype                b https://www.freetype.org/freetype2/docs/documentation.html
+    fttx                    b https://en.wikipedia.org/wiki/Fiber_to_the_x
     g                       b https://www.google.com/search\?q={u}
     g-operators             b https://ahrefs.com/blog/google-advanced-search-operators/
     gcc                     b https://gcc.gnu.org/onlinedocs/
@@ -195,9 +203,11 @@ MENUER=$prgname menuer "$@" <<-EOF |
     greek-alphabet          b https://en.wikipedia.org/wiki/Greek_alphabet#Letters
     groovy                  b https://groovy-lang.org/documentation.html
     grub                    b https://www.gnu.org/software/grub/manual/grub.html
-    gtk-running             b https://developer.gnome.org/gtk3/stable/gtk-running.html
+    gtk-running             b https://docs.gtk.org/gtk4/running.html
+    gunicorn                b https://docs.gunicorn.org/en/stable/
     gutenberg               b https://www.gutenberg.org/wiki/Category:Bookshelf
     hangouts                b https://hangouts.google.com/
+    haproxy                 b https://docs.haproxy.org/
     haskell-base            b https://hackage.haskell.org/package/base
     haskell-docs            b https://www.haskell.org/documentation
     haskell-ghc             b https://downloads.haskell.org/ghc/latest/docs/html/users_guide/index.html
@@ -217,11 +227,11 @@ MENUER=$prgname menuer "$@" <<-EOF |
     iana-dns-parameters     b https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml
     iana-http-methods       b https://www.iana.org/assignments/http-methods/http-methods.xhtml
     iana-http-status-codes  b https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+    iana-ip-numbers         b https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml
     iana-ipv4-multicast     b https://www.iana.org/assignments/multicast-addresses/multicast-addresses.xhtml
     iana-ipv4-special       b https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xhtml
     iana-ipv6-multicast     b https://www.iana.org/assignments/ipv6-multicast-addresses/ipv6-multicast-addresses.xhtml
     iana-ipv6-special       b https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml
-    iana-protocol-numbers   b https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml
     iana-root-zone          b https://www.iana.org/domains/root/db
     iana-service-names      b https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml
     iana-special-domains    b https://www.iana.org/assignments/special-use-domain-names/special-use-domain-names.xhtml
@@ -241,6 +251,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ipv4                    b https://www.rfc-editor.org/rfc/rfc791.html
     ipv6                    b https://www.rfc-editor.org/rfc/rfc8200.html
     ipv6-addressing         b https://www.rfc-editor.org/rfc/rfc4291.html
+    ipv6-local-generator    b https://www.unique-local-ipv6.com/
     irc-channels            b https://netsplit.de/channels/
     irc-docs                b https://ircdocs.horse/
     irc-logs                b https://colabti.org/irclogger/irclogger_logs
@@ -288,12 +299,14 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-faq               b http://vger.kernel.org/lkml/
     linux-ip-guide          b http://linux-ip.net/linux-ip/linux-ip-single.html
     linux-lkddb             b https://cateee.net/lkddb/web-lkddb/
+    linux-nl80211           b https://elixir.bootlin.com/linux/latest/source/include/uapi/linux/nl80211.h
     linux-params            b https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html
     linux-repos             b https://git.kernel.org/cgit/
     linux-routing           b https://lartc.org/lartc.html
     linux-specs             b https://refspecs.linuxfoundation.org/
     linux-src               b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/\?id="$kernel_version"
     linux-sysctl            b https://www.kernel.org/doc/Documentation/sysctl
+    linux-xref              b https://elixir.bootlin.com/linux/latest/source/
     lkml                    b https://lkml.org/
     lobste.rs               b https://lobste.rs/newest
     lore-git                b https://lore.kernel.org/git/
@@ -324,11 +337,16 @@ MENUER=$prgname menuer "$@" <<-EOF |
     mutt                    b http://mutt.org/doc/manual/
     mutt-changes            b https://gitlab.com/muttmua/mutt/raw/master/UPDATING
     neomutt                 b https://neomutt.org/guide/index.html
-    neomutt-changes         b https://github.com/neomutt/neomutt/blob/master/ChangeLog.md
+    neomutt-changes         b https://github.com/neomutt/neomutt/blob/main/ChangeLog.md
     neomutt-patterns        b https://neomutt.org/guide/advancedusage.html#patterns
     netfilter               b https://www.netfilter.org/documentation/index.html
-    netfilter-flow          b https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
     nextcloud               b https://docs.nextcloud.com/
+    nftables-hooks          b https://wiki.nftables.org/wiki-nftables/index.php/Netfilter_hooks
+    nftables-wiki           b https://wiki.nftables.org/wiki-nftables/index.php/Main_Page
+    nginx                   b https://nginx.org/en/docs/
+    nginx-directives        b https://nginx.org/en/docs/dirindex.html
+    nginx-variables         b https://nginx.org/en/docs/varindex.html
+    nginx-wiki              b https://www.nginx.com/resources/wiki/
     nodejs                  b https://nodejs.org/api/
     noise                   b https://noiseprotocol.org/noise.html
     notes!                  b ~/projects/notes/_build/html/index.html
@@ -346,20 +364,21 @@ MENUER=$prgname menuer "$@" <<-EOF |
     osdev                   b https://wiki.osdev.org/Main_Page
     oui                     b https://www.wireshark.org/tools/oui-lookup.html
     owl                     b https://owl.purdue.edu/owl/purdue_owl.html
-    pango-markup            b https://developer.gnome.org/pango/stable/PangoMarkupFormat.html
+    pango                   b https://docs.gtk.org/Pango/
     pasta                   b https://en.wikipedia.org/wiki/List_of_pasta
     patents                 b https://patents.google.com/
     pep                     b https://www.python.org/dev/peps/
-    pep8                    b https://www.python.org/dev/peps/pep-0008/
+    pep8-styleguide         b https://www.python.org/dev/peps/pep-0008/
     perf                    b https://www.brendangregg.com/perf.html
     perf-full               b https://www.brendangregg.com/Perf/linux_perf_tools_full.png
     periodic-table          b https://en.wikipedia.org/wiki/Periodic_table#Overview
     perl                    b https://perldoc.perl.org/
-    pgp-search              b https://pgp.key-server.io/
+    pgp-search              b https://keyserver.ubuntu.com/
     phrik                   b https://wiki.archlinux.org/index.php/Phrik
     pizza                   b http://www.varasanos.com/pizzarecipe.htm
     pkg                     b https://www.archlinux.org/packages/\?q={u}
     plan9                   b https://9p.io/plan9/
+    podman                  b https://docs.podman.io/en/latest/index.html
     posix                   b "$posix_base"/
     posix-env               b "$posix_base"/basedefs/V1_chap08.html
     posix-param-expansion   b "$posix_base"/utilities/V3_chap02.html#tag_18_06_02
@@ -373,6 +392,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     printing                b https://wiki.linuxfoundation.org/openprinting/database/documentation
     procedure-words         b https://en.wikipedia.org/wiki/Procedure_word
     prometheus              b https://prometheus.io/docs/introduction/overview/
+    proxy-protocol          b https://raw.githubusercontent.com/haproxy/haproxy/master/doc/proxy-protocol.txt
     pubchem                 b https://www.ncbi.nlm.nih.gov/pccompound\?term={u}
     pygments                b https://pygments.org/docs/lexers/
     pypa                    b https://www.pypa.io/
@@ -388,6 +408,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     qutebrowser             b https://qutebrowser.org/img/cheatsheet-big.png
     radio-spectrum          b https://en.wikipedia.org/wiki/Radio_spectrum
     realworldhaskell        b http://book.realworldhaskell.org/read/
+    regdb                   b https://git.kernel.org/pub/scm/linux/kernel/git/sforshee/wireless-regdb.git/plain/db.txt
     regex-gnulib            b https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html
     regex-java              b https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/util/regex/Pattern.html
     regex-js                b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
@@ -405,6 +426,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     rhel-docs               b https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux
     ripestat                b https://stat.ripe.net/app/launchpad
     risks                   b https://catless.ncl.ac.uk/Risks/
+    routeros                b https://help.mikrotik.com/docs/display/ROS/RouterOS
     rpi                     b https://www.raspberrypi.org/documentation/hardware/raspberrypi/README.md
     rst                     b https://docutils.sourceforge.io/rst.html
     rst-showcase!           b ~/projects/lab/docutils/showcase/build/html/index.html
@@ -446,6 +468,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     sql-bnf!                b ~/archive/lib/00-cs/dbms/sql-bnf/index.html
     sqlite                  b https://sqlite.org/docs.html
     sqlite-lang             b https://sqlite.org/lang.html
+    ssl-config              b https://ssl-config.mozilla.org/
     stn                     b https://normy.unms.sk/eshop/public/search.aspx
     suckless-repos          b https://git.suckless.org/
     sysrq                   b https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
@@ -477,12 +500,15 @@ MENUER=$prgname menuer "$@" <<-EOF |
     unix-timeline           b https://upload.wikimedia.org/wikipedia/commons/c/cd/Unix_timeline.en.svg
     unix-timeline2          b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
     url                     b https://url.spec.whatwg.org/
-    usb-connectors          b https://en.wikipedia.org/wiki/USB_hardware#Connectors
+    usb-connectors          b https://en.wikipedia.org/wiki/USB#Connector_type_quick_reference
+    usb-naming              b https://en.wikipedia.org/wiki/USB#September_2022_naming_scheme
     utf8                    b https://en.wikipedia.org/wiki/UTF-8#Encoding
     util-linux              b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
+    uwsgi                   b https://uwsgi-docs.readthedocs.io/en/latest/
     video-codecs            b https://en.wikipedia.org/wiki/List_of_codecs#Video_compression_formats
     video-standards         b https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Vector_Video_Standards2.svg/1024px-Vector_Video_Standards2.svg.png
     vim                     b https://github.com/vim/vim
+    virtualbox              b https://www.virtualbox.org/manual/
     w                       b https://en.wikipedia.org/w/index.php\?search={u}
     w-cz                    b https://cz.wikipedia.org/w/index.php\?search={u}
     w-sk                    b https://sk.wikipedia.org/w/index.php\?search={u}
@@ -496,10 +522,12 @@ MENUER=$prgname menuer "$@" <<-EOF |
     webext-firefox-js-apis  b https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API
     webext-manifest         b https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json
     webrtc-demos            b https://mozilla.github.io/webrtc-landing/
+    websockets              b https://websockets.spec.whatwg.org/
     weechat                 b https://weechat.org/files/doc/stable/weechat_user.en.html
     weechat-api             b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
     weechat-changes         b https://github.com/weechat/weechat/blob/master/ChangeLog.adoc
     whatwg-specs            b https://spec.whatwg.org/
+    wsgi                    b https://www.python.org/dev/peps/pep-3333/
     x11                     b https://www.x.org/releases/current/doc/
     x11-guide               b https://www.x.org/wiki/guide/
     x11-resdb               b https://www.x.org/releases/current/doc/libXt/intrinsics.html#Loading_the_Resource_Database
@@ -513,7 +541,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     xcb-modules             b https://xcb.freedesktop.org/manual/modules.html
     xlib                    b https://tronche.com/gui/x/xlib/
     xml                     b https://www.w3.org/TR/xml/
-    xmobar                  b https://xmobar.org/
     xmonad                  b https://hackage.haskell.org/package/xmonad
     xmonad-contrib          b https://hackage.haskell.org/package/xmonad-contrib
     xorg-lists              b https://lists.x.org/mailman/listinfo/
@@ -528,6 +555,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     yt                      b https://www.youtube.com/results\?q={u}
     yt-channel              b https://www.youtube.com/results\?sp=EgIQAlAU\&q={u}
     yt-playlist             b https://www.youtube.com/results\?sp=EgIQA1AU\&q={u}
+    zoho-toolkit            b https://mailadmin.zoho.com/cpanel/toolkit.do
     zsh                     b https://zsh.sourceforge.io/Doc/Release/index.html
     zsh-changes             b https://github.com/zsh-users/zsh/blob/master/NEWS
     zsh-guide               b https://zsh.sourceforge.io/Guide/zshguide.html
@@ -547,16 +575,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
 
     iss-hd                  playx https://www.ustream.tv/channel/iss-hdev-payload
     nasatv                  playx https://www.ustream.tv/nasahdtv
-
-    fahrenheit              b 'https://www.google.com/search?q={u} fahrenheit in celsius'
-    foot                    b 'https://www.google.com/search?q={u} ft in m'
-    gallon                  b 'https://www.google.com/search?q={u} gal in l'
-    inch                    b 'https://www.google.com/search?q={u} in in cm'
-    mile                    b 'https://www.google.com/search?q={u} mi in km'
-    ounce                   b 'https://www.google.com/search?q={u} oz in g'
-    pint                    b 'https://www.google.com/search?q={u} pint in l'
-    pound                   b 'https://www.google.com/search?q={u} lb in kg'
-    yard                    b 'https://www.google.com/search?q={u} yd in m'
 
     czk-eur                 b 'https://www.google.com/search?q={u} czk in eur'
     czk-gbp                 b 'https://www.google.com/search?q={u} czk in gbp'

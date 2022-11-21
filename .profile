@@ -159,6 +159,7 @@ export MANSECT=0:9:2:3:7:8:6:1:4:5
 export MANWIDTH=80
 export MPLAYER_HOME=$XDG_CONFIG_HOME/mplayer
 export NO_AT_BRIDGE=1
+export PAPERSIZE=a4
 export PARALLEL_SHELL=$SYSPREFIX/bin/bash
 export PARINIT='T4 w78 prbgqR B=.,?_A_a Q=_s>|'
 export PERL_RL=o=0

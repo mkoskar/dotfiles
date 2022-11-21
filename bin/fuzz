@@ -1,36 +1,4 @@
 #!/usr/bin/env bash
-#
-# See also:
-#
-#   Terminal:
-#
-#     Heatseeker
-#     Icepick
-#     PathPicker
-#     Selecta
-#     fzf
-#     fzy
-#     gof
-#     happyfinder
-#     hmenu
-#     peco
-#     percol
-#     pick
-#     pmenu
-#     selector
-#     skim
-#     slmenu
-#     smenu
-#     tmenu
-#     tpick
-#     vis-menu
-#
-#   GUI:
-#
-#     dmenu
-#     dmenu2
-#     gpicker
-#     rofi
 
 set -eu
 
