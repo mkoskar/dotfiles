@@ -123,9 +123,10 @@ $if bash
     "\C-XP": "\C-X\C-AIpgx "
     "\C-Xx": "\C-X\C-A0isudo "
     "\C-Xh": "\C-X\C-Addihistory 25 | gi ''\C-X\C-Ai"
-    "\C-Xa": "\C-X\C-Aa!!:*"
-    "\C-Xl": "\C-X\C-Aa!!:$"
-    "\C-Xs": "\C-X\C-Aa!!:gs/"
+    "\C-Xa": "!!:*"
+    "\C-Xl": "!!:$"
+    "\C-Xs": "!!:gs/"
+    "\C-X{": '{,.}\C-X\C-Ai'
     "\C-Xc": "--color=auto "
 $endif
 

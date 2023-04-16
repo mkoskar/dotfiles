@@ -39,4 +39,5 @@ pkg install \
     weechat \
     weechat-perl-plugin \
     weechat-python-plugin \
-    zsh
+    zsh \
+    zsh-completions

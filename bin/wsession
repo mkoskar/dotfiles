@@ -5,6 +5,7 @@ set -eu
 prgname=${0##*/}
 
 sessions=(
+    river
     sway
     weston
 )

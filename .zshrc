@@ -35,6 +35,7 @@ autoload -Uz select-quoted
 autoload -Uz zargs
 autoload -Uz zmv
 
+#setopt extended_glob
 setopt always_to_end
 setopt auto_cd
 setopt auto_pushd
@@ -42,7 +43,6 @@ setopt auto_resume
 setopt brace_ccl
 setopt combining_chars
 setopt complete_in_word
-setopt extended_glob
 setopt extended_history
 setopt glob_dots
 setopt hist_expire_dups_first
@@ -305,9 +305,10 @@ bindkey -s \^Xp '^X^AA | pg'
 bindkey -s \^XP '^X^AIpgx '
 bindkey -s \^Xx '^X^A0isudo '
 bindkey -s \^Xh "^X^Addihistory 25 | gi ''^X^Ai"
-bindkey -s \^Xa '^X^Aa!!:*'
-bindkey -s \^Xl '^X^Aa!!:$'
-bindkey -s \^Xs '^X^Aa!!:gs/'
+bindkey -s \^Xa '!!:*'
+bindkey -s \^Xl '!!:$'
+bindkey -s \^Xs '!!:gs/'
+bindkey -s \^X{ '{,.}^X^Ai'
 bindkey -s \^Xc '--color=auto '
 
 bindkey -M vicmd -s \| 'A | '
@@ -508,8 +509,6 @@ if __plugin zsh-autosuggestions; then
     bindkey '\e ' emacs-forward-word-autosuggest
     bindkey '\e^ ' autosuggest-toggle
 fi
-
-__plugin zsh-completions
 
 if __plugin zsh-history-substring-search; then
     HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1

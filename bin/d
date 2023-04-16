@@ -2,7 +2,7 @@
 
 set -eu -o pipefail
 
-set -- -udprN "$@"
+set -- -udpr "$@"
 cmd=(diff "$@")
 prgname=${0##*/}
 
@@ -13,14 +13,13 @@ main() (
             ;;
         *)
             tmpfile=$(mktemp)
-            cleanup() { rm -f "$tmpfile"; }
-            trap cleanup EXIT
+            trap 'rm -f "$tmpfile"' EXIT
 
             declare -i retstat=0
             "${cmd[@]}" >"$tmpfile" || retstat=$?
 
             echo ---
-            diffstat -p 1 <"$tmpfile"
+            diffstat -K <"$tmpfile"
 
             echo
             filterdiff -v --remove-timestamps --annotate <"$tmpfile"

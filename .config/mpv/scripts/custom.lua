@@ -77,9 +77,9 @@ function set_info()
     if info_enabled then
         info_ = info
     end
-    mp.set_property('options/osd-msg1', info_)
+    mp.set_property('options/osd-msg1', quote_property(info_))
     mp.set_property(
-        'options/osd-msg2', info_ ..
+        'options/osd-msg2', quote_property(info_) ..
         '\n${osd-sym-cc} ${time-pos:-} / ${time-remaining:-} / ${percent-pos:-}${?percent-pos:%}\n' ..
         'audio: ${audio-codec-name} / ${audio-params/format} / ${audio-params/samplerate}\n' ..
         'video: ${video-format} / ${video-params/pixelformat} / ${video-params/w}x${video-params/h}\n' ..
@@ -89,10 +89,16 @@ function set_info()
         'display-fps: ${display-fps}\n'
     )
     mp.set_property(
-        'options/osd-msg3', info_ ..
+        'options/osd-msg3', quote_property(info_) ..
         '\n${osd-sym-cc} ${time-pos:-} / ${time-remaining:-} / ${percent-pos:-}${?percent-pos:%}\n'
     )
     mp.osd_message('')
+end
+
+function quote_property(str)
+    str = str:gsub('"', '\\"')
+    str = str:gsub('[$]', '$$')
+    return str
 end
 
 function format_title()
@@ -110,7 +116,7 @@ function format_chapter()
         return nil
     end
     local props = mp.get_property_native('chapter-metadata', {})
-    local title = props['title'] or 'n/a'
+    local title = props['title'] or props['TITLE'] or 'n/a'
     return string.format('(%d) %s', pos + 1, title)
 end
 

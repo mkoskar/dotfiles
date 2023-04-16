@@ -39,6 +39,7 @@ if [[ $mtime1 = "$mtime2" ]]; then
     echo 'not touched' >&2
     rm "$file".bak
 else
+    mkdir -p ~/archive/gpg-edit
     cp -af "$file".bak ~/archive/gpg-edit/"${phash: -8}__$basename.$mtime1"
     mv "$file".bak "$file".old
 fi

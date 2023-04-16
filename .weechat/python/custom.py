@@ -8,6 +8,7 @@ import itertools
 import json
 import re
 import time
+import urllib.parse
 
 import weechat as w
 
@@ -684,10 +685,44 @@ cmd('alias add GNICK grep_nick')
 # Autorespond
 # ----------------------------------------
 
+def mirobot(message, buffer):
+    msg('mirobot: ' + message, buffer)
+
+
 def autorespond_handle(ctx):
-    if 'nick_pulec' in ctx.tags:
-        if 'redbull' in ctx.message.lower():
-            msg('redbull is bad for you pulec', ctx.buffer)
+    if ctx.server.endswith('~'):
+        return
+
+    #if ctx.channel == '##miro':
+    #    msg('blabla', ctx.buffer)
+
+    #if 'nick_pulec' in ctx.tags:
+    #    if 'redbull' in ctx.message.lower():
+    #        msg('redbull is bad for you pulec', ctx.buffer)
+
+    #if ctx.channel == '##archlinux-filmclub':
+    #    if ctx.message == '??':
+    #        mirobot('you can ?csfd, ?dd, ?g, ?imdb, ?rt', ctx.buffer)
+    #
+    #    elif m := re.match(r'\?csfd (.*)', ctx.message):
+    #        q = urllib.parse.quote_plus(m.group(1))
+    #        mirobot('https://www.csfd.cz/hledat/?q=' + q, ctx.buffer)
+    #
+    #    elif m := re.match(r'\?dd (.*)', ctx.message):
+    #        q = urllib.parse.quote_plus(m.group(1))
+    #        mirobot('https://duckduckgo.com/?q=' + q, ctx.buffer)
+    #
+    #    elif m := re.match(r'\?g (.*)', ctx.message):
+    #        q = urllib.parse.quote_plus(m.group(1))
+    #        mirobot('https://www.google.com/search?q=' + q, ctx.buffer)
+    #
+    #    elif m := re.match(r'\?imdb (.*)', ctx.message):
+    #        q = urllib.parse.quote_plus(m.group(1))
+    #        mirobot('https://www.imdb.com/find/?q=' + q, ctx.buffer)
+    #
+    #    elif m := re.match(r'\?rt (.*)', ctx.message):
+    #        q = urllib.parse.quote_plus(m.group(1))
+    #        mirobot('https://www.rottentomatoes.com/search?search=' + q, ctx.buffer)
 
 
 def autorespond_cb_print(data, buffer, date, tags,

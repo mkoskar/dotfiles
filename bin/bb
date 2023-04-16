@@ -47,7 +47,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     argyllcms!              b /usr/share/argyllcms/doc/ArgyllDoc.html
     articles                b https://www.grammarly.com/blog/articles/
     arxiv                   b https://arxiv.org/find
-    asciidoc                b https://asciidoc.org/
+    asciidoc                b https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
+    asgi                    b https://asgi.readthedocs.io/en/latest/introduction.html
     asn1                    b https://www.oss.com/asn1/resources/books-whitepapers-pubs/asn1-books.html
     audio-codecs            b https://en.wikipedia.org/wiki/List_of_codecs#Audio_compression_formats
     aur                     b https://aur.archlinux.org/packages\?SeB=nd\&K={u}
@@ -90,6 +91,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     chromium-flags          b https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/flag_descriptions.cc
     chromium-switches       b https://source.chromium.org/chromium/chromium/src/+/main:chrome/common/chrome_switches.cc
     cite                    b https://citeseerx.ist.psu.edu/search\?q={u}
+    commonmark              b https://spec.commonmark.org/
     constellations          b https://en.wikipedia.org/wiki/88_modern_constellations#List
     country-codes           b https://en.wikipedia.org/wiki/ISO_3166-1#Current_codes
     cpp                     b https://isocpp.org/std/the-standard
@@ -175,6 +177,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     git                     b https://git-scm.com/docs
     git-changes             b https://github.com/git/git/tree/master/Documentation/RelNotes
     git-rebase              b https://git-rebase.io/
+    gitea                   b https://docs.gitea.io/en-us/config-cheat-sheet/
     gitlab                  b https://gitlab.com/explore
     glib2                   b https://developer.gnome.org/glib/stable/
     glibc                   b https://www.gnu.org/software/libc/manual/html_mono/libc.html
@@ -220,6 +223,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     html-reference          b https://developer.mozilla.org/en-US/docs/Web/HTML/Reference
     html-spec               b https://html.spec.whatwg.org/multipage/
     http                    b https://httpwg.org/specs/
+    hugo                    b https://gohugo.io/documentation/
     i                       b https://www.ixquick.com/do/metasearch.pl\?query={u}
     i3                      b https://i3wm.org/docs/userguide.html
     iana                    b https://www.iana.org/
