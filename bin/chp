@@ -125,19 +125,23 @@ features+=(
     #PlatformHEVCDecoderSupport
     #RawDraw
     #VaapiIgnoreDriverChecks
+    #Vulkan
     -UseChromeOSDirectVideoDecoder
+    -UseSkiaRenderer
     CanvasOopRasterization
+    VaapiVideoDecoder
+    VaapiVideoEncoder
 )
 
 args+=(
     #--disable-gpu-driver-bug-workarounds
     #--enable-native-gpu-memory-buffers
     #--enable-unsafe-webgpu
+    #--use-vulkan
     --enable-gpu-rasterization
+    --enable-hardware-overlays
     --enable-zero-copy
     --ignore-gpu-blocklist
-    #--use-gl=egl # FATAL:gpu_init.cc(542)] Passthrough is not supported, GL is egl, ANGLE is
-    --use-vulkan
 )
 
 
@@ -175,4 +179,5 @@ if [[ ${CH_DEBUG-} ]]; then
     )
 fi
 
+export LIBVA_DRI3_DISABLE=1
 exec "$bin" "${args[@]}" "$@"

@@ -74,11 +74,17 @@ nnoremap K <Cmd>exec 'move -1-' . v:count1<CR>
 xnoremap <silent> J :move '>+<C-R>=v:count1<CR><CR>gv
 xnoremap <silent> K :move '<-1-<C-R>=v:count1<CR><CR>gv
 
-nnoremap * <Cmd>let @/ = '\V\<' . escape(expand('<cword>'), '\/') . '\>' \| set hls<CR>
-nnoremap g* <Cmd>let @/ = '\V' . escape(expand('<cword>'), '\/') \| set hls<CR>
-nnoremap # <Cmd>let @/ = '\V\S\@<!' . escape(expand('<cWORD>'), '\/') . '\S\@!' \| set hls<CR>
-nnoremap g# <Cmd>let @/ = '\V' . escape(expand('<cWORD>'), '\/') \| set hls<CR>
-xnoremap g/ y<Cmd>let @/ = '\V' . escape(@", '\/') \| call histadd('search', @/) \| set hls<CR>
+nnoremap * <Cmd>let @/ = '\V\c\<' . escape(expand('<cword>'), '\/') . '\>' \| set hls<CR>
+nnoremap g* <Cmd>let @/ = '\V\c' . escape(expand('<cword>'), '\/') \| set hls<CR>
+nnoremap # <Cmd>let @/ = '\V\c\S\@<!' . escape(expand('<cWORD>'), '\/') . '\S\@!' \| set hls<CR>
+nnoremap g# <Cmd>let @/ = '\V\c' . escape(expand('<cWORD>'), '\/') \| set hls<CR>
+xnoremap g/ y<Cmd>let @/ = '\V\c' . escape(@", '\/') \| call histadd('search', @/) \| set hls<CR>
+
+nnoremap <Leader>* <Cmd>let @/ = '\V\C\<' . escape(expand('<cword>'), '\/') . '\>' \| set hls<CR>
+nnoremap <Leader>g* <Cmd>let @/ = '\V\C' . escape(expand('<cword>'), '\/') \| set hls<CR>
+nnoremap <Leader># <Cmd>let @/ = '\V\C\S\@<!' . escape(expand('<cWORD>'), '\/') . '\S\@!' \| set hls<CR>
+nnoremap <Leader>g# <Cmd>let @/ = '\V\C' . escape(expand('<cWORD>'), '\/') \| set hls<CR>
+xnoremap <Leader>g/ y<Cmd>let @/ = '\V\C' . escape(@", '\/') \| call histadd('search', @/) \| set hls<CR>
 
 function! s:SearchParagraph(mode, backward) abort
     for i in range(v:count1)

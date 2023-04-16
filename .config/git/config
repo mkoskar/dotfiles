@@ -36,7 +36,7 @@
     clean-all = clean -dx
     clean-ignored = clean -dX
     clone-blobless = clone --filter=blob:none
-    clone-shallow = clone --depth 5 --shallow-submodules
+    clone-shallow = clone --depth 1 --shallow-submodules
     clone-treeless = clone --filter=tree:0
     co = checkout
     conf = !git config -l --local | sort
@@ -44,6 +44,7 @@
     confa = !git config -l | sort | pg
     confg = !git config -l --global | sort | pg
     confg-edit = config --global -e
+    count = rev-list --count HEAD
     d = difftool
     dc = difftool --cached
     df = diff
@@ -58,18 +59,22 @@
     lg1 = log --format=lg1 --graph --decorate-refs-exclude='*/HEAD' --color
     lga = lg1
     ls = ls-files
-    lso = ls-files -o --directory --exclude-standard
-    lsu = ls-files -o --directory
+    ls-ignored = ls-files -c -i --exclude-standard
+    lso = ls-files -o --directory
+    lso-ignored = ls-files -o --directory -i --exclude-standard
+    lso-unignored = ls-files -o --directory --exclude-standard
     push-current = -c push.default=current pushv
     push-matching = -c push.default=matching pushv
     push-upstream = -c push.default=upstream pushv
     pushv = push -v
     remotes = remote -v
     send-email-msmtp = !cd "\"$GIT_PREFIX\"" && git send-email --smtp-server="\"$HOME\""/bin/msmtp --envelope-sender=auto
+    shallow = fetch --depth 1
     show-commit = show-raw -s
     show-fuller = show --format=fuller
     show-raw = show --format=raw
     st = status -s
+    unshallow = fetch --unshallow
     up = update
 
 [color "branch"]
@@ -145,5 +150,5 @@
 
 [user]
     name = Miroslav Koškár
-    signingkey = CDC91131
+    signingkey = FE8EBB50B4447321
     useconfigonly = true

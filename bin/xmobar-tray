@@ -9,6 +9,7 @@ prgname=${0##*/}
 cachedir=~/.cache/$prgname
 mkdir -p "$cachedir"
 
+#xprop -name stalonetray -notype -spy 32c '\t$5\n' WM_NORMAL_HINTS |
 xprop -name panel -notype -spy 32c '\t$5\n' WM_NORMAL_HINTS |
     while read -r _ w; do
         (( w > 2 )) && (( w+=10 ))

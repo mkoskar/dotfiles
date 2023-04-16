@@ -84,8 +84,10 @@ dkstop() {
 # gpg
 # ----------------------------------------
 
+alias gpg-agent-pid="gpg-connect-agent 'getinfo pid' /bye"
 alias gpg-agent-reload='gpg-connect-agent reloadagent /bye'
 alias gpg-agent-sessionenv="gpg-connect-agent 'getinfo std_session_env' /bye"
+alias gpg-agent-socket="gpg-connect-agent 'getinfo socket_name' /bye"
 alias gpg-agent-updatetty='gpg-connect-agent updatestartuptty /bye'
 alias gpg-connect-dirmngr='gpg-connect-agent --dirmngr'
 alias gpg-debug='gpg -vv --debug-level=9'
@@ -281,6 +283,9 @@ alias curl-as='curl -A "$UAGENT"'
 alias curl-head='\curl -I'
 alias curl-trace='curl --trace-ascii - --trace-time'
 alias curl='curl -sSLJ'
+alias date0='date -R'
+alias dated='date +%F'
+alias datei='date +"Y%G Q%q W%V D%j"'
 alias dconfa='dconf dump /'
 alias dd='dd bs=4M conv=fsync oflag=direct status=progress'
 alias delv-nocheck='delv +cd'
@@ -329,7 +334,6 @@ alias lsof-net-pid='lsof-net -a -p'
 alias lsof-net='lsof -i'
 alias lsof-pid='lsof -p'
 alias lsof='lsof -nP +c 0'
-alias ltime='date +%T'
 alias makepkg-build='makepkg -srf'
 alias makepkg-rebuild='makepkg -Ccsrf'
 alias me='lslogins "$USER"'
@@ -358,6 +362,7 @@ alias patch1='patch -N -p 1'
 alias pax-copy='pax -rwv'
 alias ping-mtu='ping -M do -s 2000'
 alias pr='pr -T -W "$COLUMNS"'
+alias pwgen='pwgen -cns'
 alias qiv='qiv -uLtiGfl --vikeys'
 alias qrencode-utf8='qrencode -t UTF8'
 alias rax=rax2
@@ -466,7 +471,7 @@ cd() {
 }
 
 date() {
-    [ $# -gt 0 ] || set -- -R
+    [ $# -gt 0 ] || set -- +'%F %T'
     command date "$@"
 }
 

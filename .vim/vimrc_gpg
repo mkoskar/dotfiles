@@ -15,5 +15,5 @@ set viminfo=
 
 packadd! gnupg
 
-let GPGDefaultRecipients = ['CDC91131']
+let GPGDefaultRecipients = ['FE8EBB50B4447321']
 let GPGUsePipes = 1
