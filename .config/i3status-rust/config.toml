@@ -17,8 +17,6 @@ separator_fg = "#c0c0c0"
 
 [icons]
 icons = "material-nf"
-[icons.overrides]
-volume_muted = "\ufa80"
 
 [[block]]
 block = "focused_window"

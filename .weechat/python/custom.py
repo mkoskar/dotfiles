@@ -32,6 +32,8 @@ loaded = w.buffer_get_string(core, 'localvar_loaded_custom')
 xdg = bool(w.info_get('weechat_config_dir', ''))
 config_dir_ref = '${weechat_config_dir}' if xdg else '${weechat_dir}'
 
+version = int(w.info_get('version_number', '') or 0)
+
 hd_bar_item = w.hdata_get('bar_item')
 hd_buf = w.hdata_get('buffer')
 hd_channel = w.hdata_get('irc_channel')
@@ -462,9 +464,9 @@ bar_item_cmd_btn('btn_layout_reset', 'RESET', '/layout_reset')
 bar_item_cmd_btn('btn_layout_save', 'SAVE', '/layout_save')
 
 key_bind('meta-space', '/layout_reset')
-key_bind('meta-;meta-space', '/layout_save')
-key_bind('meta-;meta-1', '/layout_reset core.weechat')
-key_bind('meta-;meta-2', '/layout_reset &bitlbee')
+key_bind('meta-;,meta-space', '/layout_save')
+key_bind('meta-;,meta-1', '/layout_reset core.weechat')
+key_bind('meta-;,meta-2', '/layout_reset &bitlbee')
 
 if not loaded:
     opt = w.config_get('plugins.var.layout_presets')
@@ -606,7 +608,7 @@ w.hook_command('wspace_go', '', '', '', '', 'cb_command_wspace_go', '')
 w.hook_command('wspace_move', '', '', '', '', 'cb_command_wspace_move', '')
 w.hook_command('wspaces_reset', '', '', '', '-defaults', 'cb_command_wspaces_reset', '')
 
-cmd('alias add WRA wspaces_reset')
+cmd('alias add wra wspaces_reset')
 
 
 def cb_bar_item_wspace(data, item, window):
@@ -679,7 +681,7 @@ def cb_command_grep_nick(data, buffer, args):
 
 w.hook_command('grep_nick', '', '', '', '', 'cb_command_grep_nick', '')
 
-cmd('alias add GNICK grep_nick')
+cmd('alias add gnick grep_nick')
 
 
 # Autorespond
@@ -907,7 +909,7 @@ w.hook_command('ignore_filter', '', '', '',
 w.hook_line('', 'irc.*', 'irc_mode', 'ignore_filter_cb_line', '')
 w.hook_line('', 'irc.*', 'irc_privmsg', 'ignore_filter_cb_line', '')
 
-cmd('alias add IFILTER ignore_filter')
+cmd('alias add ifilter ignore_filter')
 
 key_bind('meta-i', '/ignore_filter toggle')
 
@@ -919,7 +921,7 @@ ignore_filter_reload()
 
 def set_read(buffer):
     w.buffer_set(buffer, 'hotlist', '-1')
-    w.buffer_set(buffer, 'unread', '-')
+    w.buffer_set(buffer, 'unread', '')
     if w.buffer_get_integer(buffer, 'num_displayed'):
         for win, buf in windows_buffer_iter():
             if buffer == buf:
@@ -948,8 +950,8 @@ def cb_command_set_read_all(data, buffer, args):
 w.hook_command('set_read', '', '', '', '', 'cb_command_set_read', '')
 w.hook_command('set_read_all', '', '', '', '', 'cb_command_set_read_all', '')
 
-cmd('alias add R set_read')
-cmd('alias add RA set_read_all')
+cmd('alias add r set_read')
+cmd('alias add ra set_read_all')
 
 key_bind('meta-ctrl-M', '/set_read')
 
@@ -1020,7 +1022,7 @@ w.hook_command('renick', '', '', '', '', 'cb_command_renick', '')
 # ----------------------------------------
 
 def connect_relay(server_name):
-    cmd(f'server add {server_name}~ 172.31.1.1/9000 -temp -nossl'
+    cmd(f'server add {server_name}~ 172.31.1.1/9000 -temp -notls'
         f' -password={server_name}:${{sec.data.relay}}')
     cmd(f'connect {server_name}~')
 
@@ -1056,20 +1058,22 @@ w.hook_completion('irc_servers', '', 'cb_completion_irc_servers', '')
 # ----------------------------------------
 
 def cb_signal_save_autojoins(data, signal, args):
-    for server in servers_iter():
-        server_name = w.hdata_string(hd_server, server, 'name')
-        if w.hdata_integer(hd_server, server, 'temp_server') > 0:
-            continue
-        autojoin = []
-        for channel in channels_iter(server):
-            channel_name = w.hdata_string(hd_channel, channel, 'name')
-            channel_type = w.hdata_integer(hd_channel, channel, 'type')
-            if channel_type == 0:
-                autojoin.append(channel_name)
-        if autojoin:
-            autojoin.sort()
-            val = ','.join(autojoin)
-            cmd(f'set irc.server.{server_name}.autojoin {val}')
+    #for server in servers_iter():
+    #    server_name = w.hdata_string(hd_server, server, 'name')
+    #    if w.hdata_integer(hd_server, server, 'temp_server') > 0:
+    #        continue
+    #    autojoin = []
+    #    for channel in channels_iter(server):
+    #        channel_name = w.hdata_string(hd_channel, channel, 'name')
+    #        channel_type = w.hdata_integer(hd_channel, channel, 'type')
+    #        if channel_type == 0:
+    #            autojoin.append(channel_name)
+    #    if autojoin:
+    #        autojoin.sort()
+    #        val = ','.join(autojoin)
+    #        cmd(f'set irc.server.{server_name}.autojoin {val}')
+    cmd('allserv /autojoin apply')
+    cmd('allserv /autojoin sort')
     return w.WEECHAT_RC_OK
 
 
@@ -1102,7 +1106,7 @@ bar_item_cmd_btn(
 bar_item_cmd_btn(
     'btn_nicklist_count',
     '${if:${type}==channel?${color:default}${buffer.nicklist_nicks_count}${color:reset}}',
-    '/TOGGLE_NICKLIST',
+    '/toggle_nicklist',
     ['buffer_switch']
 )
 
@@ -1145,10 +1149,10 @@ bar_item_cmd_btn('btn_win_vsplit', '[v]', '/window splitv -window ${if:${_window
 bar_item_cmd_btn('btn_win_grow', '[+]', '/window resize -window ${if:${_window_number}==*?${window.number}:${_window_number}} +5')
 bar_item_cmd_btn('btn_win_shrink', '[-]', '/window resize -window ${if:${_window_number}==*?${window.number}:${_window_number}} -5')
 
-bar_item_cmd_btn('btn_toggle_buflist', 'BUFL', '/TOGGLE_BUFLIST')
-bar_item_cmd_btn('btn_toggle_nicklist', 'NICKL', '/TOGGLE_NICKLIST')
-bar_item_cmd_btn('btn_toggle_prefix', 'PREF', '/TOGGLE_PREFIX')
-bar_item_cmd_btn('btn_toggle_time', 'TIME', '/TOGGLE_TIME')
+bar_item_cmd_btn('btn_toggle_buflist', 'BUFL', '/toggle_buflist')
+bar_item_cmd_btn('btn_toggle_nicklist', 'NICKL', '/toggle_nicklist')
+bar_item_cmd_btn('btn_toggle_prefix', 'PREF', '/toggle_prefix')
+bar_item_cmd_btn('btn_toggle_time', 'TIME', '/toggle_time')
 
 bar_addreplace(
     'fn', 'on', '200', 'root', '',
@@ -1276,6 +1280,7 @@ def configure():
     cmd('set irc.msgbuffer.whois current')
     cmd('set irc.network.lag_reconnect 0')
     cmd('set irc.server_default.autoconnect on')
+    cmd('set irc.server_default.autojoin_dynamic on')
     cmd('set irc.server_default.autorejoin on')
     cmd('set irc.server_default.autorejoin_delay 10')
     cmd('set irc.server_default.connection_timeout 300')
@@ -1283,11 +1288,11 @@ def configure():
     cmd('set irc.server_default.msg_part ""')
     cmd('set irc.server_default.msg_quit ""')
     cmd('set irc.server_default.nicks mkoskar')
-    cmd('set irc.server_default.realname Miroslav Koškár <https://mkoskar.com/>')
+    cmd('set irc.server_default.realname mkoskar')
     cmd('set irc.server_default.sasl_timeout 30')
     cmd('set irc.server_default.sasl_username mkoskar')
-    cmd('set irc.server_default.ssl on')
-    cmd('set irc.server_default.ssl_cert {}/ssl/nick.pem'.format(config_dir_ref))
+    cmd('set irc.server_default.tls on')
+    cmd('set irc.server_default.tls_cert {}/ssl/nick.pem'.format(config_dir_ref))
     cmd('set irc.server_default.usermode +iwR')
     cmd('set irc.server_default.username mkoskar')
     cmd('set logger.level.core.weechat 0')
@@ -1349,6 +1354,8 @@ def configure():
     cmd('set weechat.color.status_data_highlight lightred')
     cmd('set weechat.color.status_data_private lightcyan')
     cmd('set weechat.color.status_name yellow')
+    cmd('set weechat.color.status_name_insecure yellow')
+    cmd('set weechat.color.status_name_tls green')
     cmd('set weechat.completion.nick_case_sensitive on')
     cmd('set weechat.completion.partial_completion_command on')
     cmd('set weechat.completion.partial_completion_command_arg on')
@@ -1388,30 +1395,28 @@ def configure():
     cmd('set weechat.startup.display_logo off')
     cmd('set weechat.startup.display_version off')
 
-    cmd('alias add A allserv /away')
-    cmd('alias add AFK allserv /away afk')
-    cmd('alias add ALIS msg alis')
-    cmd('alias add B buffer')
-    cmd('alias add C close')
-    cmd('alias add CC window merge')
-    cmd('alias add CLA buffer clear -all')
-    cmd('alias add CSERV msg ChanServ')
-    cmd('alias add G grep --hilight --buffer')
-    cmd('alias add GG grep --hilight')
-    cmd('alias add MEMOSERV msg MemoServ')
-    cmd('alias add NSERV msg NickServ')
-    cmd('alias add QA quit')
-    cmd('alias add S server jump')
-    cmd('alias add SP window splith')
-    cmd('alias add TOGGLE_BUFLIST bar toggle buflist')
-    cmd('alias add TOGGLE_NICKLIST eval /buffer set nicklist ${if:${buffer.nicklist}==0}')
-    cmd('alias add TOGGLE_NUMBER bar toggle vi_line_numbers')
-    cmd('alias add TOGGLE_PREFIX /eval -s /mute set weechat.look.prefix_align ${if:${weechat.look.prefix_align}!=none?none:right} \\; /mute set weechat.look.align_end_of_lines ${if:${weechat.look.prefix_align}==none?prefix:message}')
-    cmd('alias add TOGGLE_TIME eval /buffer set time_for_each_line ${if:${buffer.time_for_each_line}==0}')
-    cmd('alias add VS window splitv')
-    cmd('alias add WC window merge')
-    cmd('alias add WO window merge all')
-    cmd('alias addcompletion %(buffers_plugins_names) MSGBUF command -buffer $1 * input send $2-')
+    cmd('alias add a allserv /away')
+    cmd('alias add afk allserv /away afk')
+    cmd('alias add alis msg alis')
+    cmd('alias add b buffer')
+    cmd('alias add c close')
+    cmd('alias add cc window merge')
+    cmd('alias add cla buffer clear -all')
+    cmd('alias add cserv msg ChanServ')
+    cmd('alias add g grep --hilight --buffer')
+    cmd('alias add gg grep --hilight')
+    cmd('alias add memoserv msg MemoServ')
+    cmd('alias add nserv msg NickServ')
+    cmd('alias add qa quit')
+    cmd('alias add s server jump')
+    cmd('alias add sp window splith')
+    cmd('alias add toggle_buflist bar toggle buflist')
+    cmd('alias add toggle_nicklist eval /buffer set nicklist ${if:${buffer.nicklist}==0}')
+    cmd('alias add toggle_prefix /eval -s /mute set weechat.look.prefix_align ${if:${weechat.look.prefix_align}!=none?none:right} \\; /mute set weechat.look.align_end_of_lines ${if:${weechat.look.prefix_align}==none?prefix:message}')
+    cmd('alias add toggle_time eval /buffer set time_for_each_line ${if:${buffer.time_for_each_line}==0}')
+    cmd('alias add vs window splitv')
+    cmd('alias add wc window merge')
+    cmd('alias add wo window merge all')
 
     bar_addreplace(
         'input', 'off', '1000', 'root', '',
@@ -1467,9 +1472,6 @@ def configure():
     cmd('bar set buflist items buflist')
     cmd('bar set buflist size 25')
 
-    cmd('bar set vi_line_numbers color_fg 244')
-    cmd('bar set vi_line_numbers items line_numbers')
-
     cmd('filter addreplace ignore * irc_ignore_filter *')
     cmd('filter addreplace longlists *,!irc.server.* irc_367,irc_728 *')
     cmd('filter addreplace nick_root irc.bitlbee.* nick_root *')
@@ -1516,31 +1518,31 @@ def configure():
     key_bind('ctrl-N', '/input history_next')
     key_bind('ctrl-O', '/go')
     key_bind('ctrl-P', '/input history_previous')
-    key_bind('meta-,', '/buffer_hot_prev')
     key_bind('meta-.', '/buffer_hot_next')
-    key_bind('meta-;meta-N', '/TOGGLE_NUMBER')
-    key_bind('meta-;meta-b', '/TOGGLE_BUFLIST')
-    key_bind('meta-;meta-m', '/mute mouse toggle')
-    key_bind('meta-;meta-n', '/TOGGLE_NICKLIST')
-    key_bind('meta-;meta-p', '/TOGGLE_PREFIX')
-    key_bind('meta-;meta-t', '/TOGGLE_TIME')
+    key_bind('meta-;,meta-N', '/toggle_number')
+    key_bind('meta-;,meta-b', '/toggle_buflist')
+    key_bind('meta-;,meta-m', '/mute mouse toggle')
+    key_bind('meta-;,meta-n', '/toggle_nicklist')
+    key_bind('meta-;,meta-p', '/toggle_prefix')
+    key_bind('meta-;,meta-t', '/toggle_time')
     key_bind('meta-G', '/window scroll_bottom')
     key_bind('meta-J', '/window scroll_down')
     key_bind('meta-K', '/window scroll_up')
     key_bind('meta-N', '/buffer +1')
     key_bind('meta-P', '/buffer -1')
+    key_bind('meta-comma', '/buffer_hot_prev')
     key_bind('meta-g', '/window scroll_top')
-    key_bind('meta-jmeta-b', '/window bare')
-    key_bind('meta-jmeta-j', '/cursor go chat')
-    key_bind('meta-jmeta-n', '/cursor go nicklist')
-    key_bind('meta-jmeta-u', '/urls_open')
-    key_bind('meta-jmeta-y', '/urls_yank')
+    key_bind('meta-j,meta-b', '/window bare')
+    key_bind('meta-j,meta-j', '/cursor go chat')
+    key_bind('meta-j,meta-n', '/cursor go nicklist')
+    key_bind('meta-j,meta-u', '/urls_open')
+    key_bind('meta-j,meta-y', '/urls_yank')
     key_bind('meta-m', '/window zoom')
     key_bind('meta-s', '/server jump')
-    key_bind('meta-wmeta-h', '/window left')
-    key_bind('meta-wmeta-j', '/window down')
-    key_bind('meta-wmeta-k', '/window up')
-    key_bind('meta-wmeta-l', '/window right')
+    key_bind('meta-w,meta-h', '/window left')
+    key_bind('meta-w,meta-j', '/window down')
+    key_bind('meta-w,meta-k', '/window up')
+    key_bind('meta-w,meta-l', '/window right')
 
     key_bind('ctrl-N', '/input search_next', 'search')
     key_bind('ctrl-P', '/input search_previous', 'search')
@@ -1586,15 +1588,19 @@ def cb_command_reconfigure(data, buffer, args):
 
     for config_file in config_files_iter():
         config_name = w.hdata_string(hd_config_file, config_file, 'name')
-        if config_name == 'alias':
+        if version < 0x04000000 and config_name == 'alias':
             continue
         cmd(f'unset -mask {config_name}.*')
+
+    if version >= 0x04000000:
+        cmd('alias missing')
 
     cmd('bar del -all')
     cmd('bar default')
     cmd('filter del -all')
     cmd('ignore del -all')
     cmd('trigger default -yes')
+
     cmd('key resetall -yes')
 
     configure()
@@ -1609,7 +1615,7 @@ def cb_command_reconfigure(data, buffer, args):
     cmd('set irc.server.bitlbee.proxy ""')
     cmd('set irc.server.bitlbee.sasl_password ${sec.data.bitlbee}')
     cmd('set irc.server.bitlbee.sasl_username miro')
-    cmd('set irc.server.bitlbee.ssl off')
+    cmd('set irc.server.bitlbee.tls off')
     cmd('set irc.server.bitlbee.usermode ""')
 
     cmd('server add gitter irc.gitter.im/6697')

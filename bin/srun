@@ -16,6 +16,7 @@ _usage() {
 	  -s        - run as scope unit
 	  -x        - target is \$DISPLAY specific (xsession@.target)
 	  -X        - target is \$DISPLAY specific (xdisplay@.target)
+	  -w        - target is \$WSESSIONID specific (wsession@.target)
 	  -l        - log to ~/.local/share/$prgname.out (ignored for -s)
 	  -L        - log to ~/.local/share/\$name.out (ignored for -s)
 	  -q        - (quiet) don't log (ignored for -s)
@@ -25,8 +26,8 @@ usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
 name=
-declare -i Nopt=0 ropt=0 sopt=0 xopt=0 Xopt=0 lopt=0 Lopt=0 qopt=0
-while getopts n:NsrxXlLqh opt; do
+declare -i Nopt=0 ropt=0 sopt=0 xopt=0 Xopt=0 wopt=0 lopt=0 Lopt=0 qopt=0
+while getopts n:NsrxXwlLqh opt; do
     case $opt in
         n) name=$OPTARG Nopt=0 ;;
         N) Nopt=1 name= ;;
@@ -34,6 +35,7 @@ while getopts n:NsrxXlLqh opt; do
         s) sopt=1 ;;
         x) xopt=1 ;;
         X) Xopt=1 xopt=1 ;;
+        w) wopt=1 xopt=0 ;;
         l) lopt=1 Lopt=0 qopt=0 ;;
         L) Lopt=1 lopt=0 qopt=0 ;;
         q) qopt=1 lopt=0 Lopt=0 ;;
@@ -115,11 +117,22 @@ if (( xopt )); then
         )
     else
         args+=(
-            -E XSESSION="$XSESSION"
+            -E XSESSION="${XSESSION:--}"
             -p Requisite=xsession@:"$screen".target
             -p After=xsession@:"$screen".target
         )
     fi
+fi
+
+if (( wopt )); then
+    args+=(
+        -E DISPLAY="$DISPLAY"
+        -E WAYLAND_DISPLAY="$WAYLAND_DISPLAY"
+        -E WSESSION="${WSESSION:--}"
+        -E WSESSIONID="$WSESSIONID"
+        -p Requisite=wsession@"$WSESSIONID".target
+        -p After=wsession@"$WSESSIONID".target
+    )
 fi
 
 exec systemd-run "${args[@]}" "$@"

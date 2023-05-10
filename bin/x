@@ -97,8 +97,7 @@ case $prgname in
         [[ $xconfig = default ]] || fqxconfig+=.$xconfig
         [[ -r /etc/X11/$fqxconfig ]] || exit 2
 
-        xcfile=$rundir/xconfig:$dispno
-        printf '%s\n' "$xconfig" >"$xcfile"
+        printf '%s\n' "$xconfig" >"$rundir/xconfig:$dispno"
 
         # shellcheck disable=SC2015
         if (( ! $# )); then

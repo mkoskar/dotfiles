@@ -163,7 +163,6 @@ export PAPERSIZE=a4
 export PARALLEL_SHELL=$SYSPREFIX/bin/bash
 export PARINIT='T4 w78 prbgqR B=.,?_A_a Q=_s>|'
 export PERL_RL=o=0
-export PIPENV_COLORBLIND=1
 export PIPENV_HIDE_EMOJIS=1
 export PIPENV_NOSPIN=1
 export PIPENV_SHELL_FANCY=1

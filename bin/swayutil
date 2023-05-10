@@ -19,9 +19,14 @@ src=~/bin/swayutil.$HOSTNAME
 [[ -e $src ]] && . "$src"
 
 case ${1-} in
-    layout)
+    screen)
         shift
         layout_hook "$@"
+        (
+            for (( i=3; i>0; i-- )); do
+                backlight-auto && break
+            done
+        ) &
         ;;
     *)
         exit 2

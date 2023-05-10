@@ -27,9 +27,6 @@ URxvt.font:                     xft:Terminus:pixelsize=16, \
 URxvt.boldItalicFont:           xft:Dejavu Sans Mono:bold:italic
 URxvt.italicFont:               xft:Dejavu Sans Mono:italic
 
-! Workaround for an odd resizing behavior introduced in 9.31
-URxvt.geometry:                 80x96
-
 URxvt.cutchars:                 '"()*,<>[]{}|\''
 URxvt.depth:                    32
 URxvt.iso14755:                 true
@@ -100,8 +97,8 @@ XTerm.vt100.scrollTtyOutput:        false
 XTerm.vt100.showMissingGlyphs:      true
 XTerm.vt100.veryBoldColors:         4
 
-XTerm.vt100.faceName:               Dejavu Sans Mono
-XTerm.vt100.faceSize:               12
+XTerm.vt100.faceName:               mononoki
+XTerm.vt100.faceSize:               11
 XTerm.vt100.renderFont:             false
 
 XTerm.vt100.font:                   7x13
