@@ -5,11 +5,8 @@ set -eu
 prgname=${0##*/}
 
 sessions=(
-    ctwm
     i3
     i3-local
-    jwm
-    kodi
     main
     openbox
     rio
@@ -32,6 +29,7 @@ sdu() { systemctl --user "$@"; }
 
 datadir=~/.local/share/xorg
 rundir=$XDG_RUNTIME_DIR/xorg
+mkdir -p "$datadir" "$rundir"
 
 # ----------------------------------------
 
@@ -90,9 +88,13 @@ cleanup() {
 trap cleanup EXIT
 
 session=-
-for i in "${sessions[@]}"; do
-    [[ $1 = "$i" ]] && { session=$i; break; }
-done
+if [[ $1 = - ]]; then
+    shift
+else
+    for i in "${sessions[@]}"; do
+        [[ $1 = "$i" ]] && { session=$i; break; }
+    done
+fi
 printf 'session: %s\n' "$session"
 
 export GDK_BACKEND=x11
@@ -101,13 +103,73 @@ export XSESSIONPID=$$
 
 # ----------------------------------------
 
-pre_hook() { :; }
-post_hook() { :; }
-exec_hook() { :; }
-startup_hook() { :; }
+pre_hook() {
+    xscreen -
+    sdu start xsession@:"$screen".target
 
-# shellcheck disable=SC1090
-. ~/bin/xsession.default
+    srun -rxl picom
+    srun -rxl osdd
+    srun -rxl -n polkit-agent /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
+    srun -rxl -n sxhkd bash -c 'sleep 1 && exec sxhkd'
+
+    case $session in
+        openbox | xfwm4)
+            srun -rxl tint2
+            ;;
+        xmonad | main)
+            srun -rxl systray
+            ;;
+    esac
+}
+
+post_hook() {
+    local dispno spid
+    sdu stop xsession@:"$screen".target
+    dispno=$(xserverq dispno)
+    if [[ ! -e $rundir/keepserver:$screen &&
+          ! -e $rundir/keepserver:$dispno ]]; then
+        spid=$(xserverq pid)
+        sdu --quiet is-active xsession@:"$dispno".[0-9].target || kill "$spid"
+    fi
+    rm -f "$rundir/keepserver:$screen"
+}
+
+exec_hook() {
+    case $session in
+        i3)
+            exec i3 -V
+            ;;
+        i3-local)
+            exec ~/projects/pub/i3/build/i3 -V
+            ;;
+        main)
+            exec xmonad
+            ;;
+        openbox)
+            exec openbox --startup 'xsession --startup'
+            ;;
+        rio)
+            exec rio -term term -virtuals 4
+            ;;
+        xfwm4)
+            exec xfwm4 --compositor=off
+            ;;
+        *)
+            exec "$@"
+            ;;
+    esac
+}
+
+startup_hook() {
+    case $session in
+        main)
+            srun -xl clementine
+            srun -xl workrave
+            ;;
+    esac
+}
+
+# ----------------------------------------
 
 set +e
 

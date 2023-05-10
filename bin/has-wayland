@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
 [[ $WAYLAND_DISPLAY ]] || exit 1
-weston-info &>/dev/null || exit 1
+wayland-info &>/dev/null || exit 1
 exit 0

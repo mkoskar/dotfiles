@@ -5,6 +5,7 @@ _arguments -C ': :->argument' && return
 case $state in
     argument)
         _alternative \
-            'sessions:session:(${(f)"$(wsession)"})'
+            'sessions:session:(${(f)"$(wsession)"})' \
+            'commands:command:(--reset)'
         ;;
 esac

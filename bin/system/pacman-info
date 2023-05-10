@@ -13,7 +13,7 @@ official_repos() {
 		Architecture = auto
 		Color
 	EOF
-    for repo in core extra community multilib; do
+    for repo in core extra multilib; do
         printf '[%s]\n' "$repo"
     done
 }

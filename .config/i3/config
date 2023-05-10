@@ -2,10 +2,10 @@
 
 set $mod Mod4
 
+#gaps inner 15
+#gaps outer 5
 #smart_borders on
 #smart_gaps on
-gaps inner 15
-gaps outer 5
 
 default_border pixel 1
 default_floating_border pixel 1
@@ -116,6 +116,11 @@ bindsym $mod+c kill
 bindsym $mod+b bar mode toggle
 bindsym $mod+Ctrl+b border toggle
 bindsym $mod+Shift+equal sticky toggle
+
+bindsym $mod+BackSpace mode "pass"
+mode "pass" {
+    bindsym $mod+BackSpace mode "default"
+}
 
 bindsym $mod+m mode "move"
 mode "move" {

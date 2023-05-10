@@ -15,11 +15,35 @@ if (( ! $# )); then
     exit
 fi
 
-# ----------------------------------------
+_usage() {
+    echo "usage: $prgname {--reset | arg...}"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+sdu() { systemctl --user "$@"; }
 
 datadir=~/.local/share/$prgname
 rundir=$XDG_RUNTIME_DIR/$prgname
 mkdir -p "$datadir" "$rundir"
+
+# ----------------------------------------
+
+case $1 in
+    --reset)
+        confirm 'Careful! Continue?' n || exit 0
+        sdu restart wsession@"$WSESSIONID".target
+        exit
+        ;;
+    -h|--help)
+        usage
+        ;;
+    -*)
+        usage_err
+        ;;
+esac
+
+# ----------------------------------------
 
 declare -i vtno=0 wayland=0 x11=0
 vtno=$(fgconsole -C /dev/tty 2>/dev/null) || true
@@ -51,13 +75,14 @@ printf '> %s: %s\n\n' "$prgname" "$*"
 cleanup() {
     local retstat=$?
     set +e
+    sdu stop wsession@"$WSESSIONID".target
     # shellcheck disable=SC2046
     kill $(jobs -p) &>/dev/null
     printf '\n> %s: exit %s\n' "$prgname" "$retstat"
 }
 trap cleanup EXIT
 
-session=unknown
+session=-
 if [[ $1 = - ]]; then
     shift
 else
@@ -80,11 +105,14 @@ export WSESSIONPID=$$
 # ----------------------------------------
 
 case $session in
-    weston)
-        weston --socket="wayland-$sid"
+    river)
+        river -log-level debug
         ;;
     sway)
         sway -V
+        ;;
+    weston)
+        weston --socket="wayland-$sid"
         ;;
     *)
         "$@"

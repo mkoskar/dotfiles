@@ -53,32 +53,25 @@ alias ansible-modules='ansible-doc -l'
 alias ansible-playbook-tasks='ansible-playbook --list-tasks'
 
 
-# docker
+# docker / podman
 # ----------------------------------------
 
-# Keep options separate in order not to break zsh completion
 alias dk=docker
 alias dkc='docker container'
 alias dke='docker exec -i -t'
 alias dki='docker image'
-alias dkr='docker run -P'
-alias dkrd='docker run -d -P'
-alias dkri='docker run -i -t -P'
-
-dkip() {
-    local target; target=${1:-$(docker container ls -lq)}
-    [ "$target" ] || return 2
-    docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$target"
-}
-
-dkrm() {
-    confirm 'Remove ALL containers (with volumes). Continue?' n || return 0
-    docker container ls -aq | command xargs -rx docker rm -vf
-}
+alias dkr='docker run -P -i -t'
 
 dkstop() {
     docker container ls -aq | command xargs -rx docker stop
 }
+
+alias pd=podman
+alias pdc='podman container'
+alias pde='podman exec -i -t'
+alias pdi='podman image'
+alias pdr='podman run -P -i -t'
+alias pdstop='podman stop -a'
 
 
 # gpg
@@ -172,7 +165,8 @@ alias man-all-posix='man-all -s 0p,9p,2p,3p,7p,8p,6p,1p,4p,5p'
 # ----------------------------------------
 
 alias pac=pacman
-alias paccheck='paccheck --quiet --depends --opt-depends --files --file-properties --sha256sum --require-mtree --db-files --backup --noextract --noupgrade'
+alias paccheck-all='paccheck --quiet --depends --opt-depends --files --file-properties --md5sum --require-mtree --db-files --backup --noextract --noupgrade'
+alias paccheck-modified='paccheck --quiet --files --md5sum --require-mtree --backup --noextract --noupgrade'
 alias pacman-log='pg /var/log/pacman.log'
 alias pacq='pacman -Q'
 alias pactree='pactree --color'
@@ -189,7 +183,7 @@ pacd() {
 
 paci() {
     [ $# -eq 0 ] && return 2
-    pacman -Qii -- "$@" || pacman -Sii -- "$@" || auracle info -- "$@"
+    pacman -Qii -- "$@" || pacman -Sii -- "$@" || aur search -i -- "$@"
 } 2>/dev/null
 
 pacl() {
@@ -229,7 +223,7 @@ pacs() {
 pacss() {
     [ $# -eq 0 ] && return 2
     pacsearch "$1"
-    auracle --color=always search -- "$1"
+    aur search -- "$1"
 }
 
 pacw() {
@@ -266,7 +260,6 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-alias aa=auracle
 alias acpi='acpi -V'
 alias alarm-bread='alarm every 1h bread fold'
 alias alarm-hourly='alarm at \*:0'
@@ -302,17 +295,18 @@ alias drill-nocheck='drill -o CD'
 alias drill-trace='drill -o CD -tT'
 alias dstat='dstat -tlycgm --vm -rdn'
 alias du='du -hx'
+alias dua='du --apparent-size -hx'
 alias e0='e -Xn -i NONE -u NONE'
 alias ebatch='e0 -V1 -es'
 alias ed='ed -v -p :'
 alias fc-debug='FC_DEBUG=8191'
 alias fc-recache='fc-cache -rv'
 alias feh='feh -F'
+alias find-broken-links='find -xtype l'
 alias fortune='fortune -c'
 alias free='free -h'
 alias fuser='fuser -v'
 alias fzy='fzy -l $LINES'
-alias gconfa='gconftool-2 -R /'
 alias getfattr='getfattr --absolute-names -d -m -'
 alias glxgears-novsync='vblank_mode=0 glxgears'
 alias grepcat='grep --exclude-dir=\* .'
@@ -323,7 +317,6 @@ alias info='info --vi-keys'
 alias infocmp0='infocmp -A "$SYSPREFIX"/share/terminfo'
 alias infocmp='infocmp -1a'
 alias ip='ip -h -p -c=auto'
-alias iwevent='iw event -T'
 alias journal='journalctl -o short-precise -b'
 alias last='last -x'
 alias ld-debug='LD_DEBUG=all'
@@ -344,6 +337,7 @@ alias mpv-debug='mpv --terminal=yes --msg-level=all=debug'
 alias mpv-verbose='mpv --terminal=yes --msg-level=all=v'
 alias mpv-ytdl-best='mpv --ytdl-format=bestvideo+bestaudio/best'
 alias mpv-ytdl-reverse='mpv --ytdl-raw-options=playlist-reverse='
+alias mpv0='mpv --no-config'
 alias mv='mv -i'
 alias namei='namei -l'
 alias ncdu='ncdu -x'
@@ -366,7 +360,7 @@ alias pwgen='pwgen -cns'
 alias qiv='qiv -uLtiGfl --vikeys'
 alias qrencode-utf8='qrencode -t UTF8'
 alias rax=rax2
-alias reflector='reflector -p https -c sk -c cz --score 3 -f 3'
+alias reflector='reflector -c cz,sk -p https -l 5 --sort rate'
 alias rm='rm -I --one-file-system'
 alias rsync='rsync -aHAXS'
 alias sarrec='sar -D -o ~/tmp'
@@ -379,8 +373,6 @@ alias sdu='systemctl --user'
 alias sed-all="sed -E -e 'H;1h;\$!d;x'"
 alias smbclient='smbclient --configfile=/dev/null'
 alias socat='socat readline,history=/dev/null'
-alias soff='sudo -K'
-alias son='sudo -v'
 alias speaker-test='speaker-test -t wav -c 2'
 alias srunX='srun -NsXl'
 alias srunx='srun -Nsxl'
@@ -411,6 +403,7 @@ alias weechat0='weechat -t'
 alias weechat='weechat -a'
 alias whois='whois -H'
 alias wi='curl -f http://wttr.in/?Fqn'
+alias xargs-lines='xargs -d \\n'
 alias xargs-perline='xargs -L 1 -d \\n'
 alias xargs='xargs -rx'
 alias xinput-test='xinput test-xi2 --root'

@@ -2,7 +2,7 @@
 
 set -eu -o pipefail
 
-env -0  \
-    | while read -r -d '' line; do
-    printf '%s\0' "${line%%=*}"
-done | xargs -0rx systemctl --user import-environment
+env -0  |
+    while read -r -d '' line; do
+        printf '%s\0' "${line%%=*}"
+    done | xargs -0rx systemctl --user import-environment

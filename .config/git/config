@@ -53,6 +53,8 @@
     f = fetch --all
     format-patch-with-signoff = format-patch --signoff
     forward = merge --ff-only
+    hunk-stage = add -p
+    hunk-unstage = restore -Sp
     k = !cd "\"$GIT_PREFIX\"" && gitk
     last = cat-file -p HEAD
     lg = lg1 -5

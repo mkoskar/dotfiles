@@ -1,0 +1,4 @@
+#compdef distrobox
+
+. /usr/share/bash-completion/completions/distrobox
+_bash_complete -F __distrobox

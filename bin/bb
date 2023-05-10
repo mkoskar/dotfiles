@@ -42,7 +42,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     arch-forums             b https://bbs.archlinux.org/search.php\?action=show_new
     arch-gitlab             b https://gitlab.archlinux.org/explore
     arch-lists              b https://lists.archlinux.org/
-    arch-repos              b https://git.archlinux.org/
     arch-wiki               b https://wiki.archlinux.org/index.php\?search={u}
     argyllcms!              b /usr/share/argyllcms/doc/ArgyllDoc.html
     articles                b https://www.grammarly.com/blog/articles/
@@ -73,6 +72,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     bash-pitfalls           b https://mywiki.wooledge.org/BashPitfalls
     bash-sheet              b https://mywiki.wooledge.org/BashSheet
     batteries               b https://en.wikipedia.org/wiki/List_of_battery_sizes#Cylindrical_batteries
+    bbcode                  b https://www.bbcode.org/reference.php
     binutils                b https://sourceware.org/binutils/docs/
     bluetooth-profiles      b https://en.wikipedia.org/wiki/List_of_Bluetooth_profiles
     bpf                     b https://www.kernel.org/doc/html/latest/bpf/index.html
@@ -115,6 +115,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     decibel                 b https://en.wikipedia.org/wiki/Decibel
     deepl                   b https://www.deepl.com/translator#en/sk/{u}
     deepl-de                b https://www.deepl.com/translator#de/sk/{u}
+    distroless              b https://github.com/GoogleContainerTools/distroless
     dkim                    b https://dkimcore.org/tools/
     dns-terminology         b https://www.rfc-editor.org/rfc/rfc8499.html
     dnssec-analyzer         b https://dnssec-debugger.verisignlabs.com/
@@ -303,7 +304,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-faq               b http://vger.kernel.org/lkml/
     linux-ip-guide          b http://linux-ip.net/linux-ip/linux-ip-single.html
     linux-lkddb             b https://cateee.net/lkddb/web-lkddb/
-    linux-nl80211           b https://elixir.bootlin.com/linux/latest/source/include/uapi/linux/nl80211.h
+    linux-nl80211           b https://elixir.bootlin.com/linux/latest/source/include/linux/ieee80211.h
     linux-params            b https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html
     linux-repos             b https://git.kernel.org/cgit/
     linux-routing           b https://lartc.org/lartc.html
@@ -379,10 +380,12 @@ MENUER=$prgname menuer "$@" <<-EOF |
     perl                    b https://perldoc.perl.org/
     pgp-search              b https://keyserver.ubuntu.com/
     phrik                   b https://wiki.archlinux.org/index.php/Phrik
+    pipenv                  b https://pipenv.pypa.io/en/latest/
     pizza                   b http://www.varasanos.com/pizzarecipe.htm
     pkg                     b https://www.archlinux.org/packages/\?q={u}
     plan9                   b https://9p.io/plan9/
     podman                  b https://docs.podman.io/en/latest/index.html
+    poetry                  b https://python-poetry.org/docs/
     posix                   b "$posix_base"/
     posix-env               b "$posix_base"/basedefs/V1_chap08.html
     posix-param-expansion   b "$posix_base"/utilities/V3_chap02.html#tag_18_06_02

@@ -8,6 +8,7 @@
 !/.config/systemd/user/
 !/.local/
 !/.local/share/
+!/.local/share/bash-completion/
 !/.local/share/dbus-1/
 !/.local/share/unicode/
 !/.mutt/

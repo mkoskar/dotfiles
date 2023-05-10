@@ -440,6 +440,7 @@ compctl -v v
 
 compdef f=find
 compdef gitall=git
+compdef xx=x
 
 _pacpkgs() {
     local -a pkgs
