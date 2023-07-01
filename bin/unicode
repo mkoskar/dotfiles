@@ -69,7 +69,7 @@ ver() {
             if (( check )); then
                 local stat scode surl
                 local url=https://www.unicode.org/Public/zipped/$ver/ReadMe.txt
-                stat=$(curl -sSL -w '%{http_code}\t%{url_effective}' -o "$tmpfile" "$url")
+                stat=$(curl -qsSL -w '%{http_code}\t%{url_effective}' -o "$tmpfile" "$url")
                 read -r scode surl <<<"$stat"
                 case $scode in
                     200)
@@ -103,7 +103,7 @@ ucd_file() {
     if [[ ! -e $zfile ]]; then
         local stat scode surl tmpfile=$tmpdir/$zfile
         local url=https://www.unicode.org/Public/zipped/$ver/UCD.zip
-        stat=$(curl -sSL -w '%{http_code}\t%{url_effective}' -o "$tmpfile" "$url")
+        stat=$(curl -qsSL -w '%{http_code}\t%{url_effective}' -o "$tmpfile" "$url")
         read -r scode surl <<<"$stat"
         case $scode in
             200)
@@ -146,7 +146,7 @@ case $mode in
         if [[ ! -e $ifile ]]; then
             tmpfile=$tmpdir/$ifile
             url=https://www.unicode.org/Public/emoji/5.0/$ifile
-            stat=$(curl -sSL -w '%{http_code}\t%{url_effective}' -o "$tmpfile" "$url")
+            stat=$(curl -qsSL -w '%{http_code}\t%{url_effective}' -o "$tmpfile" "$url")
             read -r scode surl <<<"$stat"
             case $scode in
                 200)

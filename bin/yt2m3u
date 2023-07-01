@@ -3,7 +3,7 @@
 _curl() {
     local stat scode surl
     stat=$(
-        curl -sSLG \
+        curl -qsSLG \
             -o _curl \
             -d key="$key" \
             -w '%{http_code}\t%{url_effective}' \

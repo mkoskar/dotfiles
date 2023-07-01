@@ -289,6 +289,7 @@ mp.add_key_binding(nil, 'playlist-go', playlist_go)
 mp.add_key_binding(nil, 'playlist-reverse', playlist_reverse)
 mp.add_key_binding('y', 'yank-path', function() yank_property('path') end)
 mp.add_key_binding('Y', 'yank-title', function() yank_property('media-title') end)
+mp.add_key_binding('Ctrl+y', 'yank-stream', function() yank_property('stream-open-filename') end)
 mp.add_key_binding('~', 'toggle-input-lock', toggle_input_lock)
 mp.add_key_binding('Ctrl+r', 'reload', reload)
 

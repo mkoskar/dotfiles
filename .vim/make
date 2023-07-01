@@ -22,7 +22,7 @@ from_vba() {
     printf '\n> %s\n' "$name"
     oname=$name.download
     stat=$(
-        curl -sSL -C - -z "$oname" \
+        curl -qsSL -C - -z "$oname" \
             -w '%{http_code}\t%{url_effective}' \
             -o "$oname" "$url"
     )

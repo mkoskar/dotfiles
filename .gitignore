@@ -6,6 +6,7 @@
 !/.config/ranger/
 !/.config/systemd/
 !/.config/systemd/user/
+!/.config/terminal-colors.d/
 !/.local/
 !/.local/share/
 !/.local/share/bash-completion/

@@ -10,6 +10,16 @@ cmd() {
     "$@"
 }
 
+var() {
+    local var=$1
+    local -n val=$var
+    if [[ ${val+set} ]]; then
+        printf '%s set: %q\n' "$var" "$val"
+    else
+        printf '%s unset\n' "$var"
+    fi
+}
+
 hostname=$(hostname)
 
 {
@@ -17,6 +27,10 @@ hostname=$(hostname)
     printf 'Host name:              %s\n' "$hostname"
     printf 'DNS host name (FQDN):   %s\n' "$(hostname -f)"
     printf 'DNS domain name:        %s\n' "$(hostname -d)"
+
+    echo
+    var LOCALDOMAIN
+    var RES_OPTIONS
 
     cmd getent ahosts "$hostname"
     cmd getent ahosts mkoskar.com

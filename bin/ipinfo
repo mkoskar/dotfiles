@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# See also:
+#
+#   $ dig -r +short @ns1.google.com o-o.myaddr.l.google.com TXT
+#   $ dig -r +short @resolver1.opendns.com myip.opendns.com
+
 set -eu
 
 prgname=${0##*/}
@@ -23,7 +28,7 @@ else
     url=https://ipinfo.io/
 fi
 
-stat=$(curl -sSL -w '%{http_code}\t%{url_effective}' -o "$tmpfile" "$url")
+stat=$(curl -qsSL -w '%{http_code}\t%{url_effective}' -o "$tmpfile" "$url")
 read -r scode surl <<<"$stat"
 case $scode in
     200)

@@ -132,6 +132,8 @@ if &t_Co >= 256 || has('gui_running')
     hi VisualNOS        guifg=fg            guibg=NONE          gui=underline
     hi WarningMsg       ctermfg=228         ctermbg=NONE        cterm=NONE
     hi WarningMsg       guifg=#ffff87       guibg=NONE          gui=NONE
+    hi Whitespace       ctermfg=238         ctermbg=NONE        cterm=NONE
+    hi Whitespace       guifg=#444444       guibg=NONE          gui=NONE
     hi WildMenu         ctermfg=16          ctermbg=185         cterm=bold
     hi WildMenu         guifg=bg            guibg=#d7d75f       gui=bold
 

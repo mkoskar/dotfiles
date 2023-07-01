@@ -759,7 +759,7 @@ command! -nargs=* CgrepAdd call s:QfGrep(0, 'a', <q-args>)
 command! -nargs=* -bang Lgrep call s:QfGrep(1, empty(<q-bang>) ? ' ' : 'r', <q-args>)
 command! -nargs=* LgrepAdd call s:QfGrep(1, 'a', <q-args>)
 
-function! s:QfRg(loclist, add, args) abort
+function! s:QfRg(loclist, action, args) abort
     call s:QfSystem(a:loclist, a:action,
                     \ 'rg --vimgrep --no-ignore ' . a:args,
                     \ printf(':%srg %s', a:loclist ? 'L' : 'C', a:args))
@@ -770,7 +770,7 @@ command! -nargs=* CrgAdd call s:QfRg(0, 'a', <q-args>)
 command! -nargs=* -bang Lrg call s:QfRg(1, empty(<q-bang>) ? ' ' : 'r', <q-args>)
 command! -nargs=* LrgAdd call s:QfRg(1, 'a', <q-args>)
 
-function! s:QfAg(loclist, add, args) abort
+function! s:QfAg(loclist, action, args) abort
     call s:QfSystem(a:loclist, a:action,
                     \ 'ag --vimgrep ' . a:args,
                     \ printf(':%srg %s', a:loclist ? 'L' : 'C', a:args))
@@ -1537,6 +1537,7 @@ nnoremap <Leader>gs :vert System git show HEAD:./
 let loaded_2html_plugin = 1
 let loaded_getscriptPlugin = 1
 let loaded_logiPat = 1
+let loaded_manpager_plugin = 1
 let loaded_netrwPlugin = 1
 let loaded_rrhelper = 1
 let loaded_spellfile_plugin = 1

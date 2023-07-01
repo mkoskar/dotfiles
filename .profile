@@ -135,7 +135,6 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.opengl=true 
 #export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/keyring/ssh}
 export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent}
 
-#export LESSOPEN='|highlight --quiet -O xterm256 -s bluegreen %s'
 export ANSIBLE_COLOR_VERBOSE=yellow
 export ASPROOT=~/.asp
 export AUR_MAINTAINER=mkoskar
@@ -152,9 +151,11 @@ export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc
 export GTK_IM_MODULE=xim
 export GTK_MODULES=canberra-gtk-module
 export LD_LIBRARY_PATH=~/opt/lib
-export LESS=-AQRS#3ciPs
+export LESS='c i M Q R S --shift 5 --follow-name --incsearch --no-histdups --use-color DE231.1$ DN240.-$ DP231.1$ DR238.-$ DS16.214$ Du+Y-$'
 export LESSHISTFILE=-
 export MAILDIR=~/mail
+export MANLESS='$MAN_PN ?ltlines %lt-%lb?L/%L. :byte %bB?s/%s. .?e(END) :?pB%pB\%..%t'
+export MANROFFOPT=-c
 export MANSECT=0:9:2:3:7:8:6:1:4:5
 export MANWIDTH=80
 export MPLAYER_HOME=$XDG_CONFIG_HOME/mplayer
