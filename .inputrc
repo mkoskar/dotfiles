@@ -87,6 +87,8 @@ $include ~/.inputrc.esc
 "\C-M": accept-line
 "\C-P": history-search-backward
 "\C-N": history-search-forward
+"\ep": history-substring-search-backward
+"\en": history-substring-search-forward
 "\e<": beginning-of-history
 "\e>": end-of-history
 "\ek": previous-screen-line

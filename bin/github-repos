@@ -76,7 +76,7 @@ cleanup() { rm -f "$tmpfile"; }
 trap cleanup EXIT
 
 stat=$(
-    curl -sSLG "https://api.github.com/users/$username/repos" \
+    curl -qsSLG "https://api.github.com/users/$username/repos" \
         -d "type=$type" -d "sort=$sort" -d "direction=$dir" -d 'per_page=500' \
         -w '%{http_code}\t%{url_effective}' \
         ${UAGENT:+-A "$UAGENT"} \

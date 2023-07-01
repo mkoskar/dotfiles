@@ -9,7 +9,7 @@ cd ~/.cache/apod
 case ${1-} in
     get)
         url=$(apodurl)
-        curl -sSLf --create-dirs -o cur --url "$url"
+        curl -qsSLf --create-dirs -o cur --url "$url"
         ;;
     set)
         [[ -e cur ]] || exit 0

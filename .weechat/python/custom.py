@@ -587,9 +587,9 @@ def cb_command_wspaces_reset(data, buffer, args):
         cmd('layout_reset &bitlbee')
         cmd('wspace_go 3')
         cmd('layout_reset #archlinux')
-        for ws in range(5, 10):
-            cmd(f'wspace_go {ws}')
-            cmd('wspace_del')
+        #for ws in range(5, 10):
+        #    cmd(f'wspace_go {ws}')
+        #    cmd('wspace_del')
         cmd('wspace_go 1')
         w.buffer_set(core, 'localvar_del_wspace_last_visited', '')
     else:
@@ -701,30 +701,6 @@ def autorespond_handle(ctx):
     #if 'nick_pulec' in ctx.tags:
     #    if 'redbull' in ctx.message.lower():
     #        msg('redbull is bad for you pulec', ctx.buffer)
-
-    #if ctx.channel == '##archlinux-filmclub':
-    #    if ctx.message == '??':
-    #        mirobot('you can ?csfd, ?dd, ?g, ?imdb, ?rt', ctx.buffer)
-    #
-    #    elif m := re.match(r'\?csfd (.*)', ctx.message):
-    #        q = urllib.parse.quote_plus(m.group(1))
-    #        mirobot('https://www.csfd.cz/hledat/?q=' + q, ctx.buffer)
-    #
-    #    elif m := re.match(r'\?dd (.*)', ctx.message):
-    #        q = urllib.parse.quote_plus(m.group(1))
-    #        mirobot('https://duckduckgo.com/?q=' + q, ctx.buffer)
-    #
-    #    elif m := re.match(r'\?g (.*)', ctx.message):
-    #        q = urllib.parse.quote_plus(m.group(1))
-    #        mirobot('https://www.google.com/search?q=' + q, ctx.buffer)
-    #
-    #    elif m := re.match(r'\?imdb (.*)', ctx.message):
-    #        q = urllib.parse.quote_plus(m.group(1))
-    #        mirobot('https://www.imdb.com/find/?q=' + q, ctx.buffer)
-    #
-    #    elif m := re.match(r'\?rt (.*)', ctx.message):
-    #        q = urllib.parse.quote_plus(m.group(1))
-    #        mirobot('https://www.rottentomatoes.com/search?search=' + q, ctx.buffer)
 
 
 def autorespond_cb_print(data, buffer, date, tags,
@@ -1472,9 +1448,9 @@ def configure():
     cmd('bar set buflist items buflist')
     cmd('bar set buflist size 25')
 
+    #cmd('filter addreplace nick_root irc.bitlbee.* nick_root *')
     cmd('filter addreplace ignore * irc_ignore_filter *')
     cmd('filter addreplace longlists *,!irc.server.* irc_367,irc_728 *')
-    cmd('filter addreplace nick_root irc.bitlbee.* nick_root *')
     cmd('filter addreplace smart * irc_smart_filter *')
 
     cmd(
@@ -1611,16 +1587,14 @@ def cb_command_reconfigure(data, buffer, args):
     cmd('proxy add tor socks5 127.0.0.1 9050')
 
     cmd('server add bitlbee localhost')
+    cmd('set irc.server.bitlbee.autoconnect off')
     cmd('set irc.server.bitlbee.nicks miro')
     cmd('set irc.server.bitlbee.proxy ""')
     cmd('set irc.server.bitlbee.sasl_password ${sec.data.bitlbee}')
     cmd('set irc.server.bitlbee.sasl_username miro')
     cmd('set irc.server.bitlbee.tls off')
     cmd('set irc.server.bitlbee.usermode ""')
-
-    cmd('server add gitter irc.gitter.im/6697')
-    cmd('set irc.server.gitter.autoconnect off')
-    cmd('set irc.server.gitter.password ${sec.data.gitter}')
+    cmd('set logger.level.irc.bitlbee.&bitlbee 0')
 
     cmd('server add libera irc.libera.chat/6697')
     cmd('set irc.server.libera.sasl_password ${sec.data.libera}')

@@ -30,10 +30,10 @@ fi
 export PAGER_EX='setf dict'
 word=$(printf %s "$*" | jq -sRr @uri)
 if (( match )); then
-    curl -s "dict://dict.org/match:$word:all" |
+    curl -qs "dict://dict.org/match:$word:all" |
         $PAGER
 else
-    curl -s "dict://dict.org/define:$word:all" |
+    curl -qs "dict://dict.org/define:$word:all" |
         dos2unix |
         awk '
             /^\s*$/ { squashing = 1; next }

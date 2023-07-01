@@ -20,7 +20,7 @@ process() {
     oname=$(printf %s "$url" | sha1sum)
     read -r oname _ <<<"$oname"
     stat=$(
-        curl -sSL -C - -z "$CACHEDIR/$oname" \
+        curl -qsSL -C - -z "$CACHEDIR/$oname" \
             -w '%{http_code}\t%{url_effective}' \
             ${UAGENT:+-A "$UAGENT"} \
             -o "$oname" "$url"

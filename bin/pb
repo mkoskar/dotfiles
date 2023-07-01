@@ -2,6 +2,21 @@
 
 set -eu
 
+# http://sprunge.us/
+# https://bpa.st/
+# https://dpaste.org/
+# https://ncry.pt/
+# https://paste.centos.org/
+# https://paste.debian.net/
+# https://paste.dn42.us/
+# https://paste.opensuse.org/
+# https://paste.sh/
+# https://paste.xinu.at/
+# https://pastebin.mozilla.org/
+# https://privatebin.net/
+# https://share.riseup.net/
+# https://termbin.com/
+
 prgname=${0##*/}
 
 tmpdir=$(mktemp -d)
@@ -22,16 +37,16 @@ outfile=$tmpdir/out
 
 case ${PB:-0x0} in
     0x0)
-        curl -sSLf -F file="@$infile" -o "$outfile" https://0x0.st/
+        curl -qsSLf -F file="@$infile" -o "$outfile" https://0x0.st/
         cat "$outfile"
         ;;
     ix)
         # /<id>/<lexer>#n-<line>
-        curl -sSLf -F f:1="@$infile" -o "$outfile" http://ix.io/
+        curl -qsSLf -F f:1="@$infile" -o "$outfile" http://ix.io/
         cat "$outfile"
         ;;
     rs)
-        curl -sSLf --data-binary "@$infile" -o "$outfile" https://paste.rs/
+        curl -qsSLf --data-binary "@$infile" -o "$outfile" https://paste.rs/
         cat "$outfile"
         ;;
     *)

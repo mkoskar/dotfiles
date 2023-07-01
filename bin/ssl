@@ -62,6 +62,6 @@ case $sub in
         ;;
 
     check)
-        curl -sSLf https://www.howsmyssl.com/a/check | jq .
+        curl -qsSLf https://www.howsmyssl.com/a/check | jq .
         ;;
 esac

@@ -145,7 +145,7 @@ alias lx='ll -XB'
 # man
 # ----------------------------------------
 
-alias man-less="MANPAGER='less -s' man"
+alias manless="man -P 'less -s'"
 
 alias man-1p='man -s 1p'
 alias man-3p='man -s 3p'
@@ -217,12 +217,16 @@ pacrm() {
 
 pacs() {
     [ $# -eq 0 ] && return 2
-    pacsearch "$1"
+    if [ -t 1 ]; then
+        pacsearch "$1"
+    else
+        pacsearch --nocolor "$1"
+    fi
 }
 
 pacss() {
     [ $# -eq 0 ] && return 2
-    pacsearch "$1"
+    pacs "$1"
     aur search -- "$1"
 }
 
@@ -243,6 +247,7 @@ alias ipy=ipython
 # ----------------------------------------
 
 #alias ytdl=youtube-dl
+#alias ytdl-audio-playlist="ytdl-audio --yes-playlist -o '%(uploader)s/%(playlist)s - %(release_date>%Y)s/[%(playlist_index)s] %(title)s.%(ext)s'"
 alias ytdl-audio-playlist="ytdl-audio --yes-playlist -o '%(playlist_uploader)s/%(playlist)s/[%(playlist_index)s] %(title)s.%(ext)s'"
 alias ytdl-audio='ytdl -f bestaudio/best -x'
 alias ytdl-best='ytdl -f bestvideo+bestaudio/best'
@@ -264,6 +269,7 @@ alias acpi='acpi -V'
 alias alarm-bread='alarm every 1h bread fold'
 alias alarm-hourly='alarm at \*:0'
 alias an=asciinema
+alias aria='aria2c --continue=true'
 alias aunpack='aunpack -q'
 alias avahi-browse='avahi-browse -avtr'
 alias c=calc
@@ -331,7 +337,7 @@ alias makepkg-build='makepkg -srf'
 alias makepkg-rebuild='makepkg -Ccsrf'
 alias me='lslogins "$USER"'
 alias mnt='findmnt --real'
-alias moon='curl -f http://wttr.in/moon | head -n -4'
+alias moon='curl -qf http://wttr.in/moon | head -n -4'
 alias mount-loop='mount -o loop'
 alias mpv-debug='mpv --terminal=yes --msg-level=all=debug'
 alias mpv-verbose='mpv --terminal=yes --msg-level=all=v'
@@ -371,12 +377,15 @@ alias sd-tmpfiles='systemd-tmpfiles --cat-config'
 alias sd=systemctl
 alias sdu='systemctl --user'
 alias sed-all="sed -E -e 'H;1h;\$!d;x'"
+alias signal='signal-desktop --start-in-tray'
 alias smbclient='smbclient --configfile=/dev/null'
-alias socat='socat readline,history=/dev/null'
+alias socati='socat readline,history=/dev/null'
 alias speaker-test='speaker-test -t wav -c 2'
 alias srunX='srun -NsXl'
 alias srunx='srun -Nsxl'
-alias ss='ss -napstu'
+alias ss='ss -naptu'
+alias ssh-cancel='ssh -O cancel'
+alias ssh-forward='ssh -O forward'
 alias ssh-socks='ssh -D 1080 -N'
 alias ssh0='ssh -S none'
 alias sslcon='openssl s_client -showcerts -connect'
@@ -402,7 +411,7 @@ alias weechat-tmux='tmux -L weechat attach'
 alias weechat0='weechat -t'
 alias weechat='weechat -a'
 alias whois='whois -H'
-alias wi='curl -f http://wttr.in/?Fqn'
+alias wi='curl -qf http://wttr.in/?Fqn'
 alias xargs-lines='xargs -d \\n'
 alias xargs-perline='xargs -L 1 -d \\n'
 alias xargs='xargs -rx'
