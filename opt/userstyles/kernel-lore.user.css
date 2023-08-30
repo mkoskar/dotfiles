@@ -1,0 +1,66 @@
+/* ==UserStyle==
+@name           kernel-lore
+@namespace      com.mkoskar
+@version        1.0.0
+@author         https://mkoskar.com/
+@license        Unlicense
+==/UserStyle== */
+
+@-moz-document domain("lore.kernel.org") {
+    .add {
+        background: lightgreen;
+    }
+
+    .del {
+        background: lightpink;
+    }
+
+    .head {
+        background: lightgray;
+    }
+
+    .hunk {
+        background: gold;
+    }
+
+    .q {
+        background: lightgray;
+    }
+
+    pre {
+        background: #eee;
+    }
+
+    pre#R {
+        background: none;
+    }
+
+    body > form pre {
+        background: none;
+    }
+
+    body > pre:last-of-type {
+        background: none;
+    }
+
+    #t {
+        background: cyan;
+    }
+
+    #u {
+        background: yellow;
+    }
+
+    a#r {
+        background: cyan;
+    }
+
+    a[id] {
+        background: cyan;
+    }
+
+    ul {
+        list-style: none;
+        padding-top: 0;
+    }
+}

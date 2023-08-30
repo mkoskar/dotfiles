@@ -32,30 +32,25 @@ read -r X Y W H <<<"$tmp"
     #   https://trac.ffmpeg.org/wiki/Encode/H.264
     #   https://trac.ffmpeg.org/wiki/Encode/VP9
 
-    outfile=screencast-$ts.webm
     args=(
-        -pix_fmt yuv444p
-        -codec:v vp9 -crf 15 -b:v 0 -deadline realtime -cpu-used 8
-        "$outfile"
+        -f x11grab -framerate 25 -show_region 1 -s "${W}x${H}" -i "$DISPLAY+$X,$Y" \
+        -f pulse -name "$prgname" -i default \
+        -af acompressor=threshold=0.08:ratio=8:attack=100:release=1000 \
     )
 
-    #outfile=screencast-$ts.webm
-    #args=(
-    #    -pix_fmt yuv444p
-    #    -codec:v vp9 -lossless 1 -deadline realtime -cpu-used 8
-    #    "$outfile"
-    #)
+    outfile=screencast-$ts.webm
+    args+=(
+        -pix_fmt yuv444p
+        -c:v vp9 -crf 15 -b:v 0 -deadline realtime -cpu-used 8
+        #-c:v vp9 -lossless 1 -deadline realtime -cpu-used 8
+    )
 
     #outfile=screencast-$ts.mp4
-    #args=(
-    #    -codec:v h264 -preset ultrafast -qp 0
-    #    "$outfile"
+    #args+=(
+    #    -c:v h264 -preset ultrafast -qp 0
     #)
 
-    ffmpeg -loglevel error \
-        -f x11grab -framerate 25 -show_region 1 \
-        -s "${W}x${H}" -i "$DISPLAY+$X,$Y" \
-        "${args[@]}" &
+    ffmpeg -loglevel error "${args[@]}" "$outfile" &
 
     exec 8<&-
     wait

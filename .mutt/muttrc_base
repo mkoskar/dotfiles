@@ -144,7 +144,7 @@ unset abort_unmodified
 unset reverse_realname
 
 unmy_hdr *
-my_hdr OpenPGP: url=https://keybase.io/mkoskar/key.asc
+#my_hdr OpenPGP: url=https://keybase.io/mkoskar/key.asc
 
 
 # PGP and S/MIME
@@ -310,7 +310,7 @@ macro index o <enter>
 macro index q <change-folder>!<enter> 'go to spoolfile mailbox'
 macro index,pager * <tag-pattern>~A<enter> 'tag all'
 macro index,pager 0 <tag-pattern>~N<enter> 'tag new'
-macro index,pager \c? <untag-pattern>~A<enter> 'untag all'
+macro index,pager <backspace> <untag-pattern>~A<enter> 'untag all'
 macro index,pager - <tag-prefix><clear-flag>N 'mark all tagged messages as read'
 macro index,pager W <tag-prefix><clear-flag> 'clear a status flag on all tagged messages'
 macro index,pager w <tag-prefix><set-flag> 'set a status flag on all tagged messages'

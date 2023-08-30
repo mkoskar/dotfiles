@@ -1,0 +1,17 @@
+/* ==UserStyle==
+@name           youtube-hide-chat-and-comments
+@namespace      com.mkoskar
+@version        1.0.0
+@author         https://mkoskar.com/
+@license        Unlicense
+==/UserStyle== */
+
+@-moz-document domain("youtube.com") {
+    #chat {
+        display: none;
+    }
+
+    #comments {
+        display: none;
+    }
+}

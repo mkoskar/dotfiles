@@ -77,7 +77,7 @@ mon() {
         \; selectp -t :.0 \
         \; selectl even-vertical
 
-    neww -n sstat trun pgx sstat \
+    neww -n ss trun pgx ss \
         \; set remain-on-exit on
 
     neww -n iftop trun iftop -i eth0 \

@@ -127,25 +127,17 @@ myConfig = def
 
     myManageHook = composeOne
                        [ appName <? "sp:" -?> customFloating $ W.RationalRect 0.02 0.03 0.96 0.94
-                       , appName =? "clementine" -?> doShiftView "8"
-                       , appName =? "gpodder" -?> doShift "8"
-                       , appName =? "libreoffice" -?> doShiftView "8"
                        , appName =? "pinentry-gtk-2" -?> doFloat
                        , appName =? "qjackctl" <&&> title <? "JACK Audio Connection Kit" -?> doFloat
                        , appName =? "s_aux" -?> doShift "2"
                        , appName =? "s_tmp" -?> doShift "2"
                        , appName =? "s_wrk" -?> doShift "1"
-                       , appName =? "spacefm" -?> doShiftView "5"
-                       , appName =? "sxiv" -?> doShiftView "9"
                        , appName =? "vmpk" -?> doFloat
                        , appName =? "workrave" <&&> title =? "Workrave" -?> doHideIgnore
-                       , appName =? "zathura" -?> doShiftView "8"
                        , className <? "Firefox" <&&> appName =? "Toolkit" -?> doFloat
                        , className =? "Firefox (default)" <&&> appName =? "Navigator" -?> doShiftView "3"
                        , className =? "Gxmessage" -?> doFloat
                        , className =? "mpv" -?> doShiftView "9"
-                       , className =? "qutebrowser" -?> doShiftView "3"
-                       , title =? "qiv" -?> doShiftView "9"
                        ]
                    <+> composeAll [ isDialog --> doCenterFloat ]
                    <+> positionStoreManageHook Nothing

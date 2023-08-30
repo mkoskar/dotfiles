@@ -127,8 +127,9 @@ file=user.js
 
         [[ ! $profile =~ ^(dev|lab)(-|$) ]] && cat <<-'EOF'
 
-			user_pref("media.peerconnection.enabled", false);
-			user_pref("media.peerconnection.ice.default_address_only", true);
+			//user_pref("media.peerconnection.enabled", false);
+			//user_pref("media.peerconnection.ice.default_address_only", true);
+
 			user_pref("network.http.pipelining", true);
 			user_pref("network.http.proxy.pipelining", true);
 			user_pref("network.http.referer.XOriginPolicy", 1);
@@ -184,9 +185,6 @@ file=userChrome.css
 		    border-radius: 0 !important;
 		    margin-block: 0 !important;
 		}
-		#unified-extensions-button {
-		    display: none;
-		}
 	EOF
 
     [[ $profile != default ]] && cat <<-EOF
@@ -199,38 +197,6 @@ file=userChrome.css
 		    font-family: monospace;
 		    font-weight: bold;
 		    padding: 10px 7px 0 5px;
-		}
-	EOF
-} >"$file"
-
-file=userContent.css
-[[ -f $file.lock ]] || {
-    printf '/* %s */\n' "$file"
-
-    [[ $profile = default ]] && cat <<-'EOF'
-
-		@-moz-document url-prefix(https://lore.kernel.org/) {
-		    .add { background: lightgreen }
-		    .del { background: lightpink }
-		    .head { background: lightgray }
-		    .hunk { background: gold }
-		    .q { background: lightgray }
-
-		    pre { background: #eee }
-		    pre#R { background: none }
-		    body > form pre { background: none }
-		    body > pre:last-of-type { background: none }
-
-		    #t { background: cyan }
-		    #u { background: yellow }
-		    a#r { background: cyan }
-		    a[id] { background: cyan }
-		    ul { list-style: none; padding-top: 0 }
-		}
-
-		@-moz-document url-prefix(https://www.youtube.com/) {
-		    #chat { display: none !important }
-		    #comments { display: none !important }
 		}
 	EOF
 } >"$file"

@@ -2,26 +2,45 @@
 
 set -eu -o pipefail
 
+prgname=${0##*/}
+
+_usage() {
+    echo "usage: $prgname [-6] [-l|-n]"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+prefix=ip
+postfix=
+
+while getopts 6lnh opt; do
+    case $opt in
+        6) prefix=ip6 ;;
+        l) postfix=legacy ;;
+        n) postfix=nft ;;
+        h) usage ;;
+        *) usage_err ;;
+    esac
+done
+shift $((OPTIND-1))
+
 if (( EUID )); then
     echo 'This script must be run with root privileges.' >&2
     exit 1
 fi
 
-prgname=${0##*/}
-
 # ----------------------------------------
-
-case $prgname in
-    ip6*) prefix=ip6 ;;
-    *) prefix=ip ;;
-esac
 
 tables=("$@")
 if (( ! ${#tables[@]} )); then
     src=/proc/net/${prefix}_tables_names
-    [[ -e $src ]] || exit 0
-    readarray -t tables <"$src"
+    [[ -e $src ]] && readarray -t tables <"$src"
 fi
+if (( ! ${#tables[@]} )); then
+    tables=(filter nat)
+fi
+
+iptables=${prefix}tables${postfix:+-}${postfix}
 
 for table in "${tables[@]}"; do
     case $table in
@@ -72,4 +91,4 @@ for table in "${tables[@]}"; do
 			EOF
         ;;
     esac
-done | "${prefix}tables-restore"
+done | "$iptables-restore"

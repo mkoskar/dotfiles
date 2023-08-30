@@ -31,21 +31,14 @@ for_window [class=".*"] title_format "%title [%class/%instance]"
 for_window [class="Firefox (default)"] move container to workspace 3
 for_window [class="Gxmessage"] floating enable
 for_window [class="mpv"] move container to workspace 9
-for_window [instance="clementine"] move container to workspace 8
-for_window [instance="gpodder"] move container to workspace 8
-for_window [instance="libreoffice"] move container to workspace 8
 for_window [instance="pinentry-gtk-2"] floating enable
 for_window [instance="qjackctl" title="JACK Audio Connection Kit"] floating enable
 for_window [instance="s_aux"] move container to workspace 2
 for_window [instance="s_tmp"] move container to workspace 2
 for_window [instance="s_wrk"] move container to workspace 1
 for_window [instance="sp:.*"] floating enable
-for_window [instance="spacefm"] move container to workspace 5
-for_window [instance="sxiv"] move container to workspace 9
 for_window [instance="vmpk"] floating enable
 for_window [instance="workrave" title="Workrave"] ignore and hide
-for_window [instance="zathura"] move container to workspace 8
-for_window [title="qiv"] move container to workspace 9
 
 # ----------------------------------------
 

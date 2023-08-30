@@ -65,7 +65,7 @@ else
     exec >&8 2>&1
 fi
 
-exec 8>/var/run/backup.lock
+exec 8>/run/backup.lock
 if ! flock -n 8; then
     log "$target: full-backup in progress"
     exit 3

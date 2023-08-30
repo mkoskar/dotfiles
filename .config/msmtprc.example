@@ -1,5 +1,6 @@
-auth on
 defaults
+# ----------------------------------------
+auth on
 logfile ~/.local/share/msmtp.log
 #proxy_host 127.0.0.1
 #proxy_port 1080
@@ -8,6 +9,7 @@ tls_starttls off
 tls_trust_file /etc/ssl/certs/ca-certificates.crt
 
 account <account>
+# ----------------------------------------
 from <from>
 host <host>
 port <port>

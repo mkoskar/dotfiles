@@ -494,8 +494,8 @@ set undofile
 let &undodir = $VIMDIR . '/undo//'
 call utils#mkdir(&undodir)
 
-nnoremap cw dwi
-nnoremap cW dWi
+"nnoremap cw dwi
+"nnoremap cW dWi
 
 noremap <Leader><C-J> J
 nnoremap <Leader>w :setl fo<C-R>=&fo =~# 't' ? '-' : '+'<CR>=t<CR>
@@ -804,7 +804,6 @@ let &viminfofile = $VIMDIR . '/viminfo'
 nnoremap <C-W><C-F> <Cmd>vert wincmd f<CR>
 nnoremap <Leader><C-L> <C-L>
 nnoremap <Leader>D <Cmd>%d<CR>
-nnoremap <Leader>V :setl ve=<C-R>=&ve =~# 'all' ? 'block' : 'all'<CR><CR>
 nnoremap <Leader>la :ls!<CR>
 nnoremap <Leader>lb :ls! %<CR>
 nnoremap <Leader>lc :ls! +<CR>
@@ -813,6 +812,7 @@ nnoremap <Leader>lt :ls t<CR>
 nnoremap <Leader>q <Cmd>close<CR>
 nnoremap <Leader>sc :setl scl=<C-R>=&scl !=# 'no' ? 'no' : 'yes'<CR><CR>
 nnoremap <Leader>ss <Cmd>new +setl\ bt=nofile\ bh=wipe\ noswf\ nobl<CR>
+nnoremap <Leader>ve :setl ve=<C-R>=&ve =~# 'all' ? 'block' : 'all'<CR><CR>
 
 " Switch to Ex mode with gQ instead
 nnoremap Q <NOP>

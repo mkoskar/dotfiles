@@ -62,16 +62,20 @@ alias dke='docker exec -i -t'
 alias dki='docker image'
 alias dkr='docker run -P -i -t'
 
-dkstop() {
-    docker container ls -aq | command xargs -rx docker stop
-}
-
 alias pd=podman
 alias pdc='podman container'
 alias pde='podman exec -i -t'
 alias pdi='podman image'
 alias pdr='podman run -P -i -t'
-alias pdstop='podman stop -a'
+
+alias dk-prune='docker system prune'
+alias pd-prune='podman system prune'
+
+dk-stop() {
+    docker container ls -aq | command xargs -rx docker stop
+}
+
+alias pd-stop='podman stop -a'
 
 
 # gpg
@@ -145,7 +149,7 @@ alias lx='ll -XB'
 # man
 # ----------------------------------------
 
-alias manless="man -P 'less -s'"
+alias manless="MANPAGER='less -s' man"
 
 alias man-1p='man -s 1p'
 alias man-3p='man -s 3p'
@@ -280,11 +284,14 @@ alias cp='cp -ai --reflink=auto'
 alias cpio-copy='cpio -pdmv'
 alias curl-as='curl -A "$UAGENT"'
 alias curl-head='\curl -I'
+alias curl-socks='curl --preproxy socks5h://localhost:1080'
+alias curl-tor='curl --preproxy socks5h://localhost:9050'
 alias curl-trace='curl --trace-ascii - --trace-time'
 alias curl='curl -sSLJ'
 alias date0='date -R'
-alias dated='date +%F'
-alias datei='date +"Y%G Q%q W%V D%j"'
+alias dated='date -Id'
+alias datei='date -Is'
+alias dateii='date +"Y%G Q%q W%V D%j"'
 alias dconfa='dconf dump /'
 alias dd='dd bs=4M conv=fsync oflag=direct status=progress'
 alias delv-nocheck='delv +cd'
@@ -314,6 +321,7 @@ alias free='free -h'
 alias fuser='fuser -v'
 alias fzy='fzy -l $LINES'
 alias getfattr='getfattr --absolute-names -d -m -'
+alias git0='git --no-pager'
 alias glxgears-novsync='vblank_mode=0 glxgears'
 alias grepcat='grep --exclude-dir=\* .'
 alias gsettingsa='gsettings list-recursively'
@@ -323,6 +331,7 @@ alias info='info --vi-keys'
 alias infocmp0='infocmp -A "$SYSPREFIX"/share/terminfo'
 alias infocmp='infocmp -1a'
 alias ip='ip -h -p -c=auto'
+alias journal-notice='journal -p 5'
 alias journal='journalctl -o short-precise -b'
 alias last='last -x'
 alias ld-debug='LD_DEBUG=all'
@@ -360,10 +369,13 @@ alias parallel='parallel -r'
 alias patch0='patch -N -p 0'
 alias patch1='patch -N -p 1'
 alias pax-copy='pax -rwv'
+alias pdf-decrypt='qpdf --decrypt --remove-restrictions --password-file=-'
 alias ping-mtu='ping -M do -s 2000'
 alias pr='pr -T -W "$COLUMNS"'
+alias psmem='ps --format pid,%mem,pss:7,rss:7,sz:10,vsz:10,cmd --sort=-pss'
 alias pwgen='pwgen -cns'
 alias qiv='qiv -uLtiGfl --vikeys'
+alias qrdecode=zbarimg
 alias qrencode-utf8='qrencode -t UTF8'
 alias rax=rax2
 alias reflector='reflector -c cz,sk -p https -l 5 --sort rate'
@@ -377,8 +389,8 @@ alias sd-tmpfiles='systemd-tmpfiles --cat-config'
 alias sd=systemctl
 alias sdu='systemctl --user'
 alias sed-all="sed -E -e 'H;1h;\$!d;x'"
-alias signal='signal-desktop --start-in-tray'
 alias smbclient='smbclient --configfile=/dev/null'
+alias socat='socat -dd'
 alias socati='socat readline,history=/dev/null'
 alias speaker-test='speaker-test -t wav -c 2'
 alias srunX='srun -NsXl'
@@ -388,7 +400,7 @@ alias ssh-cancel='ssh -O cancel'
 alias ssh-forward='ssh -O forward'
 alias ssh-socks='ssh -D 1080 -N'
 alias ssh0='ssh -S none'
-alias sslcon='openssl s_client -showcerts -connect'
+alias sslcon='openssl s_client -trace -showcerts -state -crlf -ign_eof -connect'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
 alias sys='systool -av'
 alias systemd-debug='SYSTEMD_LOG_LEVEL=7 SYSTEMD_LOG_COLOR=1 SYSTEMD_LOG_TIME=1 SYSTEMD_LOG_LOCATION=1'
@@ -464,6 +476,15 @@ base() {
     export BASEDIR=${1:-$PWD}
 }
 unbase() { unset BASEDIR; }
+
+bridge() {
+    if [ $# -eq 0 ]; then
+        ip link show type bridge
+        ip link show type bridge_slave
+    else
+        command bridge -p -c=auto "$@"
+    fi
+}
 
 # shellcheck disable=SC2164
 cd() {
