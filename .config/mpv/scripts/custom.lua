@@ -19,6 +19,7 @@ local input_keys = {
     'r',
     's',
     'ENTER',
+    'SPACE',
     'Ctrl+L',
     ',', '.',
     'g', 'G',

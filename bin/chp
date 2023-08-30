@@ -122,28 +122,40 @@ fi
 # https://source.chromium.org/chromium/chromium/src/+/main:gpu/config/gpu_preferences.h
 
 features+=(
+    #DefaultANGLEVulkan
     #PlatformHEVCDecoderSupport
     #RawDraw
-    #VaapiIgnoreDriverChecks
     #Vulkan
+    #VulkanFromANGLE
+    #WebRTCPipeWireCapturer
+    #WebUIDarkMode
     -UseChromeOSDirectVideoDecoder
     -UseSkiaRenderer
     CanvasOopRasterization
+    VaapiIgnoreDriverChecks
+    VaapiVideoDecodeLinuxGL
     VaapiVideoDecoder
     VaapiVideoEncoder
 )
 
+
 args+=(
     #--disable-gpu-driver-bug-workarounds
+    #--enable-drdc
+    #--enable-gpu-memory-buffer-video-frames
     #--enable-native-gpu-memory-buffers
+    #--enable-raw-draw
     #--enable-unsafe-webgpu
-    #--use-vulkan
+    #--force-dark-mode
+    #--ozone-platform=x11
+    #--use-angle=vulkan
+    #--use-gl=angle
+    #--use-vulkan=native
     --enable-gpu-rasterization
     --enable-hardware-overlays
     --enable-zero-copy
     --ignore-gpu-blocklist
 )
-
 
 # Other
 # ----------------------------------------

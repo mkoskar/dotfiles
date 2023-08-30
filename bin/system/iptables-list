@@ -1,33 +1,57 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
+
+prgname=${0##*/}
+
+_usage() {
+    echo "usage: $prgname [-6] [-l|-n]"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+prefix=ip
+postfix=
+
+while getopts 6lnh opt; do
+    case $opt in
+        6) prefix=ip6 ;;
+        l) postfix=legacy ;;
+        n) postfix=nft ;;
+        h) usage ;;
+        *) usage_err ;;
+    esac
+done
+shift $((OPTIND-1))
 
 if (( EUID )); then
     echo 'This script must be run with root privileges.' >&2
     exit 1
 fi
 
-prgname=${0##*/}
-
 # ----------------------------------------
-
-case $prgname in
-    ip6*) prefix=ip6 ;;
-    *) prefix=ip ;;
-esac
 
 tables=("$@")
 if (( ! ${#tables[@]} )); then
     src=/proc/net/${prefix}_tables_names
     [[ -e $src ]] && readarray -t tables <"$src"
 fi
+if (( ! ${#tables[@]} )); then
+    tables=(filter nat)
+fi
+
+iptables=${prefix}tables${postfix:+-}${postfix}
+
+kind=$(type -P "$iptables")
+kind=$(readlink -f "$kind")
+kind=${kind##*/xtables-}
+kind=${kind%%-multi}
 
 for table in "${tables[@]}"; do
     echo $'\n--------------------------------------------------'
-    printf '> %s table %s:\n\n' "$prefix" "$table"
-    "${prefix}tables" -t "$table" -nvL
-    echo
-    "${prefix}tables" -t "$table" -S
+    printf '> %s table %s (%s):\n\n' "$prefix" "$table" "$kind"
+    #"$iptables" -t "$table" -nvL
+    "$iptables" -t "$table" -S
 done
 
 echo

@@ -1367,7 +1367,7 @@ def configure():
     cmd('set weechat.look.scroll_page_percent 50')
     cmd('set weechat.look.window_separator_horizontal off')
     cmd('set weechat.look.window_title WeeChat ${info:version}')
-    cmd('set weechat.plugin.autoload alias,buflist,charset,fset,irc,logger,perl,python,script,spell,trigger')
+    cmd('set weechat.plugin.autoload alias,buflist,charset,irc,logger,perl,python,script,spell,trigger')
     cmd('set weechat.startup.display_logo off')
     cmd('set weechat.startup.display_version off')
 

@@ -2,30 +2,46 @@
 
 set -eu -o pipefail
 
+prgname=${0##*/}
+
+_usage() {
+    echo "usage: $prgname [-6] [-l|-n] table chain"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+prefix=ip
+postfix=
+
+while getopts 6lnh opt; do
+    case $opt in
+        6) prefix=ip6 ;;
+        l) postfix=legacy ;;
+        n) postfix=nft ;;
+        h) usage ;;
+        *) usage_err ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if (( $# < 2 )); then
+    usage_err
+fi
+
 if (( EUID )); then
     echo 'This script must be run with root privileges.' >&2
     exit 1
 fi
 
-prgname=${0##*/}
-
-if (( $# < 2 )); then
-    echo "usage: $prgname table chain" >&2
-    exit 2
-fi
-
 # ----------------------------------------
 
-case $prgname in
-    ip6*) prefix=ip6 ;;
-    *) prefix=ip ;;
-esac
+iptables=${prefix}tables${postfix:+-}${postfix}
 
 table=$1
 chain=$2
 
-"${prefix}tables" -t "$table" -F "$chain"
-"${prefix}tables" -t "$table" -S | tac |
+"$iptables" -t "$table" -F "$chain"
+"$iptables" -t "$table" -S | tac |
     awk -v chain="$chain" '
         function escape(str) {
             gsub(/[\\.*?+|^$(){}\[\]]/, "\\\\&", str)
@@ -41,5 +57,5 @@ chain=$2
             printf "\n"
         }
     ' | while read -r -a args; do
-        "${prefix}tables" -t "$table" "${args[@]}"
+        "$iptables" -t "$table" "${args[@]}"
     done

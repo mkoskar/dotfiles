@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
-set -e
+set -eu -o pipefail
 
 echo $'\n--------------------------------------------------'
 echo $'> Config:\n'
 
-socat - local:/var/run/tor/control.sock <<-'EOF'
-	AUTHENTICATE
-	GETINFO config-text
-	GETINFO orconn-status
-	GETINFO circuit-status
-	GETINFO stream-status
-	QUIT
-EOF
+(
+    printf 'AUTHENTICATE\r\n'
+    printf 'GETINFO config-text\r\n'
+    printf 'GETINFO orconn-status\r\n'
+    printf 'GETINFO circuit-status\r\n'
+    printf 'GETINFO stream-status\r\n'
+    printf 'QUIT\r\n'
+) | socat - local:/run/tor/control.sock
 echo

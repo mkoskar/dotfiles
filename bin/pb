@@ -35,7 +35,14 @@ outfile=$tmpdir/out
 
 [[ -s $infile ]] || exit 1
 
-case ${PB:-0x0} in
+case ${PB:-!} in
+    !)
+        curl -qsSLf -F file="@$infile" -o "$outfile" \
+            --variable "user@$HOME/.secrets/paste" \
+            --expand-user '{{user:trim}}' \
+            https://mkoskar.com/cgi/paste
+        cat "$outfile"
+        ;;
     0x0)
         curl -qsSLf -F file="@$infile" -o "$outfile" https://0x0.st/
         cat "$outfile"
