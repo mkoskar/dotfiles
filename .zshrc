@@ -15,7 +15,12 @@ SAVEHIST=5000
 TMPPREFIX=${TMPDIR:-/tmp}/zsh
 
 typeset -gU path fpath cdpath
-fpath=(~/.zfunctions $fpath)
+
+fpath=(
+    ~/.zfunctions
+    ~/projects/pub/pkgbuilds/.zsh
+    $fpath
+)
 
 zmodload zsh/complist
 zmodload zsh/datetime

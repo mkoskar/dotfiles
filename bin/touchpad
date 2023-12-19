@@ -6,7 +6,7 @@ shopt -s inherit_errexit
 export LC_ALL=C
 prgname=${0##*/}
 
-name='pointer:SynPS/2 Synaptics TouchPad'
+name='SynPS/2 Synaptics TouchPad'
 prop='Device Enabled'
 
 state() {

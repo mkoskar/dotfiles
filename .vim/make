@@ -103,7 +103,8 @@ parallel -r <<-'EOF'
 	from_git vim-lsp-settings   https://github.com/mattn/vim-lsp-settings
 	from_git vimspector         https://github.com/puremourning/vimspector
 	from_git visualrepeat       https://github.com/inkarkat/vim-visualrepeat
-	from_vba ansiesc            https://www.drchip.org/astronaut/vim/vbafiles/AnsiEsc.vba.gz
+
+	#from_vba ansiesc            https://www.drchip.org/astronaut/vim/vbafiles/AnsiEsc.vba.gz
 
 EOF
 

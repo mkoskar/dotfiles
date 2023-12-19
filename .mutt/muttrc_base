@@ -77,7 +77,7 @@ set attach_format = '[%u%D%I] %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s]'
 set date_format = '!%b %d'
 set folder_format = '%3C %t %N %F %3l %-8.8u %-8.8g %8s (%5n/%5m) %d %f'
 set query_format = '%3c %t %-40.40a    %n %?e?(%e)?'
-set status_format = '[%r] %f %l (%n/%m)%?F? [%F]?%?p? P:%p?%?d? D:%d?%?t? T:%t?%?V? > %V (%M)? %> %s/%S (%P)'
+set status_format = '[%r] %f %l (%n/%m)%?F? [%F]?%?p? P:%p?%?d? D:%d?%?t? T:%t?%?V? ⟫ %V (%M)? %> %s/%S (%P)'
 
 
 # Index
@@ -341,7 +341,7 @@ macro compose v <edit-from>^Ume-<tab> 'select from'
 #set sidebar_new_mail_only
 #set sidebar_visible
 set sidebar_folder_indent
-set sidebar_format = ' %B%?F? [%F]?%* %?N?%N?%C '
+set sidebar_format = ' %B%?F? [%F]?%* %?N?%N? '
 set sidebar_indent_string = ' '
 set sidebar_next_new_wrap
 set sidebar_short_path

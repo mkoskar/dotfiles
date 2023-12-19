@@ -81,7 +81,7 @@ if [[ $profile != skel ]]; then
 
         cat >manifest.json <<-EOF
 		{
-		    "manifest_version": 2,
+		    "manifest_version": 3,
 		    "name": "theme",
 		    "version": "0.1",
 		    "theme": {
@@ -98,7 +98,7 @@ if [[ $profile != skel ]]; then
 		            "ntp_logo_alternate": 0
 		        },
 		        "tints": {
-		            "background_tab" : [-1, 0.1, 0.9],
+		            "background_tab" : [-1, -1, 0.8],
 		            "frame_inactive" : [-1, -1, 0.7],
 		            "frame_incognito_inactive" : [-1, -1, 0.7]
 		        }
@@ -122,9 +122,11 @@ fi
 # https://source.chromium.org/chromium/chromium/src/+/main:gpu/config/gpu_preferences.h
 
 features+=(
+    #-CustomizeChromeSidePanel
     #DefaultANGLEVulkan
     #PlatformHEVCDecoderSupport
     #RawDraw
+    #UseMultiPlaneFormatForHardwareVideo
     #Vulkan
     #VulkanFromANGLE
     #WebRTCPipeWireCapturer
@@ -137,7 +139,6 @@ features+=(
     VaapiVideoDecoder
     VaapiVideoEncoder
 )
-
 
 args+=(
     #--disable-gpu-driver-bug-workarounds
@@ -156,6 +157,7 @@ args+=(
     --enable-zero-copy
     --ignore-gpu-blocklist
 )
+
 
 # Other
 # ----------------------------------------
