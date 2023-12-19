@@ -1,47 +1,18 @@
+# PipeWire
+# ----------------------------------------
+# /usr/share/alsa/alsa.conf.d/50-pipewire.conf
+
+
 # PulseAudio
 # ----------------------------------------
 # /usr/share/doc/alsa-plugins/README-pulse
-
-pcm.!pulse {
-    type pulse
-    fallback sysdefault
-    hint {
-        show {
-            @func refer
-            name defaults.namehint.basic
-        }
-        description "PulseAudio Sound Server"
-    }
-}
-
-ctl.!pulse {
-    type pulse
-    fallback sysdefault
-}
+# /usr/share/alsa/alsa.conf.d/50-pulseaudio.conf
 
 
 # JACK
 # ----------------------------------------
 # /usr/share/doc/alsa-plugins/README-jack
-
-pcm.!jack {
-    type jack
-    playback_ports [
-        system:playback_1
-        system:playback_2
-    ]
-    capture_ports [
-        system:capture_1
-        system:capture_2
-    ]
-    hint {
-        show {
-            @func refer
-            name defaults.namehint.basic
-        }
-        description "JACK Audio Connection Kit"
-    }
-}
+# /usr/share/alsa/alsa.conf.d/50-jack.conf
 
 # ----------------------------------------
 
@@ -51,3 +22,6 @@ defaults.namehint.showall on
 
 pcm.!default pulse
 ctl.!default pulse
+
+pcm.!default pipewire
+ctl.!default pipewire

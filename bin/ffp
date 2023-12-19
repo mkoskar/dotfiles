@@ -109,6 +109,7 @@ file=user.js
 			user_pref("devtools.webconsole.timestampMessages", true);
 			user_pref("devtools.webide.autoinstallADBExtension", false);
 			user_pref("devtools.webide.autoinstallADBHelper", false);
+			user_pref("dom.security.https_only_mode", true);
 			user_pref("network.dns.disablePrefetch", true);
 			user_pref("network.prefetch-next", false);
 			user_pref("plugin.defaultXpi.state", 1);

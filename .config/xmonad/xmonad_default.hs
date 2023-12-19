@@ -27,6 +27,7 @@ import XMonad.Hooks.PositionStoreHooks
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 
+import XMonad.Layout.FocusTracking
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.Maximize
@@ -35,7 +36,6 @@ import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.NoBorders
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
-import XMonad.Layout.TrackFloating
 import XMonad.Layout.WindowNavigation
 
 import XMonad.Util.EZConfig
@@ -101,7 +101,7 @@ myConfig = def
     -- {{{ Hooks
 
     myStartupHook = do
-        checkKeymap myConfig myEZKeys
+        --checkKeymap myConfig myEZKeys
         adjustEventInput
         setWMName "LG3D"
         n <- screenCount
@@ -143,7 +143,7 @@ myConfig = def
                    <+> positionStoreManageHook Nothing
 
     myLayoutHook = avoidStruts
-                   $ trackFloating
+                   $ focusTracking
                    $ maximize
                    $ smartBorders
                    $ configurableNavigation noNavigateBorders

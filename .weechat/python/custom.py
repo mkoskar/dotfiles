@@ -1519,6 +1519,7 @@ def configure():
     key_bind('meta-w,meta-j', '/window down')
     key_bind('meta-w,meta-k', '/window up')
     key_bind('meta-w,meta-l', '/window right')
+    key_bind('meta-w,meta-o', '/window +1')
 
     key_bind('ctrl-N', '/input search_next', 'search')
     key_bind('ctrl-P', '/input search_previous', 'search')

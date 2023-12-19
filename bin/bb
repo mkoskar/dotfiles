@@ -17,7 +17,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     /cloud                  b https://cloud.mkoskar.com/
     /git                    b https://git.mkoskar.com/
     /gitea                  b https://gitea.mkoskar.com/
-    /matrix                 b https://matrix.mkoskar.com/
     /pub                    b https://mkoskar.com/pub/
     8p8c                    b https://en.wikipedia.org/wiki/ANSI/TIA-568#Wiring
     ImageMagick             b https://www.imagemagick.org/script/command-line-tools.php
@@ -44,7 +43,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     apache-directives       b https://httpd.apache.org/docs/current/mod/quickreference.html
     apk                     b https://pkgs.alpinelinux.org/packages\?name={u}
     arch                    b https://www.archlinux.org/
-    arch-bugs               b https://bugs.archlinux.org/index.php\?string={u}
     arch-forums             b https://bbs.archlinux.org/search.php\?action=show_new
     arch-gitlab             b https://gitlab.archlinux.org/explore
     arch-lists              b https://lists.archlinux.org/
@@ -101,7 +99,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     constellations          b https://en.wikipedia.org/wiki/88_modern_constellations#List
     content-security-policy b https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
     cors                    b https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
-    country-codes           b https://en.wikipedia.org/wiki/ISO_3166-1#Current_codes
+    country-codes           b https://en.wikipedia.org/wiki/ISO_3166-1#Codes
     cpp                     b https://isocpp.org/std/the-standard
     cryptocurr              b https://coinmarketcap.com/
     css                     b https://www.w3.org/TR/CSS/
@@ -110,13 +108,14 @@ MENUER=$prgname menuer "$@" <<-EOF |
     css-reference           b https://developer.mozilla.org/en-US/docs/Web/CSS/Reference
     css-tricks              b https://css-tricks.com/
     css-units               b https://www.w3.org/TR/css-values-3/#lengths
-    ctlcodes                b https://en.wikipedia.org/wiki/C0_and_C1_control_codes#C0_\(ASCII_and_derivatives\)
+    ctlcodes                b https://en.wikipedia.org/wiki/C0_and_C1_control_codes
     ctlseqs                 b https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
     cups                    b https://www.cups.org/documentation.html
     curl-changes            b https://curl.se/changes.html
     cve                     b https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword={u}
     d                       b https://dictionary.cambridge.org/search/direct/\?datasetsearch=english\&q={u}
     dart                    b https://dart.dev/guides
+    datasheet               b https://www.alldatasheet.com/view.jsp\?Searchword={u}
     dbus                    b https://dbus.freedesktop.org/doc/dbus-specification.html
     dd                      b https://duckduckgo.com/\?q={u}
     dd-bang                 b https://duckduckgo.com/bang
@@ -147,24 +146,26 @@ MENUER=$prgname menuer "$@" <<-EOF |
     doi                     b https://www.doi.org/hb.html
     dom                     b https://dom.spec.whatwg.org/
     dovecot                 b https://doc.dovecot.org/
+    download!               b ~/download
     ebay                    b https://www.ebay.com/sch/i.html\?_nkw={u}
     ecma                    b https://www.ecma-international.org/publications/standards/Standard.htm
-    electronegativity       b https://en.wikipedia.org/wiki/Electronegativity#Electronegativities_of_the_elements
+    electropedia            b https://www.electropedia.org/
     em-spectrum             b https://en.wikipedia.org/wiki/Electromagnetic_spectrum
     emojis                  b https://emojipedia.org/
     emojis-codes            b https://www.webpagefx.com/tools/emoji-cheat-sheet/
     emoticons               b https://en.wikipedia.org/wiki/List_of_emoticons
     english-determiners     b https://dictionary.cambridge.org/grammar/british-grammar/determiners
     english-grammar         b https://dictionary.cambridge.org/grammar/british-grammar/
+    english-irregularities  b https://ncf.idallen.com/english.html
     enum                    b https://en.wikipedia.org/wiki/E_number#Full_list
     erlang                  b https://www.erlang.org/doc/index.html
+    esp-datasheets          b https://www.espressif.com/en/support/documents/technical-documents
     ethertype               b https://en.wikipedia.org/wiki/EtherType
     etsi                    b https://www.etsi.org/standards-search#\&sort=3
     etymology               b https://www.etymonline.com/word/{u}
+    euler                   b https://projecteuler.net/
     fdroid                  b https://f-droid.org/en/packages/
-    ffp                     b https://en.wikipedia.org/wiki/FFP_standards#Types
     filenames               b https://www.dwheeler.com/essays/filenames-in-shell.html
-    filter-classification   b https://en.wikipedia.org/wiki/Gas_mask#Filter_classification
     firefox-changes         b https://www.mozilla.org/en-US/firefox/releases/
     firefox-changes-dev     b https://developer.mozilla.org/en-US/Firefox/Releases/
     firefox-relnotes-bugs   b https://bugzilla.mozilla.org/buglist.cgi\?query_format=advanced\&f1=cf_tracking_firefox_relnote\&o1=isnotempty\&f2=cf_tracking_firefox_relnote\&o2=substring\&v2={u}\&limit=200\&order=changeddate\ desc
@@ -217,6 +218,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gnu-manuals             b https://www.gnu.org/manual/manual.html
     gnu-repos               b https://git.savannah.gnu.org/cgit/
     go                      b https://go.dev/ref/spec
+    goldbook                b https://goldbook.iupac.org/
     google-cloud            b https://console.cloud.google.com/
     google-devs             b https://developers.google.com/
     google-play             b https://play.google.com/store/search\?q={u}
@@ -280,6 +282,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     ii                      b https://www.ixquick.com/do/metasearch.pl\?cat=pics\&query={u}
     imdb                    b https://www.imdb.com/find\?q={u}
     imperial                b https://en.wikipedia.org/wiki/Imperial_units#Units
+    integer-sequences       b https://oeis.org/
     intel-core-datasheets   b https://www.intel.com/content/www/us/en/products/docs/processors/core/core-technical-resources.html
     intel-cpus              b https://en.wikipedia.org/wiki/List_of_Intel_processors#Latest
     intel-manuals           b https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html
@@ -322,6 +325,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     js-reference            b https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
     jsr!                    b ~/archive/lib/00-cs/java/08-jsr/
     jsr-all                 b https://jcp.org/en/jsr/all\?sortBy=date
+    jst-connectors          b https://www.jst-mfg.com/index_e.php
     k8s                     b https://kubernetes.io/docs/home/
     k8s-hub                 b https://artifacthub.io/
     kernel-lists            b http://vger.kernel.org/vger-lists.html
@@ -381,6 +385,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     memory-cards            b https://en.wikipedia.org/wiki/Comparison_of_memory_cards
     mime                    b https://datatracker.ietf.org/doc/html/rfc2045
     mime-types              b https://www.iana.org/assignments/media-types/media-types.xhtml
+    minipv/dupont           b https://www.mattmillman.com/info/crimpconnectors/dupont-and-dupont-connectors/
+    molex-connectors        b https://www.molex.com/en-us/part-list/connectors
     mongodb                 b https://docs.mongodb.org/manual/reference/
     morse-nato-alphabet     b https://en.wikipedia.org/wiki/NATO_phonetic_alphabet
     mosquitto               b https://mosquitto.org/documentation/
@@ -425,6 +431,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     osdev                   b https://wiki.osdev.org/Main_Page
     oui                     b https://www.wireshark.org/tools/oui-lookup.html
     owl                     b https://owl.purdue.edu/owl/purdue_owl.html
+    package                 b https://en.wikipedia.org/wiki/List_of_integrated_circuit_packaging_types
     pango                   b https://docs.gtk.org/Pango/
     pasta                   b https://en.wikipedia.org/wiki/List_of_pasta
     patents                 b https://patents.google.com/
@@ -444,8 +451,10 @@ MENUER=$prgname menuer "$@" <<-EOF |
     pizza                   b http://www.varasanos.com/pizzarecipe.htm
     pkg                     b https://www.archlinux.org/packages/\?q={u}
     plan9                   b https://9p.io/plan9/
+    plastics                b https://en.wikipedia.org/wiki/Plastic#Types_of_plastics
     podman                  b https://docs.podman.io/en/latest/index.html
     poetry                  b https://python-poetry.org/docs/
+    polish-alphabet         b https://en.wikipedia.org/wiki/Polish_alphabet#Letters
     posix                   b "$posix_base"/
     posix-env               b "$posix_base"/basedefs/V1_chap08.html
     posix-param-expansion   b "$posix_base"/utilities/V3_chap02.html#tag_18_06_02
@@ -537,7 +546,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     shellcheck              b https://github.com/koalaman/shellcheck/wiki
     si-prefixes             b https://en.wikipedia.org/wiki/International_System_of_Units#Prefixes
     si-quantities           b https://en.wikipedia.org/wiki/International_System_of_Quantities#Base_quantities
-    si-units                b https://en.wikipedia.org/wiki/International_System_of_Units#Base_units
+    si-units                b https://en.wikipedia.org/wiki/International_System_of_Units#SI_base_units
     sieve                   b https://datatracker.ietf.org/doc/html/rfc5228
     slovniky-lingea         b https://slovniky.lingea.sk/
     slovniky-sav            b https://slovnik.juls.savba.sk/
@@ -571,13 +580,14 @@ MENUER=$prgname menuer "$@" <<-EOF |
     tcp                     b https://datatracker.ietf.org/doc/html/rfc9293
     terminfo.src            b https://invisible-island.net/ncurses/terminfo.src.html
     tex                     b https://ctan.org/
+    thermocouples           b https://www.omega.com/en-us/colorcodes
     thinkpads               b https://en.wikipedia.org/wiki/ThinkPad#Current_model_lines
     tildes                  b https://tildes.net/?order=new
     timescale               b https://en.wikipedia.org/wiki/Geologic_time_scale#Table_of_geologic_time
     timezones               b https://upload.wikimedia.org/wikipedia/commons/8/88/World_Time_Zones_Map.png
     tiobe-index             b https://www.tiobe.com/tiobe-index/
     tls                     b https://datatracker.ietf.org/doc/html/rfc8446
-    tmp!                    b file:///"$HOME"/tmp
+    tmp!                    b ~/tmp
     tmux-changes            b https://github.com/tmux/tmux/blob/master/CHANGES
     toml                    b https://toml.io/en/latest
     tor-specs               b https://gitweb.torproject.org/torspec.git/tree/
@@ -585,6 +595,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     tr                      b https://translate.google.com/\?sl=en\&tl=sk\&q={u}
     tr-de                   b https://translate.google.com/\?sl=de\&tl=sk\&q={u}
     traefik                 b https://doc.traefik.io/traefik/
+    trigonometry            b https://en.wikipedia.org/wiki/List_of_trigonometric_identities
     turn/stun               b https://www.rfc-editor.org/rfc/rfc8656
     ud                      b https://www.urbandictionary.com/define.php\?term={u}
     uefi-specs              b https://uefi.org/specifications
@@ -614,6 +625,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     wayland-protocols       b https://wayland.app/protocols/
     web.dev                 b https://web.dev/
     webassembly             b https://webassembly.org/docs/high-level-goals/
+    webauthn                b https://webauthn.io/
     webcomponents           b https://www.webcomponents.org/
     webdev-tools            b https://www.browserling.com/tools
     webext-firefox-js-apis  b https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API

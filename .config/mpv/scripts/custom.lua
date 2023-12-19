@@ -31,7 +31,7 @@ local input_keys = {
     'DOWN', 'Shift+DOWN',
     'LEFT', 'Shift+LEFT', 'Ctrl+LEFT',
     'RIGHT', 'Shift+RIGHT', 'Ctrl+RIGHT',
-    'WHEEL_UP', 'WHEEL_DOWN',
+    'WHEEL_UP', 'WHEEL_DOWN', 'WHEEL_LEFT', 'WHEEL_RIGHT',
     'PGUP', 'Shift+PGUP',
     'PGDWN', 'Shift+PGDWN',
     'Shift+BS', 'Shift+Ctrl+BS',
@@ -62,6 +62,11 @@ function toggle_input_lock()
         else
             mp.add_forced_key_binding(k, 'input_lock' .. i, ignore)
         end
+    end
+    if input_lock then
+        mp.commandv('script-message', 'osc-visibility', 'auto', 0)
+    else
+        mp.commandv('script-message', 'osc-visibility', 'never', 0)
     end
     input_lock = not input_lock
     mp.osd_message(input_lock and "Input locked" or "Input unlocked")
@@ -296,6 +301,10 @@ mp.add_key_binding('Ctrl+r', 'reload', reload)
 
 mp.register_event('file-loaded',
     function()
+        --local ipc = mp.get_property('input-ipc-server')
+        --if ipc and string.find(ipc, 'syncplay') then
+        --  ...
+        --end
         set_info()
         show_info()
         local title = format_title()

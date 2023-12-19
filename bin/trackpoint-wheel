@@ -6,7 +6,7 @@ shopt -s inherit_errexit
 export LC_ALL=C
 prgname=${0##*/}
 
-name='pointer:TPPS/2 IBM TrackPoint'
+name='TPPS/2 IBM TrackPoint'
 prop='libinput Button Scrolling Button'
 
 state() {

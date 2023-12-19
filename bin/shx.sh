@@ -81,15 +81,19 @@ alias pd-stop='podman stop -a'
 # gpg
 # ----------------------------------------
 
+alias gpg-connect-dirmngr='gpg-connect-agent --dirmngr'
+alias gpg-debug='gpg -vv --debug-level=guru'
+alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
+alias gpg0='gpg --no-options'
+
 alias gpg-agent-pid="gpg-connect-agent 'getinfo pid' /bye"
 alias gpg-agent-reload='gpg-connect-agent reloadagent /bye'
 alias gpg-agent-sessionenv="gpg-connect-agent 'getinfo std_session_env' /bye"
 alias gpg-agent-socket="gpg-connect-agent 'getinfo socket_name' /bye"
 alias gpg-agent-updatetty='gpg-connect-agent updatestartuptty /bye'
-alias gpg-connect-dirmngr='gpg-connect-agent --dirmngr'
-alias gpg-debug='gpg -vv --debug-level=9'
-alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
-alias gpg0='gpg --no-options'
+
+alias gpg-dirmngr-kill='gpg-connect-dirmngr killdirmngr /bye'
+alias gpg-dirmngr-reload='gpg-connect-dirmngr reloaddirmngr /bye'
 
 
 # grep
@@ -273,7 +277,7 @@ alias acpi='acpi -V'
 alias alarm-bread='alarm every 1h bread fold'
 alias alarm-hourly='alarm at \*:0'
 alias an=asciinema
-alias aria='aria2c --continue=true'
+alias aria='aria2c -c -m 0'
 alias aunpack='aunpack -q'
 alias avahi-browse='avahi-browse -avtr'
 alias c=calc
@@ -389,6 +393,7 @@ alias sd-tmpfiles='systemd-tmpfiles --cat-config'
 alias sd=systemctl
 alias sdu='systemctl --user'
 alias sed-all="sed -E -e 'H;1h;\$!d;x'"
+alias shred='shred -v --random-source=/dev/urandom -n 1 -z'
 alias smbclient='smbclient --configfile=/dev/null'
 alias socat='socat -dd'
 alias socati='socat readline,history=/dev/null'
@@ -422,7 +427,7 @@ alias watch='watch -n 1'
 alias weechat-tmux='tmux -L weechat attach'
 alias weechat0='weechat -t'
 alias weechat='weechat -a'
-alias whois='whois -H'
+alias whois='whois --verbose --no-recursion -H'
 alias wi='curl -qf http://wttr.in/?Fqn'
 alias xargs-lines='xargs -d \\n'
 alias xargs-perline='xargs -L 1 -d \\n'
