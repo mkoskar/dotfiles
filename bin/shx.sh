@@ -249,6 +249,14 @@ pacw() {
 
 alias py=python
 alias ipy=ipython
+alias venv='python -m venv'
+
+
+# vim/nvim
+# ----------------------------------------
+
+alias vim-batch='vim -NXn -i NONE -u NONE -V1 -es'
+alias nvim-batch='nvim -NXn -i NONE -u NONE -V1 -es'
 
 
 # youtube-dl
@@ -277,6 +285,7 @@ alias acpi='acpi -V'
 alias alarm-bread='alarm every 1h bread fold'
 alias alarm-hourly='alarm at \*:0'
 alias an=asciinema
+alias aria-noalloc='aria2c -c -m 0 --file-allocation=none'
 alias aria='aria2c -c -m 0'
 alias aunpack='aunpack -q'
 alias avahi-browse='avahi-browse -avtr'
@@ -453,7 +462,7 @@ alias gdbus-bluez='_gdbus-system -d org.bluez'
 alias gdbus-login='_gdbus-system -d org.freedesktop.login1'
 
 _() {
-    git status -s
+    git status -s .
 }
 alias ,=_
 

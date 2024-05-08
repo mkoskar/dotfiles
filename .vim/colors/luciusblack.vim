@@ -7,157 +7,350 @@ if exists('syntax_on')
 endif
 let colors_name = 'luciusblack'
 
+function! s:Highlight(link, group, ...) abort
+    exec 'hi clear' a:group
+    exec 'hi' (a:link ? 'link' : '') a:group join(a:000)
+endfunction
+
+command -nargs=* HiColor call s:Highlight(0, <f-args>)
+command -nargs=* HiLink call s:Highlight(1, <f-args>)
+
 if &t_Co >= 256 || has('gui_running')
 
-    hi Normal           ctermfg=7           ctermbg=NONE        cterm=NONE
-    hi Normal           guifg=#aeaeae       guibg=#000000       gui=NONE
+    HiColor ColorColumn         ctermbg=236
+    \                           guibg=#303030
 
-    hi ColorColumn      ctermfg=NONE        ctermbg=236         cterm=NONE
-    hi ColorColumn      guifg=NONE          guibg=#303030       gui=NONE
-    hi Comment          ctermfg=242         ctermbg=NONE        cterm=NONE
-    hi Comment          guifg=#6c6c6c       guibg=NONE          gui=NONE
-    hi Conceal          ctermfg=238         ctermbg=NONE        cterm=NONE
-    hi Conceal          guifg=#444444       guibg=NONE          gui=NONE
-    hi Constant         ctermfg=174         ctermbg=NONE        cterm=NONE
-    hi Constant         guifg=#d78787       guibg=NONE          gui=NONE
-    hi Cursor           ctermfg=16          ctermbg=153         cterm=NONE
-    hi Cursor           guifg=bg            guibg=#afd7ff       gui=NONE
-    hi CursorColumn     ctermfg=NONE        ctermbg=236         cterm=NONE
-    hi CursorColumn     guifg=NONE          guibg=#303030       gui=NONE
-    hi CursorIM         ctermfg=16          ctermbg=116         cterm=NONE
-    hi CursorIM         guifg=bg            guibg=#87d7d7       gui=NONE
-    hi CursorLine       ctermfg=NONE        ctermbg=236         cterm=NONE
-    hi CursorLine       guifg=NONE          guibg=#303030       gui=NONE
-    hi CursorLineNr     ctermfg=231         ctermbg=233         cterm=NONE
-    hi CursorLineNr     guifg=#ffffff       guibg=#121212       gui=NONE
-    hi DiffAdd          ctermfg=15          ctermbg=241         cterm=NONE
-    hi DiffAdd          guifg=#dddddd       guibg=#626262       gui=NONE
-    hi DiffChange       ctermfg=15          ctermbg=241         cterm=NONE
-    hi DiffChange       guifg=#dddddd       guibg=#626262       gui=NONE
-    hi DiffDelete       ctermfg=16          ctermbg=241         cterm=NONE
-    hi DiffDelete       guifg=bg            guibg=#626262       gui=NONE
-    hi DiffText         ctermfg=231         ctermbg=1           cterm=NONE
-    hi DiffText         guifg=#ffffff       guibg=#9d2d2d       gui=NONE
-    hi Directory        ctermfg=151         ctermbg=NONE        cterm=NONE
-    hi Directory        guifg=#afd7af       guibg=NONE          gui=NONE
-    hi EndOfBuffer      ctermfg=238         ctermbg=NONE        cterm=NONE
-    hi EndOfBuffer      guifg=#444444       guibg=NONE          gui=NONE
-    hi Error            ctermfg=167         ctermbg=234         cterm=NONE
-    hi Error            guifg=#d75f5f       guibg=#1c1c1c       gui=NONE
-    hi ErrorMsg         ctermfg=231         ctermbg=1           cterm=NONE
-    hi ErrorMsg         guifg=#ffffff       guibg=#9d2d2d       gui=NONE
-    hi FoldColumn       ctermfg=240         ctermbg=233         cterm=NONE
-    hi FoldColumn       guifg=#585858       guibg=#121212       gui=NONE
-    hi Folded           ctermfg=244         ctermbg=233         cterm=NONE
-    hi Folded           guifg=#808080       guibg=#121212       gui=NONE
-    hi Identifier       ctermfg=156         ctermbg=NONE        cterm=NONE
-    hi Identifier       guifg=#afff87       guibg=NONE          gui=NONE
-    hi Ignore           ctermfg=16          ctermbg=NONE        cterm=NONE
-    hi Ignore           guifg=bg            guibg=NONE          gui=NONE
-    hi IncSearch        ctermfg=16          ctermbg=231         cterm=NONE
-    hi IncSearch        guifg=bg            guibg=#ffffff       gui=NONE
-    hi LineNr           ctermfg=240         ctermbg=233         cterm=NONE
-    hi LineNr           guifg=#585858       guibg=#121212       gui=NONE
-    hi MatchParen       ctermfg=46          ctermbg=NONE        cterm=bold
-    hi MatchParen       guifg=#00ff00       guibg=NONE          gui=bold
-    hi ModeMsg          ctermfg=117         ctermbg=NONE        cterm=NONE
-    hi ModeMsg          guifg=#87d7ff       guibg=NONE          gui=NONE
-    hi MoreMsg          ctermfg=228         ctermbg=NONE        cterm=NONE
-    hi MoreMsg          guifg=#ffff87       guibg=NONE          gui=NONE
-    hi NonText          ctermfg=238         ctermbg=NONE        cterm=NONE
-    hi NonText          guifg=#444444       guibg=NONE          gui=NONE
-    hi Pmenu            ctermfg=fg          ctermbg=235         cterm=NONE
-    hi Pmenu            guifg=fg            guibg=#262626       gui=NONE
-    hi PmenuSbar        ctermfg=NONE        ctermbg=236         cterm=NONE
-    hi PmenuSbar        guifg=NONE          guibg=#303030       gui=NONE
-    hi PmenuSel         ctermfg=185         ctermbg=233         cterm=NONE
-    hi PmenuSel         guifg=#d7d75f       guibg=#121212       gui=NONE
-    hi PmenuThumb       ctermfg=NONE        ctermbg=241         cterm=NONE
-    hi PmenuThumb       guifg=NONE          guibg=#626262       gui=NONE
-    hi PreProc          ctermfg=167         ctermbg=NONE        cterm=NONE
-    hi PreProc          guifg=#d75f5f       guibg=NONE          gui=NONE
-    hi Question         ctermfg=fg          ctermbg=NONE        cterm=NONE
-    hi Question         guifg=fg            guibg=NONE          gui=NONE
-    hi QuickFixLine     ctermfg=NONE        ctermbg=236         cterm=bold
-    hi QuickFixLine     guifg=NONE          guibg=#303030       gui=bold
-    hi Search           ctermfg=16          ctermbg=214         cterm=NONE
-    hi Search           guifg=bg            guibg=#ffaf00       gui=NONE
-    hi SignColumn       ctermfg=145         ctermbg=233         cterm=NONE
-    hi SignColumn       guifg=#afafaf       guibg=#121212       gui=NONE
-    hi Special          ctermfg=231         ctermbg=NONE        cterm=NONE
-    hi Special          guifg=#ffffff       guibg=NONE          gui=NONE
-    hi SpecialKey       ctermfg=238         ctermbg=NONE        cterm=NONE
-    hi SpecialKey       guifg=#444444       guibg=NONE          gui=NONE
-    hi SpellBad         ctermfg=231         ctermbg=1           cterm=NONE
-    hi SpellBad         guifg=#ffffff       guibg=#9d2d2d       gui=NONE
-    hi SpellCap         ctermfg=16          ctermbg=228         cterm=NONE
-    hi SpellCap         guifg=bg            guibg=#ffff87       gui=NONE
-    hi SpellLocal       ctermfg=231         ctermbg=5           cterm=NONE
-    hi SpellLocal       guifg=#ffffff       guibg=#a43fa4       gui=NONE
-    hi SpellRare        ctermfg=231         ctermbg=4           cterm=NONE
-    hi SpellRare        guifg=#ffffff       guibg=#384580       gui=NONE
-    hi Statement        ctermfg=228         ctermbg=NONE        cterm=NONE
-    hi Statement        guifg=#ffff87       guibg=NONE          gui=NONE
-    hi StatusLine       ctermfg=231         ctermbg=237         cterm=bold
-    hi StatusLine       guifg=#ffffff       guibg=#3a3a3a       gui=bold
-    hi StatusLineNC     ctermfg=244         ctermbg=237         cterm=NONE
-    hi StatusLineNC     guifg=#808080       guibg=#3a3a3a       gui=NONE
-    hi StatusLineTerm   ctermfg=231         ctermbg=237         cterm=bold
-    hi StatusLineTerm   guifg=#ffffff       guibg=#3a3a3a       gui=bold
-    hi StatusLineTermNC ctermfg=244         ctermbg=237         cterm=NONE
-    hi StatusLineTermNC guifg=#808080       guibg=#3a3a3a       gui=NONE
-    hi TabLine          ctermfg=244         ctermbg=237         cterm=NONE
-    hi TabLine          guifg=#808080       guibg=#3a3a3a       gui=NONE
-    hi TabLineFill      ctermfg=187         ctermbg=237         cterm=NONE
-    hi TabLineFill      guifg=#d7d7af       guibg=#3a3a3a       gui=NONE
-    hi TabLineSel       ctermfg=231         ctermbg=237         cterm=bold
-    hi TabLineSel       guifg=#ffffff       guibg=#3a3a3a       gui=bold
-    hi Title            ctermfg=74          ctermbg=NONE        cterm=NONE
-    hi Title            guifg=#5fafd7       guibg=NONE          gui=NONE
-    hi Todo             ctermfg=185         ctermbg=234         cterm=NONE
-    hi Todo             guifg=#d7d75f       guibg=#1c1c1c       gui=NONE
-    hi ToolbarButton    ctermfg=16          ctermbg=185         cterm=bold
-    hi ToolbarButton    guifg=bg            guibg=#d7d75f       gui=bold
-    hi ToolbarLine      ctermfg=NONE        ctermbg=236         cterm=NONE
-    hi ToolbarLine      guifg=NONE          guibg=#303030       gui=NONE
-    hi Type             ctermfg=110         ctermbg=NONE        cterm=NONE
-    hi Type             guifg=#87afd7       guibg=NONE          gui=NONE
-    hi Underlined       ctermfg=fg          ctermbg=NONE        cterm=underline
-    hi Underlined       guifg=fg            guibg=NONE          gui=underline
-    hi VertSplit        ctermfg=243         ctermbg=237         cterm=NONE
-    hi VertSplit        guifg=#767676       guibg=#3a3a3a       gui=NONE
-    hi Visual           ctermfg=NONE        ctermbg=235         cterm=NONE
-    hi Visual           guifg=NONE          guibg=#262626       gui=NONE
-    hi VisualNOS        ctermfg=fg          ctermbg=NONE        cterm=underline
-    hi VisualNOS        guifg=fg            guibg=NONE          gui=underline
-    hi WarningMsg       ctermfg=228         ctermbg=NONE        cterm=NONE
-    hi WarningMsg       guifg=#ffff87       guibg=NONE          gui=NONE
-    hi Whitespace       ctermfg=238         ctermbg=NONE        cterm=NONE
-    hi Whitespace       guifg=#444444       guibg=NONE          gui=NONE
-    hi WildMenu         ctermfg=16          ctermbg=185         cterm=bold
-    hi WildMenu         guifg=bg            guibg=#d7d75f       gui=bold
+    HiColor Conceal             ctermfg=238
+    \                           guifg=#444444
+
+    HiColor CurSearch           ctermfg=16      ctermbg=214
+    \                           guifg=bg        guibg=#ffaf00
+
+    HiColor Cursor              ctermfg=16      ctermbg=153
+    \                           guifg=bg        guibg=#afd7ff
+
+    HiColor CursorColumn        ctermbg=236
+    \                           guibg=#303030
+
+    HiColor CursorIM            ctermfg=16      ctermbg=116
+    \                           guifg=bg        guibg=#87d7d7
+
+    HiColor CursorLine          ctermbg=236
+    \                           guibg=#303030
+
+    HiColor CursorLineNr        ctermfg=231     ctermbg=233
+    \                           guifg=#ffffff   guibg=#121212
+
+    HiColor DiffAdd             ctermfg=15      ctermbg=241
+    \                           guifg=#dddddd   guibg=#626262
+
+    HiColor DiffChange          ctermfg=15      ctermbg=241
+    \                           guifg=#dddddd   guibg=#626262
+
+    HiColor DiffDelete          ctermfg=16      ctermbg=241
+    \                           guifg=bg        guibg=#626262
+
+    HiColor DiffText            ctermfg=231     ctermbg=1
+    \                           guifg=#ffffff   guibg=#9d2d2d
+
+    HiColor Directory           ctermfg=151
+    \                           guifg=#afd7af
+
+    HiColor EndOfBuffer         ctermfg=238
+    \                           guifg=#444444
+
+    HiColor ErrorMsg            ctermfg=231     ctermbg=1
+    \                           guifg=#ffffff   guibg=#9d2d2d
+
+    HiColor FoldColumn          ctermfg=240     ctermbg=233
+    \                           guifg=#585858   guibg=#121212
+
+    HiColor Folded              ctermfg=244     ctermbg=233
+    \                           guifg=#808080   guibg=#121212
+
+    HiColor IncSearch           ctermfg=16      ctermbg=231
+    \                           guifg=bg        guibg=#ffffff
+
+    HiColor LineNr              ctermfg=240     ctermbg=233
+    \                           guifg=#585858   guibg=#121212
+
+    HiColor MatchParen          ctermfg=46                      cterm=bold
+    \                           guifg=#00ff00                   gui=bold
+
+    HiColor ModeMsg             ctermfg=117
+    \                           guifg=#87d7ff
+
+    HiColor MoreMsg             ctermfg=228
+    \                           guifg=#ffff87
+
+    HiColor NonText             ctermfg=238
+    \                           guifg=#444444
+
+    HiColor Normal              ctermfg=7
+    \                           guifg=#aeaeae   guibg=#000000
+
+    HiColor Pmenu               ctermfg=fg      ctermbg=235
+    \                           guifg=fg        guibg=#262626
+
+    HiColor PmenuSbar           ctermbg=236
+    \                           guibg=#303030
+
+    HiColor PmenuSel            ctermfg=185     ctermbg=233
+    \                           guifg=#d7d75f   guibg=#121212
+
+    HiColor PmenuThumb          ctermbg=241
+    \                           guibg=#626262
+
+    HiColor Question            ctermfg=fg
+    \                           guifg=fg
+
+    HiColor QuickFixLine        ctermbg=236                     cterm=bold
+    \                           guibg=#303030                   gui=bold
+
+    HiColor Search              ctermfg=16      ctermbg=214
+    \                           guifg=bg        guibg=#ffaf00
+
+    HiColor SignColumn          ctermfg=145     ctermbg=233
+    \                           guifg=#afafaf   guibg=#121212
+
+    HiColor SpecialKey          ctermfg=238
+    \                           guifg=#444444
+
+    HiColor SpellBad            ctermfg=231     ctermbg=1
+    \                           guifg=#ffffff   guibg=#9d2d2d
+
+    HiColor SpellCap            ctermfg=16      ctermbg=228
+    \                           guifg=bg        guibg=#ffff87
+
+    HiColor SpellLocal          ctermfg=231     ctermbg=5
+    \                           guifg=#ffffff   guibg=#a43fa4
+
+    HiColor SpellRare           ctermfg=231     ctermbg=4
+    \                           guifg=#ffffff   guibg=#384580
+
+    HiColor StatusLine          ctermfg=231     ctermbg=237     cterm=bold
+    \                           guifg=#ffffff   guibg=#3a3a3a   gui=bold
+
+    HiColor StatusLineNC        ctermfg=244     ctermbg=237
+    \                           guifg=#808080   guibg=#3a3a3a
+
+    HiColor StatusLineTerm      ctermfg=231     ctermbg=237     cterm=bold
+    \                           guifg=#ffffff   guibg=#3a3a3a   gui=bold
+
+    HiColor StatusLineTermNC    ctermfg=244     ctermbg=237
+    \                           guifg=#808080   guibg=#3a3a3a
+
+    HiColor TabLine             ctermfg=244     ctermbg=237
+    \                           guifg=#808080   guibg=#3a3a3a
+
+    HiColor TabLineFill         ctermfg=187     ctermbg=237
+    \                           guifg=#d7d7af   guibg=#3a3a3a
+
+    HiColor TabLineSel          ctermfg=231     ctermbg=237     cterm=bold
+    \                           guifg=#ffffff   guibg=#3a3a3a   gui=bold
+
+    HiColor Title               ctermfg=74
+    \                           guifg=#5fafd7
+
+    HiColor ToolbarButton       ctermfg=16      ctermbg=185     cterm=bold
+    \                           guifg=bg        guibg=#d7d75f   gui=bold
+
+    HiColor ToolbarLine         ctermbg=236
+    \                           guibg=#303030
+
+    HiColor VertSplit           ctermfg=243     ctermbg=237
+    \                           guifg=#767676   guibg=#3a3a3a
+
+    HiColor Visual              ctermbg=235
+    \                           guibg=#262626
+
+    HiColor VisualNOS           ctermfg=fg                      cterm=underline
+    \                           guifg=fg                        gui=underline
+
+    HiColor WarningMsg          ctermfg=228
+    \                           guifg=#ffff87
+
+    HiColor Whitespace          ctermfg=238
+    \                           guifg=#444444
+
+    HiColor WildMenu            ctermfg=16      ctermbg=185     cterm=bold
+    \                           guifg=bg        guibg=#d7d75f   gui=bold
+
+    HiLink WinSeparator         VertSplit
+
+    " CursorLineFold
+    " CursorLineSign
+    " FloatBorder
+    " FloatFooter
+    " FloatTitle
+    " LineNrAbove
+    " LineNrBelow
+    " MessageWindow
+    " MsgArea
+    " MsgSeparator
+    " NormalFloat
+    " NormalNC
+    " PmenuExtra
+    " PmenuExtraSel
+    " PmenuKind
+    " PmenuKindSel
+    " PmenuMatch
+    " PmenuMatchSel
+    " PopupNotification
+    " SnippetTabstop
+    " Substitute
+    " TermCursor
+    " TermCursorNC
+    " Terminal
+    " WinBar
+    " WinBarNC
+    " lCursor
 
     " ----------------------------------------
 
-    hi LspReferenceText ctermfg=16 ctermbg=80 cterm=underline,italic
-    hi LspReferenceRead ctermfg=16 ctermbg=114 cterm=underline,italic
-    hi LspReferenceWrite ctermfg=16 ctermbg=254 cterm=underline,italic
+    HiColor Comment             ctermfg=242
+    \                           guifg=#6c6c6c
 
-    hi LspDiagnosticsDefaultError ctermfg=167 ctermbg=233 cterm=italic
-    hi LspDiagnosticsDefaultWarning ctermfg=228 ctermbg=233 cterm=italic
-    hi LspDiagnosticsDefaultInformation ctermfg=117 ctermbg=233 cterm=italic
+    HiColor Constant            ctermfg=174
+    \                           guifg=#d78787
 
-    hi LspDiagnosticsFloatingError ctermfg=167 cterm=italic
-    hi LspDiagnosticsFloatingWarning ctermfg=228 cterm=italic
-    hi LspDiagnosticsFloatingInformation ctermfg=117 cterm=italic
+    HiColor Error               ctermfg=167     ctermbg=234
+    \                           guifg=#d75f5f   guibg=#1c1c1c
 
-    hi LspDiagnosticsUnderlineError ctermfg=16 ctermbg=167 cterm=italic
-    hi LspDiagnosticsUnderlineWarning ctermfg=16 ctermbg=228 cterm=italic
-    hi LspDiagnosticsUnderlineInformation ctermfg=16 ctermbg=117 cterm=italic
+    HiColor Identifier          ctermfg=156
+    \                           guifg=#afff87
 
-    hi LspCodeLens ctermfg=167 cterm=italic
-    hi LspCodeLensSeparator ctermfg=167 cterm=italic
+    HiColor Ignore              ctermfg=16
+    \                           guifg=bg
 
-    hi LspSignatureActiveParameter ctermfg=167 cterm=italic
+    HiColor PreProc             ctermfg=167
+    \                           guifg=#d75f5f
+
+    HiColor Special             ctermfg=231
+    \                           guifg=#ffffff
+
+    HiColor Statement           ctermfg=228
+    \                           guifg=#ffff87
+
+    HiColor Todo                ctermfg=185     ctermbg=234
+    \                           guifg=#d7d75f   guibg=#1c1c1c
+
+    HiColor Type                ctermfg=110
+    \                           guifg=#87afd7
+
+    HiColor Underlined          ctermfg=fg                      cterm=underline
+    \                           guifg=fg                        gui=underline
+
+    " Added
+    " Changed
+    " Removed
+
+    " ----------------------------------------
+
+    HiLink Boolean              Constant
+    HiLink Character            Constant
+    HiLink Conditional          Statement
+    HiLink Debug                Special
+    HiLink Define               PreProc
+    HiLink Delimiter            Special
+    HiLink Exception            Statement
+    HiLink Float                Number
+    HiLink Function             Identifier
+    HiLink Include              PreProc
+    HiLink Keyword              Statement
+    HiLink Label                Statement
+    HiLink Macro                PreProc
+    HiLink Number               Constant
+    HiLink Operator             Statement
+    HiLink PreCondit            PreProc
+    HiLink Repeat               Statement
+    HiLink SpecialChar          Special
+    HiLink SpecialComment       Special
+    HiLink StorageClass         Type
+    HiLink String               Constant
+    HiLink Structure            Type
+    HiLink Tag                  Special
+    HiLink Typedef              Type
+
+    HiLink HelpCommand          Statement
+    HiLink HelpExample          Statement
+
+    " ----------------------------------------
+
+    HiColor LspReferenceRead ctermfg=16 ctermbg=114 cterm=underline,italic
+    HiColor LspReferenceText ctermfg=16 ctermbg=80 cterm=underline,italic
+    HiColor LspReferenceWrite ctermfg=16 ctermbg=254 cterm=underline,italic
+
+    HiColor LspDiagnosticsDefaultError ctermfg=167 ctermbg=233 cterm=italic
+    HiColor LspDiagnosticsDefaultInformation ctermfg=117 ctermbg=233 cterm=italic
+    HiColor LspDiagnosticsDefaultWarning ctermfg=228 ctermbg=233 cterm=italic
+
+    HiColor LspDiagnosticsFloatingError ctermfg=167 cterm=italic
+    HiColor LspDiagnosticsFloatingInformation ctermfg=117 cterm=italic
+    HiColor LspDiagnosticsFloatingWarning ctermfg=228 cterm=italic
+
+    HiColor LspDiagnosticsUnderlineError ctermfg=16 ctermbg=167 cterm=italic
+    HiColor LspDiagnosticsUnderlineInformation ctermfg=16 ctermbg=117 cterm=italic
+    HiColor LspDiagnosticsUnderlineWarning ctermfg=16 ctermbg=228 cterm=italic
+
+    HiColor LspCodeLens ctermfg=167 cterm=italic
+    HiColor LspCodeLensSeparator ctermfg=167 cterm=italic
+
+    HiColor LspSignatureActiveParameter ctermfg=167 cterm=italic
+
+    HiLink LspDiagnosticsDefaultHint        LspDiagnosticsDefaultInformation
+    HiLink LspDiagnosticsFloatingHint       LspDiagnosticsFloatingInformation
+    HiLink LspDiagnosticsSignHint           LspDiagnosticsSignInformation
+    HiLink LspDiagnosticsUnderlineHint      LspDiagnosticsUnderlineInformation
+    HiLink LspDiagnosticsVirtualTextHint    LspDiagnosticsVirtualTextInformation
+
+    " ----------------------------------------
+
+    HiColor TagbarHighlight     cterm=reverse
+    HiLink  TagbarHelp          String
+
+    HiLink EasyMotionIncCursor          Cursor
+    HiLink EasyMotionIncSearch          IncSearch
+    HiLink EasyMotionMoveHL             IncSearch
+    HiLink EasyMotionShade              Comment
+    HiLink EasyMotionTarget2First       EasyMotionTarget
+    HiLink EasyMotionTarget2Second      EasyMotionTarget
+
+    HiLink asciidocQuotedEmphasized     PreProc
+
+    HiLink bufExplorerActBuf    Directory
+    HiLink bufExplorerAltBuf    Type
+    HiLink bufExplorerCurBuf    Statement
+    HiLink bufExplorerHelp      String
+    HiLink bufExplorerHidBuf    Normal
+    HiLink bufExplorerInactBuf  Normal
+    HiLink bufExplorerMapping   Identifier
+    HiLink bufExplorerTitle     PreProc
+
+    HiLink diffBDiffer          Statement
+    HiLink diffCommon           Statement
+    HiLink diffDiffer           Statement
+    HiLink diffIdentical        Statement
+    HiLink diffIndexLine        Type
+    HiLink diffIsA              Statement
+    HiLink diffNoEOL            Statement
+    HiLink diffOnly             Statement
+    HiLink diffRemoved          Constant
+
+    HiLink htmlBold             Normal
+    HiLink htmlEndTag           htmlTagName
+    HiLink htmlItalic           Normal
+    HiLink htmlLink             Function
+    HiLink htmlSpecialTagName   htmlTagName
+    HiLink htmlTag              htmlTagName
+
+    HiLink markdownItalic       PreProc
+
+    HiLink xmlEndTag            Statement
+    HiLink xmlTag               Statement
+    HiLink xmlTagName           Statement
 
 endif
+
+delcommand HiColor
+delcommand HiLink

@@ -9,7 +9,6 @@ sessions=(
     i3-local
     main
     openbox
-    rio
     xfwm4
     xmonad
 )
@@ -148,9 +147,6 @@ exec_hook() {
         openbox)
             exec openbox --startup 'xsession --startup'
             ;;
-        rio)
-            exec rio -term term -virtuals 4
-            ;;
         xfwm4)
             exec xfwm4 --compositor=off
             ;;
@@ -163,7 +159,7 @@ exec_hook() {
 startup_hook() {
     case $session in
         main)
-            srun -xl clementine
+            srun -xl thunderbird
             srun -xl workrave
             ;;
     esac

@@ -295,51 +295,62 @@ def cb_timer_buffer_sort_merge(data, remaining_calls):
 
 
 def buffer_init(buffer):
+    plugin = w.buffer_get_string(buffer, 'plugin')
     bname = w.buffer_get_string(buffer, 'full_name')
-    bname_ = bname.split('.')
-    btype = w.buffer_get_string(buffer, 'localvar_type')
 
-    if btype == 'server':
-        w.buffer_set(buffer, 'short_name', '@' + bname_[2])
-    elif btype == 'private':
-        w.buffer_set(buffer, 'short_name', '+' + bname_[2])
-    elif btype == 'channel':
-        name = bname_[2]
-        w.buffer_set(buffer, 'nicklist', '0')
+    if plugin == 'relay':
+        bname_ = bname.split('.', 3)
+        sub = bname_[-1]
+        if not sub.startswith('irc.'):
+            sub_ = sub.split('.')
+            w.buffer_set(buffer, 'short_name', '=' + sub_[-1])
 
-        if re_twitter.match(bname):
-            name = '#twitter'
-            w.buffer_set(buffer, 'highlight_words', '@mkoskar')
+    elif plugin == 'irc':
+        bname_ = bname.split('.', 2)
+        btype = w.buffer_get_string(buffer, 'localvar_type')
+        name = bname_[-1]
 
-        elif re_bitlbee_control.match(bname):
-            w.buffer_set(buffer, 'nicklist', '1')
+        if btype == 'server':
+            w.buffer_set(buffer, 'short_name', '@' + name)
+        elif btype == 'private':
+            w.buffer_set(buffer, 'short_name', '+' + name)
+        elif btype == 'channel':
+            w.buffer_set(buffer, 'nicklist', '0')
 
-        if m := re_archlinux.match(name):
-            name = '#arch' + m.group(1)
+            if re_twitter.match(bname):
+                name = '#twitter'
+                w.buffer_set(buffer, 'highlight_words', '@mkoskar')
 
-        if m := re_offtopic.match(name):
-            name = m.group(1) + '-ot'
+            elif re_bitlbee_control.match(bname):
+                w.buffer_set(buffer, 'nicklist', '1')
 
-        w.buffer_set(buffer, 'short_name', name)
+            if m := re_archlinux.match(name):
+                name = '#arch' + m.group(1)
+
+            if m := re_offtopic.match(name):
+                name = m.group(1) + '-ot'
+
+            w.buffer_set(buffer, 'short_name', name)
 
     w.buffer_set(buffer, 'time_for_each_line', '0')
     if bname == 'perl.highmon':
         w.buffer_set(buffer, 'time_for_each_line', '1')
+
     buffer_merge(buffer)
     global timer_buffer_sort_merge
     if not timer_buffer_sort_merge:
         timer_buffer_sort_merge = w.hook_timer(5, 0, 1, 'cb_timer_buffer_sort_merge', '')
 
 
-def cb_signal_buffer_opened(data, signal, buffer):
+def cb_signal_buffer_init(data, signal, buffer):
     buffer_init(buffer)
     return w.WEECHAT_RC_OK
 
 
-w.hook_signal('buffer_opened', 'cb_signal_buffer_opened', '')
-w.hook_signal('irc_channel_opened', 'cb_signal_buffer_opened', '')
-w.hook_signal('irc_pv_opened', 'cb_signal_buffer_opened', '')
-w.hook_signal('irc_server_opened', 'cb_signal_buffer_opened', '')
+w.hook_signal('buffer_opened', 'cb_signal_buffer_init', '')
+w.hook_signal('irc_channel_opened', 'cb_signal_buffer_init', '')
+w.hook_signal('irc_pv_opened', 'cb_signal_buffer_init', '')
+w.hook_signal('irc_server_opened', 'cb_signal_buffer_init', '')
 
 for buffer in buffers_iter():
     buffer_init(buffer)
@@ -1101,12 +1112,12 @@ bar_item_cmd_btn(
 )
 
 bar_item_cmd_btn('btn_scroll_unread', '[U]', '/window scroll_unread')
-bar_item_cmd_btn('btn_set_read', '[R]', '/R')
-bar_item_cmd_btn('btn_set_read_all', '/RA', '/RA')
+bar_item_cmd_btn('btn_set_read', '[R]', '/r')
+bar_item_cmd_btn('btn_set_read_all', '/ra', '/ra')
 
-bar_item_cmd_btn('btn_clear', '/CL', '/CL')
-bar_item_cmd_btn('btn_close', '/C', '/C')
-bar_item_cmd_btn('btn_quit', '/BYE', '/BYE')
+bar_item_cmd_btn('btn_clear', '/cl', '/cl')
+bar_item_cmd_btn('btn_close', '/c', '/c')
+bar_item_cmd_btn('btn_quit', '/bye', '/bye')
 
 bar_item_cmd_btn('btn_bare', 'BARE', '/window bare')
 bar_item_cmd_btn('btn_connect_relay', 'CON~', '/connect_relay')
@@ -1221,10 +1232,10 @@ w.buffer_set(core, 'localvar_set_loaded_custom', '1')
 
 # ----------------------------------------
 
-def configure():
+def configure(args):
     cmd('set autosort.sorting.case_sensitive on')
     cmd('set autosort.v3.helpers {"core_first": "${if:${buffer.full_name}!=core.weechat}", "irc_raw_last": "${if:${buffer.full_name}==irc.irc_raw}", "irc_last": "${if:${buffer.plugin.name}==irc}", "hashless_name": "${info:autosort_replace,#,,${buffer.name}}", "irc_first": "${if:${buffer.plugin.name}!=irc}", "irc_raw_first": "${if:${buffer.full_name}!=irc.irc_raw}"}')
-    cmd('set autosort.v3.rules ["${core_first}", "${irc_last}", "${buffer.plugin.name}", "${irc_raw_first}", "${if:${plugin}==irc?${if:${server}!~\\\\|*bitlbee}}", "${if:${plugin}==irc?${info:autosort_order,${type},server,private,*,channel}}", "${buffer.short_name}", "${buffer.full_name}"]')
+    cmd('set autosort.v3.rules ["${core_first}", "${if:${buffer.full_name}==*relay.remote.*}", "${irc_last}", "${buffer.plugin.name}", "${irc_raw_first}", "${if:${plugin}=~(irc|relay)?${if:${server}!!*bitlbee*}}", "${if:${plugin}=~(irc|relay)?${info:autosort_order,${type},*,server,private,channel}}", "${buffer.short_name}", "${buffer.full_name}"]')
     cmd('set buflist.format.buffer ${format_number}${indent}${color_hotlist}${if:${type}!=channel?${color:lightgreen}${if:${type}==private?${color:lightcyan}}}${cut:14,${color:white}+,${name}}${format_hotlist}')
     cmd('set buflist.format.buffer_current ${color:,237}${format_number}${indent}${color:white}${color:*white}${cut:14,${color:white}+,${name}}${format_hotlist}')
     cmd('set buflist.format.hotlist " ${hotlist}"')
@@ -1289,17 +1300,21 @@ def configure():
     cmd('set plugins.var.python.vimode.mode_indicator_search_color_bg red')
     cmd('set plugins.var.python.vimode.no_warn on')
     cmd('set plugins.var.python.vimode.search_vim on')
+
     cmd('set relay.color.status_active lightblue')
     cmd('set relay.color.status_auth_failed lightred')
     cmd('set relay.color.status_connecting yellow')
-    cmd('set relay.color.status_waiting_auth brown')
     cmd('set relay.look.auto_open_buffer off')
     cmd('set relay.network.bind_address 172.31.1.1')
     cmd('set relay.network.ipv6 off')
     cmd('set relay.network.max_clients 30')
     cmd('set relay.network.password ${sec.data.relay}')
-    cmd('set relay.port.irc 9000')
-    cmd('set relay.port.weechat 9001')
+
+    if args == 'bouncer':
+        cmd('set relay.port.irc 9000')
+        cmd('set relay.port.weechat 9001')
+        cmd('set relay.port.api 9002')
+
     cmd('set script.scripts.download_enabled on')
     cmd('set script.scripts.hold custom.py')
     cmd('set sec.crypt.passphrase_command cat ~/.secrets/weechat-passphrase')
@@ -1367,7 +1382,7 @@ def configure():
     cmd('set weechat.look.scroll_page_percent 50')
     cmd('set weechat.look.window_separator_horizontal off')
     cmd('set weechat.look.window_title WeeChat ${info:version}')
-    cmd('set weechat.plugin.autoload alias,buflist,charset,irc,logger,perl,python,script,spell,trigger')
+    cmd('set weechat.plugin.autoload alias,buflist,charset,irc,logger,perl,python,relay,script,spell,trigger')
     cmd('set weechat.startup.display_logo off')
     cmd('set weechat.startup.display_version off')
 
@@ -1433,14 +1448,14 @@ def configure():
         'title', 'off', '500', 'window', '${active}',
         'top', 'horizontal', 'vertical',
         '1', '0', '*white', 'default', '237', '237', 'off',
-        'btn_win_fn,buffer_name,btn_server'
+        'btn_win_fn,buffer_short_name,btn_server'
     )
 
     bar_addreplace(
         'title_inactive', 'off', '500', 'window', '${inactive}',
         'top', 'horizontal', 'vertical',
         '1', '0', 'default', 'default', '237', '237', 'off',
-        'btn_win_fn,buffer_name,btn_server'
+        'btn_win_fn,buffer_short_name,btn_server'
     )
 
     cmd('buflist bar')
@@ -1578,9 +1593,13 @@ def cb_command_reconfigure(data, buffer, args):
     cmd('ignore del -all')
     cmd('trigger default -yes')
 
+    if args != 'bouncer':
+        cmd('remote disconnect default')
+        cmd('remote del default')
+
     cmd('key resetall -yes')
 
-    configure()
+    configure(args)
 
     cmd('proxy del default')
     cmd('proxy add default socks5 127.0.0.1 1081')
@@ -1608,6 +1627,9 @@ def cb_command_reconfigure(data, buffer, args):
 
     cmd('server add oftc irc.oftc.net/6697')
 
+    if args != 'bouncer':
+        cmd('remote add default http://172.31.1.1:9002/ -password=${sec.data.relay}')
+
     for key, val in autojoins.items():
         cmd(f'set irc.server.{key}.autojoin "{val}"')
 
@@ -1618,8 +1640,12 @@ def cb_command_reconfigure(data, buffer, args):
     return w.WEECHAT_RC_OK
 
 
-def cb_command_reconfigure_scripts(data, buffer, args):
-    cmd('set script.scripts.download_enabled on')
+w.hook_command('configure', '', '', '', 'bouncer', 'cb_command_configure', '')
+w.hook_command('reconfigure', '', '', '', 'bouncer', 'cb_command_reconfigure', '')
+
+
+def cb_command_script_install(data, buffer, args):
+    cmd('script enable', mute=False)
     cmd('script install autosort.py', mute=False)
     cmd('script install bufsave.py', mute=False)
     cmd('script install colorize_nicks.py', mute=False)
@@ -1631,7 +1657,5 @@ def cb_command_reconfigure_scripts(data, buffer, args):
     return w.WEECHAT_RC_OK
 
 
-w.hook_command('configure', '', '', '', 'all', 'cb_command_configure', '')
-w.hook_command('reconfigure', '', '', '', 'all', 'cb_command_reconfigure', '')
-w.hook_command('reconfigure-scripts', '', '', '', 'all',
-               'cb_command_reconfigure_scripts', '')
+w.hook_command('script-install', '', '', '', '',
+               'cb_command_script_install', '')

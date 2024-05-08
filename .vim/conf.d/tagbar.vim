@@ -19,6 +19,3 @@ augroup tagbar_conf
         \  call utils#bufSpecial()
         \| let b:ft_tabline = 1
 augroup END
-
-hi TagbarHighlight cterm=reverse
-hi def link TagbarHelp String

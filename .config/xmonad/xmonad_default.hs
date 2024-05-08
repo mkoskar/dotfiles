@@ -127,7 +127,8 @@ myConfig = def
 
     myManageHook = composeOne
                        [ appName <? "sp:" -?> customFloating $ W.RationalRect 0.02 0.03 0.96 0.94
-                       , appName =? "pinentry-gtk-2" -?> doFloat
+                       , appName =? "gcr-prompter" -?> doCenterFloat
+                       , appName =? "pinentry-gtk-2" -?> doCenterFloat
                        , appName =? "qjackctl" <&&> title <? "JACK Audio Connection Kit" -?> doFloat
                        , appName =? "s_aux" -?> doShift "2"
                        , appName =? "s_tmp" -?> doShift "2"

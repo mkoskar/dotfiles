@@ -394,7 +394,9 @@ nnoremap QA <Cmd>QuitTab!<CR>
 " ----------------------------------------
 
 if !has('nvim')
+    set keyprotocol=
     set termwinkey=<C-\\>
+    let &term = &term " reset &term for &keyprotocol to take effect
 endif
 
 tnoremap <C-\> <C-\><C-N>
@@ -860,7 +862,9 @@ nnoremap <silent> <Leader>pS :%!squashlns<CR>
 
 " Help
 nnoremap <Leader>h :tab help<Space>
+nnoremap <Leader>vh :vert help<Space>
 nnoremap <Leader>H :tab lhelpgrep<Space>
+nnoremap <Leader>vH :vert lhelpgrep<Space>
 
 " Diffs
 xnoremap <silent> <Leader>do :diffget<CR>
@@ -1383,11 +1387,15 @@ nnoremap <Leader>df :DiffTo <C-R>=expand('%')<CR>
 
 " Toggle translation of ASCII meta escape prefix encoding to 8 bit meta encoding {{{
 
+function! s:MetaSetup(enable) abort
+endfunction
+
 function! s:MetaLess(cmd) abort
     exec a:cmd
 endfunction
 
 if !has('nvim')
+"if !has('nvim') && &term =~# '\vrxvt(-.*)?'
 
 function! s:MetaSetup(enable) abort
     for c in map(range(1, 126), 'nr2char(v:val)')
@@ -1403,6 +1411,7 @@ function! s:MetaSetup(enable) abort
     endfor
     let g:meta_enabled = a:enable
     if !has('vim_starting')
+        redraw
         call utils#echoWarn('meta ' . (g:meta_enabled ? 'on' : 'off'))
     endif
 endfunction
@@ -1629,59 +1638,3 @@ augroup vimrc_base
     autocmd FileType zip call utils#bufPlain()
     autocmd FileType {c,cpp}{,.*} let &l:path = '.,,**,/usr/include'
 augroup END
-
-" ----------------------------------------
-
-hi def link Boolean                     Constant
-hi def link Character                   Constant
-hi def link Conditional                 Statement
-hi def link Debug                       Special
-hi def link Define                      PreProc
-hi def link Delimiter                   Special
-hi def link Exception                   Statement
-hi def link Float                       Number
-hi def link Function                    Identifier
-hi def link HelpCommand                 Statement
-hi def link HelpExample                 Statement
-hi def link Include                     PreProc
-hi def link Keyword                     Statement
-hi def link Label                       Statement
-hi def link Macro                       PreProc
-hi def link Number                      Constant
-hi def link Operator                    Statement
-hi def link PreCondit                   PreProc
-hi def link Repeat                      Statement
-hi def link SpecialChar                 Special
-hi def link SpecialComment              Special
-hi def link StorageClass                Type
-hi def link String                      Constant
-hi def link Structure                   Type
-hi def link Tag                         Special
-hi def link Typedef                     Type
-hi def link asciidocQuotedEmphasized    PreProc
-hi def link diffBDiffer                 Statement
-hi def link diffCommon                  Statement
-hi def link diffDiffer                  Statement
-hi def link diffIdentical               Statement
-hi def link diffIndexLine               Type
-hi def link diffIsA                     Statement
-hi def link diffNoEOL                   Statement
-hi def link diffOnly                    Statement
-hi def link diffRemoved                 Constant
-hi def link htmlBold                    Normal
-hi def link htmlEndTag                  htmlTagName
-hi def link htmlItalic                  Normal
-hi def link htmlLink                    Function
-hi def link htmlSpecialTagName          htmlTagName
-hi def link htmlTag                     htmlTagName
-hi def link markdownItalic              PreProc
-hi def link xmlEndTag                   Statement
-hi def link xmlTag                      Statement
-hi def link xmlTagName                  Statement
-
-" Nvim LSP
-hi def link LspDiagnosticsDefaultHint LspDiagnosticsDefaultInformation
-hi def link LspDiagnosticsFloatingHint LspDiagnosticsFloatingInformation
-hi def link LspDiagnosticsSignHint LspDiagnosticsSignInformation
-hi def link LspDiagnosticsUnderlineHint LspDiagnosticsUnderlineInformation
-hi def link LspDiagnosticsVirtualTextHint LspDiagnosticsVirtualTextInformation
