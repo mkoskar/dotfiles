@@ -16,12 +16,3 @@ augroup bufexplorer_conf
         \  call utils#bufSpecial()
         \| let b:ft_tabline = 1
 augroup END
-
-hi def link bufExplorerActBuf Directory
-hi def link bufExplorerAltBuf Type
-hi def link bufExplorerCurBuf Statement
-hi def link bufExplorerHelp String
-hi def link bufExplorerHidBuf Normal
-hi def link bufExplorerInactBuf Normal
-hi def link bufExplorerMapping Identifier
-hi def link bufExplorerTitle PreProc

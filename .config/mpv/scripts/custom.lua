@@ -37,7 +37,7 @@ local input_keys = {
     'Shift+BS', 'Shift+Ctrl+BS',
     'FORWARD', 'REWIND',
     '[', ']', '{', '}',
-    'NEXT', 'PREV', '<', '>', 'MBTN_BACK', 'MBTN_FORWARD',
+    'PREV', 'NEXT', '<', '>', 'MBTN_BACK', 'MBTN_FORWARD', 'MBTN_RIGHT',
     'Alt+p', 'Alt+n', 'Alt+P', 'Alt+N', 'Alt+g', 'Alt+G',
     'Ctrl+p', 'Ctrl+n', 'Ctrl+P', 'Ctrl+N', 'Ctrl+g', 'Ctrl+G',
     'q', 'Q', 'Ctrl+c', 'Ctrl+w', 'CLOSE_WIN', 'STOP', 'POWER',

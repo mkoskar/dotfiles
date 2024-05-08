@@ -25,35 +25,38 @@ trap cleanup EXIT
 
 (( $# )) || set -- -
 
-infile=$1
-if [[ $infile = - ]]; then
-    infile=$tmpdir/in
-    cat >"$infile"
-fi
-infile=$(realpath -- "$infile")
 outfile=$tmpdir/out
 
-[[ -s $infile ]] || exit 1
+fargs=()
+for arg in "$@"; do
+    arg=${arg//\\/\\\\}
+    arg=${arg//\"/\\\"}
+    fargs+=("$arg")
+done
 
 case ${PB:-!} in
     !)
-        curl -qsSLf -F file="@$infile" -o "$outfile" \
+        cargs=()
+        for farg in "${fargs[@]}"; do
+            cargs+=(-F file=@\""$farg"\")
+        done
+        curl -qsSLf "${cargs[@]}" -o "$outfile" \
             --variable "user@$HOME/.secrets/paste" \
             --expand-user '{{user:trim}}' \
             https://mkoskar.com/cgi/paste
         cat "$outfile"
         ;;
     0x0)
-        curl -qsSLf -F file="@$infile" -o "$outfile" https://0x0.st/
+        curl -qsSLf -F file=@\""$fargs"\" -o "$outfile" https://0x0.st/
         cat "$outfile"
         ;;
     ix)
         # /<id>/<lexer>#n-<line>
-        curl -qsSLf -F f:1="@$infile" -o "$outfile" http://ix.io/
+        curl -qsSLf -F f:1=@\""$fargs"\" -o "$outfile" https://ix.io/
         cat "$outfile"
         ;;
     rs)
-        curl -qsSLf --data-binary "@$infile" -o "$outfile" https://paste.rs/
+        curl -qsSLf --data-binary @"$1" -o "$outfile" https://paste.rs/
         cat "$outfile"
         ;;
     *)

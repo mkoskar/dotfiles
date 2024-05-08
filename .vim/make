@@ -109,11 +109,13 @@ parallel -r <<-'EOF'
 EOF
 
 echo
+echo '--------------------------------------------------'
 echo '> helptags'
-vim_batch -c '
+vim_batch -c '"
     for dir in glob("*/doc", 1, 1)
         try | exec "helptags" dir | catch | endtry
     endfor
+    echo "done\n"
     qa!
 '
 

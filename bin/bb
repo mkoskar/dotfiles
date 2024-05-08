@@ -80,6 +80,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     bluetooth-profiles      b https://en.wikipedia.org/wiki/List_of_Bluetooth_profiles
     bpf                     b https://www.kernel.org/doc/html/latest/bpf/index.html
     browserbench            b https://browserbench.org/
+    bsp-threads             b https://en.wikipedia.org/wiki/British_Standard_Pipe#Pipe_thread_sizes
     busybox                 b https://busybox.net/downloads/BusyBox.html
     busybox-git             b https://git.busybox.net/busybox/tree
     c                       b http://www.open-std.org/jtc1/sc22/wg14/www/projects
@@ -117,6 +118,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     dart                    b https://dart.dev/guides
     datasheet               b https://www.alldatasheet.com/view.jsp\?Searchword={u}
     dbus                    b https://dbus.freedesktop.org/doc/dbus-specification.html
+    dc-connectors           b https://en.wikipedia.org/wiki/Coaxial_power_connector#Listing_of_DC_coaxial_connectors
     dd                      b https://duckduckgo.com/\?q={u}
     dd-bang                 b https://duckduckgo.com/bang
     dd-syntax               b https://help.duckduckgo.com/duckduckgo-help-pages/results/syntax/
@@ -383,6 +385,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     mdn                     b https://developer.mozilla.org/en-US/
     memcached               b https://github.com/memcached/memcached/wiki
     memory-cards            b https://en.wikipedia.org/wiki/Comparison_of_memory_cards
+    metric-threads          b https://en.wikipedia.org/wiki/ISO_metric_screw_thread#Preferred_sizes
     mime                    b https://datatracker.ietf.org/doc/html/rfc2045
     mime-types              b https://www.iana.org/assignments/media-types/media-types.xhtml
     minipv/dupont           b https://www.mattmillman.com/info/crimpconnectors/dupont-and-dupont-connectors/
@@ -635,7 +638,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     websockets              b https://websockets.spec.whatwg.org/
     weechat                 b https://weechat.org/files/doc/stable/weechat_user.en.html
     weechat-api             b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
-    weechat-changes         b https://github.com/weechat/weechat/blob/master/ChangeLog.adoc
+    weechat-changes         b https://github.com/weechat/weechat/blob/master/CHANGELOG.md
     whatwg-specs            b https://spec.whatwg.org/
     wi                      b https://www.google.com/search?q=weather+{u}
     wsgi                    b https://www.python.org/dev/peps/pep-3333/
