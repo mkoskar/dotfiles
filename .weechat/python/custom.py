@@ -595,7 +595,7 @@ def cb_command_wspaces_reset(data, buffer, args):
         cmd('wspace_go 1')
         cmd('layout_reset core.weechat')
         cmd('wspace_go 2')
-        cmd('layout_reset &bitlbee')
+        cmd('layout_reset #bash')
         cmd('wspace_go 3')
         cmd('layout_reset #archlinux')
         #for ws in range(5, 10):
@@ -619,7 +619,7 @@ w.hook_command('wspace_go', '', '', '', '', 'cb_command_wspace_go', '')
 w.hook_command('wspace_move', '', '', '', '', 'cb_command_wspace_move', '')
 w.hook_command('wspaces_reset', '', '', '', '-defaults', 'cb_command_wspaces_reset', '')
 
-cmd('alias add wra wspaces_reset')
+cmd('alias addreplace wra wspaces_reset')
 
 
 def cb_bar_item_wspace(data, item, window):
@@ -655,7 +655,7 @@ for i in range(1, 10):
     w.hook_hsignal(f'ws{i}_click', 'cb_hsignal_wspace_click', str(i))
     key_bind(f'@item(ws{i}):button1', f'hsignal:ws{i}_click', 'mouse')
     key_bind(f'meta-{i}', f'/wspace_go {i}')
-    cmd(f'alias add {i} wspace_go {i}')
+    cmd(f'alias addreplace {i} wspace_go {i}')
 
 bar_item_cmd_btn('btn_wspace_del', 'WS×', '/wspace_del')
 bar_item_cmd_btn('btn_wspace_next', 'WS+', '/wspace_go next')
@@ -692,7 +692,7 @@ def cb_command_grep_nick(data, buffer, args):
 
 w.hook_command('grep_nick', '', '', '', '', 'cb_command_grep_nick', '')
 
-cmd('alias add gnick grep_nick')
+cmd('alias addreplace gnick grep_nick')
 
 
 # Autorespond
@@ -896,7 +896,7 @@ w.hook_command('ignore_filter', '', '', '',
 w.hook_line('', 'irc.*', 'irc_mode', 'ignore_filter_cb_line', '')
 w.hook_line('', 'irc.*', 'irc_privmsg', 'ignore_filter_cb_line', '')
 
-cmd('alias add ifilter ignore_filter')
+cmd('alias addreplace ifilter ignore_filter')
 
 key_bind('meta-i', '/ignore_filter toggle')
 
@@ -937,8 +937,8 @@ def cb_command_set_read_all(data, buffer, args):
 w.hook_command('set_read', '', '', '', '', 'cb_command_set_read', '')
 w.hook_command('set_read_all', '', '', '', '', 'cb_command_set_read_all', '')
 
-cmd('alias add r set_read')
-cmd('alias add ra set_read_all')
+cmd('alias addreplace r set_read')
+cmd('alias addreplace ra set_read_all')
 
 key_bind('meta-ctrl-M', '/set_read')
 
@@ -1266,6 +1266,7 @@ def configure(args):
     cmd('set irc.look.temporary_servers on')
     cmd('set irc.msgbuffer.whois current')
     cmd('set irc.network.lag_reconnect 0')
+    cmd('set irc.network.whois_double_nick on')
     cmd('set irc.server_default.autoconnect on')
     cmd('set irc.server_default.autojoin_dynamic on')
     cmd('set irc.server_default.autorejoin on')
@@ -1386,28 +1387,28 @@ def configure(args):
     cmd('set weechat.startup.display_logo off')
     cmd('set weechat.startup.display_version off')
 
-    cmd('alias add a allserv /away')
-    cmd('alias add afk allserv /away afk')
-    cmd('alias add alis msg alis')
-    cmd('alias add b buffer')
-    cmd('alias add c close')
-    cmd('alias add cc window merge')
-    cmd('alias add cla buffer clear -all')
-    cmd('alias add cserv msg ChanServ')
-    cmd('alias add g grep --hilight --buffer')
-    cmd('alias add gg grep --hilight')
-    cmd('alias add memoserv msg MemoServ')
-    cmd('alias add nserv msg NickServ')
-    cmd('alias add qa quit')
-    cmd('alias add s server jump')
-    cmd('alias add sp window splith')
-    cmd('alias add toggle_buflist bar toggle buflist')
-    cmd('alias add toggle_nicklist eval /buffer set nicklist ${if:${buffer.nicklist}==0}')
-    cmd('alias add toggle_prefix /eval -s /mute set weechat.look.prefix_align ${if:${weechat.look.prefix_align}!=none?none:right} \\; /mute set weechat.look.align_end_of_lines ${if:${weechat.look.prefix_align}==none?prefix:message}')
-    cmd('alias add toggle_time eval /buffer set time_for_each_line ${if:${buffer.time_for_each_line}==0}')
-    cmd('alias add vs window splitv')
-    cmd('alias add wc window merge')
-    cmd('alias add wo window merge all')
+    cmd('alias addreplace a allserv /away')
+    cmd('alias addreplace afk allserv /away afk')
+    cmd('alias addreplace alis msg alis')
+    cmd('alias addreplace b buffer')
+    cmd('alias addreplace c close')
+    cmd('alias addreplace cc window merge')
+    cmd('alias addreplace cla buffer clear -all')
+    cmd('alias addreplace cserv msg ChanServ')
+    cmd('alias addreplace g grep --hilight --buffer')
+    cmd('alias addreplace gg grep --hilight')
+    cmd('alias addreplace memoserv msg MemoServ')
+    cmd('alias addreplace nserv msg NickServ')
+    cmd('alias addreplace qa quit')
+    cmd('alias addreplace s server jump')
+    cmd('alias addreplace sp window splith')
+    cmd('alias addreplace toggle_buflist bar toggle buflist')
+    cmd('alias addreplace toggle_nicklist eval /buffer set nicklist ${if:${buffer.nicklist}==0}')
+    cmd('alias addreplace toggle_prefix /eval -s /mute set weechat.look.prefix_align ${if:${weechat.look.prefix_align}!=none?none:right} \\; /mute set weechat.look.align_end_of_lines ${if:${weechat.look.prefix_align}==none?prefix:message}')
+    cmd('alias addreplace toggle_time eval /buffer set time_for_each_line ${if:${buffer.time_for_each_line}==0}')
+    cmd('alias addreplace vs window splitv')
+    cmd('alias addreplace wc window merge')
+    cmd('alias addreplace wo window merge all')
 
     bar_addreplace(
         'input', 'off', '1000', 'root', '',

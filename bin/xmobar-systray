@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# See also:
+#
+#   https://codeberg.org/xmobar/xmobar/issues/239
+#   https://hackage.haskell.org/package/xmonad-contrib-0.18.1/docs/XMonad-Util-Hacks.html#g:4
+
+set -eu
+
+cleanup() {
+    # shellcheck disable=SC2046
+    kill $(jobs -p) &>/dev/null
+}
+trap cleanup EXIT
+
+#name=stalonetray
+#stalonetray \
+#    -bg '#000000'  \
+#    --icon-size 15 \
+#    --geometry 1x1-0+0 --grow-gravity SE &
+
+name=panel
+trayer \
+    --edge top --align right \
+    --widthtype request --height 17 \
+    --transparent true --alpha 0 --tint 0x0 \
+    --monitor primary &
+
+declare -i retry=10
+while true; do
+    xprop -name "$name" &>/dev/null && break
+    (( --retry )) || exit 2
+    sleep 0.01
+done
+
+xprop -name "$name" -notype -spy 32c '\t$5\n' WM_NORMAL_HINTS |
+    while read -r _ w; do
+        (( w > 2 )) && (( w+=5 ))
+        printf '<hspace=%d/>\n' "$w"
+    done

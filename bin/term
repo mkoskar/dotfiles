@@ -26,7 +26,7 @@ shift $((OPTIND-1))
 # ----------------------------------------
 
 if has-wayland; then
-    bin=${TERMBIN:-alacritty}
+    bin=${TERMBIN:-foot}
 elif has-x11; then
     bin=${TERMBIN:-urxvtc}
 else
@@ -39,6 +39,9 @@ unset SHLVL
 case $bin in
     alacritty)
         exec "$bin" --class "$name" -e "$@"
+        ;;
+    foot)
+        exec "$bin" -a "$name" ${geometry:+-W "$geometry"} -- "$@"
         ;;
     kitty)
         exec "$bin" --name "$name" "$@"

@@ -1,23 +1,23 @@
-gtk-button-images = 1
-gtk-cursor-theme-name = "Grounation"
-gtk-cursor-theme-size = 0
-gtk-enable-event-sounds = 1
-gtk-enable-input-feedback-sounds = 1
-gtk-font-name = "sans 8"
-gtk-icon-theme-name = "Arc"
-gtk-menu-images = 1
-gtk-recent-files-enabled = 0
-gtk-recent-files-limit = 0
-gtk-recent-files-max-age = 0
-gtk-theme-name = "Arc"
-gtk-toolbar-icon-size = GTK_ICON_SIZE_LARGE_TOOLBAR
-gtk-toolbar-style = GTK_TOOLBAR_BOTH
-gtk-xft-antialias = 1
-gtk-xft-hinting = 1
-gtk-xft-hintstyle = "hintslight"
-gtk-xft-rgba = rgb
+gtk-button-images=1
+gtk-cursor-theme-name="Grounation"
+gtk-cursor-theme-size=0
+gtk-enable-event-sounds=1
+gtk-enable-input-feedback-sounds=1
+gtk-font-name="sans 8"
+gtk-icon-theme-name="Arc"
+gtk-menu-images=1
+gtk-recent-files-enabled=0
+gtk-recent-files-limit=0
+gtk-recent-files-max-age=0
+gtk-theme-name="Arc"
+gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR
+gtk-toolbar-style=GTK_TOOLBAR_BOTH
+gtk-xft-antialias=1
+gtk-xft-hinting=1
+gtk-xft-hintstyle="hintslight"
+gtk-xft-rgba=rgb
 
 style "gvimfix" {
-    bg[NORMAL] = "#000000"
+    bg[NORMAL]="#000000"
 }
 widget "vim-main-window.*GtkForm" style "gvimfix"

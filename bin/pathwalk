@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+path=$(realpath -es -- "${1-.}")
+if [[ $path = *$'\n'* ]]; then
+    printf '%s: error: path contains \n (NL)' "$prgname" >&2
+    exit 1
+fi
+
+buf=
+readarray -t -d / bits < <(printf %s "$path")
+for bit in "${bits[@]}"; do
+    [[ $buf = / ]] && buf=
+    buf+=/$bit
+    printf '%s\n' "$buf"
+done

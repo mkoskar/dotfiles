@@ -134,8 +134,8 @@ ZLE_SPACE_SUFFIX_CHARS='&|'
 zle_highlight=(
     isearch:bg=red,fg=231
     region:bg=236,fg=default
-    special:fg=red,bold,standout
-    suffix:fg=red,bold
+    special:fg=9,bold,standout
+    suffix:fg=9,bold
     paste:standout
 )
 
@@ -147,7 +147,6 @@ zle -N {,_}complete-help
 __expand-aliases() {
     functions[___expand-aliases]=$BUFFER
     BUFFER=${functions[___expand-aliases]#$'\t'}
-    BUFFER=\\${BUFFER##\\##}
     CURSOR=$#BUFFER
 }
 zle -N {,__}expand-aliases
@@ -533,20 +532,20 @@ if __plugin zsh-syntax-highlighting; then
     #ZSH_HIGHLIGHT_REGEXP+=(pattern style)
     ZSH_HIGHLIGHT_HIGHLIGHTERS=(brackets main pattern regexp)
     ZSH_HIGHLIGHT_MAXLENGTH=50
-    ZSH_HIGHLIGHT_STYLES[alias]=fg=cyan,bold
+    ZSH_HIGHLIGHT_STYLES[alias]=fg=14,bold
     ZSH_HIGHLIGHT_STYLES[assign]=fg=11
     ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=15
-    ZSH_HIGHLIGHT_STYLES[builtin]=fg=yellow,bold
-    ZSH_HIGHLIGHT_STYLES[command]=fg=green,bold
-    ZSH_HIGHLIGHT_STYLES[commandseparator]=fg=white,bold
+    ZSH_HIGHLIGHT_STYLES[builtin]=fg=11,bold
+    ZSH_HIGHLIGHT_STYLES[command]=fg=10,bold
+    ZSH_HIGHLIGHT_STYLES[commandseparator]=fg=15,bold
     ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=11
-    ZSH_HIGHLIGHT_STYLES[function]=fg=cyan,bold
+    ZSH_HIGHLIGHT_STYLES[function]=fg=14,bold
     ZSH_HIGHLIGHT_STYLES[globbing]=fg=11
-    ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=green,bold,underline
+    ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=10,bold,underline
     ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=14
     ZSH_HIGHLIGHT_STYLES[path]=fg=15
-    ZSH_HIGHLIGHT_STYLES[precommand]=fg=yellow,bold,underline
-    ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=yellow,bold,underline
+    ZSH_HIGHLIGHT_STYLES[precommand]=fg=11,bold,underline
+    ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=11,bold,underline
 fi
 
 

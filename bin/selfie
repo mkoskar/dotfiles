@@ -11,5 +11,5 @@ fswebcam -q -r 5000x5000 "$outfile"
     exec 8>"$XDG_RUNTIME_DIR/$prgname".lock
     flock -n 8 || exit 0
     exec &>>~/.local/share/"$prgname".out
-    qiv -tiGfl --vikeys -T "$outfile" &
+    pqiv "$outfile" &
 )

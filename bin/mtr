@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 (( $# )) || set -- -n --displaymode 1 8.8.8.8
-exec cmd -0 mtr "$@"
+exec cmd -H mtr "$@"

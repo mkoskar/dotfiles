@@ -9,7 +9,7 @@ tmpfile=$(mktemp)
 cleanup() { rm -f "$tmpfile"; }
 trap cleanup EXIT
 
-src=${1:-$(xclip -o | head -c 512)}
+src=${1:-$(clip -o | head -c 512)}
 case $src in
     http?(s)://*)
         curl -qsSLf --form-string shorten="$src" -o "$tmpfile" https://0x0.st/
@@ -21,11 +21,11 @@ case $src in
 esac
 
 histfile=~/.local/share/${prgname}_history
-printf -v ts '%(%F.%s)T'
+printf -v ts '%(%F %T)T'
 
 cat >>"$histfile" <<-EOF
 
-	$ts $prgname <$src>
+	[$ts] $prgname <$src>
 	--------------------------------------------------
 EOF
 cat "$tmpfile" >>"$histfile"

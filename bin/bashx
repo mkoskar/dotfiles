@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
 
 export BASH_ENV=~/bin/shx.sh
-
-# FIXME: removed exec as a workaround for a weird case of
-# systemd/tmux/nvim/system() with non-empty input
-bash "$@"
+exec bash "$@"

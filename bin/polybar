@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+export PATH=~/projects/pub/polybar/build/bin:$PATH
+exec cmd -H polybar "$@"

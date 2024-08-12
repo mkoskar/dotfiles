@@ -2,6 +2,7 @@
 
 set -eu -o pipefail
 
+name=scast
 prgname=${0##*/}
 
 cd ~/tmp
@@ -9,19 +10,26 @@ cd ~/tmp
 printf -v ts '%(%F.%s)T'
 
 screen=$(xserverq screen)
-lockfile=$XDG_RUNTIME_DIR/$prgname:$screen.lock
+lockfile=$XDG_RUNTIME_DIR/$name:$screen.lock
+
 exec 8>"$lockfile"
 flock -n 8 || {
     exec 8<&-
+    [[ ${1-} = start ]] && exit
     lsof -t "$lockfile" | xargs -rx kill
     exit
 }
+
+case ${1-} in
+    start) shift ;;
+    stop) exit ;;
+esac
 
 tmp=$(slop -f '%x %y %w %h')
 read -r X Y W H <<<"$tmp"
 
 (
-    exec &>>~/.local/share/"$prgname".out
+    exec &>>~/.local/share/"$name".out
 
     # See also:
     #
@@ -33,15 +41,42 @@ read -r X Y W H <<<"$tmp"
     #   https://trac.ffmpeg.org/wiki/Encode/VP9
 
     args=(
-        -f x11grab -framerate 25 -show_region 1 -s "${W}x${H}" -i "$DISPLAY+$X,$Y" \
-        -f pulse -name "$prgname" -i default \
-        -af acompressor=threshold=0.08:ratio=8:attack=100:release=1000 \
+        -f x11grab -framerate ntsc-film -show_region 1
+        -s "${W}x${H}" -i "$DISPLAY+$X,$Y"
     )
+
+    case $prgname in
+        scast-monitor)
+            args+=(
+                -f pulse -name "$name" -i alsa_output.pci-0000_00_1b.0.analog-stereo.monitor
+            )
+            ;;
+        scast-mic)
+            args+=(
+                -f pulse -name "$name" -i alsa_input.pci-0000_00_1b.0.analog-stereo
+                -af acompressor=threshold=0.08:ratio=8:attack=100:release=1000
+            )
+            ;;
+        scast-keygen)
+            keygen=$(
+                find ~/download/keygen/ -regextype posix-extended \
+                     -type f -iregex '.*\.(it|mo3|mod|mp3|mtm|ogg|s3m|wav|xm)' \
+                     -print0 \
+                | shuf -z -n1 \
+                | tr -d '\0'
+            )
+            printf '%s\t%s\t%s\n' "$ts" "$prgname" "$keygen"
+            mpv --no-config --msg-level=all=error "$keygen" &
+            args+=(
+                -i "$keygen"
+            )
+            ;;
+    esac
 
     outfile=screencast-$ts.webm
     args+=(
         -pix_fmt yuv444p
-        -c:v vp9 -crf 15 -b:v 0 -deadline realtime -cpu-used 8
+        -c:v vp9 -crf 31 -b:v 0 -deadline realtime -cpu-used 8
         #-c:v vp9 -lossless 1 -deadline realtime -cpu-used 8
     )
 
@@ -49,6 +84,13 @@ read -r X Y W H <<<"$tmp"
     #args+=(
     #    -c:v h264 -preset ultrafast -qp 0
     #)
+
+    if [[ ${1-} != - ]]; then
+        screenkey \
+            --no-systray \
+            --opacity 0.25 -M \
+            -p fixed -g "$((W-100))x75+$((X+50))+$((Y+H-100))" &
+    fi
 
     ffmpeg -loglevel error "${args[@]}" "$outfile" &
 

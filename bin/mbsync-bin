@@ -20,5 +20,5 @@ cleanup() {
 }
 trap cleanup EXIT
 
-cmd -0 mbsync -q -c ~/.config/mbsyncrc "$1"
+cmd -H mbsync -q -c ~/.config/mbsyncrc "$1"
 notmuch-on main +new

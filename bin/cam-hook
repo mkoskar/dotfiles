@@ -7,7 +7,7 @@ target=$TMPDIR/cam-hook.jpg
 preview() (
     exec 8>"$XDG_RUNTIME_DIR"/cam-hook_preview.lock
     flock -n 8 || exit 0
-    qiv -tiGfl --vikeys -T "$target"
+    pqiv "$target"
 )
 
 case $ACTION in download)

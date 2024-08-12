@@ -4,9 +4,9 @@ Config { position = TopH 19
        , font = "monospace bold 8"
        , additionalFonts = ["xft:Symbola"]
        , fgColor = "#c0c0c0"
-       , commands = [ Run StdinReader
+       , commands = [ Run XMonadLog
                     , Run CommandReader "xmobar-mail" "mail"
-                    , Run CommandReader "xmobar-tray" "tray"
+                    , Run CommandReader "xmobar-systray" "systray"
                     , Run Cpu
                         [ "-t", "<total>"
                         , "-L", "15"
@@ -42,12 +42,11 @@ Config { position = TopH 19
                         ] 50
                     , Run Date "%a❘%d.%m❘%H:%M" "date" 600
                     ]
-       , template = "%StdinReader%\
-                    \}{\
+       , template = "%XMonadLog%}{\
                     \  %mail%\
                     \  %cpu%❘%memory%\
                     \  %wlan0wi%❘%kbd%\
                     \  %battery%\
                     \  %date%\
-                    \%tray%"
+                    \%systray%"
        }

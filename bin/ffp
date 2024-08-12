@@ -69,7 +69,7 @@ file=user.js
     echo
     printf %s 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);'
 
-    if [[ ! $profile =~ ^plain(-|$) ]]; then
+    if [[ ! $profile =~ ^plain ]]; then
         cat <<-'EOF'
 
 			//user_pref("browser.proton.enabled", false);

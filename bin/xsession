@@ -74,7 +74,7 @@ flock -n 8 || exit 3
 
 exec &>"$datadir/$prgname:$screen".out
 echo $'\n--------------------------------------------------'
-printf '> %s: %s\n\n' "$prgname" "$*"
+printf '> [%(%F %T)T] %s: %s\n\n' -1 "$prgname" "$*"
 
 cleanup() {
     local retstat=$?
@@ -106,17 +106,14 @@ pre_hook() {
     xscreen -
     sdu start xsession@:"$screen".target
 
-    srun -rxl picom
-    srun -rxl osdd
-    srun -rxl -n polkit-agent /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
-    srun -rxl -n sxhkd bash -c 'sleep 1 && exec sxhkd'
+    srun -xl picom
+    srun -xl osdd
+    srun -xl -n polkit-agent /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
+    srun -xl -n sxhkd bash -c 'sleep 1 && exec sxhkd'
 
     case $session in
         openbox | xfwm4)
-            srun -rxl tint2
-            ;;
-        xmonad | main)
-            srun -rxl systray
+            srun -xl tint2
             ;;
     esac
 }

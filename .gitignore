@@ -7,6 +7,7 @@
 !/.config/systemd/
 !/.config/systemd/user/
 !/.config/terminal-colors.d/
+!/.config/xkb/
 !/.local/
 !/.local/share/
 !/.local/share/bash-completion/

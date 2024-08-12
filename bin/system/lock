@@ -50,5 +50,5 @@ chvt "$vtno_new"
 vtswitch-lock
 chown -- "$user" $vtnew
 
-su - "$user" -c 'away -C away'
+runuser -c 'away -C away' - -- "$user"
 read -rs

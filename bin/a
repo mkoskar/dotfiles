@@ -3,9 +3,7 @@
 set -eu
 
 d=${1:-5m}
-ts=$(date -R)
-
-printf '%s ... alarm in %s\n' "$ts" "$d"
+printf '%(%F %T)T ... alarm in %s\n' -1 "$d"
 sleep "$d"
 
 echo Beep...

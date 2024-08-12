@@ -1,0 +1,136 @@
+# vim: fdm=marker
+
+# Colors {{{
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[colors.bright]
+black = "#4d4d4d"
+red = "#bf6060"
+green = "#60bf60"
+yellow = "#ccc466"
+blue = "#6070bf"
+magenta = "#bf60bf"
+cyan = "#60afbf"
+white = "#dddddd"
+
+[colors.cursor]
+cursor = "#dddddd"
+text = "#000000"
+
+[colors.normal]
+black = "#050505"
+red = "#bf4343"
+green = "#43bf43"
+yellow = "#db9c2e"
+blue = "#4358bf"
+magenta = "#bf43bf"
+cyan = "#43abbf"
+white = "#aeaeae"
+
+[colors.primary]
+background = "#000000"
+bright_foreground = "#dddddd"
+foreground = "#aeaeae"
+
+[colors.vi_mode_cursor]
+cursor = "#dddddd"
+text = "#000000"
+
+# }}}
+
+# Fonts {{{
+
+[font]
+size = 9
+
+#[font.normal]
+#family = "Terminus"
+
+[font.normal]
+family = "EnvyCodeR Nerd Font"
+
+[font.offset]
+#y = -1
+
+# }}}
+
+[mouse]
+hide_when_typing = true
+
+[scrolling]
+history = 8192
+
+[window.padding]
+x = 2
+y = 2
+
+
+# Bindings
+# ----------------------------------------
+
+[keyboard]
+bindings = [
+
+# Vi mode: Alt-J - 5 Down {{{
+{ mode = "Vi|~Search", mods = "Alt", key = "J", action = "Down" },
+{ mode = "Vi|~Search", mods = "Alt", key = "J", action = "Down" },
+{ mode = "Vi|~Search", mods = "Alt", key = "J", action = "Down" },
+{ mode = "Vi|~Search", mods = "Alt", key = "J", action = "Down" },
+{ mode = "Vi|~Search", mods = "Alt", key = "J", action = "Down" },
+# }}}
+
+# Vi mode: Alt-K - 5 Up {{{
+{ mode = "Vi|~Search", mods = "Alt", key = "K", action = "Up" },
+{ mode = "Vi|~Search", mods = "Alt", key = "K", action = "Up" },
+{ mode = "Vi|~Search", mods = "Alt", key = "K", action = "Up" },
+{ mode = "Vi|~Search", mods = "Alt", key = "K", action = "Up" },
+{ mode = "Vi|~Search", mods = "Alt", key = "K", action = "Up" },
+# }}}
+
+# Vi mode: Alt-L - 5 Right {{{
+{ mode = "Vi|~Search", mods = "Alt", key = "L", action = "Right" },
+{ mode = "Vi|~Search", mods = "Alt", key = "L", action = "Right" },
+{ mode = "Vi|~Search", mods = "Alt", key = "L", action = "Right" },
+{ mode = "Vi|~Search", mods = "Alt", key = "L", action = "Right" },
+{ mode = "Vi|~Search", mods = "Alt", key = "L", action = "Right" },
+# }}}
+
+# Vi mode: Alt-H - 5 Left {{{
+{ mode = "Vi|~Search", mods = "Alt", key = "H", action = "Left" },
+{ mode = "Vi|~Search", mods = "Alt", key = "H", action = "Left" },
+{ mode = "Vi|~Search", mods = "Alt", key = "H", action = "Left" },
+{ mode = "Vi|~Search", mods = "Alt", key = "H", action = "Left" },
+{ mode = "Vi|~Search", mods = "Alt", key = "H", action = "Left" },
+# }}}
+
+# Ctrl-Alt-[ - Enter/Exit Vi mode
+{ mode = "~Search", mods = "Control|Alt", key = "LBracket", action = "ToggleViMode" },
+{ mode = "Vi|~Search", mods = "Control|Alt", key = "LBracket", action = "ScrollToBottom" },
+
+# Ctrl-[ - Exit Vi mode
+{ mode = "Vi|~Search", mods = "Control", key = "LBracket", action = "ToggleViMode" },
+{ mode = "Vi|~Search", mods = "Control", key = "LBracket", action = "ScrollToBottom" },
+
+# Escape - Exit Vi mode
+{ mode = "Vi|~Search", key = "Escape", action = "ToggleViMode" },
+{ mode = "Vi|~Search", key = "Escape", action = "ScrollToBottom" },
+
+# Q - Exit Vi mode
+{ mode = "Vi|~Search", key = "Q", action = "ToggleViMode" },
+{ mode = "Vi|~Search", key = "Q", action = "ScrollToBottom" },
+
+# Ctrl-[ - Exit Search mode
+{ mode = "Search", mods = "Control", key = "LBracket", action = "SearchCancel" },
+
+# Font size
+{ mods = "Control", key = "0", action = "ReceiveChar" },
+{ mods = "Control", key = "=", action = "ResetFontSize" },
+{ mods = "Control|Shift", key = "+", action = "IncreaseFontSize" },
+
+# ----------------------------------------
+
+{ mode = "Vi|~Search", key = "Space", action = "ClearSelection" },
+
+]

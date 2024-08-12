@@ -116,7 +116,7 @@ post_process() {
     ' <"$1" |
         grep -Ev -e '[^[:alnum:]._-]' -e '^[^[:alnum:]]' -e '[^[:alnum:]]$' \
             ${whitelist:+-f "$CONFDIR"/whitelist} |
-        awk '{ print "0.0.0.0 " $0 }' >"$1".hosts
+        awk '{ print "127.0.0.1 " $0 }' >"$1".hosts
 }
 export -f post_process
 

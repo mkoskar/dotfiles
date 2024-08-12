@@ -9,8 +9,7 @@ cd ~
 declare -i retry=10
 while true; do
     gpg-connect-agent <<<'GETINFO version' &>/dev/null && break
-    (( retry )) || exit 2
-    retry=$((retry-1))
+    (( --retry )) || exit 2
     sleep 0.2
 done
 

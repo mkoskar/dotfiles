@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-exec cmd -0 msmtp -C ~/.config/msmtprc "$@"
+exec cmd -H msmtp -C ~/.config/msmtprc "$@"
