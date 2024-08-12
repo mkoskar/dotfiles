@@ -135,6 +135,11 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.opengl=true 
 #export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/keyring/ssh}
 export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent}
 
+#export SSH_ASKPASS=/usr/lib/seahorse/ssh-askpass
+#export SSH_ASKPASS=/usr/lib/ssh/ssh-askpass # -> x11-ssh-askpass
+export SSH_ASKPASS=/usr/bin/lxqt-openssh-askpass
+export SUDO_ASKPASS=$SSH_ASKPASS
+
 export ANSIBLE_COLOR_VERBOSE=yellow
 export ASPROOT=~/.asp
 export AUR_MAINTAINER=mkoskar
@@ -151,7 +156,7 @@ export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc
 export GTK_IM_MODULE=xim
 export GTK_MODULES=canberra-gtk-module
 export LD_LIBRARY_PATH=~/opt/lib
-export LESS='c i M Q R S --shift 5 --follow-name --incsearch --no-histdups --use-color DE231.1$ DN240.-$ DP231.1$ DR238.-$ DS16.214$ Du+Y-$'
+export LESS='c i M Q R S --shift 5 --follow-name --incsearch --no-histdups --no-vbell --use-color DE231.1$ DN240.-$ DP231.1$ DR238.-$ DS16.214$ Du+Y-$'
 export LESSHISTFILE=-
 export MAILDIR=~/mail
 export MANLESS='$MAN_PN ?ltlines %lt-%lb?L/%L. :byte %bB?s/%s. .?e(END) :?pB%pB\%..%t'
@@ -173,10 +178,12 @@ export PYENV_ROOT=~/.pyenv
 export PYTHONSTARTUP=~/.pythonrc
 export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 export QT_IM_MODULE=xim
-export QT_QPA_PLATFORMTHEME=qt5ct
+export QT_QPA_PLATFORMTHEME=qt6ct
 export QUOTING_STYLE=literal
 export RANGER_LOAD_DEFAULT_RC=FALSE
 export SAL_USE_VCLPLUGIN=gtk
+export SCREENDIR=$XDG_RUNTIME_DIR/screen
+export SYSTEMD_COLORS=0
 export SYSTEMD_LESS=$LESS
 export SYSTEMD_PAGERSECURE=0
 export SYSTEMD_URLIFY=0

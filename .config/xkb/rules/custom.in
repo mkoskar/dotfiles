@@ -1,0 +1,9 @@
+
+! model         = compat
+  *             = +custom
+
+! model         = types
+  *             = +custom
+
+! option        = symbols
+  custom        = +custom

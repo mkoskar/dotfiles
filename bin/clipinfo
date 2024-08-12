@@ -1,13 +1,26 @@
 #!/usr/bin/env bash
 
+declare -i wayland=0
+has-wayland && wayland=1
+
 echo $'\n--------------------------------------------------'
 echo $'> Primary:\n'
 
-xclip -o -t TARGETS
-xclip -o | finfo
+if (( wayland )); then
+    wl-paste -p -l
+    wl-paste -p -n | finfo
+else
+    xclip -o -t TARGETS
+    xclip -o | finfo
+fi
 
 echo '--------------------------------------------------'
 echo $'> Clipboard:\n'
 
-xclip -o -selection clipboard -t TARGETS
-xclip -o -selection clipboard | finfo
+if (( wayland )); then
+    wl-paste -l
+    wl-paste -n | finfo
+else
+    xclip -o -selection clipboard -t TARGETS
+    xclip -o -selection clipboard | finfo
+fi

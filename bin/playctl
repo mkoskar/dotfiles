@@ -37,11 +37,11 @@ bctl() {
         esac
         return
     fi
-    (sleep 0.01; echo "$1"; sleep 0.01) | bluetooth-player 2>/dev/null
+    bluetooth-player "$1" 2>/dev/null
 }
 
 lctl() {
-    playerctl -p clementine "$1"
+    playerctl "$1"
 }
 
 (( bopt )) && ctl=bctl || ctl=lctl

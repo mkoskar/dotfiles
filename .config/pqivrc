@@ -1,0 +1,5 @@
+# vim: ft=conf
+
+[options]
+fullscreen=1
+hide-info-box=1

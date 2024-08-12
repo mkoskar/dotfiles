@@ -26,26 +26,26 @@ idle_fg = "#efefef"
 
 [[block]]
 block = "cpu"
-format = " $icon $utilization.eng(pad_with:0) "
+format = " $icon $utilization.eng(pad_with:0,hide_unit:true) "
 interval = 1
 
 [[block]]
 block = "memory"
-format = " $icon $mem_used_percents.eng(pad_with:0) "
+format = " $icon $mem_used_percents.eng(pad_with:0,hide_unit:true) "
 
 [[block]]
 block = "backlight"
 cycle = [5, 40, 70, 100]
 device = "acpi_video0"
-format = " $icon $brightness "
+format = " $icon $brightness.eng(hide_unit:true) "
 invert_icons = true
 
 [[block]]
 block = "sound"
-format = " $icon $volume "
+format = " $icon $volume.eng(hide_unit:true) "
 show_volume_when_muted = true
 
 [[block]]
 block = "time"
-format = "$timestamp.datetime(f:'%a❘%d.%m❘%H:%M') "
+format = " $timestamp.datetime(f:'%a❘%d.%m❘%H:%M') "
 interval = 60

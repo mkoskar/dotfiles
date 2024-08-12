@@ -2,45 +2,73 @@
 
 set $mod Mod4
 
-#gaps inner 15
-#gaps outer 5
-#smart_borders on
+#default_border pixel 1
+#default_floating_border pixel 1
+#hide_edge_borders smart
+default_border normal 1
+default_floating_border normal 1
+
+#gaps inner 2
+#gaps outer 2
 #smart_gaps on
 
-default_border pixel 1
-default_floating_border pixel 1
 floating_modifier $mod
-#focus_wrapping force
+focus_wrapping force
 font pango:monospace bold 8
 title_align center
 workspace_layout tabbed
 
 client.background       #ffffff
-client.focused          #000000 #000000 #87cefa #33ff33 #ff3333
-client.focused_inactive #000000 #2a2a2a #888888 #000000 #000000
+client.focused          #ff3333 #993333 #ffffff #33ff33 #ff3333
+client.focused_inactive #333333 #5f676a #ffffff #000000 #000000
 client.placeholder      #000000 #0c0c0c #ffffff #000000 #0c0c0c
-client.unfocused        #000000 #3a3a3a #888888 #000000 #000000
-client.urgent           #f6e972 #f6e972 #bb4455 #000000 #000000
+client.unfocused        #222222 #111111 #888888 #000000 #000000
+client.urgent           #f6e972 #d4c750 #bb4455 #f6e972 #f6e972
+
+bar {
+    font pango:monospace bold 8
+    position bottom
+    separator_symbol "❘"
+    status_command i3blocks
+    status_command i3status
+    status_command i3status-rs
+    tray_output primary
+
+    colors {
+        background  #000000
+        statusline  #c0c0c0
+        separator   #c0c0c0
+        focused_background  #000000
+        focused_statusline  #c0c0c0
+        focused_separator   #c0c0c0
+        focused_workspace   #222222 #000000 #55ff55
+        active_workspace    #222222 #000000 #feed6a
+        inactive_workspace  #222222 #111111 #c0c0c0
+        urgent_workspace    #222222 #f6e972 #bb4455
+        binding_mode        #222222 #bf4343 #ffffff
+    }
+}
 
 # ----------------------------------------
 
-for_window [class=".*"] title_format "%title [%class/%instance]"
+for_window [all] title_format "%title [%class/%instance]"
 for_window [class="Firefox (default)"] move container to workspace 3
 for_window [class="Gxmessage"] floating enable
+for_window [class="QjackCtl"] floating enable
+for_window [class="lxqt-openssh-askpass"] floating enable
 for_window [class="mpv"] move container to workspace 9
+for_window [instance="gcr-prompter"] floating enable
 for_window [instance="pinentry-gtk-2"] floating enable
-for_window [instance="qjackctl" title="JACK Audio Connection Kit"] floating enable
 for_window [instance="s_aux"] move container to workspace 2
 for_window [instance="s_tmp"] move container to workspace 2
 for_window [instance="s_wrk"] move container to workspace 1
 for_window [instance="sp:.*"] floating enable
 for_window [instance="vmpk"] floating enable
-for_window [instance="workrave" title="Workrave"] ignore and hide
+for_window [instance="workrave" title="Workrave"] move container to scratchpad
 
 # ----------------------------------------
 
-#bindsym $mod+q reload
-bindsym $mod+q restart
+bindsym $mod+q reload
 bindsym $mod+Shift+q exit
 bindsym $mod+Shift+Return exec term
 
@@ -91,13 +119,14 @@ bindsym $mod+Shift+j move down 25px
 bindsym $mod+Shift+k move up 25px
 bindsym $mod+Shift+l move right 25px
 
-bindsym $mod+Tab focus next sibling
-bindsym $mod+Shift+Tab focus prev sibling
+bindsym $mod+Tab focus next
+bindsym $mod+Shift+Tab focus prev
 bindsym $mod+comma focus parent
 bindsym $mod+period focus child
 
 bindsym $mod+backslash split horizontal
 bindsym $mod+minus split vertical
+bindsym $mod+equal split none
 bindsym $mod+t layout toggle split
 bindsym $mod+Shift+t layout toggle tabbed stacking
 
@@ -107,7 +136,7 @@ bindsym $mod+Shift+space floating toggle
 
 bindsym $mod+c kill
 bindsym $mod+b bar mode toggle
-bindsym $mod+Ctrl+b border toggle
+bindsym $mod+Ctrl+b border toggle 1
 bindsym $mod+Shift+equal sticky toggle
 
 bindsym $mod+BackSpace mode "pass"
@@ -155,8 +184,8 @@ mode "resize" {
     bindsym Shift+l resize grow width 50px
 
     bindsym Ctrl+h resize shrink width 5px
-    bindsym Ctrl+k resize shrink height 5px
     bindsym Ctrl+j resize grow height 5px
+    bindsym Ctrl+k resize shrink height 5px
     bindsym Ctrl+l resize grow width 5px
 
     bindsym q mode "default"
@@ -164,30 +193,6 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym $mod+r mode "default"
     bindsym $mod+m mode "move"
-}
-
-bar {
-    font pango:monospace bold 8
-    position bottom
-    separator_symbol "❘"
-    status_command i3blocks
-    status_command i3status
-    status_command i3status-rs
-    tray_output primary
-
-    colors {
-        background  #000000
-        statusline  #c0c0c0
-        separator   #c0c0c0
-        focused_background  #000000
-        focused_statusline  #c0c0c0
-        focused_separator   #c0c0c0
-        focused_workspace   #222222 #000000 #55ff55
-        active_workspace    #222222 #000000 #feed6a
-        inactive_workspace  #222222 #111111 #c0c0c0
-        urgent_workspace    #f6e972 #f6e972 #bb4455
-        binding_mode        #bf4343 #bf4343 #ffffff
-    }
 }
 
 # ----------------------------------------

@@ -12,8 +12,7 @@ while true; do
     ssh-add -l &>/dev/null || retstat=$?
     (( retstat )) || exit 0
     (( retstat == 2 )) || break
-    (( retry )) || exit 2
-    retry=$((retry-1))
+    (( --retry )) || exit 2
     sleep 0.2
 done
 

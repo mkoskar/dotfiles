@@ -6,23 +6,26 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname [-0] [-s] cmd [arg...]
-	       $prgname [-0] [-s] {-v | -V} name [name...]
+	usage: $prgname [-e pattern]... [-H] [-s] cmd [arg...]
+	       $prgname [-e pattern]... [-H] [-s] {-v | -V} name [name...]
 
-	  -0    - use \$PATH removing first entry
-	  -s    - use \$SYSPATH
-	  -v    - print first found path
-	  -V    - print all paths
+	  -e pattern    - exclude by glob(7) prefix pattern
+	  -H            - exclude ~/bin/
+	  -s            - use \$SYSPATH
+	  -v            - print first found path
+	  -V            - print all paths
 	EOF
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
-declare -i path=0 print=0
-while getopts 0svVh opt; do
+excludes=()
+declare -i print=0
+while getopts e:HsvVh opt; do
     case $opt in
-        0) path=1 ;;
-        s) path=2 ;;
+        e) excludes+=("$OPTARG") ;;
+        H) excludes+=(~/bin/) ;;
+        s) PATH=$SYSPATH ;;
         v) print=1 ;;
         V) print=2 ;;
         h) usage ;;
@@ -35,17 +38,33 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
-_PATH=$PATH
-case $path in
-    1) PATH=${PATH#*:} ;;
-    2) PATH=$SYSPATH ;;
-esac
+if [[ $PATH = *$'\n'* ]]; then
+    printf '%s: error: PATH contains \n (NL)' "$prgname" >&2
+    exit 1
+fi
 
+paths=$(type -Pa -- "$1")
+paths_=()
+readarray -t paths <<<"$paths"
+for p in "${paths[@]}"; do
+    p=$(realpath -- "$p")
+    for e in "${excludes[@]}"; do
+        [[ $p = $e* ]] && continue 2
+    done
+    paths_+=("$p")
+done
+
+(( ${#paths_[@]} )) || exit 1
+
+# shellcheck disable=SC2128
 case $print in
     0)
-        bin=$(type -P -- "$1")
-        PATH=$_PATH exec "$bin" "${@:2}"
+        exec "$paths_" "${@:2}"
         ;;
-    1) type -P -- "$@" ;;
-    2) type -Pa -- "$@" ;;
+    1)
+        printf '%s\n' "$paths_"
+        ;;
+    2)
+        printf '%s\n' "${paths_[@]}"
+        ;;
 esac

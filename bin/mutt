@@ -11,4 +11,4 @@ fi
 mbsync now
 
 hash neomutt &>/dev/null && exec neomutt -n "$@"
-exec cmd -0 mutt -n "$@"
+exec cmd -H mutt -n "$@"

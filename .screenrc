@@ -1,4 +1,8 @@
+altscreen on
+caption splitonly '%n%f %t'
+defdynamictitle on
 defscrollback 8192
-caption always '%{=}%-Lw%{=b .W}%n%f %t%{-}%+Lw %= %h'
+hardstatus alwayslastline '%-Lw%{=b}%n%f %t%{-}%+Lw%= %h | %H'
 startup_message off
-vbell off
+term screen-256color
+truecolor on

@@ -49,6 +49,13 @@ esac
 
 declare -i vtno dispno
 case $prgname in
+    xs)
+        vtno=$(fgconsole -C /dev/tty 2>/dev/null) || {
+            echo 'This script must be run from a console.'
+            exit 1
+        }
+        exec srun -s -n x:"vt$vtno" x "${args[@]}"
+        ;;
     xx)
         for (( dispno=91; 1; dispno++ )); do
             [[ -e /tmp/.X$dispno-lock ]] || break
@@ -65,13 +72,13 @@ case $prgname in
         )
         ;;
     *)
-        unset DISPLAY
         vtno=$(fgconsole -C /dev/tty 2>/dev/null) || {
             echo 'This script must be run from a console.'
             exit 1
         }
         dispno=$((50+vtno))
         lockfile=/tmp/.X$dispno-lock
+        unset DISPLAY
 
         if [[ -e $lockfile ]]; then
             read -r pid <"$lockfile"
@@ -89,13 +96,17 @@ case $prgname in
         xconfig=${XCONFIG-}
         if [[ ! $xconfig ]]; then
             case $HOSTNAME in
+                mirci) xconfig=intel ;;
                 *) xconfig=default ;;
             esac
         fi
 
-        fqxconfig=xorg.conf.$HOSTNAME
-        [[ $xconfig = default ]] || fqxconfig+=.$xconfig
-        [[ -r /etc/X11/$fqxconfig ]] || exit 2
+        if [[ $xconfig = default ]]; then
+            fqxconfig=
+        else
+            fqxconfig=xorg.conf.$HOSTNAME.$xconfig
+            [[ -r /etc/X11/$fqxconfig ]] || exit 2
+        fi
 
         printf '%s\n' "$xconfig" >"$rundir/xconfig:$dispno"
 
@@ -104,15 +115,15 @@ case $prgname in
             case $HOSTNAME in
                 mirci)
                     case $xconfig in
-                        default)
-                            (( vtno == 1 )) &&
-                                set -- main ||
-                                set -- openbox
-                            ;;
                         zaphod)
                             (( vtno == 1 )) &&
                                 set -- main -- openbox ||
                                 set -- openbox -- openbox
+                            ;;
+                        *)
+                            (( vtno == 1 )) &&
+                                set -- main ||
+                                set -- openbox
                             ;;
                     esac
                     ;;
@@ -123,9 +134,10 @@ case $prgname in
 
         sargs=(
             /usr/lib/Xorg ":$dispno" "vt$vtno"
-            -config "$fqxconfig"
+            ${fqxconfig:+-config "$fqxconfig"}
             -keeptty
             -logfile "$datadir/Xorg:$dispno.log"
+            -logverbose 99
             -noreset
             -novtswitch
             -quiet
@@ -161,7 +173,7 @@ trap cleanup EXIT
 
 exec &>"$datadir/$prgname:$dispno.out"
 echo $'\n--------------------------------------------------'
-printf '> %s: %s\n\n' "$prgname" "$*"
+printf '> [%(%F %T)T] %s: %s\n\n' -1 "$prgname" "$*"
 
 trap ready=1 USR1; (trap '' USR1; exec "${sargs[@]}") & spid=$!
 trap : HUP; (sleep 15; kill -HUP $$) &

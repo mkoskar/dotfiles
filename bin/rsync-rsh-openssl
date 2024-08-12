@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# USER HOST rsync --server --daemon .
+# -l USER HOST rsync --server --daemon .
+
+set -u
+
+if [[ $1 == -l ]]; then
+    shift 2
+fi
+host=$1
+exec openssl s_client \
+    -verify_hostname "$host" \
+    -verify_return_error \
+    -verify_quiet \
+    -quiet \
+    -connect "$host":"$RSYNC_PORT"

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+stat() {
+    printf '%s\t%d\n' "$1" "$2"
+}
+
+while IFS=$'\t' read -r id if of; do
+    [[ $id ]] || continue
+    # shellcheck disable=SC2015
+    [[ $if ]] && [[ $of ]] || {
+        stat "$id" 2
+        continue
+    }
+    printf -v prompt $'%s\t[sudo %%p as %%U]\n' "$id"
+    sudo -Sv -p "$prompt" || {
+        stat "$id" $?
+        continue
+    }
+    sudo dd status=none if="$if" of="$of"
+    stat "$id" $?
+done

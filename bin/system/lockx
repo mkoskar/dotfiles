@@ -31,13 +31,11 @@ sysrq_old=$(<"$sysrq_path")
 echo 0 >"$sysrq_path"
 
 cleanup() {
-    printf %d "$sysrq_old" >"$sysrq_path"
+    echo "$sysrq_old" >"$sysrq_path"
     vtswitch-lock -u
 }
 trap cleanup EXIT
 
 vtswitch-lock
 
-su - "$user" -c "export DISPLAY=:$dispno
-                 export XAUTHORITY=~/.local/share/xorg/Xauthority
-                 slock"
+runuser -c "DISPLAY=:$dispno slock" - -- "$user"

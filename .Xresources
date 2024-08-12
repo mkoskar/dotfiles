@@ -24,8 +24,8 @@ URxvt.font:                     xft:Terminus:pixelsize=16, \
                                 xft:Symbola:pixelsize=9, \
                                 xft:Symbola:pixelsize=8
 
-URxvt.boldItalicFont:           xft:Dejavu Sans Mono:bold:italic
 URxvt.italicFont:               xft:Dejavu Sans Mono:italic
+URxvt.boldItalicFont:           xft:Dejavu Sans Mono:bold:italic
 
 URxvt.cutchars:                 '"()*,<>[]{}|\''
 URxvt.depth:                    32
@@ -43,8 +43,8 @@ URxvt.scrollstyle:              plain
 URxvt.thickness:                5
 URxvt.urgentOnBell:             true
 
-URxvt.keysym.C-h:               \177
-URxvt.keysym.M-C-h:             \033\010
+!URxvt.keysym.C-h:               \177
+!URxvt.keysym.M-C-h:             \033\010
 
 URxvt.keysym.Shift-Up:          command:\033]720;1\007
 URxvt.keysym.Shift-Down:        command:\033]721;1\007
@@ -65,7 +65,6 @@ URxvt.keysym.M-C-o:             perl:url-picker
 #undef TCOLOR_PREFIX
 #define TCOLOR_PREFIX URxvt.
 #include ".xcolors/resources"
-P()background: [90]TCOLOR_BG
 
 
 ! XTerm
@@ -76,6 +75,7 @@ XTerm.termName:                     xterm-256color
 !XTerm.fontWarnings:                 2
 !XTerm.reportColors:                 true
 !XTerm.reportFonts:                  true
+XTerm.omitTranslation:              paging
 
 !XTerm.vt100.boldColors:             false
 XTerm.vt100.bellIsUrgent:           true
@@ -96,6 +96,8 @@ XTerm.vt100.scrollKey:              true
 XTerm.vt100.scrollTtyOutput:        false
 XTerm.vt100.showMissingGlyphs:      true
 XTerm.vt100.veryBoldColors:         4
+
+XTerm.vt100.backarrowKey:           false
 
 XTerm.vt100.faceName:               mononoki
 XTerm.vt100.faceSize:               11
@@ -118,25 +120,27 @@ XTerm.vt100.scrollbar.thickness:    5
 XTerm.vt100.scrollbar.thumb:        None
 
 XTerm.vt100.translations:           #override \n\
-                                    :Ctrl ~Alt <Key>H   : string(\177) \n\
+                                    :Ctrl Alt <Key>[    : keymap(visual) \n\
                                     \
                                     :Ctrl <Key>plus     : larger-vt-font() \n\
                                     :Ctrl <Key>minus    : smaller-vt-font() \n\
                                     :Ctrl <Key>equal    : set-vt-font(d) \n\
                                     \
+                                    :~Shift <Key>Print  : print() \n\
                                     :Shift <Key>Print   : print-everything() \n\
-                                    :<Key>Print         : print() \n\
                                     \
                                     :Shift <Key>Up      : scroll-back(1, line) \n\
                                     :Shift <Key>Down    : scroll-forw(1, line) \n\
+                                    :Shift <Key>Prior   : scroll-back(1, halfpage) \n\
+                                    :Shift <Key>Next    : scroll-forw(1, halfpage) \n\
                                     :Shift <Key>Home    : scroll-to(begin) \n\
                                     :Shift <Key>End     : scroll-to(end) \n\
                                     :Shift <Key>Return  : scroll-to(end) \n\
-                                    :Ctrl Alt <Key>[    : keymap(visual) \n\
-                                    :Ctrl Alt <Key>1 : popup-menu(mainMenu) \n\
-                                    :Ctrl Alt <Key>2 : popup-menu(vtMenu) \n\
-                                    :Ctrl Alt <Key>3 : popup-menu(fontMenu) \n\
-                                    :Ctrl Alt <Key>4 : popup-menu(tekMenu)
+                                    \
+                                    :Ctrl Alt <Key>1    : popup-menu(mainMenu) \n\
+                                    :Ctrl Alt <Key>2    : popup-menu(vtMenu) \n\
+                                    :Ctrl Alt <Key>3    : popup-menu(fontMenu) \n\
+                                    :Ctrl Alt <Key>4    : popup-menu(tekMenu)
 
 XTerm.vt100.visualKeymap.translations: \
                                     #override \n\

@@ -24,6 +24,31 @@ endfunction
 
 " ----------------------------------------
 
+function! utils#bufPlain() abort
+    setl nonu nornu nowrap nolist cc= scl=no
+endfunction
+
+function! utils#bufSpecial() abort
+    call utils#bufPlain()
+    setl fdc=0
+endfunction
+
+function! utils#channelLines(data, part) abort
+    let [lines, part_] = [[], '']
+    if len(a:data) == 1
+        if a:data[0] == ''
+            let lines = !empty(a:part) ? [a:part] : []
+        else
+            let part_ = a:part . a:data[0]
+        endif
+    else
+        let lines = a:data[:-2]
+        let lines[0] = a:part . lines[0]
+        let part_ = a:data[-1]
+    endif
+    return [lines, part_]
+endfunction
+
 function! utils#cmdlineKillWord(forward, ...) abort
     let buf = getcmdline()
     let pos = getcmdpos() - 1
@@ -56,6 +81,53 @@ function! utils#cmdlineMoveWord(forward, ...) abort
     return getcmdline()
 endfunction
 
+function! utils#commonPrefix(a, b) abort
+    let lena = strcharlen(a:a)
+    let lenb = strcharlen(a:b)
+    let len = min([lena, lenb])
+    let i = 0
+    while i < len
+        if strcharpart(a:a, i, 1, 1) !=# strcharpart(a:b, i, 1, 1)
+            break
+        endif
+        let i += 1
+    endwhile
+    return i < 1 ? '' : slice(a:a, 0, i)
+endfunction
+
+function! utils#mapRestore(ctx) abort
+    for [mode, mappings] in items(a:ctx)
+        for [name, mapping] in items(mappings)
+            if empty(mapping)
+                exec mode . 'unmap' name
+            else
+                call mapset(mode, 0, mapping)
+            endif
+        endfor
+        unlet a:ctx[mode]
+    endfor
+endfunction
+
+function! utils#mapSave(nameOrNames, mode, ctx) abort
+    let names = type(a:nameOrNames) == v:t_list ? a:nameOrNames : [a:nameOrNames]
+    for name in names
+        let mapping = maparg(name, a:mode, 0, 1)
+        let mappings = get(a:ctx, a:mode, {})
+        if empty(mapping)
+            let mappings[name] = {}
+        else
+            let mappings[name] = mapping
+        endif
+        let a:ctx[a:mode] = mappings
+    endfor
+endfunction
+
+function! utils#mkdir(path) abort
+    if !isdirectory(a:path)
+        call mkdir(a:path, 'p', 0700)
+    endif
+endfunction
+
 function! utils#moveWord(forward, ...) abort
     if a:forward
         if get(a:, 1, 0)
@@ -65,23 +137,6 @@ function! utils#moveWord(forward, ...) abort
         endif
     else
         call search('\v<|^', 'bW')
-    endif
-endfunction
-
-" ----------------------------------------
-
-function! utils#bufPlain() abort
-    setl nonu nornu nowrap nolist cc= scl=no
-endfunction
-
-function! utils#bufSpecial() abort
-    call utils#bufPlain()
-    setl fdc=0
-endfunction
-
-function! utils#mkdir(path) abort
-    if !isdirectory(a:path)
-        call mkdir(a:path, 'p', 0700)
     endif
 endfunction
 

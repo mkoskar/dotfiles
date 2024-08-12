@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -e
+
+cd ~/.config/xkb
+
+#cat <<-'EOF' | xkbcomp -w 1 -I. - keymap.xkm
+#cat <<-'EOF' | xkbcomp -w 10 -I. - "$DISPLAY"
+cat <<-'EOF' | xkbcomp -w 1 -I. - "$DISPLAY"
+	xkb_keymap {
+	    xkb_keycodes { include "evdev+aliases(qwerty)" };
+	    xkb_types { include "complete+custom" };
+	    xkb_compat { include "complete+custom" };
+	    xkb_symbols { include "pc+us(cz_sk_de)+sk(qwerty):2+cz(qwerty):3+inet(evdev)+custom" };
+	    xkb_geometry { include "pc(pc105)" };
+	};
+EOF

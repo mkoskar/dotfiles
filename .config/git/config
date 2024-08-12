@@ -86,7 +86,7 @@
 [color "decorate"]
     HEAD = bold yellow
     branch = bold yellow
-    remotebranch = bold yellow
+    remoteBranch = bold yellow
 
 [color]
     pager = false
@@ -105,14 +105,14 @@
     prune = true
 
 [format]
-    coverletter = auto
+    coverLetter = auto
     thread = shallow
 
 [grep]
-    linenumber = true
+    lineNumber = true
 
 [init]
-    defaultbranch = master
+    defaultBranch = master
 
 [instaweb]
     browser = xdg-open
@@ -127,7 +127,7 @@
     scissors = true
 
 [merge]
-    conflictstyle = diff3
+    conflictStyle = diff3
     tool = custom
 
 [mergetool "custom"]
@@ -149,9 +149,9 @@
 
 [sendemail]
     confirm = always
-    suppresscc = self
+    suppressCc = self
 
 [user]
     name = Miroslav Koškár
-    signingkey = FE8EBB50B4447321
-    useconfigonly = true
+    signingKey = FE8EBB50B4447321
+    useConfigOnly = true

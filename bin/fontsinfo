@@ -2,10 +2,15 @@
 
 set -eu -o pipefail
 
+allfonts() {
+    fc-list -f '%{file}\n' | sort -u
+}
+
 glyph_count() {
     set -eu -o pipefail
     local file count
     while read -r file; do
+        # this doesn't handle multiple typefaces in single font file
         count=$(ftdump "$file" | awk '/glyph count:/ { print $3 }')
         printf '%5d %s\n' "$count" "$file"
     done
@@ -13,26 +18,26 @@ glyph_count() {
 export -f glyph_count
 
 if [[ ${1-} = - ]]; then
-    fc-list --format '%{file}\n' |
-        parallel --pipe --block 1K --round glyph_count |
-        sort -r
+    allfonts | parallel -r --pipe -N 100 --round glyph_count | sort -r
     exit
 fi
 
 find_glyph() {
     local file
     while read -r file; do
-        if ftdump -C -n "$file" | grep -Fq -- "$1"; then
-            printf '%s\n' "$file"
-        fi
+        ftdump -C -n "$file" | grep -H --label="$file" -F -- "$1"
     done
+    exit 0
 }
 export -f find_glyph
 
 if [[ ${1-} = 0x* ]]; then
-    fc-list --format '%{file}\n' |
-        parallel --pipe --block 1K --round find_glyph "$1" |
-        sort -r
+    allfonts | parallel -rq --pipe -N 100 --round find_glyph "$1 =>" | sort -u
+    exit
+fi
+
+if [[ ${1-} = features ]]; then
+    allfonts | parallel -r -X -N 100 otfinfo -f | sort
     exit
 fi
 
@@ -51,7 +56,7 @@ match() {
 }
 export -f match
 
-grep -Evx '\s*|(\s*#.*)' <<-'EOF' | parallel -k match
+grep -Evx '\s*|(\s*#.*)' <<-'EOF' | parallel -rk match
 
 	> Generic:
 	cursive

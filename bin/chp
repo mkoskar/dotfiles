@@ -61,7 +61,7 @@ path_skel=$path.skel
 [[ $profile = default ]] || path+=.$profile
 
 if [[ $profile != skel ]]; then
-    if [[ ! $profile =~ ^plain(-|$) && ! -e $path && -e $path_skel ]]; then
+    if [[ ! $profile =~ ^plain && ! -e $path && -e $path_skel ]]; then
         cp -a "$path_skel" "$path"
     fi
 
@@ -116,21 +116,26 @@ if [[ -e $path/theme ]]; then
     args+=(--load-extension="$path"/theme)
 fi
 
-
-# GPU
-# ----------------------------------------
-# https://source.chromium.org/chromium/chromium/src/+/main:gpu/config/gpu_preferences.h
-
 features+=(
+
     #-CustomizeChromeSidePanel
+    #WebRTCPipeWireCapturer
+    #WebUIDarkMode
+
+    #-UseChromeOSDirectVideoDecoder
+    #-UseSkiaRenderer
+    #CanvasOopRasterization
     #DefaultANGLEVulkan
     #PlatformHEVCDecoderSupport
     #RawDraw
     #UseMultiPlaneFormatForHardwareVideo
+    #VaapiIgnoreDriverChecks
+    #VaapiVideoDecodeLinuxGL
+    #VaapiVideoDecoder
+    #VaapiVideoEncoder
     #Vulkan
     #VulkanFromANGLE
-    #WebRTCPipeWireCapturer
-    #WebUIDarkMode
+
     -UseChromeOSDirectVideoDecoder
     -UseSkiaRenderer
     CanvasOopRasterization
@@ -138,40 +143,43 @@ features+=(
     VaapiVideoDecodeLinuxGL
     VaapiVideoDecoder
     VaapiVideoEncoder
+
 )
 
 args+=(
+
+    #--disable-remote-fonts
+    #--extensions-on-chrome-urls
+    #--force-dark-mode
+    #--force-device-scale-factor=1
+    #--ozone-platform=x11
+    #--restore-last-session
+    #--show-component-extension-options
+
+    --show-component-extension-options
+
     #--disable-gpu-driver-bug-workarounds
     #--enable-drdc
     #--enable-gpu-memory-buffer-video-frames
+    #--enable-gpu-rasterization
+    #--enable-hardware-overlays
     #--enable-native-gpu-memory-buffers
     #--enable-raw-draw
     #--enable-unsafe-webgpu
-    #--force-dark-mode
-    #--ozone-platform=x11
+    #--enable-zero-copy
+    #--ignore-gpu-blocklist
+    #--use-angle=gl
     #--use-angle=vulkan
     #--use-gl=angle
+    #--use-gl=egl
     #--use-vulkan=native
+
     --enable-gpu-rasterization
     --enable-hardware-overlays
     --enable-zero-copy
     --ignore-gpu-blocklist
+
 )
-
-
-# Other
-# ----------------------------------------
-
-args+=(
-    #--disable-remote-fonts
-    #--extensions-on-chrome-urls
-    #--force-device-scale-factor=1
-    #--restore-last-session
-    --show-component-extension-options
-)
-
-
-# ----------------------------------------
 
 disable_features=
 enable_features=
@@ -193,5 +201,7 @@ if [[ ${CH_DEBUG-} ]]; then
     )
 fi
 
-export LIBVA_DRI3_DISABLE=1
+#export LIBVA_DRI3_DISABLE=1
+#export LIBVA_DRIVER_NAME=i965
+
 exec "$bin" "${args[@]}" "$@"

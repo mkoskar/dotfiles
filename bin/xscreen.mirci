@@ -53,6 +53,10 @@ layout_hook_default() {
     _layout_hook_default "$@"
 }
 
+layout_hook_intel() {
+    _layout_hook_default "$@"
+}
+
 layout_hook_modesetting() {
     _layout_hook_default "$@"
 }

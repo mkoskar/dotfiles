@@ -9,7 +9,7 @@ exec &>>~/.local/share/"$prgname".out
 at=mk@
 kernel_release=$(uname -r)
 kernel_version=v${kernel_release%%-*}
-posix_base=https://pubs.opengroup.org/onlinepubs/9699919799
+posix_base=https://pubs.opengroup.org/onlinepubs/9799919799
 
 MENUER=$prgname menuer "$@" <<-EOF |
 
@@ -42,6 +42,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     apache                  b https://httpd.apache.org/docs/
     apache-directives       b https://httpd.apache.org/docs/current/mod/quickreference.html
     apk                     b https://pkgs.alpinelinux.org/packages\?name={u}
+    apod                    b https://apod.nasa.gov/apod/astropix.html
     arch                    b https://www.archlinux.org/
     arch-forums             b https://bbs.archlinux.org/search.php\?action=show_new
     arch-gitlab             b https://gitlab.archlinux.org/explore
@@ -173,7 +174,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     firefox-relnotes-bugs   b https://bugzilla.mozilla.org/buglist.cgi\?query_format=advanced\&f1=cf_tracking_firefox_relnote\&o1=isnotempty\&f2=cf_tracking_firefox_relnote\&o2=substring\&v2={u}\&limit=200\&order=changeddate\ desc
     flac                    b https://xiph.org/flac/documentation.html
     flp                     b https://www.feynmanlectures.caltech.edu/
-    font-features           b https://en.wikipedia.org/wiki/List_of_typographic_features#OpenType_typographic_features
+    font-features           b https://learn.microsoft.com/en-us/typography/opentype/spec/featurelist
     form-data               b https://datatracker.ietf.org/doc/html/rfc7578
     fosdem                  b https://video.fosdem.org/
     freebsd                 b https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/
@@ -332,6 +333,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     k8s-hub                 b https://artifacthub.io/
     kernel-lists            b http://vger.kernel.org/vger-lists.html
     keypad                  b https://en.wikipedia.org/wiki/E.161
+    language-codes          b https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes
     latin-greek-roots       b https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English
     latin-phrases           b https://en.wikipedia.org/wiki/List_of_Latin_phrases
     lcd-test                b http://www.lagom.nl/lcd-test/all_tests.php
@@ -356,6 +358,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-specs             b https://refspecs.linuxfoundation.org/
     linux-src               b https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/\?id="$kernel_version"
     linux-sysctl            b https://www.kernel.org/doc/Documentation/sysctl
+    linux-wikibook          b https://en.wikibooks.org/wiki/The_Linux_Kernel
     linux-xref              b https://elixir.bootlin.com/linux/latest/source/
     lists-apache            b https://lists.apache.org/
     lkml                    b https://lkml.org/
@@ -492,6 +495,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     qt                      b https://doc.qt.io/
     qt-flags                b https://doc.qt.io/qt-5/qguiapplication.html#supported-command-line-options
     quotes                  b https://www.cl.cam.ac.uk/~mgk25/ucs/quotes.html
+    quotes-per-language     b https://en.wikipedia.org/wiki/Quotation_mark#Summary_table
     qutebrowser             b https://qutebrowser.org/img/cheatsheet-big.png
     rabbitmq                b https://www.rabbitmq.com/documentation.html
     radio-spectrum          b https://en.wikipedia.org/wiki/Radio_spectrum
@@ -572,6 +576,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     sqlite                  b https://sqlite.org/docs.html
     sqlite-lang             b https://sqlite.org/lang.html
     squid                   b http://www.squid-cache.org/Doc/config/
+    ssh-changes             b https://www.openssh.com/releasenotes.html
     ssl-config              b https://ssl-config.mozilla.org/
     stn                     b https://normy.unms.sk/eshop/public/search.aspx
     suckless-repos          b https://git.suckless.org/
@@ -607,6 +612,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     unicode-compart         b https://www.compart.com/en/unicode
     unicode-emojis          b https://www.unicode.org/emoji/charts/full-emoji-list.html
     unicode-math            b https://www.unicode.org/Public/math/revision-15/MathClassEx-15.html
+    unicode-quotes          b https://en.wikipedia.org/wiki/Quotation_mark#Unicode_code_point_table
     unix                    b https://en.wikipedia.org/wiki/Single_UNIX_Specification#Marks_for_compliant_systems
     unix-timeline           b https://upload.wikimedia.org/wikipedia/commons/c/cd/Unix_timeline.en.svg
     unix-timeline2          b https://upload.wikimedia.org/wikipedia/commons/7/77/Unix_history-simple.svg
@@ -624,7 +630,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     w-cz                    b https://cz.wikipedia.org/w/index.php\?search={u}
     w-sk                    b https://sk.wikipedia.org/w/index.php\?search={u}
     w3c-specs               b https://www.w3.org/TR/
-    wayland                 b https://wayland-book.com/
+    wayland-book            b https://wayland-book.com/
     wayland-protocols       b https://wayland.app/protocols/
     web.dev                 b https://web.dev/
     webassembly             b https://webassembly.org/docs/high-level-goals/
@@ -649,11 +655,11 @@ MENUER=$prgname menuer "$@" <<-EOF |
     x11-translations        b https://www.x.org/releases/current/doc/libXt/intrinsics.html#Translation_Table_Syntax
     x11-xkb-config          b https://www.x.org/releases/current/doc/xorg-docs/input/XKB-Config.html
     x11-xkb-enhancing       b https://www.x.org/releases/current/doc/xorg-docs/input/XKB-Enhancing.html
-    x11-xkbguide            b https://www.charvolant.org/doug/xkb/html/index.html
     x11-xkblib              b https://www.x.org/releases/current/doc/libX11/XKB/xkblib.html
     x11-xkbproto            b https://www.x.org/releases/current/doc/kbproto/xkbproto.html
     xapian-query            b https://xapian.org/docs/queryparser.html
     xcb-modules             b https://xcb.freedesktop.org/manual/modules.html
+    xkb-keymap-format       b https://xkbcommon.org/doc/current/keymap-text-format-v1.html
     xlib                    b https://tronche.com/gui/x/xlib/
     xml                     b https://www.w3.org/TR/xml/
     xmonad                  b https://hackage.haskell.org/package/xmonad

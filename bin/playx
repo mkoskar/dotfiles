@@ -18,7 +18,7 @@ trap cleanup EXIT
 [[ -t 1 ]] || exec >/dev/null
 [[ -t 2 ]] || exec 2>/dev/null
 
-src=${1:-$(xclip -o | head -c 512)}
+src=${1:-$(clip -o | head -c 512)}
 case $src in
     http?(s)://www.rtvs.sk/* | \
     http?(s)://www.ustream.tv/* \

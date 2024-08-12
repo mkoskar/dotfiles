@@ -1,0 +1,171 @@
+// vim: ft=xkb
+
+default partial alphanumeric_keys
+xkb_symbols "default" {
+
+    include "level3(ralt_switch_multikey)"
+    include "terminate(ctrl_alt_bksp)"
+
+    //include "shift(lshift_both_capslock)"
+    include "shift(lshift_both_shiftlock)"
+
+    include "custom(rshift_multi)"
+
+    include "custom(caps_level5)"
+
+    //include "custom(caps_overlay)"
+    //include "custom(overlay_numpad)"
+    //include "custom(overlay_viarrows)"
+
+    include "custom(level3)"
+    include "custom(mousekeys)"
+    include "custom(vtswitch_prev_next)"
+
+    key <HYPR> {
+        type = "ONE_LEVEL",
+        [ VoidSymbol ]
+    };
+
+};
+
+partial alphanumeric_keys
+xkb_symbols "caps_level5" {
+
+    key <CAPS> {
+        type = "ALTGR",
+        [ ISO_Level5_Shift, ISO_Level5_Lock ]
+    };
+
+    key.type = "EIGHT_LEVEL_SEMIALPHABETIC";
+
+    key <LatY> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, End, End ] };
+    key <LatU> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Next, Next ] };
+    key <LatI> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Prior, Prior ] };
+    key <LatO> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Home, Home ] };
+
+    key <LatH> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Left, Left ] };
+    key <LatJ> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Down, Down ] };
+    key <LatK> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Up, Up ] };
+    key <LatL> { [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Right, Right ] };
+
+};
+
+partial modifier_keys
+xkb_symbols "caps_overlay" {
+
+    key <CAPS> {
+        type = "ALTGR",
+        [ VoidSymbol, Overlay1_Enable ],
+        [ SetControls(controls=Overlay1), LockControls(controls=Overlay1) ]
+    };
+
+};
+
+partial alphanumeric_keys
+xkb_symbols "level3" {
+
+    key <AB08> { [ NoSymbol, NoSymbol, U2018, U201C ] };
+    key <AB09> { [ NoSymbol, NoSymbol, U2019, U201D ] };
+    key <AB10> { [ NoSymbol, NoSymbol, U201A, U201E ] };
+    key <AC10> { [ semicolon, colon, ocircumflex, Ocircumflex ] };
+    key <AD11> { [ NoSymbol, NoSymbol, U2039, U00AB ] };
+    key <AD12> { [ NoSymbol, NoSymbol, U203A, U00BB ] };
+    key <AE01> { [ 1, exclam, U00A1, U203C ] };
+    key <BKSL> { [ backslash, bar, U2025 , U2026 ] };
+    key <LatB> { [ NoSymbol, NoSymbol, U2022, U25A0 ] };
+    key <LatF> { [ NoSymbol, NoSymbol, U03C6, U03A6 ] };
+    key <LatG> { [ NoSymbol, NoSymbol, U03B3, U0393 ] };
+    key <LatH> { [ NoSymbol, NoSymbol, U21B3, U21B2 ] };
+    key <LatJ> { [ NoSymbol, NoSymbol, U2193, U2190 ] };
+    key <LatK> { [ NoSymbol, NoSymbol, U2191, U2192 ] };
+    key <LatM> { [ NoSymbol, NoSymbol, U03BC, U039C ] };
+    key <LatP> { [ p, P, U03C0, U03A0 ] };
+    key <LatQ> { [ NoSymbol, NoSymbol, U00AC, U2310 ] };
+    key <LatU> { [ u, U, uacute, Uacute ] };
+    key <LatV> { [ NoSymbol, NoSymbol, U2228, U2227 ] };
+    key <LatW> { [ NoSymbol, NoSymbol, U03C9, U03A9 ] };
+    key <LatX> { [ NoSymbol, NoSymbol, U2713, U2717] };
+    key <SPCE> { [ NoSymbol, NoSymbol, NoSymbol, U2423 ] };
+    key <TLDE> { [ grave, asciitilde, U00B0, U2030 ] };
+
+};
+
+partial alphanumeric_keys
+xkb_symbols "mousekeys" {
+
+    key <LSGT> {
+        type = "ONE_LEVEL",
+        [ VoidSymbol ],
+        [ SetControls(controls=MouseKeys) ]
+    };
+
+    // When the keymap is set from xorg.conf.d, the following keys won't repeat.
+    // Adding "Repeat = True" here doesn't help. A workaround is to move actions
+    // to xkb_compat interpret statements.
+
+    //key <LatU> { [ PtrBtn(button=1) ] };
+    //key <LatI> { [ PtrBtn(button=2) ] };
+    //key <LatO> { [ PtrBtn(button=3) ] };
+
+    //key <LatU> { [ LockPtrBtn(button=1,affect=both) ] };
+    //key <LatI> { [ LockPtrBtn(button=2,affect=both) ] };
+    //key <LatO> { [ LockPtrBtn(button=3,affect=both) ] };
+
+    //key <LatH> { [ MovePtr(x=-15,!accel), MovePtr(x=-1) ] };
+    //key <LatJ> { [ MovePtr(y=+15,!accel), MovePtr(y=+1) ] };
+    //key <LatK> { [ MovePtr(y=-15,!accel), MovePtr(y=-1) ] };
+    //key <LatL> { [ MovePtr(x=+15,!accel), MovePtr(x=+1) ] };
+
+};
+
+partial alphanumeric_keys
+xkb_symbols "overlay_numpad" {
+
+    key <LatN> { overlay1 = <NMLK> };
+
+    key <LatU> { overlay1 = <KP7> };
+    key <LatI> { overlay1 = <KP8> };
+    key <LatO> { overlay1 = <KP9> };
+
+    key <LatJ> { overlay1 = <KP4> };
+    key <LatK> { overlay1 = <KP5> };
+    key <LatL> { overlay1 = <KP6> };
+
+    key <LatM> { overlay1 = <KP1> };
+    key <AB08> { overlay1 = <KP2> };
+    key <AB09> { overlay1 = <KP3> };
+
+};
+
+partial alphanumeric_keys
+xkb_symbols "overlay_viarrows" {
+
+    key <LatY> { overlay1 = <END> };
+    key <LatU> { overlay1 = <PGDN> };
+    key <LatI> { overlay1 = <PGUP> };
+    key <LatO> { overlay1 = <HOME> };
+
+    key <LatH> { overlay1 = <LEFT> };
+    key <LatJ> { overlay1 = <DOWN> };
+    key <LatK> { overlay1 = <UP> };
+    key <LatL> { overlay1 = <RGHT> };
+
+};
+
+partial modifier_keys
+xkb_symbols "rshift_multi" {
+
+    key <RTSH> {
+        type = "SHIFT+CTRL+ALT",
+        [ Shift_R, Caps_Lock, MouseKeys_Enable, ISO_Next_Group ]
+    };
+
+};
+
+partial function_keys
+xkb_symbols "vtswitch_prev_next" {
+
+    key <FK11> { [ F11, F11, F11, F11, Prev_Virtual_Screen ] };
+    key <FK12> { [ F12, F12, F12, F12, Next_Virtual_Screen ] };
+
+};

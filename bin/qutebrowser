@@ -6,14 +6,14 @@ set -eu -o pipefail
 
 case ${1-} in
     --) shift ;;
-    -*) exec cmd -0 qutebrowser "$@" ;;
+    -*) exec cmd -H qutebrowser "$@" ;;
 esac
 
 uhash=$(printf %s "$USER" | sha1sum)
 read -r uhash _ <<<"$uhash"
 socket=$XDG_RUNTIME_DIR/qutebrowser/ipc-$uhash
 
-[[ -S $socket ]] || exec cmd -0 qutebrowser -- "$@"
+[[ -S $socket ]] || exec cmd -H qutebrowser -- "$@"
 
 (( $# )) || set -- about:blank
 

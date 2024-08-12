@@ -4,6 +4,7 @@
 
 -- {{{ Imports
 
+import Control.Monad
 import Data.List (isPrefixOf)
 import Data.Maybe (fromMaybe)
 import Graphics.X11.Xinerama (getScreenInfo)
@@ -18,15 +19,15 @@ import XMonad.Actions.OnScreen
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.UpdateFocus
 import XMonad.Actions.UpdatePointer
-
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.PositionStoreHooks
 import XMonad.Hooks.SetWMName
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.UrgencyHook
-
 import XMonad.Layout.FocusTracking
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.LayoutHints
@@ -37,8 +38,8 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
 import XMonad.Layout.WindowNavigation
-
 import XMonad.Util.EZConfig
+import XMonad.Util.Hacks
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.WorkspaceCompare
 
@@ -58,26 +59,18 @@ workspaceOnScreen p w = do
 screenCount :: X Int
 screenCount = withDisplay $ io . (fmap length) . getScreenInfo
 
-xmobarActionWrap :: String -> String -> String
-xmobarActionWrap "" m = m
-xmobarActionWrap a m  = wrap ("<action=`" ++ a ++ "`>") "</action>" m
-
 matchAppOrClassName :: String -> Query Bool
 matchAppOrClassName n = (appName =? n) <||> (className =? n)
 
-myStatusBar conf = statusBar "xmobar" myPP myToggleStrutsKey conf
+doCustomFloat :: ManageHook
+doCustomFloat = doFloatDep move
   where
-    color = xmobarColor
-    myPP = def
-        { ppCurrent = color "#55ff55" ""
-        , ppVisible = color "#feed6a" ""
-        , ppUrgent = color "#bb4455" "#f6e972" . pad
-        , ppSep = " "
-        , ppTitle = color "#efefef" "" . shorten 100 . xmobarStrip
-        , ppOrder = \(workspaces : layout : title : extras) -> [workspaces, title]
-        , ppSort = getSortByXineramaPhysicalRule def
-        }
-    myToggleStrutsKey XConfig{modMask = modm} = (modm, xK_b)
+    move (W.RationalRect _ _ w h) = W.RationalRect cx cy cw ch
+        where
+            cx = (1 - cw) / 2
+            cy = (1 - ch) / 2
+            ch = h + 0.005
+            cw = w + 0.005
 
 myConfig = def
     { borderWidth = 1
@@ -124,23 +117,29 @@ myConfig = def
     myHandleEventHook = positionStoreEventHook
                         <+> hintsEventHook
                         <+> focusOnMouseMove
+                        <+> trayAbovePanelEventHook
+                                (className =? "trayer" <||> className =? "stalonetray")
+                                (appName =? "xmobar")
 
     myManageHook = composeOne
                        [ appName <? "sp:" -?> customFloating $ W.RationalRect 0.02 0.03 0.96 0.94
-                       , appName =? "gcr-prompter" -?> doCenterFloat
-                       , appName =? "pinentry-gtk-2" -?> doCenterFloat
-                       , appName =? "qjackctl" <&&> title <? "JACK Audio Connection Kit" -?> doFloat
                        , appName =? "s_aux" -?> doShift "2"
                        , appName =? "s_tmp" -?> doShift "2"
                        , appName =? "s_wrk" -?> doShift "1"
-                       , appName =? "vmpk" -?> doFloat
+                       , appName =? "vmpk" -?> doCustomFloat
                        , appName =? "workrave" <&&> title =? "Workrave" -?> doHideIgnore
-                       , className <? "Firefox" <&&> appName =? "Toolkit" -?> doFloat
                        , className =? "Firefox (default)" <&&> appName =? "Navigator" -?> doShiftView "3"
-                       , className =? "Gxmessage" -?> doFloat
+                       , className =? "Gcr-prompter" -?> doCustomFloat
+                       , className =? "Gxmessage" -?> doCustomFloat
+                       , className =? "QjackCtl" -?> doCustomFloat
+                       , className =? "Ssh-askpass" -?> doCustomFloat
+                       , className =? "lxqt-openssh-askpass" -?> doCustomFloat
                        , className =? "mpv" -?> doShiftView "9"
                        ]
-                   <+> composeAll [ isDialog --> doCenterFloat ]
+                   <+> composeAll
+                       [ checkDock --> doLower
+                       , isDialog --> doCenterFloat
+                       ]
                    <+> positionStoreManageHook Nothing
 
     myLayoutHook = avoidStruts
@@ -234,13 +233,14 @@ myConfig = def
           -- Windows & Layouts
         , ("M-n", refresh)
         , ("M-c", withFocused killWindow)
+        , ("M-b", sendMessage ToggleStruts)
         , ("M-<Backspace>", focusUrgent)
         , ("M-<Space>", sendMessage NextLayout)
         , ("M-S-<Space>", setLayout $ Layout myLayoutHook)
-        , ("M-l", sendMessage Expand)
         , ("M-h", sendMessage Shrink)
-        , ("M-S-l", sendMessage MirrorExpand)
-        , ("M-S-h", sendMessage MirrorShrink)
+        , ("M-l", sendMessage Expand)
+        , ("M-S-h", sendMessage MirrorExpand)
+        , ("M-S-l", sendMessage MirrorShrink)
         , ("M-,", sendMessage $ IncMasterN 1)
         , ("M-.", sendMessage $ IncMasterN (-1))
         , ("M-t", withFocused $ windows . W.sink)
@@ -253,4 +253,28 @@ myConfig = def
 
     -- }}}
 
-main = xmonad =<< myStatusBar (withUrgencyHook NoUrgencyHook $ ewmhFullscreen . ewmh . docks $ myConfig)
+----------------------------------------
+
+myPolybar = statusBarGeneric "polybar -r top" mempty
+
+myTaffybar  = statusBarGeneric "taffybar" mempty
+
+myXmobar = statusBarProp "xmobar" (pure myPP)
+  where
+    color = xmobarColor
+    myPP = def
+        { ppCurrent = color "#55ff55" ""
+        , ppVisible = color "#feed6a" ""
+        , ppUrgent = color "#bb4455" "#f6e972" . pad
+        , ppSep = " "
+        , ppTitle = color "#efefef" "" . shorten 100 . xmobarStrip
+        , ppOrder = \(workspaces : layout : title : extras) -> [workspaces, title]
+        , ppSort = getSortByXineramaPhysicalRule def
+        }
+
+main = do
+    let conf = withUrgencyHook NoUrgencyHook . ewmhFullscreen . ewmh . docks $ myConfig
+    --xmonad $ conf
+    --xmonad . withSB myTaffybar $ conf
+    --xmonad . withSB myXmobar $ conf
+    xmonad . withSB myPolybar $ conf

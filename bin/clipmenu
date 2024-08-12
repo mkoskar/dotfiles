@@ -25,10 +25,11 @@ id_psel=psel$sep
 id_clip=clip$sep
 prompt=${1:-$prgname}
 
+# shellcheck disable=SC2094
 tmp=$({
-    xclip -o >psel
+    clip -o >psel
     out "$id_psel" psel
-    xclip -o -selection clipboard >clip
+    clip -O >clip
     out "$id_clip" clip
 } | dmenu1 -p "$prompt")
 read -r sel <<<"$tmp"

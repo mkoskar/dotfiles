@@ -1,14 +1,16 @@
+# vim: ft=conf
+
 super + colon
     wmutil spawn sp:adm srun -Nsxl term -n \{\} -g 180x48 trun tmux-session adm
 
 super + semicolon ; super + semicolon
     wmutil spawn sp:mon srun -Nsxl term -n \{\} -g 180x48 trun tmux-session mon
 
-super + alt + {J,L,K,H}
-    xdo resize {-h ,-w }{+,-}50
+super + alt + {j,k}
+    xdotool getactivewindow windowmove --relative -- 0 {+,-}50
 
-super + alt + {j,l,k,h}
-    xdo move {-y ,-x }{+,-}50
+super + alt + {l,h}
+    xdotool getactivewindow windowmove --relative -- {+,-}50 0
 
 super + {_,ctrl + ,shift + }y
     xdotool click --clearmodifiers {1,2,3}
@@ -19,11 +21,8 @@ super + minus
 super + {u,i,o}
     wmutil warp_to_mon {--focused 1p, --primary, --focused 1n}
 
-super + alt + ctrl + {k,j,i,u,o,comma,m,period,l}
-    wmutil warp_in_win {c,e,n,ne,nw,s,se,sw,w}
-
 super + c
-    xdo close
+    xdotool getactivewindow windowclose
 
 # ----------------------------------------
 
@@ -58,9 +57,6 @@ super + p
 
 super + semicolon ; T
     touchpad toggle
-
-super + semicolon ; a
-    srun -Nsxl b http://apod.nasa.gov/
 
 super + semicolon ; b
     bluetooth-toggle
@@ -104,8 +100,8 @@ super + {F1,F2,F3}
 super + {F9,F10,shift + F10}
     xscreen{_, -, mobile}
 
-super + {_,shift + }Insert
-    clip{_, -p && notify 'PRIMARY -> CLIPBOARD'}
+super + Insert
+    clip
 
 super + {_,shift + }apostrophe
     srun -Nsxl bb{_, dd}

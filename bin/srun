@@ -10,13 +10,13 @@ _usage() {
 
 	Execute 'cmd [arg...]' as transient service inside user's service manager.
 
-	  -n name   - name of the target (default: cmd)
+	  -n name   - name of the unit (default: cmd)
 	  -N        - use generated name
-	  -r        - stop target first
+	  -r        - stop the unit first
 	  -s        - run as scope unit
-	  -x        - target is \$DISPLAY specific (xsession@.target)
-	  -X        - target is \$DISPLAY specific (xdisplay@.target)
-	  -w        - target is \$WSESSIONID specific (wsession@.target)
+	  -x        - unit is \$DISPLAY specific (xsession@.target)
+	  -X        - unit is \$DISPLAY specific (xdisplay@.target)
+	  -w        - unit is \$WSESSIONID specific (wsession@.target)
 	  -l        - log to ~/.local/share/$prgname.out (ignored for -s)
 	  -L        - log to ~/.local/share/\$name.out (ignored for -s)
 	  -q        - (quiet) don't log (ignored for -s)

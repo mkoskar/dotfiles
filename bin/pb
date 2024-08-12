@@ -34,6 +34,7 @@ for arg in "$@"; do
     fargs+=("$arg")
 done
 
+# shellcheck disable=SC2128
 case ${PB:-!} in
     !)
         cargs=()
@@ -65,11 +66,11 @@ case ${PB:-!} in
 esac
 
 histfile=~/.local/share/pb_history
-printf -v ts '%(%F.%s)T'
+printf -v ts '%(%F %T)T'
 
 cat >>"$histfile" <<-EOF
 
-	$ts $prgname [$*]
+	[$ts] $prgname [$*]
 	--------------------------------------------------
 EOF
 cat "$outfile" >>"$histfile"

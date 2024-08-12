@@ -17,6 +17,7 @@ mkdir -p "$FONTSDIR" "$CACHEDIR"
 process() {
     set -eu -o pipefail
     local url=$1 oname stat scode surl mime
+    printf '\n> %s\n' "$url"
     oname=$(printf %s "$url" | sha1sum)
     read -r oname _ <<<"$oname"
     stat=$(
@@ -40,38 +41,38 @@ process() {
             ;;
     esac
     mkdir "$oname"
+    cd "$oname"
     mime=$(file -b --mime-type "$CACHEDIR/$oname")
     case $mime in
-        application/gzip) tar -x -C "$oname" -f "$CACHEDIR/$oname" ;;
-        application/zip) unzip -q -d "$oname" "$CACHEDIR/$oname" ;;
-        *) return 1 ;;
+        application/gzip) tar -x -f "$CACHEDIR/$oname" ;;
+        application/zip) unzip -q "$CACHEDIR/$oname" ;;
+        application/pdf) pdfdetach -saveall "$CACHEDIR/$oname" ;;
+        *)
+            exec >&2
+            echo "Unexpected MIME: $mime"
+            return 1
+            ;;
     esac
-    find "$oname" -iregex '.*\.\(otf\|pcf\|ttf\)' -exec mv {} "$FONTSDIR" \;
+    find . -iregex '.*\.\(otf\|pcf\|ttf\)' -exec mv {} "$FONTSDIR" \;
 }
 export -f process
 
 pargs=()
-[[ -t 1 ]] && pargs+=(--bar) || pargs+=(--silent)
+[[ -t 1 ]] || pargs+=(--silent)
 
-grep -Evx '\s*|(\s*#.*)' <<-'EOF' | parallel "${pargs[@]}" process
+grep -Evx '\s*|(\s*#.*)' <<-'EOF' | parallel -r "${pargs[@]}" process
 
 	# Borg Sans Mono
 	https://github.com/marnen/borg-sans-mono/files/107663/BorgSansMono.ttf.zip
 
-	# Code New Roman
-	https://fontlibrary.org/assets/downloads/code-new-roman/2a82f29eedcdfe52fc23336e2e30ac22/code-new-roman.zip
-
 	# Cuprum
-	https://fonts.google.com/download?family=Cuprum
-
-	# Fantasque Sans Mono
-	https://github.com/belluzj/fantasque-sans/releases/download/v1.8.0/FantasqueSansMono-Normal.zip
+	#https://fonts.google.com/download?family=Cuprum
 
 	# FiraGO
 	https://github.com/bBoxType/FiraGO/releases/download/1.000/bBoxType_FiraGO_1000.zip
 
 	# Jura
-	https://fonts.google.com/download?family=Jura
+	#https://fonts.google.com/download?family=Jura
 
 	# Liberation Sans Narrow
 	https://github.com/liberationfonts/liberation-sans-narrow/files/2579431/liberation-narrow-fonts-ttf-1.07.6.tar.gz
@@ -83,24 +84,17 @@ grep -Evx '\s*|(\s*#.*)' <<-'EOF' | parallel "${pargs[@]}" process
 	https://noto-website-2.storage.googleapis.com/pkgs/NotoEmoji-unhinted.zip
 
 	# Nova Mono
-	https://fonts.google.com/download?family=Nova%20Mono
+	#https://fonts.google.com/download?family=Nova%20Mono
 
 	# Office Code Pro
 	https://github.com/nathco/Office-Code-Pro/archive/1.004.zip
 
-	# Roboto Mono
-	https://fonts.google.com/download?family=Roboto%20Mono
-
 	# Symbola
-	https://dn-works.com/wp-content/uploads/2020/UFAS-Fonts/Symbola.zip
+	https://dn-works.com/wp-content/uploads/2021/UFAS121921/Symbola.pdf
 
 	# Terminus (TTF)
 	https://files.ax86.net/terminus-ttf/files/latest.zip
 
-	# Victor Mono
-	https://rubjo.github.io/victor-mono/VictorMonoAll.zip
-
-	# mononoki
-	https://github.com/madmalik/mononoki/releases/download/1.3/mononoki.zip
-
 EOF
+
+echo

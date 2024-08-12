@@ -2,7 +2,7 @@
 
 set -eu -o pipefail
 
-pid=${1:-$PPID}
+pid=${1:-$$}
 
 [ "$pid" -gt 0 ] 2>/dev/null || {
     echo "usage: ${0##*/} pid" >&2
@@ -12,8 +12,9 @@ pid=${1:-$PPID}
 main() {
     ifile=/proc/$pid/environ
     [[ -e $ifile ]] || exit 1
-    while read -r -d '' line; do
-        printf '%s\n' "${line@Q}"
+    while IFS= read -r -d '' line; do
+        #printf '%s\n' "${line@Q}"
+        printf '%q\n' "$line"
     done <"$ifile"
 }
 

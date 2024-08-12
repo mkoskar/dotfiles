@@ -6,15 +6,15 @@ spawn() {
     local wname=$1 wid cdno
     shift
     # shellcheck disable=SC2128,SC2207
-    if wid=($(xdo id -n "$wname")); then
-        if [[ $(xdo id) = "$wid" ]]; then
-            xdo hide "$wid"
+    if wid=$(xdotool search --classname "$wname"); then
+        if [[ $(xdotool getactivewindow) = "$wid" ]]; then
+            xdotool windowunmap "$wid"
         else
             if cdno=$(xdotool get_desktop); then
                 xdotool set_desktop_for_window "$wid" "$cdno"
             fi
-            xdo show "$wid"
-            xdo activate "$wid"
+            xdotool windowmap "$wid"
+            xdotool windowactivate "$wid"
         fi
     else
         exec "${@//\{\}/$wname}"
@@ -23,25 +23,6 @@ spawn() {
 
 warp_mouse() {
     xdotool mousemove ${3:+--screen "$3"} -- "$1" "$2"
-}
-
-warp_in_win() {
-    local wid attrs x y w h
-    wid=$(xdo id)
-    attrs=$(wattr xywh "$wid")
-    read -r x y w h <<<"$attrs"
-    case $1 in
-        c) x=$((x+w/2)) y=$((y+h/2)) ;;
-        e) y=$((y+h/2)) ;;
-        n) x=$((x+w/2)) ;;
-        ne) ;;
-        nw) x=$((x+w)) ;;
-        s) x=$((x+w/2)) y=$((y+h)) ;;
-        se) y=$((y+h)) ;;
-        sw) x=$((x+w)) y=$((y+h)) ;;
-        w) x=$((x+w)) y=$((y+h/2)) ;;
-    esac
-    warp_mouse "$x" "$y"
 }
 
 warp_to_mon() {

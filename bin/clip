@@ -14,15 +14,17 @@ _usage() {
 	  -i    - read from stdin to PRIMARY and CLIPBOARD
 	  -f    - read from stdin to PRIMARY and CLIPBOARD (stdin -> stdout)
 	  -a    - read arguments to PRIMARY and CLIPBOARD
+	  -o    - write out PRIMARY
+	  -O    - write out CLIPBOARD
 	EOF
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
 mode=
-while getopts pifah opt; do
+while getopts pifaoOh opt; do
     case $opt in
-        p | i | f | a) mode=$opt ;;
+        p | i | f | a | o | O) mode=$opt ;;
         h) usage ;;
         *) usage_err ;;
     esac
@@ -31,23 +33,52 @@ shift $((OPTIND-1))
 
 # ----------------------------------------
 
+declare -i wayland=0
+has-wayland && wayland=1
+
 case $mode in
     p)
         # Read from PRIMARY to CLIPBOARD.
-        xclip -o | xclip -i -selection clipboard
+        if (( wayland )); then
+            wl-paste -p -n | wl-copy
+        else
+            xclip -o | xclip -i -selection clipboard
+        fi
         ;;
     i)
         # Read from stdin to PRIMARY and CLIPBOARD.
-        xclip -i -f | xclip -i -selection clipboard
+        if (( wayland )); then
+            wl-copy -p && clip -p
+        else
+            xclip -i -f | xclip -i -selection clipboard
+        fi
         ;;
     f)
         # Read from stdin to PRIMARY and CLIPBOARD (stdin -> stdout).
-        xclip -i -f | xclip -i -f -selection clipboard
+        if (( wayland )); then
+            clip -i && wl-paste -n
+        else
+            xclip -i -f | xclip -i -f -selection clipboard
+        fi
         ;;
     a)
         # Read arguments to PRIMARY and CLIPBOARD.
         (( ! $# )) && exit 2
         printf %s "$*" | clip -i
+        ;;
+    o)
+        if (( wayland )); then
+            wl-paste -p -n
+        else
+            xclip -o
+        fi
+        ;;
+    O)
+        if (( wayland )); then
+            wl-paste -n
+        else
+            xclip -o -selection clipboard
+        fi
         ;;
     *)
         tmpfile=$(mktemp)
