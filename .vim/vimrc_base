@@ -106,6 +106,8 @@ endfunction
 
 noremap <M-{> <Cmd>call <SID>SearchParagraph(0, 1)<CR>
 noremap <M-}> <Cmd>call <SID>SearchParagraph(0, 0)<CR>
+map <M-S-[> <M-{>
+map <M-S-]> <M-}>
 
 noremap <M-[> <Cmd>call <SID>SearchParagraph(2, 1)<CR>
 noremap <M-]> <Cmd>call <SID>SearchParagraph(2, 0)<CR>
@@ -211,7 +213,7 @@ function! s:ColorsReset() abort
 endfunction
 
 command! -bar ColorsReset call s:ColorsReset()
-command! -bar Hitest call s:MetaLess('silent runtime syntax/hitest.vim')
+command! -bar Hitest runtime syntax/hitest.vim
 
 
 " Multiple Windows
@@ -1163,12 +1165,12 @@ command! -nargs=1 -complete=command Keep call utils#tryCatchCall('<SID>Keep', <q
 
 " }}}
 
-" :MetaToggle - Toggle translation of ASCII meta escape prefix encoding to 8 bit meta encoding {{{
+" :MetaToggle - Toggle meta/alt key handling mode {{{
 
 " See also: `:set termcap`
 
-function! s:MetaSetup(enable = -1) abort
-    let enable = a:enable >= 0 ? a:enable : get(g:, 'meta_enabled', 0)
+function! s:MetaSetup(mode = -1) abort
+    let mode = a:mode >= 0 ? a:mode : get(g:, 'meta', 0)
     for c in map(range(1, 126), 'nr2char(v:val)')
         if stridx('|"', c) >= 0
             let c = '\' . c
@@ -1176,28 +1178,19 @@ function! s:MetaSetup(enable = -1) abort
             continue
         endif
         let kc = printf('<M-%s>', c)
-        exec printf('set %s=%s', kc, enable > 0 ? "\e" . c : '')
+        exec printf('set %s=%s', kc, mode > 0 ? "\e" . c : '')
         "if empty(maparg(kc, 'i')) | exec printf('inoremap %s <NOP>', kc) | endif
         "if empty(maparg(kc, 'c')) | exec printf('cnoremap %s <NOP>', kc) | endif
     endfor
-    let g:meta_enabled = enable > 0
+    let g:meta = mode > 0
     if !has('vim_starting')
         redraw
-        call utils#echoWarn('meta ' . (g:meta_enabled ? 'on' : 'off'))
+        " See also: `man 1 kbdinfo`
+        call utils#echoWarn('meta: ' . (g:meta ? 'escprefix' : 'metabit'))
     endif
 endfunction
 
-function! s:MetaLess(cmd) abort
-    if get(g:, 'meta_enabled', 0)
-        silent call s:MetaSetup(0)
-        exec a:cmd
-        silent call s:MetaSetup(1)
-    else
-        exec a:cmd
-    endif
-endfunction
-
-command! -bar MetaToggle call s:MetaSetup(!get(g:, 'meta_enabled', 0))
+command! -bar MetaToggle call s:MetaSetup(!get(g:, 'meta', 0))
 nnoremap <Leader>mm <Cmd>MetaToggle<CR>
 
 " }}}

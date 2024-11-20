@@ -2,18 +2,19 @@
 
 set -eu
 
+# shellcheck disable=SC2238
 for i in /sys/class/power_supply/${1:-*}; do
-    [[ -r $i/type ]] || continue
-    type=$(<"$i"/type)
-    [[ $type = Battery ]] || continue
+    cd "$i" || continue
+    [[ -r type ]] || continue
+    [[ $(<type) = Battery ]] || continue
 
     unset full full_design
-    if [[ -r $i/energy_full && -r $i/energy_full_design ]]; then
-        full=$(<"$i"/energy_full)
-        full_design=$(<"$i"/energy_full_design)
-    elif [[ -r $i/charge_full && -r $i/charge_full_design ]]; then
-        full=$(<"$i"/charge_full)
-        full_design=$(<"$i"/charge_full_design)
+    if [[ -r energy_full && -r energy_full_design ]]; then
+        full=$(<energy_full)
+        full_design=$(<energy_full_design)
+    elif [[ -r charge_full && -r charge_full_design ]]; then
+        full=$(<charge_full)
+        full_design=$(<charge_full_design)
     fi
 
     if [[ ${full-} && ${full_design} ]]; then

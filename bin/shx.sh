@@ -78,6 +78,19 @@ dk-stop() {
 alias pd-stop='podman stop -a'
 
 
+# dotfiles
+# ----------------------------------------
+
+alias dotfiles='GIT_DIR=~/.dotfiles/.git GIT_WORK_TREE=~/ git'
+
+dotfiles-init() {
+    git clone -n https://github.com/mkoskar/dotfiles.git ~/.dotfiles
+    dotfiles set-email
+    dotfiles reset .
+    dotfiles checkout-index -a
+}
+
+
 # find
 # ----------------------------------------
 
@@ -542,6 +555,11 @@ if has fc; then
         command fc "$@"
     }
 fi
+
+git() {
+    [ $# -gt 0 ] || set -- status -s
+    command git "$@"
+}
 
 fn() {
     if [ $# -eq 0 ]; then
