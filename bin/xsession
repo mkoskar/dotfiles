@@ -106,14 +106,14 @@ pre_hook() {
     xscreen -
     sdu start xsession@:"$screen".target
 
-    srun -xl picom
-    srun -xl osdd
+    srun -xlN picom
+    srun -xlN osdd
     srun -xl -n polkit-agent /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
     srun -xl -n sxhkd bash -c 'sleep 1 && exec sxhkd'
 
     case $session in
         openbox | xfwm4)
-            srun -xl tint2
+            srun -xlN tint2
             ;;
     esac
 }
@@ -156,8 +156,8 @@ exec_hook() {
 startup_hook() {
     case $session in
         main)
-            srun -xl thunderbird
-            srun -xl workrave
+            srun -xlN thunderbird
+            srun -xlN workrave
             ;;
     esac
 }

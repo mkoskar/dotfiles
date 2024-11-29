@@ -62,7 +62,7 @@ _pacpkgs() {
     _pacman_pkg Qq
 }
 complete -o nospace -F _pacpkgs \
-    paccheck pacd paci pacl pacp pacr pacscripts pactree pacw
+    paccheck pacd pacdo paci pacl pacp pacrm pacw
 
 # ----------------------------------------
 

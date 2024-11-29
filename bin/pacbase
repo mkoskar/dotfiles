@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -eu
+
+target=$1
+
+pkg=$(pacman -Qoq -- "$target")
+ver=$(expac %v -- "$pkg")
+arch=$(expac %a -- "$pkg")
+
+printf '%s-%s-%s.pkg.tar.*\n' "$pkg" "$ver" "$arch"
+
+readarray -t cachedirs < <(pacman-conf CacheDir)
+for cachedir in "${cachedirs[@]}"; do
+    :
+done
+
+#COMPRESS GZ=(gzip -c -f -n)
+#COMPRESS BZ2=(bzip2 -c -f)
+#COMPRESS XZ=(xz -c -z -)
+#COMPRESS ZST=(zstd -c -T0 -)
+#COMPRESS LRZ=(lrzip -q)
+#COMPRESS LZO=(lzop -q)
+#COMPRESS Z=(compress -c -f)
+#COMPRESS LZ4=(lz4 -q)
+#COMPRESS LZ=(lzip -c -f)

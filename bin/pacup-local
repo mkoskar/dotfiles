@@ -43,18 +43,18 @@ pipx list
 echo $'\n> pip list --user\n'
 pip list --user
 
-echo $'\n--------------------------------------------------'
-echo $'> Ruby packages:\n'
-
-pkgs=(
-    ruby-beautify
-    sass
-    vpsfree-client
-)
-gem install --user-install "${pkgs[@]}"
-
-echo $'\n> gem list --local'
-gem list --local
+#echo $'\n--------------------------------------------------'
+#echo $'> Ruby packages:\n'
+#
+#pkgs=(
+#    ruby-beautify
+#    sass
+#    vpsfree-client
+#)
+#gem install --user-install "${pkgs[@]}"
+#
+#echo $'\n> gem list --local'
+#gem list --local
 
 echo $'\n--------------------------------------------------'
 echo $'> Rust packages:\n'

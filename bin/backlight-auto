@@ -8,7 +8,7 @@ exec &>>~/.local/share/"$prgname".out
 
 if r=$(colorhug-cmd take-readings | sed -En 2p) &&
     [[ $r =~ ^R:([0-9]+\.[0-9]+)\ G:([0-9]+\.[0-9]+)\ B:([0-9]+\.[0-9]+)$ ]]; then
-    d=$(calc -qp -- <<<"round(sqrt(${BASH_REMATCH[1]}^2 + ${BASH_REMATCH[2]}^2 + ${BASH_REMATCH[3]}^2), 0)")
+    d=$(calc -qp <<<"round(sqrt(${BASH_REMATCH[1]}^2 + ${BASH_REMATCH[2]}^2 + ${BASH_REMATCH[3]}^2), 0)")
     printf 'distance: %s\n' "$d" >&2
 
     if ((d < 1)); then

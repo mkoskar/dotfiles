@@ -15,9 +15,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
 
     /                       b https://mkoskar.com/
     /cloud                  b https://cloud.mkoskar.com/
-    /git                    b https://git.mkoskar.com/
-    /gitea                  b https://gitea.mkoskar.com/
-    /pub                    b https://mkoskar.com/pub/
     8p8c                    b https://en.wikipedia.org/wiki/ANSI/TIA-568#Wiring
     ImageMagick             b https://www.imagemagick.org/script/command-line-tools.php
     R                       b https://cran.r-project.org/manuals.html
@@ -389,6 +386,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     memcached               b https://github.com/memcached/memcached/wiki
     memory-cards            b https://en.wikipedia.org/wiki/Comparison_of_memory_cards
     metric-threads          b https://en.wikipedia.org/wiki/ISO_metric_screw_thread#Preferred_sizes
+    mikrotik-docs           b https://help.mikrotik.com/docs/
     mime                    b https://datatracker.ietf.org/doc/html/rfc2045
     mime-types              b https://www.iana.org/assignments/media-types/media-types.xhtml
     minipv/dupont           b https://www.mattmillman.com/info/crimpconnectors/dupont-and-dupont-connectors/
@@ -438,6 +436,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     oui                     b https://www.wireshark.org/tools/oui-lookup.html
     owl                     b https://owl.purdue.edu/owl/purdue_owl.html
     package                 b https://en.wikipedia.org/wiki/List_of_integrated_circuit_packaging_types
+    pacman-changes          b https://gitlab.archlinux.org/pacman/pacman/-/raw/master/NEWS
     pango                   b https://docs.gtk.org/Pango/
     pasta                   b https://en.wikipedia.org/wiki/List_of_pasta
     patents                 b https://patents.google.com/
@@ -524,7 +523,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     risks                   b https://catless.ncl.ac.uk/Risks/
     rockylinux-guides       b https://docs.rockylinux.org/guides/
     rosetta                 b https://wiki.archlinux.org/title/Pacman/Rosetta
-    routeros                b https://help.mikrotik.com/docs/display/ROS/RouterOS
     rpi                     b https://www.raspberrypi.org/documentation/hardware/raspberrypi/README.md
     rst                     b https://docutils.sourceforge.io/rst.html
     rst-showcase!           b ~/projects/lab/docutils/showcase/build/html/index.html
@@ -626,6 +624,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     video-standards         b https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Vector_Video_Standards2.svg/1024px-Vector_Video_Standards2.svg.png
     vim                     b https://github.com/vim/vim
     virtualbox              b https://www.virtualbox.org/manual/
+    vpsfree-status          b https://status.vpsf.cz/
     w                       b https://en.wikipedia.org/w/index.php\?search={u}
     w-cz                    b https://cz.wikipedia.org/w/index.php\?search={u}
     w-sk                    b https://sk.wikipedia.org/w/index.php\?search={u}
@@ -644,7 +643,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     websockets              b https://websockets.spec.whatwg.org/
     weechat                 b https://weechat.org/files/doc/stable/weechat_user.en.html
     weechat-api             b https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
-    weechat-changes         b https://github.com/weechat/weechat/blob/master/CHANGELOG.md
+    weechat-changes         b https://github.com/weechat/weechat/blob/main/CHANGELOG.md
     whatwg-specs            b https://spec.whatwg.org/
     wi                      b https://www.google.com/search?q=weather+{u}
     wsgi                    b https://www.python.org/dev/peps/pep-3333/

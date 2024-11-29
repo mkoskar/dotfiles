@@ -83,7 +83,7 @@ if hash dircolors 2>/dev/null; then
 fi
 
 export BROWSER=b
-export DIFFPROG=difftool
+export DIFFPROG=ediff
 export EDITOR=e
 export MANPAGER=manpg
 export PAGER=pg

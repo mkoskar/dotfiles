@@ -211,10 +211,10 @@ mode "resize" {
 # ----------------------------------------
 
 #super + colon
-#    wmutil spawn sp:adm srun -Nsxl term -n \{\} -g 180x48 trun tmux-session gdg
+#    wmutil spawn sp:adm srun -sx term -n \{\} -g 180x48 trun tmux-session gdg
 #
 #super + semicolon ; super + semicolon
-#    wmutil spawn sp:mon srun -Nsxl term -n \{\} -g 180x48 trun tmux-session mon
+#    wmutil spawn sp:mon srun -sx term -n \{\} -g 180x48 trun tmux-session mon
 
 bindsym --no-repeat $mod+y seat * cursor press button1
 bindsym --release --no-repeat $mod+y seat * cursor release button1
@@ -240,7 +240,7 @@ bindsym $mod+F12 exec nop
 
 bindsym $mod+Print exec sshot
 
-bindsym $mod+p exec srun -Nswl dmenu_run
+bindsym $mod+p exec srun -sw dmenu_run
 
 #bindsym $mod+semicolon;T exec touchpad toggle
 #bindsym $mod+semicolon;b exec bluetooth-toggle
@@ -252,8 +252,8 @@ bindsym $mod+p exec srun -Nswl dmenu_run
 #bindsym $mod+semicolon;t exec trackpoint-wheel toggle
 #bindsym $mod+semicolon;w exec wifi-toggle
 
-#bindsym $mod+semicolon;p srun -Nswl playx
-#bindsym $mod+semicolon;P srun -Nswl playx-menu
+#bindsym $mod+semicolon;p srun -sw playx
+#bindsym $mod+semicolon;P srun -sw playx-menu
 
 #bindsym $mod+semicolon;m markx-url
 #bindsym $mod+semicolon;M markx
@@ -262,7 +262,7 @@ bindsym $mod+p exec srun -Nswl dmenu_run
 #bindsym $mod+semicolon;U nop
     #unicode -x select{ fav,_}
 
-#bindsym $mod+Shift+Return exec srun -Nswl term
+#bindsym $mod+Shift+Return exec srun -sw term
 
 bindsym $mod+F1 nop
 bindsym $mod+F2 nop
@@ -276,8 +276,8 @@ bindsym $mod+Shift+F10 nop
 
 bindsym $mod+Insert exec clip
 
-bindsym $mod+apostrophe exec srun -Nswl bb
-bindsym $mod+Shift+apostrophe exec srun -Nswl bb dd
+bindsym $mod+apostrophe exec srun -sw bb
+bindsym $mod+Shift+apostrophe exec srun -sw bb dd
 
 bindsym Ctrl+grave nop
     #dunstctl history-pop

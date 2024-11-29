@@ -476,7 +476,7 @@ map! <S-Insert> <MiddleMouse>
 
 set belloff=all
 set ruler
-set shortmess=aoOtTWIF
+set shortmess=aoOtTWI
 set showcmd
 set showmode
 
@@ -888,10 +888,10 @@ nnoremap <Leader>ew :e<Space>
 nnoremap <Leader>es :sp<Space>
 nnoremap <Leader>ev :vs<Space>
 nnoremap <Leader>et :tabe<Space>
-nnoremap <Leader>ee <Cmd>e \| f<CR>
-nnoremap <Leader>e0 <Cmd>e ++bin \| f<CR>
-nnoremap <Leader>e1 <Cmd>e ++nobin \| f<CR>
-nnoremap <Leader>E <Cmd>e! \| f<CR>
+nnoremap <Leader>ee <Cmd>e<CR>
+nnoremap <Leader>e0 <Cmd>e ++bin<CR>
+nnoremap <Leader>e1 <Cmd>e ++nobin<CR>
+nnoremap <Leader>E <Cmd>e!<CR>
 
 " Read / Filter
 nnoremap <Leader>% :%!
@@ -1097,7 +1097,7 @@ function! s:Reload(bang) abort
         if &l:buftype =~# '^\(nofile\|quickfix\|terminal\)$'
             throw printf("\"%s\" buffer can't be reloaded", &l:buftype)
         endif
-        silent exec 'Keep edit' . a:bang . '| file'
+        silent exec 'Keep edit' . a:bang
     endif
     redraw
     let v:statusmsg = printf('[%s] %s', strftime('%H:%M:%S'), v:statusmsg)
