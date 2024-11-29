@@ -137,7 +137,7 @@ case $prgname in
             ${fqxconfig:+-config "$fqxconfig"}
             -keeptty
             -logfile "$datadir/Xorg:$dispno.log"
-            -logverbose 99
+            #-logverbose 99
             -noreset
             -novtswitch
             -quiet
@@ -195,7 +195,7 @@ while true; do
         else
             if (( ${#args[@]} )); then
                 #DISPLAY=:$dispno.$scrno xsession "${args[@]}" &
-                DISPLAY=:$dispno.$scrno srun -X xsession "${args[@]}"
+                DISPLAY=:$dispno.$scrno srun -XN xsession "${args[@]}"
             fi
             (( $# )) || break
             scrno=$((scrno+1))

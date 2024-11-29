@@ -1,10 +1,10 @@
 # vim: ft=conf
 
 super + colon
-    wmutil spawn sp:adm srun -Nsxl term -n \{\} -g 180x48 trun tmux-session adm
+    wmutil spawn sp:adm srun -sx term -n \{\} -g 180x48 trun tmux-session adm
 
 super + semicolon ; super + semicolon
-    wmutil spawn sp:mon srun -Nsxl term -n \{\} -g 180x48 trun tmux-session mon
+    wmutil spawn sp:mon srun -sx term -n \{\} -g 180x48 trun tmux-session mon
 
 super + alt + {j,k}
     xdotool getactivewindow windowmove --relative -- 0 {+,-}50
@@ -53,7 +53,7 @@ super + Print
     sshot
 
 super + p
-    srun -Nsxl dmenu_run
+    srun -sx dmenu_run
 
 super + semicolon ; T
     touchpad toggle
@@ -86,13 +86,13 @@ super + semicolon ; {m,M}
     {markx-url,markx}
 
 super + semicolon ; {p,P}
-    srun -Nsxl playx{_,-menu}
+    srun -sx playx{_,-menu}
 
 super + semicolon ; {u,U}
     unicode -x select{ fav,_}
 
 super + shift + Return
-    srun -Nsxl term
+    srun -sx term
 
 super + {F1,F2,F3}
     xkb {0,1,2}
@@ -104,7 +104,7 @@ super + Insert
     clip
 
 super + {_,shift + }apostrophe
-    srun -Nsxl bb{_, dd}
+    srun -sx bb{_, dd}
 
 # ----------------------------------------
 

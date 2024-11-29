@@ -98,8 +98,11 @@
     helper = cache --timeout=3600
     helper = netrc
 
-[difftool "custom"]
-    cmd = difftool "$LOCAL" "$REMOTE"
+[diff]
+    tool = ediff
+
+[difftool "ediff"]
+    cmd = ediff "\"$LOCAL"\" "\"$REMOTE"\"
 
 [fetch]
     prune = true
@@ -128,10 +131,10 @@
 
 [merge]
     conflictStyle = diff3
-    tool = custom
+    tool = ediff
 
-[mergetool "custom"]
-    cmd = mergetool "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+[mergetool "ediff"]
+    cmd = ediff "\"$BASE"\" "\"$LOCAL"\" "\"$REMOTE"\" "\"$MERGED"\"
 
 [pager]
     branch = false

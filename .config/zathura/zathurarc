@@ -1,3 +1,4 @@
+set database sqlite
 set notification-error-bg "#9d2d2d"
 set scroll-page-aware true
 set scroll-step 150

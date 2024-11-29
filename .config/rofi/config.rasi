@@ -9,7 +9,7 @@ configuration {
 
     kb-accept-alt: "Control+Return";
     kb-accept-custom: "Shift+Return";
-    kb-clear-line: "Control+c";
+    kb-clear-line: "";
     kb-move-char-back: "Left,Alt+h";
     kb-move-char-forward: "Right,Control+f,Alt+l";
     kb-move-front: "Control+a,Control+b";

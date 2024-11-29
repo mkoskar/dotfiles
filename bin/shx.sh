@@ -81,7 +81,7 @@ alias pd-stop='podman stop -a'
 # dotfiles
 # ----------------------------------------
 
-alias dotfiles='GIT_DIR=~/.dotfiles/.git GIT_WORK_TREE=~/ git'
+alias dotfiles='git --git-dir ~/.dotfiles/.git --work-tree ~/'
 
 dotfiles-init() {
     git clone -n https://github.com/mkoskar/dotfiles.git ~/.dotfiles
@@ -200,6 +200,7 @@ alias man-all-posix='man-all -s 0p,9p,2p,3p,7p,8p,6p,1p,4p,5p'
 alias pac=pacman
 alias paccheck-all='paccheck --quiet --depends --opt-depends --files --file-properties --md5sum --require-mtree --db-files --backup --noextract --noupgrade'
 alias paccheck-modified='paccheck --quiet --files --md5sum --require-mtree --backup --noextract --noupgrade'
+alias pacdiff='pacdiff -s -3'
 alias pacman-log='pg /var/log/pacman.log'
 alias pacq='pacman -Q'
 alias pactree='pactree --color'
@@ -212,6 +213,11 @@ alias paclog-recent=_paclog_recent
 pacd() {
     [ $# -eq 0 ] && return 2
     expac -l \\n %D "$@"
+}
+
+pacdo() {
+    [ $# -eq 0 ] && return 2
+    expac -l \\n %o "$@"
 }
 
 paci() {
@@ -245,7 +251,7 @@ pacp() {
 pacrm() {
     [ $# -eq 0 ] && return 2
     confirm 'Careful! Continue?' n || return 0
-    sudo pacman -Rcsn "$@"
+    sudo pacman -Rcs "$@"
 }
 
 pacs() {
@@ -325,7 +331,7 @@ alias curl-head='\curl -I'
 alias curl-socks='curl --preproxy socks5h://localhost:1080'
 alias curl-tor='curl --preproxy socks5h://localhost:9050'
 alias curl-trace='curl --trace-ascii - --trace-time'
-alias curl='curl -SLJ'
+alias curl='curl -SLJn'
 alias date0='date -R'
 alias dated='date -Id'
 alias datei='date -Is'
@@ -339,6 +345,7 @@ alias df='df -h -x devtmpfs -x tmpfs'
 alias dig-nocheck='dig +cd'
 alias dig-nssearch='dig +cd +tcp +nssearch'
 alias dig-trace='dig +cd +tcp +trace'
+alias dig0='dig -r'
 alias dirs='dirs -v'
 alias dmesg='dmesg -HTx'
 alias dpms-off='xset dpms force off'
@@ -387,7 +394,7 @@ alias makepkg-build='makepkg -srf'
 alias makepkg-rebuild='makepkg -Ccsrf'
 alias me='lslogins "$USER"'
 alias mnt='findmnt --real'
-alias moon='curl -qf http://wttr.in/moon | head -n -4'
+alias moon='curl -qf http://wttr.in/moon?F'
 alias mount-loop='mount -o loop'
 alias mpv-debug='mpv --terminal=yes --msg-level=all=debug'
 alias mpv-verbose='mpv --terminal=yes --msg-level=all=v'
@@ -441,8 +448,8 @@ alias smbclient='smbclient --configfile=/dev/null'
 alias socat='socat -dd'
 alias socati='socat readline,history=/dev/null'
 alias speaker-test='speaker-test -t wav -c 2'
-alias srunX='srun -NsXl'
-alias srunx='srun -Nsxl'
+alias srunX='srun -sX'
+alias srunx='srun -sx'
 alias ss='ss -naptu'
 alias ssh-cancel='ssh -O cancel'
 alias ssh-forward='ssh -O forward'
@@ -478,8 +485,10 @@ alias xargs-lines='xargs -d \\n'
 alias xargs-perline='xargs-lines -L 1'
 alias xargs='xargs -rx'
 alias xev-keyboard='xev -event keyboard'
+alias xhost-root='xhost +si:localuser:root'
 alias xinput-test='xinput test-xi2 --root'
 alias xwininfo='xwininfo -all'
+alias zip='zip -r'
 alias zsh0='zsh -df'
 
 # Add/Remove the user from supplementary group(s)

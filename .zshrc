@@ -452,7 +452,7 @@ _pacpkgs() {
     reply=(${${pkgs#/var/lib/pacman/local/}%-*-*})
 }
 compctl -K _pacpkgs \
-    paccheck pacd paci pacl pacp pacr pacscripts pactree pacw
+    paccheck pacd pacdo paci pacl pacp pacrm pacw
 
 
 # Aliases / Named directories

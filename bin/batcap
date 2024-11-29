@@ -18,7 +18,7 @@ for i in /sys/class/power_supply/${1:-*}; do
     fi
 
     if [[ ${full-} && ${full_design} ]]; then
-        calc -qp -- <<<"round($full / $full_design * 100, 2)"
+        calc -qp <<<"round($full / $full_design * 100, 2)"
     else
         echo n/a
     fi

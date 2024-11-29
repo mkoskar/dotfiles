@@ -10,8 +10,8 @@ _usage() {
 
 	Execute 'cmd [arg...]' as transient service inside user's service manager.
 
-	  -n name   - name of the unit (default: cmd)
-	  -N        - use generated name
+	  -n name   - name of the unit (default: generated)
+	  -N        - use cmd as the name
 	  -r        - stop the unit first
 	  -s        - run as scope unit
 	  -x        - unit is \$DISPLAY specific (xsession@.target)
@@ -52,13 +52,13 @@ shift $((OPTIND-1))
 sdu() { systemctl --user "$@"; }
 
 if (( Nopt )); then
+    name=${1##*/}
+elif [[ ! $name ]]; then
     name=$(openssl rand -hex 4)
     name=srun-$name
-else
-    name=${name:-${1##*/}}
-    [[ $name =~ [][?*.] ]] && exit 2
 fi
 [[ $name ]] || exit 2
+[[ $name =~ [][?*.] ]] && exit 2
 
 if (( xopt )); then
     screen=$(xserverq screen)

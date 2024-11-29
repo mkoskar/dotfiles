@@ -82,7 +82,7 @@ by_username() {
 
 handle_api() {
     set -eu
-    key=$(<~/.yt)
+    key=$(<~/.secrets/yt)
 
     tmpdir=$(mktemp -d)
     cleanup() { rm -rf "$tmpdir"; }
@@ -95,8 +95,8 @@ handle_api() {
         by_playlist_id "${BASH_REMATCH[1]}"
     elif [[ $1 =~ ^https?://www\.youtube\.com/channel/([^/]*)(/|/videos)?$ ]]; then
         by_channel_id "${BASH_REMATCH[1]}"
-    elif [[ $1 =~ ^https?://www\.youtube\.com/c/([^/]*)(/|/videos)?$ ]]; then
-        by_channel_name "${BASH_REMATCH[1]}"
+    elif [[ $1 =~ ^https?://www\.youtube\.com/(c/|@)([^/]*)(/|/videos)?$ ]]; then
+        by_channel_name "${BASH_REMATCH[2]}"
     elif [[ $1 =~ ^https?://www\.youtube\.com/user/([^/]*)(/|/videos)?$ ]]; then
         by_username "${BASH_REMATCH[1]}"
     else

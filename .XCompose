@@ -1,6 +1,7 @@
 # See also: Compose(5)
 
-include "%L"
+#include "%L"
+include "%H/.XCompose-en"
 include "%H/.XCompose-vim"
 
 <Multi_key> <x> <s> : "┐(ツ)┌"
