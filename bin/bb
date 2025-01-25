@@ -74,6 +74,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     bash-sheet              b https://mywiki.wooledge.org/BashSheet
     batteries               b https://en.wikipedia.org/wiki/List_of_battery_sizes#Cylindrical_batteries
     bbcode                  b https://www.bbcode.org/reference.php
+    bindzone                b https://en.wikipedia.org/wiki/Zone_file#Example_file
     binutils                b https://sourceware.org/binutils/docs/
     bluetooth-profiles      b https://en.wikipedia.org/wiki/List_of_Bluetooth_profiles
     bpf                     b https://www.kernel.org/doc/html/latest/bpf/index.html
@@ -93,14 +94,16 @@ MENUER=$prgname menuer "$@" <<-EOF |
     chromium-flags          b https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/flag_descriptions.cc
     chromium-switches       b https://source.chromium.org/chromium/chromium/src/+/main:chrome/common/chrome_switches.cc
     cite                    b https://citeseerx.ist.psu.edu/search\?q={u}
+    cloud-native-projects   b https://www.cncf.io/projects/
     commonmark              b https://spec.commonmark.org/
     composer                b https://getcomposer.org/doc/
     constellations          b https://en.wikipedia.org/wiki/88_modern_constellations#List
-    content-security-policy b https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
     cors                    b https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     country-codes           b https://en.wikipedia.org/wiki/ISO_3166-1#Codes
     cpp                     b https://isocpp.org/std/the-standard
     cryptocurr              b https://coinmarketcap.com/
+    csp                     b https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+    csp-directives          b https://www.w3.org/TR/CSP3/#iana-registry
     css                     b https://www.w3.org/TR/CSS/
     css-flexbox             b https://css-tricks.com/snippets/css/a-guide-to-flexbox/
     css-grid                b https://css-tricks.com/snippets/css/complete-guide-grid/
@@ -113,6 +116,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     curl-changes            b https://curl.se/changes.html
     cve                     b https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword={u}
     d                       b https://dictionary.cambridge.org/search/direct/\?datasetsearch=english\&q={u}
+    dane                    b https://rfc.fyi/?search=dane
     dart                    b https://dart.dev/guides
     datasheet               b https://www.alldatasheet.com/view.jsp\?Searchword={u}
     dbus                    b https://dbus.freedesktop.org/doc/dbus-specification.html
@@ -139,7 +143,11 @@ MENUER=$prgname menuer "$@" <<-EOF |
     dns-sd                  b https://datatracker.ietf.org/doc/html/rfc6763
     dns-srv                 b https://datatracker.ietf.org/doc/html/rfc2782
     dns-terminology         b https://datatracker.ietf.org/doc/html/rfc8499
-    dnssec-analyzer         b https://dnssec-debugger.verisignlabs.com/
+    dns-test                b https://zonemaster.nic.cz/en/
+    dnssec                  b https://www.cloudflare.com/learning/dns/dnssec/how-dnssec-works/
+    dnssec-rrs              b https://datatracker.ietf.org/doc/html/rfc4034
+    dnssec-test             b https://dnssec-debugger.verisignlabs.com/
+    dnssec-test2            b https://dnsviz.net/
     docker                  b https://github.com/wsargent/docker-cheat-sheet
     docker-hub              b https://hub.docker.com/search\?q={u}
     docker-reference        b https://docs.docker.com/reference/
@@ -149,6 +157,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     download!               b ~/download
     ebay                    b https://www.ebay.com/sch/i.html\?_nkw={u}
     ecma                    b https://www.ecma-international.org/publications/standards/Standard.htm
+    elastic                 b https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html
     electropedia            b https://www.electropedia.org/
     em-spectrum             b https://en.wikipedia.org/wiki/Electromagnetic_spectrum
     emojis                  b https://emojipedia.org/
@@ -194,6 +203,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     gdb-refcard             b https://sourceware.org/gdb/current/onlinedocs/refcard.pdf
     gdb-wiki                b https://sourceware.org/gdb/wiki/
     gems                    b https://rubygems.org/
+    geoip                   b https://dev.maxmind.com/geoip/docs/databases/city-and-country/
     gg                      b https://groups.google.com/forum/#!search/{u}
     gh                      b https://github.com/
     gh-dotfiles             b https://github.com/mkoskar/dotfiles/tree/master/bin
@@ -204,7 +214,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     git                     b https://git-scm.com/docs
     git-changes             b https://github.com/git/git/tree/master/Documentation/RelNotes
     git-rebase              b https://git-rebase.io/
-    gitea                   b https://docs.gitea.io/en-us/config-cheat-sheet/
+    gitea                   b https://docs.gitea.com/administration/config-cheat-sheet
     gitlab                  b https://gitlab.com/explore
     glib2                   b https://developer.gnome.org/glib/stable/
     glibc                   b https://www.gnu.org/software/libc/manual/html_mono/libc.html
@@ -231,7 +241,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     google-web              b https://developers.google.com/web
     gradle                  b https://gradle.org/docs/
     grafana                 b https://grafana.com/docs/
-    grafana-agent           b https://grafana.com/docs/agent/latest/flow/reference/components/
     grafana-config          b https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/
     grafana-dashboards      b https://grafana.com/grafana/dashboards/
     grafana-plugins         b https://grafana.com/grafana/plugins/
@@ -255,9 +264,12 @@ MENUER=$prgname menuer "$@" <<-EOF |
     hn                      b https://news.ycombinator.com/
     hoogle                  b https://www.haskell.org/hoogle/\?hoogle={u}
     html                    b https://html.spec.whatwg.org/multipage/
-    html-charref            b https://dev.w3.org/html5/html-author/charref
+    html-charref            b https://html.spec.whatwg.org/multipage/named-characters.html
     html-reference          b https://developer.mozilla.org/en-US/docs/Web/HTML/Reference
     http                    b https://httpwg.org/specs/
+    http-cache-control      b https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+    http-headers            b https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
+    http3-explained         b https://http3-explained.haxx.se/en
     hugo                    b https://gohugo.io/documentation/
     i                       b https://www.ixquick.com/do/metasearch.pl\?query={u}
     i3                      b https://i3wm.org/docs/userguide.html
@@ -274,6 +286,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     iana-root-zone          b https://www.iana.org/domains/root/db
     iana-service-names      b https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml
     iana-special-domains    b https://www.iana.org/assignments/special-use-domain-names/special-use-domain-names.xhtml
+    iana-tls-parameters     b https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml
     iana-uri-schemes        b https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml
     iana-well-known-uris    b https://www.iana.org/assignments/well-known-uris/well-known-uris.xhtml
     iban                    b https://en.wikipedia.org/wiki/International_Bank_Account_Number#IBAN_formats_by_country
@@ -329,6 +342,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     k8s                     b https://kubernetes.io/docs/home/
     k8s-hub                 b https://artifacthub.io/
     kernel-lists            b http://vger.kernel.org/vger-lists.html
+    keylength               b https://www.keylength.com/
     keypad                  b https://en.wikipedia.org/wiki/E.161
     language-codes          b https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes
     latin-greek-roots       b https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English
@@ -360,7 +374,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     lists-apache            b https://lists.apache.org/
     lkml                    b https://lkml.org/
     lobste.rs               b https://lobste.rs/newest
-    loki                    b https://grafana.com/docs/loki/latest/api/
+    loki                    b https://grafana.com/docs/loki/latest/configure/
     lore-git                b https://lore.kernel.org/git/
     lore-lists              b https://lore.kernel.org/lists.html
     lpsn                    b https://lpsn.dsmz.de/
@@ -429,10 +443,12 @@ MENUER=$prgname menuer "$@" <<-EOF |
     oid                     b https://oidref.com/
     oid-pen                 b https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers
     openrc                  b https://github.com/OpenRC/openrc
+    openssl                 b https://docs.openssl.org/master/
     opentype                b https://docs.microsoft.com/en-us/typography/opentype/spec/
     oracle-plsql            b https://docs.oracle.com/en/database/oracle/oracle-database/21/lnpls/index.html
     oracle-sql              b https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/index.html
     osdev                   b https://wiki.osdev.org/Main_Page
+    otel                    b https://opentelemetry.io/docs/
     oui                     b https://www.wireshark.org/tools/oui-lookup.html
     owl                     b https://owl.purdue.edu/owl/purdue_owl.html
     package                 b https://en.wikipedia.org/wiki/List_of_integrated_circuit_packaging_types
@@ -454,6 +470,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     phrik                   b https://wiki.archlinux.org/index.php/Phrik
     pipenv                  b https://pipenv.pypa.io/en/latest/
     pizza                   b http://www.varasanos.com/pizzarecipe.htm
+    pkcs                    b https://en.wikipedia.org/wiki/PKCS
     pkg                     b https://www.archlinux.org/packages/\?q={u}
     plan9                   b https://9p.io/plan9/
     plastics                b https://en.wikipedia.org/wiki/Plastic#Types_of_plastics
@@ -473,6 +490,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     postgresql-connstring   b https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
     postgresql-psql         b https://www.postgresql.org/docs/current/app-psql.html
     postgresql-sql          b https://www.postgresql.org/docs/current/sql-commands.html
+    powerdns                b https://doc.powerdns.com/authoritative/settings.html
     printing                b https://wiki.linuxfoundation.org/openprinting/database/documentation
     privacy                 b https://www.privacytools.io/
     procedure-words         b https://en.wikipedia.org/wiki/Procedure_word
@@ -576,8 +594,10 @@ MENUER=$prgname menuer "$@" <<-EOF |
     squid                   b http://www.squid-cache.org/Doc/config/
     ssh-changes             b https://www.openssh.com/releasenotes.html
     ssl-config              b https://ssl-config.mozilla.org/
+    ssl/tls-intro           b https://httpd.apache.org/docs/current/ssl/ssl_intro.html
     stn                     b https://normy.unms.sk/eshop/public/search.aspx
     suckless-repos          b https://git.suckless.org/
+    svcb                    b https://datatracker.ietf.org/doc/html/rfc9460
     sysrq                   b https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
     systemd                 b https://systemd.io/
     systemd-changes         b https://github.com/systemd/systemd/blob/main/NEWS
@@ -629,6 +649,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     w-cz                    b https://cz.wikipedia.org/w/index.php\?search={u}
     w-sk                    b https://sk.wikipedia.org/w/index.php\?search={u}
     w3c-specs               b https://www.w3.org/TR/
+    w3c-standards           b https://www.w3.org/TR/\?status%5B0%5D=standard
     wayland-book            b https://wayland-book.com/
     wayland-protocols       b https://wayland.app/protocols/
     web.dev                 b https://web.dev/

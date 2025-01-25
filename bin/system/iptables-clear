@@ -34,7 +34,7 @@ fi
 tables=("$@")
 if (( ! ${#tables[@]} )); then
     src=/proc/net/${prefix}_tables_names
-    [[ -e $src ]] && readarray -t tables <"$src"
+    [[ -e $src ]] && readarray -t tables < <(sort "$src")
 fi
 if (( ! ${#tables[@]} )); then
     tables=(filter nat)

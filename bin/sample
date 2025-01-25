@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -eu
+
+# TODO
+
+abc() {
+    echo a >a
+    echo b >b
+    echo c >c
+}
+
+tree() {
+    :
+}
+
+case ${1-} in
+    abc | \
+    tree \
+    )
+        "$@"
+        ;;
+    *)
+        exit 2
+        ;;
+esac

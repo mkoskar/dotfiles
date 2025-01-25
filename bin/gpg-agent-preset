@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# See also:
+#
+#   /usr/lib/gnupg/gpg-preset-passphrase
+#   $ man 1 gpg-preset-passphrase
+
 set -eu
 
 cd ~

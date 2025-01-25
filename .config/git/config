@@ -70,13 +70,13 @@
     push-upstream = -c push.default=upstream pushv
     pushv = push -v
     remotes = remote -v
+    s = status -s
     send-email-msmtp = !cd "\"$GIT_PREFIX\"" && git send-email --smtp-server="\"$HOME\""/bin/msmtp --envelope-sender=auto
     sh = !shell
     shallow = fetch --depth 1
     show-commit = show-raw -s
     show-fuller = show --format=fuller
     show-raw = show --format=raw
-    st = status -s
     unshallow = fetch --unshallow
     up = update
 

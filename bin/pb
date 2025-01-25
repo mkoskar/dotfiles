@@ -42,8 +42,7 @@ case ${PB:-!} in
             cargs+=(-F file=@\""$farg"\")
         done
         curl -qsSLf "${cargs[@]}" -o "$outfile" \
-            --variable "user@$HOME/.secrets/paste" \
-            --expand-user '{{user:trim}}' \
+            --netrc-file ~/.secrets/mkoskar.netrc \
             https://mkoskar.com/cgi/paste
         cat "$outfile"
         ;;

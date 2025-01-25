@@ -1,5 +1,7 @@
 #compdef wsession
 
+local state
+
 _arguments -C ': :->argument' && return
 
 case $state in

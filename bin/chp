@@ -67,13 +67,13 @@ if [[ $profile != skel ]]; then
 
     if [[ ! -e $path/theme ]]; then
         mkdir -p "$path"/theme
-        cd "$path"/theme
+        pushd "$path"/theme
 
         case $profile in
             default)        frame_color='[200, 200, 200]' ;;
-            dev)            frame_color='[0, 153, 255]' ;;
-            lab)            frame_color='[255, 34, 0]'  ;;
-            plain)          frame_color='[38, 191, 48]' ;;
+            dev*)           frame_color='[0, 153, 255]' ;;
+            lab*)           frame_color='[255, 34, 0]'  ;;
+            plain*)         frame_color='[38, 191, 48]' ;;
             proxy-socks)    frame_color='[0, 119, 119]' ;;
             proxy-tor)      frame_color='[100, 100, 100]'  ;;
             *)              frame_color='[255, 153, 0]' ;;
@@ -108,6 +108,7 @@ if [[ $profile != skel ]]; then
         pango-view -q --font='sans 8' \
             --background=transparent --foreground=black --margin=5 \
             -t "$profile" -o ntpbg.png
+        popd
     fi
 fi
 

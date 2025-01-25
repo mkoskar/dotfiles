@@ -3,6 +3,8 @@
 set -eu -o pipefail
 
 {
+    ssh -V
+
     ssh -Q help | while read -r opt; do
         echo $'\n--------------------------------------------------'
         printf '> ssh -Q %s\n\n' "$opt"

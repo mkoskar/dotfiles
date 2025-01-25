@@ -39,7 +39,7 @@ shift $((OPTIND-1))
 # ----------------------------------------
 
 if [[ $PATH = *$'\n'* ]]; then
-    printf '%s: error: PATH contains \n (NL)' "$prgname" >&2
+    printf '%s: PATH contains \\n (NL)\n' "$prgname" >&2
     exit 1
 fi
 

@@ -18,7 +18,7 @@ read -rs -N 1 -p 'Your choice: ' dsel
 echo
 
 if [[ ! $dsel =~ ^[1-9]$ ]] || (( dsel > ${#dall[@]} )); then
-    echo "$prgname: error: invalid choice" && exit 2
+    echo "$prgname: invalid choice" && exit 2
 fi
 
 printf -v ts '%(%F.%s)T'

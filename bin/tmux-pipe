@@ -12,4 +12,10 @@ if (( $# )); then
     (( h=$1, p=${2:-0}, s=-p, e=s+h-1 ))
 fi
 
-tmux capture-pane -pJ -S "${s:--}" -E "${e:--}"
+cmd=(tmux capture-pane -pJ -S "${s:--}" -E "${e:--}")
+
+if [[ -t 1 ]]; then
+    "${cmd[@]}" | striplns | PAGER_EX=\$ pg
+else
+    "${cmd[@]}" | striplns
+fi

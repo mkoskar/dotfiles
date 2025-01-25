@@ -87,9 +87,10 @@ read -r X Y W H <<<"$tmp"
 
     if [[ ${1-} != - ]]; then
         screenkey \
-            --no-systray \
-            --opacity 0.25 -M \
-            -p fixed -g "$((W-100))x75+$((X+50))+$((Y+H-100))" &
+            --no-systray --mods-mode tux --opacity 0.25 \
+            -p fixed -g "70x40+$((X+W-80))+$Y" &
+            #-p fixed -g "100x30+$((X+W-110))+$((Y+H-30))" &
+            #-p fixed -g "$((W-100))x30+$((X+W-100))+$((Y+H-30))" &
     fi
 
     ffmpeg -loglevel error "${args[@]}" "$outfile" &
