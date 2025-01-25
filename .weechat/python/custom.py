@@ -1009,7 +1009,7 @@ w.hook_command('renick', '', '', '', '', 'cb_command_renick', '')
 # ----------------------------------------
 
 def connect_relay(server_name):
-    cmd(f'server add {server_name}~ 172.31.1.1/9000 -temp -notls'
+    cmd(f'server add {server_name}~ 172.31.0.1/9000 -temp -notls'
         f' -password={server_name}:${{sec.data.relay}}')
     cmd(f'connect {server_name}~')
 
@@ -1309,7 +1309,7 @@ def configure(args):
     cmd('set relay.color.status_auth_failed lightred')
     cmd('set relay.color.status_connecting yellow')
     cmd('set relay.look.auto_open_buffer off')
-    cmd('set relay.network.bind_address 172.31.1.1')
+    cmd('set relay.network.bind_address 172.31.0.1')
     cmd('set relay.network.ipv6 off')
     cmd('set relay.network.max_clients 30')
     cmd('set relay.network.password ${sec.data.relay}')
@@ -1555,7 +1555,7 @@ def configure(args):
 
 
 def cb_command_configure(data, buffer, args):
-    configure()
+    configure(args)
     return w.WEECHAT_RC_OK
 
 
@@ -1633,7 +1633,7 @@ def cb_command_reconfigure(data, buffer, args):
     cmd('server add oftc irc.oftc.net/6697')
 
     if args != 'bouncer':
-        cmd('remote add default http://172.31.1.1:9002/ -password=${sec.data.relay}')
+        cmd('remote add default http://172.31.0.1:9002/ -password=${sec.data.relay}')
 
     for key, val in autojoins.items():
         cmd(f'set irc.server.{key}.autojoin "{val}"')

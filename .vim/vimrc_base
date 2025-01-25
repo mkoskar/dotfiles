@@ -869,7 +869,7 @@ nnoremap <Leader>lt :ls t<CR>
 nnoremap <Leader>q <Cmd>close<CR>
 nnoremap <Leader>ve :setl ve=<C-R>=&ve =~# 'all' ? 'block' : 'all'<CR><CR>
 
-" Switch to Ex mode with gQ instead
+" Switch to Ex-mode with gQ instead
 nnoremap Q <NOP>
 
 " Select mode is annoying

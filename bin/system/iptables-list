@@ -5,19 +5,21 @@ set -eu -o pipefail
 prgname=${0##*/}
 
 _usage() {
-    echo "usage: $prgname [-6] [-l|-n]"
+    echo "usage: $prgname [-6] [-l|-n] [-L]"
 }
 usage() { _usage; exit 0; }
 usage_err() { _usage; exit 2; } >&2
 
 prefix=ip
 postfix=
+outopts=(-S)
 
-while getopts 6lnh opt; do
+while getopts 6lnLh opt; do
     case $opt in
         6) prefix=ip6 ;;
         l) postfix=legacy ;;
         n) postfix=nft ;;
+        L) outopts=(--line-numbers -nvL) ;;
         h) usage ;;
         *) usage_err ;;
     esac
@@ -34,7 +36,7 @@ fi
 tables=("$@")
 if (( ! ${#tables[@]} )); then
     src=/proc/net/${prefix}_tables_names
-    [[ -e $src ]] && readarray -t tables <"$src"
+    [[ -e $src ]] && readarray -t tables < <(sort "$src")
 fi
 if (( ! ${#tables[@]} )); then
     tables=(filter nat)
@@ -50,8 +52,7 @@ kind=${kind%%-multi}
 for table in "${tables[@]}"; do
     echo $'\n--------------------------------------------------'
     printf '> %s table %s (%s):\n\n' "$prefix" "$table" "$kind"
-    #"$iptables" -t "$table" -nvL
-    "$iptables" -t "$table" -S
+    "$iptables" -t "$table" "${outopts[@]}"
 done
 
 echo

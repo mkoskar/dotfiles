@@ -167,10 +167,10 @@ mkdir -p chrome
 cd chrome
 
 case $profile in
-    dev?(-*))   frame_color='#0099ff' ;;
-    lab?(-*))   frame_color='#ff2200' ;;
-    plain?(-*)) frame_color='#26bf30' ;;
-    *)          frame_color='#ff9900' ;;
+    dev*)   frame_color='#0099ff' ;;
+    lab*)   frame_color='#ff2200' ;;
+    plain*) frame_color='#26bf30' ;;
+    *)      frame_color='#ff9900' ;;
 esac
 
 file=userChrome.css

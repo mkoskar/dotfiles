@@ -1,0 +1,15 @@
+#compdef dotfiles
+
+local state
+
+_arguments -C \
+    '*:: :->argument' \
+    && return
+
+case $state in
+    argument)
+        words=(git --git-dir ~/.dotfiles/.git --work-tree ~/ "${words[@]}")
+        (( CURRENT += 5 ))
+        _normal
+        ;;
+esac

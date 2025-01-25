@@ -35,7 +35,7 @@ chmod "$mode_expected" "$file"
 mtime1=$(stat -c %Y "$file".bak)
 mtime2=$(stat -c %Y "$file")
 
-if [[ $mtime1 = "$mtime2" ]]; then
+if (( mtime1 = mtime2 )); then
     echo 'not touched' >&2
     rm "$file".bak
 else

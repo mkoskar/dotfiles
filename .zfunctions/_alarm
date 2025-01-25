@@ -1,4 +1,4 @@
 #compdef alarm
 
 _arguments -C \
-    ':::(at clear every in mute)'
+    ': :(at clear every in mute)'

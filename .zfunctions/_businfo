@@ -1,7 +1,7 @@
 #compdef businfo
 
 declare -A opt_args
-local curcontext=$curcontext state line
+local state
 
 _arguments -C \
     '--user' \

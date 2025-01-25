@@ -8,7 +8,7 @@ sudo pacman -Syu
 echo $'\n--------------------------------------------------'
 echo $'> Pacnew/Pacsave:\n'
 
-pacdiff -o
+sudo pacdiff -o
 
 echo $'\n--------------------------------------------------'
 echo $'> Cleanup:\n'

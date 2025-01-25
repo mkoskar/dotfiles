@@ -1,0 +1,35 @@
+#compdef ssl
+
+local state
+
+_arguments -C \
+    ':sub-command:(algos cat catall check ciphers ciphers-ecdsa-rsa con gen gen+cert gen+csr)' \
+    '*:: :->argument' \
+    && return
+
+case $state:$words[1] in
+    argument:cat(|all))
+        _arguments -C \
+            ': :(asn1 ec rsa req x509)'
+        ;;
+    argument:ciphers)
+        words=(openssl ciphers -stdname -V "${words[@]:1}")
+        (( CURRENT += 3 ))
+        _normal
+        ;;
+    argument:con)
+        words=(openssl s_client -trace -showcerts -state -crlf -ign_eof -connect "${words[@]:1}")
+        (( CURRENT += 7 ))
+        _normal
+        ;;
+    argument:gen)
+        _arguments -C \
+            ': :(ed25519 rsa)' \
+            ': :(-noenc)'
+        ;;
+    argument:gen+*)
+        _arguments -C \
+            ': :(ed25519 rsa:4096)' \
+            ': :(-noenc)'
+        ;;
+esac

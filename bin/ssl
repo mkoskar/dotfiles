@@ -6,11 +6,12 @@ prgname=${0##*/}
 
 _usage() {
     cat <<-EOF
-	usage: $prgname cat {dsa | ec | rsa | x509 | req} input
-	       $prgname modulus {dsa | ec | rsa | x509 | req} input
-	       $prgname gen-rsa
-	       $prgname gen-rsa-csr
+	usage: $prgname algos
+	       $prgname {cat | catall} {asn1 | ec | rsa | req | x509}
 	       $prgname check
+	       $prgname {ciphers | ciphers-ecdsa-rsa}
+	       $prgname con
+	       $prgname {gen gen+cert gen+csr) [params]
 	EOF
 }
 usage() { _usage; exit 0; }
@@ -32,36 +33,57 @@ sub=$1
 shift
 
 case $sub in
+    algos)
+        openssl list -all-algorithms
+        ;;
+
     cat)
         case $1 in
-            dsa | ec | rsa) openssl "$1" -in "$2" ;;
-            x509) openssl "$1" -in "$2" -text -fingerprint -noout ;;
-            req) openssl "$1" -in "$2" -text -noout ;;
+            asn1) openssl asn1parse -i ;;
+            ec | rsa) openssl "$1" -check -text -noout ;;
+            req) openssl "$1" -text -noout ;;
+            x509) openssl "$1" -text -fingerprint -noout ;;
             *) usage_err ;;
         esac
         ;;
 
-    modulus)
-        case $1 in dsa | ec | rsa | x509 | req) ;; *) usage_err ;; esac
-        openssl "$1" -in "$2" -modulus -noout
-        ;;
-
-    gen-rsa)
-        #-addext 'subjectAltName = DNS:example.org' \
-        #-addext 'subjectAltName = IP:192.168.1.1' \
-
-        openssl req \
-            -newkey rsa:4096 -nodes -keyout site_key.pem \
-            -x509 -days 365 -out site_cert.pem
-        ;;
-
-    gen-rsa-csr)
-        openssl req \
-            -newkey rsa:4096 -nodes -keyout site_key.pem \
-            -out site_csr.pem
+    catall)
+        while "$prgname" cat "$1"; do :; done
         ;;
 
     check)
         curl -qsSLf https://www.howsmyssl.com/a/check | jq .
+        ;;
+
+    ciphers)
+        openssl ciphers -stdname -V "$@"
+        ;;
+
+    ciphers-ecdsa-rsa)
+        openssl ciphers -stdname -V 'aECDSA:aRSA:!PSK:!AESCCM:!CBC:!eNULL:!SHA1'
+        ;;
+
+    con)
+        openssl s_client -trace -showcerts -state -crlf -ign_eof -connect "$@"
+        ;;
+
+    gen)
+        (( $# )) || set -- ed25519
+        openssl genpkey -verbose -out key.pem \
+            -aes256 -algorithm "$@"
+        ;;
+
+    gen+cert)
+        #-addext 'subjectAltName = DNS:example.org'
+        #-addext 'subjectAltName = IP:192.168.1.1'
+        (( $# )) || set -- ed25519
+        openssl req -verbose -out cert.pem -x509 -days 365 \
+            -keyout key.pem -newkey "$@"
+        ;;
+
+    gen+csr)
+        (( $# )) || set -- ed25519
+        openssl req -verbose -out csr.pem \
+            -keyout key.pem -newkey "$@"
         ;;
 esac
