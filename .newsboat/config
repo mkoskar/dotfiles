@@ -16,6 +16,12 @@ search-highlight-colors black yellow
 suppress-first-reload yes
 text-width 79
 
+miniflux-login "mkoskar"
+miniflux-tokenfile "~/.secrets/miniflux-api-token"
+miniflux-url "https://feed.mkoskar.com/"
+
+urls-source miniflux
+
 articlelist-format " [%f]  %D %6L %?T?;%-17T; ?%t"
 articlelist-title-format "Feed (%u/%t) %T | %U"
 dialogs-title-format "Dialogs"

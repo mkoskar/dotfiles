@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu -o pipefail
-
-systemd-analyze dot "$@" | dot -T svg | stdiner -bt b

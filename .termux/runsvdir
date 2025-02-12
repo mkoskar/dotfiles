@@ -14,17 +14,17 @@ fi
 cd ~/.termux
 
 lvl_new=$1
-
 [[ -d svdir.$lvl_new ]] || {
     printf 'no such runlevel: %s\n' "$lvl_new" >&2
     exit 1
 }
-
 ln -snf svdir."$lvl_new" svdir
-
 printf 'runlevel: %s\n' "$lvl_new" >&2
 
-busybox start-stop-daemon \
-    --pidfile "$XDG_RUNTIME_DIR"/runsvdir.pid \
-    --make-pidfile --background --oknodo --verbose \
-    --start runsvdir "$PWD"/svdir >&2
+runsvdir=$(command -v runsvdir)
+start-stop-daemon \
+    --start --startas "$runsvdir" \
+    --pidfile "$XDG_RUNTIME_DIR/$prgname.pid" --make-pidfile \
+    --chdir "$PWD" --oknodo --verbose \
+    --background --output "$PWD/$prgname.out" \
+    svdir >&2

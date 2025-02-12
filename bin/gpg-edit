@@ -10,9 +10,6 @@ if (( ! $# )); then
 fi
 
 file=$(realpath -- "$1")
-basename=${file##*/}
-phash=$(printf %s "$file" | sha1sum)
-read -r phash _ <<<"$phash"
 
 if [[ ! -f $file ]]; then
     echo 'regular file expected' >&2
@@ -35,11 +32,11 @@ chmod "$mode_expected" "$file"
 mtime1=$(stat -c %Y "$file".bak)
 mtime2=$(stat -c %Y "$file")
 
-if (( mtime1 = mtime2 )); then
+if (( mtime1 == mtime2 )); then
     echo 'not touched' >&2
     rm "$file".bak
 else
     mkdir -p ~/archive/gpg-edit
-    cp -af "$file".bak ~/archive/gpg-edit/"${phash: -8}__$basename.$mtime1"
+    cp -af "$file".bak ~/archive/gpg-edit/"$mtime1.${file//\//%}"
     mv "$file".bak "$file".old
 fi

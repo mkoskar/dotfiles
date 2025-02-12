@@ -7,7 +7,7 @@ spawn() {
     shift
     # shellcheck disable=SC2128,SC2207
     if wid=$(xdotool search --classname "$wname"); then
-        if [[ $(xdotool getactivewindow) = "$wid" ]]; then
+        if [[ $(xdotool getwindowfocus) = "$wid" ]]; then
             xdotool windowunmap "$wid"
         else
             if cdno=$(xdotool get_desktop); then
@@ -45,7 +45,6 @@ warp_to_scr() {
 case $1 in
     spawn | \
     warp_mouse | \
-    warp_in_win | \
     warp_to_mon | \
     warp_to_scr)
         "$@"

@@ -18,13 +18,15 @@ l       right-scroll
 
 #env
 
-# enter_bold_mode / bold / md
-LESS_TERMCAP_md = [1;97m
-
-# enter_underline_mode / smul / us
-LESS_TERMCAP_us = [4;93m
-LESS_TERMCAP_ue = [0m
-
-# enter_standout_mode / smso / so
-LESS_TERMCAP_so = [1;41;37m
-LESS_TERMCAP_se = [0m
+## enter_bold_mode / bold / md
+#LESS_TERMCAP_md = [1;97m
+#
+## enter_underline_mode / smul / us
+#LESS_TERMCAP_us = [4;93m
+## exit_underline_mode / rmul / ue
+#LESS_TERMCAP_ue = [0m
+#
+## enter_standout_mode / smso / so
+#LESS_TERMCAP_so = [1;41;37m
+## exit_standout_mode / rmso / se
+#LESS_TERMCAP_se = [0m

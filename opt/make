@@ -18,6 +18,7 @@ confirm 'zsh plugins?' n && {
     parallel -r <<-'EOF'
 
 		from_git zsh-autosuggestions            https://github.com/zsh-users/zsh-autosuggestions
+		from_git zsh-completions                https://github.com/zsh-users/zsh-completions
 		from_git zsh-history-substring-search   https://github.com/zsh-users/zsh-history-substring-search
 		from_git zsh-syntax-highlighting        https://github.com/zsh-users/zsh-syntax-highlighting
 

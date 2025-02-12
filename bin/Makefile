@@ -21,7 +21,7 @@ endif
 
 system:
 ifneq ($(CURDIR), $(dest))
-	cd ./system; find -type f,l -executable | rsync -lpt --files-from=- . $(dest)
+	cd ./system; find . -type f,l -executable | rsync -lpt --files-from=- . $(dest)
 	diff -rq ./system $(dest) || true
 endif
 

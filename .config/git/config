@@ -39,11 +39,11 @@
     clone-shallow = clone --depth 1 --shallow-submodules
     clone-treeless = clone --filter=tree:0
     co = checkout
-    conf = !git config -l --local | sort
-    conf-edit = config -e
-    confa = !git config -l | sort | pg
-    confg = !git config -l --global | sort | pg
-    confg-edit = config --global -e
+    conf = !git config list --local | sort
+    conf-edit = config edit
+    confa = !git config list | sort | pg
+    confg = !git config list --global | sort | pg
+    confg-edit = config edit --global
     count = rev-list --count HEAD
     d = difftool
     dc = difftool --cached
@@ -55,7 +55,6 @@
     forward = merge --ff-only
     hunk-stage = add -p
     hunk-unstage = restore -Sp
-    k = !cd "\"$GIT_PREFIX\"" && gitk
     last = cat-file -p HEAD
     lg = lg1 -5
     lg1 = log --format=lg1 --graph --decorate-refs-exclude='*/HEAD' --color
@@ -71,7 +70,9 @@
     pushv = push -v
     remotes = remote -v
     s = status -s
-    send-email-msmtp = !cd "\"$GIT_PREFIX\"" && git send-email --smtp-server="\"$HOME\""/bin/msmtp --envelope-sender=auto
+    send-email-msmtp = !cd "\"./$GIT_PREFIX\"" && git send-email --smtp-server="\"$HOME\""/bin/msmtp --envelope-sender=auto
+    serve = daemon --base-path=. --export-all --reuseaddr --informative-errors --verbose
+    serve-push = serve --enable=receive-pack
     sh = !shell
     shallow = fetch --depth 1
     show-commit = show-raw -s
@@ -96,7 +97,8 @@
 
 [credential]
     helper = cache --timeout=3600
-    helper = netrc
+    helper = /usr/share/git/credential/netrc/git-credential-netrc.perl
+    #helper = /usr/lib/git-core/git-credential-libsecret
 
 [diff]
     tool = ediff

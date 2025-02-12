@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-# See also: `openssl rand -base64 12`
+# See also:
+#
+#   $ openssl rand -base64 12
+#   $ tr -cd '0-9' </dev/urandom | head -c 25
+#   $ tr -cd '0-9A-Za-z' </dev/urandom | head -c 25
 
 set -eu
 

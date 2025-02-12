@@ -2,6 +2,6 @@
 
 exec 2>&1
 
-SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent
+SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
 rm -f "$SSH_AUTH_SOCK"
 exec ssh-agent -a "$SSH_AUTH_SOCK" -D

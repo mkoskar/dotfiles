@@ -38,8 +38,9 @@ _layout_hook_default() {
     outputs
     [[ $1 = - ]] && set -- "$(layout_profile)"
     case $1 in
-        home | LVDS_HOME1)
-            xrandr_l2r "${out[$LVDS]}" "${out[$HOME1]}"
+        home)
+            #xrandr_l2r "${out[$LVDS]}" "${out[$HOME1]}"
+            xrandr_l2r "${out[$HOME1]}" "${out[$LVDS]}"
             ;;
         *)
             handle_profile "$@"
@@ -86,7 +87,7 @@ if [[ ${1-} = --zsh-compdef ]]; then
 	    case $state in optarg)
 	        if (( CURRENT == 1 )); then
 	            _alternative \
-	                'profiles:profiles:(LVDS_HOME1 all home mobile)' \
+	                'profiles:profiles:(all home mobile)' \
 	                'monitors:monitors:(HOME1 LVDS)' \
 	                'functions:functions:(l2r)'
 	            return

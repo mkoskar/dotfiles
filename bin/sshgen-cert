@@ -43,8 +43,9 @@ opts=(
     -s "$ca_key"
     -I "$identity"
     -n "$principals"
-    -V +52w
-    #-V always:forever
+    -z +1
+    #-V +52w
+    -V always:forever
 )
 
 if (( host )); then

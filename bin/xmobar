@@ -2,5 +2,5 @@
 
 # See also: https://github.com/jaor/xmobar/issues/328
 
-trap 'trap : TERM; kill 0' EXIT
+trap "trap '' TERM; kill 0" EXIT
 cmd -H xmobar "$@"

@@ -7,10 +7,11 @@ prgname=${0##*/}
 _usage() {
     cat <<-EOF
 	usage: $prgname algos
-	       $prgname {cat | catall} {asn1 | ec | rsa | req | x509}
+	       $prgname {cat | catall} {asn1 | ec | rsa | req | sess | x509}
 	       $prgname check
 	       $prgname {ciphers | ciphers-ecdsa-rsa}
-	       $prgname con
+	       $prgname {con | con-rsaonly}
+	       $prgname csplit
 	       $prgname {gen gen+cert gen+csr) [params]
 	EOF
 }
@@ -40,8 +41,10 @@ case $sub in
     cat)
         case $1 in
             asn1) openssl asn1parse -i ;;
+            # `openssl ec` can read rsa keys too
             ec | rsa) openssl "$1" -check -text -noout ;;
             req) openssl "$1" -text -noout ;;
+            sess) openssl sess_id -text -noout ;;
             x509) openssl "$1" -text -fingerprint -noout ;;
             *) usage_err ;;
         esac
@@ -60,11 +63,36 @@ case $sub in
         ;;
 
     ciphers-ecdsa-rsa)
-        openssl ciphers -stdname -V 'aECDSA:aRSA:!PSK:!AESCCM:!CBC:!eNULL:!SHA1'
+        # aECDSA    - ECDSA authentication
+        # aRSA      - RSA authentication
+        # !PSK      - pre-shared keys
+        # !AESCCM   - AES CCM ciphers
+        # !CBC      - CBC ciphers (deprecated, insecure)
+        # !eNULL    - no encryption
+        # !SHA1     - SHA1 digest (deprecated, insecure)
+        openssl ciphers -stdname -V 'TLS_CHACHA20_POLY1305_SHA256:aECDSA:aRSA:!PSK:!AESCCM:!CBC:!eNULL:!SHA1'
         ;;
 
     con)
-        openssl s_client -trace -showcerts -state -crlf -ign_eof -connect "$@"
+        openssl s_client -crlf -port 443 -connect "$@"
+        ;;
+
+    con-rsaonly)
+        openssl s_client -crlf \
+            -tls1_2 -cipher 'aRSA:!PSK:!AESCCM:!CBC:!eNULL:!SHA1' \
+            -port 443 -connect "$@"
+        ;;
+
+    csplit)
+        in=$1
+        prefix=$(basename -- "$in")_
+        csplit -kz -f "$prefix" -- "$in" /CONNECTED/ '{*}'
+        ;;
+
+    dhparam)
+        openssl dhparam 4096
+        #openssl genpkey -genparam -algorithm dh -pkeyopt pbits:4096
+        #openssl genpkey -genparam -algorithm dh -pkeyopt group:ffdhe4096
         ;;
 
     gen)
@@ -85,5 +113,9 @@ case $sub in
         (( $# )) || set -- ed25519
         openssl req -verbose -out csr.pem \
             -keyout key.pem -newkey "$@"
+        ;;
+
+    *)
+        usage_err
         ;;
 esac

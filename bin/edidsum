@@ -44,11 +44,12 @@ exclude() {
     local out=$1
     local ddc=$drm/$out/ddc
     local bus_num power
+    [[ $out = card[0-9]-LVDS-* ]] && return 0
     if [[ -L $ddc ]]; then
         bus_num=$(readlink -f "$ddc")
         bus_num=${bus_num##*/}
         bus_num=${bus_num#i2c-}
-        if power=$(ddcutil -t -b "$bus_num" getvcp d6); then
+        if power=$(ddcutil --noconfig -t -b "$bus_num" getvcp d6 2>/dev/null); then
             read -r _ _ _ power <<<"$power"
             [[ $power = x05 ]] && return 1
         fi

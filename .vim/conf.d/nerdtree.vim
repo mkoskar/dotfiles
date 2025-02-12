@@ -2,13 +2,11 @@
 
 packadd! nerdtree
 
-" TODO: show root dir shortened with ~/
-
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeBookmarksFile = $VIMDIR . '/NERDTreeBookmarks'
 let NERDTreeCaseSensitiveSort = 1
 let NERDTreeHijackNetrw = 0
-let NERDTreeIgnore = []
+let NERDTreeIgnore = ['\.git$']
 let NERDTreeMapCWD = 'cD'
 let NERDTreeMapHelp = '<F1>'
 let NERDTreeShowBookmarks = 1

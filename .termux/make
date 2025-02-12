@@ -2,42 +2,52 @@
 
 set -eu
 
+# See also:
+#
+#   https://wiki.termux.com/wiki/Special:AllPages
+#   https://wiki.termux.com/wiki/Switching_package_manager
+#
+#   termux-am
+#   termux-chroot
+#   termux-dialog
+#   termux-fingerprint
+#   termux-help
+#   termux-info
+#   termux-reload-settings
+#   termux-reset
+
+termux-change-repo
+termux-setup-storage
+
+pkg update
 pkg upgrade
 
-#pkg install root-repo
 pkg install x11-repo
-
 pkg install \
-    aspell-en \
-    autossh \
     bsdtar \
     busybox \
     file \
     fzf \
     git \
-    htop-legacy \
+    htop \
     iproute2 \
     jq \
     linux-man-pages \
     man \
-    mpv \
     ncurses-utils \
     neovim \
-    nmap-ncat \
     openssh \
     openssl-tool \
     parallel \
-    proot \
     ranger \
     ripgrep \
+    runit \
     socat \
     termux-api \
-    tigervnc \
     tmux \
     tree \
     vim \
     weechat \
     weechat-perl-plugin \
     weechat-python-plugin \
-    zsh \
-    zsh-completions
+    zsh

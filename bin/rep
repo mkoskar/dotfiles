@@ -128,7 +128,7 @@ while true; do
             printf "> finished: %s (%s)$ti_clr_eol" "$ts_end_" "$h" >&2
             (( inline )) && echo || printf %s "$ti_clr_eos"
         fi
-        read -rs -N 1 "${read_opts[@]}" c || continue
+        read -rs -N 1 "${read_opts[@]}" c </dev/tty || continue
         case $c in [qQ]) break ;; esac
     fi
 done

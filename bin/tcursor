@@ -44,7 +44,7 @@ shift $((OPTIND-1))
 color() { printf '\e]12;%s\e\\' "${1:-#dddddd}"; }
 style() { printf '\e[%d q' "${1:-2}"; }
 
-for arg in "$@"; do
+for arg; do
     case $arg in
         block)          style 2 ;;
         underline)      style 4 ;;

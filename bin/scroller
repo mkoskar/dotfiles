@@ -34,7 +34,7 @@ while true; do
     printf '%s\n' "$item"
 
     (( len > 1 )) || break
-    read -rs -N 1 c
+    read -rs -N 1 c </dev/tty
     case $c in
         [qQ])
             break

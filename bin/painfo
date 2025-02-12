@@ -22,7 +22,8 @@ prgname=${0##*/}
 
 case $1 in
     default-sink)
-        pactl info | awk '/Default Sink:/{ print $3 }'
+        #pactl info | awk '/Default Sink:/{ print $3 }'
+        pactl get-default-sink
         ;;
     default-sink-description)
         name=$(painfo default-sink)

@@ -4,7 +4,6 @@
 
 -- {{{ Imports
 
-import Control.Monad
 import Data.List (isPrefixOf)
 import Data.Maybe (fromMaybe)
 import Graphics.X11.Xinerama (getScreenInfo)
@@ -19,7 +18,6 @@ import XMonad.Actions.OnScreen
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.UpdateFocus
 import XMonad.Actions.UpdatePointer
-import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers

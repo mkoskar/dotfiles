@@ -16,7 +16,7 @@ xrandr_l2r() {
     (( $# )) || return 1
     local arg o first prev primary args=()
     declare -A omap
-    for arg in "$@"; do
+    for arg; do
         o=${arg#+}
         [[ ${prev+set} ]] && omap[$o]=$prev || first=$o
         [[ ! ${primary+set} || $arg = +* ]] && primary=$o

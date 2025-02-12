@@ -2,16 +2,27 @@
 
 set -eu
 
-PS3='Select: '
-emails=(
-    email1
-    email2
-)
-select sel in "${emails[@]}"; do
-    break
-done
+if (( $# )); then
+    email=$1
+else
+    PS3='Select: '
+    emails=(
+        email1
+        email2
+    )
+    select email in "${emails[@]}"; do
+        break
+    done
+fi
 
-git config user.email "$sel"
-confirm 'Set commit.gpgSign?' y && git config commit.gpgSign true
-confirm 'Set tag.gpgSign?' y && git config tag.gpgSign true
+git config set user.email "$email"
+
+git config unset commit.gpgSign || true
+confirm 'Set commit.gpgSign?' n &&
+    git config set commit.gpgSign true
+
+git config unset tag.gpgSign || true
+confirm 'Set tag.gpgSign?' n &&
+    git config set tag.gpgSign true
+
 exit 0

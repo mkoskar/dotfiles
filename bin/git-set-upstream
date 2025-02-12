@@ -19,8 +19,8 @@ git remote show "$remote"
 cmd="git branch --set-upstream-to=$remote/HEAD"
 confirm "> $cmd" y && eval "$cmd"
 
-cmd='git config remote.pushdefault origin'
+cmd='git config set remote.pushdefault origin'
 confirm "> $cmd" y && eval "$cmd"
 
-cmd='git config push.default current'
+cmd='git config set push.default current'
 confirm "> $cmd" y && eval "$cmd"

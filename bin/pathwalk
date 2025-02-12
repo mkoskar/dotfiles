@@ -6,7 +6,7 @@ prgname=${0##*/}
 
 path=$(realpath -es -- "${1-.}")
 if [[ $path = *$'\n'* ]]; then
-    printf '%s: path contains \\n (NL)\n' "$prgname" >&2
+    printf '%s: path contains NL\n' "$prgname" >&2
     exit 1
 fi
 
