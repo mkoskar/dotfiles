@@ -41,7 +41,7 @@ case $default in
         ;;
 esac
 
-while read -rs -N 1 -p "$prompt" sel; do
+while read -rs -N 1 -p "$prompt" sel </dev/tty; do
     [[ $sel != $'\n' ]] || sel=$default
     case $sel in
         [yY])

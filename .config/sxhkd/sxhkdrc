@@ -7,10 +7,10 @@ super + semicolon ; super + semicolon
     wmutil spawn sp:mon srun -sx term -n \{\} -g 180x48 trun tmux-session mon
 
 super + alt + {j,k}
-    xdotool getactivewindow windowmove --relative -- 0 {+,-}50
+    xdotool getwindowfocus windowmove --relative -- 0 {+,-}50
 
 super + alt + {l,h}
-    xdotool getactivewindow windowmove --relative -- {+,-}50 0
+    xdotool getwindowfocus windowmove --relative -- {+,-}50 0
 
 super + {_,ctrl + ,shift + }y
     xdotool click --clearmodifiers {1,2,3}
@@ -22,7 +22,7 @@ super + {u,i,o}
     wmutil warp_to_mon {--focused 1p, --primary, --focused 1n}
 
 super + c
-    xdotool getactivewindow windowclose
+    xdotool getwindowfocus windowclose
 
 # ----------------------------------------
 

@@ -14,8 +14,9 @@ folder-hook . 'source $my_accounts/pre_hook'
 source $my_accounts/local
 macro index,pager \e<f1> <change-folder>$my_local/INBOX<enter>
 
-source $my_accounts/main
-macro index,pager \e<f2> <change-folder>$my_main/INBOX<enter>
+#source $my_accounts/main
+#macro index,pager \e<f2> <change-folder>$my_main/INBOX<enter>
 
 # Default INBOX
-set spoolfile = $my_main/INBOX
+#set spoolfile = $my_main/INBOX
+set spoolfile = $my_local/INBOX

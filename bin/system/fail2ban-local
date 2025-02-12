@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -eu
+
+prgname=${0##*/}
+
+(( $# )) || set -- tail
+
+log=/var/log/fail2ban-local.log
+
+cmd=$1
+shift
+case $cmd in
+    add)
+        umask 177
+        host=$1
+        args=${*:2}
+        printf '%(%F %T)T %s %s\n' -1 "$host" "${args[*]:--}" >>"$log"
+        ;;
+    tail)
+        tail -F "$log"
+        ;;
+    *)
+        echo "usage: $prgname [add HOST message | tail]" >&2
+        exit 2
+        ;;
+esac

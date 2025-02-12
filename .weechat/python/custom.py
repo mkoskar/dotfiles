@@ -1281,7 +1281,7 @@ def configure(args):
     cmd('set irc.server_default.sasl_username mkoskar')
     cmd('set irc.server_default.tls on')
     cmd('set irc.server_default.tls_cert {}/ssl/nick.pem'.format(config_dir_ref))
-    cmd('set irc.server_default.usermode +iwR')
+    cmd('set irc.server_default.usermode +iwIR')
     cmd('set irc.server_default.username mkoskar')
     cmd('set logger.file.rotation_compression_level 80')
     cmd('set logger.file.rotation_compression_type gzip')

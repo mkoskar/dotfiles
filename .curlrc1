@@ -1,0 +1,20 @@
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept
+-H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-Encoding
+--compressed
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-Language
+-H "Accept-Language: en-US,en;q=0.5"
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
+#-H "Cache-Control: no-cache"
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-Dest
+-H "Sec-Fetch-Dest: document"
+-H "Sec-Fetch-Mode: navigate"
+-H "Sec-Fetch-Site: none"
+-H "Sec-Fetch-User: ?1"
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/User-Agent
+-H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:136.0) Gecko/20100101 Firefox/136.0"

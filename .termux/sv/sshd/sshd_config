@@ -1,7 +1,8 @@
 AuthorizedKeysFile .ssh/authorized_keys
 KbdInteractiveAuthentication no
-ListenAddress 172.31.1.12
-PasswordAuthentication yes
+ListenAddress 172.31.0.12
+PasswordAuthentication no
+PrintMotd no
 Subsystem sftp /data/data/com.termux/files/usr/libexec/sftp-server
 UseDNS no
 X11Forwarding yes

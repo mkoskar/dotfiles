@@ -66,6 +66,7 @@ alias curl-socks='curl --preproxy socks5h://localhost:1080'
 alias curl-time='curl -w "%{stderr}%{time_namelookup} namelookup\n%{time_connect} connect\n%{time_appconnect} appconnect\n%{time_pretransfer} pretransfer\n%{time_starttransfer} starttransfer\n%{time_posttransfer} posttransfer\n%{time_redirect} redirect\n%{time_total} total\n"'
 alias curl-tor='curl --preproxy socks5h://localhost:9050'
 alias curl-trace='curl --trace-ascii - --trace-time'
+alias curl1='curl -K ~/.curlrc1'
 
 
 # docker / podman
@@ -75,20 +76,21 @@ alias dk=docker
 alias dkc='docker container'
 alias dke='docker exec -i -t'
 alias dki='docker image'
-alias dkr='docker run -P -i -t'
+alias dkr='docker run --rm -i -t'
 
 alias pd=podman
 alias pdc='podman container'
 alias pde='podman exec -i -t'
 alias pdi='podman image'
-alias pdr='podman run -P -i -t'
+alias pdr='podman run --rm -i -t'
 
 alias dk-prune='docker system prune'
 alias pd-prune='podman system prune'
 
-dk-stop() {
+_dk_stop() {
     docker container ls -aq | command xargs -rx docker stop
 }
+alias dk-stop=_dk_stop
 
 alias pd-stop='podman stop -a'
 
@@ -96,48 +98,42 @@ alias pd-stop='podman stop -a'
 # dotfiles
 # ----------------------------------------
 
-alias .f=dotfiles
-
-dotfiles() {
-    [ $# -gt 0 ] || set -- status -s
-    command git --git-dir ~/.dotfiles/.git --work-tree ~/ "$@"
-}
-
-dotfiles-init() {
-    git clone -n https://github.com/mkoskar/dotfiles.git ~/.dotfiles
-    dotfiles set-email
-    dotfiles reset .
-    dotfiles checkout-index -a
-}
+. ~/bin/dotfiles.sh
 
 
 # find
 # ----------------------------------------
 
-alias f="find -regextype posix-extended -mindepth 1 ! \\( -type d -regex '.*/\\.(bzr|git|hg|svn)' -prune \\)"
-alias fa='find -mindepth 1'
-alias find-broken-links='find -xtype l'
-alias find-stale-by-24h='find -mtime +1'
-alias find-stale-by-day='find -daystart -mtime +1'
+alias f="find . -regextype posix-extended -mindepth 1 ! \\( -type d -regex '.*/\\.(bzr|git|hg|svn)' -prune \\)"
+alias fa='find . -mindepth 1'
+alias find-broken-links='find . -xtype l'
+alias find-stale-by-24h='find . -mtime +1'
+alias find-stale-by-day='find . -daystart -mtime +1'
 
 
 # gpg
 # ----------------------------------------
 
-alias gpg-connect-dirmngr='gpg-connect-agent --dirmngr'
+alias gpg-connect-agent='\gpg-connect-agent --no-history'
 alias gpg-debug='gpg -vv --debug-level=guru'
-alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
 alias gpg0='gpg --no-options'
+alias gpgd='gpg --decrypt-files'
+alias gpgesym='gpg -c --cipher-algo AES256'
 
 alias gpg-agent-kill='gpg-connect-agent killagent /bye'
+alias gpg-agent-killscd="gpg-connect-agent 'scd killscd' /bye"
 alias gpg-agent-pid="gpg-connect-agent 'getinfo pid' /bye"
 alias gpg-agent-reload='gpg-connect-agent reloadagent /bye'
 alias gpg-agent-sessionenv="gpg-connect-agent 'getinfo std_session_env' /bye"
 alias gpg-agent-socket="gpg-connect-agent 'getinfo socket_name' /bye"
 alias gpg-agent-updatetty='gpg-connect-agent updatestartuptty /bye'
 
+alias gpg-connect-dirmngr='gpg-connect-agent --dirmngr'
 alias gpg-dirmngr-kill='gpg-connect-dirmngr killdirmngr /bye'
 alias gpg-dirmngr-reload='gpg-connect-dirmngr reloaddirmngr /bye'
+
+alias gpg-sandbox-connect-agent='gpg-connect-agent --homedir ~/.gnupg/sandbox'
+alias gpg-sandbox='gpg --homedir ~/.gnupg/sandbox'
 
 
 # grep
@@ -224,7 +220,6 @@ alias paccheck-modified='paccheck --quiet --files --md5sum --sha256sum --require
 alias pacdiff='\pacdiff -s -3'
 alias pacman-log='pg /var/log/pacman.log'
 alias pacq='pacman -Q'
-alias pactree='\pactree --color'
 
 _paclog_recent() {
     paclog --action=all | paclog --after="$(date -I -d -7days)" | $PAGER
@@ -341,19 +336,24 @@ alias aria-noalloc='aria2c -c -m 0 --file-allocation=none'
 alias aria='aria2c -c -m 0'
 alias aunpack='\aunpack -q'
 alias avahi-browse='\avahi-browse -avtr'
-alias c=calc
+alias bc='\bc -l'
+alias c=qalc
 alias cal='\cal -3mw'
 alias callgrind='valgrind --tool=callgrind'
 alias caps='filecap -d'
 alias clipi='clip -i'
 alias cp='\cp -ai --reflink=auto'
 alias cpio-copy='cpio -pdmv'
-alias date-serial='date +%Y%m%d01'
-alias date0='date -R'
-alias dated='date -Id'
-alias datee='date +%s'
-alias datei='date -Is'
-alias dateii='date +"Y%G Q%q W%V D%j"'
+alias csplit='\csplit -kz'
+alias date-epoch='date -d @0'
+alias date-serial='\date +%Y%m%d01'
+alias date0='\date -R'
+alias date='\date +"%F %T"'
+alias dated='\date -Id'
+alias datee='\date +%s'
+alias datei='\date -Is'
+alias dateii='\date +"Y%G Q%q W%V D%j"'
+alias dateu='date -u'
 alias dconfa='dconf dump /'
 alias dd='\dd bs=4M conv=fsync oflag=direct status=progress'
 alias delv-nocheck='delv +cd'
@@ -377,12 +377,13 @@ alias du='\du -hx'
 alias dua='du --apparent-size -hx'
 alias e0='e -Xn -i NONE -u NONE'
 alias ebatch='e0 -V1 -es'
-alias ed='\ed -v -p :'
+alias ed='\ed -Ev -p :'
 alias fc-debug='FC_DEBUG=8191'
 alias fc-recache='fc-cache -rv'
 alias feh='\feh -F'
 alias fortune='\fortune -c'
 alias free='\free -h'
+alias fsnotify-monitor='fsnotifywait -m -r'
 alias fuser='\fuser -v'
 alias fzy='\fzy -l $LINES'
 alias getfattr='\getfattr --absolute-names -d -m -'
@@ -393,6 +394,7 @@ alias host='\host -Tv'
 alias info='\info --vi-keys'
 alias infocmp0='infocmp -A "$SYSPREFIX"/share/terminfo'
 alias infocmp='\infocmp -1a'
+alias inotify-monitor='inotifywait -m -r'
 alias ip='\ip -h -p -c=auto'
 alias journal-notice='journal -p 5'
 alias journal='journalctl -o short-precise -b'
@@ -469,6 +471,7 @@ alias smbclient='\smbclient --configfile=/dev/null'
 alias socat='\socat -dd'
 alias socati='socat readline,history=/dev/null'
 alias speaker-test='\speaker-test -t wav -c 2'
+alias split='\split -d'
 alias srunX='srun -sX'
 alias srunx='srun -sx'
 alias ss='\ss -naptu'
@@ -480,6 +483,8 @@ alias ssh-socks='ssh -D 1080 -N'
 alias ssh0='ssh -S none'
 alias sshcat-cert='ssh-keygen -L -f'
 alias sshcat-key='ssh-keygen -l -f'
+alias sshconf='ssh -G'
+alias sshdconf='sshd -G'
 alias stat="stat -c '%A %a %h %U %G %s %y %N'"
 alias sys='systool -av'
 alias systemd-debug='SYSTEMD_LOG_LEVEL=7 SYSTEMD_LOG_COLOR=1 SYSTEMD_LOG_TIME=1 SYSTEMD_LOG_LOCATION=1'
@@ -573,11 +578,6 @@ cd() {
     case $SHNAME in zsh) setopt local_options posix_builtins ;; esac
     [ $# -gt 0 ] || set -- "${BASEDIR:-${SHOME:-$HOME}}"
     command cd -- "$@"
-}
-
-date() {
-    [ $# -gt 0 ] || set -- +'%F %T'
-    command date "$@"
 }
 
 if has fc; then

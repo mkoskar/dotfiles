@@ -17,24 +17,24 @@ case $- in *l*) ;; *) return ;; esac
 
 case $OSID in
     termux)
-        ~/.termux/runsvdir &>/dev/null
+        ~/.termux/runsvdir >/dev/null 2>&1
         #ssh-agent-preset
         ;;
     *)
         [ "$(tty)" = /dev/tty1 ] || { return 0; }
 
-        echo
-        echo --------------------------------------------------
-        echo '> Setup backup:'
-        echo
-        sudo backup-setup
+        #echo
+        #echo --------------------------------------------------
+        #echo '> Setup backup:'
+        #echo
+        #sudo backup-setup
 
-        echo
-        echo --------------------------------------------------
-        echo '> Presets:'
-        echo
+        #echo
+        #echo --------------------------------------------------
+        #echo '> Presets:'
+        #echo
         #gpg-agent-preset
-        ssh-agent-preset
+        #ssh-agent-preset
 
         echo
         echo --------------------------------------------------

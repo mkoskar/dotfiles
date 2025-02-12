@@ -131,12 +131,10 @@ export JDK_HOME=$SYSPREFIX/lib/jvm/default
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.opengl=true -Dsun.java2d.xrender=true -Dswing.aatext=true'
 
+#export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/gcr/ssh}
 #export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh}
-#export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/keyring/ssh}
-export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent}
+export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent.socket}
 
-#export SSH_ASKPASS=/usr/lib/seahorse/ssh-askpass
-#export SSH_ASKPASS=/usr/lib/ssh/ssh-askpass # -> x11-ssh-askpass
 export SSH_ASKPASS=/usr/bin/lxqt-openssh-askpass
 export SUDO_ASKPASS=$SSH_ASKPASS
 
@@ -156,7 +154,7 @@ export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc
 export GTK_IM_MODULE=xim
 export GTK_MODULES=canberra-gtk-module
 export LD_LIBRARY_PATH=~/opt/lib
-export LESS='c i M Q R S --shift 5 --follow-name --incsearch --no-histdups --no-vbell --use-color DE231.1$ DN240.-$ DP231.1$ DR238.-$ DS16.214$ Du+Y-$'
+export LESS='ciJMQRSW#5 --follow-name --incsearch --no-histdups --no-vbell --status-line --use-color DE231.1$ DN240$ DP231.1$ DR238$ DS16.214$ DW.235$ Du+Y$'
 export LESSHISTFILE=-
 export MAILDIR=~/mail
 export MANLESS='$MAN_PN ?ltlines %lt-%lb?L/%L. :byte %bB?s/%s. .?e(END) :?pB%pB\%..%t'
@@ -192,7 +190,7 @@ export S_TIME_DEF_TIME=UTC
 export S_TIME_FORMAT=ISO
 export TERMINFO_DIRS=$SYSETC/terminfo:$SYSPREFIX/share/terminfo
 export TMUX_TMPDIR=$TMPDIR
-export UAGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'
+export UAGENT='Mozilla/5.0 (X11; Linux x86_64; rv:136.0) Gecko/20100101 Firefox/136.0'
 export VDPAU_DRIVER=va_gl
 export VIMINIT='source ~/.vim/vimrc'
 export WEECHAT_HOME=~/.weechat

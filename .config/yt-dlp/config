@@ -6,3 +6,5 @@
 --no-cache-dir
 --no-playlist
 --output %(title)s.%(ext)s
+--sub-langs en
+--write-auto-subs

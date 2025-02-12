@@ -63,6 +63,7 @@ Glue records:
 resolv.conf(5):
 - LOCALDOMAIN: a space-separated list of search domains
 - RES_OPTIONS: a space-separated list of resolver options
+- edns0 trust-ad
 
 $ getent -s dns hosts <hostname>    # lookup for <hostname>
 $ getent -s dns hosts <ip>          # reverse lookup for <ip>
@@ -83,9 +84,17 @@ dig (bind)
 
     $ dig [@server] [name] [type] [class]
     $ dig +noall +answer [name] [type]
+
+    +do - request DNSSEC records
+    +cd - set (CD: Checking Disabled)
+    +noad[flag] - don't set (AD: Authenticated Data)
+
     $ dig +cd [name] [type]
     $ dig +cd +tcp +nssearch [name]
     $ dig +cd +tcp +trace [name] [type]
+
+    $ dig www.brokendnssec.net
+    $ dig www.dnssec-failed.org
 
 
 delv (bind)

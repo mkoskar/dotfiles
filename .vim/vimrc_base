@@ -8,7 +8,10 @@ let $MYVIMRC = vimrc
 " ----------------------------------------
 
 set nocompatible
-set pastetoggle=<F6>
+
+if !has('nvim')
+    set pastetoggle=<F6>
+endif
 
 set rtp =
     \ rtp+=~/.vim
@@ -447,7 +450,6 @@ nnoremap <Leader>M :set mouse=<C-R>=empty(&mouse) ? 'a' : ''<CR><CR>
 
 set guicursor+=a:blinkon0
 set guifont=Terminus\ 16px
-set guioptions=ce
 set title
 
 let &titlestring = '%{v:progname}: '
@@ -456,6 +458,7 @@ let &titlestring .= "%( %{get(b:, 'run_title', '')}%)"
 let &titlestring .= "%( %{get(w:, 'quickfix_title', '')}%)"
 
 if !has('nvim')
+    set guioptions=ce
     set nottybuiltin
     set ttyfast
     let &t_ut = ''
@@ -604,6 +607,7 @@ set tabstop=4
 " ----------------------------------------
 
 set foldcolumn=1
+set foldlevelstart=0
 set foldminlines=0
 set foldopen-=block
 
@@ -907,11 +911,13 @@ xnoremap <silent> <Leader>su :sort u<CR>
 xnoremap <silent> <Leader>sr :sort!<CR>
 xnoremap <silent> <Leader>sb :!sortb<CR>
 
-" Strip / Squash lines
+" Strip / Squash / Eliminate lines
 xnoremap <silent> <Leader>ps :!striplns<CR>
 nnoremap <silent> <Leader>ps :%!striplns<CR>
 xnoremap <silent> <Leader>pS :!squashlns<CR>
 nnoremap <silent> <Leader>pS :%!squashlns<CR>
+xnoremap <Leader>pe <Cmd>g/^\s*$/d<CR>
+nnoremap <Leader>pe <Cmd>g/^\s*$/d<CR>
 
 " Help
 nnoremap <Leader>h :tab help<Space>
@@ -1772,11 +1778,15 @@ endif
 
 let qf_disable_statusline = 1
 
-packadd! ansiesc
 packadd! cfilter
 packadd! colorschemes
 packadd! matchit
 packadd! termdebug
+
+try
+    packadd! ansiesc
+catch /:E919:/
+endtry
 
 filetype plugin indent on
 if !exists('syntax_on')

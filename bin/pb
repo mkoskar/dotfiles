@@ -28,7 +28,7 @@ trap cleanup EXIT
 outfile=$tmpdir/out
 
 fargs=()
-for arg in "$@"; do
+for arg; do
     arg=${arg//\\/\\\\}
     arg=${arg//\"/\\\"}
     fargs+=("$arg")

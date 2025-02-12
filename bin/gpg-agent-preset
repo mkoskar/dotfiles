@@ -7,9 +7,7 @@
 
 set -eu
 
-cd ~
-
-[[ -t 0 ]] && src=.gnupg/gpg-agent.presets || src=/dev/stdin
+[[ -t 0 ]] && src=~/.gnupg/gpg-agent.presets || src=/dev/stdin
 
 declare -i retry=10
 while true; do
@@ -18,6 +16,7 @@ while true; do
     sleep 0.2
 done
 
+cd ~/
 while read -r keygrip; do
     IFS= read -rs -p "Passphrase for (${keygrip:0:8}...): " pass </dev/tty
     echo

@@ -305,21 +305,21 @@ bindkey -M vicmd \\- vi-first-non-blank
 bindkey -M vicmd \^J vi-open-line-below
 bindkey -M vicmd \^R redo
 
-bindkey -s \^Xp '^X^AA | pg'
+bindkey -s \^Xp '^X^AA|& pg'
 bindkey -s \^XP '^X^AIpgx '
 bindkey -s \^Xx '^X^A0isudo '
-bindkey -s \^Xh "^X^Addihistory 25 | gi ''^X^Ai"
+bindkey -s \^Xh "^X^Addihistory 25 |& gi ''^X^Ai"
 bindkey -s \^Xa '!!:*'
 bindkey -s \^Xl '!!:$'
 bindkey -s \^Xs '!!:gs/'
 bindkey -s \^X{ '{,.}^X^Ai'
 bindkey -s \^Xc '--color=auto '
 
-bindkey -M vicmd -s \| 'A | '
-bindkey -M vicmd -s \^Xp 'A | pg'
+bindkey -M vicmd -s \| 'A|& '
+bindkey -M vicmd -s \^Xp 'A|& pg'
 bindkey -M vicmd -s \^XP 'Ipgx '
 bindkey -M vicmd -s \^Xx 'Isudo '
-bindkey -M vicmd -s \^Xh "ddihistory 25 | gi ''^X^Ai"
+bindkey -M vicmd -s \^Xh "ddihistory 25 |& gi ''^X^Ai"
 bindkey -M vicmd -s \^Xa 'a!!:*'
 bindkey -M vicmd -s \^Xl 'a!!:$'
 bindkey -M vicmd -s \^Xs 'a!!:gs/'
@@ -344,6 +344,103 @@ for m in visual viopp; do
         bindkey -M $m $c select-quoted
     done
 done
+
+
+# Aliases / Named directories
+# ----------------------------------------
+
+unalias run-help &>/dev/null
+alias help=run-help
+
+hash -d etc=$SYSETC
+hash -d fonts=~/.local/share/fonts
+hash -d journal=/var/log/journal
+hash -d logs=/var/log
+hash -d run=$XDG_RUNTIME_DIR
+hash -d systemd-system=/etc/systemd/system
+hash -d systemd-user=~/.config/systemd/user
+hash -d udev.rules.d=/etc/udev/rules.d
+hash -d xorg.conf.d=/etc/X11/xorg.conf.d
+
+
+# Plugins
+# ----------------------------------------
+
+__plugin() {
+    local name=$1 base
+    declare -gA __plugin_loaded
+    [[ $__plugin_loaded[$name] ]] && return
+    for base in ~/opt /usr/share/zsh/plugins; do
+        [[ -e $base/$name ]] || continue
+        if [[ -e $base/$name/$name.plugin.zsh ]]; then
+            . $base/$name/$name.plugin.zsh
+        else
+            . $base/$name/$name.zsh
+        fi
+        __plugin_loaded[$name]=1
+        return $?
+    done
+    return 1
+}
+
+__plugin zsh-completions
+
+if __plugin zsh-autosuggestions; then
+    ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(autosuggest-enable-accept)
+    ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+    ZSH_AUTOSUGGEST_COMPLETION_IGNORE='rm *'
+    ZSH_AUTOSUGGEST_HISTORY_IGNORE='rm *'
+    ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+    ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=(emacs-forward-word-autosuggest)
+    ZSH_AUTOSUGGEST_USE_ASYNC=1
+    __autosuggest-enable-accept() {
+        if (( $+_ZSH_AUTOSUGGEST_DISABLED )); then
+            zle autosuggest-enable
+        else
+            zle autosuggest-accept
+        fi
+    }
+    __emacs-forward-word-autosuggest() { zle emacs-forward-word; }
+    zle -N {,__}autosuggest-enable-accept
+    zle -N {,__}emacs-forward-word-autosuggest
+    add-zle-hook-widget zle-line-init autosuggest-disable
+    bindkey '^ ' autosuggest-enable-accept
+    bindkey '\e ' emacs-forward-word-autosuggest
+    bindkey '\e^ ' autosuggest-toggle
+fi
+
+if __plugin zsh-history-substring-search; then
+    HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
+    HISTORY_SUBSTRING_SEARCH_FUZZY=1
+    HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS=
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=bg=red,fg=231
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=
+    bindkey \^P history-substring-search-up
+    bindkey \^N history-substring-search-down
+    bindkey -M vicmd \^P history-substring-search-up
+    bindkey -M vicmd \^N history-substring-search-down
+fi
+
+if __plugin zsh-syntax-highlighting; then
+    #ZSH_HIGHLIGHT_PATTERN+=(pattern style)
+    #ZSH_HIGHLIGHT_REGEXP+=(pattern style)
+    ZSH_HIGHLIGHT_HIGHLIGHTERS=(brackets main pattern regexp)
+    ZSH_HIGHLIGHT_MAXLENGTH=50
+    ZSH_HIGHLIGHT_STYLES[alias]=fg=14,bold
+    ZSH_HIGHLIGHT_STYLES[assign]=fg=11
+    ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=15
+    ZSH_HIGHLIGHT_STYLES[builtin]=fg=11,bold
+    ZSH_HIGHLIGHT_STYLES[command]=fg=10,bold
+    ZSH_HIGHLIGHT_STYLES[commandseparator]=fg=15,bold
+    ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=11
+    ZSH_HIGHLIGHT_STYLES[function]=fg=14,bold
+    ZSH_HIGHLIGHT_STYLES[globbing]=fg=11
+    ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=10,bold,underline
+    ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=14
+    ZSH_HIGHLIGHT_STYLES[path]=fg=15
+    ZSH_HIGHLIGHT_STYLES[precommand]=fg=11,bold,underline
+    ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=11,bold,underline
+fi
 
 
 # Completion
@@ -453,100 +550,6 @@ _pacpkgs() {
 }
 compctl -K _pacpkgs \
     paccheck pacd pacdo paci pacl pacp pacrm pacw
-
-
-# Aliases / Named directories
-# ----------------------------------------
-
-unalias run-help &>/dev/null
-alias help=run-help
-
-hash -d fonts=~/.local/share/fonts
-hash -d journal=/var/log/journal
-hash -d logs=/var/log
-hash -d run=$XDG_RUNTIME_DIR
-hash -d systemd-system=/etc/systemd/system
-hash -d systemd-user=~/.config/systemd/user
-hash -d udev.rules.d=/etc/udev/rules.d
-hash -d xorg.conf.d=/etc/X11/xorg.conf.d
-
-
-# Plugins
-# ----------------------------------------
-
-__plugin() {
-    local name=$1 base
-    declare -gA __plugin_loaded
-    [[ $__plugin_loaded[$name] ]] && return
-    for base in ~/opt /usr/share/zsh/plugins; do
-        [[ -e $base/$name ]] || continue
-        if [[ -e $base/$name/$name.plugin.zsh ]]; then
-            . $base/$name/$name.plugin.zsh
-        else
-            . $base/$name/$name.zsh
-        fi
-        __plugin_loaded[$name]=1
-        return $?
-    done
-    return 1
-}
-
-if __plugin zsh-autosuggestions; then
-    ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(autosuggest-enable-accept)
-    ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
-    ZSH_AUTOSUGGEST_COMPLETION_IGNORE='rm *'
-    ZSH_AUTOSUGGEST_HISTORY_IGNORE='rm *'
-    ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-    ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=(emacs-forward-word-autosuggest)
-    ZSH_AUTOSUGGEST_USE_ASYNC=1
-    __autosuggest-enable-accept() {
-        if (( $+_ZSH_AUTOSUGGEST_DISABLED )); then
-            zle autosuggest-enable
-        else
-            zle autosuggest-accept
-        fi
-    }
-    __emacs-forward-word-autosuggest() { zle emacs-forward-word; }
-    zle -N {,__}autosuggest-enable-accept
-    zle -N {,__}emacs-forward-word-autosuggest
-    add-zle-hook-widget zle-line-init autosuggest-disable
-    bindkey '^ ' autosuggest-enable-accept
-    bindkey '\e ' emacs-forward-word-autosuggest
-    bindkey '\e^ ' autosuggest-toggle
-fi
-
-if __plugin zsh-history-substring-search; then
-    HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
-    HISTORY_SUBSTRING_SEARCH_FUZZY=1
-    HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS=
-    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=bg=red,fg=231
-    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=
-    bindkey \^P history-substring-search-up
-    bindkey \^N history-substring-search-down
-    bindkey -M vicmd \^P history-substring-search-up
-    bindkey -M vicmd \^N history-substring-search-down
-fi
-
-if __plugin zsh-syntax-highlighting; then
-    #ZSH_HIGHLIGHT_PATTERN+=(pattern style)
-    #ZSH_HIGHLIGHT_REGEXP+=(pattern style)
-    ZSH_HIGHLIGHT_HIGHLIGHTERS=(brackets main pattern regexp)
-    ZSH_HIGHLIGHT_MAXLENGTH=50
-    ZSH_HIGHLIGHT_STYLES[alias]=fg=14,bold
-    ZSH_HIGHLIGHT_STYLES[assign]=fg=11
-    ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=15
-    ZSH_HIGHLIGHT_STYLES[builtin]=fg=11,bold
-    ZSH_HIGHLIGHT_STYLES[command]=fg=10,bold
-    ZSH_HIGHLIGHT_STYLES[commandseparator]=fg=15,bold
-    ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=11
-    ZSH_HIGHLIGHT_STYLES[function]=fg=14,bold
-    ZSH_HIGHLIGHT_STYLES[globbing]=fg=11
-    ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=10,bold,underline
-    ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=14
-    ZSH_HIGHLIGHT_STYLES[path]=fg=15
-    ZSH_HIGHLIGHT_STYLES[precommand]=fg=11,bold,underline
-    ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=11,bold,underline
-fi
 
 
 # ----------------------------------------

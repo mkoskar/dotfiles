@@ -67,7 +67,7 @@ if [[ $profile != skel ]]; then
 
     if [[ ! -e $path/theme ]]; then
         mkdir -p "$path"/theme
-        pushd "$path"/theme
+        cd "$path"/theme
 
         case $profile in
             default)        frame_color='[200, 200, 200]' ;;
@@ -108,7 +108,8 @@ if [[ $profile != skel ]]; then
         pango-view -q --font='sans 8' \
             --background=transparent --foreground=black --margin=5 \
             -t "$profile" -o ntpbg.png
-        popd
+
+        cd ~-
     fi
 fi
 

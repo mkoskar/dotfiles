@@ -51,4 +51,4 @@ vtswitch-lock
 chown -- "$user" $vtnew
 
 runuser -c 'away -C away' - -- "$user"
-read -rs
+read -rs </dev/tty

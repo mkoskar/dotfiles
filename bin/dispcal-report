@@ -22,7 +22,7 @@ echo $'> Select display to continue:\n'
 printf '%s\n' "${dall[@]}"
 echo
 
-read -rs -N 1 -p 'Your choice: ' dsel
+read -rs -N 1 -p 'Your choice: ' dsel </dev/tty
 echo
 
 if [[ ! $dsel =~ ^[1-9]$ ]] || (( dsel > ${#dall[@]} )); then

@@ -1,8 +1,8 @@
 # Executed by bash(1) for interactive non-login shells.
 
-[[ $SHRC_DEBUG ]] && echo ~/.bashrc >&2
+[[ ${BASH_SOURCE[1]} = $SYSETC/profile ]] && return
 
-[[ ${BASH_SOURCE[1]} = /etc/profile ]] && return
+[[ $SHRC_DEBUG ]] && echo ~/.bashrc >&2
 
 . ~/bin/term.sh
 
