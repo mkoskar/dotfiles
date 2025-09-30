@@ -1,5 +1,6 @@
 !*
 
+/runsvdir.out
 /sv/*/log/@*
 /sv/*/log/current
 /sv/*/log/lock

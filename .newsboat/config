@@ -17,7 +17,7 @@ suppress-first-reload yes
 text-width 79
 
 miniflux-login "mkoskar"
-miniflux-tokenfile "~/.secrets/miniflux-api-token"
+miniflux-tokenfile "~/.secrets/miniflux-token"
 miniflux-url "https://feed.mkoskar.com/"
 
 urls-source miniflux

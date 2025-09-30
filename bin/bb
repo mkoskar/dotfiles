@@ -80,6 +80,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     bbcode                  b https://www.bbcode.org/reference.php
     bindzone                b https://en.wikipedia.org/wiki/Zone_file#Example_file
     binutils                b https://sourceware.org/binutils/docs/
+    bitrates                b https://en.wikipedia.org/wiki/List_of_interface_bit_rates
     bluetooth-profiles      b https://en.wikipedia.org/wiki/List_of_Bluetooth_profiles
     bpf                     b https://www.kernel.org/doc/html/latest/bpf/index.html
     browserbench            b https://browserbench.org/
@@ -175,6 +176,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     enum                    b https://en.wikipedia.org/wiki/E_number#Full_list
     erlang                  b https://www.erlang.org/doc/index.html
     esp-datasheets          b https://www.espressif.com/en/support/documents/technical-documents
+    ethernet-phy            b https://en.wikipedia.org/wiki/Ethernet_physical_layer
     ethertype               b https://en.wikipedia.org/wiki/EtherType
     etsi                    b https://www.etsi.org/standards-search#\&sort=3
     etymology               b https://www.etymonline.com/word/{u}
@@ -505,6 +507,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     posix-vol2-xsh          b "$posix_base"/functions/contents.html
     posix-vol3-xcu          b "$posix_base"/utilities/contents.html
     posix-vol4-xrat         b "$posix_base"/xrat/contents.html
+    postfix                 b https://www.postfix.org/documentation.html
     postgresql              b https://www.postgresql.org/docs/current/index.html
     postgresql-connstring   b https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
     postgresql-hba          b https://www.postgresql.org/docs/17/auth-pg-hba-conf.html

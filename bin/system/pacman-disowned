@@ -2,7 +2,7 @@
 
 set -eu -o pipefail
 
-tmpdir=${TMPDIR:-/tmp}/pacman-disowned-$UID-$$
+tmpdir=$(mktemp -d)
 cleanup() { rm -rf "$tmpdir"; }
 trap cleanup EXIT
 

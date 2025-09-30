@@ -2,12 +2,9 @@
 
 set -eu -o pipefail
 
-tmpdir=${TMPDIR:-/tmp}/pacman-altered-$UID-$$
-cleanup() { rm -rf "$tmpdir"; }
-trap cleanup EXIT
-
-mkdir "$tmpdir"
-cd "$tmpdir"
-
-{ paccheck --quiet --files --file-properties --sha256sum --require-mtree \
-    --db-files --backup --noextract --noupgrade || true; } | sort
+{
+    paccheck --quiet \
+        --files --file-properties \
+        --md5sum --sha256sum --require-mtree \
+        --db-files --backup --noextract --noupgrade || true
+} | sort

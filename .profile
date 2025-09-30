@@ -135,6 +135,8 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dsun.java2d.opengl=true 
 #export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh}
 export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent.socket}
 
+#export SSH_ASKPASS=/usr/lib/seahorse/ssh-askpass
+#export SSH_ASKPASS=/usr/lib/ssh/x11-ssh-askpass
 export SSH_ASKPASS=/usr/bin/lxqt-openssh-askpass
 export SUDO_ASKPASS=$SSH_ASKPASS
 
@@ -151,7 +153,7 @@ export ENV=~/.shrc
 export GRADLE_HOME=$SYSPREFIX/share/java/gradle
 export GREP_COLORS=sl=:cx=:mt=41:fn=36:ln=33:bn=33:se=:ne
 export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc
-export GTK_IM_MODULE=xim
+export GTK_IM_MODULE=none
 export GTK_MODULES=canberra-gtk-module
 export LD_LIBRARY_PATH=~/opt/lib
 export LESS='ciJMQRSW#5 --follow-name --incsearch --no-histdups --no-vbell --status-line --use-color DE231.1$ DN240$ DP231.1$ DR238$ DS16.214$ DW.235$ Du+Y$'

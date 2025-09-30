@@ -23,8 +23,9 @@ printf 'runlevel: %s\n' "$lvl_new" >&2
 
 runsvdir=$(command -v runsvdir)
 start-stop-daemon \
-    --start --startas "$runsvdir" \
-    --pidfile "$XDG_RUNTIME_DIR/$prgname.pid" --make-pidfile \
-    --chdir "$PWD" --oknodo --verbose \
+    --start --exec "$runsvdir" \
+    --pidfile "$XDG_RUNTIME_DIR/$prgname.pid" \
     --background --output "$PWD/$prgname.out" \
+    --chdir "$PWD" --make-pidfile \
+    --oknodo --verbose \
     svdir >&2

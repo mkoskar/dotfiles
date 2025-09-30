@@ -29,10 +29,10 @@ case $1 in
         name=$(painfo default-sink)
         pactl list sinks |
             gawk -v name="$name" '
-                match($0, /Name: (.*)/, a) {
-                    if (a[1] == name) { found = 1; next }
+                match($0, /Name: (.*)/, m) {
+                    if (m[1] == name) { found = 1; next }
                 }
-                found && match($0, /Description: (.*)/, a) { print a[1]; exit }
+                found && match($0, /Description: (.*)/, a) { print m[1]; exit }
             '
         ;;
     sinks)

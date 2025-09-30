@@ -68,7 +68,7 @@ ver() {
             fi
             if (( check )); then
                 local stat scode surl
-                local url=https://www.unicode.org/Public/zipped/$ver/ReadMe.txt
+                local url=https://www.unicode.org/Public/UCD/latest/ReadMe.txt
                 stat=$(curl -qsSL -w '%{http_code}\t%{url_effective}' -o "$tmpfile" "$url")
                 read -r scode surl <<<"$stat"
                 case $scode in
@@ -102,7 +102,7 @@ ucd_file() {
     local zfile=UCD-$ver.zip
     if [[ ! -e $zfile ]]; then
         local stat scode surl tmpfile=$tmpdir/$zfile
-        local url=https://www.unicode.org/Public/zipped/$ver/UCD.zip
+        local url=https://www.unicode.org/Public/$ver/ucd/UCD.zip
         stat=$(curl -qsSL -w '%{http_code}\t%{url_effective}' -o "$tmpfile" "$url")
         read -r scode surl <<<"$stat"
         case $scode in
