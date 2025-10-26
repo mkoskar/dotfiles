@@ -2,7 +2,7 @@
 
 set -eu -o pipefail
 
-vim_batch() { vim -NXn -i NONE -u NONE -V1 -es "$@"; }
+vim_batch() { vim -NXYn -i NONE -u NONE -Es -V0 "$@"; }
 export -f vim_batch
 
 from_git() {
@@ -111,12 +111,12 @@ EOF
 echo
 echo '--------------------------------------------------'
 echo '> helptags'
-vim_batch -c '"
-    for dir in glob("*/doc", 1, 1)
-        try | exec "helptags" dir | catch | endtry
-    endfor
-    echo "done\n"
-    qa!
-'
+vim_batch <<-'EOF'
+	for dir in glob("*/doc", 1, 1)
+	    try | exec "helptags" dir | catch | endtry
+	endfor
+	verb echo "done\n"
+	qa!
+EOF
 
 echo

@@ -29,7 +29,7 @@ shift $((OPTIND-1))
 
 if (( $# )); then
     exec <"$1"
-    ft=$(vim -NXn -i NONE -u NONE -es \
+    ft=$(vim -NXYn -i NONE -u NONE -Es -V0 \
              --cmd 'filetype on' -c 'verb echon &ft | qa!' "$1" 2>&1)
 fi
 

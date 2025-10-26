@@ -51,6 +51,14 @@ Glue records:
 - not part of the authoritative data
 - maintained inside parent zone
 
+Hidden name server:
+- e.g., hidden primary name server
+- not pointed to by any NS (parent or child zone)
+
+Stealth/Private name server:
+- no parent NS delegation
+- has NS delegation in the child zone
+
 --------------------------------------------------
 
 /etc/gai.conf
@@ -82,48 +90,48 @@ FQDN:
 dig (bind)
 ----------
 
-    $ dig [@server] [name] [type] [class]
-    $ dig +noall +answer [name] [type]
+$ dig [@server] [name] [type] [class]
+$ dig +noall +answer [name] [type]
 
-    +do - request DNSSEC records
-    +cd - set (CD: Checking Disabled)
-    +noad[flag] - don't set (AD: Authenticated Data)
++do - request DNSSEC records
++cd - set (CD: Checking Disabled)
++noad[flag] - don't set (AD: Authenticated Data)
 
-    $ dig +cd [name] [type]
-    $ dig +cd +tcp +nssearch [name]
-    $ dig +cd +tcp +trace [name] [type]
+$ dig +cd [name] [type]
+$ dig +cd +tcp +nssearch [name]
+$ dig +cd +tcp +trace [name] [type]
 
-    $ dig www.brokendnssec.net
-    $ dig www.dnssec-failed.org
+$ dig www.brokendnssec.net
+$ dig www.dnssec-failed.org
 
 
 delv (bind)
 -----------
 
-    $ delv [@server] [name] [type] [class]
-    $ delv +cd [name] [type]
-    $ delv +cd +tcp +mt +rt +vt [name] [type]
+$ delv [@server] [name] [type] [class]
+$ delv +cd [name] [type]
+$ delv +cd +tcp +mt +rt +vt [name] [type]
 
 
 host (bind)
 -----------
 
-    $ host name [server]
-    $ host -Tv name
+$ host name [server]
+$ host -Tv name
 
 
 nslookup (bind)
 ---------------
 
-    $ nslookup [name|-] [server]
-    $ nslookup -vc -fail
+$ nslookup [name|-] [server]
+$ nslookup -vc -fail
 
 
 drill (ldns)
 ------------
 
-    $ drill name [@server] [type] [class]
-    $ drill -o CD name [type]
-    $ drill -o CD -tT name [type]
+$ drill name [@server] [type] [class]
+$ drill -o CD name [type]
+$ drill -o CD -tT name [type]
 
 EOF

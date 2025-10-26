@@ -6,3 +6,6 @@ hardstatus alwayslastline '%-Lw%{=b}%n%f %t%{-}%+Lw%= %h | %H'
 startup_message off
 term screen-256color
 truecolor on
+zmodem catch
+zmodem recvcmd '!!! lrzsz-rz -vv -E'
+zmodem sendcmd '!!! lrzsz-sz -vv '

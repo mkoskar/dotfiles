@@ -4,13 +4,11 @@
 
 my $url =
    qr{
-      (?:https?://|ftp://|s?news://|mailto:|file://|\bwww\.)
-      [a-zA-Z0-9\-\@;\/?:&=%\$_.+!*\x27,~#]*
-      ( 
-         # Allow a pair of matched parentheses
-         \([a-zA-Z0-9\-\@;\/?:&=%\$_.+!*\x27,~#]*\)|  
-         # exclude some trailing characters (heuristic)
-         [a-zA-Z0-9\-\@;\/?:&=%\$_+*~]
+      (?:https?://|ftp://|news://|mailto:|file://|\bwww\.)
+      [\w\-\@;\/?:&=%\$.+!*\x27,~#$urxvt::NOCHAR]*
+      (
+         \([\w\-\@;\/?:&=%\$.+!*\x27,~#$urxvt::NOCHAR]*\)| # Allow a pair of matched parentheses
+         [\w\-\@;\/?:&=%\$+*~]  # exclude some trailing characters (heuristic)
       )+
    }x;
 
@@ -58,7 +56,7 @@ sub on_user_command {
     my ($brow, $bcol) = $self->selection_beg();
     my ($erow, $ecol) = $self->selection_end();
     my $issel = ($ecol > $bcol) || ($erow > $brow);
-    if ($issel) {         # restrict to selection if one exists
+    if ($issel && $self->my_resource("skipSelection") ne "true") {  # restrict to selection if one exists and allowed
       ($row, $base_col) = ($brow - $self->view_start, $bcol);
       for (split(/\n/, $self->selection())) {
         my $start = length($text) - $base_col;
@@ -102,9 +100,12 @@ sub on_user_command {
 
 sub on_key_press {
   my ($self, $event, $keysym) = @_;
+  if ($self->{url_picker_msg}) {
+    $self->{url_picker_msg} = ();
+  }
   my $p = $self->{url_picker};
   if ($p) {
-    if ($keysym == 0xff1b || $keysym == 113) {  # escape / q
+    if ($keysym == 0xff1b || $keysym == 113) {           # escape or q
       $self->screen_cur($p->{crow},$p->{ccol});
       $self->{url_picker} = ();
     } elsif ($keysym == 0xff08) {      # backspace
@@ -150,7 +151,9 @@ sub update {
       $overlay->hide;
     }
   }
-  if (scalar(@matches) == 1) {
+  # Auto-launch a single url only if the launchsingle resource is true
+  # (default), or if some digits were input
+  if (scalar(@matches) == 1 && ($self->{launchsingle} || $len > 0)) {
     $self->launch(@matches[0]);
   } else {
     $self->screen_cur($self->nrow,8+$len);
@@ -203,8 +206,9 @@ sub on_start {
   ($self->{name} = __PACKAGE__) =~ s/.*:://;
   $self->{name} =~ tr/_/-/;
   $self->{launcher} = $self->my_resource("launcher") ||
-                      $self->x_resource("urlLauncher") ||
+                      $self->x_resource("url-launcher") ||
                       "sensible-browser";
+  $self->{launchsingle} = ($self->my_resource("launchsingle") ne "false");
   $self->{descending} = ($self->my_resource("order") eq "descending");
   $self->{url_picker} = ();
 }

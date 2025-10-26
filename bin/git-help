@@ -3,57 +3,65 @@
 # fetch/pull/rebase
 # -----------------
 #
-#     remote:
-#         branch.<name>.remote
-#         "origin"
+# remote:
+#     branch.<name>.remote
+#     "origin"
 #
-#     remote url:
-#         remote.<name>.url
+# remote url:
+#     remote.<name>.url
 #
-#     refspec:
-#         remote.<name>.fetch
+# refspec:
+#     remote.<name>.fetch
 #
-#     upstream branch:
-#         branch.<name>.merge (remote part of refspec)
-#         "first refspec fetched"
+# upstream branch:
+#     branch.<name>.merge (remote part of refspec)
+#     "first refspec fetched"
 #
 # push
 # ----
 #
-#     remote:
-#         branch.<name>.pushRemote
-#         remote.pushDefault
-#         branch.<name>.remote
-#         "origin"
+# remote:
+#     branch.<name>.pushRemote
+#     remote.pushDefault
+#     branch.<name>.remote
+#     "origin"
 #
-#     remote url:
-#         remote.<name>.pushurl
-#         remote.<name>.url
+# remote url:
+#     remote.<name>.pushurl
+#     remote.<name>.url
 #
-#     refspec:
-#         remote.<name>.push
+# refspec:
+#     remote.<name>.push
 #
-#     push.default (action if no refspec is explicitly given)
+# push.default (action if no refspec is explicitly given)
 
 cat <<-'EOF'
+
+fetch
+-----
+
+GitHub PRs:
+
+    fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
+
 
 push
 ----
 
-    git push
-    git push remote
-    git push remote src
+git push
+git push remote
+git push remote src
 
-    git push remote HEAD
-    $ git -c push.default=current push
+git push remote HEAD
+$ git -c push.default=current push
 
-    git push remote HEAD:dst
-    git push remote src:dst
-    git push remote +src:dst
+git push remote HEAD:dst
+git push remote src:dst
+git push remote +src:dst
 
-    git push remote :dst
+git push remote :dst
 
-    git push remote :
-    $ git -c push.default=matching push
+git push remote :
+$ git -c push.default=matching push
 
 EOF

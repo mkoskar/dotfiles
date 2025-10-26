@@ -1,0 +1,32 @@
+#! perl
+
+use strict;
+use MIME::Base64;
+
+sub on_osc_seq {
+    my ($self, $op, $args, $resp) = @_;
+
+    $op eq 52 or return;
+    my ($p1, $p2) = split(';', $args, 2);
+
+    $p1 or return;
+    my $type = substr($p1, 0, 1);
+    $type eq 'c' or $type eq 'p' or return;
+    my $clip = $type eq 'c';
+
+    if ($p2 eq '?') {
+        !$clip or return;
+        # this returns primary selection only when owned by urxvt itself
+        my $data = $self->selection();
+        utf8::encode($data);
+        $self->tt_write("\e]52;p;".encode_base64($data, '')."\a");
+    }
+    else {
+        my $data = decode_base64($p2);
+        utf8::decode($data);
+        $self->selection($data, $clip);
+        $self->selection_grab(urxvt::CurrentTime, $clip);
+    }
+
+    ()
+}

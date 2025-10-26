@@ -12,7 +12,7 @@ _usage() {
 	       $prgname {ciphers | ciphers-ecdsa-rsa}
 	       $prgname {con | con-rsaonly}
 	       $prgname csplit
-	       $prgname {gen gen+cert gen+csr) [params]
+	       $prgname {gen | gen+cert | gen+csr} [params]
 	EOF
 }
 usage() { _usage; exit 0; }

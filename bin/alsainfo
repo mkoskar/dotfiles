@@ -1,30 +1,19 @@
 #!/usr/bin/env bash
 
-headcat() { head -v -n -0 "$@"; }
-
-info() {
-    local label=$1
-    shift
-    [[ $label = - ]] && label=$*
-    echo $'\n--------------------------------------------------'
-    printf '> %s\n\n' "$label"
-    "$@"
-}
-
 {
-    info - amixer info
+    infohdr - amixer info
 
-    info - amixer -c 0 info
+    infohdr - amixer -c 0 info
 
-    info /proc/asound headcat /proc/asound/{cards,devices,modules,pcm,version}
+    infohdr /proc/asound headcat /proc/asound/{cards,devices,modules,pcm,version}
 
-    info - aplay -l
+    infohdr - aplay -l
 
-    info - arecord -l
+    infohdr - arecord -l
 
-    info - aplay -L
+    infohdr - aplay -L
 
-    info - lsof +c 0 +D /dev/snd
+    infohdr - lsof +c 0 +D /dev/snd
 
     echo
 } |& $PAGER

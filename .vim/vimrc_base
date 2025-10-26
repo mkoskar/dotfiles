@@ -42,6 +42,7 @@ let &pp = &rtp
 
 set ignorecase
 set incsearch
+set nostartofline
 set paragraphs=
 set path=.,,**
 set sections=
@@ -95,14 +96,12 @@ function! s:SearchParagraph(mode, backward) abort
         if fold > 0
             call cursor(fold, a:backward ? 1 : col([fold, '$']))
         endif
-        if a:mode == 0
-            let pat = '\v(\n@1<=\n\_^\zs.)|%'
-        elseif a:mode == 1
-            let pat = '\v(\n@1<=\n\_^\zs.)|(^.+\n\n)|%'
+        let pat = '\v%^|((^\n)@<=\_^.)|%$'
+        if a:mode == 1
+            let pat .= '|(^.+\n\n)'
         elseif a:mode == 2
-            let pat = '\v(\n@1<=\n\_^\s*\zs.)|(.\n\n)|%'
+            let pat .= '|(.\n\n)'
         endif
-        let pat .= a:backward ? '^' : '$'
         call search(pat, a:backward ? 'Wb' : 'W')
     endfor
 endfunction
@@ -112,8 +111,8 @@ noremap <M-}> <Cmd>call <SID>SearchParagraph(0, 0)<CR>
 map <M-S-[> <M-{>
 map <M-S-]> <M-}>
 
-noremap <M-[> <Cmd>call <SID>SearchParagraph(2, 1)<CR>
-noremap <M-]> <Cmd>call <SID>SearchParagraph(2, 0)<CR>
+noremap <M-[> <Cmd>call <SID>SearchParagraph(1, 1)<CR>
+noremap <M-]> <Cmd>call <SID>SearchParagraph(1, 0)<CR>
 
 
 " Tags
@@ -151,6 +150,7 @@ nnoremap <Leader>W :setl <C-R>=&wrap ? 'nowrap' : 'wrap'<CR><CR>
 " ----------------------------------------
 
 set colorcolumn=80
+set notermguicolors
 set spelllang=en_us
 set spelloptions=camel
 set synmaxcol=500

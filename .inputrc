@@ -121,15 +121,12 @@ $if bash
     "\C-X~": complete-username
     "\ei": complete-filename
 
-    "\C-Xp": "\C-X\C-AA|& pg"
+    "\C-Xp": "\C-X\C-AA |& pg"
     "\C-XP": "\C-X\C-AIpgx "
-    "\C-Xx": "\C-X\C-A0isudo "
-    "\C-Xh": "\C-X\C-Addihistory 25 |& gi ''\C-X\C-Ai"
-    "\C-Xa": "!!:*"
-    "\C-Xl": "!!:$"
-    "\C-Xs": "!!:gs/"
+    "\C-Xx": "\C-X\C-AIsudo "
+    "\C-X,": "!!:"
+    "\C-X.": "!#:"
     "\C-X{": '{,.}\C-X\C-Ai'
-    "\C-Xc": "--color=auto "
 $endif
 
 set keymap vi-command
@@ -158,18 +155,9 @@ $if bash
     "v": ""
     "\C-X\C-E": edit-and-execute-command
 
-    "|": "A|& "
-    "\C-Xp": "A|& pg"
+    "|": "A |& "
+    ">": "A &>"
+    "\C-Xp": "A |& pg"
     "\C-XP": "Ipgx "
     "\C-Xx": "Isudo "
-    "\C-Xh": "ddihistory 25 |& gi ''\C-X\C-Ai"
-    "\C-Xa": "a!!:*"
-    "\C-Xl": "a!!:$"
-    "\C-Xs": "a!!:gs/"
-$endif
-
-# Workaround for https://github.com/Qalculate/libqalculate/issues/810
-$if qalc
-    set vi-cmd-mode-string (cmd)
-    set vi-ins-mode-string (ins)
 $endif

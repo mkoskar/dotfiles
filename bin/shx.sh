@@ -69,7 +69,7 @@ alias curl-trace='curl --trace-ascii - --trace-time'
 alias curl1='curl -K ~/.curlrc1'
 
 
-# docker / podman
+# docker/podman
 # ----------------------------------------
 
 alias dk=docker
@@ -222,7 +222,7 @@ alias pacman-log='pg /var/log/pacman.log'
 alias pacq='pacman -Q'
 
 _paclog_recent() {
-    paclog --action=all | paclog --after="$(date -I -d -7days)" | $PAGER
+    paclog --action=all | paclog --after="$(\date -I -d -7days)" | $PAGER
 }
 alias paclog-recent=_paclog_recent
 
@@ -302,8 +302,13 @@ alias venv='python -m venv'
 # vim/nvim
 # ----------------------------------------
 
-alias vim-batch='vim -NXn -i NONE -u NONE -V1 -es'
-alias nvim-batch='nvim -NXn -i NONE -u NONE -V1 -es'
+alias e0='e -n -i NONE -u NONE'
+alias nvim0='nvim -n -i NONE -u NONE'
+alias vim0='vim -Nn -i NONE -u NONE'
+
+# -V[N] Verbose. Sets the 'verbose' option to [N] (default: 10)
+alias nvim-batch='nvim0 -es -V0'
+alias vim-batch='vim0 -XY -Es -V0'
 
 
 # youtube-dl
@@ -336,13 +341,15 @@ alias aria-noalloc='aria2c -c -m 0 --file-allocation=none'
 alias aria='aria2c -c -m 0'
 alias aunpack='\aunpack -q'
 alias avahi-browse='\avahi-browse -avtr'
+alias bat='\bat --nonprintable-notation caret -APn'
 alias bc='\bc -l'
 alias c=qalc
 alias cal='\cal -3mw'
 alias callgrind='valgrind --tool=callgrind'
 alias caps='filecap -d'
+alias catv='\cat -An'
 alias clipi='clip -i'
-alias cp='\cp -ai --reflink=auto'
+alias cp='\cp -aiv --reflink=auto'
 alias cpio-copy='cpio -pdmv'
 alias csplit='\csplit -kz'
 alias date-epoch='date -d @0'
@@ -375,8 +382,6 @@ alias drill-trace='drill -o CD -tT'
 alias dstat='\dstat -tlycgm --vm -rdn'
 alias du='\du -hx'
 alias dua='du --apparent-size -hx'
-alias e0='e -Xn -i NONE -u NONE'
-alias ebatch='e0 -V1 -es'
 alias ed='\ed -Ev -p :'
 alias fc-debug='FC_DEBUG=8191'
 alias fc-recache='fc-cache -rv'
@@ -417,7 +422,7 @@ alias makepkg-build='makepkg -srf'
 alias makepkg-rebuild='makepkg -Ccsrf'
 alias me='lslogins "$USER"'
 alias mnt='findmnt --real'
-alias moon='curl -qf https://wttr.in/moon\?F'
+alias moon='curl -qf wttr.in/moon\?F'
 alias mount-loop='mount -o loop'
 alias mpv-debug='mpv --terminal=yes --msg-level=all=debug'
 alias mpv-verbose='mpv --terminal=yes --msg-level=all=v'
@@ -444,6 +449,7 @@ alias patch0='patch -N -p 0'
 alias patch1='patch -N -p 1'
 alias pax-copy='pax -rwv'
 alias pdf-decrypt='qpdf --decrypt --remove-restrictions --password-file=-'
+alias perl-debug='perl -dE 0'
 alias ping-mtu='ping -M do -s 2000'
 alias pr='\pr -T -W "$COLUMNS"'
 alias psmem='ps --format pid,%mem,pss:7,rss:7,sz:10,vsz:10,cmd --sort=-pss'
@@ -459,9 +465,11 @@ alias rsync='\rsync -aHAXS -P -iv'
 alias sarrec='sar -D -o ~/tmp'
 alias sarsvg='sadf -g -O showinfo,showtoc ~/tmp --'
 alias scp='\scp -rp'
+alias sd-states='systemctl --state=help'
 alias sd-sysusers='systemd-sysusers --cat-config'
 alias sd-tmpfiles='systemd-tmpfiles --cat-config'
 alias sd=systemctl
+alias sda=systemd-analyze
 alias sdu='systemctl --user'
 alias sed-all="sed -e 'H;1h;\$!d;x'"
 alias sed='\sed -E'
@@ -508,7 +516,6 @@ alias weechat-tmux='tmux -L weechat attach'
 alias weechat0='weechat -t'
 alias weechat='\weechat -a'
 alias whois='\whois --verbose --no-recursion -H'
-alias wi='curl -qf https://wttr.in/\?Fqn'
 alias xargs-lines='xargs -d \\n'
 alias xargs-perline='xargs-lines -L 1'
 alias xargs='\xargs -rx'
@@ -539,7 +546,11 @@ _() {
 }
 alias ,=_
 
-__() {
+_dot() {
+    if [ $# -gt 0 ]; then
+        source "$@"
+        return $?
+    fi
     local cwd gitdir
     cwd=$PWD
     case $cwd in "$HOME" | "$HOME"/*) cwd=\~${cwd##"$HOME"} ;; esac
@@ -556,7 +567,7 @@ __() {
     git -P stash list
     echo
 }
-alias ,,=__
+alias .=_dot
 
 base() {
     [ "$PWD" != "$HOME" ] || return
@@ -669,13 +680,14 @@ pstree() {
     pgx command pstree -ahglnpsSuU "$@"
 }
 
-r() {
-    [ $# -gt 0 ] || set -- -1
-    case $SHNAME in
-        zsh) fc -L -e - "$@" ;;
-        *) fc -e - "$@" ;;
-    esac
-}
+if ! has r && has fc; then
+    r() {
+        case $SHNAME in
+            zsh) fc -Ls "$@" ;;
+            *) fc -s "$@" ;;
+        esac
+    }
+fi
 
 reexec() {
     eval exec "$(cmdline)"
@@ -740,6 +752,11 @@ v() {
         ;;
     esac
     set | $PAGER
+}
+
+wi() {
+    curl -qf --variable loc="$1" \
+        --expand-url 'wttr.in/{{loc:trim:url}}?Fn'
 }
 
 xkbkeymap() {

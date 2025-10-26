@@ -39,6 +39,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     aosabook                b https://aosabook.org/en/
     apache                  b https://httpd.apache.org/docs/
     apache-directives       b https://httpd.apache.org/docs/current/mod/quickreference.html
+    apache-lists            b https://lists.apache.org/
     apache-log-formats      b https://httpd.apache.org/docs/current/mod/mod_log_config.html#formats
     apk                     b https://pkgs.alpinelinux.org/packages\?name={u}
     apod                    b https://apod.nasa.gov/apod/astropix.html
@@ -163,7 +164,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     dovecot                 b https://doc.dovecot.org/
     download!               b ~/download
     ebay                    b https://www.ebay.com/sch/i.html\?_nkw={u}
-    ecma                    b https://www.ecma-international.org/publications/standards/Standard.htm
+    ecma                    b https://ecma-international.org/publications-and-standards/standards/
     elastic                 b https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html
     electropedia            b https://www.electropedia.org/
     em-spectrum             b https://en.wikipedia.org/wiki/Electromagnetic_spectrum
@@ -197,7 +198,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     freebsd                 b https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/
     freebsd-git             b https://cgit.freebsd.org/
     freedesktop-gitlab      b https://gitlab.freedesktop.org/explore
-    freedesktop-lists       b https://lists.freedesktop.org/mailman/listinfo/
+    freedesktop-lists       b https://lists.freedesktop.org/
     freedesktop-repos       b https://cgit.freedesktop.org/
     freedesktop-specs       b https://standards.freedesktop.org/
     freenode                b https://freenode.net/
@@ -326,7 +327,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     irc-docs                b https://ircdocs.horse/
     irc-logs                b https://colabti.org/irclogger/irclogger_logs
     irc-networks            b https://netsplit.de/networks/top100.php
-    iso                     b https://standards.iso.org/ittf/PubliclyAvailableStandards/
     iss-sightings           b https://spotthestation.nasa.gov/sightings/view.cfm\?country=Slovakia\&region=None\&city=Partizanske
     iss-tracker             b http://wsn.spaceflight.esa.int/iss/
     itu                     b https://www.itu.int/itu-t/recommendations/index.aspx
@@ -360,7 +360,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     jst-connectors          b https://www.jst-mfg.com/index_e.php
     k8s                     b https://kubernetes.io/docs/home/
     k8s-hub                 b https://artifacthub.io/
-    kernel-lists            b http://vger.kernel.org/vger-lists.html
     keylength               b https://www.keylength.com/
     keypad                  b https://en.wikipedia.org/wiki/E.161
     language-codes          b https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes
@@ -368,6 +367,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     latin-phrases           b https://en.wikipedia.org/wiki/List_of_Latin_phrases
     lcd-test                b http://www.lagom.nl/lcd-test/all_tests.php
     less-css                b https://lesscss.org/functions/
+    libera                  b https://libera.chat/guides/connect
     libretexts              b https://libretexts.org/
     licenses                b https://choosealicense.com/licenses/
     licenses2               b https://blueoakcouncil.org/list
@@ -379,6 +379,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-docs!             b /lib/modules/"$kernel_release"/build/Documentation
     linux-docs-html         b https://www.kernel.org/doc/html/latest/index.html
     linux-faq               b http://vger.kernel.org/lkml/
+    linux-insides-book      b https://0xax.gitbooks.io/linux-insides/content/index.html
     linux-ip-guide          b http://linux-ip.net/linux-ip/linux-ip-single.html
     linux-lkddb             b https://cateee.net/lkddb/web-lkddb/
     linux-nl80211           b https://elixir.bootlin.com/linux/latest/source/include/linux/ieee80211.h
@@ -390,12 +391,12 @@ MENUER=$prgname menuer "$@" <<-EOF |
     linux-sysctl            b https://www.kernel.org/doc/Documentation/sysctl
     linux-wikibook          b https://en.wikibooks.org/wiki/The_Linux_Kernel
     linux-xref              b https://elixir.bootlin.com/linux/latest/source/
-    lists-apache            b https://lists.apache.org/
+    lists.linux.dev-lists   b https://subspace.kernel.org/lists.linux.dev.html
     lkml                    b https://lkml.org/
     lobste.rs               b https://lobste.rs/newest
     loki                    b https://grafana.com/docs/loki/latest/configure/
     lore-git                b https://lore.kernel.org/git/
-    lore-lists              b https://lore.kernel.org/lists.html
+    lore-lists              b https://lore.kernel.org/
     lpsn                    b https://lpsn.dsmz.de/
     lua                     b https://www.lua.org/manual/
     lua!                    b /usr/share/doc/lua/manual.html
@@ -419,6 +420,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     mdn                     b https://developer.mozilla.org/en-US/
     memcached               b https://github.com/memcached/memcached/wiki
     memory-cards            b https://en.wikipedia.org/wiki/Comparison_of_memory_cards
+    mesa                    b https://docs.mesa3d.org/
     metric-threads          b https://en.wikipedia.org/wiki/ISO_metric_screw_thread#Preferred_sizes
     mikrotik-docs           b https://help.mikrotik.com/docs/
     mime                    b https://datatracker.ietf.org/doc/html/rfc2045
@@ -483,6 +485,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     perf-full               b https://www.brendangregg.com/Perf/linux_perf_tools_full.png
     periodic-table          b https://en.wikipedia.org/wiki/Periodic_table#Overview
     perl                    b https://perldoc.perl.org/
+    perl-vars               b https://perldoc.perl.org/variables
     pgp-search              b https://keyserver.ubuntu.com/
     php-funcref             b https://www.php.net/manual/en/funcref.php
     php-langref             b https://www.php.net/manual/en/langref.php
@@ -502,16 +505,15 @@ MENUER=$prgname menuer "$@" <<-EOF |
     posix-env               b "$posix_base"/basedefs/V1_chap08.html
     posix-param-expansion   b "$posix_base"/utilities/V3_chap02.html#tag_19_06_02
     posix-shell             b "$posix_base"/utilities/V3_chap02.html
+    posix-signals           b "$posix_base"/functions/V2_chap02.html#tag_16_04
+    posix-terminal          b "$posix_base"/basedefs/V1_chap11.html
     posix-utils-index       b https://shellhaters.org/
-    posix-vol1-xbd          b "$posix_base"/basedefs/contents.html
-    posix-vol2-xsh          b "$posix_base"/functions/contents.html
-    posix-vol3-xcu          b "$posix_base"/utilities/contents.html
-    posix-vol4-xrat         b "$posix_base"/xrat/contents.html
     postfix                 b https://www.postfix.org/documentation.html
     postgresql              b https://www.postgresql.org/docs/current/index.html
     postgresql-connstring   b https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
-    postgresql-hba          b https://www.postgresql.org/docs/17/auth-pg-hba-conf.html
+    postgresql-hba          b https://www.postgresql.org/docs/current/auth-pg-hba-conf.html
     postgresql-psql         b https://www.postgresql.org/docs/current/app-psql.html
+    postgresql-release      b https://www.postgresql.org/docs/current/release.html
     postgresql-sql          b https://www.postgresql.org/docs/current/sql-commands.html
     powerdns                b https://doc.powerdns.com/authoritative/settings.html
     printing                b https://wiki.linuxfoundation.org/openprinting/database/documentation
@@ -653,6 +655,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     trigonometry            b https://en.wikipedia.org/wiki/List_of_trigonometric_identities
     turn/stun               b https://www.rfc-editor.org/rfc/rfc8656
     ud                      b https://www.urbandictionary.com/define.php\?term={u}
+    uefi                    b https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface
     uefi-specs              b https://uefi.org/specifications
     unicode                 b https://www.unicode.org/versions/latest/
     unicode-charts          b https://unicode.org/charts/
@@ -669,6 +672,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     utf8                    b https://en.wikipedia.org/wiki/UTF-8#Encoding
     util-linux              b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
     uwsgi                   b https://uwsgi-docs.readthedocs.io/en/latest/
+    vger.kernel.org-lists   b https://subspace.kernel.org/vger.kernel.org.html
     video-codecs            b https://en.wikipedia.org/wiki/List_of_codecs#Video_compression_formats
     video-standards         b https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Vector_Video_Standards2.svg/1024px-Vector_Video_Standards2.svg.png
     vim                     b https://github.com/vim/vim

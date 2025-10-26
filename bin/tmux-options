@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+{
+    printf '#\x20vim: ft=info'
+
+    infohdr 'server (-s)' tmux show-options -sH
+
+    infohdr 'session (-g)' tmux show-options -gH
+
+    infohdr 'session' tmux show-options -H
+
+    infohdr 'window/pane (-gw)' tmux show-options -gwH
+
+    infohdr 'window/pane (-w)' tmux show-options -wH
+
+    infohdr 'pane (-p)' tmux show-options -pH
+
+    echo
+} |& $PAGER

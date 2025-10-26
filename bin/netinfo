@@ -24,8 +24,8 @@ routes_by_table() {
 }
 
 {
-    echo '# vim: ft=netinfo'
-    echo '--------------------------------------------------'
+    printf '#\x20vim: ft=netinfo'
+    echo $'\n--------------------------------------------------'
     echo $'> Addressing:\n'
 
     ip -d addr

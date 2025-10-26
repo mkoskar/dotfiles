@@ -1,8 +1,10 @@
 # vim: fdm=marker
 
-# Colors {{{
+[bell]
+color = "#dddddd"
+duration = 200
 
-[colors]
+[colors] # {{{
 draw_bold_text_with_bright_colors = true
 
 [colors.bright]
@@ -19,6 +21,18 @@ white = "#dddddd"
 cursor = "#dddddd"
 text = "#000000"
 
+#[colors.footer_bar]
+#foreground =
+#background =
+
+#[colors.hints]
+#start =
+#end =
+
+#[colors.line_indicator]
+#foreground =
+#background =
+
 [colors.normal]
 black = "#050505"
 red = "#bf4343"
@@ -34,43 +48,46 @@ background = "#000000"
 bright_foreground = "#dddddd"
 foreground = "#aeaeae"
 
+#[colors.search]
+#matches =
+#focused_match =
+
+#[colors.selection]
+#text =
+#background =
+
 [colors.vi_mode_cursor]
 cursor = "#dddddd"
 text = "#000000"
 
 # }}}
 
-# Fonts {{{
+[cursor]
+blink_timeout = 2
+style = { shape = "Beam", blinking = "On" }
+thickness = 0.25
+vi_mode_style = "Block"
 
 [font]
-size = 9
+#offset.y = -1
+normal.family = "EnvyCodeR Nerd Font"
+size = 12
 
-#[font.normal]
-#family = "Terminus"
+[hints] # {{{
 
-[font.normal]
-family = "EnvyCodeR Nerd Font"
-
-[font.offset]
-#y = -1
+[[hints.enabled]]
+action = "MoveViModeCursor"
+binding = { key = "O", mods = "Control|Shift" }
+#command = "xdg-open"
+hyperlinks = true
+mouse.enabled = true
+persist = true
+post_processing = true
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩‘\\\\]+"
 
 # }}}
 
-[mouse]
-hide_when_typing = true
-
-[scrolling]
-history = 8192
-
-[window.padding]
-x = 2
-y = 2
-
-
-# Bindings
-# ----------------------------------------
-
-[keyboard]
+[keyboard] # {{{
 bindings = [
 
 # Vi mode: Alt-J - 5 Down {{{
@@ -134,3 +151,18 @@ bindings = [
 { mode = "Vi|~Search", key = "Space", action = "ClearSelection" },
 
 ]
+
+# }}}
+
+[mouse]
+hide_when_typing = true
+
+[scrolling]
+history = 8192
+
+[terminal]
+osc52 = "CopyPaste"
+
+[window.padding]
+x = 2
+y = 2

@@ -51,7 +51,7 @@ if &t_Co >= 256 || has('gui_running')
     \                           guifg=bg        guibg=#626262
 
     HiColor DiffText            ctermfg=231     ctermbg=1
-    \                           guifg=#ffffff   guibg=#9d2d2d
+    \                           guifg=#ffffff   guibg=#bf4343
 
     HiColor Directory           ctermfg=151
     \                           guifg=#afd7af
@@ -60,7 +60,7 @@ if &t_Co >= 256 || has('gui_running')
     \                           guifg=#444444
 
     HiColor ErrorMsg            ctermfg=231     ctermbg=1
-    \                           guifg=#ffffff   guibg=#9d2d2d
+    \                           guifg=#ffffff   guibg=#bf4343
 
     HiColor FoldColumn          ctermfg=240     ctermbg=233
     \                           guifg=#585858   guibg=#121212
@@ -117,16 +117,16 @@ if &t_Co >= 256 || has('gui_running')
     \                           guifg=#444444
 
     HiColor SpellBad            ctermfg=231     ctermbg=1
-    \                           guifg=#ffffff   guibg=#9d2d2d
+    \                           guifg=#ffffff   guibg=#bf4343
 
     HiColor SpellCap            ctermfg=16      ctermbg=228
     \                           guifg=bg        guibg=#ffff87
 
     HiColor SpellLocal          ctermfg=231     ctermbg=5
-    \                           guifg=#ffffff   guibg=#a43fa4
+    \                           guifg=#ffffff   guibg=#bf43bf
 
     HiColor SpellRare           ctermfg=231     ctermbg=4
-    \                           guifg=#ffffff   guibg=#384580
+    \                           guifg=#ffffff   guibg=#4358bf
 
     HiColor StatusLine          ctermfg=231     ctermbg=237     cterm=bold
     \                           guifg=#ffffff   guibg=#3a3a3a   gui=bold
@@ -139,6 +139,9 @@ if &t_Co >= 256 || has('gui_running')
 
     HiColor StatusLineTermNC    ctermfg=244     ctermbg=237
     \                           guifg=#808080   guibg=#3a3a3a
+
+    HiColor User1               ctermfg=231     ctermbg=1       cterm=bold
+    \                           guifg=#ffffff   guibg=#bf4343   gui=bold
 
     HiColor TabLine             ctermfg=244     ctermbg=237
     \                           guifg=#808080   guibg=#3a3a3a

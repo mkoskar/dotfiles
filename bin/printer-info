@@ -1,26 +1,19 @@
 #!/usr/bin/env bash
 
-info() {
-    local label=$1
-    shift
-    [[ $label = - ]] && label=$*
-    echo $'\n--------------------------------------------------'
-    printf '> %s\n\n' "$label"
-    "$@"
-}
-
 {
-    info - lpstat -t
+    printf '#\x20vim: ft=info'
 
-    info 'lpoptions -l (default destination)' lpoptions -l
+    infohdr - lpstat -t
 
-    #info - lpinfo -l -m
+    infohdr 'lpoptions -l (default destination)' lpoptions -l
 
-    #info - lpinfo -l -v
+    #infohdr - lpinfo -l -m
 
-    #info - ippfind
+    #infohdr - lpinfo -l -v
 
-    info - driverless list
+    #infohdr - ippfind
+
+    infohdr - driverless list
 
     echo
 } |& $PAGER

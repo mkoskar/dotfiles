@@ -132,8 +132,8 @@ file=user.js
 			//user_pref("media.peerconnection.ice.default_address_only", true);
 			user_pref("network.http.pipelining", true);
 			user_pref("network.http.proxy.pipelining", true);
-			user_pref("network.http.referer.XOriginPolicy", 1);
-			user_pref("network.http.referer.spoofSource", true);
+			//user_pref("network.http.referer.XOriginPolicy", 1);
+			//user_pref("network.http.referer.spoofSource", true);
 			user_pref("privacy.donottrackheader.enabled", true);
 			user_pref("privacy.trackingprotection.enabled", true);
 		EOF

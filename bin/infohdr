@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+label=$1
+shift
+[[ $label = - ]] && label=$*
+echo $'\n--------------------------------------------------'
+printf '> %s\n\n' "$label"
+
+(( $# )) || exit 0
+"$@"

@@ -52,14 +52,14 @@ URxvt.keysym.Shift-Home:        command:\033]720;9999\007
 URxvt.keysym.Shift-End:         command:\033]721;9999\007
 URxvt.keysym.Shift-Return:      command:\033]721;9999\007
 
-URxvt.perl-ext-common:          confirm-paste,keyboard-select,matcher,option-popup,url-picker,url-select
+URxvt.perl-ext-common:          confirm-paste,keyboard-select,option-popup,osc-xterm-clipboard,url-picker,url-select
 
 URxvt.url-picker.launcher:      b
 URxvt.url-select.launcher:      b
 URxvt.url-select.underline:     true
-URxvt.keysym.M-C-bracketleft:   perl:keyboard-select:activate
-URxvt.keysym.M-C-slash:         perl:keyboard-select:search
-URxvt.keysym.M-C-u:             perl:url-select:select_next
+URxvt.keysym.M-C-bracketleft:   keyboard-select:activate
+URxvt.keysym.M-C-slash:         keyboard-select:search
+URxvt.keysym.M-C-u:             url-select:select_next
 URxvt.keysym.M-C-o:             perl:url-picker
 
 #undef TCOLOR_PREFIX
@@ -84,6 +84,7 @@ XTerm.vt100.colorBD:                #dddddd
 XTerm.vt100.colorBDMode:            true
 XTerm.vt100.cutNewline:             false
 XTerm.vt100.decTerminalID:          340
+XTerm.vt100.disallowedWindowOps:    GetChecksum,GetIconTitle,GetWinTitle,SetXprop
 XTerm.vt100.dynamicColors:          true
 XTerm.vt100.metaSendsEscape:        true
 XTerm.vt100.numColorRegisters:      1024

@@ -1,26 +1,90 @@
 #!/usr/bin/env bash
 
-declare -i wayland=0
-has-wayland && wayland=1
+prgname=${0##*/}
+
+_usage() {
+    echo "usage: $prgname [-t]"
+}
+usage() { _usage; exit 0; }
+usage_err() { _usage; exit 2; } >&2
+
+declare -i term=0
+while getopts th opt; do
+    case $opt in
+        t) term=1 ;;
+        h) usage ;;
+        *) usage_err ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# ----------------------------------------
+
+r() {
+    read -r -d "$1" -t 5 r
+}
+
+osc52() {
+    printf '\e]52;%s;?\a' "$1" >/dev/tty
+    while :; do
+        r $'\e' || break
+        r ']' || break
+        [[ ! $r ]] || continue
+        r \; || break
+        [[ $r = '52' ]] || continue
+        r \; || break
+        case $TERM in
+            xterm-kitty)
+                r $'\e' || break
+                ;;
+            *)
+                r $'\a' || break
+                ;;
+        esac
+        printf %s "$r" | base64 -d
+        return 0
+    done
+    return 1
+}
+
+if (( ! term )); then
+    declare -i wayland=0
+    has-wayland && wayland=1
+fi
+
+stty=$(stty -g)
+cleanup() {
+    stty "$stty" || stty sane
+}
+trap cleanup EXIT
+stty -echo
 
 echo $'\n--------------------------------------------------'
-echo $'> Primary:\n'
+echo '> Primary:'
 
-if (( wayland )); then
+if (( term )); then
+    osc52 p | finfo
+elif (( wayland )); then
+    echo
     wl-paste -p -l
     wl-paste -p -n | finfo
 else
+    echo
     xclip -o -t TARGETS
     xclip -o | finfo
 fi
 
 echo '--------------------------------------------------'
-echo $'> Clipboard:\n'
+echo '> Clipboard:'
 
-if (( wayland )); then
+if (( term )); then
+    osc52 c | finfo
+elif (( wayland )); then
+    echo
     wl-paste -l
     wl-paste -n | finfo
 else
+    echo
     xclip -o -selection clipboard -t TARGETS
     xclip -o -selection clipboard | finfo
 fi

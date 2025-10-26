@@ -21,7 +21,7 @@ matching a certain pattern and make it clickable. When clicked with the
 mouse button specified in the C<matcher.button> resource (default 2, or
 middle), the program specified in the C<matcher.launcher> resource
 (default, the C<url-launcher> resource, C<sensible-browser>) will be started
-with the matched text as first argument.  The default configuration is
+with the matched text as first argument. The default configuration is
 suitable for matching URLs and launching a web browser, like the
 former "mark-urls" extension.
 
@@ -31,7 +31,7 @@ with numbered patterns, in a manner similar to the "selection" extension.
 The launcher can also be overridden on a per-pattern basis.
 
 It is possible to activate the most recently seen match or a list of matches
-from the keyboard.  Simply bind a keysym to "matcher:last" or
+from the keyboard. Simply bind a keysym to "matcher:last" or
 "matcher:list" as seen in the example below.
 
 The C<matcher:select> action enables a mode in which it is possible to
@@ -39,7 +39,7 @@ iterate over the matches using the keyboard and either activate them
 or copy them to the clipboard. While the mode is active, normal terminal
 input/output is suspended and the following bindings are recognized:
 
-=over 4
+=over
 
 =item C<Up>
 
@@ -88,14 +88,44 @@ Example: use a custom configuration.
     URxvt.matcher.pattern.2:  \\B(/\\S+?):(\\d+)(?=:|$)
     URxvt.matcher.launcher.2: gvim +$2 $1
 
+=head2 Regex encoding/wide character matching
+
+Urxvt stores all text as unicode, in a special encoding that uses
+one character/code point per column. For various reasons, the regular
+expressions are matched directly against this encoding, which means there are a few things
+you need to keep in mind:
+
+=over
+
+=item X resources/command line arguments are locale-encoded
+
+The regexes taken from the command line or resources will be converted
+from locale encoding to unicode. This can change the number of code points
+per character.
+
+=item Wide characters are column-padded with C<$urxvt::NOCHAR>
+
+Wide characters (such as kanji and sometimes tabs) are padded with
+a special character value (C<$urxvt::NOCHAR>). That means that
+constructs such as C<\w> or C<.> will only match part of a character, as
+C<$urxvt::NOCHAR> is not matched by C<\w> and both only match the first
+"column" of a wide character.
+
+That means you have to incorporate C<$urxvt::NOCHAR> into parts of regexes
+that may match wide characters. For example, to match C<\w+> you might
+want to use C<[\w$urxvt::NOCHAR]+> instead, and to match a single character
+(C<.>) you might want to use C<.$urxvt::NOCHAR*> instead.
+
+=back
+
 =cut
 
 my $url =
    qr{
-      (?:https?://|ftp://|s?news://|mailto:|file://|\bwww\.)
-      [\w\-\@;\/?:&=%\$.+!*\x27,~#]*
+      (?:https?://|ftp://|news://|mailto:|file://|\bwww\.)
+      [\w\-\@;\/?:&=%\$.+!*\x27,~#$urxvt::NOCHAR]*
       (
-         \([\w\-\@;\/?:&=%\$.+!*\x27,~#]*\)| # Allow a pair of matched parentheses
+         \([\w\-\@;\/?:&=%\$.+!*\x27,~#$urxvt::NOCHAR]*\)| # Allow a pair of matched parentheses
          [\w\-\@;\/?:&=%\$+*~]  # exclude some trailing characters (heuristic)
       )+
    }x;
@@ -195,16 +225,19 @@ sub most_recent {
    my ($self) = shift;
    my $row = $self->nrow - 1;
    my @exec;
+
    while ($row >= $self->top_row) {
       my $line = $self->line ($row);
-      @exec = $self->command_for($row);
-      last if(@exec);
+      @exec = $self->command_for ($row);
+      last if @exec;
 
       $row = $line->beg - 1;
    }
-   if(@exec) {
+
+   if (@exec) {
       return $self->exec_async (@exec);
    }
+
    ()
 }
 
@@ -253,9 +286,7 @@ sub on_start {
 
    my @defaults = ($url);
    my @matchers;
-   for (my $idx = 0; defined (my $res = $self->my_resource ("pattern.$idx") || $defaults[$idx]); $idx++) {
-      $res = $self->locale_decode ($res);
-      utf8::encode $res;
+   for (my $idx = 0; defined (my $res = $self->locale_decode ($self->my_resource ("pattern.$idx")) || $defaults[$idx]); $idx++) {
       my $launcher = $self->my_resource ("launcher.$idx");
       $launcher =~ s/\$&|\$\{&\}/\${0}/g if $launcher;
       my $rend = $self->parse_rend($self->my_resource ("rend.$idx"));
@@ -315,15 +346,18 @@ sub find_matches {
          my @end = @+;
          my @exec;
 
-         if (!defined($off) || ($-[0] <= $off && $+[0] >= $off)) {
+         if (!(defined $off) || ($-[0] <= $off && $+[0] >= $off)) {
             if ($launcher !~ /\$/) {
                @exec = ($launcher, $match);
             } else {
                # It'd be nice to just access a list like ($&,$1,$2...),
                # but alas, m//g behaves differently in list context.
-               @exec = map { s/\$(\d+)|\$\{(\d+)\}/
-                  substr $text, $begin[$1 || $2], $end[$1 || $2] - $begin[$1 || $2]
-                  /egx; $_ } split /\s+/, $launcher;
+               @exec = map {
+                     s{\$(\d+)|\$\{(\d+)\}}{
+                        substr $text, $begin[$1 || $2], $end[$1 || $2] - $begin[$1 || $2]
+                     }egx;
+                     $_
+                  } split /\s+/, $launcher;
             }
 
             push @matches, [ $line->coord_of ($begin[0]), $line->coord_of ($end[0]), $match, @exec ];
@@ -331,7 +365,7 @@ sub find_matches {
       }
    }
 
-   @matches;
+   @matches
 }
 
 sub command_for {
@@ -348,8 +382,11 @@ sub command_for {
 
 sub on_button_press {
    my ($self, $event) = @_;
-   if($self->valid_button($event)
-      && (my @exec = $self->command_for($event->{row},$event->{col}))) {
+
+   if (
+      $self->valid_button ($event)
+      && (my @exec = $self->command_for ($event->{row}, $event->{col}))
+   ) {
       $self->{row} = $event->{row};
       $self->{col} = $event->{col};
       $self->{cmd} = \@exec;
@@ -372,12 +409,13 @@ sub on_button_release {
 
    return if !defined $row;
 
-   if($row == $event->{row} && abs($col-$event->{col}) < 2
-      && join("\x00", @$cmd) eq join("\x00", $self->command_for($row,$col))) {
-      if($self->valid_button($event)) {
-
+   if (
+      $row == $event->{row}
+      && (abs $col-$event->{col}) < 2
+      && (join "\x00", @$cmd) eq (join "\x00", $self->command_for ($row, $col))
+   ) {
+      if ($self->valid_button ($event)) {
          $self->exec_async (@$cmd);
-
       }
    }
 
@@ -425,7 +463,7 @@ sub select_search {
          $self->{matches} = \@matches;
          $self->{cur_row} = $row;
          $self->{id} = $dir < 0 ? @{ $self->{matches} } - 1 : 0;
-         $self->view_start (List::Util::min 0, $row - ($self->nrow >> 1));
+         $self->view_start ($row - ($self->nrow >> 1));
          $self->want_refresh;
          return 1;
       }
@@ -451,8 +489,11 @@ sub select_refresh {
 
 sub select_key_press {
    my ($self, $event, $keysym, $string) =  @_;
+   my $char = chr($keysym);
 
-   if ($keysym == 0xff0d || $keysym == 0xff8d) { # enter
+   #if ($keysym == 0xff0d || $keysym == 0xff8d) { # enter
+   if ($keysym == 0xff0d || $char eq 'o' ||
+       (lc($char) eq 'm' && $event->{state} & urxvt::ControlMask)) {
       if ($self->{matches}) {
          my @match = @{ $self->{matches}[$self->{id}] };
          $self->exec_async (@match[5 .. $#match]);
@@ -464,14 +505,19 @@ sub select_key_press {
          $self->selection_grab (urxvt::CurrentTime, 1);
       }
       $self->select_leave;
-   } elsif ($keysym == 0xff1b) { # escape
+   #} elsif ($keysym == 0xff1b) { # escape
+   } elsif ($keysym == 0xff1b || lc($char) eq 'q' ||
+            (lc($char) eq 'c' && $event->{state} & urxvt::ControlMask)) {
       $self->view_start ($self->{view_start});
       $self->select_leave;
-   } elsif ($keysym == 0xff50) { # home
+   #} elsif ($keysym == 0xff50) { # home
+   } elsif ($char eq 'g' || $keysym == 0xff50) {
       $self->select_search (+1, $self->top_row)
-   } elsif ($keysym == 0xff57) { # end
+   #} elsif ($keysym == 0xff57) { # end
+   } elsif ($char eq 'G' || $keysym == 0xff57) {
       $self->select_search (-1, $self->nrow - 1)
-   } elsif ($keysym == 0xff52) { # up
+   #} elsif ($keysym == 0xff52) { # up
+   } elsif ($char eq 'k' || $keysym == 0xff52 || $keysym == 0xff51) {
       if ($self->{id} > 0) {
          $self->{id}--;
          $self->want_refresh;
@@ -480,7 +526,8 @@ sub select_key_press {
          $self->select_search (-1, $line->beg - 1)
             if $line->beg > $self->top_row;
       }
-   } elsif ($keysym == 0xff54) { # down
+   #} elsif ($keysym == 0xff54) { # down
+   } elsif ($char eq 'j' || $keysym == 0xff54 || $keysym == 0xff53) {
       if ($self->{id} < @{ $self->{matches} } - 1) {
          $self->{id}++;
          $self->want_refresh;

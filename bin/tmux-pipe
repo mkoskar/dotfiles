@@ -12,7 +12,11 @@ if (( $# )); then
     (( h=$1, p=${2:-0}, s=-p, e=s+h-1 ))
 fi
 
-cmd=(tmux capture-pane -pJ -S "${s:--}" -E "${e:--}")
+cmd=(
+    tmux if -F '#{>=:#{version},3.6}' \
+        "capture-pane -pJM -S ${s:--} -E ${e:--}" \
+        "capture-pane -pJ -S ${s:--} -E ${e:--}"
+)
 
 if [[ -t 1 ]]; then
     "${cmd[@]}" | striplns | PAGER_EX=\$ pg

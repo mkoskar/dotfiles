@@ -1,5 +1,5 @@
 set database sqlite
-set notification-error-bg "#9d2d2d"
+set notification-error-bg "#bf4343"
 set scroll-page-aware true
 set scroll-step 150
 set statusbar-home-tilde true

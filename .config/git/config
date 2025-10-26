@@ -50,14 +50,14 @@
     df = diff
     dfc = diff --cached
     du = count-objects -vH
-    f = fetch --all
+    f = fetch -v
+    fa = fetch --all -v
     format-patch-with-signoff = format-patch --signoff
     forward = merge --ff-only
     hunk-stage = add -p
     hunk-unstage = restore -Sp
-    last = cat-file -p HEAD
     lg = lg1 -5
-    lg1 = log --format=lg1 --graph --decorate-refs-exclude='*/HEAD' --color
+    lg1 = log --format=lg1 --date=human-local --graph --decorate-refs-exclude='*/HEAD' --color
     lga = lg1
     ls = ls-files
     ls-ignored = ls-files -c -i --exclude-standard
@@ -125,7 +125,7 @@
     local = true
 
 [log]
-    date = human
+    date = iso-local
     decorate = short
 
 [mailinfo]

@@ -1,0 +1,15 @@
+[global_config]
+  dbus = False
+  inactive_color_offset = 1.0
+  enabled_plugins = ,
+[profiles]
+  [[default]]
+    cursor_blink = False
+    cursor_fg_color = "#000000"
+    cursor_bg_color = "#dddddd"
+    cursor_color_default = False
+    font = EnvyCodeR Nerd Font 11
+    foreground_color = "#aeaeae"
+    palette = "#050505:#bf4343:#43bf43:#db9c2e:#4358bf:#bf43bf:#43abbf:#aeaeae:#4d4d4d:#bf6060:#60bf60:#ccc466:#6070bf:#bf60bf:#60afbf:#dddddd"
+    use_system_font = False
+    title_use_system_font = False

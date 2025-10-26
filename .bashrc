@@ -14,7 +14,7 @@ case $- in *i*) ;; *) return ;; esac
 . ~/bin/shrc-pre.sh
 
 HISTCONTROL=ignorespace:erasedups
-HISTFILESIZE=5000
+HISTFILESIZE=10000
 HISTIGNORE=exit
 HISTTIMEFORMAT='%F %T  '
 
@@ -40,8 +40,8 @@ __prompt_command() {
 }
 PROMPT_COMMAND=__prompt_command
 
-shopt -s autocd checkjobs checkwinsize cmdhist dotglob gnu_errfmt histappend \
-    histreedit histverify lithist no_empty_cmd_completion
+shopt -s autocd checkjobs checkwinsize cmdhist dotglob extglob gnu_errfmt \
+    histappend histreedit histverify lithist no_empty_cmd_completion
 
 # some can't detect editing-mode set in ~/.inputrc early enough (e.g., fzf)
 set -o vi

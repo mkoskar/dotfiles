@@ -11,7 +11,7 @@ case $- in *i*) ;; *) return ;; esac
 . ~/bin/shx.sh
 . ~/bin/shrc-pre.sh
 
-SAVEHIST=5000
+SAVEHIST=10000
 TMPPREFIX=${TMPDIR:-/tmp}/zsh
 
 typeset -gU path fpath cdpath
@@ -305,24 +305,18 @@ bindkey -M vicmd \\- vi-first-non-blank
 bindkey -M vicmd \^J vi-open-line-below
 bindkey -M vicmd \^R redo
 
-bindkey -s \^Xp '^X^AA|& pg'
+bindkey -s \^Xp '^X^AA |& pg'
 bindkey -s \^XP '^X^AIpgx '
-bindkey -s \^Xx '^X^A0isudo '
-bindkey -s \^Xh "^X^Addihistory 25 |& gi ''^X^Ai"
-bindkey -s \^Xa '!!:*'
-bindkey -s \^Xl '!!:$'
-bindkey -s \^Xs '!!:gs/'
+bindkey -s \^Xx '^X^AIsudo '
+bindkey -s \^X, '!!:'
+bindkey -s \^X. '!#:'
 bindkey -s \^X{ '{,.}^X^Ai'
-bindkey -s \^Xc '--color=auto '
 
-bindkey -M vicmd -s \| 'A|& '
-bindkey -M vicmd -s \^Xp 'A|& pg'
+bindkey -M vicmd -s \| 'A |& '
+bindkey -M vicmd -s \> 'A &>'
+bindkey -M vicmd -s \^Xp 'A |& pg'
 bindkey -M vicmd -s \^XP 'Ipgx '
 bindkey -M vicmd -s \^Xx 'Isudo '
-bindkey -M vicmd -s \^Xh "ddihistory 25 |& gi ''^X^Ai"
-bindkey -M vicmd -s \^Xa 'a!!:*'
-bindkey -M vicmd -s \^Xl 'a!!:$'
-bindkey -M vicmd -s \^Xs 'a!!:gs/'
 
 bindkey -M isearch . self-insert
 bindkey -M menuselect \\ej down-line-or-history
@@ -520,8 +514,8 @@ zstyle -e ':completion:*:*:*:*:hosts' hosts 'reply=(
     ${=${${${${(@M)${(f)"$(cat ~/.ssh/config 2>/dev/null)"}:#Host *}#Host }:#*\**}:#*\?*}}
 )'
 
-zstyle ':completion:all-matches:*' completer _all_matches _complete
-zstyle ':completion:all-matches:*' insert true
+zstyle ':completion:all-matches:*' completer _all_matches
+zstyle ':completion:all-matches:*' old-matches only
 
 compctl -F fn
 compctl -FBmwa i

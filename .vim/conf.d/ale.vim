@@ -9,6 +9,8 @@ function! AleStatus() abort
     return printf('[%d]', total)
 endfunction
 
+"let &g:stl .= '%( %{AleStatus()}%*%)'
+"let &g:stl .= '%( %1*%{AleStatus()}%*%)'
 let &g:stl .= '%( %#ErrorMsg#%{AleStatus()}%*%)'
 
 "let ale_completion_delay = 10

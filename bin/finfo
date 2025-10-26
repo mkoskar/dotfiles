@@ -34,12 +34,14 @@ case $mime in
     text/*)
         declare -i n=30
         echo "(Content limited to first $n lines)"
-        head -n "$n" -- "$ifile"
+        #head -n "$n" -- "$ifile"
+        bat -APn -r ":$n" -- "$ifile"
         ;;
     *)
         declare -i n=128
         echo "(Canonical hexdump limited to first $n bytes)"
-        hexdump -C -n "$n" "$ifile"
+        #hexdump -C -n "$n" -- "$ifile"
+        xxd -l "$n" -- "$ifile"
         ;;
 esac
 echo

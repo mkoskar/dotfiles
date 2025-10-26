@@ -221,15 +221,14 @@ def cb_signal_bar_item_cmd_btn_update(data, signal, signal_data):
 # ----------------------------------------
 
 BUFFER_MERGE_RULES = [
-    re.compile(r'^irc\.[^.]*\.#(bash|zsh)$'),
-    re.compile(r'^irc\.[^.]*\.#archlinux(-offtopic)?$'),
-    re.compile(r'^irc\.[^.]*\.#libera(-offtopic)?$'),
+    re.compile(r'.*\.#(bash|zsh)$'),
+    re.compile(r'.*\.#archlinux(-offtopic)?$'),
+    re.compile(r'.*\.#libera(-offtopic)?$'),
 ]
 
-re_archlinux = re.compile(r'^#+archlinux(|-.*)$')
-re_bitlbee_control = re.compile(r'^irc\.bitlbee[^.]*\.&')
-re_offtopic = re.compile(r'^(.*)-offtopic$')
-re_twitter = re.compile(r'^irc\.bitlbee[^.]*\.#twitter_mkoskar$')
+re_archlinux = re.compile(r'#+archlinux(|-.*)$')
+re_bitlbee_control = re.compile(r'.*\.bitlbee[^.]*\.&')
+re_offtopic = re.compile(r'(.*)-offtopic$')
 
 timer_buffer_sort_merge = None
 
@@ -317,11 +316,7 @@ def buffer_init(buffer):
         elif btype == 'channel':
             w.buffer_set(buffer, 'nicklist', '0')
 
-            if re_twitter.match(bname):
-                name = '#twitter'
-                w.buffer_set(buffer, 'highlight_words', '@mkoskar')
-
-            elif re_bitlbee_control.match(bname):
+            if re_bitlbee_control.match(bname):
                 w.buffer_set(buffer, 'nicklist', '1')
 
             if m := re_archlinux.match(name):
@@ -1009,7 +1004,7 @@ w.hook_command('renick', '', '', '', '', 'cb_command_renick', '')
 # ----------------------------------------
 
 def connect_relay(server_name):
-    cmd(f'server add {server_name}~ 172.31.0.1/9000 -temp -notls'
+    cmd(f'server addreplace {server_name}~ 172.31.0.1/9000 -notls'
         f' -password={server_name}:${{sec.data.relay}}')
     cmd(f'connect {server_name}~')
 
@@ -1045,20 +1040,6 @@ w.hook_completion('irc_servers', '', 'cb_completion_irc_servers', '')
 # ----------------------------------------
 
 def cb_signal_save_autojoins(data, signal, args):
-    #for server in servers_iter():
-    #    server_name = w.hdata_string(hd_server, server, 'name')
-    #    if w.hdata_integer(hd_server, server, 'temp_server') > 0:
-    #        continue
-    #    autojoin = []
-    #    for channel in channels_iter(server):
-    #        channel_name = w.hdata_string(hd_channel, channel, 'name')
-    #        channel_type = w.hdata_integer(hd_channel, channel, 'type')
-    #        if channel_type == 0:
-    #            autojoin.append(channel_name)
-    #    if autojoin:
-    #        autojoin.sort()
-    #        val = ','.join(autojoin)
-    #        cmd(f'set irc.server.{server_name}.autojoin {val}')
     cmd('allserv /autojoin apply')
     cmd('allserv /autojoin sort')
     return w.WEECHAT_RC_OK
@@ -1263,7 +1244,6 @@ def configure(args):
     cmd('set irc.look.highlight_server ""')
     cmd('set irc.look.pv_buffer merge_by_server')
     cmd('set irc.look.server_buffer independent')
-    cmd('set irc.look.temporary_servers on')
     cmd('set irc.msgbuffer.whois current')
     cmd('set irc.network.lag_reconnect 0')
     cmd('set irc.network.whois_double_nick on')
@@ -1272,7 +1252,7 @@ def configure(args):
     cmd('set irc.server_default.autorejoin on')
     cmd('set irc.server_default.autorejoin_delay 10')
     cmd('set irc.server_default.connection_timeout 300')
-    cmd('set irc.server_default.ipv6 off')
+    cmd('set irc.server_default.ipv6 disable')
     cmd('set irc.server_default.msg_part ""')
     cmd('set irc.server_default.msg_quit ""')
     cmd('set irc.server_default.nicks mkoskar')
@@ -1309,15 +1289,15 @@ def configure(args):
     cmd('set relay.color.status_auth_failed lightred')
     cmd('set relay.color.status_connecting yellow')
     cmd('set relay.look.auto_open_buffer off')
-    cmd('set relay.network.bind_address 172.31.0.1')
-    cmd('set relay.network.ipv6 off')
-    cmd('set relay.network.max_clients 30')
-    cmd('set relay.network.password ${sec.data.relay}')
 
     if args == 'bouncer':
+        cmd('set relay.network.bind_address 172.31.0.1')
+        cmd('set relay.network.ipv6 off')
+        cmd('set relay.network.max_clients 30')
+        cmd('set relay.network.password ${sec.data.relay}')
+        cmd('set relay.port.api 9002')
         cmd('set relay.port.irc 9000')
         cmd('set relay.port.weechat 9001')
-        cmd('set relay.port.api 9002')
 
     cmd('set script.scripts.download_enabled on')
     cmd('set script.scripts.hold custom.py')
@@ -1397,11 +1377,11 @@ def configure(args):
     cmd('alias addreplace b buffer')
     cmd('alias addreplace c close')
     cmd('alias addreplace cc window merge')
+    cmd('alias addreplace chserv msg ChanServ')
     cmd('alias addreplace cla buffer clear -all')
-    cmd('alias addreplace cserv msg ChanServ')
     cmd('alias addreplace g grep --hilight --buffer')
     cmd('alias addreplace gg grep --hilight')
-    cmd('alias addreplace memoserv msg MemoServ')
+    cmd('alias addreplace mserv msg MemoServ')
     cmd('alias addreplace nserv msg NickServ')
     cmd('alias addreplace qa quit')
     cmd('alias addreplace s server jump')
@@ -1572,6 +1552,8 @@ def cb_command_reconfigure(data, buffer, args):
     autojoins = {}
     for server in list(servers_iter()):
         server_name = w.hdata_string(hd_server, server, 'name')
+        if server_name.endswith('~'):
+            continue
         autojoin = w.config_string(server_opt(server_name, 'autojoin'))
         autojoins[server_name] = autojoin
         cmd(f'server del {server_name}')
