@@ -67,7 +67,6 @@ MENUER=$prgname menuer "$@" <<-EOF |
     awk-gnu                 b https://www.gnu.org/software/gawk/manual/gawk.html
     bacdive                 b https://bacdive.dsmz.de/advsearch
     bacteria                b https://upload.wikimedia.org/wikipedia/commons/6/69/Bacterial_morphology_diagram.svg
-    basedir                 b https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
     bash                    b https://www.gnu.org/software/bash/manual/html_node/index.html
     bash-abs                b https://tldp.org/LDP/abs/html/
     bash-changes            b https://mywiki.wooledge.org/BashFAQ/061
@@ -90,6 +89,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     busybox-git             b https://git.busybox.net/busybox/tree
     c                       b http://www.open-std.org/jtc1/sc22/wg14/www/projects
     c-faq                   b http://c-faq.com/
+    caddy                   b https://caddyserver.com/docs/
     certbot                 b https://eff-certbot.readthedocs.io/en/stable/
     cgi                     b https://datatracker.ietf.org/doc/html/rfc3875
     chebi                   b https://www.ebi.ac.uk/chebi/advancedSearchFT.do\?searchString={u}
@@ -275,6 +275,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     haskell-ghc             b https://downloads.haskell.org/ghc/latest/docs/html/users_guide/index.html
     haskell-libs            b https://downloads.haskell.org/ghc/latest/docs/html/libraries/index.html
     haskell-prelude         b https://hackage.haskell.org/package/base/docs/Prelude.html
+    helix                   b https://docs.helix-editor.com/
     hibernate-orm           b https://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
     hn                      b https://news.ycombinator.com/
     hoogle                  b https://www.haskell.org/hoogle/\?hoogle={u}
@@ -454,6 +455,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     nginx-location          b https://nginx.org/en/docs/http/ngx_http_core_module.html#location
     nginx-njs               b https://nginx.org/en/docs/njs/reference.html
     nginx-rewrite           b https://nginx.org/en/docs/http/ngx_http_rewrite_module.html
+    nginx-stream-core       b https://nginx.org/en/docs/stream/ngx_stream_core_module.html
     nginx-vars              b https://nginx.org/en/docs/varindex.html
     nodejs                  b https://nodejs.org/api/
     noise                   b https://noiseprotocol.org/noise.html
@@ -515,7 +517,8 @@ MENUER=$prgname menuer "$@" <<-EOF |
     postgresql-psql         b https://www.postgresql.org/docs/current/app-psql.html
     postgresql-release      b https://www.postgresql.org/docs/current/release.html
     postgresql-sql          b https://www.postgresql.org/docs/current/sql-commands.html
-    powerdns                b https://doc.powerdns.com/authoritative/settings.html
+    powerdns                b https://doc.powerdns.com/authoritative/index.html
+    powerdns-recursor       b https://doc.powerdns.com/recursor/index.html
     printing                b https://wiki.linuxfoundation.org/openprinting/database/documentation
     privacy-tools           b https://www.privacytools.io/
     procedure-words         b https://en.wikipedia.org/wiki/Procedure_word
@@ -528,10 +531,14 @@ MENUER=$prgname menuer "$@" <<-EOF |
     pypa-projects           b https://packaging.python.org/en/latest/key_projects/
     pypi                    b https://pypi.org/search/\?q={u}
     python                  b https://docs.python.org/
+    python-changes          b https://docs.python.org/3/whatsnew/index.html
     python-dist             b https://docs.python.org/3/library/distribution.html
     python-exceptions       b https://docs.python.org/3/library/exceptions.html
+    python-formatspec       b https://docs.python.org/3/library/string.html#formatspec
+    python-fstrings         b https://docs.python.org/3/library/stdtypes.html#formatted-string-literals-f-strings
     python-io               b https://docs.python.org/3/library/io.html
     python-lib              b https://docs.python.org/3/library/index.html
+    python-printf           b https://docs.python.org/3/library/stdtypes.html#printf-style-string-formatting
     python-wiki             b https://wiki.python.org/moin/FrontPage
     python2                 b https://docs.python.org/2/
     qemu                    b https://qemu.weilnetz.de/doc/qemu-doc.html
@@ -672,6 +679,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     utf8                    b https://en.wikipedia.org/wiki/UTF-8#Encoding
     util-linux              b https://git.kernel.org/cgit/utils/util-linux/util-linux.git/tree
     uwsgi                   b https://uwsgi-docs.readthedocs.io/en/latest/
+    varnish/vinyl           b https://vinyl-cache.org/docs/index.html
     vger.kernel.org-lists   b https://subspace.kernel.org/vger.kernel.org.html
     video-codecs            b https://en.wikipedia.org/wiki/List_of_codecs#Video_compression_formats
     video-standards         b https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Vector_Video_Standards2.svg/1024px-Vector_Video_Standards2.svg.png
@@ -714,6 +722,7 @@ MENUER=$prgname menuer "$@" <<-EOF |
     x11-xkbproto            b https://www.x.org/releases/current/doc/kbproto/xkbproto.html
     xapian-query            b https://xapian.org/docs/queryparser.html
     xcb-modules             b https://xcb.freedesktop.org/manual/modules.html
+    xdg-basedir             b https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
     xkb-keymap-format       b https://xkbcommon.org/doc/current/keymap-text-format-v1.html
     xlib                    b https://tronche.com/gui/x/xlib/
     xml                     b https://www.w3.org/TR/xml/

@@ -5,7 +5,10 @@ color = "#dddddd"
 duration = 200
 
 [colors] # {{{
+cursor = { cursor = "#dddddd", text = "#000000" }
 draw_bold_text_with_bright_colors = true
+primary = { background = "#000000", bright_foreground = "#dddddd", foreground = "#aeaeae" }
+vi_mode_cursor = { cursor = "#dddddd", text = "#000000" }
 
 [colors.bright]
 black = "#4d4d4d"
@@ -17,22 +20,6 @@ magenta = "#bf60bf"
 cyan = "#60afbf"
 white = "#dddddd"
 
-[colors.cursor]
-cursor = "#dddddd"
-text = "#000000"
-
-#[colors.footer_bar]
-#foreground =
-#background =
-
-#[colors.hints]
-#start =
-#end =
-
-#[colors.line_indicator]
-#foreground =
-#background =
-
 [colors.normal]
 black = "#050505"
 red = "#bf4343"
@@ -43,47 +30,43 @@ magenta = "#bf43bf"
 cyan = "#43abbf"
 white = "#aeaeae"
 
-[colors.primary]
-background = "#000000"
-bright_foreground = "#dddddd"
-foreground = "#aeaeae"
-
-#[colors.search]
-#matches =
-#focused_match =
-
-#[colors.selection]
-#text =
-#background =
-
-[colors.vi_mode_cursor]
-cursor = "#dddddd"
-text = "#000000"
-
 # }}}
 
-[cursor]
-blink_timeout = 2
-style = { shape = "Beam", blinking = "On" }
-thickness = 0.25
-vi_mode_style = "Block"
+[env]
+RUST_BACKTRACE = "full"
 
 [font]
-#offset.y = -1
 normal.family = "EnvyCodeR Nerd Font"
-size = 12
+size = 11
 
 [hints] # {{{
+alphabet = "jfkdls;ahgurieowpqytmv,c.x/znbJFKDLS:AHGURIEOWPQYTMV<C>X?ZNB"
+
+[[hints.enabled]]
+binding = { key = "U", mods = "Control|Alt" }
+command = "b"
+hyperlinks = true
+mouse.enabled = true
+post_processing = true
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩‘\\\\]+"
+
+[[hints.enabled]]
+action = "Copy"
+binding = { key = "Y", mods = "Control|Alt" }
+hyperlinks = true
+mouse.enabled = true
+post_processing = true
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩‘\\\\]+"
+
+[[hints.enabled]]
+action = "Select"
+binding = { key = "O", mods = "Control|Alt" }
+regex = "\\S+"
 
 [[hints.enabled]]
 action = "MoveViModeCursor"
-binding = { key = "O", mods = "Control|Shift" }
-#command = "xdg-open"
-hyperlinks = true
-mouse.enabled = true
-persist = true
-post_processing = true
-regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩‘\\\\]+"
+binding = { key = "L", mods = "Control|Alt" }
+regex = ".*"
 
 # }}}
 
@@ -148,7 +131,18 @@ bindings = [
 
 # ----------------------------------------
 
+{ mode = "~Vi|~Search", key = ".", mods = "Control|Alt", action = "ToggleViMode" },
+{ mode = "~Vi|~Search", key = ".", mods = "Control|Alt", action = "High" },
+{ mode = "~Search", key = ".", mods = "Control|Alt", action = "SearchForward" },
+
+{ mode = "~Vi|~Search", key = ",", mods = "Control|Alt", action = "ToggleViMode" },
+{ mode = "~Search", key = ",", mods = "Control|Alt", action = "SearchBackward" },
+
 { mode = "Vi|~Search", key = "Space", action = "ClearSelection" },
+
+{ key = "N", mods = "Control|Alt", action = "CreateNewWindow" },
+
+{ key = "P", mods = "Control|Alt", action = "Paste" },
 
 ]
 
@@ -159,10 +153,14 @@ hide_when_typing = true
 
 [scrolling]
 history = 8192
+multiplier = 5
+
+[selection]
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t‘’«»‚‛“”„‟‹›⹂"
 
 [terminal]
 osc52 = "CopyPaste"
 
-[window.padding]
-x = 2
-y = 2
+[window]
+dynamic_padding = true
+padding = { x = 2, y = 2 }

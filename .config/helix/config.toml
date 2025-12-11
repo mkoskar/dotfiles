@@ -1,0 +1,107 @@
+theme = "amberwood2"
+
+[editor]
+auto-format = false
+mouse = false
+popup-border = "all"
+rulers = [80]
+scrolloff = 2
+shell = ["bashx", "-c"]
+
+[editor.cursor-shape]
+insert = "bar"
+
+[editor.indent-guides]
+render = true
+skip-levels = 1
+
+[editor.smart-tab]
+enable = false
+
+[editor.whitespace.characters]
+newline = "¬"
+
+[editor.whitespace]
+render = "all"
+
+[keys.insert]
+"C-[" = "normal_mode"
+
+[keys.normal]
+"$" = "goto_line_end"
+"@" = "replay_macro"
+"A-C-h" = "@5h"
+"A-C-l" = "@5l"
+"A-j" = "@5j"
+"A-k" = "@5k"
+"^" = "goto_line_start"
+"{" = "goto_prev_paragraph"
+"}" = "goto_next_paragraph"
+- = "goto_first_nonwhitespace"
+0 = "goto_line_start"
+G = "goto_last_line"
+H = "goto_window_top"
+L = "goto_window_bottom"
+M = "goto_window_center"
+V = ["extend_line", "select_mode"]
+X = "select_line_above"
+q = "record_macro"
+x = "select_line_below"
+
+[keys.normal.Q]
+A = ":cquit!"
+Q = ":quit-all"
+
+[keys.normal.g]
+E = "move_prev_long_word_end"
+e = "move_prev_word_end"
+
+[keys.normal.space.","]
+L = ":toggle whitespace.render none all"
+M = ":toggle mouse"
+W = ":toggle soft-wrap.enable"
+
+[keys.normal.space.",".c.o]
+"<" = ":set rulers [80]"
+g = ":toggle indent-guides.render"
+l = ":toggle rulers [] [80]"
+
+[keys.normal.space.",".c.u]
+c = ":toggle cursorcolumn"
+l = ":toggle cursorline"
+
+[keys.normal.space.",".r]
+c = ":config-open"
+
+[keys.normal.space.",".s]
+o = ":config-reload"
+
+[keys.select]
+"$" = "goto_line_end"
+"@" = "replay_macro"
+"A-C-h" = "@5h"
+"A-C-l" = "@5l"
+"A-j" = "@5j"
+"A-k" = "@5k"
+"C-[" = "normal_mode"
+"^" = "extend_to_line_start"
+"{" = "goto_prev_paragraph"
+"}" = "goto_next_paragraph"
+- = "extend_to_first_nonwhitespace"
+0 = "extend_to_line_start"
+G = "extend_to_last_line"
+H = "goto_window_top"
+L = "goto_window_bottom"
+M = "goto_window_center"
+V = "extend_line"
+X = "select_line_above"
+q = "record_macro"
+x = "select_line_below"
+
+[keys.select.Q]
+A = ":cquit!"
+Q = ":quit-all"
+
+[keys.select.g]
+E = "extend_prev_long_word_end"
+e = "extend_prev_word_end"

@@ -44,7 +44,7 @@ case $bin in
         exec "$bin" -a "$name" ${geometry:+-W "$geometry"} -- "$@"
         ;;
     kitty)
-        exec "$bin" --name "$name" "$@"
+        exec "$bin" --name "$name" -- "$@"
         ;;
     st)
         exec "$bin" -n "$name" ${geometry:+-g "$geometry"} -e "$@"

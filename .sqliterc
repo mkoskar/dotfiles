@@ -1,3 +1,6 @@
+.changes on
+.echo on
+.eqp on
 .headers on
-.mode column
+.mode box
 .timer on

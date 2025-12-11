@@ -1,12 +1,12 @@
+require('vis')
+
 local modes = vis.modes
 
 vis.events.subscribe(vis.events.INIT, function()
 
     vis:command('set autoindent')
     vis:command('set escdelay 10')
-    vis:command('set expandtab')
     vis:command('set shell bashx')
-    vis:command('set tabwidth 4')
     vis:command('set theme custom')
 
 
@@ -28,10 +28,10 @@ vis.events.subscribe(vis.events.INIT, function()
     ----------------------------------------
 
     vis:map(modes.NORMAL, ',L', function(keys)
-        vis:command('set show-newlines!')
-        vis:command('set show-spaces!')
-        vis:command('set show-tabs!')
-    end, 'Toggle show-newlines and show-spaces')
+        vis:command('set shownewlines!')
+        vis:command('set showspaces!')
+        vis:command('set showtabs!')
+    end)
 
 
     -- Syntax, Highlighting and Spelling
@@ -49,11 +49,11 @@ vis.events.subscribe(vis.events.INIT, function()
     vis:command('map! normal <C-h> <C-w>h')
     vis:command('map! normal <Backspace> <C-h>')
 
-    vis:command('map! normal c<C-j> <C-w>s')
-    vis:command('map! normal c<C-k> <C-w>s<C-w>j')
-    vis:command('map! normal c<C-l> <C-w>v')
-    vis:command('map! normal c<C-h> <C-w>v<C-w>l')
-    vis:command('map! normal c<Backspace> c<C-h>')
+    vis:command('map! normal s<C-j> <C-w>s')
+    vis:command('map! normal s<C-k> <C-w>s<C-w>j')
+    vis:command('map! normal s<C-l> <C-w>v')
+    vis:command('map! normal s<C-h> <C-w>v<C-w>l')
+    vis:command('map! normal s<Backspace> c<C-h>')
 
     vis:command('map! normal d<C-j> <C-w>j<C-w>c')
     vis:command('map! normal d<C-k> <C-w>k<C-w>c')
@@ -110,15 +110,7 @@ vis.events.subscribe(vis.events.INIT, function()
     vis:command('map! visual ,ss :|sort<Enter>')
     vis:command('map! visual ,su ":|sort -u<Enter>"')
     vis:command('map! visual ,sr ":|sort -r<Enter>"')
-    vis:command('map! visual ,sb :|sort-blocks<Enter>')
-
-    -- Format
-    vis:command('map! visual ,fo :|format<Enter>')
-    vis:command('map! normal ,fo :%|format<Enter>')
-
-    -- XML prettify
-    vis:command('map! visual ,px ":|format xml<Enter>"')
-    vis:command('map! normal ,px ":%|format xml<Enter>"')
+    vis:command('map! visual ,sb :|sortb<Enter>')
 
     -- Strip / Squash lines
     vis:command('map! visual ,ps :|striplns<Enter>')
@@ -138,8 +130,8 @@ vis.events.subscribe(vis.events.INIT, function()
 end)
 
 vis.events.subscribe(vis.events.WIN_OPEN, function(win)
-
     vis:command('set colorcolumn 80')
-    vis:command('set show-eof')
-
+    vis:command('set expandtab')
+    vis:command('set showeof')
+    vis:command('set tabwidth 4')
 end)

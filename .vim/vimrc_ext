@@ -36,7 +36,7 @@ runtime conf.d/ctrlp.vim
 "runtime conf.d/ultisnips.vim
 runtime conf.d/ale.vim
 runtime conf.d/asyncomplete.vim
-runtime conf.d/vim-lsp.vim
+"runtime conf.d/vim-lsp.vim
 
 
 " Other

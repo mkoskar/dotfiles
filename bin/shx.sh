@@ -188,7 +188,7 @@ alias lr='ll -R'
 alias lt='ll -tr'
 alias lta='lt -u'
 alias ltc='lt -c'
-alias lu='ll -Sr'
+alias lu='ll -Ssr'
 alias lx='ll -XB'
 
 
@@ -373,6 +373,8 @@ alias dig-server-version='digs -c chaos -q version.bind -t txt'
 alias dig-trace='dig +cd +tcp +trace'
 alias dig-verbose='dig +qr +showbadcookie'
 alias dig0='dig -r'
+alias dig1111='dig @1.1.1.1'
+alias dig8888='dig @8.8.8.8'
 alias digs='dig +short'
 alias dirs='\dirs -v'
 alias dmesg='\dmesg -HTx'
@@ -502,8 +504,10 @@ alias tmux0='tmux -f /dev/null'
 alias top='\top -d 1'
 alias topdf='lowriter --convert-to pdf'
 alias tp=tmux-pipe
-alias tree='\tree -aF -I .git --dirsfirst --noreport'
-alias treei='tree -pugshDif'
+alias tree3='tree -L 3'
+alias tree='\tree -aF --dirsfirst --noreport -I .git'
+alias treei3='treei -L 3'
+alias treei='tree -pugshDif --du'
 alias tshark-prefs='\tshark -G currentprefs'
 alias tshark-protocols='\tshark -G protocols'
 alias tshark='\tshark -nV'
@@ -517,8 +521,9 @@ alias weechat0='weechat -t'
 alias weechat='\weechat -a'
 alias whois='\whois --verbose --no-recursion -H'
 alias xargs-lines='xargs -d \\n'
-alias xargs-perline='xargs-lines -L 1'
-alias xargs='\xargs -rx'
+alias xargs-perline='xargs-lines -n 1'
+alias xargs-rmrf='xargs-perline -p rm -rf'
+alias xargs='\xargs -rxot'
 alias xev-keyboard='xev -event keyboard'
 alias xhost-root='xhost +si:localuser:root'
 alias xinput-test='xinput test-xi2 --root'
@@ -577,8 +582,8 @@ unbase() { unset BASEDIR; }
 
 bridge() {
     if [ $# -eq 0 ]; then
-        ip link show type bridge
-        ip link show type bridge_slave
+        ip addr show type bridge
+        ip addr show type bridge_slave
     else
         command bridge -p -c=auto "$@"
     fi
@@ -624,6 +629,10 @@ h() {
             fi
             ;;
     esac
+}
+
+histfile() {
+    $EDITOR "$HISTFILE"
 }
 
 hread() {

@@ -8,11 +8,8 @@ if (( EUID )); then
 fi
 
 official_repos() {
-    cat <<-'EOF'
-		[options]
-		Architecture = auto
-		Color
-	EOF
+    printf '[options]\n'
+    pacconf --options
     for repo in core extra multilib; do
         printf '[%s]\n' "$repo"
     done

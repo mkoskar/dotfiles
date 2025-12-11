@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+set -eu
+shopt -s extglob
+
+prgname=${0##*/}
+
+IFS=: read -ra data_dirs <<<"${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+IFS=: read -ra config_dirs <<<"${XDG_CONFIG_DIRS:-/etc/xdg}"
+
+dirs=(
+    "$HOME"
+    "$HOME/.local/bin"
+    "${XDG_CACHE_HOME:-$HOME/.cache}"
+    "${XDG_CONFIG_HOME:-$HOME/.config}"
+    "${config_dirs[@]}"
+    "${XDG_DATA_HOME:-$HOME/.local/share}"
+    "${data_dirs[@]}"
+    "${XDG_STATE_HOME:-$HOME/.local/state}"
+    "$XDG_RUNTIME_DIR"
+    /etc
+)
+
+for dir in "${dirs[@]}"; do
+    dir=${dir%%+(/)}
+    for pat in "$@"; do
+        pat="?(.)$pat*"
+        for path in "$dir"/$pat; do
+            #printf '> %s\n' "$path" >&2
+            [[ -e $path ]] || continue
+            if [[ $path = *$'\n'* ]]; then
+                printf '%s: %q skipped (contains NL)\n' "$prgname" "$path" >&2
+                continue
+            fi
+            printf '%s\n' "$path"
+        done
+    done
+done

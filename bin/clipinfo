@@ -25,39 +25,43 @@ r() {
 }
 
 osc52() {
+    local data
     printf '\e]52;%s;?\a' "$1" >/dev/tty
     while :; do
         r $'\e' || break
-        r ']' || break
-        [[ ! $r ]] || continue
         r \; || break
-        [[ $r = '52' ]] || continue
+        [[ $r = ']52' ]] || continue
         r \; || break
         case $TERM in
             xterm-kitty)
                 r $'\e' || break
+                data=$r
+                r \\ || break
                 ;;
             *)
                 r $'\a' || break
+                data=$r
                 ;;
         esac
-        printf %s "$r" | base64 -d
+        printf %s "$data" | base64 -d
         return 0
     done
     return 1
 }
 
-if (( ! term )); then
+stty() {
+    command stty -F /dev/tty "$@"
+}
+
+if (( term )); then
+    tc=$(stty -g)
+    cleanup() { stty "$tc" || stty sane; }
+    trap cleanup EXIT
+    stty -echo
+else
     declare -i wayland=0
     has-wayland && wayland=1
 fi
-
-stty=$(stty -g)
-cleanup() {
-    stty "$stty" || stty sane
-}
-trap cleanup EXIT
-stty -echo
 
 echo $'\n--------------------------------------------------'
 echo '> Primary:'

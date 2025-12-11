@@ -488,6 +488,7 @@ set showmode
 " ----------------------------------------
 
 set clipboard=unnamed
+"set selection=exclusive
 
 "if has('nvim')
 "    let clipboard = #{
@@ -527,9 +528,6 @@ set undolevels=100
 
 let &undodir = $VIMDIR . '/undo//'
 call utils#mkdir(&undodir)
-
-"nnoremap cw dwi
-"nnoremap cW dWi
 
 noremap <Leader><C-J> J
 nnoremap <Leader>w :setl fo<C-R>=&fo =~# 't' ? '-' : '+'<CR>=t<CR>

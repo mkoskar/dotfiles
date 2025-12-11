@@ -1,0 +1,7 @@
+inherits = "amberwood" # /usr/lib/helix/runtime/themes/amberwood.toml
+
+"ui.cursor.primary" = { fg = "#000000", bg = "#dddddd" }
+"ui.virtual.jump-label" = { fg = "#ffffff", bg = "#4d4d4d", modifiers = ["italic", "bold"] }
+
+[palette]
+cursor = "#7d7d7d"

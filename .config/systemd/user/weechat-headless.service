@@ -4,8 +4,7 @@ Description=%N service
 [Service]
 SyslogIdentifier=%N
 Environment=WEECHAT_HOME=%h/.weechat
-ExecStart=/usr/bin/weechat-headless \
-    -P alias,buflist,charset,irc,logger,perl,python,relay,script,spell,trigger
+ExecStart=/usr/bin/weechat-headless
 Restart=always
 
 [Install]

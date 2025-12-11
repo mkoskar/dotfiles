@@ -1,3 +1,7 @@
+# See also:
+#
+#   https://www.manpagez.com/html/gtk2/gtk2-2.24.29/GtkSettings.php
+
 gtk-button-images=1
 gtk-cursor-theme-name="Grounation"
 gtk-cursor-theme-size=0
@@ -5,6 +9,7 @@ gtk-enable-event-sounds=1
 gtk-enable-input-feedback-sounds=1
 gtk-font-name="sans 8"
 #gtk-icon-theme-name="Arc"
+gtk-im-module="xim"
 gtk-menu-images=1
 gtk-recent-files-enabled=0
 gtk-recent-files-limit=0

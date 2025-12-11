@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-(( $# )) || set -- /dev/stdin
-
-# TODO: fix unterm's wrapping
-unterm -l 2 -c 1000 -- "$1" | sed \$d

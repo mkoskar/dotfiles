@@ -8,7 +8,6 @@ import itertools
 import json
 import re
 import time
-import urllib.parse
 
 import weechat as w
 
@@ -131,6 +130,39 @@ def windows_iter():
 
 # ----------------------------------------
 
+cmdmute = True
+
+
+def cmd(command, buffer=core, mute=None):
+    if mute is None:
+        mute = cmdmute
+    command = command.strip().replace('\n', ' ')
+    w.command(buffer, ('/mute ' if mute else '/') + command)
+
+
+def cmd_unmute(func):
+    def _func(*args, **kwargs):
+        global cmdmute
+        try:
+            cmdmute = False
+            return func(*args, **kwargs)
+        finally:
+            cmdmute = True
+    return _func
+
+
+def cb_command_toggle_cmdmute(data, buffer, args):
+    global cmdmute
+    cmdmute = not cmdmute
+    w.prnt(buffer, f'cmdmute = {cmdmute}')
+    return w.WEECHAT_RC_OK
+
+
+w.hook_command('toggle_cmdmute', '', '', '', '', 'cb_command_toggle_cmdmute', '')
+
+# ----------------------------------------
+
+
 def bar_addreplace(*args):
     bar = w.bar_search(args[0])
     if bar:
@@ -147,11 +179,6 @@ def channel_search(server_name, channel_name):
                 continue
             return channel
     return None
-
-
-def cmd(command, buffer=core, mute=True):
-    command = command.strip().replace('\n', ' ')
-    w.command(buffer, ('/mute ' if mute else '/') + command)
 
 
 def config_file_search(name):
@@ -1228,7 +1255,6 @@ def configure(args):
     cmd('set buflist.format.number "${number} "')
     cmd('set buflist.look.mouse_move_buffer off')
     cmd('set colorize_nicks.look.colorize_input on')
-    cmd('set fset.look.condition_catch_set ""')
     cmd('set irc.color.input_nick white')
     cmd('set irc.color.message_chghost default')
     cmd('set irc.color.message_join default')
@@ -1388,7 +1414,8 @@ def configure(args):
     cmd('alias addreplace sp window splith')
     cmd('alias addreplace toggle_buflist bar toggle buflist')
     cmd('alias addreplace toggle_nicklist eval /buffer set nicklist ${if:${buffer.nicklist}==0}')
-    cmd('alias addreplace toggle_prefix /eval -s /mute set weechat.look.prefix_align ${if:${weechat.look.prefix_align}!=none?none:right} \\; /mute set weechat.look.align_end_of_lines ${if:${weechat.look.prefix_align}==none?prefix:message}')
+    cmd('alias addreplace toggle_prefix /eval -s /mute toggle weechat.look.prefix_align none right \\; /mute set weechat.look.align_end_of_lines ${if:${weechat.look.prefix_align}==none?prefix:message}')
+    cmd('alias addreplace toggle_seconds /mute toggle weechat.look.buffer_time_format "%H:%M" "%H:%M:%S"')
     cmd('alias addreplace toggle_time eval /buffer set time_for_each_line ${if:${buffer.time_for_each_line}==0}')
     cmd('alias addreplace vs window splitv')
     cmd('alias addreplace wc window merge')
@@ -1490,7 +1517,7 @@ def configure(args):
 
     key_bind("meta-'", '/input jump_smart')
     key_bind('ctrl-G', '/window scroll_bottom')
-    key_bind('ctrl-M', '/input return ; /window scroll_bottom')
+    key_bind('ctrl-M', '/input return; /window scroll_bottom')
     key_bind('ctrl-N', '/input history_next')
     key_bind('ctrl-O', '/go')
     key_bind('ctrl-P', '/input history_previous')
@@ -1524,6 +1551,8 @@ def configure(args):
     key_bind('ctrl-N', '/input search_next', 'search')
     key_bind('ctrl-P', '/input search_previous', 'search')
 
+    key_bind('G', '/cursor move bottom_left', 'cursor')
+    key_bind('g', '/cursor move top_left', 'cursor')
     key_bind('h', '/cursor move left', 'cursor')
     key_bind('j', '/cursor move down', 'cursor')
     key_bind('k', '/cursor move up', 'cursor')
@@ -1534,11 +1563,13 @@ def configure(args):
     key_bind('meta-l', '/cursor move area_right', 'cursor')
 
 
+@cmd_unmute
 def cb_command_configure(data, buffer, args):
     configure(args)
     return w.WEECHAT_RC_OK
 
 
+@cmd_unmute
 def cb_command_reconfigure(data, buffer, args):
     cmd('disconnect -all')
     while True:
@@ -1603,6 +1634,9 @@ def cb_command_reconfigure(data, buffer, args):
     cmd('set irc.server.bitlbee.usermode ""')
     cmd('set logger.level.irc.bitlbee.&bitlbee 0')
 
+    cmd('server add hackint irc.hackint.org/6697')
+    cmd('set irc.server.hackint.sasl_password ${sec.data.hackint}')
+
     cmd('server add libera irc.libera.chat/6697')
     cmd('set irc.server.libera.sasl_password ${sec.data.libera}')
 
@@ -1631,16 +1665,17 @@ w.hook_command('configure', '', '', '', 'bouncer', 'cb_command_configure', '')
 w.hook_command('reconfigure', '', '', '', 'bouncer', 'cb_command_reconfigure', '')
 
 
+@cmd_unmute
 def cb_command_script_install(data, buffer, args):
-    cmd('script enable', mute=False)
-    cmd('script install autosort.py', mute=False)
-    cmd('script install bufsave.py', mute=False)
-    cmd('script install colorize_nicks.py', mute=False)
-    cmd('script install cron.py', mute=False)
-    cmd('script install go.py', mute=False)
-    cmd('script install grep.py', mute=False)
-    cmd('script install highmon.pl', mute=False)
-    cmd('script install vimode.py', mute=False)
+    cmd('script enable')
+    cmd('script install autosort.py')
+    cmd('script install bufsave.py')
+    cmd('script install colorize_nicks.py')
+    cmd('script install cron.py')
+    cmd('script install go.py')
+    cmd('script install grep.py')
+    cmd('script install highmon.pl')
+    cmd('script install vimode.py')
     return w.WEECHAT_RC_OK
 
 

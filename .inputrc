@@ -74,7 +74,7 @@ $include ~/.inputrc.esc
 "\C-O": menu-complete-backward
 "\e[Z": menu-complete-backward
 
-"\e.": yank-last-arg
+"\e,": yank-last-arg
 "\C-J": self-insert
 "\C-R": reverse-search-history
 "\C-S": forward-search-history
@@ -121,12 +121,17 @@ $if bash
     "\C-X~": complete-username
     "\ei": complete-filename
 
-    "\C-Xp": "\C-X\C-AA |& pg"
-    "\C-XP": "\C-X\C-AIpgx "
-    "\C-Xx": "\C-X\C-AIsudo "
+    "\e.": "!#:$\ee"
     "\C-X,": "!!:"
     "\C-X.": "!#:"
+
     "\C-X{": '{,.}\C-X\C-Ai'
+
+    "\C-X>": "\C-X\C-AA &>"
+    "\C-X|": "\C-X\C-AA |& "
+    "\C-XP": "\C-X\C-AIpgx "
+    "\C-Xp": "\C-X\C-AA |& pg"
+    "\C-Xx": "\C-X\C-AIsudo "
 $endif
 
 set keymap vi-command
@@ -155,9 +160,9 @@ $if bash
     "v": ""
     "\C-X\C-E": edit-and-execute-command
 
-    "|": "A |& "
     ">": "A &>"
-    "\C-Xp": "A |& pg"
+    "|": "A |& "
     "\C-XP": "Ipgx "
+    "\C-Xp": "A |& pg"
     "\C-Xx": "Isudo "
 $endif

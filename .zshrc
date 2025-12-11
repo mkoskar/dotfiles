@@ -40,7 +40,6 @@ autoload -Uz select-quoted
 autoload -Uz zargs
 autoload -Uz zmv
 
-#setopt extended_glob
 setopt always_to_end
 setopt auto_cd
 setopt auto_pushd
@@ -48,7 +47,9 @@ setopt auto_resume
 setopt brace_ccl
 setopt combining_chars
 setopt complete_in_word
+setopt extended_glob
 setopt extended_history
+setopt glob_complete
 setopt glob_dots
 setopt hist_expire_dups_first
 setopt hist_find_no_dups
@@ -258,7 +259,7 @@ bindkey \^I complete-word
 bindkey \^O reverse-menu-complete
 [[ $terminfo[kcbt] ]] && bindkey $terminfo[kcbt] reverse-menu-complete
 
-bindkey \\e. insert-last-word
+bindkey \\e, insert-last-word
 bindkey \^J self-insert
 bindkey \^R history-incremental-search-backward
 bindkey \^S history-incremental-search-forward
@@ -270,7 +271,6 @@ bindkey ' ' magic-space
 bindkey . expand-dot-to-parent-directory-path
 bindkey \\ee expand-word-alias
 bindkey \\em copy-earlier-word
-bindkey \^XH _complete_help
 bindkey \^Y toggle-comment-all
 bindkey \^_ split-undo
 
@@ -305,17 +305,23 @@ bindkey -M vicmd \\- vi-first-non-blank
 bindkey -M vicmd \^J vi-open-line-below
 bindkey -M vicmd \^R redo
 
-bindkey -s \^Xp '^X^AA |& pg'
-bindkey -s \^XP '^X^AIpgx '
-bindkey -s \^Xx '^X^AIsudo '
+bindkey -s \\e. '!#:$\ee'
 bindkey -s \^X, '!!:'
 bindkey -s \^X. '!#:'
+
+bindkey -s \^Xi '(#i)'
 bindkey -s \^X{ '{,.}^X^Ai'
 
-bindkey -M vicmd -s \| 'A |& '
+bindkey -s \^X\> '^X^AA &>'
+bindkey -s \^X\| '^X^AA |& '
+bindkey -s \^XP '^X^AIpgx '
+bindkey -s \^Xp '^X^AA |& pg'
+bindkey -s \^Xx '^X^AIsudo '
+
 bindkey -M vicmd -s \> 'A &>'
-bindkey -M vicmd -s \^Xp 'A |& pg'
+bindkey -M vicmd -s \| 'A |& '
 bindkey -M vicmd -s \^XP 'Ipgx '
+bindkey -M vicmd -s \^Xp 'A |& pg'
 bindkey -M vicmd -s \^Xx 'Isudo '
 
 bindkey -M isearch . self-insert
@@ -478,9 +484,10 @@ fi
 # See also:
 #
 #   ^X? _complete_debug
-#   ^XH _complete_help
+#   ^Xh _complete_help
+#   ^Xt _complete_tag
 
-zstyle ':completion:*' completer _complete _match
+zstyle ':completion:*' completer _complete
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' insert-unambiguous true
 zstyle ':completion:*' menu select
